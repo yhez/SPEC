@@ -112,5 +112,10 @@ public class CryptMethods {
 		}
 		return false;
 	}
-    public static signPublic
+    public static void signPublicQR(){
+
+    }
+    public static boolean checkSignPublicQR(){
+        return false;
+    }
 }

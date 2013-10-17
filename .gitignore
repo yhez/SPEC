@@ -18,7 +18,8 @@ local.properties
 build/libs/
 # External tool builders
 .externalToolBuilders/
-
+.gradle/
+.idea/
 # Locally stored "Eclipse launch configurations"
 *.launch
 

@@ -139,9 +139,6 @@ public class Wmain extends Activity {
     }
 
     void encryptManager(final QRPublicKey qrp) {
-        // selectItemLayout(R.layout.encrypt_show);
-        // final int checked = ((RadioGroup) findViewById(R.id.radioGroupf))
-        // .getCheckedRadioButtonId();
         Contact contact = Contact.giveMeContact(this, qrp);
         final QRMessage msg = new QRMessage(fileContent, userInput,
                 contact.getSession());
@@ -462,6 +459,9 @@ public class Wmain extends Activity {
                     case R.layout.create_new_keys:
                         menu = menuTitles.length - 1;
                         break;
+                    case R.layout.wait_nfc_decrypt:
+                        menu = menuTitles.length - 1;
+                        break;
                 }
             }
         } else {
@@ -565,7 +565,7 @@ public class Wmain extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         String msg = getIntent().getStringExtra("message");
-        if (msg != null) {
+        if (msg != null&&publicKey) {
             getIntent().removeExtra("message");
             decryptManager(msg);
         } else {
@@ -575,7 +575,9 @@ public class Wmain extends Activity {
                     exist = true;
                     break;
                 }
-            if (!exist)
+            if(!privateKey&&publicKey)
+                selectItem(-1,R.layout.wait_nfc_decrypt);
+            else if (!exist)
                 selectItem(defaultScreen, 0);
         }
     }

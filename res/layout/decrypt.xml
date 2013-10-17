@@ -3,7 +3,7 @@
     android:layout_height="fill_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:alpha="1">
+    android:alpha="0">
 
     <TextView
         android:gravity="center"
