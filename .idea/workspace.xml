@@ -77,19 +77,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CryptMethods.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="CryptMethods.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/specular/systems/CryptMethods.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="23" selection-start="1338" selection-end="1338" vertical-scroll-proportion="0.0" vertical-offset="646" max-vertical-offset="2057">
+            <state line="114" column="28" selection-start="3688" selection-end="3688" vertical-scroll-proportion="0.6666667" vertical-offset="1309" max-vertical-offset="1683">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Wmain.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Wmain.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/specular/systems/Wmain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="384" column="29" selection-start="15803" selection-end="15803" vertical-scroll-proportion="-2.3333333" vertical-offset="6528" max-vertical-offset="11951">
+            <state line="438" column="48" selection-start="17737" selection-end="17737" vertical-scroll-proportion="0.0" vertical-offset="5355" max-vertical-offset="11951">
               <folding>
                 <element signature="e#25472#25481#0" expanded="true" />
               </folding>
@@ -527,6 +527,7 @@
         <option value="$PROJECT_DIR$/res/layout/wait_nfc.xml" />
         <option value="$PROJECT_DIR$/res/layout/wait_nfc_decrypt.xml" />
         <option value="$PROJECT_DIR$/src/specular/systems/Wmain.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/CryptMethods.java" />
       </list>
     </option>
   </component>
@@ -845,8 +846,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="10" y="0" width="1346" height="728" extended-state="1" />
-    <editor active="false" />
+    <frame x="10" y="0" width="1346" height="728" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -937,13 +938,6 @@
         <state line="5" column="0" selection-start="109" selection-end="109" vertical-scroll-proportion="0.05345912" vertical-offset="68" max-vertical-offset="10115" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/CryptMethods.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="23" selection-start="1338" selection-end="1338" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1666">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/FragmentManagment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="269" column="40" selection-start="15135" selection-end="15135" vertical-scroll-proportion="0.0" vertical-offset="4347" max-vertical-offset="4947">
@@ -987,10 +981,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/Wmain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="384" column="29" selection-start="15803" selection-end="15803" vertical-scroll-proportion="-2.3333333" vertical-offset="6528" max-vertical-offset="11951">
+        <state line="438" column="48" selection-start="17737" selection-end="17737" vertical-scroll-proportion="0.0" vertical-offset="5355" max-vertical-offset="11951">
           <folding>
             <element signature="e#25472#25481#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/CryptMethods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="114" column="28" selection-start="3688" selection-end="3688" vertical-scroll-proportion="0.6666667" vertical-offset="1309" max-vertical-offset="1683">
+          <folding />
         </state>
       </provider>
     </entry>

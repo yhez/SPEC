@@ -112,4 +112,5 @@ public class CryptMethods {
 		}
 		return false;
 	}
+    public static signPublic
 }
