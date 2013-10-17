@@ -15,7 +15,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
-
+build/libs/
 # External tool builders
 .externalToolBuilders/
 
@@ -192,7 +192,6 @@ $RECYCLE.BIN/
 *.egg
 *.egg-info
 dist/
-build/
 eggs/
 parts/
 var/
