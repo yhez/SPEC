@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:alpha="0"
+    android:padding="40dp">
+
+    <TextView
+        android:textColor="#222"
+        android:gravity="center"
+        android:padding="@dimen/default_gap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wait_for_nfc_to_write"
+        android:textSize="40sp" />
+
+    <Button
+        android:textColor="#222"
+        android:onClick="onClick"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="bottom"
+        android:padding="@dimen/default_gap"
+        android:text="@string/skip_save_to_phone" />
+</LinearLayout>

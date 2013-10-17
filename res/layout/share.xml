@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0"
+            android:background="@drawable/background"
+    
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/default_gap" >
+	<TextView 
+	    android:id="@+id/your_publick_key"
+     	android:padding="6dp"
+		android:text="@string/share_public_descripton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:alpha="0.5"
+        android:gravity="center"
+        android:textColor="#222"
+        android:textSize="25sp" />
+    <TextView
+        android:padding="6dp"
+        android:id="@+id/me_public"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:alpha="0.5"
+        android:gravity="center"
+        android:textColor="#28bedf"
+        android:textIsSelectable="true"
+        android:textSize="23sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:alpha="0.8"
+        android:background="#17adce"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_gap" >
+
+        <Button
+            style="@android:attr/borderlessButtonStyle"
+            android:id="@+id/button_share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="share"
+            android:text="Share" />
+
+        <Button
+            style="@android:attr/borderlessButtonStyle"
+            android:id="@+id/button_publish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="shareWeb"
+            android:text="@string/share_on_server" />
+    </LinearLayout>
+    <ImageView 
+        android:id="@+id/qr_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.1"/>
+</FrameLayout>

@@ -1,0 +1,78 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:alpha="1"
+    android:padding="@dimen/default_gap"
+    android:gravity="center">
+
+    <EditText
+        android:gravity="center"
+        android:paddingLeft="@dimen/default_gap"
+        android:paddingTop="@dimen/default_gap"
+        android:paddingRight="@dimen/default_gap"
+        android:id="@+id/contact_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:gravity="center"
+        android:padding="@dimen/default_gap"
+        android:id="@+id/contact_session"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:gravity="center"
+        android:padding="@dimen/default_gap"
+        android:id="@+id/contact_pb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:gravity="center"
+        android:padding="@dimen/default_gap"
+        android:id="@+id/contact_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:padding="@dimen/default_gap"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancel"
+            android:padding="@dimen/default_gap"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/save"
+            android:padding="@dimen/default_gap"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/delete"
+            android:padding="@dimen/default_gap"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/contact_id"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

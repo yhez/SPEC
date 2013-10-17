@@ -1,0 +1,55 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="specular.systems"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="18"
+        android:maxSdkVersion="18"
+        android:targetSdkVersion="18" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name" >
+        <activity
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent"
+            android:name=".Splash"
+			android:launchMode="singleTask"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="*"
+                    android:mimeType="application/octet-stream"
+                    android:pathPattern=".*\\.SPEC" />
+            </intent-filter>
+        </activity>
+        <activity
+           	android:screenOrientation="portrait"
+            android:icon="@drawable/menu"
+            android:name=".Wmain"
+            android:launchMode="singleTask"
+            android:label="Menu" />
+         <activity
+            android:screenOrientation="landscape"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            android:icon="@drawable/menu"
+            android:name=".StartScan"
+            android:label="Menu" />
+    </application>
+</manifest>

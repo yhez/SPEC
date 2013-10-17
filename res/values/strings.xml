@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- "Encrypt","Decrypt","Share","Contacts","Learn","Manage" -->
+    <string name="welcome">Welcome, let\'s start securing our communications.</string>
+    <string name="keys_loaded">Keys successfully loaded</string>
+    <string name="company_text">SPEC ; YOU HOLD THE KEY TO YOUR SECURITY</string>
+    <string name="file_added">File successfully added</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_name">SPEC</string>
+    <string name="decrypt_explain">Decrypt message using QR code scanner, press logo below to scan:\n</string>
+    <string name="start">GO</string>
+    <!-- encrypt -->
+    <string name="encrypt_explain">Encrypt and send a message using your friend\'s (contact) public key</string>
+    <string name="no_msg">Insert a message</string>
+    <string name="hint_msg">Message goes here . . .</string>
+    <!-- sharing the public key -->
+    <string name="explain"> Hi there, I\'m attaching my public encryption key. Use it wisely and securely. You should verify that this public key belongs to the sender.</string>
+    <!-- for the qr installation -->
+    <string name="title">Install barcode scanner?</string>
+    <string name="msg">This application requires a barcode scanner, would you like to install it?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <!-- first run -->
+    <!-- radio buttons -->
+    <string name="from_nfc">Tap NFC</string>
+    <string name="from_qr">Scan QR</string>
+    <string name="from_text">Type It</string>
+    <string name="from_contacts">From Contacts</string>
+    <!-- main -->
+    <string name="encrypt">Encrypt message using your friend\'s public key</string>
+    <!-- encrypt show -->
+    <string name="encrypting">Encrypting message\nSecuring communication</string>
+    <!-- edit contact -->
+    <!-- <string name="ok">Ok</string> -->
+    <string name="hint_enter_your_name">username</string>
+    <string name="hint_enter_your_email">email</string>
+    <string name="wait_for_nfc_to_write">Tap NFC tag</string>
+    <string name="skip_save_to_phone">Skip and save private key on your phone (less secure)</string>
+    <string name="explain_and_about">LEARN ABOUT SPEC</string>
+    <string name="chance_the_key_in_nfc">TODO, else</string>
+    <string name="create_keys">Create New Keys</string>
+    <string name="share_qr">Share QR</string>
+    <string name="share_file">Share File</string>
+    <string name="share_on_server">Publish</string>
+    <string name="to_file">To File</string>
+    <string name="to_qr">To QR</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+	<string name="failed">Failed</string>
+	<string name="time_stemp">Time stamp</string>
+	<string name="hash">Hash</string>
+	<string name="nfc_off">Tap NFC tag</string>
+	<string name="message">Message</string>
+	<string name="email">Email</string>
+	<string name="session">Session</string>
+	<string name="bad_data">Unexpected data</string>
+	<string name="public_key">Public Key</string>
+	<string name="share_dialog">Share your Public Key&#8230;</string>
+	<string name="send_dialog">Send encrypted message&#8230;</string>
+	<string name="cant_decrypt">This message hasn\'t been encrypted for you</string>
+	<string name="attachment_error">Attachment Error</string>
+	<string name="content_msg">Attached is an encrypted SPEC APP message</string>
+	<string name="subject_encrypt">An encrypted message just for you - SPEC APP</string>
+	<string name="share_public_descripton">Your Public Key:</string>
+	<string name="fill_all">Please fill all the fields</string>
+	<string name="subject_share">My Public Key - SPEC APP</string>
+	<string name="content_share">My public key, use it for secure messaging</string>
+	<string name="done_loading">Finished loading private key</string>
+	<string name="contact_saved">SAVED TO CONTACTS</string>
+	<string name="contact_exist">Contact already exists</string>
+    <string name="wait_for_nfc_to_read">wait_for_nfc_to_read</string>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0"
+    android:gravity="center">
+
+    <TextView
+        android:textColor="#222"
+        android:gravity="center"
+        android:padding="@dimen/default_gap"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="30sp"
+        android:text="TODO make it only for settings not for sowed when the app turns on" />
+
+    <Button
+        android:textColor="#222"
+        android:onClick="onClick"
+        android:padding="@dimen/default_gap"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/create_keys"
+        android:id="@+id/button1"
+        android:layout_gravity="center" />
+</LinearLayout>

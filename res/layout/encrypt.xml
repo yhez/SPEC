@@ -1,0 +1,89 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:alpha="1"
+    android:orientation="vertical"
+    android:padding="16dp" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/default_gap"
+        android:text="@string/encrypt_explain"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:id="@+id/bottom_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:background="#ffffff"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dip"
+            android:layout_weight="1.0"
+            android:autoText="true"
+            android:capitalize="sentences"
+            android:hint="@string/hint_msg"
+            android:imeOptions="actionSend|flagNoEnterAction"
+            android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine"
+            android:maxLength="2000"
+            android:maxLines="3"
+            android:minHeight="48dp"
+            android:nextFocusRight="@+id/send_button"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/text_counter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|bottom"
+            android:paddingBottom="5dip"
+            android:paddingLeft="3dip"
+            android:paddingRight="3dip"
+            android:textColor="#cc333333"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/add_file"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="0"
+            android:drawablePadding="0dip"
+            android:nextFocusLeft="@+id/send_button_sms"
+            android:onClick="onClick"
+            android:src="@drawable/ic_attachment_universal_small" />
+
+        <ImageButton
+            android:id="@+id/send"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="0"
+            android:drawablePadding="0dip"
+            android:nextFocusLeft="@+id/embedded_text_editor"
+            android:onClick="onClick"
+            android:src="@drawable/ic_send_holo_light" />
+    </LinearLayout>
+    <ListView
+        android:id="@+id/en_list_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_panel"
+        android:padding="@dimen/default_gap"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:alpha="0"    
+    android:padding="37dp">
+
+    <TextView
+        android:textSize="19sp"
+        android:text="@string/welcome"
+		android:layout_marginTop="10dp"
+        android:textColor="#222"
+        android:padding="@dimen/default_gap"
+        android:id="@+id/welcome"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent" 
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_enter_your_name"
+        android:inputType="textPersonName"
+        android:padding="@dimen/default_gap"
+        android:textColor="#222"
+        android:textColorHint="#777" />
+
+    <EditText
+        android:maxLength="16"
+        android:textColor="#222"
+        android:textColorHint="#777"
+        android:padding="@dimen/default_gap"
+        android:id="@+id/email"
+        android:hint="@string/hint_enter_your_email"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress" />
+
+    <Button
+		android:maxLength="40"
+        android:id="@+id/button"
+        android:textColor="#222"
+        android:padding="@dimen/default_gap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/create_keys"
+        android:textSize="32sp"
+        android:onClick="onClick" />
+    </LinearLayout>
+</LinearLayout>
