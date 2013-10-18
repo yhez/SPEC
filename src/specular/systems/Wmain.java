@@ -73,18 +73,6 @@ public class Wmain extends Activity {
     private String userInput;
     private String fileContent = "";
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        for (int a = 0; a < layouts.length; a++) {
-            if (currentLayout == layouts[a]) {
-                moveTaskToBack(true);
-                return;
-            }
-        }
-        onResume();
-    }
-
     void createKeysManager() {
         createKeys.start();
         if (NfcAdapter.getDefaultAdapter(this) != null)
@@ -569,16 +557,32 @@ public class Wmain extends Activity {
             getIntent().removeExtra("message");
             decryptManager(msg);
         } else {
-            boolean exist = false;
-            for (int a = 0; a < layouts.length; a++)
-                if (currentLayout == layouts[a]) {
-                    exist = true;
-                    break;
-                }
             if (!privateKey && publicKey)
                 selectItem(-1, R.layout.wait_nfc_decrypt);
-            else if (!exist)
-                selectItem(defaultScreen, 0);
+            else {
+                boolean exist = false;
+                for (int a = 0; a < layouts.length; a++)
+                    if (currentLayout == layouts[a]) {
+                        selectItem(-1, currentLayout);
+                        exist = true;
+                        break;
+                    }
+                if (!exist)
+                    selectItem(defaultScreen, 0);
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        boolean atHome = false;
+        for (int a = 0; a < layouts.length; a++)
+            if (currentLayout == layouts[a])
+                atHome = true;
+        if (atHome)
+            super.onBackPressed();
+        else{
+            setUpViews();
         }
     }
 

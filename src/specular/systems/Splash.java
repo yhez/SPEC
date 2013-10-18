@@ -100,8 +100,6 @@ public class Splash extends Activity {
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
-        /*Intent inte = new Intent(Splash.this,StartScan.class);
-		startActivity(inte);*/
         Intent thisIntent = getIntent();
         getKeys.start();
         if (thisIntent != null && thisIntent.getType() != null
