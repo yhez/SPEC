@@ -1,64 +1,83 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/decrypt_show"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="37dp"
-    android:gravity="center"
     android:alpha="0"
-    android:id="@+id/decrypt_show"
-    android:orientation="vertical">
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="37dp">
 
-    <TextView
-        android:gravity="center"
-        android:padding="@dimen/default_gap"
-        android:alpha="0"
-        android:id="@+id/ds_email"
+    <LinearLayout
+        android:id="@+id/decrypt_show_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp" />
+        android:orientation="vertical">
 
-    <TextView
-        android:padding="@dimen/default_gap"
-        android:gravity="center"
-        android:alpha="0"
-        android:id="@+id/ds_msg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="26sp" />
+        <TextView
+            android:visibility="gone"
+            android:textColor="#222"
+            android:id="@+id/ds_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:gravity="center"
+            android:padding="@dimen/default_gap"
+            android:textSize="25sp" />
 
-    <TextView
-        android:padding="@dimen/default_gap"
-        android:gravity="center"
-        android:alpha="0"
-        android:id="@+id/ds_hash"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        <TextView
+            android:visibility="gone"
+            android:textColor="#222"
+            android:id="@+id/ds_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:gravity="center"
+            android:padding="@dimen/default_gap"
+            android:textSize="26sp" />
 
-    <TextView
-        android:padding="@dimen/default_gap"
-        android:gravity="center"
-        android:alpha="0"
-        android:id="@+id/ds_session"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="12sp" />
+        <TextView
+            android:visibility="gone"
+            android:textColor="#222"
+            android:id="@+id/ds_hash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:gravity="center"
+            android:padding="@dimen/default_gap"
+            android:textSize="14sp" />
 
-    <TextView
-        android:alpha="0"
-        android:padding="@dimen/default_gap"
-        android:gravity="center"
-        android:id="@+id/ds_pk"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="5sp" />
+        <TextView
+            android:visibility="gone"
+            android:textColor="#222"
+            android:id="@+id/ds_session"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:gravity="center"
+            android:padding="@dimen/default_gap"
+            android:textSize="12sp" />
 
-    <TextView
-        android:alpha="0"
-        android:gravity="center"
-        android:padding="@dimen/default_gap"
-        android:id="@+id/ds_sent_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="12sp" />
+        <TextView
+            android:visibility="gone"
+            android:textColor="#222"
+            android:id="@+id/ds_pk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:gravity="center"
+            android:padding="@dimen/default_gap"
+            android:textSize="5sp" />
 
-</LinearLayout>
+        <TextView
+            android:visibility="gone"
+            android:textColor="#222"
+            android:id="@+id/ds_sent_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:gravity="center"
+            android:padding="@dimen/default_gap"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+</ScrollView>

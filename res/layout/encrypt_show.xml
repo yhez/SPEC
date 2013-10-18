@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="0"
+    android:id="@+id/encrypt_show"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="37dp">
 
     <LinearLayout
-        android:id="@+id/encrypt_show"
+        android:id="@+id/encrypt_show_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

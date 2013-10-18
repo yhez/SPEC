@@ -24,6 +24,7 @@ import android.os.Parcelable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -114,7 +115,7 @@ public class Wmain extends Activity {
     void decryptManager(String contents) {
         if (contents != null && contents.length() > 5) {
             String data = CryptMethods.decrypt(contents);
-            Fragment fragment = new FragmentManagment();
+            Fragment fragment = new FragmentManagement();
             Bundle args = new Bundle();
             args.putString("data", data);
             args.putInt("layout", R.layout.decrypt_show);
@@ -134,7 +135,7 @@ public class Wmain extends Activity {
 
         // TODO debug note
         Log.e("jj", "" + System.currentTimeMillis());
-        Fragment fragment = new FragmentManagment();
+        Fragment fragment = new FragmentManagement();
         Bundle args = new Bundle();
         args.putInt("layout", R.layout.encrypt_show);
         args.putString("email", qrp.getEmail());
@@ -486,7 +487,7 @@ public class Wmain extends Activity {
         mDrawerList.setItemChecked(menu, true);
         setTitle(menuTitles[menu]);
         mDrawerLayout.closeDrawer(mDrawerList);
-        Fragment fragment = new FragmentManagment();
+        Fragment fragment = new FragmentManagement();
         Bundle args = new Bundle();
         args.putInt("layout", layout);
         fragment.setArguments(args);
@@ -621,8 +622,13 @@ public class Wmain extends Activity {
             intent.setType("*/*");
             intent.putExtra(Intent.EXTRA_SUBJECT,
                     getResources().getString(R.string.subject_share));
-            intent.putExtra(Intent.EXTRA_TEXT,
-                    getResources().getString(R.string.content_share));
+           InputStream is = getAssets().open("spec_temp_share.html");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+                    /*getResources().getString(R.string.content_share));*/
             ArrayList<Uri> files = new FilesManegmant(this).getFilesToShare();
             if (files == null)
                 Toast.makeText(this, R.string.attachment_error,

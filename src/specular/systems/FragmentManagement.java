@@ -5,6 +5,8 @@ import android.app.FragmentManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +16,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class FragmentManagment extends Fragment {
-    public FragmentManagment() {
+public class FragmentManagement extends Fragment {
+    public FragmentManagement() {
     }
-
+    final Handler hndl = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            ((TextView)msg.obj).setVisibility(View.VISIBLE);
+            ((TextView)msg.obj).setTypeface(FilesManegmant.getOs(getActivity()));
+            ((TextView)msg.obj).animate().setDuration(700).alpha(1);
+            ((ScrollView)getActivity().findViewById(msg.what)).smoothScrollTo(0, ((View)msg.obj).getTop());
+        }
+    };
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,7 +69,7 @@ public class FragmentManagment extends Fragment {
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> p1, View p2, int p3,
                                             long p4) {
-                        Fragment fragment = new FragmentManagment();
+                        Fragment fragment = new FragmentManagement();
                         Bundle args = new Bundle();
                         args.putInt("layout", R.layout.edit_contact);
                         args.putLong("contactId", Long.parseLong(((TextView) p2
@@ -116,24 +127,21 @@ public class FragmentManagment extends Fragment {
                 ((TextView) getActivity().findViewById(R.id.encryptshow_hash))
                         .setText(sentTime);
                 final LinearLayout ll = (LinearLayout) getActivity().findViewById(
-                        R.id.encrypt_show);
+                        R.id.encrypt_show_ll);
                 new Thread(new Runnable() {
                     public void run() {
                         int a = 0;
-                        while (a < ll.getChildCount() - 1)
+                        while (a < ll.getChildCount())
                             synchronized (this) {
                                 try {
-                                    if (ll.getChildAt(a).getAlpha() == 0) {
-                                        ll.getChildAt(a).setVisibility(View.VISIBLE);
-                                        ((TextView) ll.getChildAt(a)).setTypeface(FilesManegmant.getOs(getActivity()));
-                                        ll.getChildAt(a).animate().setDuration(700)
-                                                .alpha(1);
-                                        wait(1000);
-                                    } else if (ll.getChildAt(a).getAlpha() == 1)
+                                    if (ll.getChildAt(a).getVisibility()==View.GONE) {
+                                        Message msg = hndl.obtainMessage(R.id.encrypt_show,ll.getChildAt(a));
+                                        hndl.sendMessage(msg);
+                                        wait(1700);
+                                    } else
                                         a++;
-                                    else
-                                        wait(100);
                                 } catch (Exception ignored) {
+                                    ignored.printStackTrace();
                                 }
                             }
                     }
@@ -181,21 +189,19 @@ public class FragmentManagment extends Fragment {
                             .setText(getResources().getString(R.string.time_stemp)
                                     + ":\n" + msg.getSentTime());
                     final LinearLayout mm = (LinearLayout) getActivity()
-                            .findViewById(R.id.decrypt_show);
+                            .findViewById(R.id.decrypt_show_ll);
                     new Thread(new Runnable() {
                         public void run() {
                             int a = 0;
                             while (a < mm.getChildCount()) {
                                 synchronized (this) {
                                     try {
-                                        if (mm.getChildAt(a).getAlpha() == 0) {
-                                            mm.getChildAt(a).animate()
-                                                    .setDuration(700).alpha(1);
+                                        if (mm.getChildAt(a).getVisibility() == View.GONE) {
+                                            Message msg = hndl.obtainMessage(R.id.decrypt_show,mm.getChildAt(a));
+                                            hndl.sendMessage(msg);
                                             wait(720);
-                                        } else if (mm.getChildAt(a).getAlpha() >= 1)
+                                        }else
                                             a++;
-                                        else
-                                            wait(100);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
