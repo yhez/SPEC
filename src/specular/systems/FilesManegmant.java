@@ -81,7 +81,7 @@ public class FilesManegmant {
             edt.putString("public_key", qrpk.getPublicKey());
             edt.putString("email", qrpk.getEmail());
             edt.putString("name", qrpk.getName());
-            edt.putString("private_key", CryptMethods.myPrivateKey);
+            edt.putString("private_key", CryptMethods.myPrivateKey!=null?CryptMethods.myPrivateKey:"the key is on nfc");
             edt.commit();
         }
     });
@@ -132,6 +132,9 @@ public class FilesManegmant {
         CryptMethods.myPublicKey = srp.getString("public_key", null);
         CryptMethods.myPrivateKey = srp.getString("private_key", null);
         CryptMethods.myEmail = srp.getString("email", null);
+        if(CryptMethods.myPrivateKey!=null)
+            if(!CryptMethods.formatPrivate())
+                CryptMethods.myPrivateKey=null;
     }
 
     public void save() {

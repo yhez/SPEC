@@ -340,24 +340,29 @@ public class Wmain extends Activity {
                         e.printStackTrace();
                     }
                 }
-                String tmp = CryptMethods.myPrivateKey;
-                CryptMethods.myPrivateKey = null;
-                saveKeys.start(this);
-                String rslt = writeTag(tag, Visual.hex2bin(tmp));
-                Toast.makeText(getBaseContext(), rslt, Toast.LENGTH_LONG).show();
-                findViewById(R.id.drawer_layout).animate().setDuration(1000)
-                        .alpha(0);
-                while (saveKeys.isAlive()) {
-                    try {
-                        wait(150);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                if (CryptMethods.myPrivateKey == null) {
+                    Toast.makeText(getBaseContext(), "there was a problem\ntry creating keys again", Toast.LENGTH_LONG).show();
+                    selectItem(layouts.length - 1, R.layout.create_new_keys);
+                } else {
+                    String tmp = CryptMethods.myPrivateKey;
+                    CryptMethods.myPrivateKey = null;
+                    saveKeys.start(this);
+                    String rslt = writeTag(tag, Visual.hex2bin(tmp));
+                    Toast.makeText(getBaseContext(), rslt, Toast.LENGTH_LONG).show();
+                    findViewById(R.id.drawer_layout).animate().setDuration(1000)
+                            .alpha(0);
+                    while (saveKeys.isAlive()) {
+                        try {
+                            wait(150);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
+                    onPause();
+                    finish();
+                    Intent intent = new Intent(Wmain.this, Splash.class);
+                    startActivity(intent);
                 }
-                onPause();
-                finish();
-                Intent intent = new Intent(Wmain.this, Splash.class);
-                startActivity(intent);
             }
         } else if (currentLayout == R.layout.wait_nfc_decrypt) {
             Parcelable raw[] = getIntent().getParcelableArrayExtra(
@@ -581,7 +586,7 @@ public class Wmain extends Activity {
                 atHome = true;
         if (atHome)
             super.onBackPressed();
-        else{
+        else {
             setUpViews();
         }
     }
@@ -695,22 +700,8 @@ public class Wmain extends Activity {
         super.onResume();
         if (CryptMethods.myPrivateKey == null
                 || CryptMethods.myPublicKey == null) {
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    new FilesManegmant(Wmain.this).get();
-                }
-            });
-            t.start();
-            synchronized (this) {
-                while (t.isAlive())
-                    try {
-                        wait(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                setUpViews();
-            }
+            new FilesManegmant(Wmain.this).get();
+            setUpViews();
         }
     }
 
@@ -730,13 +721,12 @@ public class Wmain extends Activity {
         }
 
         public static boolean isAlive() {
-            return t.isAlive();
+            return t != null && t.isAlive();
         }
     }
 
     static class saveKeys {
         static Thread t;
-
         public static void start(final Activity a) {
             if (t == null || !t.isAlive()) {
                 t = new Thread(new Runnable() {
@@ -748,9 +738,8 @@ public class Wmain extends Activity {
                 t.start();
             }
         }
-
         public static boolean isAlive() {
-            return t.isAlive();
+            return t != null && t.isAlive();
         }
     }
 

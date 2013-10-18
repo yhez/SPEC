@@ -20,15 +20,6 @@ import java.io.InputStreamReader;
 
 public class Splash extends Activity {
     final private static int TIME_FOR_SPLASH = 3500;
-    private
-    final Thread getKeys = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            new FilesManegmant(Splash.this).get();
-            if (CryptMethods.myPrivateKey != null)
-                privateKey = true;
-        }
-    });
     Thread waitForSplash = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -46,62 +37,43 @@ public class Splash extends Activity {
             finish();
         }
     });
-    private String message = null;
-    private boolean privateKey = false;
     boolean newUser;
+    private String message = null;
+
     void go() {
-        newUser=FilesManegmant.isItNewUser(this);
+        newUser = FilesManegmant.isItNewUser(this);
         if (newUser) {
             setContentView(R.layout.splash);
             ((TextView) findViewById(R.id.company)).setTypeface(FilesManegmant.getOs(this));
             findViewById(R.id.splash).animate().setDuration(TIME_FOR_SPLASH).alpha(1);
             waitForSplash.start();
         }
-        CryptMethods.addProviders();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (getKeys.isAlive()) {
-                    synchronized (this) {
-                        try {
-                            wait(150);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                if (!privateKey && getIntent().getType() != null) {
-                    Parcelable raw[] = getIntent().getParcelableArrayExtra(
-                            NfcAdapter.EXTRA_NDEF_MESSAGES);
-                    if (raw != null) {
-                        NdefMessage msg = (NdefMessage) raw[0];
-                        NdefRecord pvk = msg.getRecords()[0];
-                        CryptMethods.myPrivateKey = Visual.bin2hex(pvk
-                                .getPayload());
-                        privateKey = true;
-                    }
-                }
-                if (privateKey)
-                    if (!CryptMethods.formatPrivate()) {
-                        privateKey = false;
-                        CryptMethods.myPrivateKey = null;
-                    }
-                if (!newUser) {
-                    Intent intent = new Intent(Splash.this, Wmain.class);
-                    if (message != null)
-                        intent.putExtra("message", message);
-                    startActivity(intent);
-                    finish();
-                }
+        new FilesManegmant(this).get();
+        if (CryptMethods.myPrivateKey!=null && getIntent().getType() != null) {
+            Parcelable raw[] = getIntent().getParcelableArrayExtra(
+                    NfcAdapter.EXTRA_NDEF_MESSAGES);
+            if (raw != null) {
+                NdefMessage msg = (NdefMessage) raw[0];
+                NdefRecord pvk = msg.getRecords()[0];
+                CryptMethods.myPrivateKey = Visual.bin2hex(pvk
+                        .getPayload());
+                if(!CryptMethods.formatPrivate())
+                    CryptMethods.myPrivateKey=null;
             }
-        }).start();
+        }
+        if (!newUser) {
+            Intent intent = new Intent(Splash.this, Wmain.class);
+            if (message != null)
+                intent.putExtra("message", message);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
         Intent thisIntent = getIntent();
-        getKeys.start();
         if (thisIntent != null && thisIntent.getType() != null
                 && thisIntent.getType().equals("application/octet-stream")
                 && thisIntent.getData() != null) {
@@ -149,7 +121,6 @@ public class Splash extends Activity {
                         Toast.makeText(getBaseContext(),
                                 R.string.contact_exist, Toast.LENGTH_LONG)
                                 .show();
-                    // TODO delete the private if he already loaded
                     finish();
                 } else {
                     message = data;

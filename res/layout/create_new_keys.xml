@@ -31,7 +31,7 @@
         android:textColorHint="#777" />
 
     <EditText
-        android:maxLength="16"
+        android:maxLength="40"
         android:textColor="#222"
         android:textColorHint="#777"
         android:padding="@dimen/default_gap"
