@@ -1,12 +1,17 @@
 package specular.systems;
 
-import java.math.BigInteger;
-
 public class Visual {
-	public static String bin2hex(byte[] data) {
-		return String.format("%0" + (data.length * 2) + 'X', new BigInteger(1,
-				data));
-	}
+    static final String HEXES = "0123456789ABCDEF";
+    public static String bin2hex(byte[] raw) {
+            if ( raw == null )
+                return null;
+            final StringBuilder hex = new StringBuilder( 2 * raw.length );
+            for ( final byte b : raw ) {
+                hex.append(HEXES.charAt((b & 0xF0) >> 4))
+                        .append(HEXES.charAt((b & 0x0F)));
+            }
+            return hex.toString();
+    }
 
 	// return bin data from hexadecimal string
 	public static byte[] hex2bin(String data) {

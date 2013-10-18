@@ -371,7 +371,7 @@ public class Wmain extends Activity {
                 Intent intent = new Intent(Wmain.this, Splash.class);
                 startActivity(intent);
             }
-        }else if(currentLayout==R.layout.wait_nfc_decrypt){
+        } else if (currentLayout == R.layout.wait_nfc_decrypt) {
             Parcelable raw[] = getIntent().getParcelableArrayExtra(
                     NfcAdapter.EXTRA_NDEF_MESSAGES);
             if (raw != null) {
@@ -565,7 +565,7 @@ public class Wmain extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         String msg = getIntent().getStringExtra("message");
-        if (msg != null&&publicKey) {
+        if (msg != null && publicKey) {
             getIntent().removeExtra("message");
             decryptManager(msg);
         } else {
@@ -575,8 +575,8 @@ public class Wmain extends Activity {
                     exist = true;
                     break;
                 }
-            if(!privateKey&&publicKey)
-                selectItem(-1,R.layout.wait_nfc_decrypt);
+            if (!privateKey && publicKey)
+                selectItem(-1, R.layout.wait_nfc_decrypt);
             else if (!exist)
                 selectItem(defaultScreen, 0);
         }
