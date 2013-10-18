@@ -4,7 +4,7 @@
     <!-- "Encrypt","Decrypt","Share","Contacts","Learn","Manage" -->
     <string name="welcome">Welcome, let\'s start securing our communications.</string>
     <string name="keys_loaded">Keys successfully loaded</string>
-    <string name="company_text">SPEC ; YOU HOLD THE KEY TO YOUR SECURITY</string>
+    <string name="company_text">SPEC ; HOLD THE KEY TO YOUR SECURITY</string>
     <string name="file_added">File successfully added</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
