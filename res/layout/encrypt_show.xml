@@ -1,82 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="37dp"
-    android:id="@+id/encrypt_show_ll"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:alpha="0"
     android:gravity="center"
-    android:alpha="0">
+    android:orientation="vertical"
+    android:padding="37dp">
 
-    <TextView
-        android:padding="@dimen/default_gap"
+    <LinearLayout
+        android:id="@+id/encrypt_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:alpha="0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/encryptshow"
-        android:text="@string/encrypting"
-        android:layout_gravity="center" />
+        android:orientation="vertical">
 
-    <TextView
-        android:padding="@dimen/default_gap"
-        android:gravity="center"
-        android:alpha="0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/encryptshow_email"
-        android:layout_gravity="center" />
+        <TextView
+            android:textColor="#222"
+            android:textSize="25sp"
+            android:visibility="gone"
+            android:id="@+id/encryptshow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha="0"
+            android:gravity="center"
+            android:padding="@dimen/default_gap"
+            android:text="@string/encrypting" />
 
-    <TextView
-        android:padding="@dimen/default_gap"
-        android:gravity="center"
-        android:alpha="0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/encryptshow_mpk"
-        android:layout_gravity="center" />
+        <TextView
+            android:textColor="#222"
+            android:textSize="20sp"
+            android:visibility="gone"
+            android:id="@+id/encryptshow_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha="0"
+            android:gravity="center"
+            android:padding="@dimen/default_gap" />
 
-    <TextView
-        android:padding="@dimen/default_gap"
-        android:gravity="center"
-        android:alpha="0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/encryptshow_msg"
-        android:layout_gravity="center" />
+        <TextView
+            android:textColor="#222"
+            android:textSize="20sp"
+            android:visibility="gone"
+            android:id="@+id/encryptshow_mpk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha="0"
+            android:gravity="center"
+            android:padding="@dimen/default_gap" />
 
-    <TextView
-        android:padding="@dimen/default_gap"
-        android:gravity="center"
-        android:alpha="0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/encryptshow_time"
-        android:layout_gravity="center" />
+        <TextView
+            android:textColor="#222"
+            android:textSize="20sp"
+            android:visibility="gone"
+            android:id="@+id/encryptshow_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha="0"
+            android:gravity="center"
+            android:padding="@dimen/default_gap" />
 
-    <TextView
-        android:padding="@dimen/default_gap"
-        android:alpha="0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/encryptshow_session"
-        android:layout_gravity="center" />
+        <TextView
+            android:textColor="#222"
+            android:textSize="20sp"
+            android:visibility="gone"
+            android:id="@+id/encryptshow_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha="0"
+            android:gravity="center"
+            android:padding="@dimen/default_gap" />
 
-    <TextView
-        android:padding="@dimen/default_gap"
-        android:gravity="center"
-        android:alpha="0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/encryptshow_hash"
-        android:layout_gravity="center" />
+        <TextView
+            android:textColor="#222"
+            android:textSize="20sp"
+            android:visibility="gone"
+            android:id="@+id/encryptshow_session"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha="0"
+            android:padding="@dimen/default_gap" />
 
-    <TextView
-        android:padding="@dimen/default_gap"
-        android:gravity="center"
-        android:alpha="0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/encryptshow_encrypt"
-        android:layout_gravity="center" />
-</LinearLayout>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/encryptshow_hash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha="0"
+            android:gravity="center"
+            android:padding="@dimen/default_gap" />
+
+        <TextView
+            android:textColor="#222"
+            android:textSize="20sp"
+            android:visibility="gone"
+            android:id="@+id/encryptshow_encrypt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha="0"
+            android:gravity="center"
+            android:padding="@dimen/default_gap" />
+        <Button
+            android:onClick="onClick"
+            android:textColor="#222"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="send"
+            android:padding="@dimen/default_gap"
+            android:gravity="center"/>
+    </LinearLayout>
+</ScrollView>

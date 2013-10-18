@@ -2,14 +2,9 @@ package specular.systems;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentManagment extends Fragment {
@@ -53,9 +40,9 @@ public class FragmentManagment extends Fragment {
         switch (Wmain.currentLayout) {
             case R.layout.create_new_keys:
                 ((TextView) getActivity().findViewById(R.id.welcome)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
-                ((EditText)getActivity().findViewById(R.id.name)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
-                ((EditText)getActivity().findViewById(R.id.email)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
-                ((Button)getActivity().findViewById(R.id.button)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
+                ((EditText) getActivity().findViewById(R.id.name)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
+                ((EditText) getActivity().findViewById(R.id.email)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
+                ((Button) getActivity().findViewById(R.id.button)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
                 break;
             case R.layout.contacts:
                 ListView lv = (ListView) getActivity().findViewById(R.id.list);
@@ -129,7 +116,7 @@ public class FragmentManagment extends Fragment {
                 ((TextView) getActivity().findViewById(R.id.encryptshow_hash))
                         .setText(sentTime);
                 final LinearLayout ll = (LinearLayout) getActivity().findViewById(
-                        R.id.encrypt_show_ll);
+                        R.id.encrypt_show);
                 new Thread(new Runnable() {
                     public void run() {
                         int a = 0;
@@ -137,6 +124,8 @@ public class FragmentManagment extends Fragment {
                             synchronized (this) {
                                 try {
                                     if (ll.getChildAt(a).getAlpha() == 0) {
+                                        ll.getChildAt(a).setVisibility(View.VISIBLE);
+                                        ((TextView) ll.getChildAt(a)).setTypeface(FilesManegmant.getOs(getActivity()));
                                         ll.getChildAt(a).animate().setDuration(700)
                                                 .alpha(1);
                                         wait(1000);
@@ -147,70 +136,6 @@ public class FragmentManagment extends Fragment {
                                 } catch (Exception ignored) {
                                 }
                             }
-                        while(CryptMethods.isAlive())
-                            synchronized (this) {
-                                try {
-                                    wait(300);
-                                } catch (InterruptedException e1) {
-                                    e1.printStackTrace();
-                                }}
-                        //TODO debug note
-                        Log.e("jj", ""+System.currentTimeMillis());
-                        String FILENAME = "message.SPEC";
-                        String QR_NAME = "qr_message.png";
-                        if (getArguments().getBoolean("qr")) {
-                            int qrCodeDimention = 500;
-                            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(
-                                    CryptMethods.encryptedMsgToSend, null,
-                                    Contents.Type.TEXT, BarcodeFormat.QR_CODE
-                                    .toString(), qrCodeDimention);
-                            try {
-                                Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
-                                FileOutputStream fos2 = null;
-                                try {
-                                    fos2 = getActivity().openFileOutput(QR_NAME,
-                                            Context.MODE_WORLD_READABLE);
-                                } catch (FileNotFoundException e) {
-                                    e.printStackTrace();
-                                }
-                                if (fos2 != null) {
-                                    bitmap.compress(Bitmap.CompressFormat.PNG, 90,
-                                            fos2);
-                                }
-                            } catch (WriterException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        try {
-                            FileOutputStream fos = getActivity().openFileOutput(
-                                    FILENAME, Context.MODE_WORLD_READABLE);
-                            fos.write(CryptMethods.encryptedMsgToSend.getBytes());
-                            fos.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(getActivity().getBaseContext(),
-                                    R.string.failed, Toast.LENGTH_LONG).show();
-                        }
-
-                        Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                        intent.setType("*/*");
-                        intent.putExtra(Intent.EXTRA_SUBJECT,
-                                getResources().getString(R.string.subject_encrypt));
-                        intent.putExtra(Intent.EXTRA_TEXT,
-                                getResources().getString(R.string.content_msg));
-                        ArrayList<Uri> files = new ArrayList<Uri>(2);
-                        File root = getActivity().getFilesDir();
-                        try{
-                            files.add(Uri.parse("file://" +new File(root, FILENAME)));
-                            if(getArguments().getBoolean("qr"))
-                                files.add(Uri.parse("file://" +new File(root, QR_NAME)));
-                            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
-                            getActivity().startActivity(Intent.createChooser(intent, getResources()
-                                    .getString(R.string.send_dialog)));
-                        }catch(Exception e){
-                            Toast.makeText(getActivity(), R.string.attachment_error,
-                                    Toast.LENGTH_SHORT).show();
-                        }
                     }
                 }).start();
                 break;

@@ -483,15 +483,15 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
       }
       Map<ResultMetadataType,?> metadata = rawResult.getResultMetadata();
       if (metadata != null) {
-        Integer orientation = (Integer) metadata.get(ResultMetadataType.ORIENTATION);
+        Integer orientation = (Integer) metadata.getKeysFromSdcard(ResultMetadataType.ORIENTATION);
         if (orientation != null) {
           intent.putExtra(Intents.Scan.RESULT_ORIENTATION, orientation.intValue());
         }
-        String ecLevel = (String) metadata.get(ResultMetadataType.ERROR_CORRECTION_LEVEL);
+        String ecLevel = (String) metadata.getKeysFromSdcard(ResultMetadataType.ERROR_CORRECTION_LEVEL);
         if (ecLevel != null) {
           intent.putExtra(Intents.Scan.RESULT_ERROR_CORRECTION_LEVEL, ecLevel);
         }
-        Iterable<byte[]> byteSegments = (Iterable<byte[]>) metadata.get(ResultMetadataType.BYTE_SEGMENTS);
+        Iterable<byte[]> byteSegments = (Iterable<byte[]>) metadata.getKeysFromSdcard(ResultMetadataType.BYTE_SEGMENTS);
         if (byteSegments != null) {
           int i = 0;
           for (byte[] byteSegment : byteSegments) {

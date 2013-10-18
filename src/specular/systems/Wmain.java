@@ -61,6 +61,7 @@ public class Wmain extends Activity {
             }
         }
     };
+    public final static int MSG_LIMIT_FOR_QR=141;
     public static int currentLayout;
     static Activity mainActivity = null;
     private int layouts[];
@@ -141,7 +142,6 @@ public class Wmain extends Activity {
         args.putString("hash", msg.getHash());
         args.putString("userInput", userInput);
         args.putString("sentTime", msg.getSentTime());
-        args.putBoolean("qr", (userInput.length() + fileContent.length()) < 141);
         fragment.setArguments(args);
         android.app.FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
@@ -306,6 +306,27 @@ public class Wmain extends Activity {
                         break;
                 }
                 selectItem(-1, R.layout.contacts);
+                break;
+            case R.layout.encrypt_show:
+                boolean success = FilesManegmant.createFilesToSend(this,(userInput.length() + fileContent.length()) < MSG_LIMIT_FOR_QR);
+                if (success) {
+                    Intent intentShare = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                    intentShare.setType("*/*");
+                    intentShare.putExtra(Intent.EXTRA_SUBJECT,
+                            getResources().getString(R.string.subject_encrypt));
+                    intentShare.putExtra(Intent.EXTRA_TEXT,
+                            getResources().getString(R.string.content_msg));
+                    ArrayList<Uri> files =FilesManegmant.getFilesToSend(this);
+                    if(files==null)
+                        Toast.makeText(this, "failed to retrieve files", Toast.LENGTH_LONG).show();
+                    else{
+                        intentShare.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
+                        startActivity(Intent.createChooser(intentShare, getResources()
+                                .getString(R.string.send_dialog)));
+                    }
+                } else {
+                    Toast.makeText(this, "failed to create files", Toast.LENGTH_LONG).show();
+                }
                 break;
             default:
                 break;
@@ -584,8 +605,11 @@ public class Wmain extends Activity {
         for (int a = 0; a < layouts.length; a++)
             if (currentLayout == layouts[a])
                 atHome = true;
-        if (atHome)
+        if (atHome){
+            CryptMethods.myPrivateKey="lllllllllllllllllllllllllllll";
+            CryptMethods.mPtK=null;
             super.onBackPressed();
+        }
         else {
             setUpViews();
         }
@@ -700,7 +724,7 @@ public class Wmain extends Activity {
         super.onResume();
         if (CryptMethods.myPrivateKey == null
                 || CryptMethods.myPublicKey == null) {
-            new FilesManegmant(Wmain.this).get();
+            new FilesManegmant(Wmain.this).getKeysFromSdcard();
             setUpViews();
         }
     }

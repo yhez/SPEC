@@ -44,7 +44,7 @@ public final class Intents {
     public static final String MODE = "SCAN_MODE";
 
     /**
-     * Decode only UPC and EAN barcodes. This is the right choice for shopping apps which get
+     * Decode only UPC and EAN barcodes. This is the right choice for shopping apps which getKeysFromSdcard
      * prices, reviews, etc. for products.
      */
     public static final String PRODUCT_MODE = "PRODUCT_MODE";
@@ -117,7 +117,7 @@ public final class Intents {
     public static final String RESULT_FORMAT = "SCAN_RESULT_FORMAT";
 
     /**
-     * Call intent.getByteArrayExtra(RESULT_BYTES) to get a {@code byte[]} of raw bytes in the
+     * Call intent.getByteArrayExtra(RESULT_BYTES) to getKeysFromSdcard a {@code byte[]} of raw bytes in the
      * barcode, if available.
      */
     public static final String RESULT_BYTES = "SCAN_RESULT_BYTES";

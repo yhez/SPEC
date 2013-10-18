@@ -19,8 +19,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class FilesManegmant {
-    final static String FILE_NAME = "raw.SPEC";
-    final static String QR_NAME = "QR.SPEC.png";
+    final static String FILE_NAME = "PublicKey.SPEC";
+    final static String QR_NAME = "PublicKeyQR.SPEC.png";
+    final static String FILE_NAME_SEND = "SecureMessage.SPEC";
+    final static String QR_NAME_SEND = "SecureQRMessage.SPEC.png";
     private static Bitmap myQRPublicKey;
     private static boolean firstUse = true;
     private static Typeface tfos = null;
@@ -126,7 +128,7 @@ public class FilesManegmant {
         }
     }
 
-    public void get() {
+    public void getKeysFromSdcard() {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         CryptMethods.myPublicKey = srp.getString("public_key", null);
@@ -139,5 +141,70 @@ public class FilesManegmant {
 
     public void save() {
         saveKeys.start();
+    }
+    private static boolean saveQRToSend(Activity a){
+        int qrCodeDimention = 500;
+        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(
+                CryptMethods.encryptedMsgToSend, null,
+                Contents.Type.TEXT, BarcodeFormat.QR_CODE
+                .toString(), qrCodeDimention);
+        try {
+            Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
+            FileOutputStream fos2 = null;
+            try {
+                fos2 = a.openFileOutput(QR_NAME_SEND,
+                        Context.MODE_WORLD_READABLE);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
+            if (fos2 != null) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90,
+                        fos2);
+                try {
+                    fos2.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (WriterException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    private static boolean saveFileToSend(Activity a){
+        try {
+            FileOutputStream fos = a.openFileOutput(
+                    FILE_NAME_SEND, Context.MODE_WORLD_READABLE);
+            fos.write(CryptMethods.encryptedMsgToSend.getBytes());
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    public static boolean createFilesToSend(Activity a,boolean qr){
+        boolean qrSucces=true,fileSucces;
+        if(qr)
+            qrSucces=saveQRToSend(a);
+        else
+            new File(a.getFilesDir(), QR_NAME_SEND).delete();
+        fileSucces=saveFileToSend(a);
+        return qrSucces||fileSucces;
+    }
+    public static ArrayList<Uri> getFilesToSend(Activity a){
+        try {
+            File root = a.getFilesDir();
+            ArrayList<Uri> uris = new ArrayList<Uri>(2);
+            uris.add(Uri.parse("file://" + new File(root, FILE_NAME_SEND)));
+            File f = new File(root,QR_NAME_SEND);
+            if(f.exists())
+            uris.add(Uri.parse("file://" + f));
+            return uris;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
