@@ -2,7 +2,7 @@
 <resources>
     
     <!-- "Encrypt","Decrypt","Share","Contacts","Learn","Manage" -->
-    <string name="welcome">Welcome, let\'s start securing our communications.</string>
+    <string name="welcome">Welcome, let\'s start securing our communications</string>
     <string name="keys_loaded">Keys successfully loaded</string>
     <string name="company_text">SPEC ; HOLD THE KEY TO YOUR SECURITY</string>
     <string name="file_added">File successfully added</string>
@@ -10,7 +10,7 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
     <string name="app_name">SPEC</string>
-    <string name="decrypt_explain">Decrypt message using QR code scanner, press logo below to scan:\n</string>
+    <string name="decrypt_explain">Decrypt message using barcode scanner, press logo below to scan:\n</string>
     <string name="start">GO</string>
     <!-- encrypt -->
     <string name="encrypt_explain">Encrypt and send a message using your friend\'s (contact) public key</string>
@@ -32,7 +32,7 @@
     <!-- main -->
     <string name="encrypt">Encrypt message using your friend\'s public key</string>
     <!-- encrypt show -->
-    <string name="encrypting">Encrypting message\nSecuring communication</string>
+    <string name="encrypting">Encrypting message\nSecuring communications</string>
     <!-- edit contact -->
     <!-- <string name="ok">Ok</string> -->
     <string name="hint_enter_your_name">username</string>
