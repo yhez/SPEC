@@ -49,6 +49,12 @@
             android:padding="@dimen/default_gap"
             android:src="@drawable/add_qr" />
     </LinearLayout>
+    <View
+        android:id="@+id/divider_up"
+        android:layout_below="@id/filter_ll"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#eeeeee" />
 
     <LinearLayout
         android:id="@+id/bottom_panel"
@@ -131,7 +137,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/divider"
-        android:layout_below="@id/filter_ll"
+        android:layout_below="@id/divider_up"
         android:padding="@dimen/default_gap" />
 
     <TextView

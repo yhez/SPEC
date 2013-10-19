@@ -5,7 +5,6 @@
     android:alpha="0"
     android:background="@drawable/background"
     android:id="@+id/share_fl"
-    android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/default_gap" >
 	<TextView 
@@ -24,7 +23,7 @@
         android:id="@+id/me_public"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="top"
         android:alpha="0.5"
         android:gravity="center"
         android:textColor="#28bedf"
