@@ -2,7 +2,7 @@
 <resources>
     
     <!-- "Encrypt","Decrypt","Share","Contacts","Learn","Manage" -->
-    <string name="welcome">Welcome, let\'s start securing our communications</string>
+    <string name="welcome">Welcome, let's start bringing privacy and security to our online lives when we realy need them.</string>
     <string name="keys_loaded">Keys successfully loaded</string>
     <string name="company_text">SPEC ; HOLD THE KEY TO YOUR SECURITY</string>
     <string name="file_added">File successfully added</string>
@@ -13,9 +13,9 @@
     <string name="decrypt_explain">Decrypt message using barcode scanner, press logo below to scan:\n</string>
     <string name="start">GO</string>
     <!-- encrypt -->
-    <string name="encrypt_explain">Encrypt and send a message using your friend\'s (contact) public key</string>
+    <string name="encrypt_explain">Search contacts...</string>
     <string name="no_msg">Insert a message</string>
-    <string name="hint_msg">Message goes here . . .</string>
+    <string name="hint_msg">Message goes here...</string>
     <!-- sharing the public key -->
     <string name="explain"> Hi there, I\'m attaching my public encryption key. Use it wisely and securely. You should verify that this public key belongs to the sender.</string>
     <!-- for the qr installation -->
