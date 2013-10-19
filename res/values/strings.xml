@@ -2,7 +2,7 @@
 <resources>
     
     <!-- "Encrypt","Decrypt","Share","Contacts","Learn","Manage" -->
-    <string name="welcome">Welcome, let's start bringing privacy and security to our online lives when we realy need them.</string>
+    <string name="welcome">Welcome, let\'s start bringing privacy and security to our online lives when we realy need them.</string>
     <string name="keys_loaded">Keys successfully loaded</string>
     <string name="company_text">SPEC ; HOLD THE KEY TO YOUR SECURITY</string>
     <string name="file_added">File successfully added</string>

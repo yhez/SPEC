@@ -10,6 +10,7 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,6 +29,7 @@ import java.util.List;
 public class FragmentManagement extends Fragment {
     public FragmentManagement() {
     }
+    float startPoint=0;
     final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -120,6 +122,29 @@ public class FragmentManagement extends Fragment {
                             .setImageBitmap(FilesManegmant.getMyQRPublicKey(getActivity()));
                 ((TextView) getActivity().findViewById(R.id.me_public))
                         .setText(CryptMethods.myPublicKey);
+                getActivity().findViewById(R.id.touch).setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        if(motionEvent.getAction()==MotionEvent.ACTION_DOWN)
+                            startPoint=motionEvent.getY();
+                        else if(motionEvent.getAction()==MotionEvent.ACTION_UP){
+                            if(motionEvent.getY()>startPoint){
+                                getActivity().findViewById(R.id.qr_image).animate().setDuration(700).alpha(0.1f).start();
+                                getActivity().findViewById(R.id.me_public).animate().setDuration(700).alpha(1).start();
+                            }
+                            else if(motionEvent.getY()<startPoint){
+                                getActivity().findViewById(R.id.me_public).animate().setDuration(700).alpha(0.1f).start();
+                                getActivity().findViewById(R.id.qr_image).animate().setDuration(700).alpha(1f).start();
+                            }
+                            else{
+                                getActivity().findViewById(R.id.me_public).animate().setDuration(700).alpha(0.5f).start();
+                                getActivity().findViewById(R.id.qr_image).animate().setDuration(700).alpha(0.11f).start();
+                            }
+
+                        }
+                        return true;
+                    }
+                });
                 break;
             case R.layout.encrypt:
                 lv = (ListView)getActivity().findViewById(R.id.en_list_contact);

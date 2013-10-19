@@ -49,6 +49,8 @@ import java.util.ArrayList;
 
 public class Wmain extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
+    public static int currentLayout;
+    static Activity mainActivity = null;
     final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -58,15 +60,13 @@ public class Wmain extends Activity {
                             Toast.LENGTH_LONG).show();
                     break;
                 case 1:
-                    findViewById(R.id.add_file).setBackgroundColor(Color.argb(255,255,0,0));
+                    findViewById(R.id.add_file).setBackgroundColor(Color.argb(255, 255, 0, 0));
                     Toast.makeText(getBaseContext(), R.string.file_added,
                             Toast.LENGTH_LONG).show();
                     break;
             }
         }
     };
-    public static int currentLayout;
-    static Activity mainActivity = null;
     private int layouts[];
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -214,15 +214,15 @@ public class Wmain extends Activity {
                         case R.layout.encrypt:
                             QRPublicKey qrpbk = new QRPublicKey(this, result);
                             if (qrpbk.getPublicKey() != null) {
-                                Contact c =Contact.giveMeContact(this,qrpbk);
+                                Contact c = Contact.giveMeContact(this, qrpbk);
                                 findViewById(R.id.en_list_contact).setVisibility(View.GONE);
-                                ((TextView)findViewById(R.id.en_contact)).setText(c+"");
+                                ((TextView) findViewById(R.id.en_contact)).setText(c + "");
                             } else
                                 Toast.makeText(getBaseContext(), R.string.bad_data,
                                         Toast.LENGTH_LONG).show();
                             break;
                         case R.layout.contacts:
-                             qrpbk = new QRPublicKey(this, result);
+                            qrpbk = new QRPublicKey(this, result);
                             if (qrpbk.getPublicKey() != null) {
                                 new Contact(this, qrpbk.getName(),
                                         qrpbk.getEmail(), qrpbk.getPublicKey());
@@ -293,7 +293,7 @@ public class Wmain extends Activity {
                         // hides the keyboard when the user starts the encryption process
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-                        long id =Long.parseLong(((TextView) findViewById(R.id.contact_id_to_send)).getText().toString());
+                        long id = Long.parseLong(((TextView) findViewById(R.id.contact_id_to_send)).getText().toString());
                         ContactsDataSource cds = new ContactsDataSource(this);
                         cds.open();
                         contact = cds.findContact(id);
@@ -301,8 +301,8 @@ public class Wmain extends Activity {
                         encryptManager();
                         break;
                     case R.id.add_contact:
-                        Intent intt = new Intent(this,StartScan.class);
-                        startActivityForResult(intt,43);
+                        Intent intt = new Intent(this, StartScan.class);
+                        startActivityForResult(intt, 43);
                         break;
                 }
                 break;
