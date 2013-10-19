@@ -2,16 +2,53 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:alpha="0"
+    android:background="#ffffff"
     android:orientation="vertical"
-    android:padding="16dp" >
+    android:padding="16dp">
 
     <TextView
+        android:id="@+id/file_content_length"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/contact_id_to_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/filter_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#ffffff"
         android:gravity="center"
-        android:padding="@dimen/default_gap"
-        android:text="@string/encrypt_explain"
-        android:textSize="15sp" />
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:hint="@string/encrypt_explain"
+            android:inputType="textFilter"
+            android:padding="@dimen/default_gap"
+            android:textSize="15sp" />
+
+        <ImageButton
+            android:id="@+id/add_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:onClick="onClick"
+            android:padding="@dimen/default_gap"
+            android:src="@drawable/ic_recipients_add" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/bottom_panel"
@@ -21,21 +58,21 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:background="#ffffff"
-        android:orientation="horizontal" >
-
+        android:orientation="horizontal">
         <EditText
             android:id="@+id/message"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="8dip"
             android:layout_weight="1.0"
             android:autoText="true"
             android:capitalize="sentences"
+            android:gravity="bottom"
             android:hint="@string/hint_msg"
-            android:imeOptions="actionSend|flagNoEnterAction"
-            android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine"
+            android:imeOptions="actionSend"
+            android:inputType="textAutoCorrect|textCapSentences|textMultiLine"
             android:maxLength="2000"
-            android:maxLines="3"
+            android:maxLines="4"
             android:minHeight="48dp"
             android:nextFocusRight="@+id/send_button"
             android:textColor="#000000"
@@ -43,7 +80,7 @@
 
         <TextView
             android:id="@+id/text_counter"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|bottom"
             android:paddingBottom="5dip"
@@ -51,39 +88,61 @@
             android:paddingRight="3dip"
             android:textColor="#cc333333"
             android:textSize="12sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:textStyle="bold" />
 
-        <ImageButton
-            android:id="@+id/add_file"
-            style="?android:attr/borderlessButtonStyle"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="0"
-            android:drawablePadding="0dip"
-            android:nextFocusLeft="@+id/send_button_sms"
-            android:onClick="onClick"
-            android:src="@drawable/ic_attachment_universal_small" />
+            android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/send"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="0"
-            android:drawablePadding="0dip"
-            android:nextFocusLeft="@+id/embedded_text_editor"
-            android:onClick="onClick"
-            android:src="@drawable/ic_send_holo_light" />
+            <ImageButton
+                android:id="@+id/add_file"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="0"
+                android:drawablePadding="0dip"
+                android:nextFocusLeft="@+id/send_button_sms"
+                android:onClick="onClick"
+                android:src="@drawable/ic_attachment_universal_small" />
+
+            <ImageButton
+                android:id="@+id/send"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="0"
+                android:drawablePadding="0dip"
+                android:nextFocusLeft="@+id/embedded_text_editor"
+                android:onClick="onClick"
+                android:src="@drawable/ic_send_disabled_holo_light" />
+        </LinearLayout>
     </LinearLayout>
+    <View
+        android:id="@+id/divider"
+        android:layout_above="@id/bottom_panel"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#eeeeee" />
     <ListView
         android:id="@+id/en_list_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/divider"
+        android:layout_below="@id/filter_ll"
+        android:padding="@dimen/default_gap" />
+
+    <TextView
+        android:id="@+id/en_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_panel"
+        android:layout_below="@id/filter_ll"
         android:padding="@dimen/default_gap"
+        android:textColor="#222"
+        android:textSize="20sp"
         android:visibility="gone" />
 
 </RelativeLayout>

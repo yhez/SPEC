@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -19,6 +20,7 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -44,25 +46,25 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Wmain extends Activity {
-    final static Handler hndl = new Handler() {
+    public final static int MSG_LIMIT_FOR_QR = 141;
+    final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    Toast.makeText((Context) msg.obj, R.string.failed,
+                    Toast.makeText(getBaseContext(), R.string.failed,
                             Toast.LENGTH_LONG).show();
                     break;
                 case 1:
-                    Toast.makeText((Context) msg.obj, R.string.file_added,
+                    findViewById(R.id.add_file).setBackgroundColor(Color.argb(255,255,0,0));
+                    Toast.makeText(getBaseContext(), R.string.file_added,
                             Toast.LENGTH_LONG).show();
                     break;
             }
         }
     };
-    public final static int MSG_LIMIT_FOR_QR=141;
     public static int currentLayout;
     static Activity mainActivity = null;
     private int layouts[];
@@ -74,6 +76,7 @@ public class Wmain extends Activity {
     private CharSequence mTitle;
     private String userInput;
     private String fileContent = "";
+    private Contact contact;
 
     void createKeysManager() {
         createKeys.start();
@@ -128,17 +131,13 @@ public class Wmain extends Activity {
                     .show();
     }
 
-    void encryptManager(final QRPublicKey qrp) {
-        Contact contact = Contact.giveMeContact(this, qrp);
+    void encryptManager() {
         final QRMessage msg = new QRMessage(fileContent, userInput,
                 contact.getSession());
-
-        // TODO debug note
-        Log.e("jj", "" + System.currentTimeMillis());
         Fragment fragment = new FragmentManagement();
         Bundle args = new Bundle();
         args.putInt("layout", R.layout.encrypt_show);
-        args.putString("email", qrp.getEmail());
+        args.putString("email", contact.getEmail());
         args.putString("session", msg.getSession());
         args.putString("hash", msg.getHash());
         args.putString("userInput", userInput);
@@ -147,8 +146,15 @@ public class Wmain extends Activity {
         android.app.FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame, fragment).commit();
+        // TODO debug note
+        Log.e("start", "" + System.currentTimeMillis());
         CryptMethods.encrypt(msg.getFormatedMsg().getBytes(),
-                qrp.getPublicKey());
+                contact.getPublicKey());
+        // TODO debug note
+        Log.e("end", "" + System.currentTimeMillis());
+        //Looper.prepare();
+        //((TextView) findViewById(R.id.encryptshow_encrypt)).setText(CryptMethods.encryptedMsgToSend);
+        //((TextView)findViewById(R.id.to_email)).setText("TO: official address\n"+contact.getEmail());
 
     }
 
@@ -186,12 +192,12 @@ public class Wmain extends Activity {
                             if (data != null) {
                                 String w[] = uri.getEncodedPath().split("/");
                                 fileContent = w[w.length - 1] + "\n" + data;
-                                Message msg = hndl.obtainMessage(1,
-                                        getBaseContext());
+                                Looper.prepare();
+                                ((TextView) findViewById(R.id.file_content_length)).setText(fileContent.length() + "");
+                                Message msg = hndl.obtainMessage(1);
                                 hndl.sendMessage(msg);
                             } else {
-                                Message msg = hndl.obtainMessage(0,
-                                        getBaseContext());
+                                Message msg = hndl.obtainMessage(0);
                                 hndl.sendMessage(msg);
                             }
                         }
@@ -206,10 +212,17 @@ public class Wmain extends Activity {
                             decryptManager(result);
                             break;
                         case R.layout.encrypt:
-                            encryptManager(new QRPublicKey(this, result));
+                            QRPublicKey qrpbk = new QRPublicKey(this, result);
+                            if (qrpbk.getPublicKey() != null) {
+                                Contact c =Contact.giveMeContact(this,qrpbk);
+                                findViewById(R.id.en_list_contact).setVisibility(View.GONE);
+                                ((TextView)findViewById(R.id.en_contact)).setText(c+"");
+                            } else
+                                Toast.makeText(getBaseContext(), R.string.bad_data,
+                                        Toast.LENGTH_LONG).show();
                             break;
                         case R.layout.contacts:
-                            QRPublicKey qrpbk = new QRPublicKey(this, result);
+                             qrpbk = new QRPublicKey(this, result);
                             if (qrpbk.getPublicKey() != null) {
                                 new Contact(this, qrpbk.getName(),
                                         qrpbk.getEmail(), qrpbk.getPublicKey());
@@ -266,14 +279,31 @@ public class Wmain extends Activity {
                 setUpViews();
                 break;
             case R.layout.encrypt:
-                if (v.getId() == R.id.add_file) {
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    intent.setType("*/*");
-                    Intent i = Intent.createChooser(intent, "file");
-                    startActivityForResult(i, 5);
-                } else {
-                    startEncrypt();
+                switch (v.getId()) {
+                    case R.id.add_file:
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        intent.setType("*/*");
+                        Intent i = Intent.createChooser(intent, "file");
+                        startActivityForResult(i, 5);
+                        break;
+                    case R.id.send:
+                        EditText et = (EditText) findViewById(R.id.message);
+                        userInput = et.getText().toString();
+                        // hides the keyboard when the user starts the encryption process
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+                        long id =Long.parseLong(((TextView) findViewById(R.id.contact_id_to_send)).getText().toString());
+                        ContactsDataSource cds = new ContactsDataSource(this);
+                        cds.open();
+                        contact = cds.findContact(id);
+                        cds.close();
+                        encryptManager();
+                        break;
+                    case R.id.add_contact:
+                        Intent intt = new Intent(this,StartScan.class);
+                        startActivityForResult(intt,43);
+                        break;
                 }
                 break;
             case R.layout.decrypt:
@@ -309,18 +339,19 @@ public class Wmain extends Activity {
                 selectItem(-1, R.layout.contacts);
                 break;
             case R.layout.encrypt_show:
-                boolean success = FilesManegmant.createFilesToSend(this,(userInput.length() + fileContent.length()) < MSG_LIMIT_FOR_QR);
+                boolean success = FilesManegmant.createFilesToSend(this, (userInput.length() + fileContent.length()) < MSG_LIMIT_FOR_QR);
                 if (success) {
                     Intent intentShare = new Intent(Intent.ACTION_SEND_MULTIPLE);
                     intentShare.setType("*/*");
+                    //intent.putExtra(Intent.EXTRA_EMAIL,findViewById(R.id.))
                     intentShare.putExtra(Intent.EXTRA_SUBJECT,
                             getResources().getString(R.string.subject_encrypt));
                     intentShare.putExtra(Intent.EXTRA_TEXT,
                             getResources().getString(R.string.content_msg));
-                    ArrayList<Uri> files =FilesManegmant.getFilesToSend(this);
-                    if(files==null)
+                    ArrayList<Uri> files = FilesManegmant.getFilesToSend(this);
+                    if (files == null)
                         Toast.makeText(this, "failed to retrieve files", Toast.LENGTH_LONG).show();
-                    else{
+                    else {
                         intentShare.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
                         startActivity(Intent.createChooser(intentShare, getResources()
                                 .getString(R.string.send_dialog)));
@@ -606,12 +637,11 @@ public class Wmain extends Activity {
         for (int a = 0; a < layouts.length; a++)
             if (currentLayout == layouts[a])
                 atHome = true;
-        if (atHome){
-            CryptMethods.myPrivateKey="lllllllllllllllllllllllllllll";
-            CryptMethods.mPtK=null;
+        if (atHome) {
+            CryptMethods.myPrivateKey = "lllllllllllllllllllllllllllll";
+            CryptMethods.mPtK = null;
             super.onBackPressed();
-        }
-        else {
+        } else {
             setUpViews();
         }
     }
@@ -622,7 +652,7 @@ public class Wmain extends Activity {
             intent.setType("*/*");
             intent.putExtra(Intent.EXTRA_SUBJECT,
                     getResources().getString(R.string.subject_share));
-           InputStream is = getAssets().open("spec_temp_share.html");
+            InputStream is = getAssets().open("spec_temp_share.html");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -646,38 +676,6 @@ public class Wmain extends Activity {
 
     public void shareWeb(View v) {
 
-    }
-
-    // starts the encryption
-    public void startEncrypt() {
-        EditText et = (EditText) findViewById(R.id.message);
-        userInput = et.getText().toString();
-        if (userInput.length() == 0)
-            Toast.makeText(getBaseContext(), R.string.no_msg,
-                    Toast.LENGTH_SHORT).show();
-        else {
-            ListView lv = (ListView) findViewById(R.id.en_list_contact);
-            lv.setVisibility(View.VISIBLE);
-            ContactsDataSource cds = new ContactsDataSource(Wmain.this);
-            cds.open();
-            List<Contact> alc = cds.getAllContacts();
-            cds.close();
-            final ArrayAdapter<Contact> adapter = new ArrayAdapter<Contact>(
-                    Wmain.this, android.R.layout.simple_list_item_1, alc);
-            lv.setAdapter(adapter);
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> p1, View p2, int p3,
-                                        long p4) {
-                    encryptManager(new QRPublicKey(Wmain.this, adapter
-                            .getItem(p3)));
-                }
-            });
-            // hides the keyboard when the user starts the encryption process
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-
-        }
     }
 
     String writeTag(Tag tag, byte[] binText) {
@@ -757,6 +755,7 @@ public class Wmain extends Activity {
 
     static class saveKeys {
         static Thread t;
+
         public static void start(final Activity a) {
             if (t == null || !t.isAlive()) {
                 t = new Thread(new Runnable() {
@@ -768,6 +767,7 @@ public class Wmain extends Activity {
                 t.start();
             }
         }
+
         public static boolean isAlive() {
             return t != null && t.isAlive();
         }

@@ -86,8 +86,8 @@
             android:layout_gravity="center"
             android:alpha="0"
             android:padding="@dimen/default_gap" />
-
         <TextView
+            android:textColor="#222"
             android:visibility="gone"
             android:id="@+id/encryptshow_hash"
             android:layout_width="match_parent"
@@ -96,7 +96,6 @@
             android:alpha="0"
             android:gravity="center"
             android:padding="@dimen/default_gap" />
-
         <TextView
             android:textColor="#222"
             android:textSize="20sp"
