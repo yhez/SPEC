@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -35,6 +34,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +60,7 @@ public class Wmain extends Activity {
                             Toast.LENGTH_LONG).show();
                     break;
                 case 1:
-                    findViewById(R.id.add_file).setBackgroundColor(Color.argb(255, 255, 0, 0));
+                    ((ImageView)findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
                     Toast.makeText(getBaseContext(), R.string.file_added,
                             Toast.LENGTH_LONG).show();
                     break;

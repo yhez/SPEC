@@ -29,6 +29,7 @@
         android:orientation="horizontal">
 
         <EditText
+            android:textColor="#222"
             android:id="@+id/filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,6 +42,9 @@
             android:textSize="15sp" />
 
         <ImageButton
+            android:drawablePadding="0dip"
+            android:layout_marginLeft="8dp"
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/add_contact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

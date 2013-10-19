@@ -7,7 +7,7 @@
 
     <TextView
         android:gravity="center"
-        android:textColor="#fff"
+        android:textColor="#222"
         android:padding="@dimen/default_gap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +15,8 @@
         android:text="@string/decrypt_explain" />
 
 
-    <ImageView
+    <ImageButton
+        style="?android:attr/borderlessButtonStyle"
         android:padding="@dimen/default_gap"
         android:src="@drawable/key"
         android:onClick="onClick"

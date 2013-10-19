@@ -7,7 +7,7 @@
     android:id="@+id/share_fl"
     android:orientation="vertical"
     android:padding="@dimen/default_gap" >
-	<TextView 
+	<TextView
 	    android:id="@+id/your_publick_key"
      	android:padding="6dp"
 		android:text="@string/share_public_descripton"
@@ -18,17 +18,23 @@
         android:gravity="center"
         android:textColor="#222"
         android:textSize="25sp" />
+
     <TextView
         android:padding="6dp"
         android:id="@+id/me_public"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
+        android:layout_gravity="center"
         android:alpha="0.5"
         android:gravity="center"
         android:textColor="#28bedf"
         android:textSize="23sp" />
-
+    <ImageView
+        android:id="@+id/qr_image"
+        android:layout_gravity="top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.1"/>
     <View
         android:id="@+id/touch"
         android:layout_width="match_parent"
@@ -37,14 +43,13 @@
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:alpha="0.8"
+        android:alpha="1"
         android:background="#17adce"
         android:orientation="horizontal"
         android:padding="@dimen/default_gap" >
 
         <Button
             android:padding="@dimen/default_gap"
-            style="@android:attr/borderlessButtonStyle"
             android:id="@+id/button_share"
             android:layout_weight="1"
             android:layout_width="wrap_content"
@@ -55,16 +60,10 @@
         <Button
             android:layout_weight="0.5"
             android:padding="@dimen/default_gap"
-            style="@android:attr/borderlessButtonStyle"
             android:id="@+id/button_publish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="shareWeb"
             android:text="@string/share_on_server" />
     </LinearLayout>
-    <ImageView 
-        android:id="@+id/qr_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.1"/>
 </FrameLayout>

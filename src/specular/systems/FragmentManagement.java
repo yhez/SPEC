@@ -2,6 +2,9 @@ package specular.systems;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -131,6 +134,10 @@ public class FragmentManagement extends Fragment {
                             if(motionEvent.getY()>startPoint){
                                 getActivity().findViewById(R.id.qr_image).animate().setDuration(700).alpha(0.1f).start();
                                 getActivity().findViewById(R.id.me_public).animate().setDuration(700).alpha(1).start();
+                                ClipboardManager cm = (ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                                ClipData cd = ClipData.newPlainText("public key",CryptMethods.myPublicKey);
+                                cm.setPrimaryClip(cd);
+                                Toast.makeText(getActivity(),"Key has been copied to clipboard",Toast.LENGTH_SHORT).show();
                             }
                             else if(motionEvent.getY()<startPoint){
                                 getActivity().findViewById(R.id.me_public).animate().setDuration(700).alpha(0.1f).start();
@@ -171,11 +178,28 @@ public class FragmentManagement extends Fragment {
                                 .toString());
                         Contact cvc = cdsss.findContact(l);
                         cdsss.close();
+                        getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
                         ((TextView)getActivity().findViewById(R.id.contact_id_to_send)).setText(l + "");
                         ((TextView)getActivity().findViewById(R.id.en_contact)).setText(cvc + "");
                     }
                 });
                 ((ImageButton)getActivity().findViewById(R.id.send)).setEnabled(false);
+                ((EditText)getActivity().findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        //TODO update list view by query to sqlite
+                    }
+                });
                 final EditText et = (EditText)getActivity().findViewById(R.id.message);
                 et.addTextChangedListener(new TextWatcher() {
                     @Override
