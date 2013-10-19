@@ -346,8 +346,18 @@ public class Wmain extends Activity {
                     //intent.putExtra(Intent.EXTRA_EMAIL,findViewById(R.id.))
                     intentShare.putExtra(Intent.EXTRA_SUBJECT,
                             getResources().getString(R.string.subject_encrypt));
-                    intentShare.putExtra(Intent.EXTRA_TEXT,
-                            getResources().getString(R.string.content_msg));
+                    InputStream is = null;
+                    try {
+                        is = getAssets().open("spec_temp_msg.html");
+                        int size = is.available();
+                        byte[] buffer = new byte[size];
+                        is.read(buffer);
+                        is.close();
+                        intentShare.putExtra(Intent.EXTRA_TEXT,Html.fromHtml(new String(buffer)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                            //getResources().getString(R.string.content_msg));
                     ArrayList<Uri> files = FilesManegmant.getFilesToSend(this);
                     if (files == null)
                         Toast.makeText(this, "failed to retrieve files", Toast.LENGTH_LONG).show();
