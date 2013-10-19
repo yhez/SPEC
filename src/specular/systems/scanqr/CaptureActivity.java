@@ -72,15 +72,48 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
   CameraManager getCameraManager() {
     return cameraManager;
   }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        //b=!b;
+        // get pointer index from the event object
+        int pointerIndex = event.getActionIndex();
 
-  @Override
+        // get pointer ID
+        int pointerId = event.getPointerId(pointerIndex);
+
+        // get masked (not specific to a pointer) action
+        int maskedAction = event.getActionMasked();
+
+        switch (maskedAction) {
+            case MotionEvent.ACTION_DOWN:
+                cameraManager.onF(true);
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN: {
+                // TODO use data
+                break;
+            }
+            case MotionEvent.ACTION_MOVE: { // a pointer was moved
+                // TODO use data
+                break;
+            }
+            case MotionEvent.ACTION_UP:
+                cameraManager.onF(false);
+            break;
+            case MotionEvent.ACTION_POINTER_UP:
+            case MotionEvent.ACTION_CANCEL: {
+                // TODO use data
+                break;
+            }
+        }
+        return true;
+    }
+    @Override
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
 
     Window window = getWindow();
     window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     setContentView(R.layout.capture);
-
     hasSurface = false;
 //    historyManager = new HistoryManager(this);
   //  historyManager.trimHistory();

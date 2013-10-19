@@ -17,10 +17,8 @@
 package specular.systems.scanqr.camera;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.hardware.Camera;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
@@ -44,7 +42,6 @@ final class CameraConfigurationManager {
   CameraConfigurationManager(Context context) {
     this.context = context;
   }
-
   /**
    * Reads, one time, values from the camera that are needed by the app.
    */
@@ -76,9 +73,9 @@ final class CameraConfigurationManager {
       return;
     }
 
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-    initializeTorch(parameters, prefs);
+    initializeTorch(parameters);
     String focusMode = findSettableValue(parameters.getSupportedFocusModes(),
                                          Camera.Parameters.FOCUS_MODE_AUTO,
                                          Camera.Parameters.FOCUS_MODE_MACRO);
@@ -98,14 +95,14 @@ final class CameraConfigurationManager {
     return screenResolution;
   }
 
-  void setTorch(Camera camera, boolean newSetting) {
+  public void setTorch(Camera camera, boolean newSetting) {
     Camera.Parameters parameters = camera.getParameters();
     doSetTorch(parameters, newSetting);
     camera.setParameters(parameters);
   }
 
-  private static void initializeTorch(Camera.Parameters parameters, SharedPreferences prefs) {
-    doSetTorch(parameters, true);
+  private static void initializeTorch(Camera.Parameters parameters) {
+    doSetTorch(parameters, false);
   }
 
   private static void doSetTorch(Camera.Parameters parameters, boolean newSetting) {

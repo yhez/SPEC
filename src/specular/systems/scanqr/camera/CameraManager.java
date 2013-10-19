@@ -23,8 +23,10 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import specular.systems.scanqr.PlanarYUVLuminanceSource;
+
 import java.io.IOException;
+
+import specular.systems.scanqr.PlanarYUVLuminanceSource;
 
 /**
  * This object wraps the Camera service object and expects to be the only one talking to it. The
@@ -64,7 +66,10 @@ public final class CameraManager {
     previewCallback = new PreviewCallback(configManager);
     autoFocusCallback = new AutoFocusCallback();
   }
-
+//TODO lets try turn flash on and off
+    public void onF(boolean b){
+        configManager.setTorch(camera,b);
+    }
   /**
    * Opens the camera driver and initializes the hardware parameters.
    *
