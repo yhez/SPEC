@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -227,10 +226,8 @@ public class FragmentManagement extends Fragment {
                                 tv.setText(Wmain.MSG_LIMIT_FOR_QR - num + "");
                             } else if (num <= Wmain.MSG_LIMIT_FOR_QR) {
                                 tv.setText(Wmain.MSG_LIMIT_FOR_QR - num + "");
-                            } else if (num == Wmain.MSG_LIMIT_FOR_QR)
-                                Toast.makeText(getActivity(), "we'll not create a QR for your message", Toast.LENGTH_LONG).show();
-                            else
-                                tv.setText(0 + "");
+                            } else
+                                tv.setText(getActivity().getString(R.string.no_qr));
 
                         }
                     }

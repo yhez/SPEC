@@ -2,7 +2,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:alpha="0"
-    android:background="#ffffff"
+    android:background="@android:color/white"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -29,13 +29,13 @@
         android:orientation="horizontal">
 
         <EditText
-            android:textColor="#222"
+            android:textColor="#000000"
             android:id="@+id/filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_weight="1"
-            android:gravity="left"
+            android:gravity="bottom"
             android:hint="@string/encrypt_explain"
             android:inputType="textFilter"
             android:padding="@dimen/default_gap"
@@ -54,13 +54,13 @@
             android:src="@drawable/add_qr" />
     </LinearLayout>
 
-    <View
+  <!--  <View
         android:id="@+id/divider_up"
         android:layout_below="@id/filter_ll"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#eeeeee" />
-
+-->
     <LinearLayout
         android:id="@+id/bottom_panel"
         android:layout_width="match_parent"
@@ -145,7 +145,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/divider"
-        android:layout_below="@id/divider_up"
+        android:layout_below="@id/filter_ll"
         android:padding="@dimen/default_gap" />
 
     <TextView

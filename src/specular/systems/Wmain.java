@@ -18,7 +18,6 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -33,7 +32,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,10 +55,9 @@ public class Wmain extends Activity {
                     Toast.makeText(getBaseContext(), R.string.failed,
                             Toast.LENGTH_LONG).show();
                     break;
-                case 1:
-                    ((ImageView) findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
-                    Toast.makeText(getBaseContext(), R.string.file_added,
-                            Toast.LENGTH_LONG).show();
+                case 15:
+                    ((TextView) findViewById(R.id.file_content_length)).setText(fileContent.length() + "");
+                    ((ImageButton)findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
                     break;
             }
         }
@@ -168,8 +166,8 @@ public class Wmain extends Activity {
                             if (data != null) {
                                 String w[] = uri.getEncodedPath().split("/");
                                 fileContent = w[w.length - 1] + "\n" + data;
-                                Looper.prepare();
-                                ((TextView) findViewById(R.id.file_content_length)).setText(fileContent.length() + "");
+                                Message msg = hndl.obtainMessage(15);
+                                hndl.sendMessage(msg);
                             } else {
                                 Message msg = hndl.obtainMessage(0);
                                 hndl.sendMessage(msg);

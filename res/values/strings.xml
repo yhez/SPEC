@@ -78,4 +78,5 @@
     <string name="contact_exist">Contact already exists</string>
     <string name="wait_for_nfc_to_read">wait_for_nfc_to_read</string>
     <string name="what_to_share">What to share</string>
+    <string name="no_qr">no qr</string>
 </resources>
