@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<?xml version="1.0" encoding="UTF-8"?><!--
  Copyright (C) 2008 ZXing authors
 
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +15,7 @@
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent">
 
     <SurfaceView
         android:id="@+id/preview_view"
@@ -28,6 +27,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/transparent" />
+
     <ImageView
         android:id="@+id/logo_view"
         android:layout_width="wrap_content"
@@ -35,6 +35,7 @@
         android:layout_gravity="top|center_horizontal"
         android:padding="16dp"
         android:src="@drawable/logospec" />
+
     <TextView
         android:id="@+id/status_view"
         android:layout_width="wrap_content"

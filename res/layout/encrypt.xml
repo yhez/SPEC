@@ -53,6 +53,7 @@
             android:padding="@dimen/default_gap"
             android:src="@drawable/add_qr" />
     </LinearLayout>
+
     <View
         android:id="@+id/divider_up"
         android:layout_below="@id/filter_ll"
@@ -69,6 +70,7 @@
         android:layout_alignParentRight="true"
         android:background="#ffffff"
         android:orientation="horizontal">
+
         <EditText
             android:id="@+id/message"
             android:layout_width="wrap_content"
@@ -130,12 +132,14 @@
                 android:src="@drawable/ic_send_disabled_holo_light" />
         </LinearLayout>
     </LinearLayout>
+
     <View
         android:id="@+id/divider"
         android:layout_above="@id/bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#eeeeee" />
+
     <ListView
         android:id="@+id/en_list_contact"
         android:layout_width="match_parent"

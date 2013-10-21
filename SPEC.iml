@@ -71,7 +71,7 @@
     <orderEntry type="library" exported="" name="android-support-v4" level="project" />
     <orderEntry type="library" exported="" name="CoDec-build17-jdk13" level="project" />
     <orderEntry type="library" exported="" name="FlexiProvider-1.7p6.signed" level="project" />
-    <orderEntry type="library" exported="" name="core" level="project" />
+    <orderEntry type="library" name="core-2.3-20131013.231655-8" level="project" />
   </component>
 </module>
 

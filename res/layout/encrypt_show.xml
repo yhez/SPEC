@@ -86,6 +86,7 @@
             android:layout_gravity="center"
             android:alpha="0"
             android:padding="@dimen/default_gap" />
+
         <TextView
             android:textColor="#222"
             android:visibility="gone"
@@ -96,6 +97,7 @@
             android:alpha="0"
             android:gravity="center"
             android:padding="@dimen/default_gap" />
+
         <TextView
             android:textColor="#222"
             android:textSize="20sp"
@@ -107,6 +109,7 @@
             android:alpha="0"
             android:gravity="center"
             android:padding="@dimen/default_gap" />
+
         <Button
             android:onClick="onClick"
             android:textColor="#222"
@@ -116,6 +119,6 @@
             android:visibility="gone"
             android:text="send"
             android:padding="@dimen/default_gap"
-            android:gravity="center"/>
+            android:gravity="center" />
     </LinearLayout>
 </ScrollView>

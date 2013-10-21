@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+    <string-array name="choice">
+        <item >file</item>
+        <item>qr</item>
+        <item>text</item>
+    </string-array>
     <!-- "Encrypt","Decrypt","Share","Contacts","Learn","Manage" -->
     <string name="welcome">Welcome, let\'s start bringing privacy and security to our online lives when we realy need them.</string>
     <string name="keys_loaded">Keys successfully loaded</string>
@@ -50,27 +54,28 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
-	<string name="failed">Failed</string>
-	<string name="time_stemp">Time stamp</string>
-	<string name="hash">Hash</string>
-	<string name="nfc_off">Tap NFC tag</string>
-	<string name="message">Message</string>
-	<string name="email">Email</string>
-	<string name="session">Session</string>
-	<string name="bad_data">Unexpected data</string>
-	<string name="public_key">Public Key</string>
-	<string name="share_dialog">Share your Public Key&#8230;</string>
-	<string name="send_dialog">Send encrypted message&#8230;</string>
-	<string name="cant_decrypt">This message hasn\'t been encrypted for you</string>
-	<string name="attachment_error">Attachment Error</string>
-	<string name="content_msg">Attached is an encrypted SPEC APP message</string>
-	<string name="subject_encrypt">An encrypted message just for you - SPEC APP</string>
-	<string name="share_public_descripton">Your Public Key:</string>
-	<string name="fill_all">Please fill all the fields</string>
-	<string name="subject_share">My Public Key - SPEC APP</string>
-	<string name="content_share">My public key, use it for secure messaging</string>
-	<string name="done_loading">Finished loading private key</string>
-	<string name="contact_saved">SAVED TO CONTACTS</string>
-	<string name="contact_exist">Contact already exists</string>
+    <string name="failed">Failed</string>
+    <string name="time_stemp">Time stamp</string>
+    <string name="hash">Hash</string>
+    <string name="nfc_off">Tap NFC tag</string>
+    <string name="message">Message</string>
+    <string name="email">Email</string>
+    <string name="session">Session</string>
+    <string name="bad_data">Unexpected data</string>
+    <string name="public_key">Public Key</string>
+    <string name="share_dialog">Share your Public Key&#8230;</string>
+    <string name="send_dialog">Send encrypted message&#8230;</string>
+    <string name="cant_decrypt">This message hasn\'t been encrypted for you</string>
+    <string name="attachment_error">Attachment Error</string>
+    <string name="content_msg">Attached is an encrypted SPEC APP message</string>
+    <string name="subject_encrypt">An encrypted message just for you - SPEC APP</string>
+    <string name="share_public_descripton">Your Public Key:</string>
+    <string name="fill_all">Please fill all the fields</string>
+    <string name="subject_share">My Public Key - SPEC APP</string>
+    <string name="content_share">My public key, use it for secure messaging</string>
+    <string name="done_loading">Finished loading private key</string>
+    <string name="contact_saved">SAVED TO CONTACTS</string>
+    <string name="contact_exist">Contact already exists</string>
     <string name="wait_for_nfc_to_read">wait_for_nfc_to_read</string>
+    <string name="what_to_share">What to share</string>
 </resources>

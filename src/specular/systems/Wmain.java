@@ -43,11 +43,6 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-//import java.io.BufferedReader;
-//import java.io.FileNotFoundException;
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.io.InputStreamReader;
 
 public class Wmain extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
@@ -635,30 +630,8 @@ public class Wmain extends Activity {
     }
 
     public void share(View v) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-            intent.setType("*/*");
-            intent.putExtra(Intent.EXTRA_SUBJECT,
-                    getResources().getString(R.string.subject_share));
-            InputStream is = getAssets().open("spec_temp_share.html");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
-            ArrayList<Uri> files = new FilesManegmant(this).getFilesToShare();
-            if (files == null)
-                Toast.makeText(this, R.string.attachment_error,
-                        Toast.LENGTH_SHORT).show();
-            else {
-                intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
-                startActivity(Intent.createChooser(intent, getResources()
-                        .getString(R.string.share_dialog)));
-            }
-        } catch (Exception e) {
-            Toast.makeText(getBaseContext(), R.string.failed, Toast.LENGTH_LONG)
-                    .show();
-        }
+        ShareDialog dlg = new ShareDialog();
+        dlg.show(getFragmentManager(),"share");
     }
 
     public void shareWeb(View v) {

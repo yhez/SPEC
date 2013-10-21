@@ -13,16 +13,17 @@
         android:layout_width="match_parent"
         android:padding="@dimen/default_gap"
         android:src="@drawable/splash2" />
-<TextView
-    android:id="@+id/company"
-    android:textStyle="normal"
-    android:textColor="#000"
-    android:text="@string/company_text"
-    android:textSize="13sp"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    android:padding="16dp"
-    android:layout_marginBottom="32dp"
-    android:gravity="center"
-    android:layout_gravity="bottom|center"/>
+
+    <TextView
+        android:id="@+id/company"
+        android:textStyle="normal"
+        android:textColor="#000"
+        android:text="@string/company_text"
+        android:textSize="13sp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:padding="16dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:layout_gravity="bottom|center" />
 </FrameLayout>

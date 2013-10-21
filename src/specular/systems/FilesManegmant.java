@@ -202,13 +202,16 @@ public class FilesManegmant {
         }
     }
 
-    public ArrayList<Uri> getFilesToShare() {
+    public static Uri getFileToShare(Activity a) {
         try {
-            File root = a.getFilesDir();
-            ArrayList<Uri> uris = new ArrayList<Uri>(2);
-            uris.add(Uri.parse("file://" + new File(root, QR_NAME)));
-            uris.add(Uri.parse("file://" + new File(root, FILE_NAME)));
-            return uris;
+            return Uri.parse("file://" + new File(a.getFilesDir(), FILE_NAME));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public static Uri getQRToShare(Activity a) {
+        try {
+            return Uri.parse("file://" + new File(a.getFilesDir(), QR_NAME));
         } catch (Exception e) {
             return null;
         }

@@ -13,16 +13,16 @@
         android:alpha="1"
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
-     <!-- <ImageView
-          android:layout_gravity="top|right"
-          android:src="@drawable/aaa"
-            android:layout_height="wrap_content"
-            
-            android:layout_width="wrap_content"
-             />-->
-    
+    <!-- <ImageView
+         android:layout_gravity="top|right"
+         android:src="@drawable/aaa"
+           android:layout_height="wrap_content"
+
+           android:layout_width="wrap_content"
+            />-->
+
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
          this as a sliding main on the left side for left-to-right
