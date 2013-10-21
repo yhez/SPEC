@@ -88,7 +88,7 @@ public class CryptMethods {
     }
 
     public static void encrypt(final byte[] msg, final String friendPublicKey) {
-        if(notInit)
+        if (notInit)
             addProviders();
         crypter = new Thread(new Runnable() {
             @Override
@@ -110,7 +110,7 @@ public class CryptMethods {
     }
 
     public static boolean formatPrivate() {
-        if(notInit)
+        if (notInit)
             addProviders();
         try {
             mPtK = KeyFactory.getInstance("ECIES", "FlexiEC").generatePrivate(

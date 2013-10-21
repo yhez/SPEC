@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:textSize="10sp" />
     </LinearLayout>
-
+<!--
     <TextView
         android:alpha="0.3"
         android:id="@+id/fifthLine"
@@ -73,7 +73,7 @@
         android:layout_height="fill_parent"
         android:ellipsize="marquee"
         android:textSize="8sp" />
-
+-->
     <TextView
         android:id="@+id/id_contact"
         android:layout_width="match_parent"

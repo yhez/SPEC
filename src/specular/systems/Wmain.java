@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -39,13 +38,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+
+//import java.io.BufferedReader;
+//import java.io.FileNotFoundException;
+//import java.io.IOException;
+//import java.io.InputStream;
+//import java.io.InputStreamReader;
 
 public class Wmain extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
@@ -60,7 +62,7 @@ public class Wmain extends Activity {
                             Toast.LENGTH_LONG).show();
                     break;
                 case 1:
-                    ((ImageView)findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
+                    ((ImageView) findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
                     Toast.makeText(getBaseContext(), R.string.file_added,
                             Toast.LENGTH_LONG).show();
                     break;
@@ -167,35 +169,12 @@ public class Wmain extends Activity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            String data;
-                            ContentResolver cr = getBaseContext()
-                                    .getContentResolver();
-                            InputStream is = null;
-                            try {
-                                is = cr.openInputStream(uri);
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                            StringBuilder buf = new StringBuilder();
-                            BufferedReader reader = new BufferedReader(
-                                    new InputStreamReader(is));
-                            String str;
-                            try {
-                                while ((str = reader.readLine()) != null) {
-                                    buf.append(str).append("\n");
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            buf.deleteCharAt(buf.length() - 1);
-                            data = buf.toString();
+                            String data = FilesManegmant.addFile(Wmain.this, uri);
                             if (data != null) {
                                 String w[] = uri.getEncodedPath().split("/");
                                 fileContent = w[w.length - 1] + "\n" + data;
                                 Looper.prepare();
                                 ((TextView) findViewById(R.id.file_content_length)).setText(fileContent.length() + "");
-                                Message msg = hndl.obtainMessage(1);
-                                hndl.sendMessage(msg);
                             } else {
                                 Message msg = hndl.obtainMessage(0);
                                 hndl.sendMessage(msg);
@@ -212,6 +191,7 @@ public class Wmain extends Activity {
                             decryptManager(result);
                             break;
                         case R.layout.encrypt:
+                            Log.e("bad data", result);
                             QRPublicKey qrpbk = new QRPublicKey(this, result);
                             if (qrpbk.getPublicKey() != null) {
                                 Contact c = Contact.giveMeContact(this, qrpbk);
@@ -343,7 +323,6 @@ public class Wmain extends Activity {
                 if (success) {
                     Intent intentShare = new Intent(Intent.ACTION_SEND_MULTIPLE);
                     intentShare.setType("*/*");
-                    //intent.putExtra(Intent.EXTRA_EMAIL,findViewById(R.id.))
                     intentShare.putExtra(Intent.EXTRA_SUBJECT,
                             getResources().getString(R.string.subject_encrypt));
                     InputStream is = null;
@@ -353,11 +332,10 @@ public class Wmain extends Activity {
                         byte[] buffer = new byte[size];
                         is.read(buffer);
                         is.close();
-                        intentShare.putExtra(Intent.EXTRA_TEXT,Html.fromHtml(new String(buffer)));
+                        intentShare.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                            //getResources().getString(R.string.content_msg));
                     ArrayList<Uri> files = FilesManegmant.getFilesToSend(this);
                     if (files == null)
                         Toast.makeText(this, "failed to retrieve files", Toast.LENGTH_LONG).show();
@@ -668,7 +646,6 @@ public class Wmain extends Activity {
             is.read(buffer);
             is.close();
             intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
-                    /*getResources().getString(R.string.content_share));*/
             ArrayList<Uri> files = new FilesManegmant(this).getFilesToShare();
             if (files == null)
                 Toast.makeText(this, R.string.attachment_error,

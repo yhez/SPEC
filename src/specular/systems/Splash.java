@@ -49,7 +49,7 @@ public class Splash extends Activity {
             waitForSplash.start();
         }
         new FilesManegmant(this).getKeysFromSdcard();
-        if (CryptMethods.myPrivateKey!=null && getIntent().getType() != null) {
+        if (CryptMethods.myPrivateKey != null && getIntent().getType() != null) {
             Parcelable raw[] = getIntent().getParcelableArrayExtra(
                     NfcAdapter.EXTRA_NDEF_MESSAGES);
             if (raw != null) {
@@ -57,8 +57,8 @@ public class Splash extends Activity {
                 NdefRecord pvk = msg.getRecords()[0];
                 CryptMethods.myPrivateKey = Visual.bin2hex(pvk
                         .getPayload());
-                if(!CryptMethods.formatPrivate())
-                    CryptMethods.myPrivateKey=null;
+                if (!CryptMethods.formatPrivate())
+                    CryptMethods.myPrivateKey = null;
             }
         }
         if (!newUser) {

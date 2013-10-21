@@ -2,9 +2,6 @@ package specular.systems;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -32,24 +29,25 @@ import java.util.List;
 public class FragmentManagement extends Fragment {
     public FragmentManagement() {
     }
-    float startPoint=0;
+
+    float startPoint = 0;
     final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if(msg.what==15){
-                EditText et = (EditText)getActivity().findViewById(R.id.message);
-                String ss = et.getText()+"";
-                et.setText(" "+ss);
+            if (msg.what == 15) {
+                EditText et = (EditText) getActivity().findViewById(R.id.message);
+                String ss = et.getText() + "";
+                et.setText(" " + ss);
                 et.setText(ss);
-            }
-            else{
-            ((TextView)msg.obj).setVisibility(View.VISIBLE);
-            ((TextView)msg.obj).setTypeface(FilesManegmant.getOs(getActivity()));
-            ((TextView)msg.obj).animate().setDuration(700).alpha(1);
-            ((ScrollView)getActivity().findViewById(msg.what)).smoothScrollTo(0, ((View) msg.obj).getTop());
+            } else {
+                ((TextView) msg.obj).setVisibility(View.VISIBLE);
+                ((TextView) msg.obj).setTypeface(FilesManegmant.getOs(getActivity()));
+                ((TextView) msg.obj).animate().setDuration(700).alpha(1);
+                ((ScrollView) getActivity().findViewById(msg.what)).smoothScrollTo(0, ((View) msg.obj).getTop());
             }
         }
     };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -128,33 +126,28 @@ public class FragmentManagement extends Fragment {
                 getActivity().findViewById(R.id.touch).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
-                        if(motionEvent.getAction()==MotionEvent.ACTION_DOWN)
-                            startPoint=motionEvent.getY();
-                        else if(motionEvent.getAction()==MotionEvent.ACTION_UP){
-                            if(motionEvent.getY()>startPoint){
-                                getActivity().findViewById(R.id.qr_image).animate().setDuration(700).alpha(0.1f).start();
-                                getActivity().findViewById(R.id.me_public).animate().setDuration(700).alpha(1).start();
-                                ClipboardManager cm = (ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                                ClipData cd = ClipData.newPlainText("public key",CryptMethods.myPublicKey);
-                                cm.setPrimaryClip(cd);
-                                Toast.makeText(getActivity(),"Key has been copied to clipboard",Toast.LENGTH_SHORT).show();
+                        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+                            startPoint = motionEvent.getX();
+                        else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                            if (motionEvent.getX() < startPoint) {
+                                 View mePublic = getActivity().findViewById(R.id.me_public), qrImage = getActivity().findViewById(R.id.qr_image);
+                                if(mePublic.getAlpha()==0)
+                                {
+                                    qrImage.animate().setDuration(500).alpha(0).start();
+                                    mePublic.animate().setDuration(500).alpha(1).start();
+                                }
+                                else{
+                                    mePublic.animate().setDuration(500).alpha(0).start();
+                                    qrImage.animate().setDuration(500).alpha(1).start();
+                                }
                             }
-                            else if(motionEvent.getY()<startPoint){
-                                getActivity().findViewById(R.id.me_public).animate().setDuration(700).alpha(0.1f).start();
-                                getActivity().findViewById(R.id.qr_image).animate().setDuration(700).alpha(1f).start();
-                            }
-                            else{
-                                getActivity().findViewById(R.id.me_public).animate().setDuration(700).alpha(0.5f).start();
-                                getActivity().findViewById(R.id.qr_image).animate().setDuration(700).alpha(0.11f).start();
-                            }
-
                         }
                         return true;
                     }
                 });
                 break;
             case R.layout.encrypt:
-                lv = (ListView)getActivity().findViewById(R.id.en_list_contact);
+                lv = (ListView) getActivity().findViewById(R.id.en_list_contact);
                 lv.setVisibility(View.VISIBLE);
                 cds = new ContactsDataSource(getActivity());
                 cds.open();
@@ -171,7 +164,7 @@ public class FragmentManagement extends Fragment {
                                             long p4) {
                         getActivity().findViewById(R.id.en_list_contact).setVisibility(View.GONE);
                         getActivity().findViewById(R.id.en_contact).setVisibility(View.VISIBLE);
-                              ContactsDataSource  cdsss=new ContactsDataSource(getActivity());
+                        ContactsDataSource cdsss = new ContactsDataSource(getActivity());
                         cdsss.open();
                         long l = Long.parseLong(((TextView) p2
                                 .findViewById(R.id.id_contact)).getText()
@@ -179,12 +172,12 @@ public class FragmentManagement extends Fragment {
                         Contact cvc = cdsss.findContact(l);
                         cdsss.close();
                         getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
-                        ((TextView)getActivity().findViewById(R.id.contact_id_to_send)).setText(l + "");
-                        ((TextView)getActivity().findViewById(R.id.en_contact)).setText(cvc + "");
+                        ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(l + "");
+                        ((TextView) getActivity().findViewById(R.id.en_contact)).setText(cvc + "");
                     }
                 });
-                ((ImageButton)getActivity().findViewById(R.id.send)).setEnabled(false);
-                ((EditText)getActivity().findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
+                ((ImageButton) getActivity().findViewById(R.id.send)).setEnabled(false);
+                ((EditText) getActivity().findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
@@ -200,7 +193,7 @@ public class FragmentManagement extends Fragment {
                         //TODO update list view by query to sqlite
                     }
                 });
-                final EditText et = (EditText)getActivity().findViewById(R.id.message);
+                final EditText et = (EditText) getActivity().findViewById(R.id.message);
                 et.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -215,37 +208,34 @@ public class FragmentManagement extends Fragment {
                     @Override
                     public void afterTextChanged(Editable editable) {
                         String len = ((TextView) getActivity().findViewById(R.id.file_content_length)).getText().toString();
-                        int num = editable.toString().length()+ (len.length()>0?
-                                Integer.parseInt(len):0);
-                        TextView tv = (TextView)getActivity().findViewById(R.id.text_counter);
-                        ImageButton bt = (ImageButton)getActivity().findViewById(R.id.send);
-                        boolean choosedContact=((TextView)getActivity().findViewById(R.id.contact_id_to_send)).getText().toString().length()>0;
-                        if(num==0){
+                        int num = editable.toString().length() + (len.length() > 0 ?
+                                Integer.parseInt(len) : 0);
+                        TextView tv = (TextView) getActivity().findViewById(R.id.text_counter);
+                        ImageButton bt = (ImageButton) getActivity().findViewById(R.id.send);
+                        boolean choosedContact = ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).getText().toString().length() > 0;
+                        if (num == 0) {
                             tv.setVisibility(View.GONE);
                             bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
                             bt.setEnabled(false);
-                        }
-                        else if(num>0){
-                            if(choosedContact){
+                        } else if (num > 0) {
+                            if (choosedContact) {
                                 bt.setEnabled(true);
                                 bt.setImageResource(R.drawable.ic_send_holo_light);
                             }
-                            if(num==1){
+                            if (num == 1) {
                                 tv.setVisibility(View.VISIBLE);
-                                tv.setText(Wmain.MSG_LIMIT_FOR_QR-num+"");
-                            }
-                            else if(num<=Wmain.MSG_LIMIT_FOR_QR){
-                                tv.setText(Wmain.MSG_LIMIT_FOR_QR-num+"");
-                            }
-                            else if(num==Wmain.MSG_LIMIT_FOR_QR)
-                                Toast.makeText(getActivity(),"we'll not create a QR for your message",Toast.LENGTH_LONG).show();
+                                tv.setText(Wmain.MSG_LIMIT_FOR_QR - num + "");
+                            } else if (num <= Wmain.MSG_LIMIT_FOR_QR) {
+                                tv.setText(Wmain.MSG_LIMIT_FOR_QR - num + "");
+                            } else if (num == Wmain.MSG_LIMIT_FOR_QR)
+                                Toast.makeText(getActivity(), "we'll not create a QR for your message", Toast.LENGTH_LONG).show();
                             else
-                                tv.setText(0+"");
+                                tv.setText(0 + "");
 
                         }
                     }
                 });
-                TextView tvfl = (TextView)getActivity().findViewById(R.id.file_content_length);
+                TextView tvfl = (TextView) getActivity().findViewById(R.id.file_content_length);
                 tvfl.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -263,7 +253,7 @@ public class FragmentManagement extends Fragment {
                         hndl.sendMessage(msg);
                     }
                 });
-                TextView tvci = (TextView)getActivity().findViewById(R.id.contact_id_to_send);
+                TextView tvci = (TextView) getActivity().findViewById(R.id.contact_id_to_send);
                 tvci.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -307,8 +297,8 @@ public class FragmentManagement extends Fragment {
                         while (a < ll.getChildCount())
                             synchronized (this) {
                                 try {
-                                    if (ll.getChildAt(a).getVisibility()==View.GONE) {
-                                        Message msg = hndl.obtainMessage(R.id.encrypt_show,ll.getChildAt(a));
+                                    if (ll.getChildAt(a).getVisibility() == View.GONE) {
+                                        Message msg = hndl.obtainMessage(R.id.encrypt_show, ll.getChildAt(a));
                                         hndl.sendMessage(msg);
                                         wait(720);
                                     } else
@@ -370,10 +360,10 @@ public class FragmentManagement extends Fragment {
                                 synchronized (this) {
                                     try {
                                         if (mm.getChildAt(a).getVisibility() == View.GONE) {
-                                            Message msg = hndl.obtainMessage(R.id.decrypt_show,mm.getChildAt(a));
+                                            Message msg = hndl.obtainMessage(R.id.decrypt_show, mm.getChildAt(a));
                                             hndl.sendMessage(msg);
                                             wait(720);
-                                        }else
+                                        } else
                                             a++;
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
