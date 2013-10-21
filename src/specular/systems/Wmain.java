@@ -525,8 +525,7 @@ public class Wmain extends Activity {
         final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
                 R.layout.share, R.layout.contacts, R.layout.help,
                 R.layout.setup};
-        final String[] allMenus = {"Encrypt", "Decrypt", "Share", "Contacts",
-                "Learn", "Manage"};
+        final String[] allMenus = getResources().getStringArray(R.array.menus);
         final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, CONTACTS = 3, LEARN = 4, SETUP = 5;
         if (privateKey && publicKey) {
             layouts = allLayouts;
@@ -547,7 +546,7 @@ public class Wmain extends Activity {
         } else {
             layouts = new int[]{allLayouts[LEARN], allLayouts[SETUP]};
             menuTitles = new String[]{allMenus[LEARN], allMenus[SETUP]};
-            defaultScreen = 1;
+            defaultScreen = 0;
         }
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -598,6 +597,8 @@ public class Wmain extends Activity {
         } else {
             if (!privateKey && publicKey)
                 selectItem(-1, R.layout.wait_nfc_decrypt);
+            else if(!privateKey&&!publicKey)
+                selectItem(-1, R.layout.create_new_keys);
             else {
                 boolean exist = false;
                 for (int a = 0; a < layouts.length; a++)

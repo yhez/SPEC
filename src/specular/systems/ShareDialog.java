@@ -23,7 +23,7 @@ public class ShareDialog extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         mSelectedItems = new ArrayList();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getActivity().getString(R.string.what_to_share))
+        builder.setTitle(R.string.what_to_share)
                 // Specify the list array, the items to be selected by default (null for none),
                 // and the listener through which to receive callbacks when items are selected
                 .setMultiChoiceItems(R.array.choice, null,
@@ -41,11 +41,11 @@ public class ShareDialog extends DialogFragment {
                             }
                         })
                         // Set the action buttons
-                .setPositiveButton(R.string.app_name, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.share_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         if (mSelectedItems.size() == 0) {
-                            Toast.makeText(getActivity(), "you didnt choosed anything", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), R.string.didnt_choose, Toast.LENGTH_LONG).show();
                         } else {
 
                             Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
@@ -82,11 +82,11 @@ public class ShareDialog extends DialogFragment {
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //...
-                    }
-                });
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                //...
+            }
+        });
 
         return builder.create();
     }

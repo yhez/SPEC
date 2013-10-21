@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:textSize="30sp"
-        android:text="TODO make it only for settings not for sowed when the app turns on" />
+        android:text="@string/todo" />
 
     <Button
         android:textColor="#222"
@@ -25,5 +25,29 @@
         android:layout_height="wrap_content"
         android:text="@string/create_keys"
         android:id="@+id/button1"
+        android:layout_gravity="center" />
+    <Button
+        android:textColor="#222"
+        android:padding="@dimen/default_gap"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/export"
+        android:id="@+id/button2"
+        android:layout_gravity="center" />
+    <Button
+        android:textColor="#222"
+        android:padding="@dimen/default_gap"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/Import"
+        android:id="@+id/button3"
+        android:layout_gravity="center" />
+    <Button
+        android:textColor="#222"
+        android:padding="@dimen/default_gap"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/clean"
+        android:id="@+id/button4"
         android:layout_gravity="center" />
 </LinearLayout>
