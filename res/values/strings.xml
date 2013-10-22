@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="welcome">Welcome, let\'s start bringing privacy and security to our online lives when we really need them.</string>
+    <string name="welcome">Welcome, let\'s start bringing privacy and security to our online lives.</string>
     <string name="company_text">SPEC ; HOLD THE KEY TO YOUR SECURITY</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="app_name">SPEC</string>
-    <string name="decrypt_explain">Decrypt message using barcode scanner, press logo below to scan:\n</string>
+    <string name="decrypt_explain">Decrypt message using barcode scanner, press button to scan:\n</string>
     <string name="encrypt_explain">Search contacts&#8230;</string>
     <string name="hint_msg">Message goes here&#8230;</string>
-    <string name="explain"> Hi there, I\'m attaching my public encryption key. Use it wisely and securely. You should verify that this public key belongs to the sender.</string>
+    <string name="explain"> I\'m attaching my public encryption key. Use it wisely and securely. You should verify that this public key belongs to the sender.</string>
     <string name="encrypting">Encrypting message\nSecuring communications</string>
     <string name="ok">OK</string>
-    <string name="hint_enter_your_name">username</string>
-    <string name="hint_enter_your_email">email</string>
+    <string name="hint_enter_your_name">username...</string>
+    <string name="hint_enter_your_email">email...</string>
     <string name="wait_for_nfc_to_write">Tap NFC tag</string>
-    <string name="skip_save_to_phone">Skip and save private key on your phone (less secure)</string>
+    <string name="skip_save_to_phone">Skip and save private key on your phone (LESS SECURE)</string>
     <string name="explain_and_about">LEARN ABOUT SPEC</string>
     <string name="create_keys">Create New Keys</string>
     <string name="share_on_server">Publish</string>
@@ -40,15 +40,15 @@
     <string name="subject_share">My Public Key - SPEC APP</string>
     <string name="contact_saved">SAVED TO CONTACTS</string>
     <string name="contact_exist">Contact already exists</string>
-    <string name="wait_for_nfc_to_read">wait_for_nfc_to_read</string>
-    <string name="what_to_share">What to share</string>
+    <string name="wait_for_nfc_to_read">Wait for NFC...</string>
+    <string name="what_to_share">Contact Card, what to share:</string>
     <string name="no_qr">no qr</string>
     <string name="share_button">Share</string>
-    <string name="didnt_choose">you didn\'t choose anything</string>
-    <string name="todo">TODO Implement the option below</string>
-    <string name="export">export keys</string>
+    <string name="didnt_choose">Choose format of CONTACT CARD</string>
+    <string name="todo">TODO Implement and design below</string>
+    <string name="export">Export keys</string>
     <string name="Import">Import keys</string>
-    <string name="clean">delete all previews used data</string>
+    <string name="clean">Delete app data</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
@@ -58,8 +58,8 @@
         <item>Manage</item>
     </string-array>
     <string-array name="choice">
-        <item >file</item>
-        <item>qr</item>
-        <item>text</item>
+        <item >Contact Card</item>
+        <item>QR Image</item>
+        <item>Key Text</item>
     </string-array>
 </resources>
