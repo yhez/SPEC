@@ -57,7 +57,7 @@ public class Wmain extends Activity {
                     break;
                 case 15:
                     ((TextView) findViewById(R.id.file_content_length)).setText(fileContent.length() + "");
-                    ((ImageButton)findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
+                    ((ImageButton) findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
                     break;
             }
         }
@@ -209,7 +209,7 @@ public class Wmain extends Activity {
         }
     }
 
-    public void onClick(View v) {
+    public void onClick(final View v) {
         switch (currentLayout) {
             case R.layout.setup:
                 selectItem(-1, R.layout.create_new_keys);
@@ -280,8 +280,14 @@ public class Wmain extends Activity {
                 }
                 break;
             case R.layout.decrypt:
-                Intent intent = new Intent(Wmain.this, StartScan.class);
-                startActivityForResult(intent, 18);
+                v.animate().alpha(0.5f).setDuration(300).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        v.setAlpha(1);
+                        Intent intent = new Intent(Wmain.this, StartScan.class);
+                        startActivityForResult(intent, 18);
+                    }
+                }).start();
                 break;
             case R.layout.contacts:
                 break;
@@ -320,7 +326,7 @@ public class Wmain extends Activity {
                             getResources().getString(R.string.subject_encrypt));
                     InputStream is = null;
                     try {
-                        is = getAssets().open("spec_temp_msg.html");
+                        is = getAssets().open("spec_tmp_msg.html");
                         int size = is.available();
                         byte[] buffer = new byte[size];
                         is.read(buffer);
@@ -333,6 +339,7 @@ public class Wmain extends Activity {
                     if (files == null)
                         Toast.makeText(this, "failed to retrieve files", Toast.LENGTH_LONG).show();
                     else {
+                        //TODO add intentShare.putExtra(Intent.EXTRA_EMAIL,)
                         intentShare.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
                         startActivity(Intent.createChooser(intentShare, getResources()
                                 .getString(R.string.send_dialog)));
@@ -356,7 +363,6 @@ public class Wmain extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainActivity = this;
         setContentView(R.layout.main);
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1);
         setUpViews();
@@ -408,7 +414,8 @@ public class Wmain extends Activity {
                         .getPayload());
                 setUpViews();
             }
-        }
+        } else
+            setUpViews();
     }
 
     @Override
@@ -439,6 +446,7 @@ public class Wmain extends Activity {
         super.onPause();
         CryptMethods.mPtK = null;
         CryptMethods.myPrivateKey = "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj";
+        CryptMethods.myPrivateKey=null;
     }
 
     /**
@@ -518,7 +526,7 @@ public class Wmain extends Activity {
     private void setUpViews() {
         int defaultScreen = 0;
         boolean privateKey = false, publicKey = false;
-        if (CryptMethods.myPrivateKey != null)
+        if (CryptMethods.myPrivateKey != null&&CryptMethods.mPtK!=null)
             privateKey = true;
         if (CryptMethods.myPublicKey != null)
             publicKey = true;
@@ -591,13 +599,13 @@ public class Wmain extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         String msg = getIntent().getStringExtra("message");
-        if (msg != null && publicKey) {
+        if (msg != null && privateKey) {
             getIntent().removeExtra("message");
             decryptManager(msg);
         } else {
             if (!privateKey && publicKey)
                 selectItem(-1, R.layout.wait_nfc_decrypt);
-            else if(!privateKey&&!publicKey)
+            else if (!privateKey && !publicKey)
                 selectItem(-1, R.layout.create_new_keys);
             else {
                 boolean exist = false;
@@ -630,7 +638,7 @@ public class Wmain extends Activity {
 
     public void share(View v) {
         ShareDialog dlg = new ShareDialog();
-        dlg.show(getFragmentManager(),"share");
+        dlg.show(getFragmentManager(), "share");
     }
 
     public void shareWeb(View v) {
@@ -685,11 +693,8 @@ public class Wmain extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (CryptMethods.myPrivateKey == null
-                || CryptMethods.myPublicKey == null) {
-            new FilesManegmant(Wmain.this).getKeysFromSdcard();
-            setUpViews();
-        }
+        FilesManegmant.getKeysFromSdcard(this);
+        setUpViews();
     }
 
     static class createKeys {

@@ -48,7 +48,7 @@ public class Splash extends Activity {
             findViewById(R.id.splash).animate().setDuration(TIME_FOR_SPLASH).alpha(1);
             waitForSplash.start();
         }
-        new FilesManegmant(this).getKeysFromSdcard();
+        FilesManegmant.getKeysFromSdcard(this);
         if (CryptMethods.myPrivateKey != null && getIntent().getType() != null) {
             Parcelable raw[] = getIntent().getParcelableArrayExtra(
                     NfcAdapter.EXTRA_NDEF_MESSAGES);

@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:alpha="0"
+    android:alpha="1"
     android:background="@android:color/white"
     android:orientation="vertical"
     android:padding="16dp">
@@ -29,6 +29,7 @@
         android:orientation="horizontal">
 
         <EditText
+            android:textSize="16sp"
             android:textColor="#000000"
             android:id="@+id/filter"
             android:layout_width="wrap_content"
@@ -38,8 +39,7 @@
             android:gravity="bottom"
             android:layout_marginLeft="8dip"
             android:hint="@string/encrypt_explain"
-            android:inputType="textFilter"
-            android:textSize="15sp" />
+            android:inputType="textFilter" />
 
         <ImageButton
             android:drawablePadding="0dip"

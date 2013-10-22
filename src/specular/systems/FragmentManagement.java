@@ -307,6 +307,16 @@ public class FragmentManagement extends Fragment {
                     }
                 }).start();
                 break;
+            case R.layout.decrypt:
+                ((TextView)getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManegmant.getOs(getActivity()));
+                break;
+            case R.layout.setup:
+                ((TextView)getActivity().findViewById(R.id.txt_manage)).setTypeface(FilesManegmant.getOs(getActivity()));
+                ((Button)getActivity().findViewById(R.id.button1)).setTypeface(FilesManegmant.getOs(getActivity()));
+                ((Button)getActivity().findViewById(R.id.button2)).setTypeface(FilesManegmant.getOs(getActivity()));
+                ((Button)getActivity().findViewById(R.id.button3)).setTypeface(FilesManegmant.getOs(getActivity()));
+                ((Button)getActivity().findViewById(R.id.button4)).setTypeface(FilesManegmant.getOs(getActivity()));
+                break;
             case R.layout.decrypt_show:
                 String data = getArguments().getString("data");
                 if (data == null) {

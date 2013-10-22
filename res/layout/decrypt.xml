@@ -7,17 +7,17 @@
     android:alpha="0">
 
     <TextView
+        android:id="@+id/text_decrypt"
         android:gravity="center"
         android:textColor="#222"
         android:padding="@dimen/default_gap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="22sp"
+        android:textSize="21sp"
         android:text="@string/decrypt_explain" />
 
 
-    <ImageButton
-        style="?android:attr/borderlessButtonStyle"
+    <ImageView
         android:padding="@dimen/default_gap"
         android:src="@drawable/key"
         android:onClick="onClick"

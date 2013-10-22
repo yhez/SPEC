@@ -75,6 +75,7 @@ public class CryptMethods {
             byte[] rawMsg = Visual.hex2bin(encryptedMessage);
             if (rawMsg == null)
                 Log.e("null", "at visual");
+            Log.e("myp",myPrivateKey);
             byte[] decryptedBytes = cipher.doFinal(rawMsg);
             return new String(decryptedBytes);
         } catch (Exception ignored) {

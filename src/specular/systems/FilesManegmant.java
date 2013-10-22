@@ -217,7 +217,7 @@ public class FilesManegmant {
         }
     }
 
-    public void getKeysFromSdcard() {
+    public static void getKeysFromSdcard(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         CryptMethods.myPublicKey = srp.getString("public_key", null);
