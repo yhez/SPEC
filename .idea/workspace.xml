@@ -77,59 +77,36 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Wmain.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Wmain.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/specular/systems/Wmain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="686" column="11" selection-start="28545" selection-end="28545" vertical-scroll-proportion="-8.076923" vertical-offset="11231" max-vertical-offset="12121">
+            <state line="458" column="35" selection-start="19067" selection-end="19067" vertical-scroll-proportion="16.154667" vertical-offset="895" max-vertical-offset="11764">
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="e#1675#1690#0" expanded="true" />
-                <element signature="e#2847#2863#0" expanded="true" />
-                <element signature="e#5099#6003#0" expanded="true" />
-                <element signature="e#5980#5981#0" expanded="true" />
-                <element signature="e#7107#7124#0" expanded="true" />
-                <element signature="e#7655#7672#0" expanded="true" />
-                <element signature="e#8493#8510#0" expanded="true" />
-                <element signature="e#12626#12643#0" expanded="true" />
-                <element signature="method#setTitle#0;class#Wmain#0" expanded="false" />
-                <element signature="e#22205#22225#0" expanded="true" />
-                <element signature="e#22291#22312#0" expanded="true" />
-                <element signature="e#23256#23611#0" expanded="true" />
-                <element signature="e#23592#23593#0" expanded="true" />
-                <element signature="e#23690#23705#0" expanded="true" />
-                <element signature="method#share#0;class#Wmain#0" expanded="false" />
-                <element signature="e#25313#25363#0" expanded="true" />
-                <element signature="e#26244#26315#0" expanded="true" />
-                <element signature="class#saveKeys#0;class#Wmain#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="encrypt.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/res/layout/encrypt.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="20" selection-start="174" selection-end="174" vertical-scroll-proportion="0.14049587" vertical-offset="0" max-vertical-offset="2754">
-              <folding>
-                <element signature="e#1336#1361#0" expanded="true" />
-                <element signature="e#1816#1836#0" expanded="true" />
-                <element signature="e#2862#2880#0" expanded="true" />
-                <element signature="e#5410#5430#0" expanded="true" />
-                <element signature="e#5693#5713#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CryptMethods.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/specular/systems/CryptMethods.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="157" column="31" selection-start="5339" selection-end="5341" vertical-scroll-proportion="-4.8076925" vertical-offset="2408" max-vertical-offset="2907">
-              <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#2127#2159#0" expanded="true" />
+                <element signature="e#2914#2930#0" expanded="true" />
+                <element signature="e#7182#7199#0" expanded="true" />
+                <element signature="e#7730#7747#0" expanded="true" />
+                <element signature="e#8568#8585#0" expanded="true" />
+                <element signature="e#10113#10154#0" expanded="true" />
+                <element signature="e#12736#12753#0" expanded="true" />
+                <element signature="e#14282#14321#0" expanded="true" />
+                <element signature="e#22316#22336#0" expanded="true" />
+                <element signature="e#22402#22423#0" expanded="true" />
+                <element signature="e#23317#23622#0" expanded="true" />
+                <element signature="e#23603#23604#0" expanded="true" />
+                <element signature="e#23701#23716#0" expanded="true" />
+                <element signature="e#25324#25374#0" expanded="true" />
+                <element signature="e#25963#25991#0" expanded="true" />
+                <element signature="e#26257#26328#0" expanded="true" />
+                <element signature="e#26395#26434#0" expanded="true" />
+                <element signature="e#27259#27295#0" expanded="true" />
+                <element signature="e#27511#27547#0" expanded="true" />
+                <element signature="e#27638#27669#0" expanded="true" />
+                <element signature="e#27983#28025#0" expanded="true" />
+                <element signature="e#28104#28135#0" expanded="true" />
+                <element signature="e#28211#28248#0" expanded="true" />
+                <element signature="e#28333#28368#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -138,32 +115,13 @@
       <file leaf-file-name="FragmentManagement.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/specular/systems/FragmentManagement.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="279" column="37" selection-start="14608" selection-end="14608" vertical-scroll-proportion="-4.576923" vertical-offset="4624" max-vertical-offset="5032">
+            <state line="251" column="31" selection-start="13365" selection-end="13372" vertical-scroll-proportion="-4.6153846" vertical-offset="3977" max-vertical-offset="4862">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#826#1946#0" expanded="true" />
                 <element signature="e#1939#1940#0" expanded="true" />
-                <element signature="e#3846#4726#0" expanded="true" />
-                <element signature="e#4707#4708#0" expanded="true" />
-                <element signature="e#6756#8024#0" expanded="true" />
-                <element signature="e#8005#8006#0" expanded="true" />
-                <element signature="e#8708#9857#0" expanded="true" />
-                <element signature="e#9838#9839#0" expanded="true" />
-                <element signature="e#12661#12700#0" expanded="true" />
               </folding>
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="decrypted_msg.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/decrypted_msg.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="28" selection-start="476" selection-end="476" vertical-scroll-proportion="-8.84" vertical-offset="0" max-vertical-offset="374">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
           </provider>
         </entry>
       </file>
@@ -535,7 +493,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/layout/share.xml" />
         <option value="$PROJECT_DIR$/res/values/arr.xml" />
         <option value="$PROJECT_DIR$/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/res/layout/decrypt.xml" />
@@ -545,12 +502,13 @@
         <option value="$PROJECT_DIR$/src/specular/systems/QRMessage.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/QRPublicKey.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/ShareDialog.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/CryptMethods.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Splash.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/FragmentManagement.java" />
         <option value="$PROJECT_DIR$/res/layout/decrypted_msg.xml" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Wmain.java" />
         <option value="$PROJECT_DIR$/res/layout/encrypt.xml" />
+        <option value="$PROJECT_DIR$/src/specular/systems/CryptMethods.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/StartScan.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Wmain.java" />
       </list>
     </option>
   </component>
@@ -608,7 +566,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -637,30 +594,13 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SPEC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SPEC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -756,6 +696,19 @@
       </ExternalSystemSettings>
       <method />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -781,19 +734,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -917,7 +857,7 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3242424" sideWeight="0.681431" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3242424" sideWeight="0.681431" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32789558" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -926,7 +866,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32520324" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30569106" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30569106" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -979,13 +919,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/StartScan.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="181" selection-end="181" vertical-scroll-proportion="0.042394016" vertical-offset="51" max-vertical-offset="510">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/Session.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="13" selection-start="66" selection-end="66" vertical-scroll-proportion="0.16957606" vertical-offset="0" max-vertical-offset="1428">
@@ -1007,13 +940,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Splash.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="121" column="44" selection-start="4717" selection-end="4717" vertical-scroll-proportion="0.6346667" vertical-offset="1479" max-vertical-offset="2040">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/Visual.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="18" column="0" selection-start="555" selection-end="555" vertical-scroll-proportion="0.33167082" vertical-offset="173" max-vertical-offset="850">
@@ -1021,98 +947,103 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/encrypt.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="116" column="13" selection-start="4362" selection-end="4362" vertical-scroll-proportion="0.33150685" vertical-offset="1851" max-vertical-offset="2754">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/decrypted_msg.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="22" selection-start="398" selection-end="398" vertical-scroll-proportion="0.49470899" vertical-offset="0" max-vertical-offset="378">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Splash.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="41" selection-start="1067" selection-end="1068" vertical-scroll-proportion="0.331565" vertical-offset="147" max-vertical-offset="2040">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/StartScan.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="0" selection-start="626" selection-end="626" vertical-scroll-proportion="0.94164455" vertical-offset="2" max-vertical-offset="493">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/FilesManegmant.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="154" column="0" selection-start="5134" selection-end="5134" vertical-scroll-proportion="0.33167082" vertical-offset="2128" max-vertical-offset="4046">
+        <state line="212" column="28" selection-start="7335" selection-end="7335" vertical-scroll-proportion="0.24266666" vertical-offset="3156" max-vertical-offset="4046">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/CryptMethods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="121" column="38" selection-start="4028" selection-end="4028" vertical-scroll-proportion="0.71321696" vertical-offset="1261" max-vertical-offset="2516">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/ShareDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="29" selection-start="4132" selection-end="4132" vertical-scroll-proportion="0.41902313" vertical-offset="857" max-vertical-offset="1258">
+        <state line="55" column="102" selection-start="2737" selection-end="2738" vertical-scroll-proportion="0.33333334" vertical-offset="521" max-vertical-offset="1258">
           <folding />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/decrypted_msg.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="28" selection-start="476" selection-end="476" vertical-scroll-proportion="-8.84" vertical-offset="0" max-vertical-offset="374">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/FragmentManagement.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="279" column="37" selection-start="14608" selection-end="14608" vertical-scroll-proportion="-4.576923" vertical-offset="4624" max-vertical-offset="5032">
+        <state line="251" column="31" selection-start="13365" selection-end="13372" vertical-scroll-proportion="-4.6153846" vertical-offset="3977" max-vertical-offset="4862">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#826#1946#0" expanded="true" />
             <element signature="e#1939#1940#0" expanded="true" />
-            <element signature="e#3846#4726#0" expanded="true" />
-            <element signature="e#4707#4708#0" expanded="true" />
-            <element signature="e#6756#8024#0" expanded="true" />
-            <element signature="e#8005#8006#0" expanded="true" />
-            <element signature="e#8708#9857#0" expanded="true" />
-            <element signature="e#9838#9839#0" expanded="true" />
-            <element signature="e#12661#12700#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/CryptMethods.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="157" column="31" selection-start="5339" selection-end="5341" vertical-scroll-proportion="-4.8076925" vertical-offset="2408" max-vertical-offset="2907">
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/Wmain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="686" column="11" selection-start="28545" selection-end="28545" vertical-scroll-proportion="-8.076923" vertical-offset="11231" max-vertical-offset="12121">
+        <state line="458" column="35" selection-start="19067" selection-end="19067" vertical-scroll-proportion="16.154667" vertical-offset="895" max-vertical-offset="11764">
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#1675#1690#0" expanded="true" />
-            <element signature="e#2847#2863#0" expanded="true" />
-            <element signature="e#5099#6003#0" expanded="true" />
-            <element signature="e#5980#5981#0" expanded="true" />
-            <element signature="e#7107#7124#0" expanded="true" />
-            <element signature="e#7655#7672#0" expanded="true" />
-            <element signature="e#8493#8510#0" expanded="true" />
-            <element signature="e#12626#12643#0" expanded="true" />
-            <element signature="method#setTitle#0;class#Wmain#0" expanded="false" />
-            <element signature="e#22205#22225#0" expanded="true" />
-            <element signature="e#22291#22312#0" expanded="true" />
-            <element signature="e#23256#23611#0" expanded="true" />
-            <element signature="e#23592#23593#0" expanded="true" />
-            <element signature="e#23690#23705#0" expanded="true" />
-            <element signature="method#share#0;class#Wmain#0" expanded="false" />
-            <element signature="e#25313#25363#0" expanded="true" />
-            <element signature="e#26244#26315#0" expanded="true" />
-            <element signature="class#saveKeys#0;class#Wmain#0" expanded="false" />
+            <element signature="e#2127#2159#0" expanded="true" />
+            <element signature="e#2914#2930#0" expanded="true" />
+            <element signature="e#7182#7199#0" expanded="true" />
+            <element signature="e#7730#7747#0" expanded="true" />
+            <element signature="e#8568#8585#0" expanded="true" />
+            <element signature="e#10113#10154#0" expanded="true" />
+            <element signature="e#12736#12753#0" expanded="true" />
+            <element signature="e#14282#14321#0" expanded="true" />
+            <element signature="e#22316#22336#0" expanded="true" />
+            <element signature="e#22402#22423#0" expanded="true" />
+            <element signature="e#23317#23622#0" expanded="true" />
+            <element signature="e#23603#23604#0" expanded="true" />
+            <element signature="e#23701#23716#0" expanded="true" />
+            <element signature="e#25324#25374#0" expanded="true" />
+            <element signature="e#25963#25991#0" expanded="true" />
+            <element signature="e#26257#26328#0" expanded="true" />
+            <element signature="e#26395#26434#0" expanded="true" />
+            <element signature="e#27259#27295#0" expanded="true" />
+            <element signature="e#27511#27547#0" expanded="true" />
+            <element signature="e#27638#27669#0" expanded="true" />
+            <element signature="e#27983#28025#0" expanded="true" />
+            <element signature="e#28104#28135#0" expanded="true" />
+            <element signature="e#28211#28248#0" expanded="true" />
+            <element signature="e#28333#28368#0" expanded="true" />
           </folding>
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/encrypt.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="20" selection-start="174" selection-end="174" vertical-scroll-proportion="0.14049587" vertical-offset="0" max-vertical-offset="2754">
-          <folding>
-            <element signature="e#1336#1361#0" expanded="true" />
-            <element signature="e#1816#1836#0" expanded="true" />
-            <element signature="e#2862#2880#0" expanded="true" />
-            <element signature="e#5410#5430#0" expanded="true" />
-            <element signature="e#5693#5713#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
   </component>

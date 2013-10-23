@@ -48,7 +48,18 @@
     <string name="todo">TODO Implement and design below</string>
     <string name="export">Export keys</string>
     <string name="Import">Import keys</string>
-    <string name="clean">Delete app data</string>
+    <string name="clean">Delete app data</string><string name="problem_create_keys">there was a problem
+try creating keys again</string>
+    <string name="choose_file_to_attach">file</string>
+    <string name="failed_attach_files">failed to retrieve files</string>
+    <string name="failed_to_create_files_to_send">failed to create files</string><string name="nfc_wroten_successfuly">Tag written successfully!
+Close this app and scan tag.</string>
+    <string name="tag_written">Tag written successfully.</string>
+    <string name="tag_needs_format">Tag doesn\'t have enough free space.</string>
+    <string name="failed_read_only">Read-only tag.</string>
+    <string name="cant_format">Unable to format tag to NDEF.</string>
+    <string name="tag_doesnt_supprt">Tag doesn\'t appear to support NDEF format.</string>
+    <string name="failed_to_write">Failed to write tag</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

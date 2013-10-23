@@ -24,6 +24,5 @@ public class StartScan extends CaptureActivity {
     public void onBackPressed() {
         super.onBackPressed();
         setResult(RESULT_CANCELED);
-        finish();
     }
 }

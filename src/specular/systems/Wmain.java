@@ -59,8 +59,9 @@ public class Wmain extends Activity {
                     ((ImageButton) findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
                     break;
                 case 1:
-                    Log.e("msg",(String)msg.obj);
-                    ((TextView) findViewById(R.id.decrypted_msg)).setText((String) msg.obj);
+                    String s = msg.obj!=null?(String) msg.obj:getString(R.string.cant_decrypt);
+                    Log.e("msg",s);
+                    ((TextView) findViewById(R.id.decrypted_msg)).setText(s);
                     break;
             }
         }
@@ -96,7 +97,7 @@ public class Wmain extends Activity {
             }
         else {
             findViewById(R.id.drawer_layout).animate().setDuration(1000)
-                    .alpha(0);
+                    .alpha(0).start();
             while (createKeys.isAlive())
                 synchronized (this) {
                     try {
@@ -240,7 +241,7 @@ public class Wmain extends Activity {
                         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                         intent.addCategory(Intent.CATEGORY_OPENABLE);
                         intent.setType("*/*");
-                        Intent i = Intent.createChooser(intent, "file");
+                        Intent i = Intent.createChooser(intent, getString(R.string.choose_file_to_attach));
                         startActivityForResult(i, 5);
                         break;
                     case R.id.send:
@@ -316,7 +317,7 @@ public class Wmain extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1);
+        findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
     }
 
@@ -333,7 +334,7 @@ public class Wmain extends Activity {
                     }
                 }
                 if (!CryptMethods.privateExist()) {
-                    Toast.makeText(getBaseContext(), "there was a problem\ntry creating keys again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), getString(R.string.problem_create_keys), Toast.LENGTH_LONG).show();
                     selectItem(layouts.length - 1, R.layout.create_new_keys);
                 } else {
                     saveKeys.start(this);
@@ -544,14 +545,13 @@ public class Wmain extends Activity {
         final String msg = getIntent().getStringExtra("message");
         if (msg != null && privateKey) {
             //getIntent().removeExtra("message");
-            //decryptManager(msg);
-            if (msg != null && msg.length() > 5) {
+            if (msg.length() > 5) {
                 selectItem(1,R.layout.decrypted_msg);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         String data = CryptMethods.decrypt(msg);
-                        Message msg = hndl.obtainMessage(1, data==null?"this message hasnt encrypted for you":data);
+                        Message msg = hndl.obtainMessage(1, data);
                         hndl.sendMessage(msg);
                     }
                 }).start();
@@ -621,7 +621,7 @@ public class Wmain extends Activity {
             }
             ArrayList<Uri> files = FilesManegmant.getFilesToSend(this);
             if (files == null)
-                Toast.makeText(this, "failed to retrieve files", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.failed_attach_files, Toast.LENGTH_LONG).show();
             else {
                 //TODO add intentShare.putExtra(Intent.EXTRA_EMAIL,)
                 intentShare.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
@@ -629,7 +629,7 @@ public class Wmain extends Activity {
                         .getString(R.string.send_dialog)));
             }
         } else {
-            Toast.makeText(this, "failed to create files", Toast.LENGTH_LONG).show();
+            Toast.makeText(this,R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -649,15 +649,15 @@ public class Wmain extends Activity {
             if (ndef != null) {
                 ndef.connect();
                 if (!ndef.isWritable()) {
-                    return "Read-only tag.";
+                    return getString(R.string.failed_read_only);
                 }
                 // work out how much space we need for the data
                 int size = message.toByteArray().length;
                 if (ndef.getMaxSize() < size) {
-                    return "Tag doesn't have enough free space.";
+                    return getString(R.string.tag_needs_format);
                 }
                 ndef.writeNdefMessage(message);
-                return "Tag written successfully.";
+                return getString(R.string.tag_written);
             } else {
                 // attempt to format tag
                 NdefFormatable format = NdefFormatable.get(tag);
@@ -665,16 +665,16 @@ public class Wmain extends Activity {
                     try {
                         format.connect();
                         format.format(message);
-                        return "Tag written successfully!\nClose this app and scan tag.";
+                        return getString(R.string.nfc_wroten_successfuly);
                     } catch (IOException e) {
-                        return "Unable to format tag to NDEF.";
+                        return getString(R.string.cant_format);
                     }
                 } else {
-                    return "Tag doesn't appear to support NDEF format.";
+                    return getString(R.string.tag_doesnt_supprt);
                 }
             }
         } catch (Exception e) {
-            return "Failed to write tag";
+            return getString(R.string.failed_to_write);
         }
     }
 

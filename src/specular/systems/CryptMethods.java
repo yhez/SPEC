@@ -25,7 +25,6 @@ import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
 public class CryptMethods {
-    private static QRPublicKey qrPublicKey;
     public static String encryptedMsgToSend = null;
     private static PrivateKey mPtK = null;
     private static String myName = null, myEmail = null, myPublicKey = null,
@@ -162,12 +161,12 @@ public class CryptMethods {
         }
         return false;
     }
-
-    public static void signPublicQR() {
+//TODO
+ /*   public static void signPublicQR() {
 
     }
 
     public static boolean checkSignPublicQR() {
         return false;
-    }
+    }*/
 }
