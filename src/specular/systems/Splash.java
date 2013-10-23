@@ -45,20 +45,18 @@ public class Splash extends Activity {
         if (newUser) {
             setContentView(R.layout.splash);
             ((TextView) findViewById(R.id.company)).setTypeface(FilesManegmant.getOs(this));
-            findViewById(R.id.splash).animate().setDuration(TIME_FOR_SPLASH).alpha(1);
+            findViewById(R.id.splash).animate().setDuration(TIME_FOR_SPLASH).alpha(1).start();
             waitForSplash.start();
         }
         FilesManegmant.getKeysFromSdcard(this);
-        if (CryptMethods.myPrivateKey != null && getIntent().getType() != null) {
+        if (!CryptMethods.privateExist() && getIntent().getType() != null) {
             Parcelable raw[] = getIntent().getParcelableArrayExtra(
                     NfcAdapter.EXTRA_NDEF_MESSAGES);
             if (raw != null) {
                 NdefMessage msg = (NdefMessage) raw[0];
                 NdefRecord pvk = msg.getRecords()[0];
-                CryptMethods.myPrivateKey = Visual.bin2hex(pvk
-                        .getPayload());
-                if (!CryptMethods.formatPrivate())
-                    CryptMethods.myPrivateKey = null;
+                CryptMethods.setPrivate(Visual.bin2hex(pvk
+                        .getPayload()));
             }
         }
         if (!newUser) {
@@ -121,6 +119,7 @@ public class Splash extends Activity {
                         Toast.makeText(getBaseContext(),
                                 R.string.contact_exist, Toast.LENGTH_LONG)
                                 .show();
+                    getIntent().setData(null);
                     finish();
                 } else {
                     message = data;

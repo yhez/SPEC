@@ -33,75 +33,7 @@ public class FilesManegmant {
     private static boolean firstUse = true;
     private static Typeface tfos = null;
     private static Typeface tfold = null;
-    Activity a;
-    Thread saveKeys = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            SharedPreferences srp = PreferenceManager
-                    .getDefaultSharedPreferences(a.getApplicationContext());
-            SharedPreferences.Editor edt = srp.edit();
-            QRPublicKey qrpk = new QRPublicKey(a);
-            FileOutputStream fos = null;
-            try {
-                fos = a.openFileOutput(FILE_NAME,
-                        Context.MODE_WORLD_READABLE);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            if (fos != null) {
-                try {
-                    fos.write(qrpk.getQRToPublish().getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrpk.getQRToPublish(), null,
-                    Contents.Type.TEXT, BarcodeFormat.QR_CODE.toString(), 512);
 
-            try {
-                Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
-                Bitmap crop = crop(bitmap);
-                FileOutputStream fos2 = null;
-                try {
-                    fos2 = a.openFileOutput(QR_NAME,
-                            Context.MODE_WORLD_READABLE);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                if (fos2 != null) {
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos2);
-                }
-                FileOutputStream fos3 = null;
-                try {
-                    fos3 = a.openFileOutput(QR_NAME_T,
-                            Context.MODE_WORLD_READABLE);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                if (fos3 != null) {
-                    crop.compress(Bitmap.CompressFormat.PNG, 90, fos3);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            edt.putString("public_key", qrpk.getPublicKey());
-            edt.putString("email", qrpk.getEmail());
-            edt.putString("name", qrpk.getName());
-            edt.putString("private_key", CryptMethods.myPrivateKey != null ? CryptMethods.myPrivateKey : "the key is on nfc");
-            edt.commit();
-        }
-    });
-
-    public FilesManegmant(Activity a) {
-        this.a = a;
-    }
 
     public static Bitmap getMyQRPublicKey(Activity a) {
         if (myQRPublicKey == null)
@@ -220,16 +152,71 @@ public class FilesManegmant {
     public static void getKeysFromSdcard(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
-        CryptMethods.myPublicKey = srp.getString("public_key", null);
-        CryptMethods.myPrivateKey = srp.getString("private_key", null);
-        CryptMethods.myEmail = srp.getString("email", null);
-        if (CryptMethods.myPrivateKey != null)
-            if (!CryptMethods.formatPrivate())
-                CryptMethods.myPrivateKey = null;
+        CryptMethods.setPrivate(srp.getString("private_key", null));
+        CryptMethods.setPublic(srp.getString("public_key", null));
+        CryptMethods.setDetails(srp.getString("name", null),srp.getString("email", null));
     }
 
-    public void save() {
-        saveKeys.start();
+    public static void save(Activity a) {
+        SharedPreferences srp = PreferenceManager
+                .getDefaultSharedPreferences(a.getApplicationContext());
+        SharedPreferences.Editor edt = srp.edit();
+        QRPublicKey qrpk = new QRPublicKey(a);
+        FileOutputStream fos = null;
+        try {
+            fos = a.openFileOutput(FILE_NAME,
+                    Context.MODE_WORLD_READABLE);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (fos != null) {
+            try {
+                fos.write(qrpk.getQRToPublish().getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (fos != null) {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrpk.getQRToPublish(), null,
+                Contents.Type.TEXT, BarcodeFormat.QR_CODE.toString(), 512);
+
+        try {
+            Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
+            Bitmap crop = crop(bitmap);
+            FileOutputStream fos2 = null;
+            try {
+                fos2 = a.openFileOutput(QR_NAME,
+                        Context.MODE_WORLD_READABLE);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (fos2 != null) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos2);
+            }
+            FileOutputStream fos3 = null;
+            try {
+                fos3 = a.openFileOutput(QR_NAME_T,
+                        Context.MODE_WORLD_READABLE);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (fos3 != null) {
+                crop.compress(Bitmap.CompressFormat.PNG, 90, fos3);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        edt.putString("public_key", qrpk.getPublicKey());
+        edt.putString("email", qrpk.getEmail());
+        edt.putString("name", qrpk.getName());
+        edt.putString("private_key", CryptMethods.getPrivateToSave());
+        edt.commit();
     }
 
     public static String addFile(Activity a, Uri uri) {
@@ -254,7 +241,7 @@ public class FilesManegmant {
         buf.deleteCharAt(buf.length() - 1);
         return buf.toString();
     }
-    private Bitmap crop(Bitmap bitmap){
+    private static Bitmap crop(Bitmap bitmap){
         int width = bitmap.getWidth();
         int border;
         for (int x = 0; ; x++)

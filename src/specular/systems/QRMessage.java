@@ -27,14 +27,14 @@ public class QRMessage {
     }
 
     public QRMessage(String fileContentt, String msgContentt, String sessiont) {
-        email = CryptMethods.myEmail;
+        email = CryptMethods.getEmail();
         msgContent = msgContentt;
-        publicKey = CryptMethods.myPublicKey;
+        publicKey = CryptMethods.getPublic();
         sentTime = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
                 .getInstance().getTime());
         session = sessiont;
         fileContent = fileContentt;
-        name = CryptMethods.myName;
+        name = CryptMethods.getName();
         hash = hashing(name + email + publicKey + msgContent + fileContent + session + sentTime);
     }
 

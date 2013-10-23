@@ -74,7 +74,7 @@ public class ShareDialog extends DialogFragment {
                                 intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, file);
                             }
                             if (mSelectedItems.contains(Integer.valueOf(2))) {
-                                intent.putExtra(Intent.EXTRA_TEXT, CryptMethods.myPublicKey);
+                                intent.putExtra(Intent.EXTRA_TEXT, CryptMethods.getPublic());
                             }
                             startActivity(Intent.createChooser(intent, getResources()
                                     .getString(R.string.share_dialog)));

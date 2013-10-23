@@ -46,7 +46,6 @@ import java.util.ArrayList;
 public class Wmain extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
     public static int currentLayout;
-    static Activity mainActivity = null;
     final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -58,6 +57,10 @@ public class Wmain extends Activity {
                 case 15:
                     ((TextView) findViewById(R.id.file_content_length)).setText(fileContent.length() + "");
                     ((ImageButton) findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
+                    break;
+                case 1:
+                    Log.e("msg",(String)msg.obj);
+                    ((TextView) findViewById(R.id.decrypted_msg)).setText((String) msg.obj);
                     break;
             }
         }
@@ -94,6 +97,14 @@ public class Wmain extends Activity {
         else {
             findViewById(R.id.drawer_layout).animate().setDuration(1000)
                     .alpha(0);
+            while (createKeys.isAlive())
+                synchronized (this) {
+                    try {
+                        wait(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             saveKeys.start(this);
             while (saveKeys.isAlive())
                 synchronized (this) {
@@ -103,58 +114,23 @@ public class Wmain extends Activity {
                         e.printStackTrace();
                     }
                 }
-            Intent intent = new Intent(Wmain.this, Splash.class);
-            startActivity(intent);
-            onPause();
-            finish();
+            setUpViews();
         }
-    }
-
-    void decryptManager(String contents) {
-        if (contents != null && contents.length() > 5) {
-            String data = CryptMethods.decrypt(contents);
-            Fragment fragment = new FragmentManagement();
-            Bundle args = new Bundle();
-            args.putString("data", data);
-            args.putInt("layout", R.layout.decrypt_show);
-            fragment.setArguments(args);
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, fragment).commit();
-        } else
-            Toast.makeText(getBaseContext(), R.string.failed, Toast.LENGTH_LONG)
-                    .show();
     }
 
     void encryptManager() {
         final QRMessage msg = new QRMessage(fileContent, userInput,
                 contact.getSession());
-        Fragment fragment = new FragmentManagement();
-        Bundle args = new Bundle();
-        args.putInt("layout", R.layout.encrypt_show);
-        args.putString("email", contact.getEmail());
-        args.putString("session", msg.getSession());
-        args.putString("hash", msg.getHash());
-        args.putString("userInput", userInput);
-        args.putString("sentTime", msg.getSentTime());
-        fragment.setArguments(args);
-        android.app.FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment).commit();
-        // TODO debug note
-        Log.e("start", "" + System.currentTimeMillis());
+        long x = System.currentTimeMillis();
         CryptMethods.encrypt(msg.getFormatedMsg().getBytes(),
                 contact.getPublicKey());
-        // TODO debug note
-        Log.e("end", "" + System.currentTimeMillis());
-        //Looper.prepare();
-        //((TextView) findViewById(R.id.encryptshow_encrypt)).setText(CryptMethods.encryptedMsgToSend);
-        //((TextView)findViewById(R.id.to_email)).setText("TO: official address\n"+contact.getEmail());
-
+        Log.d("time to encrypt", "" + (System.currentTimeMillis() - x) / 1000);
+        sendMessage();
     }
-
+    boolean handleByOnActivityResult=false;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        handleByOnActivityResult=true;
         if (resultCode == RESULT_OK) {
             if (requestCode == 5) {
                 final Uri uri = intent.getData();
@@ -164,10 +140,13 @@ public class Wmain extends Activity {
                         public void run() {
                             String data = FilesManegmant.addFile(Wmain.this, uri);
                             if (data != null) {
-                                String w[] = uri.getEncodedPath().split("/");
-                                fileContent = w[w.length - 1] + "\n" + data;
-                                Message msg = hndl.obtainMessage(15);
-                                hndl.sendMessage(msg);
+                                if(data.length()>0){
+                                    String w[] = uri.getEncodedPath().split("/");
+                                    fileContent = w[w.length - 1] + "\n" + data;
+                                    Message msg = hndl.obtainMessage(15);
+                                    hndl.sendMessage(msg);
+                                }
+                                //TODO handle empty file
                             } else {
                                 Message msg = hndl.obtainMessage(0);
                                 hndl.sendMessage(msg);
@@ -181,7 +160,9 @@ public class Wmain extends Activity {
                     // String contents = result;
                     switch (currentLayout) {
                         case R.layout.decrypt:
-                            decryptManager(result);
+                            getIntent().putExtra("message",result);
+                            setUpViews();
+                            //decryptManager(result);
                             break;
                         case R.layout.encrypt:
                             Log.e("bad data", result);
@@ -215,22 +196,23 @@ public class Wmain extends Activity {
                 selectItem(-1, R.layout.create_new_keys);
                 break;
             case R.layout.create_new_keys:
-                CryptMethods.myEmail = ((EditText) findViewById(R.id.email))
+                String myEmail = ((EditText) findViewById(R.id.email))
                         .getText().toString();
-                CryptMethods.myName = ((EditText) findViewById(R.id.name))
+                String myName = ((EditText) findViewById(R.id.name))
                         .getText().toString();
-                if (CryptMethods.myEmail == null
-                        || !CryptMethods.myEmail.contains("@")
-                        || CryptMethods.myName == null)
+                if (myEmail == null
+                        || !myEmail.contains("@")
+                        || myName == null)
                     Toast.makeText(getBaseContext(), R.string.fill_all,
                             Toast.LENGTH_LONG).show();
-                else
+                else {
+                    CryptMethods.setDetails(myName, myEmail);
                     createKeysManager();
+                }
                 break;
             case R.layout.wait_nfc_to_write:
                 NfcAdapter.getDefaultAdapter(getApplicationContext())
                         .disableForegroundDispatch(Wmain.this);
-                saveKeys.start(this);
                 synchronized (this) {
                     while (createKeys.isAlive()) {
                         try {
@@ -240,8 +222,9 @@ public class Wmain extends Activity {
                         }
                     }
                 }
+                saveKeys.start(this);
                 synchronized (this) {
-                    while (createKeys.isAlive() || saveKeys.isAlive()) {
+                    while (saveKeys.isAlive()) {
                         try {
                             wait(150);
                         } catch (InterruptedException e) {
@@ -317,37 +300,6 @@ public class Wmain extends Activity {
                 }
                 selectItem(-1, R.layout.contacts);
                 break;
-            case R.layout.encrypt_show:
-                boolean success = FilesManegmant.createFilesToSend(this, (userInput.length() + fileContent.length()) < MSG_LIMIT_FOR_QR);
-                if (success) {
-                    Intent intentShare = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                    intentShare.setType("*/*");
-                    intentShare.putExtra(Intent.EXTRA_SUBJECT,
-                            getResources().getString(R.string.subject_encrypt));
-                    InputStream is = null;
-                    try {
-                        is = getAssets().open("spec_tmp_msg.html");
-                        int size = is.available();
-                        byte[] buffer = new byte[size];
-                        is.read(buffer);
-                        is.close();
-                        intentShare.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    ArrayList<Uri> files = FilesManegmant.getFilesToSend(this);
-                    if (files == null)
-                        Toast.makeText(this, "failed to retrieve files", Toast.LENGTH_LONG).show();
-                    else {
-                        //TODO add intentShare.putExtra(Intent.EXTRA_EMAIL,)
-                        intentShare.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
-                        startActivity(Intent.createChooser(intentShare, getResources()
-                                .getString(R.string.send_dialog)));
-                    }
-                } else {
-                    Toast.makeText(this, "failed to create files", Toast.LENGTH_LONG).show();
-                }
-                break;
             default:
                 break;
         }
@@ -380,28 +332,22 @@ public class Wmain extends Activity {
                         e.printStackTrace();
                     }
                 }
-                if (CryptMethods.myPrivateKey == null) {
+                if (!CryptMethods.privateExist()) {
                     Toast.makeText(getBaseContext(), "there was a problem\ntry creating keys again", Toast.LENGTH_LONG).show();
                     selectItem(layouts.length - 1, R.layout.create_new_keys);
                 } else {
-                    String tmp = CryptMethods.myPrivateKey;
-                    CryptMethods.myPrivateKey = null;
                     saveKeys.start(this);
-                    String rslt = writeTag(tag, Visual.hex2bin(tmp));
+                    String rslt = writeTag(tag, Visual.hex2bin(CryptMethods.getPrivateToSave()));
                     Toast.makeText(getBaseContext(), rslt, Toast.LENGTH_LONG).show();
                     findViewById(R.id.drawer_layout).animate().setDuration(1000)
                             .alpha(0);
-                    while (saveKeys.isAlive()) {
+                    while (saveKeys.isAlive())
                         try {
                             wait(150);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                    }
-                    onPause();
-                    finish();
-                    Intent intent = new Intent(Wmain.this, Splash.class);
-                    startActivity(intent);
+                    setUpViews();
                 }
             }
         } else if (currentLayout == R.layout.wait_nfc_decrypt) {
@@ -410,8 +356,8 @@ public class Wmain extends Activity {
             if (raw != null) {
                 NdefMessage msg = (NdefMessage) raw[0];
                 NdefRecord pvk = msg.getRecords()[0];
-                CryptMethods.myPrivateKey = Visual.bin2hex(pvk
-                        .getPayload());
+                CryptMethods.setPrivate(Visual.bin2hex(pvk
+                        .getPayload()));
                 setUpViews();
             }
         } else
@@ -443,10 +389,8 @@ public class Wmain extends Activity {
 
     @Override
     public void onPause() {
+        CryptMethods.deleteKeys();
         super.onPause();
-        CryptMethods.mPtK = null;
-        CryptMethods.myPrivateKey = "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj";
-        CryptMethods.myPrivateKey=null;
     }
 
     /**
@@ -473,8 +417,8 @@ public class Wmain extends Activity {
 
     private void selectItem(int position, int layout_screen) {
         // update the main content by replacing fragments
-        int layout = 0;
-        int menu = -1;
+        int layout = layout_screen;
+        int menu = position;
         if (layout_screen == 0 && position != -1) {
             layout = layouts[position];
             menu = position;
@@ -497,11 +441,14 @@ public class Wmain extends Activity {
                     case R.layout.wait_nfc_decrypt:
                         menu = menuTitles.length - 1;
                         break;
+                    case R.layout.decrypted_msg:
+                        menu = 1;
+                        break;
+                    default:
+                        menu = 0;
+                        break;
                 }
             }
-        } else {
-            Toast.makeText(getBaseContext(), "shouldnt be here",
-                    Toast.LENGTH_LONG).show();
         }
         // update selected item and title, then close the main
         mDrawerList.setItemChecked(menu, true);
@@ -525,11 +472,7 @@ public class Wmain extends Activity {
 
     private void setUpViews() {
         int defaultScreen = 0;
-        boolean privateKey = false, publicKey = false;
-        if (CryptMethods.myPrivateKey != null&&CryptMethods.mPtK!=null)
-            privateKey = true;
-        if (CryptMethods.myPublicKey != null)
-            publicKey = true;
+        boolean privateKey = CryptMethods.privateExist(), publicKey = CryptMethods.publicExist();
         final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
                 R.layout.share, R.layout.contacts, R.layout.help,
                 R.layout.setup};
@@ -598,10 +541,24 @@ public class Wmain extends Activity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        String msg = getIntent().getStringExtra("message");
+        final String msg = getIntent().getStringExtra("message");
         if (msg != null && privateKey) {
-            getIntent().removeExtra("message");
-            decryptManager(msg);
+            //getIntent().removeExtra("message");
+            //decryptManager(msg);
+            if (msg != null && msg.length() > 5) {
+                selectItem(1,R.layout.decrypted_msg);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String data = CryptMethods.decrypt(msg);
+                        Message msg = hndl.obtainMessage(1, data==null?"this message hasnt encrypted for you":data);
+                        hndl.sendMessage(msg);
+                    }
+                }).start();
+            } else
+                Toast.makeText(getBaseContext(), R.string.failed, Toast.LENGTH_LONG)
+                        .show();
+
         } else {
             if (!privateKey && publicKey)
                 selectItem(-1, R.layout.wait_nfc_decrypt);
@@ -628,8 +585,7 @@ public class Wmain extends Activity {
             if (currentLayout == layouts[a])
                 atHome = true;
         if (atHome) {
-            CryptMethods.myPrivateKey = "lllllllllllllllllllllllllllll";
-            CryptMethods.mPtK = null;
+            CryptMethods.deleteKeys();
             super.onBackPressed();
         } else {
             setUpViews();
@@ -643,6 +599,38 @@ public class Wmain extends Activity {
 
     public void shareWeb(View v) {
 
+    }
+
+    void sendMessage() {
+        boolean success = FilesManegmant.createFilesToSend(this, (userInput.length() + fileContent.length()) < MSG_LIMIT_FOR_QR);
+        if (success) {
+            Intent intentShare = new Intent(Intent.ACTION_SEND_MULTIPLE);
+            intentShare.setType("*/*");
+            intentShare.putExtra(Intent.EXTRA_SUBJECT,
+                    getResources().getString(R.string.subject_encrypt));
+            InputStream is = null;
+            try {
+                is = getAssets().open("spec_tmp_msg.html");
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+                intentShare.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            ArrayList<Uri> files = FilesManegmant.getFilesToSend(this);
+            if (files == null)
+                Toast.makeText(this, "failed to retrieve files", Toast.LENGTH_LONG).show();
+            else {
+                //TODO add intentShare.putExtra(Intent.EXTRA_EMAIL,)
+                intentShare.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
+                startActivity(Intent.createChooser(intentShare, getResources()
+                        .getString(R.string.send_dialog)));
+            }
+        } else {
+            Toast.makeText(this, "failed to create files", Toast.LENGTH_LONG).show();
+        }
     }
 
     String writeTag(Tag tag, byte[] binText) {
@@ -692,9 +680,13 @@ public class Wmain extends Activity {
 
     @Override
     protected void onResume() {
-        super.onResume();
         FilesManegmant.getKeysFromSdcard(this);
-        setUpViews();
+        if(handleByOnActivityResult)
+            handleByOnActivityResult=false;
+        else{
+           setUpViews();
+        }
+        super.onResume();
     }
 
     static class createKeys {
@@ -725,7 +717,7 @@ public class Wmain extends Activity {
                 t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        new FilesManegmant(a).save();
+                        FilesManegmant.save(a);
                     }
                 });
                 t.start();

@@ -8,9 +8,9 @@ public class QRPublicKey {
 
     public QRPublicKey(Activity a) {
         if (a != null) {
-            publicKey = CryptMethods.myPublicKey;
-            email = CryptMethods.myEmail;
-            name = CryptMethods.myName;
+            publicKey = CryptMethods.getPublic();
+            email = CryptMethods.getEmail();
+            name = CryptMethods.getName();
             this.a = a;
         }
     }
