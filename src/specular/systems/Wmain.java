@@ -59,13 +59,14 @@ public class Wmain extends Activity {
                     ((ImageButton) findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
                     break;
                 case 1:
-                    String s = msg.obj!=null?(String) msg.obj:getString(R.string.cant_decrypt);
-                    Log.e("msg",s);
+                    String s = msg.obj != null ? (String) msg.obj : getString(R.string.cant_decrypt);
+                    Log.e("msg", s);
                     ((TextView) findViewById(R.id.decrypted_msg)).setText(s);
                     break;
             }
         }
     };
+    boolean handleByOnActivityResult = false;
     private int layouts[];
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -128,10 +129,10 @@ public class Wmain extends Activity {
         Log.d("time to encrypt", "" + (System.currentTimeMillis() - x) / 1000);
         sendMessage();
     }
-    boolean handleByOnActivityResult=false;
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        handleByOnActivityResult=true;
+        handleByOnActivityResult = true;
         if (resultCode == RESULT_OK) {
             if (requestCode == 5) {
                 final Uri uri = intent.getData();
@@ -141,7 +142,7 @@ public class Wmain extends Activity {
                         public void run() {
                             String data = FilesManegmant.addFile(Wmain.this, uri);
                             if (data != null) {
-                                if(data.length()>0){
+                                if (data.length() > 0) {
                                     String w[] = uri.getEncodedPath().split("/");
                                     fileContent = w[w.length - 1] + "\n" + data;
                                     Message msg = hndl.obtainMessage(15);
@@ -161,7 +162,7 @@ public class Wmain extends Activity {
                     // String contents = result;
                     switch (currentLayout) {
                         case R.layout.decrypt:
-                            getIntent().putExtra("message",result);
+                            getIntent().putExtra("message", result);
                             setUpViews();
                             //decryptManager(result);
                             break;
@@ -264,14 +265,8 @@ public class Wmain extends Activity {
                 }
                 break;
             case R.layout.decrypt:
-                v.animate().alpha(0.5f).setDuration(300).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        v.setAlpha(1);
-                        Intent intent = new Intent(Wmain.this, StartScan.class);
-                        startActivityForResult(intent, 18);
-                    }
-                }).start();
+                Intent intent = new Intent(Wmain.this, StartScan.class);
+                startActivityForResult(intent, 18);
                 break;
             case R.layout.contacts:
                 break;
@@ -546,7 +541,7 @@ public class Wmain extends Activity {
         if (msg != null && privateKey) {
             //getIntent().removeExtra("message");
             if (msg.length() > 5) {
-                selectItem(1,R.layout.decrypted_msg);
+                selectItem(1, R.layout.decrypted_msg);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -629,7 +624,7 @@ public class Wmain extends Activity {
                         .getString(R.string.send_dialog)));
             }
         } else {
-            Toast.makeText(this,R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -681,10 +676,10 @@ public class Wmain extends Activity {
     @Override
     protected void onResume() {
         FilesManegmant.getKeysFromSdcard(this);
-        if(handleByOnActivityResult)
-            handleByOnActivityResult=false;
-        else{
-           setUpViews();
+        if (handleByOnActivityResult)
+            handleByOnActivityResult = false;
+        else {
+            setUpViews();
         }
         super.onResume();
     }
