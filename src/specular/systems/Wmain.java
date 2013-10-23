@@ -665,12 +665,12 @@ public class Wmain extends Activity {
                     try {
                         format.connect();
                         format.format(message);
-                        return getString(R.string.nfc_wroten_successfuly);
+                        return getString(R.string.nfc_written_successfully);
                     } catch (IOException e) {
                         return getString(R.string.cant_format);
                     }
                 } else {
-                    return getString(R.string.tag_doesnt_supprt);
+                    return getString(R.string.tag_not_supported);
                 }
             }
         } catch (Exception e) {
