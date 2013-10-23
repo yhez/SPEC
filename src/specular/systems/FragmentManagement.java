@@ -24,10 +24,6 @@ import android.widget.TextView;
 import java.util.List;
 
 public class FragmentManagement extends Fragment {
-    public FragmentManagement() {
-    }
-
-    float startPoint = 0;
     final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -36,12 +32,12 @@ public class FragmentManagement extends Fragment {
                 String ss = et.getText() + "";
                 et.setText(" " + ss);
                 et.setText(ss);
-            } else if (msg.what==43){
+            } else if (msg.what == 43) {
                 ((TextView) msg.obj).setVisibility(View.VISIBLE);
                 ((TextView) msg.obj).setTypeface(FilesManegmant.getOs(getActivity()));
                 ((TextView) msg.obj).animate().setDuration(700).alpha(1).start();
                 ((ScrollView) getActivity().findViewById(msg.what)).smoothScrollTo(0, ((View) msg.obj).getTop());
-            } else if (msg.what==44){
+            } else if (msg.what == 44) {
                 ((TextView) msg.obj).setVisibility(View.VISIBLE);
                 ((TextView) msg.obj).setTypeface(FilesManegmant.getOs(getActivity()));
                 ((TextView) msg.obj).animate().setDuration(700).alpha(1).start();
@@ -49,6 +45,10 @@ public class FragmentManagement extends Fragment {
             }
         }
     };
+    float startPoint = 0;
+
+    public FragmentManagement() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -132,13 +132,11 @@ public class FragmentManagement extends Fragment {
                             startPoint = motionEvent.getX();
                         else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                             if (motionEvent.getX() < startPoint) {
-                                 View mePublic = getActivity().findViewById(R.id.me_public), qrImage = getActivity().findViewById(R.id.qr_image);
-                                if(mePublic.getAlpha()==0)
-                                {
+                                View mePublic = getActivity().findViewById(R.id.me_public), qrImage = getActivity().findViewById(R.id.qr_image);
+                                if (mePublic.getAlpha() == 0) {
                                     qrImage.animate().setDuration(500).alpha(0).start();
                                     mePublic.animate().setDuration(500).alpha(1).start();
-                                }
-                                else{
+                                } else {
                                     mePublic.animate().setDuration(500).alpha(0).start();
                                     qrImage.animate().setDuration(500).alpha(1).start();
                                 }
@@ -219,19 +217,21 @@ public class FragmentManagement extends Fragment {
                             tv.setVisibility(View.GONE);
                             bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
                             bt.setEnabled(false);
-                        } else if (num > 0) {
-                            if (choosedContact) {
-                                bt.setEnabled(true);
-                                bt.setImageResource(R.drawable.ic_send_holo_light);
+                        } else {
+                            tv.setVisibility(View.VISIBLE);
+                            if (num > 0) {
+                                if (choosedContact) {
+                                    bt.setEnabled(true);
+                                    bt.setImageResource(R.drawable.ic_send_holo_light);
+                                }
+                                if (num == 1) {
+                                    tv.setVisibility(View.VISIBLE);
+                                    tv.setText(Wmain.MSG_LIMIT_FOR_QR - num + "");
+                                } else if (num <= Wmain.MSG_LIMIT_FOR_QR) {
+                                    tv.setText(Wmain.MSG_LIMIT_FOR_QR - num + "");
+                                } else
+                                    tv.setText(getActivity().getString(R.string.no_qr));
                             }
-                            if (num == 1) {
-                                tv.setVisibility(View.VISIBLE);
-                                tv.setText(Wmain.MSG_LIMIT_FOR_QR - num + "");
-                            } else if (num <= Wmain.MSG_LIMIT_FOR_QR) {
-                                tv.setText(Wmain.MSG_LIMIT_FOR_QR - num + "");
-                            } else
-                                tv.setText(getActivity().getString(R.string.no_qr));
-
                         }
                     }
                 });
@@ -273,14 +273,14 @@ public class FragmentManagement extends Fragment {
                 });
                 break;
             case R.layout.decrypt:
-                ((TextView)getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManegmant.getOs(getActivity()));
+                ((TextView) getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManegmant.getOs(getActivity()));
                 break;
             case R.layout.setup:
-                ((TextView)getActivity().findViewById(R.id.txt_manage)).setTypeface(FilesManegmant.getOs(getActivity()));
-                ((Button)getActivity().findViewById(R.id.button1)).setTypeface(FilesManegmant.getOs(getActivity()));
-                ((Button)getActivity().findViewById(R.id.button2)).setTypeface(FilesManegmant.getOs(getActivity()));
-                ((Button)getActivity().findViewById(R.id.button3)).setTypeface(FilesManegmant.getOs(getActivity()));
-                ((Button)getActivity().findViewById(R.id.button4)).setTypeface(FilesManegmant.getOs(getActivity()));
+                ((TextView) getActivity().findViewById(R.id.txt_manage)).setTypeface(FilesManegmant.getOs(getActivity()));
+                ((Button) getActivity().findViewById(R.id.button1)).setTypeface(FilesManegmant.getOs(getActivity()));
+                ((Button) getActivity().findViewById(R.id.button2)).setTypeface(FilesManegmant.getOs(getActivity()));
+                ((Button) getActivity().findViewById(R.id.button3)).setTypeface(FilesManegmant.getOs(getActivity()));
+                ((Button) getActivity().findViewById(R.id.button4)).setTypeface(FilesManegmant.getOs(getActivity()));
                 break;
             case R.layout.decrypted_msg:
                 ((TextView) getActivity().findViewById(R.id.decrypted_msg)).setTypeface(FilesManegmant.getOs(getActivity()));
