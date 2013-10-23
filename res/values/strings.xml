@@ -41,14 +41,14 @@
     <string name="contact_saved">SAVED TO CONTACTS</string>
     <string name="contact_exist">Contact already exists</string>
     <string name="wait_for_nfc_to_read">Wait for NFC...</string>
-    <string name="what_to_share">Contact Card, what to share:</string>
+    <string name="what_to_share">What to share:</string>
     <string name="no_qr">no qr</string>
     <string name="share_button">Share</string>
     <string name="didnt_choose">Choose format of CONTACT CARD</string>
     <string name="todo">TODO Implement and design below</string>
-    <string name="export">Export keys</string>
-    <string name="Import">Import keys</string>
-    <string name="clean">Delete app data</string><string name="problem_create_keys">there was a problem
+    <string name="export">Export Keys</string>
+    <string name="Import">Import Keys</string>
+    <string name="clean">Delete App Data</string><string name="problem_create_keys">there was a problem
 try creating keys again</string>
     <string name="choose_file_to_attach">file</string>
     <string name="failed_attach_files">failed to retrieve files</string>
@@ -71,6 +71,6 @@ Close this app and scan tag.</string>
     <string-array name="choice">
         <item >Contact Card</item>
         <item>QR Image</item>
-        <item>Key Text</item>
+        <item>Raw Key Text</item>
     </string-array>
 </resources>
