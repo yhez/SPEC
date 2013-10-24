@@ -42,7 +42,7 @@
     <string name="contact_exist">Contact already exists</string>
     <string name="wait_for_nfc_to_read">Wait for NFC...</string>
     <string name="what_to_share">What to share:</string>
-    <string name="no_qr">no qr</string>
+    <string name="no_qr">No QR</string>
     <string name="share_button">Share</string>
     <string name="not_choosed">Choose format of CONTACT CARD</string>
     <string name="todo">TODO Implement and design below</string>
