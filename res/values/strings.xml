@@ -50,7 +50,7 @@
     <string name="Import">Import Keys</string>
     <string name="clean">Delete App Data</string>
     <string name="problem_create_keys">there was a problem try creating keys again</string>
-    <string name="choose_file_to_attach">file</string>
+    <string name="choose_file_to_attach">Choose file to attach</string>
     <string name="failed_attach_files">failed to retrieve files</string>
     <string name="failed_to_create_files_to_send">failed to create files</string>
     <string name="nfc_written_successfully">Tag written successfully!\nClose this app and scan tag.</string>
