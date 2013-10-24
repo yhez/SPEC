@@ -74,8 +74,8 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     private ImageView logoView;
     private Result lastResult;
     private boolean hasSurface;
-    private boolean copyToClipboard;
-    private IntentSource source;
+ //   private boolean copyToClipboard;
+ //   private IntentSource source;
     private String sourceUrl;
     private String returnUrlTemplate;
     private Collection<BarcodeFormat> decodeFormats;
@@ -189,7 +189,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         inactivityTimer.onResume();
 
         Intent intent = getIntent();
-        source = IntentSource.NONE;
+ //       source = IntentSource.NONE;
         decodeFormats = null;
         characterSet = null;
 
@@ -201,7 +201,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
             if (Intents.Scan.ACTION.equals(action)) {
 
                 // Scan the formats the intent requested, and return the result to the calling activity.
-                source = IntentSource.NATIVE_APP_INTENT;
+  //              source = IntentSource.NATIVE_APP_INTENT;
                 decodeFormats = DecodeFormatManager.parseDecodeFormats(intent);
 
                 if (intent.hasExtra(Intents.Scan.WIDTH) && intent.hasExtra(Intents.Scan.HEIGHT)) {
@@ -222,7 +222,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
                     dataString.contains(PRODUCT_SEARCH_URL_SUFFIX)) {
 
                 // Scan only products and send the result to mobile Product Search.
-                source = IntentSource.PRODUCT_SEARCH_LINK;
+ //               source = IntentSource.PRODUCT_SEARCH_LINK;
                 sourceUrl = dataString;
                 decodeFormats = DecodeFormatManager.PRODUCT_FORMATS;
 
@@ -230,7 +230,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 
                 // Scan formats requested in query string (all formats if none specified).
                 // If a return URL is specified, send the results there. Otherwise, handle it ourselves.
-                source = IntentSource.ZXING_LINK;
+ //               source = IntentSource.ZXING_LINK;
                 sourceUrl = dataString;
                 Uri inputUri = Uri.parse(sourceUrl);
                 returnUrlTemplate = inputUri.getQueryParameter(RETURN_URL_PARAM);
@@ -277,7 +277,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         super.onDestroy();
     }
 
-    @Override
+/*    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (source == IntentSource.NATIVE_APP_INTENT) {
@@ -294,7 +294,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         }
         return super.onKeyDown(keyCode, event);
     }
-
+*/
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (resultCode == RESULT_OK) {
