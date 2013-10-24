@@ -5,11 +5,8 @@
       <configuration>
         <option name="SELECTED_BUILD_VARIANT" value="Debug" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
-        <option name="COMPILE_JAVA_TASK_NAME" value="compileDebug" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleTest" />
-        <option name="SOURCE_GEN_TASK_NAME" value="generateDebugSources" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/res" />
         <option name="APK_PATH" value="/build/apk/SPEC-debug-unaligned.apk" />
       </configuration>
     </facet>
