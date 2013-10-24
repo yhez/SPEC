@@ -98,5 +98,4 @@ final class DecodeFormatManager {
         }
         return null;
     }
-
 }
