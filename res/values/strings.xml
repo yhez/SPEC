@@ -14,7 +14,7 @@
     <string name="hint_enter_your_name">username...</string>
     <string name="hint_enter_your_email">email...</string>
     <string name="wait_for_nfc_to_write">Tap NFC tag</string>
-    <string name="skip_save_to_phone">Skip and save private key on your phone (LESS SECURE)</string>
+    <string name="skip_save_to_phone">Skip and save private decryption key on phone (LESS SECURE)</string>
     <string name="explain_and_about">LEARN ABOUT SPEC</string>
     <string name="create_keys">Create New Keys</string>
     <string name="share_on_server">Publish</string>
@@ -36,7 +36,7 @@
     <string name="attachment_error">Attachment Error</string>
     <string name="subject_encrypt">An encrypted message just for you - SPEC APP</string>
     <string name="share_public_descripton">Your Public Key:</string>
-    <string name="fill_all">Please enter email</string>
+    <string name="fill_all">Please input email</string>
     <string name="subject_share">My Public Key - SPEC APP</string>
     <string name="contact_saved">SAVED TO CONTACTS</string>
     <string name="contact_exist">Contact already exists</string>
@@ -49,16 +49,16 @@
     <string name="export">Export Keys</string>
     <string name="Import">Import Keys</string>
     <string name="clean">Delete App Data</string>
-    <string name="problem_create_keys">there was a problem try creating keys again</string>
+    <string name="problem_create_keys">Try creating keys again</string>
     <string name="choose_file_to_attach">Choose file to attach</string>
-    <string name="failed_attach_files">failed to retrieve files</string>
-    <string name="failed_to_create_files_to_send">failed to create files</string>
-    <string name="nfc_written_successfully">Tag written successfully!\nClose this app and scan tag.</string>
-    <string name="tag_written">Tag written successfully.</string>
-    <string name="tag_needs_format">Tag doesn\'t have enough free space.</string>
-    <string name="failed_read_only">Read-only tag.</string>
-    <string name="cant_format">Unable to format tag to NDEF.</string>
-    <string name="tag_not_supported">Tag doesn\'t appear to support NDEF format.</string>
+    <string name="failed_attach_files">Could not retrieve files</string>
+    <string name="failed_to_create_files_to_send">Could not create files</string>
+    <string name="nfc_written_successfully">Tag written successfully!\nClose app and tap tag</string>
+    <string name="tag_written">Tag written successfully</string>
+    <string name="tag_needs_format">Tag doesn\'t have enough free space</string>
+    <string name="failed_read_only">Read-only tag</string>
+    <string name="cant_format">Unable to format tag to NDEF</string>
+    <string name="tag_not_supported">Tag doesn\'t appear to support NDEF format</string>
     <string name="failed_to_write">Failed to write tag</string>
     <string-array name="menus">
         <item>Encrypt</item>
