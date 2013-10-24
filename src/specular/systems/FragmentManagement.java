@@ -275,6 +275,10 @@ public class FragmentManagement extends Fragment {
             case R.layout.decrypt:
                 ((TextView) getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManegmant.getOs(getActivity()));
                 break;
+            case R.layout.wait_nfc_to_write:
+                ((TextView) getActivity().findViewById(R.id.button_skip_nfc)).setTypeface(FilesManegmant.getOs(getActivity()));
+                ((TextView) getActivity().findViewById(R.id.tab_nfc)).setTypeface(FilesManegmant.getOs(getActivity()));
+                break;
             case R.layout.setup:
                 ((TextView) getActivity().findViewById(R.id.txt_manage)).setTypeface(FilesManegmant.getOs(getActivity()));
                 ((Button) getActivity().findViewById(R.id.button1)).setTypeface(FilesManegmant.getOs(getActivity()));

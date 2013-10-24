@@ -31,51 +31,61 @@ public class CryptMethods {
             myPrivateKey = null;
     private static boolean notInit = true;
 
-    public static String getPrivateToSave(){
-        return myPrivateKey!=null?myPrivateKey:"the key is on nfc";
+    public static String getPrivateToSave() {
+        return myPrivateKey != null ? myPrivateKey : "the key is on nfc";
     }
-    public static void deleteKeys(){
-        myPrivateKey=null;
-        mPtK=null;
+
+    public static void deleteKeys() {
+        myPrivateKey = null;
+        mPtK = null;
     }
-    public static boolean setPrivate(String p){
-        if(p!=null&&formatPrivate(p)){
-            myPrivateKey=p;
+
+    public static boolean setPrivate(String p) {
+        if (p != null && formatPrivate(p)) {
+            myPrivateKey = p;
             return true;
         }
         return false;
     }
-    public static void setPublic(String p){
-        myPublicKey=p;
+
+    public static void setDetails(String name, String email) {
+        myName = name;
+        myEmail = email;
     }
-    public static void setDetails(String name,String email){
-        myName=name;
-        myEmail=email;
-    }
-    public static String getName(){
+
+    public static String getName() {
         return myName;
     }
-    public static String getPublic(){
+
+    public static String getPublic() {
         return myPublicKey;
     }
-    public static String getEmail(){
+
+    public static void setPublic(String p) {
+        myPublicKey = p;
+    }
+
+    public static String getEmail() {
         return myEmail;
     }
-    public static boolean privateExist(){
-        return myPrivateKey!=null;
+
+    public static boolean privateExist() {
+        return myPrivateKey != null;
     }
-    public static boolean publicExist(){
-        return myPublicKey!=null;
+
+    public static boolean publicExist() {
+        return myPublicKey != null;
     }
+
     private static void addProviders() {
         Security.addProvider(new FlexiCoreProvider());
         Security.addProvider(new FlexiECProvider());
     }
 
     public static void createKeys() {
-        if (notInit){
+        if (notInit) {
             addProviders();
-            notInit=false;
+            notInit = false;
         }
         KeyPairGenerator kpg = null;
         try {
@@ -85,27 +95,26 @@ public class CryptMethods {
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
         }
-        CurveParams ecParams = new CurveRegistry.BrainpoolP512r1();
         if (kpg != null) {
+            CurveParams ecParams = new CurveRegistry.BrainpoolP512r1();
             try {
                 kpg.initialize(ecParams, new SecureRandom());
             } catch (InvalidAlgorithmParameterException e) {
                 e.printStackTrace();
             }
-        }
-        KeyPair keypair;
-        if (kpg != null) {
+            KeyPair keypair;
             keypair = kpg.generateKeyPair();
             myPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
             myPrivateKey = Visual.bin2hex(keypair.getPrivate().getEncoded());
             formatPrivate(myPrivateKey);
         }
+
     }
 
     public static String decrypt(String encryptedMessage) {
-        if (notInit){
+        if (notInit) {
             addProviders();
-            notInit=false;
+            notInit = false;
         }
         try {
             IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",
@@ -125,9 +134,9 @@ public class CryptMethods {
     }
 
     public static void encrypt(final byte[] msg, final String friendPublicKey) {
-        if (notInit){
+        if (notInit) {
             addProviders();
-            notInit=false;
+            notInit = false;
         }
         try {
             PublicKey frndPbK = KeyFactory.getInstance("ECIES", "FlexiEC")
@@ -143,9 +152,9 @@ public class CryptMethods {
     }
 
     private static boolean formatPrivate(String p) {
-        if (notInit){
+        if (notInit) {
             addProviders();
-            notInit=false;
+            notInit = false;
         }
         try {
             mPtK = KeyFactory.getInstance("ECIES", "FlexiEC").generatePrivate(

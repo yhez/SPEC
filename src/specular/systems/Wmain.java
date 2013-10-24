@@ -686,7 +686,6 @@ public class Wmain extends Activity {
 
     static class createKeys {
         static Thread t;
-
         public static void start() {
             if (t == null || !t.isAlive()) {
                 t = new Thread(new Runnable() {
