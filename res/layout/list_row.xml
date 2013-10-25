@@ -16,8 +16,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
+        android:gravity="left"
+        android:orientation="vertical"
         android:id="@+id/ll1"
         android:layout_toRightOf="@id/icon"
         android:layout_alignParentTop="true"
@@ -28,55 +28,16 @@
             android:textColor="#222"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="4dp"
             android:id="@+id/first_line"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <TextView
-            android:textColor="#222"
-            android:padding="4dp"
-            android:id="@+id/secondLine"
+            android:textColor="@color/spec_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp" />
+            android:textSize="17sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:id="@+id/ll"
-        android:orientation="horizontal"
-        android:layout_below="@id/ll1"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/icon">
-
-        <TextView
-            android:textColor="#222"
-            android:padding="4dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/thirdLine"
-            android:textSize="10sp" />
-
-        <TextView
-            android:textColor="#222"
-            android:padding="4dp"
-            android:id="@+id/forthLine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10sp" />
-    </LinearLayout>
-    <!--
-        <TextView
-            android:alpha="0.3"
-            android:id="@+id/fifthLine"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:ellipsize="marquee"
-            android:textSize="8sp" />
-    -->
     <TextView
         android:id="@+id/id_contact"
         android:layout_width="match_parent"

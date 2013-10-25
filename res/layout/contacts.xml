@@ -3,9 +3,42 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white"
-    android:alpha="0"
+    android:alpha="1"
     android:padding="@dimen/default_gap"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/filter_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:layout_marginLeft="8dip"
+            android:hint="@string/encrypt_explain"
+            android:inputType="textFilter" />
+
+        <ImageButton
+            android:drawablePadding="0dip"
+            android:layout_marginLeft="8dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/add_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:onClick="onClick"
+            android:padding="@dimen/default_gap"
+            android:src="@drawable/add_qr" />
+    </LinearLayout>
 
     <ListView
         android:padding="@dimen/default_gap"

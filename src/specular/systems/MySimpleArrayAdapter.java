@@ -27,18 +27,18 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.list_row, parent, false);
         Contact c = lst.get(position);
         TextView name = (TextView) rowView.findViewById(R.id.first_line);
-        TextView email = (TextView) rowView.findViewById(R.id.secondLine);
-        TextView session = (TextView) rowView.findViewById(R.id.thirdLine);
-        TextView status = (TextView) rowView.findViewById(R.id.forthLine);
+       // TextView email = (TextView) rowView.findViewById(R.id.secondLine);
+       // TextView session = (TextView) rowView.findViewById(R.id.thirdLine);
+       // TextView status = (TextView) rowView.findViewById(R.id.forthLine);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         TextView id = (TextView) rowView.findViewById(R.id.id_contact);
         id.setText("" + c.getId());
         imageView.setImageBitmap(c.getPhoto());
-        email.setText(c.getEmail());
-        session.setText(c.getSession());
+        // email.setText(c.getEmail());
+        // session.setText(c.getSession());
         name.setText(c.getContactName());
         //pbk.setText(c.getPublicKey());
-        status.setText("" + c.getConversationStatus());
+        // status.setText("" + c.getConversationStatus());
         return rowView;
     }
 }

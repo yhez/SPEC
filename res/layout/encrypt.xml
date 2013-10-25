@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:alpha="0"
+    android:alpha="1"
     android:background="@android:color/white"
     android:orientation="vertical"
     android:padding="16dp">
@@ -69,7 +69,16 @@
         android:layout_alignParentRight="true"
         android:background="#ffffff"
         android:orientation="horizontal">
-
+        <ImageButton
+            android:id="@+id/add_file"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:drawablePadding="0dip"
+            android:nextFocusLeft="@+id/send_button_sms"
+            android:onClick="onClick"
+            android:src="@drawable/ic_attachment_universal_small" />
         <EditText
             android:id="@+id/message"
             android:layout_width="0dip"
@@ -94,17 +103,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/add_file"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="0"
-                android:drawablePadding="0dip"
-                android:nextFocusLeft="@+id/send_button_sms"
-                android:onClick="onClick"
-                android:src="@drawable/ic_attachment_universal_small" />
+
             <TextView
                 android:id="@+id/text_counter"
                 android:layout_width="match_parent"
@@ -134,7 +133,7 @@
         android:layout_above="@id/bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#eeeeee" />
+        android:background="@color/spec_blue" />
 
     <ListView
         android:id="@+id/en_list_contact"
