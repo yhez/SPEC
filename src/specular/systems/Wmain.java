@@ -198,19 +198,7 @@ public class Wmain extends Activity {
                 selectItem(-1, R.layout.create_new_keys);
                 break;
             case R.layout.create_new_keys:
-                String myEmail = ((EditText) findViewById(R.id.email))
-                        .getText().toString();
-                String myName = ((EditText) findViewById(R.id.name))
-                        .getText().toString();
-                if (myEmail == null
-                        || !myEmail.contains("@")
-                        || myName == null)
-                    Toast.makeText(getBaseContext(), R.string.fill_all,
-                            Toast.LENGTH_LONG).show();
-                else {
-                    CryptMethods.setDetails(myName, myEmail);
-                    createKeysManager();
-                }
+
                 break;
             case R.layout.wait_nfc_to_write:
                 NfcAdapter.getDefaultAdapter(getApplicationContext())
@@ -269,6 +257,8 @@ public class Wmain extends Activity {
                 startActivityForResult(intent, 18);
                 break;
             case R.layout.contacts:
+                Intent intt = new Intent(this, StartScan.class);
+                startActivityForResult(intt, 43);
                 break;
             case R.layout.edit_contact:
                 ContactsDataSource cds = new ContactsDataSource(this);

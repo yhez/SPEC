@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -60,6 +61,8 @@ public class FragmentManagement extends Fragment {
         return rootView;
     }
 
+    float oldPos;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -70,7 +73,32 @@ public class FragmentManagement extends Fragment {
                 ((TextView) getActivity().findViewById(R.id.welcome)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
                 ((EditText) getActivity().findViewById(R.id.name)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
                 ((EditText) getActivity().findViewById(R.id.email)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
-                ((Button) getActivity().findViewById(R.id.button)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
+                getActivity().findViewById(R.id.gesture).setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        if (motionEvent.getActionMasked()== MotionEvent.ACTION_DOWN)
+                            oldPos = motionEvent.getX();
+                        else if (motionEvent.getActionMasked()== MotionEvent.ACTION_UP)
+                            if(motionEvent.getX() < oldPos){
+
+
+                                String myEmail = ((EditText) getActivity().findViewById(R.id.email))
+                                        .getText().toString();
+                        String myName = ((EditText) getActivity().findViewById(R.id.name))
+                                .getText().toString();
+                        if (myEmail == null
+                                || !myEmail.contains("@")
+                                || myName == null)
+                            Toast.makeText(getActivity(), R.string.fill_all,
+                                    Toast.LENGTH_LONG).show();
+                        else {
+                            CryptMethods.setDetails(myName, myEmail);
+                      //TODO      createKeysManager();
+                        }
+                        }
+                        return true;
+                    }
+                });
                 break;
             case R.layout.contacts:
                 ListView lv = (ListView) getActivity().findViewById(R.id.list);
