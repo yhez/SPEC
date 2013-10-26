@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import android.app.*;
 
 
 public class Wmain extends Activity {
@@ -78,7 +79,7 @@ public class Wmain extends Activity {
     private String fileContent = "";
     private Contact contact;
 
-    void createKeysManager() {
+   public void createKeysManager() {
         createKeys.start();
         if (NfcAdapter.getDefaultAdapter(this) != null)
             if (!NfcAdapter.getDefaultAdapter(this).isEnabled())
@@ -124,8 +125,17 @@ public class Wmain extends Activity {
         final QRMessage msg = new QRMessage(fileContent, userInput,
                 contact.getSession());
         long x = System.currentTimeMillis();
-        CryptMethods.encrypt(msg.getFormatedMsg().getBytes(),
-                contact.getPublicKey());
+		final ProgressDialog prgd =new ProgressDialog(this);
+		prgd.setCancelable(false);
+		prgd.show();
+		new Thread(new Runnable(){
+			@Override
+			public void run(){
+				CryptMethods.encrypt(msg.getFormatedMsg().getBytes(),
+									 contact.getPublicKey());
+				prgd.cancel();
+			}
+		}).start();
         Log.d("time to encrypt", "" + (System.currentTimeMillis() - x) / 1000);
         sendMessage();
     }
@@ -440,7 +450,7 @@ public class Wmain extends Activity {
         mDrawerList.setItemChecked(menu, true);
         setTitle(menuTitles[menu]);
         mDrawerLayout.closeDrawer(mDrawerList);
-        Fragment fragment = new FragmentManagement();
+        Fragment fragment = new FragmentManagement(this);
         Bundle args = new Bundle();
         args.putInt("layout", layout);
         fragment.setArguments(args);

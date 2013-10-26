@@ -8,83 +8,91 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactsDataSource {
-
+public class ContactsDataSource
+{
     private final String[] allColumns = {MySQLiteHelper.COLUMN_ID,
-            MySQLiteHelper.COLUMN_CONTACT_NAME, MySQLiteHelper.COLUMN_EMAIL,
-            MySQLiteHelper.COLUMN_PUBLIC_KEY, MySQLiteHelper.COLUMN_SESSION,
-            MySQLiteHelper.COLUMN_FIRST};
+		MySQLiteHelper.COLUMN_CONTACT_NAME, MySQLiteHelper.COLUMN_EMAIL,
+		MySQLiteHelper.COLUMN_PUBLIC_KEY, MySQLiteHelper.COLUMN_SESSION,
+		MySQLiteHelper.COLUMN_FIRST};
     // Database fields
     private SQLiteDatabase database;
     private final MySQLiteHelper dbHelper;
 
-    public ContactsDataSource(Context context) {
+    public ContactsDataSource(Context context)
+	{
         dbHelper = new MySQLiteHelper(context);
     }
 
-    public void close() {
+    public void close()
+	{
         dbHelper.close();
     }
 
-    public long createContact(Contact contact) {
+    public long createContact(Contact contact)
+	{
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_CONTACT_NAME, contact.getContactName());
         values.put(MySQLiteHelper.COLUMN_EMAIL, contact.getEmail());
         values.put(MySQLiteHelper.COLUMN_PUBLIC_KEY, contact.getPublicKey());
         values.put(MySQLiteHelper.COLUMN_SESSION, contact.getSession());
         values.put(MySQLiteHelper.COLUMN_FIRST,
-                "" + contact.getConversationStatus());
+				   "" + contact.getConversationStatus());
         long insertId = database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
-                values);
+										values);
         /*Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
-				allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
-				null, null, null);
-		cursor.moveToFirst();
-		long id = cursor.getLong(0);
-		cursor.close();*/
+		 allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
+		 null, null, null);
+		 cursor.moveToFirst();
+		 long id = cursor.getLong(0);
+		 cursor.close();*/
         return insertId;//id;
     }
 
-    public void deleteContact(Contact contact) {
+    public void deleteContact(Contact contact)
+	{
         long id = contact.getId();
         database.delete(MySQLiteHelper.TABLE_CONTACTS, MySQLiteHelper.COLUMN_ID
-                + " = " + id, null);
+						+ " = " + id, null);
     }
 
-    public Contact findContact(long id) {
+    public Contact findContact(long id)
+	{
         Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
-                allColumns, MySQLiteHelper.COLUMN_ID + " = " + id, null, null,
-                null, null);
+									   allColumns, MySQLiteHelper.COLUMN_ID + " = " + id, null, null,
+									   null, null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0)
             return new Contact(cursor.getLong(0), cursor.getString(1),
-                    cursor.getString(2), cursor.getString(3),
-                    cursor.getString(4), Integer.parseInt(cursor.getString(5)));
+							   cursor.getString(2), cursor.getString(3),
+							   cursor.getString(4), Integer.parseInt(cursor.getString(5)));
         return null;
     }
 
-    public Contact findContact(String pbk) {
+    public Contact findContact(String pbk)
+	{
         Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
-                allColumns, MySQLiteHelper.COLUMN_PUBLIC_KEY + " = '" + pbk
-                + "' ", null, null, null, null);
+									   allColumns, MySQLiteHelper.COLUMN_PUBLIC_KEY + " = '" + pbk
+									   + "' ", null, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0)
             return new Contact(cursor.getLong(0), cursor.getString(1),
-                    cursor.getString(2), cursor.getString(3),
-                    cursor.getString(4), Integer.parseInt(cursor.getString(5)));
+							   cursor.getString(2), cursor.getString(3),
+							   cursor.getString(4), Integer.parseInt(cursor.getString(5)));
         return null;
     }
 
-    public List<Contact> getAllContacts() {
+    public List<Contact> getAllContacts()
+	{
         List<Contact> contacts = new ArrayList<Contact>();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
-                allColumns, null, null, null, null, null);
+									   allColumns, null, null, null, null, null);
         cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
+        while (!cursor.isAfterLast())
+		{
             Contact contact = new Contact(cursor.getLong(0),
-                    cursor.getString(1), cursor.getString(2),
-                    cursor.getString(3), cursor.getString(4),
-                    Integer.parseInt(cursor.getString(5)));
+										  cursor.getString(1), cursor.getString(2),
+										  cursor.getString(3), cursor.getString(4),
+										  Integer.parseInt(cursor.getString(5)));
             contacts.add(contact);
             cursor.moveToNext();
         }
@@ -93,7 +101,8 @@ public class ContactsDataSource {
         return contacts;
     }
 
-    public void open() {
+    public void open()
+	{
         database = dbHelper.getWritableDatabase();
     }
 

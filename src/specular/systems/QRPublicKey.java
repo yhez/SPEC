@@ -2,12 +2,15 @@ package specular.systems;
 
 import android.app.Activity;
 
-public class QRPublicKey {
+public class QRPublicKey
+{
     private Activity a;
     private String publicKey = null, email = null, name = null;
 
-    public QRPublicKey(Activity a) {
-        if (a != null) {
+    public QRPublicKey(Activity a)
+	{
+        if (a != null)
+		{
             publicKey = CryptMethods.getPublic();
             email = CryptMethods.getEmail();
             name = CryptMethods.getName();
@@ -15,15 +18,18 @@ public class QRPublicKey {
         }
     }
 
-    public QRPublicKey(Activity a, Contact contact) {
+    public QRPublicKey(Activity a, Contact contact)
+	{
         publicKey = contact.getPublicKey();
         email = contact.getEmail();
         name = contact.getContactName();
         this.a = a;
     }
 
-    public QRPublicKey(Activity a, String raw) {
-        if (validate(raw)) {
+    public QRPublicKey(Activity a, String raw)
+	{
+        if (validate(raw))
+		{
             String data[] = raw.split("\n");
             publicKey = data[3];
             email = data[2];
@@ -32,24 +38,29 @@ public class QRPublicKey {
         }
     }
 
-    public String getEmail() {
+    public String getEmail()
+	{
         return email;
     }
 
-    public String getName() {
+    public String getName()
+	{
         return name;
     }
 
-    public String getPublicKey() {
+    public String getPublicKey()
+	{
         return publicKey;
     }
 
-    public String getQRToPublish() {
+    public String getQRToPublish()
+	{
         String explain = a.getResources().getString(R.string.explain);
         return explain + "\n" + name + "\n" + email + "\n" + publicKey;
     }
 
-    boolean validate(String raw) {
+    boolean validate(String raw)
+	{
         if (raw == null)
             return false;
         String data[] = raw.split("\n");
