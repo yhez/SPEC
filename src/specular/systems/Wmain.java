@@ -127,6 +127,8 @@ public class Wmain extends Activity {
         long x = System.currentTimeMillis();
 		final ProgressDialog prgd =new ProgressDialog(this);
 		prgd.setCancelable(false);
+		prgd.setMessage("encrypting...");
+		prgd.setProgressStyle(android.R.style.Theme_Holo_Dialog);
 		prgd.show();
 		new Thread(new Runnable(){
 			@Override
@@ -134,10 +136,11 @@ public class Wmain extends Activity {
 				CryptMethods.encrypt(msg.getFormatedMsg().getBytes(),
 									 contact.getPublicKey());
 				prgd.cancel();
+				sendMessage();
 			}
 		}).start();
         Log.d("time to encrypt", "" + (System.currentTimeMillis() - x) / 1000);
-        sendMessage();
+        
     }
 
     @Override
