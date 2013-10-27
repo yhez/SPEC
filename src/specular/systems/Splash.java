@@ -18,9 +18,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class Splash extends Activity {
+class Splash extends Activity {
     final private static int TIME_FOR_SPLASH = 3500;
-    Thread waitForSplash = new Thread(new Runnable() {
+    private final Thread waitForSplash = new Thread(new Runnable() {
         @Override
         public void run() {
             synchronized (this) {
@@ -37,11 +37,10 @@ public class Splash extends Activity {
             finish();
         }
     });
-    boolean newUser;
     private String message = null;
 
     void go() {
-        newUser = FilesManegmant.isItNewUser(this);
+        boolean newUser = FilesManegmant.isItNewUser(this);
         if (newUser) {
             setContentView(R.layout.splash);
             ((TextView) findViewById(R.id.company)).setTypeface(FilesManegmant.getOs(this));

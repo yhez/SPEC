@@ -1,8 +1,8 @@
 package specular.systems;
 
-public class Visual
+class Visual
 {
-    static final String HEXES = "0123456789ABCDEF";
+    private static final String HEXES = "0123456789ABCDEF";
 
     public static String bin2hex(byte[] raw)
 	{

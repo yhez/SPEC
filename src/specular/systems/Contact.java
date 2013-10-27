@@ -10,7 +10,7 @@ public class Contact {
     public static final int WE_STRANGERS = 0, I_KNOW_HIS_SESS = 1,
             HE_KNOW_MY_SESS = 2, WE_FRIENDS = 3;
 
-    public static Contact giveMeContact(Activity a, QRMessage msg) {
+  /*  public static Contact giveMeContact(Activity a, QRMessage msg) {
         ContactsDataSource dsrc = new ContactsDataSource(a);
         dsrc.open();
         Contact c = dsrc.findContact(msg.getPublicKey());
@@ -19,7 +19,7 @@ public class Contact {
             return c;
         return new Contact(a, msg.getName(), msg.getEmail(),
                 msg.getPublicKey(), new Session(msg.getSession()) + "");
-    }
+    }*/
 
     public static Contact giveMeContact(Activity a, QRPublicKey qrp) {
         ContactsDataSource dsrc = new ContactsDataSource(a);
@@ -71,7 +71,7 @@ public class Contact {
         }
     }
 
-    private Contact(Activity a, String name, String email, String publicKey,
+   /* private Contact(Activity a, String name, String email, String publicKey,
                     String session) {
         this.conversationStatus = I_KNOW_HIS_SESS;
         this.contactName = name;
@@ -82,7 +82,7 @@ public class Contact {
         dataSrc.open();
         this.id = dataSrc.createContact(this);
         dataSrc.close();
-    }
+    }*/
 
     public Contact(long id, String contactName, String email, String publicKey,
                    String session, int conversationStatus) {
@@ -147,16 +147,15 @@ public class Contact {
     public Bitmap getPhoto() {
 
         //String color = pbk.substring(pbk.length()/2,pbk.length()/2+6);
-        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(getPublicKey(), null,
-                Contents.Type.TEXT, BarcodeFormat.QR_CODE.toString(), 128);
+        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(getPublicKey(), BarcodeFormat.QR_CODE.toString(), 128);
         Bitmap bitmap = null;
         try {
             bitmap = qrCodeEncoder.encodeAsBitmap();
         } catch (WriterException e) {
             e.printStackTrace();
         }
-        int sqrSize;
-        /*for (int x = 0; ; x++)
+        /*int sqrSize;
+        for (int x = 0; ; x++)
             if (bitmap.getPixel(x, x) != Color.BLACK) {
                 sqrSize = x;
                 break;

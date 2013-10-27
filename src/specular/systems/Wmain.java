@@ -25,8 +25,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -44,11 +42,11 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 
-public class Wmain extends Activity {
+class Wmain extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
     public static int currentLayout;
     public static String decryptedMsg;
-    final Handler hndl = new Handler() {
+    private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -62,7 +60,6 @@ public class Wmain extends Activity {
                     break;
                 case 1:
                     String s = msg.obj != null ? (String) msg.obj : getString(R.string.cant_decrypt);
-                    Log.e("msg", s);
                     ((TextView) findViewById(R.id.decrypted_msg)).setText(s);
                     break;
                 case 2:
@@ -71,7 +68,7 @@ public class Wmain extends Activity {
             }
         }
     };
-    boolean handleByOnActivityResult = false;
+    private boolean handleByOnActivityResult = false;
     private int layouts[];
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -128,10 +125,9 @@ public class Wmain extends Activity {
     void encryptManager() {
         final QRMessage msg = new QRMessage(fileContent, userInput,
                 contact.getSession());
-        long x = System.currentTimeMillis();
         final ProgressDialog prgd = new ProgressDialog(this);
         prgd.setCancelable(false);
-        prgd.setMessage("encrypting...");
+        prgd.setMessage(getString(R.string.encrypting));
         prgd.setProgressStyle(android.R.style.Theme_Holo_Dialog);
         prgd.show();
         new Thread(new Runnable() {
@@ -143,8 +139,6 @@ public class Wmain extends Activity {
                 sendMessage();
             }
         }).start();
-        Log.d("time to encrypt", "" + (System.currentTimeMillis() - x) / 1000);
-
     }
 
     @Override
@@ -412,14 +406,14 @@ public class Wmain extends Activity {
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
-    @Override
+    /*@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav main is open, hide action items related to the content
         // view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
-    }
+    }*/
 
     private void selectItem(int position, int layout_screen) {
         // update the main content by replacing fragments
@@ -477,8 +471,7 @@ public class Wmain extends Activity {
     }
 
     private void setUpViews() {
-        int defaultScreen = 0;
-       // boolean privateKey = CryptMethods.privateExist(), publicKey = CryptMethods.publicExist();
+        int defaultScreen;
         final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
                 R.layout.share, R.layout.contacts, R.layout.help,
                 R.layout.setup};
@@ -579,8 +572,8 @@ public class Wmain extends Activity {
                 selectItem(-1, R.layout.create_new_keys);
             else {
                 boolean exist = false;
-                for (int a = 0; a < layouts.length; a++)
-                    if (currentLayout == layouts[a]) {
+                for (int layout : layouts)
+                    if (currentLayout == layout) {
                         selectItem(-1, currentLayout);
                         exist = true;
                         break;
@@ -597,8 +590,8 @@ public class Wmain extends Activity {
             super.onBackPressed();
         } else {
             boolean atHome = false;
-            for (int a = 0; a < layouts.length; a++)
-                if (currentLayout == layouts[a])
+            for (int layout : layouts)
+                if (currentLayout == layout)
                     atHome = true;
             if (atHome) {
                 CryptMethods.deleteKeys();
@@ -613,10 +606,10 @@ public class Wmain extends Activity {
         ShareDialog dlg = new ShareDialog();
         dlg.show(getFragmentManager(), "share");
     }
+//TODO
+    /*public void shareWeb(View v) {
 
-    public void shareWeb(View v) {
-
-    }
+    }*/
 
     void sendMessage() {
         boolean success = FilesManegmant.createFilesToSend(this, (userInput.length() + fileContent.length()) < MSG_LIMIT_FOR_QR);
@@ -625,7 +618,7 @@ public class Wmain extends Activity {
             intentShare.setType("*/*");
             intentShare.putExtra(Intent.EXTRA_SUBJECT,
                     getResources().getString(R.string.subject_encrypt));
-            InputStream is = null;
+            InputStream is;
             try {
                 is = getAssets().open("spec_tmp_msg.html");
                 int size = is.available();

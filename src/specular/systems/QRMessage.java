@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class QRMessage
+class QRMessage
 {
     private String name, email, publicKey, msgContent, session, hash, sentTime, fileContent;
 	
@@ -103,15 +103,14 @@ public class QRMessage
 
     public String getFileName()
 	{
-        String fileName = fileContent.substring(0, fileContent.indexOf("\n"));
-        return fileName;
+        return fileContent.substring(0, fileContent.indexOf("\n"));
     }
 
-    public void saveFileContent()
+    /*public void saveFileContent()
 	{
         //TODO save the file and return the path
 
-    }
+    }*/
 
     String hashing(String msg)
 	{

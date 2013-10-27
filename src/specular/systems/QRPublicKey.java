@@ -2,7 +2,7 @@ package specular.systems;
 
 import android.app.Activity;
 
-public class QRPublicKey
+class QRPublicKey
 {
     private Activity a;
     private String publicKey = null, email = null, name = null;
@@ -18,14 +18,14 @@ public class QRPublicKey
         }
     }
 
-    public QRPublicKey(Activity a, Contact contact)
+ /*   public QRPublicKey(Activity a, Contact contact)
 	{
         publicKey = contact.getPublicKey();
         email = contact.getEmail();
         name = contact.getContactName();
         this.a = a;
     }
-
+*/
     public QRPublicKey(Activity a, String raw)
 	{
         if (validate(raw))

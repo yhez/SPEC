@@ -23,7 +23,7 @@ import specular.systems.scanqr.camera.CameraManager;
  *
  * @author dswitkin@google.com (Daniel Switkin)
  */
-public final class ViewfinderView extends View {
+final class ViewfinderView extends View {
 
     private static final int[] SCANNER_ALPHA = {0, 64, 128, 192, 255, 192, 128, 64};
     private static final long ANIMATION_DELAY = 80L;
@@ -152,16 +152,6 @@ public final class ViewfinderView extends View {
         if (resultBitmap != null) {
             resultBitmap.recycle();
         }
-        invalidate();
-    }
-
-    /**
-     * Draw a bitmap with the result points highlighted instead of the live scanning display.
-     *
-     * @param barcode An image of the decoded barcode.
-     */
-    public void drawResultBitmap(Bitmap barcode) {
-        resultBitmap = barcode;
         invalidate();
     }
 

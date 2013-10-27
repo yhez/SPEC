@@ -23,14 +23,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class FilesManegmant {
-    final static String FILE_NAME = "PublicKey.SPEC";
-    final static String QR_NAME = "PublicKeyQR.SPEC.png";
-    final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
-    final static String FILE_NAME_SEND = "SecureMessage.SPEC";
-    final static String QR_NAME_SEND = "SecureQRMessage.SPEC.png";
+final class FilesManegmant {
+    private final static String FILE_NAME = "PublicKey.SPEC";
+    private final static String QR_NAME = "PublicKeyQR.SPEC.png";
+    private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
+    private final static String FILE_NAME_SEND = "SecureMessage.SPEC";
+    private final static String QR_NAME_SEND = "SecureQRMessage.SPEC.png";
     private static Bitmap myQRPublicKey;
-    private static boolean firstUse = true;
     private static Typeface tfos = null;
     private static Typeface tfold = null;
 
@@ -54,8 +53,6 @@ public class FilesManegmant {
     }
 
     public static boolean isItNewUser(Activity a) {
-        if (!firstUse)
-            return firstUse;
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         if (srp.getBoolean("firstUse", true)) {
@@ -68,12 +65,11 @@ public class FilesManegmant {
     private static boolean saveQRToSend(Activity a) {
         int qrCodeDimention = 500;
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(
-                CryptMethods.encryptedMsgToSend, null,
-                Contents.Type.TEXT, BarcodeFormat.QR_CODE
+                CryptMethods.encryptedMsgToSend, BarcodeFormat.QR_CODE
                 .toString(), qrCodeDimention);
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
-            FileOutputStream fos2 = null;
+            FileOutputStream fos2;
             try {
                 fos2 = a.openFileOutput(QR_NAME_SEND,
                         Context.MODE_WORLD_READABLE);
@@ -183,8 +179,7 @@ public class FilesManegmant {
                 e.printStackTrace();
             }
         }
-        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrpk.getQRToPublish(), null,
-                Contents.Type.TEXT, BarcodeFormat.QR_CODE.toString(), 512);
+        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrpk.getQRToPublish(), BarcodeFormat.QR_CODE.toString(), 512);
 
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();

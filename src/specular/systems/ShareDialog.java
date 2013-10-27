@@ -13,11 +13,8 @@ import android.widget.Toast;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-/**
- * Created by yehezkelk on 10/21/13.
- */
-public class ShareDialog extends DialogFragment {
-    ArrayList mSelectedItems;
+class ShareDialog extends DialogFragment {
+    private ArrayList mSelectedItems;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction

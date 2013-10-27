@@ -17,7 +17,6 @@
 package specular.systems.scanqr;
 
 import android.content.Intent;
-import android.net.Uri;
 
 import com.google.zxing.BarcodeFormat;
 
@@ -31,7 +30,7 @@ final class DecodeFormatManager {
 
     private static final Pattern COMMA_PATTERN = Pattern.compile(",");
 
-    static final Collection<BarcodeFormat> PRODUCT_FORMATS;
+    private static final Collection<BarcodeFormat> PRODUCT_FORMATS;
     static final Collection<BarcodeFormat> ONE_D_FORMATS;
     static final Collection<BarcodeFormat> QR_CODE_FORMATS = EnumSet.of(BarcodeFormat.QR_CODE);
     static final Collection<BarcodeFormat> DATA_MATRIX_FORMATS = EnumSet.of(BarcodeFormat.DATA_MATRIX);
@@ -59,14 +58,6 @@ final class DecodeFormatManager {
             scanFormats = Arrays.asList(COMMA_PATTERN.split(scanFormatsString));
         }
         return parseDecodeFormats(scanFormats, intent.getStringExtra(Intents.Scan.MODE));
-    }
-
-    static Collection<BarcodeFormat> parseDecodeFormats(Uri inputUri) {
-        List<String> formats = inputUri.getQueryParameters(Intents.Scan.FORMATS);
-        if (formats != null && formats.size() == 1 && formats.get(0) != null) {
-            formats = Arrays.asList(COMMA_PATTERN.split(formats.get(0)));
-        }
-        return parseDecodeFormats(formats, inputUri.getQueryParameter(Intents.Scan.MODE));
     }
 
     private static Collection<BarcodeFormat> parseDecodeFormats(Iterable<String> scanFormats,

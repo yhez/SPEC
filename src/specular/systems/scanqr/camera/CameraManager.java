@@ -21,11 +21,11 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Handler;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
 import java.io.IOException;
 
+import specular.systems.R;
 import specular.systems.scanqr.PlanarYUVLuminanceSource;
 
 /**
@@ -36,8 +36,6 @@ import specular.systems.scanqr.PlanarYUVLuminanceSource;
  * @author dswitkin@google.com (Daniel Switkin)
  */
 public final class CameraManager {
-
-    private static final String TAG = CameraManager.class.getSimpleName();
 
     private static final int MIN_FRAME_WIDTH = 240;
     private static final int MIN_FRAME_HEIGHT = 240;
@@ -50,7 +48,6 @@ public final class CameraManager {
     private Rect framingRectInPreview;
     private boolean initialized;
     private boolean previewing;
-    private boolean reverseImage;
     private int requestedFramingRectWidth;
     private int requestedFramingRectHeight;
     /**
@@ -101,9 +98,6 @@ public final class CameraManager {
             }
         }
         configManager.setDesiredCameraParameters(theCamera);
-
-        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        //reverseImage = prefs.getBoolean(PreferencesActivity.KEY_REVERSE_IMAGE, false);
     }
 
     /**
@@ -149,12 +143,11 @@ public final class CameraManager {
      * respectively.
      *
      * @param handler The handler to send the message to.
-     * @param message The what field of the message to be sent.
      */
-    public void requestPreviewFrame(Handler handler, int message) {
+    public void requestPreviewFrame(Handler handler) {
         Camera theCamera = camera;
         if (theCamera != null && previewing) {
-            previewCallback.setHandler(handler, message);
+            previewCallback.setHandler(handler, R.id.decode);
             theCamera.setOneShotPreviewCallback(previewCallback);
         }
     }
@@ -163,16 +156,14 @@ public final class CameraManager {
      * Asks the camera hardware to perform an autofocus.
      *
      * @param handler The Handler to notify when the autofocus completes.
-     * @param message The message to deliver.
      */
-    public void requestAutoFocus(Handler handler, int message) {
+    public void requestAutoFocus(Handler handler) {
         if (camera != null && previewing) {
-            autoFocusCallback.setHandler(handler, message);
+            autoFocusCallback.setHandler(handler, R.id.auto_focus);
             try {
                 camera.autoFocus(autoFocusCallback);
             } catch (RuntimeException re) {
                 // Have heard RuntimeException reported in Android 4.0.x+; continue?
-                Log.w(TAG, "Unexpected exception while focusing", re);
             }
         }
     }
@@ -205,7 +196,6 @@ public final class CameraManager {
             int leftOffset = (screenResolution.x - width) / 2;
             int topOffset = (screenResolution.y - height) / 2;
             framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
-            Log.d(TAG, "Calculated framing rect: " + framingRect);
         }
         return framingRect;
     }
@@ -251,7 +241,6 @@ public final class CameraManager {
             int leftOffset = (screenResolution.x - width) / 2;
             int topOffset = (screenResolution.y - height) / 2;
             framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
-            Log.d(TAG, "Calculated manual framing rect: " + framingRect);
             framingRectInPreview = null;
         } else {
             requestedFramingRectWidth = width;
@@ -275,7 +264,7 @@ public final class CameraManager {
         }
         // Go ahead and assume it's YUV rather than die.
         return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top,
-                rect.width(), rect.height(), reverseImage);
+                rect.width(), rect.height());
     }
 
 }

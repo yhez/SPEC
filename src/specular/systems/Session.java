@@ -2,7 +2,7 @@ package specular.systems;
 
 import java.util.Random;
 
-public class Session
+class Session
 {
 
     public final static int VERIFIED = 0, FAILED = 1, DONT_TRUST = 2;// ,

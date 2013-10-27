@@ -6,7 +6,7 @@ package specular.systems.scanqr;
  *
  * @author dswitkin@google.com (Daniel Switkin)
  */
-public final class Intents
+final class Intents
 {
     private Intents()
 	{

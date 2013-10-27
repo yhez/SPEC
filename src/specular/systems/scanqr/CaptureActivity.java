@@ -3,10 +3,8 @@ package specular.systems.scanqr;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -33,7 +31,6 @@ import specular.systems.scanqr.camera.CameraManager;
  */
 public class CaptureActivity extends Activity implements SurfaceHolder.Callback
 {
-    private static final String TAG = CaptureActivity.class.getSimpleName();
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
@@ -139,10 +136,6 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder)
 	{
-        if (holder == null)
-		{
-            Log.e(TAG, "*** WARNING *** surfaceCreated() gave us a null surface!");
-        }
         if (!hasSurface)
 		{
             hasSurface = true;
@@ -166,9 +159,9 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
      * A valid barcode has been found, so give an indication of success and show the results.
      *
      * @param rawResult The contents of the barcode.
-     * @param barcode   A greyscale bitmap of the camera data which was decoded.
+     *
      */
-    public void handleDecode(Result rawResult, Bitmap barcode)
+    public void handleDecode(Result rawResult)
 	{
     }
     private void initCamera(SurfaceHolder surfaceHolder)
@@ -184,14 +177,12 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
         }
 		catch (IOException ioe)
 		{
-            Log.w(TAG, ioe);
             displayFrameworkBugMessageAndExit();
         }
 		catch (RuntimeException e)
 		{
             // Barcode Scanner has seen crashes in the wild of this variety:
             // java.?lang.?RuntimeException: Fail to connect to camera service
-            Log.w(TAG, "Unexpected error initializing camera", e);
             displayFrameworkBugMessageAndExit();
         }
     }
@@ -199,9 +190,9 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
     private void displayFrameworkBugMessageAndExit()
 	{
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("spec");
-        builder.setMessage("msg_camera_framework_bug");
-        builder.setPositiveButton("ok", new FinishListener(this));
+        builder.setTitle(getString(R.string.title_scan_error_msg));
+        builder.setMessage(getString(R.string.content_scan_error_msg));
+        builder.setPositiveButton(getString(R.string.ok), new FinishListener(this));
         builder.setOnCancelListener(new FinishListener(this));
         builder.show();
     }

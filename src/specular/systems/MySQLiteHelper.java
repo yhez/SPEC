@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class MySQLiteHelper extends SQLiteOpenHelper
+class MySQLiteHelper extends SQLiteOpenHelper
 {
 
     public static final String COLUMN_CONTACT_NAME = "contact";

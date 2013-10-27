@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactsDataSource
+class ContactsDataSource
 {
     private final String[] allColumns = {MySQLiteHelper.COLUMN_ID,
 		MySQLiteHelper.COLUMN_CONTACT_NAME, MySQLiteHelper.COLUMN_EMAIL,
@@ -18,7 +18,7 @@ public class ContactsDataSource
     private SQLiteDatabase database;
     private final MySQLiteHelper dbHelper;
 
-    public ContactsDataSource(Context context)
+   public ContactsDataSource(Context context)
 	{
         dbHelper = new MySQLiteHelper(context);
     }
@@ -37,7 +37,7 @@ public class ContactsDataSource
         values.put(MySQLiteHelper.COLUMN_SESSION, contact.getSession());
         values.put(MySQLiteHelper.COLUMN_FIRST,
 				   "" + contact.getConversationStatus());
-        long insertId = database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
+        return database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
 										values);
         /*Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
 		 allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
@@ -45,7 +45,7 @@ public class ContactsDataSource
 		 cursor.moveToFirst();
 		 long id = cursor.getLong(0);
 		 cursor.close();*/
-        return insertId;//id;
+        //return insertId;//id;
     }
 
     public void deleteContact(Contact contact)

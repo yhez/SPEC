@@ -34,9 +34,9 @@ import static specular.systems.R.layout.setup;
 import static specular.systems.R.layout.share;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
-public class FragmentManagement extends Fragment {
-    static Wmain w;
-    final Handler hndl = new Handler() {
+class FragmentManagement extends Fragment {
+    private static Wmain w;
+    private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -64,9 +64,7 @@ public class FragmentManagement extends Fragment {
             }
         }
     };
-    float startPoint = 0;
-    float oldPos;
-
+    private float startPoint;
     public FragmentManagement(Wmain w) {
         this.w = w;
     }
@@ -95,9 +93,9 @@ public class FragmentManagement extends Fragment {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
                         if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN)
-                            oldPos = motionEvent.getX();
+                            startPoint = motionEvent.getX();
                         else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP)
-                            if (motionEvent.getX() < oldPos) {
+                            if (motionEvent.getX() < startPoint) {
                                 String myEmail = ((EditText) getActivity().findViewById(R.id.email))
                                         .getText().toString();
                                 String myName = ((EditText) getActivity().findViewById(R.id.name))
@@ -220,7 +218,7 @@ public class FragmentManagement extends Fragment {
                         ((TextView) getActivity().findViewById(R.id.en_contact)).setText(cvc + "");
                     }
                 });
-                ((ImageButton) getActivity().findViewById(R.id.send)).setEnabled(false);
+                getActivity().findViewById(R.id.send).setEnabled(false);
                 ((EditText) getActivity().findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {

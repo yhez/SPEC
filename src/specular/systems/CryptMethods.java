@@ -1,7 +1,5 @@
 package specular.systems;
 
-import android.util.Log;
-
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -119,9 +117,6 @@ public class CryptMethods {
             Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
             cipher.init(Cipher.DECRYPT_MODE, mPtK, iesParams);
             byte[] rawMsg = Visual.hex2bin(encryptedMessage);
-            if (rawMsg == null)
-                Log.e("null", "at visual");
-            Log.e("myp", myPrivateKey);
             byte[] decryptedBytes = cipher.doFinal(rawMsg);
             return new String(decryptedBytes);
         } catch (Exception ignored) {

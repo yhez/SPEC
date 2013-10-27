@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class MySimpleArrayAdapter extends ArrayAdapter<String> {
+class MySimpleArrayAdapter extends ArrayAdapter<String> {
     private final Context context;
     private final List<Contact> lst;
 
