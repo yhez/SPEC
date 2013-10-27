@@ -13,5 +13,5 @@
         android:id="@+id/decrypted_msg"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:text="working..."/>
+        android:text="@string/working"/>
 </ScrollView>

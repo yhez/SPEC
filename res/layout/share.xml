@@ -27,6 +27,7 @@
             android:textColor="#222"
             android:textSize="25sp" />
         <LinearLayout
+            style="?android:attr/buttonBarStyle"
             android:id="@+id/share_panel"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
@@ -37,15 +38,16 @@
             android:padding="@dimen/default_gap">
 
             <Button
-                android:id="@+id/button_share"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="share"
                 android:padding="@dimen/default_gap"
-                android:text="Share" />
+                android:text="@string/share_button" />
 
             <Button
+                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/button_publish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

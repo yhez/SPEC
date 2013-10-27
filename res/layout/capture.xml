@@ -43,6 +43,6 @@
         android:layout_gravity="bottom|center_horizontal"
         android:gravity="center_horizontal"
         android:padding="16dp"
-        android:text="Place an enrypted QR message within the scanner in order to decrypt (read it)" />
+        android:text="@string/qr_scan_explain" />
 
 </FrameLayout>
