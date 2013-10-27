@@ -691,6 +691,7 @@ public class Wmain extends Activity {
 
     @Override
     protected void onResume() {
+        super.onResume();
         FilesManegmant.getKeysFromSdcard(this);
         if (handleByOnActivityResult)
             handleByOnActivityResult = false;

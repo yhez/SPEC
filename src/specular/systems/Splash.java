@@ -61,8 +61,10 @@ public class Splash extends Activity {
         }
         if (!newUser) {
             Intent intent = new Intent(Splash.this, Wmain.class);
-            if (message != null)
+            if (message != null){
                 intent.putExtra("message", message);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            }
             startActivity(intent);
             finish();
         }

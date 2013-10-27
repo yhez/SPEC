@@ -77,10 +77,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Wmain.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Wmain.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/specular/systems/Wmain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="326" column="23" selection-start="13582" selection-end="13589" vertical-scroll-proportion="8.823529" vertical-offset="5992" max-vertical-offset="12869">
+            <state line="699" column="9" selection-start="28946" selection-end="28946" vertical-scroll-proportion="0.6906907" vertical-offset="11653" max-vertical-offset="12886">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1557#2522#0" expanded="true" />
@@ -114,10 +114,10 @@
                 <element signature="e#28409#28440#0" expanded="true" />
                 <element signature="e#28516#28553#0" expanded="true" />
                 <element signature="e#28638#28673#0" expanded="true" />
-                <element signature="e#29097#29274#0" expanded="true" />
-                <element signature="e#29255#29256#0" expanded="true" />
-                <element signature="e#29616#29790#0" expanded="true" />
-                <element signature="e#29771#29772#0" expanded="true" />
+                <element signature="e#29123#29300#0" expanded="true" />
+                <element signature="e#29281#29282#0" expanded="true" />
+                <element signature="e#29642#29816#0" expanded="true" />
+                <element signature="e#29797#29798#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -135,10 +135,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Splash.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Splash.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/specular/systems/Splash.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="126" column="17" selection-start="4854" selection-end="4854" vertical-scroll-proportion="0.6636637" vertical-offset="1581" max-vertical-offset="2040">
+            <state line="65" column="65" selection-start="2334" selection-end="2334" vertical-scroll-proportion="-3.862745" vertical-offset="585" max-vertical-offset="2074">
               <folding />
             </state>
           </provider>
@@ -535,7 +535,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/layout/create_new_keys.xml" />
         <option value="$PROJECT_DIR$/project.properties" />
         <option value="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" />
         <option value="$PROJECT_DIR$/res/layout/capture.xml" />
@@ -550,6 +549,7 @@
         <option value="$PROJECT_DIR$/res/layout/share.xml" />
         <option value="$PROJECT_DIR$/res/layout/decrypted_msg.xml" />
         <option value="$PROJECT_DIR$/src/specular/systems/FragmentManagement.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Splash.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Wmain.java" />
       </list>
     </option>
@@ -988,7 +988,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32088286" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30390492" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30390492" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1135,9 +1135,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Splash.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="65" selection-start="2334" selection-end="2334" vertical-scroll-proportion="-3.862745" vertical-offset="585" max-vertical-offset="2074">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/Wmain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="326" column="23" selection-start="13582" selection-end="13589" vertical-scroll-proportion="8.823529" vertical-offset="5992" max-vertical-offset="12869">
+        <state line="699" column="9" selection-start="28946" selection-end="28946" vertical-scroll-proportion="0.6906907" vertical-offset="11653" max-vertical-offset="12886">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1557#2522#0" expanded="true" />
@@ -1171,18 +1178,11 @@
             <element signature="e#28409#28440#0" expanded="true" />
             <element signature="e#28516#28553#0" expanded="true" />
             <element signature="e#28638#28673#0" expanded="true" />
-            <element signature="e#29097#29274#0" expanded="true" />
-            <element signature="e#29255#29256#0" expanded="true" />
-            <element signature="e#29616#29790#0" expanded="true" />
-            <element signature="e#29771#29772#0" expanded="true" />
+            <element signature="e#29123#29300#0" expanded="true" />
+            <element signature="e#29281#29282#0" expanded="true" />
+            <element signature="e#29642#29816#0" expanded="true" />
+            <element signature="e#29797#29798#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Splash.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="126" column="17" selection-start="4854" selection-end="4854" vertical-scroll-proportion="0.6636637" vertical-offset="1581" max-vertical-offset="2040">
-          <folding />
         </state>
       </provider>
     </entry>
