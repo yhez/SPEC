@@ -60,6 +60,7 @@
     <string name="failed_to_write">Failed to write NFC tag</string>
     <string name="working">working&#8230;</string>
     <string name="qr_scan_explain">Place an enrypted QR message within the scanner in order to decrypt (read it)</string>
+    <string name="decrypting">Decrypting...</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

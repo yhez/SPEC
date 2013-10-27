@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -41,12 +42,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import android.app.*;
 
 
 public class Wmain extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
     public static int currentLayout;
+    public static String decryptedMsg;
     final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -64,6 +65,9 @@ public class Wmain extends Activity {
                     Log.e("msg", s);
                     ((TextView) findViewById(R.id.decrypted_msg)).setText(s);
                     break;
+                case 2:
+                    selectItem(1, R.layout.decrypted_msg);
+                    break;
             }
         }
     };
@@ -79,7 +83,7 @@ public class Wmain extends Activity {
     private String fileContent = "";
     private Contact contact;
 
-   public void createKeysManager() {
+    public void createKeysManager() {
         createKeys.start();
         if (NfcAdapter.getDefaultAdapter(this) != null)
             if (!NfcAdapter.getDefaultAdapter(this).isEnabled())
@@ -125,22 +129,22 @@ public class Wmain extends Activity {
         final QRMessage msg = new QRMessage(fileContent, userInput,
                 contact.getSession());
         long x = System.currentTimeMillis();
-		final ProgressDialog prgd =new ProgressDialog(this);
-		prgd.setCancelable(false);
-		prgd.setMessage("encrypting...");
-		prgd.setProgressStyle(android.R.style.Theme_Holo_Dialog);
-		prgd.show();
-		new Thread(new Runnable(){
-			@Override
-			public void run(){
-				CryptMethods.encrypt(msg.getFormatedMsg().getBytes(),
-									 contact.getPublicKey());
-				prgd.cancel();
-				sendMessage();
-			}
-		}).start();
+        final ProgressDialog prgd = new ProgressDialog(this);
+        prgd.setCancelable(false);
+        prgd.setMessage("encrypting...");
+        prgd.setProgressStyle(android.R.style.Theme_Holo_Dialog);
+        prgd.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                CryptMethods.encrypt(msg.getFormatedMsg().getBytes(),
+                        contact.getPublicKey());
+                prgd.cancel();
+                sendMessage();
+            }
+        }).start();
         Log.d("time to encrypt", "" + (System.currentTimeMillis() - x) / 1000);
-        
+
     }
 
     @Override
@@ -541,22 +545,31 @@ public class Wmain extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         final String msg = getIntent().getStringExtra("message");
-        if (msg != null && privateKey) {
-            //getIntent().removeExtra("message");
-            if (msg.length() > 5) {
-                selectItem(1, R.layout.decrypted_msg);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String data = CryptMethods.decrypt(msg);
-                        Message msg = hndl.obtainMessage(1, data);
-                        hndl.sendMessage(msg);
-                    }
-                }).start();
-            } else
-                Toast.makeText(getBaseContext(), R.string.failed, Toast.LENGTH_LONG)
-                        .show();
-
+        if (msg != null) {
+            if (privateKey) {
+                if (msg.length() > 5) {
+                    final ProgressDialog prgd = new ProgressDialog(this);
+                    prgd.setCancelable(false);
+                    prgd.setMessage(getString(R.string.decrypting));
+                    prgd.setProgressStyle(android.R.style.Theme_Holo_Dialog);
+                    prgd.show();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            decryptedMsg = CryptMethods.decrypt(msg);
+                            prgd.cancel();
+                            getIntent().removeExtra("message");
+                            Message msg = hndl.obtainMessage(2);
+                            hndl.sendMessage(msg);
+                        }
+                    }).start();
+                } else
+                    Toast.makeText(getBaseContext(), R.string.failed, Toast.LENGTH_LONG)
+                            .show();
+            }
+            else{
+                selectItem(1,R.layout.wait_nfc_decrypt);
+            }
         } else {
             if (!privateKey && publicKey)
                 selectItem(-1, R.layout.wait_nfc_decrypt);
@@ -684,11 +697,11 @@ public class Wmain extends Activity {
         else {
             setUpViews();
         }
-        super.onResume();
     }
 
     static class createKeys {
         static Thread t;
+
         public static void start() {
             if (t == null || !t.isAlive()) {
                 t = new Thread(new Runnable() {
