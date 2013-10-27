@@ -39,8 +39,11 @@ public class Contact {
                 return c;
             }
         }
-        Contact cont = new Contact(a, qrp.getName(), qrp.getEmail(), qrp.getPublicKey());
-        return cont.publicKey == null ? null : cont;
+        else{
+            Contact cont = new Contact(a, qrp.getName(), qrp.getEmail(), qrp.getPublicKey());
+            return cont.publicKey == null ? null : cont;
+        }
+        return null;
     }
 
     private String contactName;

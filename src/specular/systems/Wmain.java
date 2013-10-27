@@ -149,6 +149,7 @@ public class Wmain extends Activity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        FilesManegmant.getKeysFromSdcard(this);
         handleByOnActivityResult = true;
         if (resultCode == RESULT_OK) {
             if (requestCode == 5) {
@@ -184,7 +185,7 @@ public class Wmain extends Activity {
                             //decryptManager(result);
                             break;
                         case R.layout.encrypt:
-                            Log.e("bad data", result);
+                            //Log.e("bad data", result);
                             QRPublicKey qrpbk = new QRPublicKey(this, result);
                             if (qrpbk.getPublicKey() != null) {
                                 Contact c = Contact.giveMeContact(this, qrpbk);
@@ -197,8 +198,7 @@ public class Wmain extends Activity {
                         case R.layout.contacts:
                             qrpbk = new QRPublicKey(this, result);
                             if (qrpbk.getPublicKey() != null) {
-                                new Contact(this, qrpbk.getName(),
-                                        qrpbk.getEmail(), qrpbk.getPublicKey());
+                                Contact.giveMeContact(this, qrpbk);
                             } else
                                 Toast.makeText(getBaseContext(), R.string.bad_data,
                                         Toast.LENGTH_LONG).show();
@@ -328,17 +328,20 @@ public class Wmain extends Activity {
         if (currentLayout == R.layout.wait_nfc_to_write) {
             Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if (tag != null) {
-                while (createKeys.isAlive()) {
-                    try {
-                        wait(150);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                synchronized (this) {
+                    while (createKeys.isAlive()) {
+                        try {
+                            wait(150);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 if (!CryptMethods.privateExist()) {
                     Toast.makeText(getBaseContext(), getString(R.string.problem_create_keys), Toast.LENGTH_LONG).show();
                     selectItem(layouts.length - 1, R.layout.create_new_keys);
                 } else {
+                    CryptMethods.NFCMode=true;
                     saveKeys.start(this);
                     String rslt = writeTag(tag, Visual.hex2bin(CryptMethods.getPrivateToSave()));
                     Toast.makeText(getBaseContext(), rslt, Toast.LENGTH_LONG).show();
@@ -475,23 +478,23 @@ public class Wmain extends Activity {
 
     private void setUpViews() {
         int defaultScreen = 0;
-        boolean privateKey = CryptMethods.privateExist(), publicKey = CryptMethods.publicExist();
+       // boolean privateKey = CryptMethods.privateExist(), publicKey = CryptMethods.publicExist();
         final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
                 R.layout.share, R.layout.contacts, R.layout.help,
                 R.layout.setup};
         final String[] allMenus = getResources().getStringArray(R.array.menus);
         final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, CONTACTS = 3, LEARN = 4, SETUP = 5;
-        if (privateKey && publicKey) {
+        if (CryptMethods.privateExist() && CryptMethods.publicExist()) {
             layouts = allLayouts;
             menuTitles = allMenus;
             defaultScreen = ENCRYPT;
-        } else if (publicKey) {
+        } else if (CryptMethods.publicExist()) {
             layouts = new int[]{allLayouts[ENCRYPT], allLayouts[SHARE],
                     allLayouts[CONTACTS], allLayouts[LEARN], allLayouts[SETUP]};
             menuTitles = new String[]{allMenus[ENCRYPT], allMenus[SHARE],
                     allMenus[CONTACTS], allMenus[LEARN], allMenus[SETUP]};
             defaultScreen = 1;
-        } else if (privateKey) {
+        } else if (CryptMethods.privateExist()) {
             layouts = new int[]{allLayouts[DECRYPT], allLayouts[CONTACTS],
                     allLayouts[LEARN], allLayouts[SETUP]};
             menuTitles = new String[]{allMenus[DECRYPT], allMenus[CONTACTS],
@@ -546,7 +549,7 @@ public class Wmain extends Activity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         final String msg = getIntent().getStringExtra("message");
         if (msg != null) {
-            if (privateKey) {
+            if (CryptMethods.privateExist()) {
                 if (msg.length() > 5) {
                     final ProgressDialog prgd = new ProgressDialog(this);
                     prgd.setCancelable(false);
@@ -566,14 +569,13 @@ public class Wmain extends Activity {
                 } else
                     Toast.makeText(getBaseContext(), R.string.failed, Toast.LENGTH_LONG)
                             .show();
-            }
-            else{
-                selectItem(1,R.layout.wait_nfc_decrypt);
+            } else {
+                selectItem(1, R.layout.wait_nfc_decrypt);
             }
         } else {
-            if (!privateKey && publicKey)
+            if (!CryptMethods.privateExist() && CryptMethods.publicExist())
                 selectItem(-1, R.layout.wait_nfc_decrypt);
-            else if (!privateKey && !publicKey)
+            else if (!CryptMethods.privateExist() && !CryptMethods.publicExist())
                 selectItem(-1, R.layout.create_new_keys);
             else {
                 boolean exist = false;
@@ -591,15 +593,19 @@ public class Wmain extends Activity {
 
     @Override
     public void onBackPressed() {
-        boolean atHome = false;
-        for (int a = 0; a < layouts.length; a++)
-            if (currentLayout == layouts[a])
-                atHome = true;
-        if (atHome) {
-            CryptMethods.deleteKeys();
+        if (currentLayout == R.layout.create_new_keys) {
             super.onBackPressed();
         } else {
-            setUpViews();
+            boolean atHome = false;
+            for (int a = 0; a < layouts.length; a++)
+                if (currentLayout == layouts[a])
+                    atHome = true;
+            if (atHome) {
+                CryptMethods.deleteKeys();
+                super.onBackPressed();
+            } else {
+                setUpViews();
+            }
         }
     }
 

@@ -9,26 +9,27 @@
     android:padding="@dimen/default_gap">
 
     <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_width="match_parent">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/your_public_key"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:alpha="1"
             android:gravity="center"
             android:padding="6dp"
             android:text="@string/share_public_descripton"
             android:textColor="#222"
             android:textSize="25sp" />
+
         <LinearLayout
-            style="?android:attr/buttonBarStyle"
             android:id="@+id/share_panel"
+            style="?android:attr/buttonBarStyle"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -38,8 +39,8 @@
             android:padding="@dimen/default_gap">
 
             <Button
-                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/button_share"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -47,9 +48,14 @@
                 android:padding="@dimen/default_gap"
                 android:text="@string/share_button" />
 
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/white" />
+
             <Button
-                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/button_publish"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
@@ -57,19 +63,21 @@
                 android:padding="@dimen/default_gap"
                 android:text="@string/share_on_server" />
         </LinearLayout>
+
         <ImageView
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_above="@id/share_panel"
-            android:src="@drawable/swipe"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:src="@drawable/swipe" />
+
         <FrameLayout
-            android:layout_marginBottom="@dimen/default_gap"
-            android:padding="@dimen/default_gap"
-            android:layout_below="@id/your_public_key"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_above="@id/share_panel"
-            android:layout_height="wrap_content">
+            android:layout_below="@id/your_public_key"
+            android:layout_marginBottom="@dimen/default_gap"
+            android:padding="@dimen/default_gap">
 
             <TextView
                 android:id="@+id/me_public"
@@ -87,7 +95,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
-                android:alpha="0"/>
+                android:alpha="0" />
+
             <View
                 android:id="@+id/touch"
                 android:layout_width="match_parent"

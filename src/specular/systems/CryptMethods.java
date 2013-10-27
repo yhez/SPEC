@@ -30,7 +30,7 @@ public class CryptMethods {
     private static String myName = null, myEmail = null, myPublicKey = null,
             myPrivateKey = null;
     private static boolean notInit = true;
-
+    public static boolean NFCMode=false;
     public static String getPrivateToSave() {
         return myPrivateKey != null ? myPrivateKey : "the key is on nfc";
     }
@@ -87,15 +87,9 @@ public class CryptMethods {
             addProviders();
             notInit = false;
         }
-        KeyPairGenerator kpg = null;
+        KeyPairGenerator kpg;
         try {
             kpg = KeyPairGenerator.getInstance("ECIES", "FlexiEC");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        }
-        if (kpg != null) {
             CurveParams ecParams = new CurveRegistry.BrainpoolP512r1();
             try {
                 kpg.initialize(ecParams, new SecureRandom());
@@ -107,8 +101,11 @@ public class CryptMethods {
             myPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
             myPrivateKey = Visual.bin2hex(keypair.getPrivate().getEncoded());
             formatPrivate(myPrivateKey);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
         }
-
     }
 
     public static String decrypt(String encryptedMessage) {

@@ -215,7 +215,8 @@ public class FilesManegmant {
         edt.putString("public_key", qrpk.getPublicKey());
         edt.putString("email", qrpk.getEmail());
         edt.putString("name", qrpk.getName());
-        edt.putString("private_key", CryptMethods.getPrivateToSave());
+        if(!CryptMethods.NFCMode)
+            edt.putString("private_key", CryptMethods.getPrivateToSave());
         edt.commit();
     }
 
