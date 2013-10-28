@@ -30,7 +30,7 @@ public class Splash extends Activity {
                     e.printStackTrace();
                 }
             }
-            Intent intent = new Intent(Splash.this, Wmain.class);
+            Intent intent = new Intent(Splash.this, Main.class);
             if (message != null)
                 intent.putExtra("message", message);
             startActivity(intent);
@@ -59,7 +59,7 @@ public class Splash extends Activity {
             }
         }
         if (!newUser) {
-            Intent intent = new Intent(Splash.this, Wmain.class);
+            Intent intent = new Intent(Splash.this, Main.class);
             if (message != null) {
                 intent.putExtra("message", message);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -35,7 +35,7 @@ import static specular.systems.R.layout.share;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 class FragmentManagement extends Fragment {
-    private static Wmain w;
+    private static Main w;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -59,20 +59,20 @@ class FragmentManagement extends Fragment {
                     ((ScrollView) getActivity().findViewById(msg.what)).smoothScrollTo(0, ((View) msg.obj).getTop());
                     break;
                 case 55:
-                    ((TextView)getActivity().findViewById(R.id.decrypted_msg)).setText(Wmain.decryptedMsg!=null?Wmain.decryptedMsg.getMsgContent():getActivity().getString(R.string.cant_decrypt));
+                    ((TextView)getActivity().findViewById(R.id.decrypted_msg)).setText(w.decryptedMsg != null ? w.decryptedMsg.getMsgContent() : getActivity().getString(R.string.cant_decrypt));
                     break;
             }
         }
     };
     private float startPoint;
-    public FragmentManagement(Wmain w) {
+    public FragmentManagement(Main w) {
         this.w = w;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Wmain.currentLayout = getArguments().getInt("layout");
+        Main.currentLayout = getArguments().getInt("layout");
         View rootView = inflater.inflate(getArguments().getInt("layout"),
                 container, false);
         rootView.animate().setDuration(1000).alpha(1).start();
@@ -84,7 +84,7 @@ class FragmentManagement extends Fragment {
         super.onStart();
         Contact contact;
         ContactsDataSource cds = new ContactsDataSource(getActivity());
-        switch (Wmain.currentLayout) {
+        switch (Main.currentLayout) {
             case create_new_keys:
                 ((TextView) getActivity().findViewById(R.id.welcome)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
                 ((EditText) getActivity().findViewById(R.id.name)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
@@ -269,9 +269,9 @@ class FragmentManagement extends Fragment {
                                 }
                                 if (num == 1) {
                                     tv.setVisibility(View.VISIBLE);
-                                    tv.setText(Wmain.MSG_LIMIT_FOR_QR - num + "");
-                                } else if (num <= Wmain.MSG_LIMIT_FOR_QR) {
-                                    tv.setText(Wmain.MSG_LIMIT_FOR_QR - num + "");
+                                    tv.setText(Main.MSG_LIMIT_FOR_QR - num + "");
+                                } else if (num <= Main.MSG_LIMIT_FOR_QR) {
+                                    tv.setText(Main.MSG_LIMIT_FOR_QR - num + "");
                                 } else
                                     tv.setText(getActivity().getString(R.string.no_qr));
                             }

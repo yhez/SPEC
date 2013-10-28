@@ -42,10 +42,10 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 
-public class Wmain extends Activity {
+public class Main extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
     public static int currentLayout;
-    public static QRMessage decryptedMsg=null;
+    public QRMessage decryptedMsg=null;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -88,15 +88,15 @@ public class Wmain extends Activity {
                         Toast.LENGTH_LONG).show();
             else {
                 selectItem(-1, R.layout.wait_nfc_to_write);
-                PendingIntent pi = PendingIntent.getActivity(Wmain.this, 0,
-                        new Intent(Wmain.this, getClass())
+                PendingIntent pi = PendingIntent.getActivity(Main.this, 0,
+                        new Intent(Main.this, getClass())
                                 .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
                 IntentFilter tagDetected = new IntentFilter(
                         NfcAdapter.ACTION_TAG_DISCOVERED);
                 IntentFilter[] filters = new IntentFilter[]{tagDetected};
                 NfcAdapter
-                        .getDefaultAdapter(Wmain.this)
-                        .enableForegroundDispatch(Wmain.this, pi, filters, null);
+                        .getDefaultAdapter(Main.this)
+                        .enableForegroundDispatch(Main.this, pi, filters, null);
             }
         else {
             findViewById(R.id.drawer_layout).animate().setDuration(1000)
@@ -152,7 +152,7 @@ public class Wmain extends Activity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            String data = FilesManegmant.addFile(Wmain.this, uri);
+                            String data = FilesManegmant.addFile(Main.this, uri);
                             if (data != null) {
                                 if (data.length() > 0) {
                                     String w[] = uri.getEncodedPath().split("/");
@@ -213,7 +213,7 @@ public class Wmain extends Activity {
                 break;
             case R.layout.wait_nfc_to_write:
                 NfcAdapter.getDefaultAdapter(getApplicationContext())
-                        .disableForegroundDispatch(Wmain.this);
+                        .disableForegroundDispatch(Main.this);
                 synchronized (this) {
                     while (createKeys.isAlive()) {
                         try {
@@ -264,7 +264,7 @@ public class Wmain extends Activity {
                 }
                 break;
             case R.layout.decrypt:
-                Intent intent = new Intent(Wmain.this, StartScan.class);
+                Intent intent = new Intent(Main.this, StartScan.class);
                 startActivityForResult(intent, 18);
                 break;
             case R.layout.contacts:
@@ -555,7 +555,7 @@ public class Wmain extends Activity {
                             String tmp = CryptMethods.decrypt(msg);
                             if(tmp != null){
                                 decryptedMsg= new QRMessage(tmp);
-                                Contact.giveMeContact(Wmain.this,decryptedMsg);
+                                Contact.giveMeContact(Main.this,decryptedMsg);
                             }
                             prgd.cancel();
                             getIntent().removeExtra("message");
