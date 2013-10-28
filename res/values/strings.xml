@@ -59,7 +59,7 @@
     <string name="tag_not_supported">Tag doesn\'t appear to support NDEF format</string>
     <string name="failed_to_write">Failed to write NFC tag</string>
     <string name="working">Working&#8230;</string>
-    <string name="qr_scan_explain">Place an encrypted QR message in order to decrypt (read it)</string>
+    <string name="qr_scan_explain">Place the QR code in the box to add this contact</string>
     <string name="decrypting">Decrypting...</string>
     <string name="title_scan_error_msg">title_scan_error_msg</string>
     <string name="content_scan_error_msg">content_scan_error_msg</string>
