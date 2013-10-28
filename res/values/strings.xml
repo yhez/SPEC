@@ -22,7 +22,7 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="failed">Failed</string>
-    <string name="time_stemp">Time stamp</string>
+    <string name="time_stamp">Time stamp</string>
     <string name="hash">Hash</string>
     <string name="nfc_off">Please activate NFC</string>
     <string name="message">Message</string>
@@ -42,7 +42,7 @@
     <string name="what_to_share">What to share:</string>
     <string name="no_qr">No QR</string>
     <string name="share_button">Share</string>
-    <string name="not_choosed">Choose format of CONTACT CARD</string>
+    <string name="not_chosen">Choose format of CONTACT CARD</string>
     <string name="todo">SPEC Management</string>
     <string name="export">Export Keys</string>
     <string name="Import">Import Keys</string>
@@ -63,6 +63,8 @@
     <string name="decrypting">Decrypting...</string>
     <string name="title_scan_error_msg">title_scan_error_msg</string>
     <string name="content_scan_error_msg">content_scan_error_msg</string>
+    <string name="scan_contact_explain">scan contact explain</string>
+    <string name="decrypt_qr_message_explain">decrypt_qr_message_explain</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

@@ -44,24 +44,25 @@ import java.util.ArrayList;
 
 public class Main extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
+    private final static int FAILED=0,REPLACE_PHOTO=1,CANT_DECRYPT=2,DECRYPT_SCREEN=3;
     public static int currentLayout;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case 0:
+                case FAILED:
                     Toast.makeText(getBaseContext(), R.string.failed,
                             Toast.LENGTH_LONG).show();
                     break;
-                case 15:
+                case REPLACE_PHOTO:
                     ((TextView) findViewById(R.id.file_content_length)).setText(fileContent.length() + "");
                     ((ImageButton) findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
                     break;
-                case 1:
+                case CANT_DECRYPT:
                     String s = msg.obj != null ? (String) msg.obj : getString(R.string.cant_decrypt);
                     ((TextView) findViewById(R.id.decrypted_msg)).setText(s);
                     break;
-                case 2:
+                case DECRYPT_SCREEN:
                     selectItem(1, R.layout.decrypted_msg);
                     break;
             }
@@ -142,13 +143,13 @@ public class Main extends Activity {
             }
         }).start();
     }
-
+    private final int ATTACH_FILE=0,SCAN_QR=1;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         FilesManegmant.getKeysFromSdcard(this);
         handleByOnActivityResult = true;
         if (resultCode == RESULT_OK) {
-            if (requestCode == 5) {
+            if (requestCode == ATTACH_FILE) {
                 final Uri uri = intent.getData();
                 if (uri != null) {
                     new Thread(new Runnable() {
@@ -159,12 +160,12 @@ public class Main extends Activity {
                                 if (data.length() > 0) {
                                     String w[] = uri.getEncodedPath().split("/");
                                     fileContent = w[w.length - 1] + "\n" + data;
-                                    Message msg = hndl.obtainMessage(15);
+                                    Message msg = hndl.obtainMessage(REPLACE_PHOTO);
                                     hndl.sendMessage(msg);
                                 }
                                 //TODO handle empty file
                             } else {
-                                Message msg = hndl.obtainMessage(0);
+                                Message msg = hndl.obtainMessage(FAILED);
                                 hndl.sendMessage(msg);
                             }
                         }
@@ -242,7 +243,7 @@ public class Main extends Activity {
                         intent.addCategory(Intent.CATEGORY_OPENABLE);
                         intent.setType("*/*");
                         Intent i = Intent.createChooser(intent, getString(R.string.choose_file_to_attach));
-                        startActivityForResult(i, 5);
+                        startActivityForResult(i, ATTACH_FILE);
                         break;
                     case R.id.send:
                         EditText et = (EditText) findViewById(R.id.message);
@@ -259,17 +260,18 @@ public class Main extends Activity {
                         break;
                     case R.id.add_contact:
                         Intent intt = new Intent(this, StartScan.class);
-                        startActivityForResult(intt, 43);
+                        startActivityForResult(intt, SCAN_QR);
                         break;
                 }
                 break;
             case R.layout.decrypt:
                 Intent intent = new Intent(Main.this, StartScan.class);
-                startActivityForResult(intent, 18);
+                intent.putExtra("decrypt",true);
+                startActivityForResult(intent, SCAN_QR);
                 break;
             case R.layout.contacts:
                 Intent intt = new Intent(this, StartScan.class);
-                startActivityForResult(intt, 43);
+                startActivityForResult(intt, SCAN_QR);
                 break;
             case R.layout.edit_contact:
                 ContactsDataSource cds = new ContactsDataSource(this);
@@ -562,7 +564,7 @@ public class Main extends Activity {
                             }
                             prgd.cancel();
                             getIntent().removeExtra("message");
-                            Message msg = hndl.obtainMessage(2);
+                            Message msg = hndl.obtainMessage(DECRYPT_SCREEN);
                             hndl.sendMessage(msg);
                         }
                     }).start();

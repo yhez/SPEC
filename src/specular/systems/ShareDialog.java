@@ -42,7 +42,7 @@ class ShareDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         if (mSelectedItems.size() == 0) {
-                            Toast.makeText(getActivity(), R.string.not_choosed, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), R.string.not_chosen, Toast.LENGTH_LONG).show();
                         } else {
 
                             Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);

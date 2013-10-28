@@ -1,18 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
- Copyright (C) 2008 ZXing authors
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
+<?xml version="1.0" encoding="UTF-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -38,11 +24,11 @@
 
     <TextView
         android:id="@+id/status_view"
-        android:layout_width="wrap_content"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
+        android:layout_gravity="left|center_vertical"
         android:gravity="center_horizontal"
-        android:padding="16dp"
-        android:text="@string/qr_scan_explain" />
+        android:padding="@dimen/default_gap"
+        android:text="@string/scan_contact_explain" />
 
 </FrameLayout>

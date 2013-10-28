@@ -28,12 +28,12 @@ final class Intents
          * Decode only UPC and EAN barcodes. This is the right choice for shopping apps which getKeysFromSdcard
          * prices, reviews, etc. for products.
          */
-        public static final String PRODUCT_MODE = "PRODUCT_MODE";
+       // public static final String PRODUCT_MODE = "PRODUCT_MODE";
 
         /**
          * Decode only 1D barcodes.
          */
-        public static final String ONE_D_MODE = "ONE_D_MODE";
+        //public static final String ONE_D_MODE = "ONE_D_MODE";
 
         /**
          * Decode only QR codes.

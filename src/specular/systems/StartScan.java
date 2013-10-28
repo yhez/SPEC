@@ -1,5 +1,7 @@
 package specular.systems;
 
+import android.widget.TextView;
+
 import com.google.zxing.Result;
 
 import specular.systems.scanqr.CaptureActivity;
@@ -17,5 +19,11 @@ public class StartScan extends CaptureActivity {
     public void onBackPressed() {
         super.onBackPressed();
         setResult(RESULT_CANCELED);
+    }
+    @Override
+    public void onStart(){
+        super.onStart();
+        if(getIntent().getBooleanExtra("decrypt",false))
+            ((TextView)findViewById(R.id.status_view)).setText(getString(R.string.decrypt_qr_message_explain));
     }
 }
