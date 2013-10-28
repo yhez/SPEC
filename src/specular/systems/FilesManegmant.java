@@ -212,6 +212,8 @@ final class FilesManegmant {
         edt.putString("name", qrpk.getName());
         if(!CryptMethods.NFCMode)
             edt.putString("private_key", CryptMethods.getPrivateToSave());
+        else
+            edt.remove("private_key");
         edt.commit();
     }
 

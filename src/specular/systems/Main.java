@@ -45,7 +45,6 @@ import java.util.ArrayList;
 public class Main extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
     public static int currentLayout;
-    public QRMessage decryptedMsg=null;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -68,6 +67,7 @@ public class Main extends Activity {
             }
         }
     };
+    public QRMessage decryptedMsg = null;
     private boolean handleByOnActivityResult = false;
     private int layouts[];
     private DrawerLayout mDrawerLayout;
@@ -79,6 +79,7 @@ public class Main extends Activity {
     private String userInput;
     private String fileContent = "";
     private Contact contact;
+    private boolean handleByOnNewIntent = false;
 
     public void createKeysManager() {
         createKeys.start();
@@ -87,6 +88,7 @@ public class Main extends Activity {
                 Toast.makeText(getBaseContext(), R.string.nfc_off,
                         Toast.LENGTH_LONG).show();
             else {
+                handleByOnNewIntent = true;
                 selectItem(-1, R.layout.wait_nfc_to_write);
                 PendingIntent pi = PendingIntent.getActivity(Main.this, 0,
                         new Intent(Main.this, getClass())
@@ -171,15 +173,12 @@ public class Main extends Activity {
             } else {
                 String result = intent.getStringExtra("barcode");
                 if (result != null) {
-                    // String contents = result;
                     switch (currentLayout) {
                         case R.layout.decrypt:
                             getIntent().putExtra("message", result);
                             setUpViews();
-                            //decryptManager(result);
                             break;
                         case R.layout.encrypt:
-                            //Log.e("bad data", result);
                             QRPublicKey qrpbk = new QRPublicKey(this, result);
                             if (qrpbk.getPublicKey() != null) {
                                 Contact c = Contact.giveMeContact(this, qrpbk);
@@ -223,6 +222,7 @@ public class Main extends Activity {
                         }
                     }
                 }
+                handleByOnNewIntent = false;
                 saveKeys.start(this);
                 synchronized (this) {
                     while (saveKeys.isAlive()) {
@@ -319,6 +319,8 @@ public class Main extends Activity {
 
     @Override
     public void onNewIntent(Intent i) {
+        //TODO find a better solution to deleting keys while on new intent
+        handleByOnNewIntent = false;
         if (currentLayout == R.layout.wait_nfc_to_write) {
             Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if (tag != null) {
@@ -335,17 +337,17 @@ public class Main extends Activity {
                     Toast.makeText(getBaseContext(), getString(R.string.problem_create_keys), Toast.LENGTH_LONG).show();
                     selectItem(layouts.length - 1, R.layout.create_new_keys);
                 } else {
-                    CryptMethods.NFCMode=true;
+                    CryptMethods.NFCMode = true;
                     saveKeys.start(this);
                     String rslt = writeTag(tag, Visual.hex2bin(CryptMethods.getPrivateToSave()));
                     Toast.makeText(getBaseContext(), rslt, Toast.LENGTH_LONG).show();
-                    findViewById(R.id.drawer_layout).animate().setDuration(1000)
-                            .alpha(0);
                     while (saveKeys.isAlive())
-                        try {
-                            wait(150);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                        synchronized (this) {
+                            try {
+                                wait(150);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     setUpViews();
                 }
@@ -389,7 +391,8 @@ public class Main extends Activity {
 
     @Override
     public void onPause() {
-        CryptMethods.deleteKeys();
+        if (!handleByOnNewIntent)
+            CryptMethods.deleteKeys();
         super.onPause();
     }
 
@@ -553,9 +556,9 @@ public class Main extends Activity {
                         @Override
                         public void run() {
                             String tmp = CryptMethods.decrypt(msg);
-                            if(tmp != null){
-                                decryptedMsg= new QRMessage(tmp);
-                                Contact.giveMeContact(Main.this,decryptedMsg);
+                            if (tmp != null) {
+                                decryptedMsg = new QRMessage(tmp);
+                                Contact.giveMeContact(Main.this, decryptedMsg);
                             }
                             prgd.cancel();
                             getIntent().removeExtra("message");
@@ -610,7 +613,8 @@ public class Main extends Activity {
         ShareDialog dlg = new ShareDialog();
         dlg.show(getFragmentManager(), "share");
     }
-//TODO
+
+    //TODO
     public void shareWeb(View v) {
 
     }
