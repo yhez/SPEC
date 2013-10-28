@@ -42,7 +42,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 
-class Wmain extends Activity {
+public class Wmain extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
     public static int currentLayout;
     public static String decryptedMsg;
@@ -553,6 +553,12 @@ class Wmain extends Activity {
                         @Override
                         public void run() {
                             decryptedMsg = CryptMethods.decrypt(msg);
+                            if(decryptedMsg.length()>0){
+                                QRMessage qrm= new QRMessage(decryptedMsg);
+                                Contact.giveMeContact(Wmain.this,qrm);
+                            }
+                            else
+                                decryptedMsg=getString(R.string.cant_decrypt);
                             prgd.cancel();
                             getIntent().removeExtra("message");
                             Message msg = hndl.obtainMessage(2);

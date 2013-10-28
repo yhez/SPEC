@@ -122,7 +122,7 @@ public class CryptMethods {
         } catch (Exception ignored) {
             ignored.printStackTrace();
         }
-        return null;
+        return "";
     }
 
     public static void encrypt(final byte[] msg, final String friendPublicKey) {

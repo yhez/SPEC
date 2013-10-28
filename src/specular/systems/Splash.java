@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-class Splash extends Activity {
+public class Splash extends Activity {
     final private static int TIME_FOR_SPLASH = 3500;
     private final Thread waitForSplash = new Thread(new Runnable() {
         @Override
