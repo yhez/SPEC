@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -128,10 +127,10 @@ public class Main extends Activity {
     void encryptManager() {
         final QRMessage msg = new QRMessage(fileContent, userInput,
                 contact.getSession());
-        final ProgressDialog prgd = new ProgressDialog(this);
+        final ProgressDlg prgd = new ProgressDlg(this);
         prgd.setCancelable(false);
         prgd.setMessage(getString(R.string.encrypting));
-        prgd.setProgressStyle(android.R.style.Theme_Holo_Dialog);
+        //prgd.setProgressStyle(android.R.style.Theme_Holo_Dialog);
         prgd.show();
         new Thread(new Runnable() {
             @Override
@@ -549,10 +548,9 @@ public class Main extends Activity {
         if (msg != null) {
             if (CryptMethods.privateExist()) {
                 if (msg.length() > 5) {
-                    final ProgressDialog prgd = new ProgressDialog(this);
+                    final ProgressDlg prgd = new ProgressDlg(this);
                     prgd.setCancelable(false);
                     prgd.setMessage(getString(R.string.decrypting));
-                    prgd.setProgressStyle(android.R.style.Theme_Holo_Dialog);
                     prgd.show();
                     new Thread(new Runnable() {
                         @Override
