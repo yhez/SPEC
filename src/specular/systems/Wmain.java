@@ -45,7 +45,7 @@ import java.util.ArrayList;
 public class Wmain extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
     public static int currentLayout;
-    public static String decryptedMsg;
+    public static QRMessage decryptedMsg=null;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -552,13 +552,11 @@ public class Wmain extends Activity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            decryptedMsg = CryptMethods.decrypt(msg);
-                            if(decryptedMsg.length()>0){
-                                QRMessage qrm= new QRMessage(decryptedMsg);
-                                Contact.giveMeContact(Wmain.this,qrm);
+                            String tmp = CryptMethods.decrypt(msg);
+                            if(tmp != null){
+                                decryptedMsg= new QRMessage(tmp);
+                                Contact.giveMeContact(Wmain.this,decryptedMsg);
                             }
-                            else
-                                decryptedMsg=getString(R.string.cant_decrypt);
                             prgd.cancel();
                             getIntent().removeExtra("message");
                             Message msg = hndl.obtainMessage(2);
@@ -613,9 +611,9 @@ public class Wmain extends Activity {
         dlg.show(getFragmentManager(), "share");
     }
 //TODO
-    /*public void shareWeb(View v) {
+    public void shareWeb(View v) {
 
-    }*/
+    }
 
     void sendMessage() {
         boolean success = FilesManegmant.createFilesToSend(this, (userInput.length() + fileContent.length()) < MSG_LIMIT_FOR_QR);

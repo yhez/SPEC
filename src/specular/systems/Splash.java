@@ -60,7 +60,7 @@ public class Splash extends Activity {
         }
         if (!newUser) {
             Intent intent = new Intent(Splash.this, Wmain.class);
-            if (message != null){
+            if (message != null) {
                 intent.putExtra("message", message);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
@@ -79,53 +79,58 @@ public class Splash extends Activity {
             QRPublicKey qrp;
             Uri uri = getIntent().getData();
             if (uri != null) {
-                String data;
+                String data = null;
                 ContentResolver cr = getBaseContext().getContentResolver();
                 InputStream is = null;
                 try {
                     is = cr.openInputStream(uri);
+                    StringBuilder buf = new StringBuilder();
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(is));
+                    String str;
+                    try {
+                        while ((str = reader.readLine()) != null) {
+                            buf.append(str).append("\n");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    buf.deleteCharAt(buf.length() - 1);
+                    data = buf.toString();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                StringBuilder buf = new StringBuilder();
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(is));
-                String str;
-                try {
-                    while ((str = reader.readLine()) != null) {
-                        buf.append(str).append("\n");
+                if (data != null) {
+                    qrp = new QRPublicKey(this, data);
+                    if (qrp.getPublicKey() != null) {
+                        ContactsDataSource cds = new ContactsDataSource(this);
+                        cds.open();
+                        Contact c = cds.findContact(qrp.getPublicKey());
+                        cds.close();
+                        if (c == null) {
+                            c = new Contact(this, qrp.getName(), qrp.getEmail(),
+                                    qrp.getPublicKey());
+                            Toast.makeText(
+                                    getBaseContext(),
+                                    c
+                                            + "\n"
+                                            + getResources().getString(
+                                            R.string.contact_saved),
+                                    Toast.LENGTH_LONG).show();
+                        } else
+                            Toast.makeText(getBaseContext(),
+                                    R.string.contact_exist, Toast.LENGTH_LONG)
+                                    .show();
+                        getIntent().setData(null);
+                        finish();
+                    } else {
+                        message = data;
+                        go();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-                buf.deleteCharAt(buf.length() - 1);
-                data = buf.toString();
-                qrp = new QRPublicKey(this, data);
-                if (qrp.getPublicKey() != null) {
-                    ContactsDataSource cds = new ContactsDataSource(this);
-                    cds.open();
-                    Contact c = cds.findContact(qrp.getPublicKey());
-                    cds.close();
-                    if (c == null) {
-                        c = new Contact(this, qrp.getName(), qrp.getEmail(),
-                                qrp.getPublicKey());
-                        Toast.makeText(
-                                getBaseContext(),
-                                c
-                                        + "\n"
-                                        + getResources().getString(
-                                        R.string.contact_saved),
-                                Toast.LENGTH_LONG).show();
-                    } else
-                        Toast.makeText(getBaseContext(),
-                                R.string.contact_exist, Toast.LENGTH_LONG)
-                                .show();
-                    getIntent().setData(null);
-                    finish();
-                } else {
-                    message = data;
-                    go();
-                }
+                else
+                    Toast.makeText(getBaseContext(), R.string.failed,
+                            Toast.LENGTH_LONG).show();
             } else
                 Toast.makeText(getBaseContext(), R.string.failed,
                         Toast.LENGTH_LONG).show();
