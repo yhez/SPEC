@@ -34,7 +34,7 @@
     <string name="cant_decrypt">This message hasn\'t been encrypted for you</string>
     <string name="subject_encrypt">An encrypted message just for you - SPEC APP</string>
     <string name="share_public_descripton">Your Public Key:</string>
-    <string name="fill_all">Please enter email</string>
+    <string name="fill_all">Please enter email, username is optional</string>
     <string name="subject_share">My Public Key - SPEC APP</string>
     <string name="contact_saved">SAVED TO CONTACTS</string>
     <string name="contact_exist">Contact already exists</string>
@@ -59,12 +59,12 @@
     <string name="tag_not_supported">Tag doesn\'t appear to support NDEF format</string>
     <string name="failed_to_write">Failed to write NFC tag</string>
     <string name="working">Working&#8230;</string>
-    <string name="qr_scan_explain">TODO</string>
+    <string name="qr_scan_explain">Place QR code within box to activate magic</string>
     <string name="decrypting">Decrypting...</string>
-    <string name="title_scan_error_msg">title_scan_error_msg</string>
-    <string name="content_scan_error_msg">content_scan_error_msg</string>
-    <string name="scan_contact_explain">scan contact explain</string>
-    <string name="decrypt_qr_message_explain">decrypt_qr_message_explain</string>
+    <string name="title_scan_error_msg">Please scan again</string>
+    <string name="content_scan_error_msg">Please scan again</string>
+    <string name="scan_contact_explain">Place QR code within box to add contact</string>
+    <string name="decrypt_qr_message_explain">Place QR code within box to read message</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
