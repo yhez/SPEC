@@ -158,7 +158,7 @@ class FragmentManagement extends Fragment {
                         .setText(contact.getPublicKey());
                 break;
             case share:
-                ((TextView) getActivity().findViewById(R.id.your_public_key)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
+                ((TextView) getActivity().findViewById(R.id.your_public_key)).setTypeface(FilesManegmant.getOld(getActivity()));
                 ((TextView) getActivity().findViewById(R.id.me_public)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "cour.ttf"));
                 ((TextView) getActivity().findViewById(R.id.button_publish)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
                 ((TextView) getActivity().findViewById(R.id.button_share)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
