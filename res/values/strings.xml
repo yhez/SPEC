@@ -27,7 +27,7 @@
     <string name="nfc_off">Please activate NFC</string>
     <string name="message">Message</string>
     <string name="session">Session</string>
-    <string name="bad_data">Unexpected data</string>
+    <string name="bad_data">Please scan again</string>
     <string name="public_key">Public Key</string>
     <string name="share_dialog">Share your Public Key&#8230;</string>
     <string name="send_dialog">Send encrypted message&#8230;</string>
