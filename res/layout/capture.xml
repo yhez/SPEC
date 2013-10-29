@@ -24,7 +24,7 @@
 
     <TextView
         android:id="@+id/status_view"
-        android:layout_width="240dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_gravity="left|center_vertical"
         android:gravity="center_horizontal"

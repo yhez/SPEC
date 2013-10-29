@@ -16,7 +16,7 @@ class TurnNFCOn extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("turn NFC on? if not keys will be saved on your device")
+        builder.setTitle(getActivity().getString(R.string.title_turn_nfc_on))
                 // Set the action buttons
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override

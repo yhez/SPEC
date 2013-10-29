@@ -60,11 +60,12 @@
     <string name="failed_to_write">Failed to write NFC tag</string>
     <string name="working">Working&#8230;</string>
     <string name="qr_scan_explain">Place QR code within box to activate magic</string>
-    <string name="decrypting">Decrypting...</string>
+    <string name="decrypting">Decrypting&#8230;</string>
     <string name="title_scan_error_msg">Please scan again</string>
     <string name="content_scan_error_msg">Please scan again</string>
     <string name="scan_contact_explain">Place QR code within box to add contact</string>
     <string name="decrypt_qr_message_explain">Place QR code within box to read message</string>
+    <string name="title_turn_nfc_on">turn NFC on? if not, keys will be saved on your device</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
