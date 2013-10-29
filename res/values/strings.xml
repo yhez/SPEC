@@ -14,7 +14,7 @@
     <string name="hint_enter_your_name">username&#8230;</string>
     <string name="hint_enter_your_email">email&#8230;</string>
     <string name="wait_for_nfc_to_write">Tap NFC tag</string>
-    <string name="skip_save_to_phone">Skip and save private decryption key on phone (LESS SECURE)</string>
+    <string name="skip_save_to_phone">Skip and save private decryption key on device (LESS SECURE)</string>
     <string name="explain_and_about">LEARN ABOUT SPEC</string>
     <string name="create_keys">Create New Keys</string>
     <string name="share_on_server">Publish</string>
@@ -65,7 +65,7 @@
     <string name="content_scan_error_msg">Please scan again</string>
     <string name="scan_contact_explain">Place QR code within box to add contact</string>
     <string name="decrypt_qr_message_explain">Place QR code within box to read message</string>
-    <string name="title_turn_nfc_on">turn NFC on? if not, keys will be saved on your device</string>
+    <string name="title_turn_nfc_on">Activate NFC? If not, keys will be saved on device (LESS SECURE)</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
