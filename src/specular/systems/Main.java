@@ -322,7 +322,6 @@ public class Main extends Activity {
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
     }
-
     @Override
     public void onNewIntent(Intent i) {
         //TODO find a better solution to deleting keys while on new intent
@@ -561,6 +560,8 @@ public class Main extends Activity {
                                 decryptedMsg = new QRMessage(tmp);
                                 Contact.giveMeContact(Main.this, decryptedMsg);
                             }
+                            else
+                                decryptedMsg=null;
                             prgd.cancel();
                             getIntent().removeExtra("message");
                             Message msg = hndl.obtainMessage(DECRYPT_SCREEN);
