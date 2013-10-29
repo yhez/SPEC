@@ -43,7 +43,7 @@ import java.util.ArrayList;
 
 public class Main extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
-    private final static int FAILED=0,REPLACE_PHOTO=1,CANT_DECRYPT=2,DECRYPT_SCREEN=3;
+    private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3;
     public static int currentLayout;
     private final Handler hndl = new Handler() {
         @Override
@@ -67,6 +67,7 @@ public class Main extends Activity {
             }
         }
     };
+    private final int ATTACH_FILE = 0, SCAN_QR = 1;
     public QRMessage decryptedMsg = null;
     private boolean handleByOnActivityResult = false;
     private int layouts[];
@@ -84,9 +85,10 @@ public class Main extends Activity {
     public void createKeysManager() {
         createKeys.start();
         if (NfcAdapter.getDefaultAdapter(this) != null)
-            if (!NfcAdapter.getDefaultAdapter(this).isEnabled())
-                Toast.makeText(getBaseContext(), R.string.nfc_off,
-                        Toast.LENGTH_LONG).show();
+            if (!NfcAdapter.getDefaultAdapter(this).isEnabled()) {
+                TurnNFCOn tno = new TurnNFCOn();
+                tno.show(getFragmentManager(),"nfc");
+            }
             else {
                 handleByOnNewIntent = true;
                 selectItem(-1, R.layout.wait_nfc_to_write);
@@ -142,7 +144,7 @@ public class Main extends Activity {
             }
         }).start();
     }
-    private final int ATTACH_FILE=0,SCAN_QR=1;
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         FilesManegmant.getKeysFromSdcard(this);
@@ -170,7 +172,10 @@ public class Main extends Activity {
                         }
                     }).start();
                 }
-            } else {
+            } else if(requestCode==71){
+                //nothing it just helping that the call set up views will not called
+            }
+            else{
                 String result = intent.getStringExtra("barcode");
                 if (result != null) {
                     switch (currentLayout) {
@@ -265,7 +270,7 @@ public class Main extends Activity {
                 break;
             case R.layout.decrypt:
                 Intent intent = new Intent(Main.this, StartScan.class);
-                intent.putExtra("decrypt",true);
+                intent.putExtra("decrypt", true);
                 startActivityForResult(intent, SCAN_QR);
                 break;
             case R.layout.contacts:
@@ -338,19 +343,15 @@ public class Main extends Activity {
                     Toast.makeText(getBaseContext(), getString(R.string.problem_create_keys), Toast.LENGTH_LONG).show();
                     selectItem(layouts.length - 1, R.layout.create_new_keys);
                 } else {
-                    CryptMethods.NFCMode = true;
-                    saveKeys.start(this);
                     String rslt = writeTag(tag, Visual.hex2bin(CryptMethods.getPrivateToSave()));
                     Toast.makeText(getBaseContext(), rslt, Toast.LENGTH_LONG).show();
-                    while (saveKeys.isAlive())
-                        synchronized (this) {
-                            try {
-                                wait(150);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    setUpViews();
+                    if (rslt.equals(getString(R.string.tag_written))) {
+                        CryptMethods.NFCMode = true;
+                        saveKeys.start(this);
+                        setUpViews();
+                    }
+                    else
+                        handleByOnNewIntent=true;
                 }
             }
         } else if (currentLayout == R.layout.wait_nfc_decrypt) {

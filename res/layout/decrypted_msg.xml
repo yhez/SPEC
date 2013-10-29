@@ -7,30 +7,44 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <LinearLayout
+    <GridLayout
+        android:rowCount="1"
+        android:columnCount="4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
+        android:layout_gravity="top"
+        android:layout_margin="@dimen/default_gap"
         android:padding="@dimen/default_gap">
+<LinearLayout
+    android:layout_column="1"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_gap"
+            android:text="hash"
+             />
+    <CheckBox
+        android:enabled="false"
+        style="?android:attr/checkboxStyle"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+</LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/default_gap"
-            android:text="hash" />
+            android:text="replay"
+            android:layout_column="2" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/default_gap"
-            android:text="replay" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/default_gap"
-            android:text="session" />
+            android:text="session"
+            android:layout_column="3" />
 
         <ImageButton
             style="?android:attr/borderlessButtonStyle"
@@ -38,8 +52,9 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/default_gap"
             android:src="@drawable/after_attach"
-            android:text="file" />
-    </LinearLayout>
+            android:text="file"
+            android:layout_column="0" />
+    </GridLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -55,23 +70,23 @@
     </ScrollView>
 
     <LinearLayout
-        android:padding="@dimen/default_gap"
-        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal"
+        android:padding="@dimen/default_gap">
 
         <Button
-            android:padding="@dimen/default_gap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/default_gap"
             android:text="Response.." />
 
         <Button
-            android:padding="@dimen/default_gap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/default_gap"
             android:text="technical details" />
     </LinearLayout>
 </LinearLayout>

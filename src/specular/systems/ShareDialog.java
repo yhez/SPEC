@@ -82,6 +82,7 @@ class ShareDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 //...
+                dialog.cancel();
             }
         });
 

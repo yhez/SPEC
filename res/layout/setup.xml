@@ -1,54 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     android:alpha="0"
-    android:gravity="center">
+    android:background="@android:color/white"
+    android:gravity="center"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/txt_manage"
-        android:textColor="#222"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/default_gap"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:textSize="30sp"
-        android:text="@string/todo" />
+        android:text="@string/todo"
+        android:textColor="#222"
+        android:textSize="30sp" />
 
-    <Button
-        android:textColor="#222"
-        android:onClick="onClick"
-        android:padding="@dimen/default_gap"
-        android:layout_width="200dp"
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/create_keys"
-        android:id="@+id/button1"
-        android:layout_gravity="center" />
-    <Button
-        android:textColor="#222"
-        android:padding="@dimen/default_gap"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="@string/export"
-        android:id="@+id/button2"
-        android:layout_gravity="center" />
-    <Button
-        android:textColor="#222"
-        android:padding="@dimen/default_gap"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="@string/Import"
-        android:id="@+id/button3"
-        android:layout_gravity="center" />
-    <Button
-        android:textColor="#222"
-        android:padding="@dimen/default_gap"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="@string/clean"
-        android:id="@+id/button4"
-        android:layout_gravity="center" />
+        android:background="#17adce"
+        android:orientation="vertical"
+        android:padding="@dimen/default_gap">
+
+        <Button
+            android:id="@+id/button1"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="onClick"
+            android:padding="@dimen/default_gap"
+            android:text="@string/create_keys"
+            android:textColor="#222" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white" />
+
+        <Button
+            android:id="@+id/button2"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/default_gap"
+            android:text="@string/export"
+            android:textColor="#222" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white" />
+        <Button
+            android:id="@+id/button3"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/default_gap"
+            android:text="@string/Import"
+            android:textColor="#222" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white" />
+        <Button
+            android:id="@+id/button4"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/default_gap"
+            android:text="@string/clean"
+            android:textColor="#222" />
+    </LinearLayout>
+
 </LinearLayout>

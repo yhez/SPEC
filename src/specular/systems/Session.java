@@ -75,10 +75,10 @@ class Session
 	{
         return "My session id: "
 			+ mySession
-			+ "   My secrete symbol: "
+			+ "   My secret sign: "
 			+ mySymbol
 			+ " "
 			+ (hisSession.equals("") ? "" : "\nYour session id: "
-			+ hisSession + "   Your secrete symbol: " + hisSymbol);
+			+ hisSession + "   Your secret sign: " + hisSymbol);
     }
 }
