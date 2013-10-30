@@ -23,25 +23,32 @@ import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
 public class CryptMethods {
+    public static QRMessage decryptedMsg = null;
     public static String encryptedMsgToSend = null;
+    public static boolean NFCMode = false;
     private static PrivateKey mPtK = null;
     private static String myName = null, myEmail = null, myPublicKey = null,
             myPrivateKey = null;
+    private static PrivateKey tmpPtK = null;
+    private static String tmpPublicKey = null,
+            tmpPrivateKey = null;
     private static boolean notInit = true;
-    public static boolean NFCMode=false;
+
     public static String getPrivateToSave() {
-        return myPrivateKey != null ? myPrivateKey : "the key is on nfc";
+        return myPrivateKey;
     }
 
     public static void deleteKeys() {
         myPrivateKey = null;
         mPtK = null;
+        decryptedMsg = null;
     }
 
     public static boolean setPrivate(String p) {
-        if (p != null && formatPrivate(p)) {
+        if (p != null) {
             myPrivateKey = p;
-            return true;
+            mPtK = formatPrivate(p);
+            return mPtK != null;
         }
         return false;
     }
@@ -49,6 +56,15 @@ public class CryptMethods {
     public static void setDetails(String name, String email) {
         myName = name;
         myEmail = email;
+    }
+
+    public static void moveKeysFromTmp() {
+        myPublicKey = tmpPublicKey;
+        tmpPublicKey=null;
+        mPtK = tmpPtK;
+        tmpPtK=null;
+        myPrivateKey = tmpPrivateKey;
+        tmpPrivateKey=null;
     }
 
     public static String getName() {
@@ -96,9 +112,9 @@ public class CryptMethods {
             }
             KeyPair keypair;
             keypair = kpg.generateKeyPair();
-            myPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
-            myPrivateKey = Visual.bin2hex(keypair.getPrivate().getEncoded());
-            formatPrivate(myPrivateKey);
+            tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
+            tmpPrivateKey = Visual.bin2hex(keypair.getPrivate().getEncoded());
+            tmpPtK = formatPrivate(tmpPrivateKey);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchProviderException e) {
@@ -106,7 +122,7 @@ public class CryptMethods {
         }
     }
 
-    public static String decrypt(String encryptedMessage) {
+    public static void decrypt(String encryptedMessage) {
         if (notInit) {
             addProviders();
             notInit = false;
@@ -118,11 +134,11 @@ public class CryptMethods {
             cipher.init(Cipher.DECRYPT_MODE, mPtK, iesParams);
             byte[] rawMsg = Visual.hex2bin(encryptedMessage);
             byte[] decryptedBytes = cipher.doFinal(rawMsg);
-            return new String(decryptedBytes);
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
+            decryptedMsg = new QRMessage(new String(decryptedBytes));
+        } catch (Exception e) {
+            decryptedMsg = null;
+            e.printStackTrace();
         }
-        return null;
     }
 
     public static void encrypt(final byte[] msg, final String friendPublicKey) {
@@ -143,16 +159,16 @@ public class CryptMethods {
         }
     }
 
-    private static boolean formatPrivate(String p) {
+    private static PrivateKey formatPrivate(String p) {
         if (notInit) {
             addProviders();
             notInit = false;
         }
         try {
-            mPtK = KeyFactory.getInstance("ECIES", "FlexiEC").generatePrivate(
+            return KeyFactory.getInstance("ECIES", "FlexiEC").generatePrivate(
                     new PKCS8EncodedKeySpec(Visual
                             .hex2bin(p)));
-            return true;
+
         } catch (InvalidKeySpecException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
@@ -160,7 +176,7 @@ public class CryptMethods {
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 //TODO
  /*   public static void signPublicQR() {

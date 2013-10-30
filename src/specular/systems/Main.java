@@ -68,7 +68,6 @@ public class Main extends Activity {
         }
     };
     private final int ATTACH_FILE = 0, SCAN_QR = 1;
-    public QRMessage decryptedMsg = null;
     private boolean handleByOnActivityResult = false;
     private int layouts[];
     private DrawerLayout mDrawerLayout;
@@ -87,9 +86,8 @@ public class Main extends Activity {
         if (NfcAdapter.getDefaultAdapter(this) != null)
             if (!NfcAdapter.getDefaultAdapter(this).isEnabled()) {
                 TurnNFCOn tno = new TurnNFCOn();
-                tno.show(getFragmentManager(),"nfc");
-            }
-            else {
+                tno.show(getFragmentManager(), "nfc");
+            } else {
                 handleByOnNewIntent = true;
                 selectItem(-1, R.layout.wait_nfc_to_write);
                 PendingIntent pi = PendingIntent.getActivity(Main.this, 0,
@@ -172,10 +170,9 @@ public class Main extends Activity {
                         }
                     }).start();
                 }
-            } else if(requestCode==71){
+            } else if (requestCode == 71) {
                 //nothing it just helping that the call set up views will not called
-            }
-            else{
+            } else {
                 String result = intent.getStringExtra("barcode");
                 if (result != null) {
                     switch (currentLayout) {
@@ -212,9 +209,7 @@ public class Main extends Activity {
             case R.layout.setup:
                 selectItem(-1, R.layout.create_new_keys);
                 break;
-            case R.layout.create_new_keys:
 
-                break;
             case R.layout.wait_nfc_to_write:
                 NfcAdapter.getDefaultAdapter(getApplicationContext())
                         .disableForegroundDispatch(Main.this);
@@ -322,6 +317,7 @@ public class Main extends Activity {
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
     }
+
     @Override
     public void onNewIntent(Intent i) {
         //TODO find a better solution to deleting keys while on new intent
@@ -338,20 +334,14 @@ public class Main extends Activity {
                         }
                     }
                 }
-                if (!CryptMethods.privateExist()) {
-                    Toast.makeText(getBaseContext(), getString(R.string.problem_create_keys), Toast.LENGTH_LONG).show();
-                    selectItem(layouts.length - 1, R.layout.create_new_keys);
-                } else {
                     String rslt = writeTag(tag, Visual.hex2bin(CryptMethods.getPrivateToSave()));
                     Toast.makeText(getBaseContext(), rslt, Toast.LENGTH_LONG).show();
                     if (rslt.equals(getString(R.string.tag_written))) {
                         CryptMethods.NFCMode = true;
                         saveKeys.start(this);
                         setUpViews();
-                    }
-                    else
-                        handleByOnNewIntent=true;
-                }
+                    } else
+                        handleByOnNewIntent = true;
             }
         } else if (currentLayout == R.layout.wait_nfc_decrypt) {
             Parcelable raw[] = getIntent().getParcelableArrayExtra(
@@ -475,33 +465,6 @@ public class Main extends Activity {
     }
 
     private void setUpViews() {
-        int defaultScreen;
-        final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
-                R.layout.share, R.layout.contacts, R.layout.help,
-                R.layout.setup};
-        final String[] allMenus = getResources().getStringArray(R.array.menus);
-        final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, CONTACTS = 3, LEARN = 4, SETUP = 5;
-        if (CryptMethods.privateExist() && CryptMethods.publicExist()) {
-            layouts = allLayouts;
-            menuTitles = allMenus;
-            defaultScreen = ENCRYPT;
-        } else if (CryptMethods.publicExist()) {
-            layouts = new int[]{allLayouts[ENCRYPT], allLayouts[SHARE],
-                    allLayouts[CONTACTS], allLayouts[LEARN], allLayouts[SETUP]};
-            menuTitles = new String[]{allMenus[ENCRYPT], allMenus[SHARE],
-                    allMenus[CONTACTS], allMenus[LEARN], allMenus[SETUP]};
-            defaultScreen = 1;
-        } else if (CryptMethods.privateExist()) {
-            layouts = new int[]{allLayouts[DECRYPT], allLayouts[CONTACTS],
-                    allLayouts[LEARN], allLayouts[SETUP]};
-            menuTitles = new String[]{allMenus[DECRYPT], allMenus[CONTACTS],
-                    allMenus[LEARN], allMenus[SETUP]};
-            defaultScreen = 0;
-        } else {
-            layouts = new int[]{allLayouts[LEARN], allLayouts[SETUP]};
-            menuTitles = new String[]{allMenus[LEARN], allMenus[SETUP]};
-            defaultScreen = 0;
-        }
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -545,51 +508,52 @@ public class Main extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         final String msg = getIntent().getStringExtra("message");
-        if (msg != null) {
-            if (CryptMethods.privateExist()) {
-                if (msg.length() > 5) {
-                    final ProgressDlg prgd = new ProgressDlg(this);
-                    prgd.setCancelable(false);
-                    prgd.setMessage(getString(R.string.decrypting));
-                    prgd.show();
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String tmp = CryptMethods.decrypt(msg);
-                            if (tmp != null) {
-                                decryptedMsg = new QRMessage(tmp);
-                                Contact.giveMeContact(Main.this, decryptedMsg);
-                            }
-                            else
-                                decryptedMsg=null;
-                            prgd.cancel();
-                            getIntent().removeExtra("message");
-                            Message msg = hndl.obtainMessage(DECRYPT_SCREEN);
-                            hndl.sendMessage(msg);
-                        }
-                    }).start();
-                } else
-                    Toast.makeText(getBaseContext(), R.string.failed, Toast.LENGTH_LONG)
-                            .show();
-            } else {
-                selectItem(1, R.layout.wait_nfc_decrypt);
-            }
-        } else {
-            if (!CryptMethods.privateExist() && CryptMethods.publicExist())
-                selectItem(-1, R.layout.wait_nfc_decrypt);
-            else if (!CryptMethods.privateExist() && !CryptMethods.publicExist())
-                selectItem(-1, R.layout.create_new_keys);
-            else {
-                boolean exist = false;
-                for (int layout : layouts)
-                    if (currentLayout == layout) {
-                        selectItem(-1, currentLayout);
-                        exist = true;
-                        break;
+        //int defaultScreenMenu, defaultScreenLayout;
+        final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
+                R.layout.share, R.layout.contacts, R.layout.help,
+                R.layout.setup};
+        final String[] allMenus = getResources().getStringArray(R.array.menus);
+        final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, CONTACTS = 3, LEARN = 4, SETUP = 5;
+        if (CryptMethods.privateExist() && CryptMethods.publicExist()) {
+            layouts = allLayouts;
+            menuTitles = allMenus;
+            selectItem(0,R.layout.encrypt);
+        } else if (CryptMethods.publicExist()) {
+            layouts = new int[]{allLayouts[ENCRYPT], allLayouts[SHARE],
+                    allLayouts[CONTACTS], allLayouts[LEARN], allLayouts[SETUP]};
+            menuTitles = new String[]{allMenus[ENCRYPT], allMenus[SHARE],
+                    allMenus[CONTACTS], allMenus[LEARN], allMenus[SETUP]};
+            selectItem(1, R.layout.wait_nfc_decrypt);
+        } else if (CryptMethods.privateExist()) {
+            layouts = new int[]{allLayouts[DECRYPT], allLayouts[CONTACTS],
+                    allLayouts[LEARN], allLayouts[SETUP]};
+            menuTitles = new String[]{allMenus[DECRYPT], allMenus[CONTACTS],
+                    allMenus[LEARN], allMenus[SETUP]};
+            if (msg != null) {
+                final ProgressDlg prgd = new ProgressDlg(this);
+                prgd.setCancelable(false);
+                prgd.setMessage(getString(R.string.decrypting));
+                prgd.show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CryptMethods.decrypt(msg);
+                        if (CryptMethods.decryptedMsg != null)
+                            Contact.giveMeContact(Main.this, CryptMethods.decryptedMsg);
+                        else
+                            CryptMethods.decryptedMsg = null;
+                        prgd.cancel();
+                        getIntent().removeExtra("message");
+                        Message msg = hndl.obtainMessage(DECRYPT_SCREEN);
+                        hndl.sendMessage(msg);
                     }
-                if (!exist)
-                    selectItem(defaultScreen, 0);
-            }
+                }).start();
+            } else
+                selectItem(0,R.layout.decrypt);
+        } else {
+            layouts = new int[]{allLayouts[LEARN], allLayouts[SETUP]};
+            menuTitles = new String[]{allMenus[LEARN], allMenus[SETUP]};
+            selectItem(1, R.layout.create_new_keys);
         }
     }
 

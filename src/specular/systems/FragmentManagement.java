@@ -59,7 +59,7 @@ class FragmentManagement extends Fragment {
                     ((ScrollView) getActivity().findViewById(msg.what)).smoothScrollTo(0, ((View) msg.obj).getTop());
                     break;
                 case 55:
-                    ((TextView)getActivity().findViewById(R.id.decrypted_msg)).setText(w.decryptedMsg != null ? w.decryptedMsg.getMsgContent() : getActivity().getString(R.string.cant_decrypt));
+                    ((TextView)getActivity().findViewById(R.id.decrypted_msg)).setText(CryptMethods.decryptedMsg != null ? CryptMethods.decryptedMsg.getMsgContent() : getActivity().getString(R.string.cant_decrypt));
                     break;
             }
         }

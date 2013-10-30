@@ -154,6 +154,7 @@ final class FilesManegmant {
     }
 
     public static void save(Activity a) {
+        CryptMethods.moveKeysFromTmp();
         SharedPreferences srp = PreferenceManager
                 .getDefaultSharedPreferences(a.getApplicationContext());
         SharedPreferences.Editor edt = srp.edit();

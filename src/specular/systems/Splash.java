@@ -81,7 +81,7 @@ public class Splash extends Activity {
             if (uri != null) {
                 String data = null;
                 ContentResolver cr = getBaseContext().getContentResolver();
-                InputStream is = null;
+                InputStream is;
                 try {
                     is = cr.openInputStream(uri);
                     StringBuilder buf = new StringBuilder();
@@ -103,6 +103,7 @@ public class Splash extends Activity {
                 if (data != null) {
                     qrp = new QRPublicKey(this, data);
                     if (qrp.getPublicKey() != null) {
+                        //TODO create dialog before save
                         ContactsDataSource cds = new ContactsDataSource(this);
                         cds.open();
                         Contact c = cds.findContact(qrp.getPublicKey());
@@ -122,7 +123,7 @@ public class Splash extends Activity {
                                     R.string.contact_exist, Toast.LENGTH_LONG)
                                     .show();
                         getIntent().setData(null);
-                        finish();
+                        go();
                     } else {
                         message = data;
                         go();
