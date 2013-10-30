@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="welcome">Welcome, let\'s start bringing privacy and security to our online lives.</string>
+    <string name="welcome">Welcome, let\'s start bringing privacy and security to our online lives.\nLet the SPEC magic begin.</string>
     <string name="company_text">SPEC ; HOLD THE KEY TO YOUR SECURITY</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -34,7 +34,7 @@
     <string name="cant_decrypt">This message hasn\'t been encrypted for you</string>
     <string name="subject_encrypt">An encrypted message just for you - SPEC APP</string>
     <string name="share_public_descripton">Your Public Key:</string>
-    <string name="fill_all">Please enter a valid email.\nThis email will help other users when they contact you.\nUsername is optional.</string>
+    <string name="fill_all">Please enter a valid email.\nThis email will enable other users to contact you.\nUsername is optional.</string>
     <string name="subject_share">My Public Key - SPEC APP</string>
     <string name="contact_saved">SAVED TO CONTACTS</string>
     <string name="contact_exist">Contact already exists</string>
