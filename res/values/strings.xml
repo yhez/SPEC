@@ -34,7 +34,7 @@
     <string name="cant_decrypt">This message hasn\'t been encrypted for you</string>
     <string name="subject_encrypt">An encrypted message just for you - SPEC APP</string>
     <string name="share_public_descripton">Your Public Key:</string>
-    <string name="fill_all">Please enter email, username is optional</string>
+    <string name="fill_all">Please enter a valid email.\nThis email will help other users when they contact you.\nUsername is optional.</string>
     <string name="subject_share">My Public Key - SPEC APP</string>
     <string name="contact_saved">SAVED TO CONTACTS</string>
     <string name="contact_exist">Contact already exists</string>
