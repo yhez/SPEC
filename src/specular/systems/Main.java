@@ -177,7 +177,7 @@ public void search(View v){
                     }).start();
                 }
             } else if (requestCode == 71) {
-                //nothing it just helping that the call set up views will not called
+                //nothing to do, it just helping that the call set up views will not called
             } else {
                 String result = intent.getStringExtra("barcode");
                 if (result != null) {
@@ -565,7 +565,7 @@ public void search(View v){
 
     private boolean showDecrypt() {
         final String msg = getIntent().getStringExtra("message");
-        if (msg != null) {
+        if (Splash.message != null||msg!=null) {
             final ProgressDlg prgd = new ProgressDlg(this);
             prgd.setCancelable(false);
             prgd.setMessage(getString(R.string.decrypting));
@@ -573,12 +573,13 @@ public void search(View v){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    CryptMethods.decrypt(msg);
+                    CryptMethods.decrypt(msg!=null?msg:Splash.message);
                     if (CryptMethods.decryptedMsg != null)
                         Contact.giveMeContact(Main.this, CryptMethods.decryptedMsg);
                     else
                         CryptMethods.decryptedMsg = null;
                     getIntent().removeExtra("message");
+                    Splash.message=null;
                     Message msg = hndl.obtainMessage(DECRYPT_SCREEN);
                     hndl.sendMessage(msg);
                     prgd.cancel();

@@ -9,6 +9,7 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import java.io.InputStreamReader;
 
 public class Splash extends Activity {
     final private static int TIME_FOR_SPLASH = 3500;
+    public static String message;
     private final Thread waitForSplash = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -31,14 +33,10 @@ public class Splash extends Activity {
                 }
             }
             Intent intent = new Intent(Splash.this, Main.class);
-            if (message != null)
-                intent.putExtra("message", message);
             startActivity(intent);
             finish();
         }
     });
-    private String message = null;
-
     void go() {
         boolean newUser = FilesManegmant.isItNewUser(this);
         if (newUser) {
@@ -61,7 +59,6 @@ public class Splash extends Activity {
         if (!newUser) {
             Intent intent = new Intent(Splash.this, Main.class);
             if (message != null) {
-                intent.putExtra("message", message);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
             startActivity(intent);
@@ -80,9 +77,9 @@ public class Splash extends Activity {
             Uri uri = getIntent().getData();
             if (uri != null) {
                 String data = null;
-                ContentResolver cr = getBaseContext().getContentResolver();
-                InputStream is;
                 try {
+                    ContentResolver cr = getBaseContext().getContentResolver();
+                    InputStream is;
                     is = cr.openInputStream(uri);
                     StringBuilder buf = new StringBuilder();
                     BufferedReader reader = new BufferedReader(
@@ -92,6 +89,10 @@ public class Splash extends Activity {
                         while ((str = reader.readLine()) != null) {
                             buf.append(str).append("\n");
                         }
+
+                        is.close();
+                        reader.close();
+                        Log.d("success",buf.length()+"");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
