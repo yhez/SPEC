@@ -49,7 +49,7 @@ public class ProgressDlg extends ProgressDialog {
     }
     private void animate(final HoloCircularProgressBar progressBar, final Animator.AnimatorListener listener) {
         final float progress = (float) (Math.random() * 2);
-        int duration = 3000;
+        int duration = 1500;
         animate(progressBar, listener, progress, duration);
     }
     private void animate(final HoloCircularProgressBar progressBar, final Animator.AnimatorListener listener,

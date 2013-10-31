@@ -2,6 +2,7 @@ package specular.systems;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,13 +13,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,30 +37,16 @@ import static specular.systems.R.layout.wait_nfc_to_write;
 
 class FragmentManagement extends Fragment {
     private static Main w;
+    final int TURN_TEXT_TRIGGER=0;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case 15:
+                case TURN_TEXT_TRIGGER:
                     EditText et = (EditText) getActivity().findViewById(R.id.message);
                     String ss = et.getText() + "";
                     et.setText(" " + ss);
                     et.setText(ss);
-                    break;
-                case 43:
-                    ((TextView) msg.obj).setVisibility(View.VISIBLE);
-                    ((TextView) msg.obj).setTypeface(FilesManegmant.getOs(getActivity()));
-                    ((TextView) msg.obj).animate().setDuration(700).alpha(1).start();
-                    ((ScrollView) getActivity().findViewById(msg.what)).smoothScrollTo(0, ((View) msg.obj).getTop());
-                    break;
-                case 44:
-                    ((TextView) msg.obj).setVisibility(View.VISIBLE);
-                    ((TextView) msg.obj).setTypeface(FilesManegmant.getOs(getActivity()));
-                    ((TextView) msg.obj).animate().setDuration(700).alpha(1).start();
-                    ((ScrollView) getActivity().findViewById(msg.what)).smoothScrollTo(0, ((View) msg.obj).getTop());
-                    break;
-                case 55:
-                    ((TextView)getActivity().findViewById(R.id.decrypted_msg)).setText(CryptMethods.decryptedMsg != null ? CryptMethods.decryptedMsg.getMsgContent() : getActivity().getString(R.string.cant_decrypt));
                     break;
             }
         }
@@ -204,6 +191,9 @@ class FragmentManagement extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> p1, View p2, int p3,
                                             long p4) {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
+                        getActivity().findViewById(R.id.search).setVisibility(View.GONE);
                         getActivity().findViewById(R.id.en_list_contact).setVisibility(View.GONE);
                         getActivity().findViewById(R.id.en_contact).setVisibility(View.VISIBLE);
                         ContactsDataSource cdsss = new ContactsDataSource(getActivity());
@@ -249,7 +239,6 @@ class FragmentManagement extends Fragment {
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-                        et.setGravity(View.TEXT_ALIGNMENT_TEXT_START);
                         String len = ((TextView) getActivity().findViewById(R.id.file_content_length)).getText().toString();
                         int num = editable.toString().length() + (len.length() > 0 ?
                                 Integer.parseInt(len) : 0);
@@ -292,7 +281,7 @@ class FragmentManagement extends Fragment {
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-                        Message msg = hndl.obtainMessage(15);
+                        Message msg = hndl.obtainMessage(TURN_TEXT_TRIGGER);
                         hndl.sendMessage(msg);
                     }
                 });
@@ -310,7 +299,7 @@ class FragmentManagement extends Fragment {
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-                        Message msg = hndl.obtainMessage(15);
+                        Message msg = hndl.obtainMessage(TURN_TEXT_TRIGGER);
                         hndl.sendMessage(msg);
                     }
                 });
@@ -330,9 +319,10 @@ class FragmentManagement extends Fragment {
                 ((Button) getActivity().findViewById(R.id.button4)).setTypeface(FilesManegmant.getOs(getActivity()));
                 break;
             case decrypted_msg:
-                ((TextView) getActivity().findViewById(R.id.decrypted_msg)).setTypeface(FilesManegmant.getOs(getActivity()));
-                Message msg = hndl.obtainMessage(55);
-                hndl.sendMessage(msg);
+                QRMessage qrm = CryptMethods.decryptedMsg;
+                TextView tv = (TextView)getActivity().findViewById(R.id.decrypted_msg);
+                tv.setText(qrm != null ? qrm.getMsgContent() : getActivity().getString(R.string.cant_decrypt));
+                tv.setTypeface(FilesManegmant.getOs(getActivity()));
                 break;
         }
     }

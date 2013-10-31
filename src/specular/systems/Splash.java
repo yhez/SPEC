@@ -123,18 +123,21 @@ public class Splash extends Activity {
                                     R.string.contact_exist, Toast.LENGTH_LONG)
                                     .show();
                         getIntent().setData(null);
-                        go();
                     } else {
                         message = data;
-                        go();
                     }
+                    go();
                 }
-                else
+                else{
                     Toast.makeText(getBaseContext(), R.string.failed,
                             Toast.LENGTH_LONG).show();
-            } else
+                    finish();
+                }
+            } else{
                 Toast.makeText(getBaseContext(), R.string.failed,
                         Toast.LENGTH_LONG).show();
+                finish();
+            }
         } else
             go();
     }

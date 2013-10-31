@@ -123,7 +123,13 @@ public class Main extends Activity {
             setUpViews();
         }
     }
-
+public void search(View v){
+    View b = findViewById(R.id.filter_ll);
+    if(b.getVisibility()==View.GONE)
+        b.setVisibility(View.VISIBLE);
+    else
+        b.setVisibility(View.GONE);
+}
     void encryptManager() {
         final QRMessage msg = new QRMessage(fileContent, userInput,
                 contact.getSession());
@@ -137,8 +143,8 @@ public class Main extends Activity {
             public void run() {
                 CryptMethods.encrypt(msg.getFormatedMsg().getBytes(),
                         contact.getPublicKey());
-                prgd.cancel();
                 sendMessage();
+                prgd.cancel();
             }
         }).start();
     }
@@ -528,7 +534,6 @@ public class Main extends Activity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        final String msg = getIntent().getStringExtra("message");
         //int defaultScreenMenu, defaultScreenLayout;
         final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
                 R.layout.share, R.layout.contacts, R.layout.help,
@@ -536,7 +541,8 @@ public class Main extends Activity {
         switch (status) {
             case BOTH:
                 layouts = allLayouts;
-                selectItem(0, R.layout.encrypt);
+                if (!showDecrypt())
+                    selectItem(0, R.layout.encrypt);
                 break;
             case PB:
                 layouts = new int[]{allLayouts[ENCRYPT], allLayouts[SHARE],
@@ -546,26 +552,7 @@ public class Main extends Activity {
             case PV:
                 layouts = new int[]{allLayouts[DECRYPT], allLayouts[CONTACTS],
                         allLayouts[LEARN], allLayouts[SETUP]};
-                if (msg != null) {
-                    final ProgressDlg prgd = new ProgressDlg(this);
-                    prgd.setCancelable(false);
-                    prgd.setMessage(getString(R.string.decrypting));
-                    prgd.show();
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            CryptMethods.decrypt(msg);
-                            if (CryptMethods.decryptedMsg != null)
-                                Contact.giveMeContact(Main.this, CryptMethods.decryptedMsg);
-                            else
-                                CryptMethods.decryptedMsg = null;
-                            prgd.cancel();
-                            getIntent().removeExtra("message");
-                            Message msg = hndl.obtainMessage(DECRYPT_SCREEN);
-                            hndl.sendMessage(msg);
-                        }
-                    }).start();
-                } else
+                if(!showDecrypt())
                     selectItem(0, R.layout.decrypt);
                 break;
             case NONE:
@@ -573,6 +560,32 @@ public class Main extends Activity {
                 selectItem(1, R.layout.create_new_keys);
                 break;
         }
+    }
+
+    private boolean showDecrypt() {
+        final String msg = getIntent().getStringExtra("message");
+        if (msg != null) {
+            final ProgressDlg prgd = new ProgressDlg(this);
+            prgd.setCancelable(false);
+            prgd.setMessage(getString(R.string.decrypting));
+            prgd.show();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    CryptMethods.decrypt(msg);
+                    if (CryptMethods.decryptedMsg != null)
+                        Contact.giveMeContact(Main.this, CryptMethods.decryptedMsg);
+                    else
+                        CryptMethods.decryptedMsg = null;
+                    getIntent().removeExtra("message");
+                    Message msg = hndl.obtainMessage(DECRYPT_SCREEN);
+                    hndl.sendMessage(msg);
+                    prgd.cancel();
+                }
+            }).start();
+            return true;
+        }
+        return false;
     }
 
     @Override

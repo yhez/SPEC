@@ -26,40 +26,33 @@
         android:layout_height="wrap_content"
         android:background="#ffffff"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/add_contact"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:drawablePadding="0dip"
+            android:onClick="onClick"
+            android:padding="@dimen/default_gap"
+            android:src="@drawable/add_qr" />
 
         <EditText
-            android:textSize="16sp"
-            android:textColor="#000000"
+            android:layout_marginRight="@dimen/default_gap"
             android:id="@+id/filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="bottom"
-            android:layout_marginLeft="8dip"
             android:hint="@string/encrypt_explain"
-            android:inputType="textFilter" />
-
-        <ImageButton
-            android:drawablePadding="0dip"
-            android:layout_marginLeft="8dp"
-            style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/add_contact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:onClick="onClick"
-            android:padding="@dimen/default_gap"
-            android:src="@drawable/add_qr" />
+            android:inputType="textFilter"
+            android:textColor="#000000"
+            android:textSize="16sp" />
     </LinearLayout>
 
-  <!--  <View
-        android:id="@+id/divider_up"
-        android:layout_below="@id/filter_ll"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#eeeeee" />
--->
     <LinearLayout
         android:id="@+id/bottom_panel"
         android:layout_width="match_parent"
@@ -78,6 +71,7 @@
             android:layout_weight="1.0"
             android:autoText="true"
             android:capitalize="sentences"
+            android:gravity="bottom|left"
             android:hint="@string/hint_msg"
             android:imeOptions="actionSend"
             android:inputType="textAutoCorrect|textCapSentences|textMultiLine"
@@ -93,33 +87,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/add_file"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="0"
-                android:drawablePadding="0dip"
-                android:nextFocusLeft="@+id/send_button_sms"
-                android:onClick="onClick"
-                android:src="@drawable/ic_attachment_universal_small" />
             <TextView
                 android:id="@+id/text_counter"
                 android:layout_width="match_parent"
-                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:textColor="#cc333333"
                 android:textSize="12sp"
-                android:visibility="gone"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
+
             <ImageButton
                 android:id="@+id/send"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
                 android:layout_weight="0"
                 android:drawablePadding="0dip"
                 android:nextFocusLeft="@+id/embedded_text_editor"
@@ -130,18 +113,44 @@
 
     <View
         android:id="@+id/divider"
-        android:layout_above="@id/bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_above="@id/bottom_panel"
         android:background="@color/spec_blue" />
 
-    <ListView
-        android:id="@+id/en_list_contact"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/divider"
-        android:layout_below="@id/filter_ll"
-        android:padding="@dimen/default_gap" />
+        android:layout_height="match_parent"
+        android:layout_above="@id/divider"
+        android:layout_below="@id/filter_ll">
+
+        <ListView
+            android:paddingLeft="@dimen/default_gap"
+            android:paddingRight="@dimen/default_gap"
+            android:id="@+id/en_list_contact"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageButton
+            android:id="@+id/search"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:onClick="search"
+            android:src="@android:drawable/ic_menu_search" />
+
+        <ImageButton
+            android:id="@+id/add_file"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_weight="0"
+            android:drawablePadding="0dip"
+            android:onClick="onClick"
+            android:src="@drawable/ic_attachment_universal_small" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/en_contact"
