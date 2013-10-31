@@ -37,6 +37,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
-        android:divider="#39cfef"
+        android:divider="@color/spec_blue"
         android:dividerHeight="1dp" />
 </android.support.v4.widget.DrawerLayout>

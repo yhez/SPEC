@@ -24,7 +24,7 @@
             android:gravity="center"
             android:padding="6dp"
             android:text="@string/share_public_descripton"
-            android:textColor="#222"
+            android:textColor="@color/spec_black"
             android:textSize="25sp" />
 
         <LinearLayout
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
-            android:background="#17adce"
+            android:background="@color/spec_dark_blue"
             android:orientation="horizontal"
             android:padding="@dimen/default_gap">
 

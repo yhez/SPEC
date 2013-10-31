@@ -6,5 +6,7 @@
     <color name="result_view">#b0000000</color>
     <color name="possible_result_points">#c0ffff00</color>
     <color name="spec_blue">#39cfef</color>
-
+    <color name="spec_dark_blue">#17adce</color>
+    <color name="spec_black">#222</color>
+    <color name="spec_gray">#777</color>
 </resources>

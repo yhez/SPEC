@@ -16,14 +16,14 @@
         android:gravity="center"
         android:padding="@dimen/default_gap"
         android:text="@string/todo"
-        android:textColor="#222"
+        android:textColor="@color/spec_black"
         android:textSize="30sp" />
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#17adce"
+        android:background="@color/spec_dark_blue"
         android:orientation="vertical"
         android:padding="@dimen/default_gap">
 
@@ -36,7 +36,7 @@
             android:onClick="onClick"
             android:padding="@dimen/default_gap"
             android:text="@string/create_keys"
-            android:textColor="#222" />
+            android:textColor="@color/spec_black" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -50,7 +50,7 @@
             android:layout_gravity="center"
             android:padding="@dimen/default_gap"
             android:text="@string/export"
-            android:textColor="#222" />
+            android:textColor="@color/spec_black" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -63,7 +63,7 @@
             android:layout_gravity="center"
             android:padding="@dimen/default_gap"
             android:text="@string/Import"
-            android:textColor="#222" />
+            android:textColor="@color/spec_black" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -76,7 +76,7 @@
             android:layout_gravity="center"
             android:padding="@dimen/default_gap"
             android:text="@string/clean"
-            android:textColor="#222" />
+            android:textColor="@color/spec_black" />
     </LinearLayout>
 
 </LinearLayout>

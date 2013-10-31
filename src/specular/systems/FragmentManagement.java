@@ -139,6 +139,7 @@ class FragmentManagement extends Fragment {
                         .setText(contact.getEmail());
                 ((TextView) getActivity().findViewById(R.id.contact_session))
                         .setText(contact.getSession());
+                ((ImageView)getActivity().findViewById(R.id.contact_picture)).setImageBitmap(contact.getPhoto());
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.edit_contact));
                 TextView tvt = (TextView) getActivity().findViewById(R.id.contact_pb);
                 tvt.setText(contact.getPublicKey());
@@ -312,10 +313,10 @@ class FragmentManagement extends Fragment {
                 setAllFonts(getActivity(),(ViewGroup)getActivity().findViewById(R.id.setup));
                 break;
             case decrypted_msg:
-                QRMessage qrm = CryptMethods.decryptedMsg;
                 TextView tv = (TextView) getActivity().findViewById(R.id.decrypted_msg);
-                tv.setText(qrm != null ? qrm.getMsgContent() : getActivity().getString(R.string.cant_decrypt));
-                tv.setTypeface(FilesManegmant.getOs(getActivity()));
+                tv.setText(CryptMethods.decryptedMsg != null ?
+                        CryptMethods.decryptedMsg.getMsgContent() : getActivity().getString(R.string.cant_decrypt));
+                setAllFonts(getActivity(),(ViewGroup)getActivity().findViewById(R.id.decrypted_msg_ll));
                 break;
         }
     }
