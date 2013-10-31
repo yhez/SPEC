@@ -6,6 +6,7 @@
     android:background="@android:color/white"
     android:gravity="center"
     android:alpha="0"
+    android:id="@+id/wait_nfc_to_write"
     android:padding="40dp">
 
     <TextView

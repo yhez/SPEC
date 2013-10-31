@@ -48,7 +48,7 @@ final class FilesManegmant {
 
     public static Typeface getOld(Activity a) {
         if (tfold == null)
-            tfold = Typeface.createFromAsset(a.getAssets(), "OpenSans-Light.ttf");
+            tfold = Typeface.createFromAsset(a.getAssets(), "cour.ttf");
         return tfold;
     }
 

@@ -1,9 +1,9 @@
 package specular.systems;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -37,7 +36,7 @@ import static specular.systems.R.layout.wait_nfc_to_write;
 
 class FragmentManagement extends Fragment {
     private static Main w;
-    final int TURN_TEXT_TRIGGER=0;
+    final int TURN_TEXT_TRIGGER = 0;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -52,6 +51,7 @@ class FragmentManagement extends Fragment {
         }
     };
     private float startPoint;
+
     public FragmentManagement(Main w) {
         this.w = w;
     }
@@ -73,9 +73,7 @@ class FragmentManagement extends Fragment {
         ContactsDataSource cds = new ContactsDataSource(getActivity());
         switch (Main.currentLayout) {
             case create_new_keys:
-                ((TextView) getActivity().findViewById(R.id.welcome)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
-                ((EditText) getActivity().findViewById(R.id.name)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
-                ((EditText) getActivity().findViewById(R.id.email)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
+                setAllFonts(getActivity(),(ViewGroup)getActivity().findViewById(R.id.create_new_keys));
                 getActivity().findViewById(R.id.gesture).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -141,14 +139,14 @@ class FragmentManagement extends Fragment {
                         .setText(contact.getEmail());
                 ((TextView) getActivity().findViewById(R.id.contact_session))
                         .setText(contact.getSession());
-                ((TextView) getActivity().findViewById(R.id.contact_pb))
-                        .setText(contact.getPublicKey());
+                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.edit_contact));
+                TextView tvt = (TextView) getActivity().findViewById(R.id.contact_pb);
+                tvt.setText(contact.getPublicKey());
+                tvt.setTypeface(FilesManegmant.getOld(getActivity()));
                 break;
             case share:
-                ((TextView) getActivity().findViewById(R.id.your_public_key)).setTypeface(FilesManegmant.getOld(getActivity()));
-                ((TextView) getActivity().findViewById(R.id.me_public)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "cour.ttf"));
-                ((TextView) getActivity().findViewById(R.id.button_publish)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
-                ((TextView) getActivity().findViewById(R.id.button_share)).setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
+                setAllFonts(getActivity(),(ViewGroup)getActivity().findViewById(R.id.share_fl));
+                ((TextView) getActivity().findViewById(R.id.me_public)).setTypeface(FilesManegmant.getOld(getActivity()));
                 if (FilesManegmant.getMyQRPublicKey(getActivity()) != null)
                     ((ImageView) getActivity().findViewById(R.id.qr_image))
                             .setImageBitmap(FilesManegmant.getMyQRPublicKey(getActivity()));
@@ -308,22 +306,29 @@ class FragmentManagement extends Fragment {
                 ((TextView) getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManegmant.getOs(getActivity()));
                 break;
             case wait_nfc_to_write:
-                ((TextView) getActivity().findViewById(R.id.button_skip_nfc)).setTypeface(FilesManegmant.getOs(getActivity()));
-                ((TextView) getActivity().findViewById(R.id.tab_nfc)).setTypeface(FilesManegmant.getOs(getActivity()));
+                setAllFonts(getActivity(),(ViewGroup)getActivity().findViewById(R.id.wait_nfc_to_write));
                 break;
             case setup:
-                ((TextView) getActivity().findViewById(R.id.txt_manage)).setTypeface(FilesManegmant.getOs(getActivity()));
-                ((Button) getActivity().findViewById(R.id.button1)).setTypeface(FilesManegmant.getOs(getActivity()));
-                ((Button) getActivity().findViewById(R.id.button2)).setTypeface(FilesManegmant.getOs(getActivity()));
-                ((Button) getActivity().findViewById(R.id.button3)).setTypeface(FilesManegmant.getOs(getActivity()));
-                ((Button) getActivity().findViewById(R.id.button4)).setTypeface(FilesManegmant.getOs(getActivity()));
+                setAllFonts(getActivity(),(ViewGroup)getActivity().findViewById(R.id.setup));
                 break;
             case decrypted_msg:
                 QRMessage qrm = CryptMethods.decryptedMsg;
-                TextView tv = (TextView)getActivity().findViewById(R.id.decrypted_msg);
+                TextView tv = (TextView) getActivity().findViewById(R.id.decrypted_msg);
                 tv.setText(qrm != null ? qrm.getMsgContent() : getActivity().getString(R.string.cant_decrypt));
                 tv.setTypeface(FilesManegmant.getOs(getActivity()));
                 break;
         }
+    }
+
+    void setAllFonts(Activity act, ViewGroup v) {
+        for (int a = 0; a < v.getChildCount(); a++)
+            try {
+                setAllFonts(act, (ViewGroup) v.getChildAt(a));
+            } catch (Exception e) {
+                try {
+                    ((TextView) v.getChildAt(a)).setTypeface(FilesManegmant.getOs(act));
+                } catch (Exception ee) {
+                }
+            }
     }
 }

@@ -3,7 +3,8 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="@android:color/white"
-    android:alpha="1"
+    android:alpha="0"
+    android:id="@+id/create_new_keys"
     android:padding="37dp">
 
     <TextView

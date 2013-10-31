@@ -1,83 +1,152 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="@android:color/white"
     android:alpha="0"
-    android:padding="@dimen/default_gap"
-    android:gravity="center">
-
+    android:id="@+id/edit_contact"
+    android:background="@android:color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/default_gap">
+    <TextView
+        android:layout_gravity="left"
+        android:textColor="#777"
+        android:textSize="10sp"
+        android:text="@string/editable_fields"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+    <View
+        android:background="@color/spec_blue"
+        android:layout_height="1dp"
+        android:layout_width="match_parent"/>
+<LinearLayout
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
+    <TextView
+        android:textColor="#222"
+        android:textSize="15sp"
+        android:text="@string/edit_name"
+        android:padding="@dimen/default_gap"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
     <EditText
-        android:gravity="center"
-        android:paddingLeft="@dimen/default_gap"
-        android:paddingTop="@dimen/default_gap"
-        android:paddingRight="@dimen/default_gap"
+        android:minWidth="100dp"
+        android:textSize="15sp"
         android:id="@+id/contact_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
         android:padding="@dimen/default_gap"
-        android:id="@+id/contact_session"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:gravity="center"
-        android:padding="@dimen/default_gap"
-        android:id="@+id/contact_pb"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:gravity="center"
-        android:padding="@dimen/default_gap"
-        android:id="@+id/contact_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+        android:textColor="#222" />
+</LinearLayout>
     <LinearLayout
-        style="?android:attr/buttonBarStyle"
-        android:padding="@dimen/default_gap"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="horizontal">
+        <TextView
+            android:textColor="#222"
+            android:textSize="14sp"
+            android:text="@string/edit_email"
+            android:padding="@dimen/default_gap"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+    <EditText
+        android:minWidth="100dp"
+        android:textSize="15sp"
+        android:id="@+id/contact_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:padding="@dimen/default_gap"
+        android:textColor="#222" />
+</LinearLayout>
+    <TextView
+        android:layout_gravity="left"
+        android:textColor="#777"
+        android:textSize="10sp"
+        android:text="@string/not_editable_fields"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+    <View
+        android:background="@color/spec_blue"
+        android:layout_height="1dp"
+        android:layout_width="match_parent"/>
+    <TextView
+        android:id="@+id/contact_session"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:padding="@dimen/default_gap"
+        android:textColor="#222" />
+
+    <TextView
+        android:textSize="11sp"
+        android:id="@+id/contact_pb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:padding="@dimen/default_gap"
+        android:textColor="#222" />
+    <View
+        android:background="@color/spec_blue"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/default_gap"
+        android:layout_width="match_parent"/>
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/spec_blue"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_gap">
 
         <Button
-            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/cancel"
-            android:padding="@dimen/default_gap"
-            android:layout_weight="1"
-            android:onClick="onClick"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel" />
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:padding="@dimen/default_gap"
+            android:text="@string/cancel"
+            android:textColor="#222" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" />
 
         <Button
-            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/save"
-            android:padding="@dimen/default_gap"
-            android:layout_weight="1"
-            android:onClick="onClick"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save" />
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:padding="@dimen/default_gap"
+            android:text="@string/save"
+            android:textColor="#222" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" />
 
         <Button
-            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/delete"
-            android:padding="@dimen/default_gap"
-            android:layout_weight="1"
-            android:onClick="onClick"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/delete" />
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:padding="@dimen/default_gap"
+            android:text="@string/delete"
+            android:textColor="#222" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/contact_id"
-        android:visibility="gone"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 </LinearLayout>

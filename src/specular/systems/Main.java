@@ -287,11 +287,12 @@ public void search(View v){
                 cds.close();
                 switch (v.getId()) {
                     case R.id.save:
-                        if (((EditText) findViewById(R.id.contact_name)).getText()
-                                .toString().length() != 0)
-                            contact.update(this,
-                                    ((EditText) findViewById(R.id.contact_name))
-                                            .getText().toString(), null, null, null, -1);
+                        String name = ((EditText) findViewById(R.id.contact_name)).getText()
+                                .toString();
+                        String email= ((EditText) findViewById(R.id.contact_email)).getText()
+                                .toString();
+                        if (name.length()>0&&email.length()>0)
+                            contact.update(this,name, email, null, null, -1);
                         else
                             Toast.makeText(getBaseContext(), R.string.fill_all,
                                     Toast.LENGTH_LONG).show();
@@ -587,22 +588,28 @@ public void search(View v){
         }
         return false;
     }
-
+boolean exit = false;
     @Override
     public void onBackPressed() {
-        if (currentLayout == R.layout.create_new_keys) {
+        if (exit) {
             super.onBackPressed();
         } else {
-            boolean atHome = false;
-            for (int layout : layouts)
-                if (currentLayout == layout)
-                    atHome = true;
-            if (atHome) {
-                CryptMethods.deleteKeys();
-                super.onBackPressed();
-            } else {
-                setUpViews();
-            }
+            Toast.makeText(this,R.string.exit_by_back_notify,Toast.LENGTH_SHORT).show();
+            exit=true;
+            setUpViews();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (this){
+                        try {
+                            wait(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    exit=false;
+                }
+            }).start();
         }
     }
 
