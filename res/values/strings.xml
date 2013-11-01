@@ -67,8 +67,8 @@
     <string name="decrypt_qr_message_explain">Place QR code within box to read message</string>
     <string name="title_turn_nfc_on">Activate NFC? If not, keys will be saved on device (LESS SECURE)</string>
     <string name="exit_by_back_notify">Press back again to exit</string>
-    <string name="edit_email">Email: </string>
-    <string name="edit_name">Name: </string>
+    <string name="edit_email">email: </string>
+    <string name="edit_name">name: </string>
     <string name="editable_fields">Contact\'s Info (editable):</string>
     <string name="not_editable_fields">Security Audit Info (uneditable):</string>
     <string-array name="menus">
