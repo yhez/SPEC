@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -73,7 +74,7 @@ class FragmentManagement extends Fragment {
         ContactsDataSource cds = new ContactsDataSource(getActivity());
         switch (Main.currentLayout) {
             case create_new_keys:
-                setAllFonts(getActivity(),(ViewGroup)getActivity().findViewById(R.id.create_new_keys));
+                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.create_new_keys));
                 getActivity().findViewById(R.id.gesture).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -139,14 +140,14 @@ class FragmentManagement extends Fragment {
                         .setText(contact.getEmail());
                 ((TextView) getActivity().findViewById(R.id.contact_session))
                         .setText(contact.getSession());
-                ((ImageView)getActivity().findViewById(R.id.contact_picture)).setImageBitmap(contact.getPhoto());
+                ((ImageView) getActivity().findViewById(R.id.contact_picture)).setImageBitmap(contact.getPhoto());
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.edit_contact));
                 TextView tvt = (TextView) getActivity().findViewById(R.id.contact_pb);
                 tvt.setText(contact.getPublicKey());
                 tvt.setTypeface(FilesManegmant.getOld(getActivity()));
                 break;
             case share:
-                setAllFonts(getActivity(),(ViewGroup)getActivity().findViewById(R.id.share_fl));
+                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.share_fl));
                 ((TextView) getActivity().findViewById(R.id.me_public)).setTypeface(FilesManegmant.getOld(getActivity()));
                 if (FilesManegmant.getMyQRPublicKey(getActivity()) != null)
                     ((ImageView) getActivity().findViewById(R.id.qr_image))
@@ -193,8 +194,8 @@ class FragmentManagement extends Fragment {
                         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
                         getActivity().findViewById(R.id.search).setVisibility(View.GONE);
+                        getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
                         getActivity().findViewById(R.id.en_list_contact).setVisibility(View.GONE);
-                        getActivity().findViewById(R.id.en_contact).setVisibility(View.VISIBLE);
                         ContactsDataSource cdsss = new ContactsDataSource(getActivity());
                         cdsss.open();
                         long l = Long.parseLong(((TextView) p2
@@ -202,9 +203,38 @@ class FragmentManagement extends Fragment {
                                 .toString());
                         Contact cvc = cdsss.findContact(l);
                         cdsss.close();
-                        getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
                         ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(l + "");
-                        ((TextView) getActivity().findViewById(R.id.en_contact)).setText(cvc + "");
+                        ((TextView) getActivity().findViewById(R.id.chosen_name)).setText(cvc.getContactName());
+                        ((TextView) getActivity().findViewById(R.id.chosen_email)).setText(cvc.getEmail());
+                        ((ImageView) getActivity().findViewById(R.id.chosen_icon)).setImageBitmap(cvc.getPhoto());
+                        final View cont = getActivity().findViewById(R.id.en_contact);
+                        cont.setVisibility(View.VISIBLE);
+                        cont.setOnTouchListener(new View.OnTouchListener() {
+                            ImageView iv = (ImageView) getActivity().findViewById(R.id.en_touch);
+
+                            @Override
+                            public boolean onTouch(View view, MotionEvent motionEvent) {
+                                Log.d("touch", motionEvent.getX() + " " + motionEvent.getY());
+                                if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                                    startPoint = motionEvent.getX();
+                                    iv.setVisibility(View.VISIBLE);
+                                    iv.setX(motionEvent.getX());
+                                    iv.setY(motionEvent.getY());
+                                } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
+                                    iv.setVisibility(View.GONE);
+                                    if (motionEvent.getX() < startPoint + 60) {
+                                        cont.setVisibility(View.GONE);
+                                        ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
+                                        getActivity().findViewById(R.id.search).setVisibility(View.VISIBLE);
+                                        getActivity().findViewById(R.id.en_list_contact).setVisibility(View.VISIBLE);
+                                    }
+                                } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
+                                    iv.setX(motionEvent.getX());
+                                    iv.setY(motionEvent.getY());
+                                }
+                                return true;
+                            }
+                        });
                     }
                 });
                 getActivity().findViewById(R.id.send).setEnabled(false);
@@ -244,6 +274,8 @@ class FragmentManagement extends Fragment {
                         TextView tv = (TextView) getActivity().findViewById(R.id.text_counter);
                         ImageButton bt = (ImageButton) getActivity().findViewById(R.id.send);
                         boolean choosedContact = ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).getText().toString().length() > 0;
+                        bt.setEnabled(choosedContact);
+                        bt.setImageResource(choosedContact ? R.drawable.ic_send_holo_light : R.drawable.ic_send_disabled_holo_light);
                         if (num == 0) {
                             tv.setVisibility(View.GONE);
                             bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
@@ -307,16 +339,16 @@ class FragmentManagement extends Fragment {
                 ((TextView) getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManegmant.getOs(getActivity()));
                 break;
             case wait_nfc_to_write:
-                setAllFonts(getActivity(),(ViewGroup)getActivity().findViewById(R.id.wait_nfc_to_write));
+                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.wait_nfc_to_write));
                 break;
             case setup:
-                setAllFonts(getActivity(),(ViewGroup)getActivity().findViewById(R.id.setup));
+                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.setup));
                 break;
             case decrypted_msg:
                 TextView tv = (TextView) getActivity().findViewById(R.id.decrypted_msg);
                 tv.setText(CryptMethods.decryptedMsg != null ?
                         CryptMethods.decryptedMsg.getMsgContent() : getActivity().getString(R.string.cant_decrypt));
-                setAllFonts(getActivity(),(ViewGroup)getActivity().findViewById(R.id.decrypted_msg_ll));
+                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.decrypted_msg_ll));
                 break;
         }
     }

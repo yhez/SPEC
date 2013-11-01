@@ -31,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -191,7 +192,11 @@ public void search(View v){
                             if (qrpbk.getPublicKey() != null) {
                                 Contact c = Contact.giveMeContact(this, qrpbk);
                                 findViewById(R.id.en_list_contact).setVisibility(View.GONE);
-                                ((TextView) findViewById(R.id.en_contact)).setText(c + "");
+                                ((TextView)findViewById(R.id.contact_id_to_send)).setText(c.getId() + "");
+                                ((TextView)findViewById(R.id.chosen_name)).setText(c.getContactName());
+                                ((TextView)findViewById(R.id.chosen_email)).setText(c.getEmail());
+                                ((ImageView)findViewById(R.id.chosen_icon)).setImageBitmap(c.getPhoto());
+                                findViewById(R.id.en_contact).setVisibility(View.VISIBLE);
                             } else
                                 Toast.makeText(getBaseContext(), R.string.bad_data,
                                         Toast.LENGTH_LONG).show();

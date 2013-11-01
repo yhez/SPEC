@@ -1,60 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/decrypted_msg_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="0"
-    android:id="@+id/decrypted_msg_ll"
     android:background="@android:color/white"
     android:orientation="vertical">
 
     <GridLayout
-        android:rowCount="1"
-        android:columnCount="4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:layout_margin="@dimen/default_gap"
-        android:padding="@dimen/default_gap">
-<LinearLayout
-    android:layout_column="1"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content">
-        <TextView
+        android:columnCount="4"
+        android:padding="@dimen/default_gap"
+        android:rowCount="1">
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/default_gap"
-            android:text="hash"
-             />
-    <CheckBox
-        android:enabled="false"
-        style="?android:attr/checkboxStyle"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
-</LinearLayout>
+            android:layout_column="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/default_gap"
+                android:text="hash" />
+
+            <CheckBox
+                style="?android:attr/checkboxStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_column="2"
             android:padding="@dimen/default_gap"
-            android:text="replay"
-            android:layout_column="2" />
+            android:text="replay" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_column="3"
             android:padding="@dimen/default_gap"
-            android:text="session"
-            android:layout_column="3" />
+            android:text="session" />
 
         <ImageButton
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_column="0"
             android:padding="@dimen/default_gap"
             android:src="@drawable/after_attach"
-            android:text="file"
-            android:layout_column="0" />
+            android:text="file" />
     </GridLayout>
 
     <ScrollView

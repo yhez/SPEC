@@ -41,10 +41,10 @@
             android:src="@drawable/add_qr" />
 
         <EditText
-            android:layout_marginRight="@dimen/default_gap"
             android:id="@+id/filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/default_gap"
             android:layout_weight="1"
             android:gravity="bottom"
             android:hint="@string/encrypt_explain"
@@ -125,11 +125,11 @@
         android:layout_below="@id/filter_ll">
 
         <ListView
-            android:paddingLeft="@dimen/default_gap"
-            android:paddingRight="@dimen/default_gap"
             android:id="@+id/en_list_contact"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/default_gap"
+            android:paddingRight="@dimen/default_gap" />
 
         <ImageButton
             android:id="@+id/search"
@@ -152,15 +152,66 @@
             android:src="@drawable/ic_attachment_universal_small" />
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/en_contact"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_panel"
-        android:layout_below="@id/filter_ll"
-        android:padding="@dimen/default_gap"
-        android:textColor="@color/spec_black"
-        android:textSize="20sp"
-        android:visibility="gone" />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
+        <RelativeLayout
+            android:id="@+id/en_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:padding="6dip"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/chosen_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="6dip"
+                android:gravity="center_vertical" />
+
+            <LinearLayout
+                android:id="@+id/ll1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_toRightOf="@id/chosen_icon"
+                android:gravity="left"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/chosen_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/spec_black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/chosen_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/spec_blue"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom"
+                android:background="#eeeeee" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/en_touch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/touch"
+            android:visibility="gone" />
+    </FrameLayout>
 </RelativeLayout>
