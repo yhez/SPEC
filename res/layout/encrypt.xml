@@ -83,6 +83,7 @@
             android:textSize="16sp" />
 
         <LinearLayout
+            android:layout_gravity="bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -103,7 +104,6 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
                 android:drawablePadding="0dip"
                 android:nextFocusLeft="@+id/embedded_text_editor"
                 android:onClick="onClick"
@@ -146,72 +146,84 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_weight="0"
             android:drawablePadding="0dip"
             android:onClick="onClick"
             android:src="@drawable/ic_attachment_universal_small" />
-    </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout
-            android:id="@+id/en_contact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/editbox_background"
-            android:padding="6dip"
-            android:visibility="gone">
-
-            <ImageView
-                android:id="@+id/chosen_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="6dip"
-                android:gravity="center_vertical" />
-
-            <LinearLayout
-                android:id="@+id/ll1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_toRightOf="@id/chosen_icon"
-                android:gravity="left"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/chosen_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/spec_black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/chosen_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/spec_blue"
-                    android:textSize="17sp" />
-            </LinearLayout>
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_gravity="bottom"
-                android:background="#eeeeee" />
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/en_touch"
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/touch"
-            android:visibility="gone" />
+            android:isScrollContainer="true">
+
+            <RelativeLayout
+                android:id="@+id/en_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_background"
+                android:padding="6dip"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/chosen_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="6dip"
+                    android:gravity="center_vertical" />
+
+                <LinearLayout
+                    android:id="@+id/ll1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignWithParentIfMissing="true"
+                    android:layout_toRightOf="@id/chosen_icon"
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/chosen_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/spec_black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/chosen_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/spec_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider_con"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:background="#eeeeee" />
+            </RelativeLayout>
+
+
+            <ImageView
+                android:id="@+id/pin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:alpha="0.5"
+                android:src="@drawable/bowling_pin"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/boll"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.5"
+                android:src="@drawable/eight_boll"
+                android:visibility="gone" />
+        </FrameLayout>
     </FrameLayout>
 </RelativeLayout>

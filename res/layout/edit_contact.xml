@@ -80,6 +80,7 @@
         android:textColor="@color/spec_black" />
 
     <TextView
+        android:textIsSelectable="true"
         android:textSize="11sp"
         android:id="@+id/contact_pb"
         android:layout_width="match_parent"

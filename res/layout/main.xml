@@ -33,7 +33,7 @@
     <ListView
         android:alpha="1"
         android:id="@+id/left_drawer"
-        android:layout_width="120dp"
+        android:layout_width="140dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"

@@ -36,7 +36,8 @@
             android:onClick="onClick"
             android:padding="@dimen/default_gap"
             android:text="@string/create_keys"
-            android:textColor="@color/spec_black" />
+            android:textColor="@android:color/white"
+            />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -50,7 +51,8 @@
             android:layout_gravity="center"
             android:padding="@dimen/default_gap"
             android:text="@string/export"
-            android:textColor="@color/spec_black" />
+            android:textColor="@android:color/white"
+            />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -63,7 +65,8 @@
             android:layout_gravity="center"
             android:padding="@dimen/default_gap"
             android:text="@string/Import"
-            android:textColor="@color/spec_black" />
+            android:textColor="@android:color/white"
+            />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -76,7 +79,8 @@
             android:layout_gravity="center"
             android:padding="@dimen/default_gap"
             android:text="@string/clean"
-            android:textColor="@color/spec_black" />
+            android:textColor="@android:color/white"
+            />
     </LinearLayout>
 
 </LinearLayout>

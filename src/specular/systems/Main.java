@@ -28,7 +28,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -76,6 +75,7 @@ public class Main extends Activity {
     private CharSequence mDrawerTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private String[] menuTitles;
+    private int[] menuDrawables;
     private CharSequence mTitle;
     private String userInput;
     private String fileContent = "";
@@ -479,6 +479,7 @@ public void search(View v){
     private void setUpViews() {
         final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, CONTACTS = 3, LEARN = 4, SETUP = 5;
         final String[] allMenus = getResources().getStringArray(R.array.menus);
+        final int[] allDrb = {R.drawable.encrypt,R.drawable.add_qr,R.drawable.share ,R.drawable.contacts,R.drawable.learn,R.drawable.manage};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.privateExist() ? 1 : CryptMethods.publicExist() ? 2 : 3;
         mTitle = mDrawerTitle = getTitle();
@@ -493,22 +494,28 @@ public void search(View v){
         switch (status) {
             case BOTH:
                 menuTitles = allMenus;
+                menuDrawables=allDrb;
                 break;
             case PB:
                 menuTitles = new String[]{allMenus[ENCRYPT], allMenus[SHARE],
                         allMenus[CONTACTS], allMenus[LEARN], allMenus[SETUP]};
+                menuDrawables = new int[]{allDrb[ENCRYPT], allDrb[SHARE],
+                        allDrb[CONTACTS], allDrb[LEARN], allDrb[SETUP]};
                 break;
             case PV:
                 menuTitles = new String[]{allMenus[DECRYPT], allMenus[CONTACTS],
                         allMenus[LEARN], allMenus[SETUP]};
+                menuDrawables = new int[]{allDrb[DECRYPT],
+                        allDrb[CONTACTS], allDrb[LEARN], allDrb[SETUP]};
                 break;
             case NONE:
                 menuTitles = new String[]{allMenus[LEARN], allMenus[SETUP]};
+                menuDrawables = new int[]{allDrb[LEARN], allDrb[SETUP]};
                 break;
         }
         // set up the main's list view with items and click listener
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, menuTitles));
+        mDrawerList.setAdapter(new LeftMenu(this,
+                menuTitles,menuDrawables));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enable ActionBar app icon to behave as action to toggle nav main
@@ -598,6 +605,7 @@ boolean exit = false;
     @Override
     public void onBackPressed() {
         if (exit) {
+            CryptMethods.deleteKeys();
             super.onBackPressed();
         } else {
             Toast.makeText(this,R.string.exit_by_back_notify,Toast.LENGTH_SHORT).show();

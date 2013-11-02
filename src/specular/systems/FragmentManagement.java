@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -177,7 +176,6 @@ class FragmentManagement extends Fragment {
                 break;
             case encrypt:
                 lv = (ListView) getActivity().findViewById(R.id.en_list_contact);
-                lv.setVisibility(View.VISIBLE);
                 cds = new ContactsDataSource(getActivity());
                 cds.open();
                 alc = cds.getAllContacts();
@@ -209,28 +207,29 @@ class FragmentManagement extends Fragment {
                         ((ImageView) getActivity().findViewById(R.id.chosen_icon)).setImageBitmap(cvc.getPhoto());
                         final View cont = getActivity().findViewById(R.id.en_contact);
                         cont.setVisibility(View.VISIBLE);
+                        final ImageView iv = (ImageView) getActivity().findViewById(R.id.boll);
+                        final ImageView pin = (ImageView)getActivity().findViewById(R.id.pin);
                         cont.setOnTouchListener(new View.OnTouchListener() {
-                            ImageView iv = (ImageView) getActivity().findViewById(R.id.en_touch);
-
                             @Override
                             public boolean onTouch(View view, MotionEvent motionEvent) {
-                                Log.d("touch", motionEvent.getX() + " " + motionEvent.getY());
                                 if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                                    startPoint = motionEvent.getX();
+                                    if(motionEvent.getX()<cont.getWidth()/3){
+                                        start=true;
+                                    pin.setVisibility(View.VISIBLE);
                                     iv.setVisibility(View.VISIBLE);
-                                    iv.setX(motionEvent.getX());
-                                    iv.setY(motionEvent.getY());
+                                    iv.setX(motionEvent.getX()-(iv.getWidth()/2));
+                                    }
                                 } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
                                     iv.setVisibility(View.GONE);
-                                    if (motionEvent.getX() < startPoint + 60) {
+                                    pin.setVisibility(View.GONE);
+                                    if (start&&motionEvent.getX()>cont.getWidth()/3*2) {
                                         cont.setVisibility(View.GONE);
                                         ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
                                         getActivity().findViewById(R.id.search).setVisibility(View.VISIBLE);
                                         getActivity().findViewById(R.id.en_list_contact).setVisibility(View.VISIBLE);
                                     }
                                 } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
-                                    iv.setX(motionEvent.getX());
-                                    iv.setY(motionEvent.getY());
+                                    iv.setX(motionEvent.getX()-iv.getWidth()/2);
                                 }
                                 return true;
                             }
@@ -352,6 +351,7 @@ class FragmentManagement extends Fragment {
                 break;
         }
     }
+    boolean start = false;
 
     void setAllFonts(Activity act, ViewGroup v) {
         for (int a = 0; a < v.getChildCount(); a++)
