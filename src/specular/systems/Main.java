@@ -143,7 +143,7 @@ public class Main extends Activity {
                 contact.getSession());
         final ProgressDlg prgd = new ProgressDlg(this);
         prgd.setCancelable(false);
-        prgd.setMessage(getString(R.string.encrypting));
+        //prgd.setMessage(getString(R.string.encrypting));
         //prgd.setProgressStyle(android.R.style.Theme_Holo_Dialog);
         prgd.show();
         new Thread(new Runnable() {
@@ -663,7 +663,7 @@ public class Main extends Activity {
     }
 
     void sendMessage() {
-        boolean success = FilesManegmant.createFilesToSend(this, (userInput.length() + fileContent.length) < MSG_LIMIT_FOR_QR);
+        boolean success = FilesManegmant.createFilesToSend(this, (userInput.length() + (fileContent!=null?fileContent.length:0)) < MSG_LIMIT_FOR_QR);
         if (success) {
             Intent intentShare = new Intent(Intent.ACTION_SEND_MULTIPLE);
             intentShare.setType("*/*");

@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 class QRMessage {
     private String name, email, publicKey, msgContent, session, hash, sentTime,fileName;
-    private byte[] fileContent;
+    private byte[] fileContent=null;
 
     public QRMessage(String raw) {
         String r[] = raw.split("file//");
@@ -57,7 +57,7 @@ class QRMessage {
 
     public String getFormatedMsg() {
         return name + "\n" + email + "\n" + publicKey + "\n" + hash + "\n"
-                + session + "\n" + sentTime + "\n"+fileName+"\n"+ msgContent+ "file//" + fileContent;
+                + session + "\n" + sentTime + "\n"+fileName+"\n"+ msgContent+ (fileContent!=null?"file//" + new String(fileContent):"");
     }
 
     public String getHash() {
