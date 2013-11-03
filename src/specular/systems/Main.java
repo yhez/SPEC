@@ -63,6 +63,7 @@ public class Main extends Activity {
                     ((TextView) findViewById(R.id.decrypted_msg)).setText(s);
                     break;
                 case DECRYPT_SCREEN:
+                    if(CryptMethods.decryptedMsg.getFileContent()!=null)
                     if(!FilesManegmant.createFileToOpen(Main.this))
                         Toast.makeText(Main.this,"failed to create filr",Toast.LENGTH_SHORT).show();
                     selectItem(1, R.layout.decrypted_msg);

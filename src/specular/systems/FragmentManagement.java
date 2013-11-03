@@ -344,7 +344,7 @@ class FragmentManagement extends Fragment {
                 break;
             case decrypted_msg:
                 Button bt =(Button)getActivity().findViewById(R.id.open_file);
-                if(CryptMethods.decryptedMsg.getFileContent().length>0)
+                if(CryptMethods.decryptedMsg.getFileContent()!=null)
                         bt.setText("File");
                 else {
                     bt.setVisibility(View.GONE);
