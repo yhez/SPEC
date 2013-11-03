@@ -1,65 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/decrypted_msg_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:alpha="0"
+    android:alpha="1"
     android:background="@android:color/white"
     android:orientation="vertical">
 
     <GridLayout
-        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/top_pannel"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_margin="@dimen/default_gap"
         android:columnCount="4"
         android:padding="@dimen/default_gap"
         android:rowCount="1">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1">
-
-            <TextView
+<!--hash ok or not-->
+            <ImageButton
+                android:layout_column="1"
+                style="@android:style/Widget.Holo.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/default_gap"
+                android:src="@drawable/hash_not_ok"
                 android:text="hash" />
-
-            <CheckBox
-                style="?android:attr/checkboxStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:enabled="false" />
-        </LinearLayout>
-
-        <TextView
+        <ImageButton
+            style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="2"
             android:padding="@dimen/default_gap"
+            android:src="@drawable/replay_atack"
             android:text="replay" />
 
-        <TextView
+        <ImageButton
+            style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="3"
+            android:src="@drawable/session"
             android:padding="@dimen/default_gap"
             android:text="session" />
 
-        <ImageButton
+        <Button
+            android:id="@+id/open_file"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
+            android:onClick="openFile"
             android:padding="@dimen/default_gap"
             android:src="@drawable/after_attach"
-            android:text="file" />
+            android:text="file"
+            android:textColor="@color/spec_black" />
     </GridLayout>
+    <LinearLayout
+        android:id="@+id/bottom_panel_dm"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/default_gap"
+        android:background="@color/spec_dark_blue"
+        android:orientation="horizontal"
+        android:padding="@dimen/default_gap">
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_gap"
+            android:text="Response..."
+            android:textColor="@android:color/white" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_gap"
+            android:text="technical details"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 
     <ScrollView
+        android:layout_above="@id/bottom_panel_dm"
+        android:padding="@dimen/default_gap"
+        android:layout_below="@id/top_pannel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -72,24 +106,4 @@
             android:textSize="50sp" />
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="@dimen/default_gap">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/default_gap"
-            android:text="Response.." />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/default_gap"
-            android:text="technical details" />
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -207,29 +208,27 @@ class FragmentManagement extends Fragment {
                         ((ImageView) getActivity().findViewById(R.id.chosen_icon)).setImageBitmap(cvc.getPhoto());
                         final View cont = getActivity().findViewById(R.id.en_contact);
                         cont.setVisibility(View.VISIBLE);
-                        final ImageView iv = (ImageView) getActivity().findViewById(R.id.boll);
-                        final ImageView pin = (ImageView)getActivity().findViewById(R.id.pin);
+                        cont.setAlpha(1);
+                        cont.setX(0);
                         cont.setOnTouchListener(new View.OnTouchListener() {
                             @Override
                             public boolean onTouch(View view, MotionEvent motionEvent) {
-                                if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                                    if(motionEvent.getX()<cont.getWidth()/3){
-                                        start=true;
-                                    pin.setVisibility(View.VISIBLE);
-                                    iv.setVisibility(View.VISIBLE);
-                                    iv.setX(motionEvent.getX()-(iv.getWidth()/2));
-                                    }
-                                } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
-                                    iv.setVisibility(View.GONE);
-                                    pin.setVisibility(View.GONE);
-                                    if (start&&motionEvent.getX()>cont.getWidth()/3*2) {
+                                //final float width = 1f/(float)cont.getWidth();
+                                if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN)
+                                        startPoint=motionEvent.getX();
+                                else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
+                                    if (cont.getAlpha()<0.3) {
                                         cont.setVisibility(View.GONE);
                                         ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
                                         getActivity().findViewById(R.id.search).setVisibility(View.VISIBLE);
                                         getActivity().findViewById(R.id.en_list_contact).setVisibility(View.VISIBLE);
+                                    }else{
+                                        cont.setAlpha(1);
+                                        cont.setX(0);
                                     }
                                 } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
-                                    iv.setX(motionEvent.getX()-iv.getWidth()/2);
+                                    cont.setAlpha(cont.getAlpha() - 0.03f);
+                                    cont.setX(motionEvent.getRawX()-startPoint);
                                 }
                                 return true;
                             }
@@ -344,6 +343,12 @@ class FragmentManagement extends Fragment {
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.setup));
                 break;
             case decrypted_msg:
+                Button bt =(Button)getActivity().findViewById(R.id.open_file);
+                if(CryptMethods.decryptedMsg.getFileContent().length>0)
+                        bt.setText("File");
+                else {
+                    bt.setVisibility(View.GONE);
+                }
                 TextView tv = (TextView) getActivity().findViewById(R.id.decrypted_msg);
                 tv.setText(CryptMethods.decryptedMsg != null ?
                         CryptMethods.decryptedMsg.getMsgContent() : getActivity().getString(R.string.cant_decrypt));
@@ -351,7 +356,6 @@ class FragmentManagement extends Fragment {
                 break;
         }
     }
-    boolean start = false;
 
     void setAllFonts(Activity act, ViewGroup v) {
         for (int a = 0; a < v.getChildCount(); a++)

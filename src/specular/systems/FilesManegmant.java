@@ -10,17 +10,17 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 final class FilesManegmant {
@@ -46,6 +46,19 @@ final class FilesManegmant {
         return tfos;
     }
 
+    public static boolean createFileToOpen(Activity a){
+        if(CryptMethods.decryptedMsg.getFileContent()==null)
+            return false;
+        try {
+            FileOutputStream fos = a.openFileOutput("File", Context.MODE_WORLD_READABLE);
+            fos.write(CryptMethods.decryptedMsg.getFileContent());
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
     public static Typeface getOld(Activity a) {
         if (tfold == null)
             tfold = Typeface.createFromAsset(a.getAssets(), "cour.ttf");
@@ -218,27 +231,44 @@ final class FilesManegmant {
         edt.commit();
     }
 
-    public static String addFile(Activity a, Uri uri) {
+    public static byte[] addFile(Activity a, Uri uri) {
         ContentResolver cr = a.getContentResolver();
-        InputStream is = null;
+        int size=0;
         try {
-            is = cr.openInputStream(uri);
+            InputStream ind = cr.openInputStream(uri);
+            size=ind.available();
+            ind.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-        StringBuilder buf = new StringBuilder();
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(is));
-        String str;
-        try {
-            while ((str = reader.readLine()) != null) {
-                buf.append(str).append("\n");
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        buf.deleteCharAt(buf.length() - 1);
-        return buf.toString();
+        byte[] result = new byte[size];
+        try {
+            InputStream input = null;
+            try {
+                int totalBytesRead = 0;
+                input = new BufferedInputStream(cr.openInputStream(uri));
+                while(totalBytesRead < result.length){
+                    int bytesRemaining = result.length - totalBytesRead;
+                    int bytesRead = input.read(result, totalBytesRead, bytesRemaining);
+                    if (bytesRead > 0){
+                        totalBytesRead = totalBytesRead + bytesRead;
+                    }
+                }
+            }
+            finally {
+                input.close();
+            }
+        }
+        catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        Log.d("size",result.length+"");
+        return result;
     }
     private static Bitmap crop(Bitmap bitmap){
         int width = bitmap.getWidth();

@@ -4,123 +4,105 @@ import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-class QRMessage
-{
-    private String name, email, publicKey, msgContent, session, hash, sentTime, fileContent;
-	
-    public QRMessage(String raw)
-	{
+class QRMessage {
+    private String name, email, publicKey, msgContent, session, hash, sentTime,fileName;
+    private byte[] fileContent;
+
+    public QRMessage(String raw) {
         String r[] = raw.split("file//");
         String data[] = r[0].split("\n");
-        if (!(data.length < 6))
-		{
+        if (!(data.length < 6)) {
             name = data[0];
             email = data[1];
             publicKey = data[2];
             hash = data[3];
             session = data[4];
             sentTime = data[5];
+            fileName=data[6];
             msgContent = "";
-            for (int a = 6; a < data.length; a++)
+            for (int a = 7; a < data.length; a++)
                 msgContent += data[a] + (a + 1 == data.length ? "" : "\n");
-            if (r.length > 1)
-			{
-                fileContent = r[1];
+            if (r.length > 1) {
+                fileContent = r[1].getBytes();
             }
         }
     }
 
-    public QRMessage(String fileContentt, String msgContentt, String sessiont)
-	{
+    public QRMessage(byte[] fileContentt,String fileName, String msgContentt, String sessiont) {
         email = CryptMethods.getEmail();
         msgContent = msgContentt;
         publicKey = CryptMethods.getPublic();
         sentTime = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
-																  .getInstance().getTime());
+                .getInstance().getTime());
         session = sessiont;
+        this.fileName=fileName;
         fileContent = fileContentt;
         name = CryptMethods.getName();
         hash = hashing(name + email + publicKey + msgContent + fileContent + session + sentTime);
     }
 
-    public boolean checkHash()
-	{
+    public boolean checkHash() {
         return checkHash(hash, name + email + publicKey + msgContent + fileContent + session
-						 + sentTime);
+                + sentTime);
     }
 
-    boolean checkHash(String hash, String msg)
-	{
+    boolean checkHash(String hash, String msg) {
         String sig = hashing(msg);
         return sig.equals(hash);
     }
 
-    public String getEmail()
-	{
+    public String getEmail() {
         return email;
     }
 
-    public String getFormatedMsg()
-	{
+    public String getFormatedMsg() {
         return name + "\n" + email + "\n" + publicKey + "\n" + hash + "\n"
-			+ session + "\n" + sentTime + "\n" + msgContent + "file//" + fileContent;
+                + session + "\n" + sentTime + "\n"+fileName+"\n"+ msgContent+ "file//" + fileContent;
     }
 
-    public String getHash()
-	{
+    public String getHash() {
         return hash;
     }
 
-    public String getMsgContent()
-	{
+    public String getMsgContent() {
         return msgContent;
     }
 
-    public String getName()
-	{
+    public String getName() {
         return name;
     }
 
-    public String getPublicKey()
-	{
+    public String getPublicKey() {
         return publicKey;
     }
 
-    public String getSentTime()
-	{
+    public String getSentTime() {
         return sentTime;
     }
 
-    public String getSession()
-	{
+    public String getSession() {
         return session;
     }
 
-    public String getFileContent()
-	{
+    public byte[] getFileContent() {
         return fileContent;
     }
 
-    public String getFileName()
-	{
-        return fileContent.substring(0, fileContent.indexOf("\n"));
-    }
+   /* public String getFileName() {
+        return fileName;
+    }*/
 
     /*public void saveFileContent()
-	{
+    {
         //TODO save the file and return the path
 
     }*/
 
-    String hashing(String msg)
-	{
-        try
-		{
+    String hashing(String msg) {
+        try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             return Visual.bin2hex(md.digest(msg.getBytes()));
-        }
-		catch (Exception ignore)
-		{
+        } catch (Exception ignore) {
         }
         return null;
     }

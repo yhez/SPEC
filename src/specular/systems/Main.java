@@ -35,6 +35,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -54,7 +55,7 @@ public class Main extends Activity {
                             Toast.LENGTH_LONG).show();
                     break;
                 case REPLACE_PHOTO:
-                    ((TextView) findViewById(R.id.file_content_length)).setText(fileContent.length() + "");
+                    ((TextView) findViewById(R.id.file_content_length)).setText(fileContent.length + "");
                     ((ImageButton) findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
                     break;
                 case CANT_DECRYPT:
@@ -62,12 +63,15 @@ public class Main extends Activity {
                     ((TextView) findViewById(R.id.decrypted_msg)).setText(s);
                     break;
                 case DECRYPT_SCREEN:
+                    if(!FilesManegmant.createFileToOpen(Main.this))
+                        Toast.makeText(Main.this,"failed to create filr",Toast.LENGTH_SHORT).show();
                     selectItem(1, R.layout.decrypted_msg);
                     break;
             }
         }
     };
     private final int ATTACH_FILE = 0, SCAN_QR = 1;
+    boolean exit = false;
     private boolean handleByOnActivityResult = false;
     private int layouts[];
     private DrawerLayout mDrawerLayout;
@@ -78,7 +82,8 @@ public class Main extends Activity {
     private int[] menuDrawables;
     private CharSequence mTitle;
     private String userInput;
-    private String fileContent = "";
+    private byte[] fileContent;
+    private String fileName="";
     private Contact contact;
     private boolean handleByOnNewIntent = false;
 
@@ -124,15 +129,17 @@ public class Main extends Activity {
             setUpViews();
         }
     }
-public void search(View v){
-    View b = findViewById(R.id.filter_ll);
-    if(b.getVisibility()==View.GONE)
-        b.setVisibility(View.VISIBLE);
-    else
-        b.setVisibility(View.GONE);
-}
+
+    public void search(View v) {
+        View b = findViewById(R.id.filter_ll);
+        if (b.getVisibility() == View.GONE)
+            b.setVisibility(View.VISIBLE);
+        else
+            b.setVisibility(View.GONE);
+    }
+
     void encryptManager() {
-        final QRMessage msg = new QRMessage(fileContent, userInput,
+        final QRMessage msg = new QRMessage(fileContent,fileName, userInput,
                 contact.getSession());
         final ProgressDlg prgd = new ProgressDlg(this);
         prgd.setCancelable(false);
@@ -150,6 +157,20 @@ public void search(View v){
         }).start();
     }
 
+    public void openFile(View v) {
+        //String name = CryptMethods.decryptedMsg.getFileName();
+        //Log.d("name",name);
+        //String tmp[] = name.split(".");
+        //String extension = tmp[tmp.length - 1];
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse("file://" + new File(getFilesDir(), "File")), "image/*");
+        try {
+            startActivityForResult(intent, 23);
+        }catch (Exception e){
+            Toast.makeText(this,"cant find an app to open it",Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         FilesManegmant.getKeysFromSdcard(this);
@@ -161,11 +182,12 @@ public void search(View v){
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            String data = FilesManegmant.addFile(Main.this, uri);
+                            byte[] data = FilesManegmant.addFile(Main.this, uri);
                             if (data != null) {
-                                if (data.length() > 0) {
+                                if (data.length > 0) {
                                     String w[] = uri.getEncodedPath().split("/");
-                                    fileContent = w[w.length - 1] + "\n" + data;
+                                    fileName=w[w.length - 1];
+                                    fileContent =  data;
                                     Message msg = hndl.obtainMessage(REPLACE_PHOTO);
                                     hndl.sendMessage(msg);
                                 }
@@ -179,7 +201,10 @@ public void search(View v){
                 }
             } else if (requestCode == 71) {
                 //nothing to do, it just helping that the call set up views will not called
-            } else {
+            } else if(requestCode==23){
+                //nothing to do, it just helping that the call set up views will not called
+            }
+            else {
                 String result = intent.getStringExtra("barcode");
                 if (result != null) {
                     switch (currentLayout) {
@@ -192,10 +217,10 @@ public void search(View v){
                             if (qrpbk.getPublicKey() != null) {
                                 Contact c = Contact.giveMeContact(this, qrpbk);
                                 findViewById(R.id.en_list_contact).setVisibility(View.GONE);
-                                ((TextView)findViewById(R.id.contact_id_to_send)).setText(c.getId() + "");
-                                ((TextView)findViewById(R.id.chosen_name)).setText(c.getContactName());
-                                ((TextView)findViewById(R.id.chosen_email)).setText(c.getEmail());
-                                ((ImageView)findViewById(R.id.chosen_icon)).setImageBitmap(c.getPhoto());
+                                ((TextView) findViewById(R.id.contact_id_to_send)).setText(c.getId() + "");
+                                ((TextView) findViewById(R.id.chosen_name)).setText(c.getContactName());
+                                ((TextView) findViewById(R.id.chosen_email)).setText(c.getEmail());
+                                ((ImageView) findViewById(R.id.chosen_icon)).setImageBitmap(c.getPhoto());
                                 findViewById(R.id.en_contact).setVisibility(View.VISIBLE);
                             } else
                                 Toast.makeText(getBaseContext(), R.string.bad_data,
@@ -294,10 +319,10 @@ public void search(View v){
                     case R.id.save:
                         String name = ((EditText) findViewById(R.id.contact_name)).getText()
                                 .toString();
-                        String email= ((EditText) findViewById(R.id.contact_email)).getText()
+                        String email = ((EditText) findViewById(R.id.contact_email)).getText()
                                 .toString();
-                        if (name.length()>0&&email.length()>0)
-                            contact.update(this,name, email, null, null, -1);
+                        if (name.length() > 0 && email.length() > 0)
+                            contact.update(this, name, email, null, null, -1);
                         else
                             Toast.makeText(getBaseContext(), R.string.fill_all,
                                     Toast.LENGTH_LONG).show();
@@ -399,6 +424,16 @@ public void search(View v){
         super.onPause();
     }
 
+    /* Called whenever we call invalidateOptionsMenu() */
+    /*@Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav main is open, hide action items related to the content
+        // view
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
+    }*/
+
     /**
      * When using the ActionBarDrawerToggle, you must call it during
      * onPostCreate() and onConfigurationChanged()...
@@ -410,16 +445,6 @@ public void search(View v){
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
-
-    /* Called whenever we call invalidateOptionsMenu() */
-    /*@Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav main is open, hide action items related to the content
-        // view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }*/
 
     private void selectItem(int position, int layout_screen) {
         // update the main content by replacing fragments
@@ -479,7 +504,7 @@ public void search(View v){
     private void setUpViews() {
         final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, CONTACTS = 3, LEARN = 4, SETUP = 5;
         final String[] allMenus = getResources().getStringArray(R.array.menus);
-        final int[] allDrb = {R.drawable.encrypt,R.drawable.add_qr,R.drawable.share ,R.drawable.contacts,R.drawable.learn,R.drawable.manage};
+        final int[] allDrb = {R.drawable.encrypt, R.drawable.decrypt, R.drawable.share, R.drawable.contacts, R.drawable.learn, R.drawable.manage};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.privateExist() ? 1 : CryptMethods.publicExist() ? 2 : 3;
         mTitle = mDrawerTitle = getTitle();
@@ -494,7 +519,7 @@ public void search(View v){
         switch (status) {
             case BOTH:
                 menuTitles = allMenus;
-                menuDrawables=allDrb;
+                menuDrawables = allDrb;
                 break;
             case PB:
                 menuTitles = new String[]{allMenus[ENCRYPT], allMenus[SHARE],
@@ -515,7 +540,7 @@ public void search(View v){
         }
         // set up the main's list view with items and click listener
         mDrawerList.setAdapter(new LeftMenu(this,
-                menuTitles,menuDrawables));
+                menuTitles, menuDrawables));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enable ActionBar app icon to behave as action to toggle nav main
@@ -565,7 +590,7 @@ public void search(View v){
             case PV:
                 layouts = new int[]{allLayouts[DECRYPT], allLayouts[CONTACTS],
                         allLayouts[LEARN], allLayouts[SETUP]};
-                if(!showDecrypt())
+                if (!showDecrypt())
                     selectItem(0, R.layout.decrypt);
                 break;
             case NONE:
@@ -577,7 +602,7 @@ public void search(View v){
 
     private boolean showDecrypt() {
         final String msg = getIntent().getStringExtra("message");
-        if (Splash.message != null||msg!=null) {
+        if (Splash.message != null || msg != null) {
             final ProgressDlg prgd = new ProgressDlg(this);
             prgd.setCancelable(false);
             prgd.setMessage(getString(R.string.decrypting));
@@ -585,13 +610,13 @@ public void search(View v){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    CryptMethods.decrypt(msg!=null?msg:Splash.message);
+                    CryptMethods.decrypt(msg != null ? msg : Splash.message);
                     if (CryptMethods.decryptedMsg != null)
                         Contact.giveMeContact(Main.this, CryptMethods.decryptedMsg);
                     else
                         CryptMethods.decryptedMsg = null;
                     getIntent().removeExtra("message");
-                    Splash.message=null;
+                    Splash.message = null;
                     Message msg = hndl.obtainMessage(DECRYPT_SCREEN);
                     hndl.sendMessage(msg);
                     prgd.cancel();
@@ -601,27 +626,27 @@ public void search(View v){
         }
         return false;
     }
-boolean exit = false;
+
     @Override
     public void onBackPressed() {
         if (exit) {
             CryptMethods.deleteKeys();
             super.onBackPressed();
         } else {
-            Toast.makeText(this,R.string.exit_by_back_notify,Toast.LENGTH_SHORT).show();
-            exit=true;
+            Toast.makeText(this, R.string.exit_by_back_notify, Toast.LENGTH_SHORT).show();
+            exit = true;
             setUpViews();
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    synchronized (this){
+                    synchronized (this) {
                         try {
                             wait(2000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
-                    exit=false;
+                    exit = false;
                 }
             }).start();
         }
@@ -638,7 +663,7 @@ boolean exit = false;
     }
 
     void sendMessage() {
-        boolean success = FilesManegmant.createFilesToSend(this, (userInput.length() + fileContent.length()) < MSG_LIMIT_FOR_QR);
+        boolean success = FilesManegmant.createFilesToSend(this, (userInput.length() + fileContent.length) < MSG_LIMIT_FOR_QR);
         if (success) {
             Intent intentShare = new Intent(Intent.ACTION_SEND_MULTIPLE);
             intentShare.setType("*/*");
