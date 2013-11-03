@@ -155,28 +155,28 @@
             android:id="@+id/en_contact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/editbox_background"
-            android:padding="6dip"
+            android:isScrollContainer="true"
+            android:background="@android:drawable/alert_light_frame"
+            android:padding="@dimen/default_gap"
             android:visibility="gone">
 
             <ImageView
                 android:id="@+id/chosen_icon"
+                android:padding="@dimen/default_gap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="6dip"
-                android:gravity="center_vertical" />
+                android:layout_alignParentTop="true" />
 
             <LinearLayout
                 android:id="@+id/ll1"
+                android:padding="@dimen/default_gap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_alignWithParentIfMissing="true"
                 android:layout_toRightOf="@id/chosen_icon"
-                android:gravity="left"
+                android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
@@ -193,13 +193,6 @@
                     android:textColor="@color/spec_blue"
                     android:textSize="17sp" />
             </LinearLayout>
-
-            <View
-                android:id="@+id/divider_con"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_gravity="bottom"
-                android:background="#eeeeee" />
         </RelativeLayout>
     </FrameLayout>
 </RelativeLayout>

@@ -20,6 +20,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class Splash extends Activity {
+    @Override
+    public void onBackPressed(){
+
+    }
     final private static int TIME_FOR_SPLASH = 3500;
     public static String message;
     private final Thread waitForSplash = new Thread(new Runnable() {

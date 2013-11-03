@@ -76,11 +76,12 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/share_panel"
             android:layout_below="@id/your_public_key"
-            android:layout_marginBottom="@dimen/default_gap"
             android:padding="@dimen/default_gap">
 
             <TextView
+                android:padding="32dp"
                 android:id="@+id/me_public"
+                android:background="@android:drawable/alert_light_frame"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -90,6 +91,8 @@
                 android:textSize="20sp" />
 
             <ImageView
+                android:padding="32dp"
+                android:background="@android:drawable/alert_light_frame"
                 android:id="@+id/qr_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
