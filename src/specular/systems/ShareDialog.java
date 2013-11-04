@@ -62,10 +62,10 @@ class ShareDialog extends DialogFragment {
                             }
                             ArrayList<Uri> file = new ArrayList<Uri>();
                             if (mSelectedItems.contains(Integer.valueOf(0))) {
-                                file.add(FilesManegmant.getFileToShare(getActivity()));
+                                file.add(FilesManagement.getFileToShare(getActivity()));
                             }
                             if (mSelectedItems.contains(Integer.valueOf(1))) {
-                                file.add(FilesManegmant.getQRToShare(getActivity()));
+                                file.add(FilesManagement.getQRToShare(getActivity()));
                             }
                             if (file.size() > 0) {
                                 intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, file);

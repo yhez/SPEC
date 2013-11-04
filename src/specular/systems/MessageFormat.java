@@ -4,11 +4,11 @@ import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-class QRMessage {
+class MessageFormat {
     private String name, email, publicKey, msgContent, session, hash, sentTime,fileName;
     private byte[] fileContent=null;
 
-    public QRMessage(String raw) {
+    public MessageFormat(String raw) {
         String r[] = raw.split("file//");
         String data[] = r[0].split("\n");
         if (!(data.length < 6)) {
@@ -24,11 +24,15 @@ class QRMessage {
                 msgContent += data[a] + (a + 1 == data.length ? "" : "\n");
             if (r.length > 1) {
                 fileContent = r[1].getBytes();
+                //Log.d("msg after decrypt",new String(fileContent));
+                //Log.d("length aftar",""+fileContent.length);
             }
         }
     }
 
-    public QRMessage(byte[] fileContentt,String fileName, String msgContentt, String sessiont) {
+    public MessageFormat(byte[] fileContentt, String fileName, String msgContentt, String sessiont) {
+        //Log.d("msg before encrypt",new String(fileContentt));
+        //Log.d("length",""+fileContentt.length);
         email = CryptMethods.getEmail();
         msgContent = msgContentt;
         publicKey = CryptMethods.getPublic();
@@ -38,7 +42,7 @@ class QRMessage {
         this.fileName=fileName;
         fileContent = fileContentt;
         name = CryptMethods.getName();
-        hash = hashing(name + email + publicKey + msgContent + fileContent + session + sentTime);
+        hash = hashing(name + email + publicKey + msgContent + new String(fileContent) + session + sentTime);
     }
 
     public boolean checkHash() {

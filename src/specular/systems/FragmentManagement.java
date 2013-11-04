@@ -144,14 +144,14 @@ class FragmentManagement extends Fragment {
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.edit_contact));
                 TextView tvt = (TextView) getActivity().findViewById(R.id.contact_pb);
                 tvt.setText(contact.getPublicKey());
-                tvt.setTypeface(FilesManegmant.getOld(getActivity()));
+                tvt.setTypeface(FilesManagement.getOld(getActivity()));
                 break;
             case share:
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.share_fl));
-                ((TextView) getActivity().findViewById(R.id.me_public)).setTypeface(FilesManegmant.getOld(getActivity()));
-                if (FilesManegmant.getMyQRPublicKey(getActivity()) != null)
+                ((TextView) getActivity().findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
+                if (FilesManagement.getMyQRPublicKey(getActivity()) != null)
                     ((ImageView) getActivity().findViewById(R.id.qr_image))
-                            .setImageBitmap(FilesManegmant.getMyQRPublicKey(getActivity()));
+                            .setImageBitmap(FilesManagement.getMyQRPublicKey(getActivity()));
                 ((TextView) getActivity().findViewById(R.id.me_public))
                         .setText(CryptMethods.getPublic());
                 getActivity().findViewById(R.id.touch).setOnTouchListener(new View.OnTouchListener() {
@@ -334,7 +334,7 @@ class FragmentManagement extends Fragment {
                 });
                 break;
             case decrypt:
-                ((TextView) getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManegmant.getOs(getActivity()));
+                ((TextView) getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManagement.getOs(getActivity()));
                 break;
             case wait_nfc_to_write:
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.wait_nfc_to_write));
@@ -363,7 +363,7 @@ class FragmentManagement extends Fragment {
                 setAllFonts(act, (ViewGroup) v.getChildAt(a));
             } catch (Exception e) {
                 try {
-                    ((TextView) v.getChildAt(a)).setTypeface(FilesManegmant.getOs(act));
+                    ((TextView) v.getChildAt(a)).setTypeface(FilesManagement.getOs(act));
                 } catch (Exception ee) {
                 }
             }

@@ -23,7 +23,7 @@ import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
 public class CryptMethods {
-    public static QRMessage decryptedMsg = null;
+    public static MessageFormat decryptedMsg = null;
     public static String encryptedMsgToSend = null;
     public static boolean NFCMode = false;
     private static PrivateKey mPtK = null;
@@ -134,7 +134,7 @@ public class CryptMethods {
             cipher.init(Cipher.DECRYPT_MODE, mPtK, iesParams);
             byte[] rawMsg = Visual.hex2bin(encryptedMessage);
             byte[] decryptedBytes = cipher.doFinal(rawMsg);
-            decryptedMsg = new QRMessage(new String(decryptedBytes));
+            decryptedMsg = new MessageFormat(new String(decryptedBytes));
         } catch (Exception e) {
             decryptedMsg = null;
             e.printStackTrace();

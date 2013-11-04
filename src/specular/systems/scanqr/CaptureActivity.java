@@ -20,15 +20,6 @@ import java.util.Collection;
 import specular.systems.R;
 import specular.systems.scanqr.camera.CameraManager;
 
-
-/**
- * This activity opens the camera and does the actual scanning on a background thread. It draws a
- * viewfinder to help the user place the barcode correctly, shows feedback as the image processing
- * is happening, and then overlays the results when a scan is successful.
- *
- * @author dswitkin@google.com (Daniel Switkin)
- * @author Sean Owen
- */
 public class CaptureActivity extends Activity implements SurfaceHolder.Callback
 {
     private CameraManager cameraManager;
@@ -121,7 +112,9 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
 		{
             SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
             SurfaceHolder surfaceHolder = surfaceView.getHolder();
-            surfaceHolder.removeCallback(this);
+            if (surfaceHolder != null) {
+                surfaceHolder.removeCallback(this);
+            }
         }
         super.onPause();
     }
@@ -155,12 +148,6 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
 
     }
 
-    /**
-     * A valid barcode has been found, so give an indication of success and show the results.
-     *
-     * @param rawResult The contents of the barcode.
-     *
-     */
     public void handleDecode(Result rawResult)
 	{
     }

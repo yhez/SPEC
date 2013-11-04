@@ -10,7 +10,7 @@ public class Contact {
     public static final int WE_STRANGERS = 0, I_KNOW_HIS_SESS = 1,
             HE_KNOW_MY_SESS = 2, WE_FRIENDS = 3;
 
-    public static Contact giveMeContact(Activity a, QRMessage msg) {
+    public static Contact giveMeContact(Activity a, MessageFormat msg) {
         ContactsDataSource dsrc = new ContactsDataSource(a);
         dsrc.open();
         Contact c = dsrc.findContact(msg.getPublicKey());
@@ -21,7 +21,7 @@ public class Contact {
                 msg.getPublicKey(), new Session(msg.getSession()) + "");
     }
 
-    public static Contact giveMeContact(Activity a, QRPublicKey qrp) {
+    public static Contact giveMeContact(Activity a, PublicContactCard qrp) {
         ContactsDataSource dsrc = new ContactsDataSource(a);
         dsrc.open();
         Contact c = dsrc.findContact(qrp.getPublicKey());

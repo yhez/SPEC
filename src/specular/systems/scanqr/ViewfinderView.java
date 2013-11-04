@@ -17,12 +17,6 @@ import java.util.List;
 import specular.systems.R;
 import specular.systems.scanqr.camera.CameraManager;
 
-/**
- * This view is overlaid on top of the camera preview. It adds the viewfinder rectangle and partial
- * transparency outside it, as well as the laser scanner animation and result points.
- *
- * @author dswitkin@google.com (Daniel Switkin)
- */
 final class ViewfinderView extends View {
 
     private static final int[] SCANNER_ALPHA = {0, 64, 128, 192, 255, 192, 128, 64};

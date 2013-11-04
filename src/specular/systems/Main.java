@@ -64,7 +64,7 @@ public class Main extends Activity {
                     break;
                 case DECRYPT_SCREEN:
                     if(CryptMethods.decryptedMsg.getFileContent()!=null)
-                    if(!FilesManegmant.createFileToOpen(Main.this))
+                    if(!FilesManagement.createFileToOpen(Main.this))
                         Toast.makeText(Main.this,"failed to create filr",Toast.LENGTH_SHORT).show();
                     selectItem(1, R.layout.decrypted_msg);
                     break;
@@ -140,7 +140,7 @@ public class Main extends Activity {
     }
 
     void encryptManager() {
-        final QRMessage msg = new QRMessage(fileContent,fileName, userInput,
+        final MessageFormat msg = new MessageFormat(fileContent,fileName, userInput,
                 contact.getSession());
         final ProgressDlg prgd = new ProgressDlg(this);
         prgd.setCancelable(false);
@@ -164,7 +164,7 @@ public class Main extends Activity {
         //String tmp[] = name.split(".");
         //String extension = tmp[tmp.length - 1];
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse("file://" + new File(getFilesDir(), "File")), "image/*");
+        intent.setDataAndType(Uri.parse("file://" + new File(getFilesDir(), "File")), "*/*");
         try {
             startActivityForResult(intent, 23);
         }catch (Exception e){
@@ -174,7 +174,7 @@ public class Main extends Activity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        FilesManegmant.getKeysFromSdcard(this);
+        FilesManagement.getKeysFromSDCard(this);
         handleByOnActivityResult = true;
         if (resultCode == RESULT_OK) {
             if (requestCode == ATTACH_FILE) {
@@ -183,7 +183,7 @@ public class Main extends Activity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            byte[] data = FilesManegmant.addFile(Main.this, uri);
+                            byte[] data = FilesManagement.addFile(Main.this, uri);
                             if (data != null) {
                                 if (data.length > 0) {
                                     String w[] = uri.getEncodedPath().split("/");
@@ -214,7 +214,7 @@ public class Main extends Activity {
                             setUpViews();
                             break;
                         case R.layout.encrypt:
-                            QRPublicKey qrpbk = new QRPublicKey(this, result);
+                            PublicContactCard qrpbk = new PublicContactCard(this, result);
                             if (qrpbk.getPublicKey() != null) {
                                 Contact c = Contact.giveMeContact(this, qrpbk);
                                 findViewById(R.id.en_list_contact).setVisibility(View.GONE);
@@ -228,7 +228,7 @@ public class Main extends Activity {
                                         Toast.LENGTH_LONG).show();
                             break;
                         case R.layout.contacts:
-                            qrpbk = new QRPublicKey(this, result);
+                            qrpbk = new PublicContactCard(this, result);
                             if (qrpbk.getPublicKey() != null) {
                                 Contact.giveMeContact(this, qrpbk);
                             } else
@@ -664,7 +664,7 @@ public class Main extends Activity {
     }
 
     void sendMessage() {
-        boolean success = FilesManegmant.createFilesToSend(this, (userInput.length() + (fileContent!=null?fileContent.length:0)) < MSG_LIMIT_FOR_QR);
+        boolean success = FilesManagement.createFilesToSend(this, (userInput.length() + (fileContent != null ? fileContent.length : 0)) < MSG_LIMIT_FOR_QR);
         if (success) {
             Intent intentShare = new Intent(Intent.ACTION_SEND_MULTIPLE);
             intentShare.setType("*/*");
@@ -681,7 +681,7 @@ public class Main extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            ArrayList<Uri> files = FilesManegmant.getFilesToSend(this);
+            ArrayList<Uri> files = FilesManagement.getFilesToSend(this);
             if (files == null)
                 Toast.makeText(this, R.string.failed_attach_files, Toast.LENGTH_LONG).show();
             else {
@@ -743,7 +743,7 @@ public class Main extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        FilesManegmant.getKeysFromSdcard(this);
+        FilesManagement.getKeysFromSDCard(this);
         if (handleByOnActivityResult)
             handleByOnActivityResult = false;
         else {
@@ -779,7 +779,7 @@ public class Main extends Activity {
                 t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        FilesManegmant.save(a);
+                        FilesManagement.save(a);
                     }
                 });
                 t.start();

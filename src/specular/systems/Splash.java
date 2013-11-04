@@ -42,14 +42,14 @@ public class Splash extends Activity {
         }
     });
     void go() {
-        boolean newUser = FilesManegmant.isItNewUser(this);
+        boolean newUser = FilesManagement.isItNewUser(this);
         if (newUser) {
             setContentView(R.layout.splash);
-            ((TextView) findViewById(R.id.company)).setTypeface(FilesManegmant.getOs(this));
+            ((TextView) findViewById(R.id.company)).setTypeface(FilesManagement.getOs(this));
             findViewById(R.id.splash).animate().setDuration(TIME_FOR_SPLASH).alpha(1).start();
             waitForSplash.start();
         }
-        FilesManegmant.getKeysFromSdcard(this);
+        FilesManagement.getKeysFromSDCard(this);
         if (!CryptMethods.privateExist() && getIntent().getType() != null) {
             Parcelable raw[] = getIntent().getParcelableArrayExtra(
                     NfcAdapter.EXTRA_NDEF_MESSAGES);
@@ -77,7 +77,7 @@ public class Splash extends Activity {
         if (thisIntent != null && thisIntent.getType() != null
                 && thisIntent.getType().equals("application/octet-stream")
                 && thisIntent.getData() != null) {
-            QRPublicKey qrp;
+            PublicContactCard qrp;
             Uri uri = getIntent().getData();
             if (uri != null) {
                 String data = null;
@@ -106,7 +106,7 @@ public class Splash extends Activity {
                     e.printStackTrace();
                 }
                 if (data != null) {
-                    qrp = new QRPublicKey(this, data);
+                    qrp = new PublicContactCard(this, data);
                     if (qrp.getPublicKey() != null) {
                         //TODO create dialog before save
                         ContactsDataSource cds = new ContactsDataSource(this);
