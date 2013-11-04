@@ -71,6 +71,8 @@
     <string name="edit_name">name: </string>
     <string name="editable_fields">Contact\'s Info (editable):</string>
     <string name="not_editable_fields">Security Audit Info (uneditable):</string>
+    <string name="response">Response...</string>
+    <string name="technical_detailes">technical details</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

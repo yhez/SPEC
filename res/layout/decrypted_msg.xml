@@ -9,41 +9,39 @@
     android:orientation="vertical">
 
     <GridLayout
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:id="@+id/top_pannel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:columnCount="4"
         android:padding="@dimen/default_gap"
         android:rowCount="1">
-<!--hash ok or not-->
-            <ImageButton
-                android:layout_column="1"
-                style="@android:style/Widget.Holo.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/default_gap"
-                android:src="@drawable/hash_not_ok"
-                android:text="hash" />
+        <!--hash ok or not-->
+        <ImageButton
+            style="@android:style/Widget.Holo.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:padding="@dimen/default_gap"
+            android:src="@drawable/hash_not_ok"/>
+<!--replay attack-->
         <ImageButton
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="2"
             android:padding="@dimen/default_gap"
-            android:src="@drawable/replay_atack"
-            android:text="replay" />
-
+            android:src="@drawable/replay_atack" />
+<!--session-->
         <ImageButton
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="3"
-            android:src="@drawable/session"
             android:padding="@dimen/default_gap"
-            android:text="session" />
-
+            android:src="@drawable/session"/>
+<!--file to open-->
         <Button
             android:id="@+id/open_file"
             style="?android:attr/borderlessButtonStyle"
@@ -53,9 +51,9 @@
             android:onClick="openFile"
             android:padding="@dimen/default_gap"
             android:src="@drawable/after_attach"
-            android:text="file"
             android:textColor="@color/spec_black" />
     </GridLayout>
+
     <LinearLayout
         android:id="@+id/bottom_panel_dm"
         style="?android:attr/buttonBarStyle"
@@ -73,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/default_gap"
-            android:text="Response..."
+            android:text="@string/response"
             android:textColor="@android:color/white" />
 
         <View
@@ -86,16 +84,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/default_gap"
-            android:text="technical details"
+            android:text="@string/technical_detailes"
             android:textColor="@android:color/white" />
     </LinearLayout>
 
     <ScrollView
-        android:layout_above="@id/bottom_panel_dm"
-        android:padding="@dimen/default_gap"
-        android:layout_below="@id/top_pannel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_panel_dm"
+        android:layout_below="@id/top_pannel"
+        android:padding="@dimen/default_gap">
 
         <TextView
             android:id="@+id/decrypted_msg"
