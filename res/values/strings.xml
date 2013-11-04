@@ -69,10 +69,10 @@
     <string name="exit_by_back_notify">Press back again to exit</string>
     <string name="edit_email">email: </string>
     <string name="edit_name">name: </string>
-    <string name="editable_fields">Contact\'s Info (editable):</string>
-    <string name="not_editable_fields">Security Audit Info (uneditable):</string>
-    <string name="response">Response...</string>
-    <string name="technical_detailes">technical details</string>
+    <string name="editable_fields">Contact\'s Info:</string>
+    <string name="not_editable_fields">Security Audit Info:</string>
+    <string name="response">Respond</string>
+    <string name="technical_detailes">Security Details</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
