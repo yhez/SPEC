@@ -30,7 +30,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,16 +62,17 @@ public class Main extends Activity {
                     ((TextView) findViewById(R.id.decrypted_msg)).setText(s);
                     break;
                 case DECRYPT_SCREEN:
-                    if(CryptMethods.decryptedMsg.getFileContent()!=null)
-                    if(!FilesManagement.createFileToOpen(Main.this))
-                        Toast.makeText(Main.this,"failed to create filr",Toast.LENGTH_SHORT).show();
+                    if (CryptMethods.decryptedMsg.getFileContent() != null)
+                        if (!FilesManagement.createFileToOpen(Main.this))
+                            Toast.makeText(Main.this, R.string.failed_to_create_file_to_open, Toast.LENGTH_SHORT).show();
                     selectItem(1, R.layout.decrypted_msg);
                     break;
             }
         }
     };
     private final int ATTACH_FILE = 0, SCAN_QR = 1;
-    boolean exit = false;
+    //public static PublicContactCard contactCard;
+    boolean exit = false, refreshed = false;
     private boolean handleByOnActivityResult = false;
     private int layouts[];
     private DrawerLayout mDrawerLayout;
@@ -84,7 +84,7 @@ public class Main extends Activity {
     private CharSequence mTitle;
     private String userInput;
     private byte[] fileContent;
-    private String fileName="";
+    private String fileName = "";
     private Contact contact;
     private boolean handleByOnNewIntent = false;
 
@@ -140,7 +140,7 @@ public class Main extends Activity {
     }
 
     void encryptManager() {
-        final MessageFormat msg = new MessageFormat(fileContent,fileName, userInput,
+        final MessageFormat msg = new MessageFormat(fileContent, fileName, userInput,
                 contact.getSession());
         final ProgressDlg prgd = new ProgressDlg(this);
         prgd.setCancelable(false);
@@ -167,8 +167,8 @@ public class Main extends Activity {
         intent.setDataAndType(Uri.parse("file://" + new File(getFilesDir(), "File")), "*/*");
         try {
             startActivityForResult(intent, 23);
-        }catch (Exception e){
-            Toast.makeText(this,"cant find an app to open it",Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(this,R.string.cand_find_an_app_to_open_file, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -187,8 +187,8 @@ public class Main extends Activity {
                             if (data != null) {
                                 if (data.length > 0) {
                                     String w[] = uri.getEncodedPath().split("/");
-                                    fileName=w[w.length - 1];
-                                    fileContent =  data;
+                                    fileName = w[w.length - 1];
+                                    fileContent = data;
                                     Message msg = hndl.obtainMessage(REPLACE_PHOTO);
                                     hndl.sendMessage(msg);
                                 }
@@ -202,10 +202,9 @@ public class Main extends Activity {
                 }
             } else if (requestCode == 71) {
                 //nothing to do, it just helping that the call set up views will not called
-            } else if(requestCode==23){
+            } else if (requestCode == 23) {
                 //nothing to do, it just helping that the call set up views will not called
-            }
-            else {
+            } else {
                 String result = intent.getStringExtra("barcode");
                 if (result != null) {
                     switch (currentLayout) {
@@ -216,24 +215,27 @@ public class Main extends Activity {
                         case R.layout.encrypt:
                             PublicContactCard qrpbk = new PublicContactCard(this, result);
                             if (qrpbk.getPublicKey() != null) {
-                                Contact c = Contact.giveMeContact(this, qrpbk);
+                                //TODO
+                               /* Contact c = Contact.giveMeContact(this, qrpbk);
                                 findViewById(R.id.en_list_contact).setVisibility(View.GONE);
                                 ((TextView) findViewById(R.id.contact_id_to_send)).setText(c.getId() + "");
                                 ((TextView) findViewById(R.id.chosen_name)).setText(c.getContactName());
                                 ((TextView) findViewById(R.id.chosen_email)).setText(c.getEmail());
                                 ((ImageView) findViewById(R.id.chosen_icon)).setImageBitmap(c.getPhoto());
-                                findViewById(R.id.en_contact).setVisibility(View.VISIBLE);
+                                findViewById(R.id.en_contact).setVisibility(View.VISIBLE);*/
                             } else
                                 Toast.makeText(getBaseContext(), R.string.bad_data,
                                         Toast.LENGTH_LONG).show();
                             break;
                         case R.layout.contacts:
-                            qrpbk = new PublicContactCard(this, result);
-                            if (qrpbk.getPublicKey() != null) {
-                                Contact.giveMeContact(this, qrpbk);
-                            } else
+                            Splash.fileContactCard = new PublicContactCard(this, result);
+                            if (Splash.fileContactCard.getPublicKey() != null) {
+                                AddContactDlg acd = new AddContactDlg();
+                                acd.show(getFragmentManager(),"acd2");
+                            } else{
                                 Toast.makeText(getBaseContext(), R.string.bad_data,
                                         Toast.LENGTH_LONG).show();
+                            }
                             break;
                     }
                 }
@@ -418,13 +420,6 @@ public class Main extends Activity {
 
     }
 
-    @Override
-    public void onPause() {
-        if (!handleByOnNewIntent)
-            CryptMethods.deleteKeys();
-        super.onPause();
-    }
-
     /* Called whenever we call invalidateOptionsMenu() */
     /*@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -434,6 +429,13 @@ public class Main extends Activity {
         //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }*/
+
+    @Override
+    public void onPause() {
+        if (!handleByOnNewIntent)
+            CryptMethods.deleteKeys();
+        super.onPause();
+    }
 
     /**
      * When using the ActionBarDrawerToggle, you must call it during
@@ -580,7 +582,7 @@ public class Main extends Activity {
         switch (status) {
             case BOTH:
                 layouts = allLayouts;
-                if (!showDecrypt())
+                if (!openByFile())
                     selectItem(0, R.layout.encrypt);
                 break;
             case PB:
@@ -591,7 +593,7 @@ public class Main extends Activity {
             case PV:
                 layouts = new int[]{allLayouts[DECRYPT], allLayouts[CONTACTS],
                         allLayouts[LEARN], allLayouts[SETUP]};
-                if (!showDecrypt())
+                if (!openByFile())
                     selectItem(0, R.layout.decrypt);
                 break;
             case NONE:
@@ -601,7 +603,7 @@ public class Main extends Activity {
         }
     }
 
-    private boolean showDecrypt() {
+    private boolean openByFile() {
         final String msg = getIntent().getStringExtra("message");
         if (Splash.message != null || msg != null) {
             final ProgressDlg prgd = new ProgressDlg(this);
@@ -612,8 +614,12 @@ public class Main extends Activity {
                 @Override
                 public void run() {
                     CryptMethods.decrypt(msg != null ? msg : Splash.message);
-                    if (CryptMethods.decryptedMsg != null)
-                        Contact.giveMeContact(Main.this, CryptMethods.decryptedMsg);
+                    if (CryptMethods.decryptedMsg != null){
+                        //Splash.fileContactCard=CryptMethods.
+                       //TODO Contact.giveMeContact(Main.this, CryptMethods.decryptedMsg);
+                       //TODO to open a dialog
+                        //TODO
+                    }
                     else
                         CryptMethods.decryptedMsg = null;
                     getIntent().removeExtra("message");
@@ -623,6 +629,22 @@ public class Main extends Activity {
                     prgd.cancel();
                 }
             }).start();
+            getIntent().setData(null);
+            return true;
+        } else if (Splash.fileContactCard != null) {
+            selectItem(-1, R.layout.contacts);
+            ContactsDataSource cds = new ContactsDataSource(this);
+            cds.open();
+            //TODO search also in names and emails
+            Contact c = cds.findContact(Splash.fileContactCard.getPublicKey());
+            cds.close();
+            if (c == null) {
+                AddContactDlg acd = new AddContactDlg();
+                acd.show(getFragmentManager(), "acd");
+            } else
+                Toast.makeText(getBaseContext(),
+                        R.string.contact_exist, Toast.LENGTH_LONG)
+                        .show();
             return true;
         }
         return false;
@@ -630,26 +652,65 @@ public class Main extends Activity {
 
     @Override
     public void onBackPressed() {
+        final int[] mainL = {R.layout.encrypt, R.layout.decrypt, R.layout.contacts, R.layout.share, R.layout.help, R.layout.setup};
         if (exit) {
             CryptMethods.deleteKeys();
             super.onBackPressed();
         } else {
-            Toast.makeText(this, R.string.exit_by_back_notify, Toast.LENGTH_SHORT).show();
-            exit = true;
-            setUpViews();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (this) {
-                        try {
-                            wait(2000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+            boolean isMain = false;
+            for (int x : mainL) {
+                if (currentLayout == x)
+                    isMain = true;
+            }
+            if (isMain) {
+                if (refreshed) {
+                    Toast.makeText(this, R.string.exit_by_back_notify, Toast.LENGTH_SHORT).show();
+                    exit = true;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            synchronized (this) {
+                                try {
+                                    wait(2000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            exit = false;
                         }
-                    }
-                    exit = false;
+                    }).start();
+                } else {
+                    setUpViews();
+                    refreshed = true;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            synchronized (this) {
+                                try {
+                                    wait(7000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            refreshed = false;
+                        }
+                    }).start();
                 }
-            }).start();
+            } else {
+                switch (currentLayout) {
+                    case R.layout.edit_contact:
+                        //TODO handle you wanna save or cancel
+                        selectItem(3, R.layout.contacts);
+                        break;
+                    case R.layout.decrypted_msg:
+                        setUpViews();
+                        break;
+                    case R.layout.wait_nfc_decrypt:
+                        setUpViews();
+                        break;
+                    //TODO handle on create keys, where to take him back
+                }
+            }
         }
     }
 
@@ -686,6 +747,7 @@ public class Main extends Activity {
                 Toast.makeText(this, R.string.failed_attach_files, Toast.LENGTH_LONG).show();
             else {
                 //TODO add intentShare.putExtra(Intent.EXTRA_EMAIL,)
+                intentShare.putExtra(Intent.EXTRA_EMAIL,((TextView)findViewById(R.id.chosen_email)).getText().toString());
                 intentShare.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
                 startActivity(Intent.createChooser(intentShare, getResources()
                         .getString(R.string.send_dialog)));
@@ -799,5 +861,9 @@ public class Main extends Activity {
                                 long id) {
             selectItem(position, 0);
         }
+    }
+    public void addToContact(View v){
+        AddContactDlg acd = new AddContactDlg();
+        acd.show(getFragmentManager(),"acd3");
     }
 }

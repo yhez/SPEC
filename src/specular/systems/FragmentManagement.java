@@ -140,7 +140,7 @@ class FragmentManagement extends Fragment {
                         .setText(contact.getEmail());
                 ((TextView) getActivity().findViewById(R.id.contact_session))
                         .setText(contact.getSession());
-                ((ImageView) getActivity().findViewById(R.id.contact_picture)).setImageBitmap(contact.getPhoto());
+                ((ImageView) getActivity().findViewById(R.id.contact_picture)).setImageBitmap(Contact.getPhoto(contact.getPublicKey()));
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.edit_contact));
                 TextView tvt = (TextView) getActivity().findViewById(R.id.contact_pb);
                 tvt.setText(contact.getPublicKey());
@@ -205,7 +205,7 @@ class FragmentManagement extends Fragment {
                         ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(l + "");
                         ((TextView) getActivity().findViewById(R.id.chosen_name)).setText(cvc.getContactName());
                         ((TextView) getActivity().findViewById(R.id.chosen_email)).setText(cvc.getEmail());
-                        ((ImageView) getActivity().findViewById(R.id.chosen_icon)).setImageBitmap(cvc.getPhoto());
+                        ((ImageView) getActivity().findViewById(R.id.chosen_icon)).setImageBitmap(Contact.getPhoto(cvc.getPublicKey()));
                         final View cont = getActivity().findViewById(R.id.en_contact);
                         cont.setVisibility(View.VISIBLE);
                         cont.setAlpha(1);

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?android:attr/dialogTheme"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal|center_vertical"
+    android:orientation="vertical"
+    android:padding="@dimen/default_gap">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_contact_to_add" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/spec_dark_blue" />
+
+    <RelativeLayout
+        android:id="@+id/acd_en_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/alert_light_frame"
+        android:isScrollContainer="true"
+        android:padding="@dimen/default_gap">
+
+        <ImageView
+            android:id="@+id/acd_chosen_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:padding="@dimen/default_gap" />
+
+        <LinearLayout
+            android:id="@+id/acd_ll1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/acd_chosen_icon"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="@dimen/default_gap">
+
+            <TextView
+                android:id="@+id/acd_chosen_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/spec_black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/acd_chosen_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/spec_blue"
+                android:textSize="17sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/described_what_going_to_be" />
+
+</LinearLayout>

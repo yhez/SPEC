@@ -26,6 +26,7 @@ public class Splash extends Activity {
     }
     final private static int TIME_FOR_SPLASH = 3500;
     public static String message;
+    public static PublicContactCard fileContactCard;
     private final Thread waitForSplash = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -108,26 +109,7 @@ public class Splash extends Activity {
                 if (data != null) {
                     qrp = new PublicContactCard(this, data);
                     if (qrp.getPublicKey() != null) {
-                        //TODO create dialog before save
-                        ContactsDataSource cds = new ContactsDataSource(this);
-                        cds.open();
-                        Contact c = cds.findContact(qrp.getPublicKey());
-                        cds.close();
-                        if (c == null) {
-                            c = new Contact(this, qrp.getName(), qrp.getEmail(),
-                                    qrp.getPublicKey());
-                            Toast.makeText(
-                                    getBaseContext(),
-                                    c
-                                            + "\n"
-                                            + getResources().getString(
-                                            R.string.contact_saved),
-                                    Toast.LENGTH_LONG).show();
-                        } else
-                            Toast.makeText(getBaseContext(),
-                                    R.string.contact_exist, Toast.LENGTH_LONG)
-                                    .show();
-                        getIntent().setData(null);
+                        fileContactCard=qrp;
                     } else {
                         message = data;
                     }

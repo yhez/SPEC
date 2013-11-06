@@ -39,13 +39,6 @@ class ContactsDataSource
 				   "" + contact.getConversationStatus());
         return database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
 										values);
-        /*Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
-		 allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
-		 null, null, null);
-		 cursor.moveToFirst();
-		 long id = cursor.getLong(0);
-		 cursor.close();*/
-        //return insertId;//id;
     }
 
     public void deleteContact(Contact contact)

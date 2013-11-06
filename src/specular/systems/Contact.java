@@ -10,42 +10,6 @@ public class Contact {
     public static final int WE_STRANGERS = 0, I_KNOW_HIS_SESS = 1,
             HE_KNOW_MY_SESS = 2, WE_FRIENDS = 3;
 
-    public static Contact giveMeContact(Activity a, MessageFormat msg) {
-        ContactsDataSource dsrc = new ContactsDataSource(a);
-        dsrc.open();
-        Contact c = dsrc.findContact(msg.getPublicKey());
-        dsrc.close();
-        if (c != null)
-            return c;
-        return new Contact(a, msg.getName(), msg.getEmail(),
-                msg.getPublicKey(), new Session(msg.getSession()) + "");
-    }
-
-    public static Contact giveMeContact(Activity a, PublicContactCard qrp) {
-        ContactsDataSource dsrc = new ContactsDataSource(a);
-        dsrc.open();
-        Contact c = dsrc.findContact(qrp.getPublicKey());
-        dsrc.close();
-        if (c != null) {
-            int d = c.getConversationStatus();
-            if (d == WE_FRIENDS || d == HE_KNOW_MY_SESS)
-                return c;
-            if (d == WE_STRANGERS) {
-                c.update(a, null, null, null, null, HE_KNOW_MY_SESS);
-                return c;
-            }
-            if (d == I_KNOW_HIS_SESS) {
-                c.update(a, null, null, null, null, WE_FRIENDS);
-                return c;
-            }
-        }
-        else{
-            Contact cont = new Contact(a, qrp.getName(), qrp.getEmail(), qrp.getPublicKey());
-            return cont.publicKey == null ? null : cont;
-        }
-        return null;
-    }
-
     private String contactName;
     private int conversationStatus;
     private String email;
@@ -70,20 +34,6 @@ public class Contact {
             dataSrc.close();
         }
     }
-
-    private Contact(Activity a, String name, String email, String publicKey,
-                    String session) {
-        this.conversationStatus = I_KNOW_HIS_SESS;
-        this.contactName = name;
-        this.publicKey = publicKey;
-        this.email = email;
-        this.session = session;
-        ContactsDataSource dataSrc = new ContactsDataSource(a);
-        dataSrc.open();
-        this.id = dataSrc.createContact(this);
-        dataSrc.close();
-    }
-
     public Contact(long id, String contactName, String email, String publicKey,
                    String session, int conversationStatus) {
         this.conversationStatus = conversationStatus;
@@ -144,10 +94,10 @@ public class Contact {
         this.id = dataSrc.createContact(this);
         dataSrc.close();
     }
-    public Bitmap getPhoto() {
+    public static Bitmap getPhoto(String publicKey) {
 
-        //String color = pbk.substring(pbk.length()/2,pbk.length()/2+6);
-        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(getPublicKey(), BarcodeFormat.QR_CODE.toString(), 128);
+        //TODO add colors String color = pbk.substring(pbk.length()/2,pbk.length()/2+6);
+        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(publicKey, BarcodeFormat.QR_CODE.toString(), 128);
         Bitmap bitmap = null;
         try {
             bitmap = qrCodeEncoder.encodeAsBitmap();

@@ -33,7 +33,7 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         TextView id = (TextView) rowView.findViewById(R.id.id_contact);
         id.setText("" + c.getId());
-        imageView.setImageBitmap(c.getPhoto());
+        imageView.setImageBitmap(Contact.getPhoto(c.getPublicKey()));
         email.setText(c.getEmail());
         // session.setText(c.getSession());
         name.setText(c.getContactName());
