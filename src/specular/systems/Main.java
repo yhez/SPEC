@@ -728,6 +728,7 @@ public class Main extends Activity {
         boolean success = FilesManagement.createFilesToSend(this, (userInput.length() + (fileContent != null ? fileContent.length : 0)) < MSG_LIMIT_FOR_QR);
         if (success) {
             Intent intentShare = new Intent(Intent.ACTION_SEND_MULTIPLE);
+            intentShare.putExtra(Intent.EXTRA_EMAIL,new String[]{((TextView)findViewById(R.id.chosen_email)).getText().toString()});
             intentShare.setType("*/*");
             intentShare.putExtra(Intent.EXTRA_SUBJECT,
                     getResources().getString(R.string.subject_encrypt));
@@ -747,7 +748,6 @@ public class Main extends Activity {
                 Toast.makeText(this, R.string.failed_attach_files, Toast.LENGTH_LONG).show();
             else {
                 //TODO add intentShare.putExtra(Intent.EXTRA_EMAIL,)
-                intentShare.putExtra(Intent.EXTRA_EMAIL,((TextView)findViewById(R.id.chosen_email)).getText().toString());
                 intentShare.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
                 startActivity(Intent.createChooser(intentShare, getResources()
                         .getString(R.string.send_dialog)));
@@ -862,7 +862,7 @@ public class Main extends Activity {
             selectItem(position, 0);
         }
     }
-    public void addToContact(View v){
+    public void addToContacts(View v){
         AddContactDlg acd = new AddContactDlg();
         acd.show(getFragmentManager(),"acd3");
     }

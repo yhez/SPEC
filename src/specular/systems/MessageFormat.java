@@ -42,7 +42,7 @@ class MessageFormat {
         this.fileName=fileName;
         fileContent = fileContentt;
         name = CryptMethods.getName();
-        hash = hashing(name + email + publicKey + msgContent + new String(fileContent) + session + sentTime);
+        hash = hashing(name + email + publicKey + msgContent + (fileContent!=null?new String(fileContent):"") + session + sentTime);
     }
 
     public boolean checkHash() {
