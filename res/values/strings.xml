@@ -80,7 +80,7 @@
     <string name="no">NO</string>
     <string name="yes">YES</string>
     <string name="save_changes_back_pressed">Would you like to save the changes?</string>
-    <string name="verify_delete_msg">Are you sure you want to delete?</string>
+    <string name="verify_delete_msg">Are you sure you want to delete this contact?</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
