@@ -29,17 +29,6 @@
         android:orientation="horizontal"
         android:visibility="gone">
 
-        <ImageButton
-            android:id="@+id/add_contact"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:drawablePadding="0dip"
-            android:onClick="onClick"
-            android:padding="@dimen/default_gap"
-            android:src="@drawable/add_qr" />
-
         <EditText
             android:id="@+id/filter"
             android:layout_width="wrap_content"
@@ -51,6 +40,15 @@
             android:inputType="textFilter"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
+        <ImageButton
+            android:id="@+id/add_contact"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:drawablePadding="0dip"
+            android:onClick="onClick"
+            android:src="@drawable/add_qr" />
     </LinearLayout>
 
     <LinearLayout
@@ -130,15 +128,6 @@
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/default_gap"
             android:paddingRight="@dimen/default_gap" />
-
-        <ImageButton
-            android:id="@+id/search"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|right"
-            android:onClick="search"
-            android:src="@android:drawable/ic_menu_search" />
 
         <ImageButton
             android:id="@+id/add_file"

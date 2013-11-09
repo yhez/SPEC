@@ -24,6 +24,8 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -129,14 +131,6 @@ public class Main extends Activity {
                 }
             setUpViews();
         }
-    }
-
-    public void search(View v) {
-        View b = findViewById(R.id.filter_ll);
-        if (b.getVisibility() == View.GONE)
-            b.setVisibility(View.VISIBLE);
-        else
-            b.setVisibility(View.GONE);
     }
 
     void encryptManager() {
@@ -404,30 +398,39 @@ public class Main extends Activity {
             return true;
         }
         // Handle action buttons
-        /*
-         * switch(item.getItemId()) { case R.id.action_websearch: // create
-		 * intent to perform web search for this planet Intent intent = new
-		 * Intent(Intent.ACTION_WEB_SEARCH);
-		 * intent.putExtra(SearchManager.QUERY, getActionBar().getTitle()); //
-		 * catch event that there's no activity to handle intent if
-		 * (intent.resolveActivity(getPackageManager()) != null) {
-		 * startActivity(intent); } else { Toast.makeText(this,
-		 * R.string.app_not_available, Toast.LENGTH_LONG).show(); } return true;
-		 * default:}
-		 */
+         View b = findViewById(R.id.filter_ll);
+        View lst = currentLayout==R.layout.encrypt?findViewById(R.id.en_list_contact):findViewById(R.id.list);
+        if(lst.getVisibility()==View.VISIBLE){
+            if (b.getVisibility() == View.GONE)
+                b.setVisibility(View.VISIBLE);
+            else
+                b.setVisibility(View.GONE);
+        }
         return super.onOptionsItemSelected(item);
 
     }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(currentLayout==R.layout.contacts||currentLayout==R.layout.encrypt){
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.main, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
+        return false;
+    }
     /* Called whenever we call invalidateOptionsMenu() */
-    /*@Override
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav main is open, hide action items related to the content
         // view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }*/
+        if(currentLayout==R.layout.contacts||currentLayout==R.layout.encrypt){
+            boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+            menu.findItem(R.id.action_search).setVisible(!drawerOpen);
+            return super.onPrepareOptionsMenu(menu);
+        }
+        else
+            return false;
+    }
 
     @Override
     public void onPause() {

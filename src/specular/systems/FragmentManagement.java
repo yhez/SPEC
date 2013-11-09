@@ -85,8 +85,7 @@ class FragmentManagement extends Fragment {
                                         .getText().toString();
                                 String myName = ((EditText) getActivity().findViewById(R.id.name))
                                         .getText().toString();
-                                if (myEmail == null
-                                        || !myEmail.contains("@")
+                                if (!validateEmail(myEmail)
                                         || myName == null)
                                     Toast.makeText(getActivity(), R.string.fill_all,
                                             Toast.LENGTH_LONG).show();
@@ -196,7 +195,6 @@ class FragmentManagement extends Fragment {
                                             long p4) {
                         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
-                        getActivity().findViewById(R.id.search).setVisibility(View.GONE);
                         getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
                         getActivity().findViewById(R.id.en_list_contact).setVisibility(View.GONE);
                         ContactsDataSource cdsss = new ContactsDataSource(getActivity());
@@ -224,7 +222,6 @@ class FragmentManagement extends Fragment {
                                     if (cont.getAlpha() < 0.3) {
                                         cont.setVisibility(View.GONE);
                                         ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
-                                        getActivity().findViewById(R.id.search).setVisibility(View.VISIBLE);
                                         getActivity().findViewById(R.id.en_list_contact).setVisibility(View.VISIBLE);
                                     } else {
                                         cont.setAlpha(1);
@@ -393,5 +390,20 @@ class FragmentManagement extends Fragment {
                 } catch (Exception ee) {
                 }
             }
+    }
+    private boolean validateEmail(String email){
+        if(email==null)
+            return false;
+        String[] parse = email.split("@");
+        if(parse.length<2)
+            return false;
+        if(parse[0].length()<2)
+            return false;
+        if(parse[1].length()<4)
+            return false;
+        parse=parse[1].split(".");
+        if(parse.length<2)
+            return false;
+        return true;
     }
 }
