@@ -45,6 +45,7 @@ public class Main extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3;
     public static int currentLayout;
+    static boolean changed;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -72,7 +73,6 @@ public class Main extends Activity {
     };
     private final int ATTACH_FILE = 0, SCAN_QR = 1;
     boolean exit = false;
-    static boolean changed;
     private boolean handleByOnActivityResult = false;
     private int layouts[];
     private DrawerLayout mDrawerLayout;
@@ -333,7 +333,7 @@ public class Main extends Activity {
                         break;
                     case R.id.delete:
                         DeleteDialog dlg = new DeleteDialog();
-                        dlg.show(getFragmentManager(),"delete");
+                        dlg.show(getFragmentManager(), "delete");
                         break;
                 }
                 break;
@@ -373,7 +373,7 @@ public class Main extends Activity {
                         }
                     }
                 }
-                String rslt = writeTag(tag, Visual.hex2bin(CryptMethods.getPrivateToSave()));
+                String rslt = getString(writeTag(tag, Visual.hex2bin(CryptMethods.getPrivateToSave())));
                 Toast.makeText(getBaseContext(), rslt, Toast.LENGTH_LONG).show();
                 if (rslt.equals(getString(R.string.tag_written))) {
                     CryptMethods.NFCMode = true;
@@ -632,9 +632,9 @@ public class Main extends Activity {
             if (c == null) {
                 AddContactDlg acd = new AddContactDlg();
                 acd.show(getFragmentManager(), "acd");
-            } else{
+            } else {
                 //TODO what if some of the details are not exist
-                Splash.fileContactCard=null;
+                Splash.fileContactCard = null;
                 Toast.makeText(getBaseContext(),
                         R.string.contact_exist, Toast.LENGTH_LONG)
                         .show();
@@ -673,8 +673,8 @@ public class Main extends Activity {
         } else {
             switch (currentLayout) {
                 case R.layout.encrypt:
-                    if(changed)
-                        selectItem(-1,currentLayout);
+                    if (changed)
+                        selectItem(-1, currentLayout);
                     else
                         new prepareToExit();
                     break;
@@ -685,8 +685,8 @@ public class Main extends Activity {
                     setUpViews();
                     break;
                 case R.layout.contacts:
-                    if(changed)
-                        selectItem(-1,currentLayout);
+                    if (changed)
+                        selectItem(-1, currentLayout);
                     else
                         setUpViews();
                     break;
@@ -705,7 +705,7 @@ public class Main extends Activity {
                         selectItem(-1, R.layout.contacts);
                     else {
                         ExitWithoutSave dlg = new ExitWithoutSave();
-                        dlg.show(getFragmentManager(),"exit");
+                        dlg.show(getFragmentManager(), "exit");
                     }
                     break;
                 case R.layout.create_new_keys:
@@ -767,7 +767,7 @@ public class Main extends Activity {
         }
     }
 
-    String writeTag(Tag tag, byte[] binText) {
+    int writeTag(Tag tag, byte[] binText) {
         // record to launch Play Store if app is not installed
         NdefRecord appRecord = NdefRecord
                 .createApplicationRecord("specular.systems");
@@ -780,35 +780,31 @@ public class Main extends Activity {
         try {
             // see if tag is already NDEF formatted
             Ndef ndef = Ndef.get(tag);
-            if (ndef != null) {
-                ndef.connect();
-                if (!ndef.isWritable()) {
-                    return getString(R.string.failed_read_only);
-                }
-                // work out how much space we need for the data
-                int size = message.toByteArray().length;
-                if (ndef.getMaxSize() < size) {
-                    return getString(R.string.tag_needs_format);
-                }
-                ndef.writeNdefMessage(message);
-                return getString(R.string.tag_written);
-            } else {
+            ndef.connect();
+            //todo move this check to the right place
+            if (!ndef.isWritable()) {
+                return R.string.failed_read_only;
+            }
+            // work out how much space we need for the data
+            int size = message.toByteArray().length;
+            if (ndef==null||ndef.getMaxSize() < size) {
                 // attempt to format tag
                 NdefFormatable format = NdefFormatable.get(tag);
                 if (format != null) {
                     try {
                         format.connect();
                         format.format(message);
-                        return getString(R.string.nfc_written_successfully);
                     } catch (IOException e) {
-                        return getString(R.string.cant_format);
+                        return R.string.cant_format;
                     }
                 } else {
-                    return getString(R.string.tag_not_supported);
+                    return R.string.tag_not_supported;
                 }
             }
+            ndef.writeNdefMessage(message);
+            return R.string.tag_written;
         } catch (Exception e) {
-            return getString(R.string.failed_to_write);
+            return R.string.failed_to_write;
         }
     }
 
