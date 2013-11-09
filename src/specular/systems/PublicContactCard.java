@@ -18,14 +18,13 @@ class PublicContactCard
         }
     }
 
- /*   public PublicContactCard(Activity a, Contact contact)
+   public PublicContactCard(Activity a,String publicKey,String email,String name)
 	{
-        publicKey = contact.getPublicKey();
-        email = contact.getEmail();
-        name = contact.getContactName();
+        this.publicKey = publicKey;
+        this.email = email;
+        this.name = name;
         this.a = a;
     }
-*/
     public PublicContactCard(Activity a, String raw)
 	{
         if (validate(raw))

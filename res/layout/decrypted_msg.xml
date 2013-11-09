@@ -14,35 +14,62 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:columnCount="4"
+        android:columnCount="5"
         android:padding="@dimen/default_gap"
         android:rowCount="1">
         <!--hash ok or not-->
-        <ImageButton
-            style="@android:style/Widget.Holo.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <FrameLayout
             android:layout_column="1"
-            android:padding="@dimen/default_gap"
-            android:src="@drawable/hash_not_ok"/>
-<!--replay attack-->
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/hash_check"
+            android:layout_gravity="top|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <ImageButton
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/default_gap"
+            android:src="@drawable/hash_not_ok" />
+        </FrameLayout>
+        <!--replay attack-->
+        <FrameLayout
             android:layout_column="2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/replay_check"
+            android:layout_gravity="top|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            style="@android:style/Widget.Holo.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:padding="@dimen/default_gap"
             android:src="@drawable/replay_atack" />
-<!--session-->
+        </FrameLayout>
+        <!--session-->
+        <FrameLayout
+            android:layout_column="3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/session_check"
+            android:layout_gravity="top|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <ImageButton
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="3"
             android:padding="@dimen/default_gap"
-            android:src="@drawable/session"/>
-<!--file to open-->
-        <Button
+            android:src="@drawable/session" />
+        </FrameLayout>
+        <!--file to open-->
+        <ImageButton
             android:id="@+id/open_file"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
@@ -50,8 +77,17 @@
             android:layout_column="0"
             android:onClick="openFile"
             android:padding="@dimen/default_gap"
-            android:src="@drawable/after_attach"
-            android:textColor="@color/spec_black" />
+            android:src="@drawable/after_attach" />
+        <!--add to contact if doesn't exist-->
+        <ImageButton
+            android:onClick="addToContacts"
+            android:id="@+id/add_contact_decrypt"
+            style="@android:style/Widget.Holo.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="4"
+            android:padding="@dimen/default_gap"
+            android:src="@android:drawable/ic_menu_add" />
     </GridLayout>
 
     <LinearLayout
@@ -103,5 +139,4 @@
             android:textColor="@color/spec_black"
             android:textSize="50sp" />
     </ScrollView>
-
 </RelativeLayout>

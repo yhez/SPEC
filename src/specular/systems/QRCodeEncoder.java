@@ -12,8 +12,8 @@ import java.util.EnumMap;
 import java.util.Map;
 
 final class QRCodeEncoder {
-    private static final int WHITE = 0xFFFFFFFF;
-    private static final int BLACK = 0xFF000000;
+    private static int WHITE = 0xFFFFFFFF;
+    private int BLACK;
 
     private int dimension = Integer.MIN_VALUE;
     private String contents = null;
@@ -22,6 +22,7 @@ final class QRCodeEncoder {
 
     public QRCodeEncoder(String data, String format, int dimension) {
         this.dimension = dimension;
+        BLACK=0xFF000000+Integer.parseInt(data.substring(data.length()-6),16);
         encoded = encodeContents(data, format);
     }
 

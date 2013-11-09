@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -101,6 +100,7 @@ class FragmentManagement extends Fragment {
                 });
                 break;
             case contacts:
+                Main.changed=false;
                 ListView lv = (ListView) getActivity().findViewById(R.id.list);
                 cds = new ContactsDataSource(getActivity());
                 cds.open();
@@ -136,7 +136,11 @@ class FragmentManagement extends Fragment {
                 cds.close();
                 ((EditText) getActivity().findViewById(R.id.contact_name))
                         .setText(contact.getContactName());
-                ((TextView) getActivity().findViewById(R.id.contact_email))
+                ((TextView) getActivity().findViewById(R.id.orig_name))
+                        .setText(contact.getContactName());
+                ((EditText) getActivity().findViewById(R.id.contact_email))
+                        .setText(contact.getEmail());
+                ((TextView) getActivity().findViewById(R.id.orig_eamil))
                         .setText(contact.getEmail());
                 ((TextView) getActivity().findViewById(R.id.contact_session))
                         .setText(contact.getSession());
@@ -176,6 +180,7 @@ class FragmentManagement extends Fragment {
                 });
                 break;
             case encrypt:
+                Main.changed=false;
                 lv = (ListView) getActivity().findViewById(R.id.en_list_contact);
                 cds = new ContactsDataSource(getActivity());
                 cds.open();
@@ -184,7 +189,6 @@ class FragmentManagement extends Fragment {
                 secRowText = new String[alc.size()];
                 final MySimpleArrayAdapter adapter2 = new MySimpleArrayAdapter(
                         getActivity().getBaseContext(), secRowText, alc);
-                lv.setAdapter(adapter2);
                 lv.setAdapter(adapter2);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -215,20 +219,20 @@ class FragmentManagement extends Fragment {
                             public boolean onTouch(View view, MotionEvent motionEvent) {
                                 //final float width = 1f/(float)cont.getWidth();
                                 if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN)
-                                        startPoint=motionEvent.getX();
+                                    startPoint = motionEvent.getX();
                                 else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
-                                    if (cont.getAlpha()<0.3) {
+                                    if (cont.getAlpha() < 0.3) {
                                         cont.setVisibility(View.GONE);
                                         ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
                                         getActivity().findViewById(R.id.search).setVisibility(View.VISIBLE);
                                         getActivity().findViewById(R.id.en_list_contact).setVisibility(View.VISIBLE);
-                                    }else{
+                                    } else {
                                         cont.setAlpha(1);
                                         cont.setX(0);
                                     }
                                 } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
                                     cont.setAlpha(cont.getAlpha() - 0.03f);
-                                    cont.setX(motionEvent.getRawX()-startPoint);
+                                    cont.setX(motionEvent.getRawX() - startPoint);
                                 }
                                 return true;
                             }
@@ -275,10 +279,12 @@ class FragmentManagement extends Fragment {
                         bt.setEnabled(choosedContact);
                         bt.setImageResource(choosedContact ? R.drawable.ic_send_holo_light : R.drawable.ic_send_disabled_holo_light);
                         if (num == 0) {
+                            Main.changed=choosedContact;
                             tv.setVisibility(View.GONE);
                             bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
                             bt.setEnabled(false);
                         } else {
+                            Main.changed=true;
                             tv.setVisibility(View.VISIBLE);
                             if (num > 0) {
                                 if (choosedContact) {
@@ -343,16 +349,36 @@ class FragmentManagement extends Fragment {
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.setup));
                 break;
             case decrypted_msg:
-                Button bt =(Button)getActivity().findViewById(R.id.open_file);
-                if(CryptMethods.decryptedMsg.getFileContent()!=null)
-                        bt.setText("File");
-                else {
-                    bt.setVisibility(View.GONE);
-                }
                 TextView tv = (TextView) getActivity().findViewById(R.id.decrypted_msg);
-                tv.setText(CryptMethods.decryptedMsg != null ?
-                        CryptMethods.decryptedMsg.getMsgContent() : getActivity().getString(R.string.cant_decrypt));
+                if (CryptMethods.decryptedMsg == null) {
+                    getActivity().findViewById(R.id.top_pannel).setVisibility(View.GONE);
+                    getActivity().findViewById(R.id.bottom_panel_dm).setVisibility(View.GONE);
+                    tv.setText(getActivity().getString(R.string.cant_decrypt));
+                } else {
+                    cds.open();
+                    Contact c = cds.findContact(CryptMethods.decryptedMsg.getPublicKey());
+                    cds.close();
+                    if(c!=null){
+                        getActivity().findViewById(R.id.add_contact_decrypt).setVisibility(View.GONE);
+                    }
+                    if (CryptMethods.decryptedMsg.getFileContent() == null)
+                        getActivity().findViewById(R.id.open_file).setVisibility(View.GONE);
+                    tv.setText(CryptMethods.decryptedMsg.getMsgContent());
+                    if(CryptMethods.decryptedMsg.checkHash())
+                        ((ImageView)getActivity().findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_ok);
+                    else
+                        ((ImageView)getActivity().findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_bad);
+                    if(CryptMethods.decryptedMsg.checkReplay())
+                        ((ImageView)getActivity().findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_ok);
+                    else
+                        ((ImageView)getActivity().findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_bad);
+                    if(CryptMethods.decryptedMsg.checkHash())
+                        ((ImageView)getActivity().findViewById(R.id.session_check)).setImageResource(R.drawable.ic_ok);
+                    else
+                        ((ImageView)getActivity().findViewById(R.id.session_check)).setImageResource(R.drawable.ic_bad);
+                }
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.decrypted_msg_ll));
+
                 break;
         }
     }

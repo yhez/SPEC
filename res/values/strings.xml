@@ -76,7 +76,11 @@
     <string name="cand_find_an_app_to_open_file">cant find an app to open it</string>
     <string name="failed_to_create_file_to_open">failed to create filr</string>
     <string name="described_what_going_to_be">Notify here if some of details already exist - TODO</string>
-    <string name="new_contact_to_add">You've been discovered, would you like to add this contact?</string>
+    <string name="new_contact_to_add">You\'ve been discovered, would you like to add this contact?</string>
+    <string name="no">NO</string>
+    <string name="yes">YES</string>
+    <string name="save_changes_back_pressed">would you like to save changes?</string>
+    <string name="verify_delete_msg">Are you sure you want to delete?</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

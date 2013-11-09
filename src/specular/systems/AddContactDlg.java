@@ -28,7 +28,9 @@ public class AddContactDlg extends DialogFragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+                        Main.changed=true;
                         new Contact(getActivity(),pcc.getName(),pcc.getEmail(),pcc.getPublicKey());
+                        getActivity().onBackPressed();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

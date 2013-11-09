@@ -24,15 +24,11 @@ class MessageFormat {
                 msgContent += data[a] + (a + 1 == data.length ? "" : "\n");
             if (r.length > 1) {
                 fileContent = r[1].getBytes();
-                //Log.d("msg after decrypt",new String(fileContent));
-                //Log.d("length aftar",""+fileContent.length);
             }
         }
     }
 
     public MessageFormat(byte[] fileContentt, String fileName, String msgContentt, String sessiont) {
-        //Log.d("msg before encrypt",new String(fileContentt));
-        //Log.d("length",""+fileContentt.length);
         email = CryptMethods.getEmail();
         msgContent = msgContentt;
         publicKey = CryptMethods.getPublic();
@@ -46,11 +42,16 @@ class MessageFormat {
     }
 
     public boolean checkHash() {
-        return checkHash(hash, name + email + publicKey + msgContent + fileContent + session
+        return checkHash(hash, name + email + publicKey + msgContent + (fileContent!=null?new String(fileContent):"") + session
                 + sentTime);
     }
+    public boolean checkReplay(){
+        String now = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
+                .getInstance().getTime());
+        return now.substring(4,6).equals(sentTime.substring(4,6));
+    }
 
-    boolean checkHash(String hash, String msg) {
+    private boolean checkHash(String hash, String msg) {
         String sig = hashing(msg);
         return sig.equals(hash);
     }
@@ -92,15 +93,6 @@ class MessageFormat {
         return fileContent;
     }
 
-   /* public String getFileName() {
-        return fileName;
-    }*/
-
-    /*public void saveFileContent()
-    {
-        //TODO save the file and return the path
-
-    }*/
 
     String hashing(String msg) {
         try {
