@@ -73,8 +73,8 @@
     <string name="not_editable_fields">Security Audit Info:</string>
     <string name="response">Respond</string>
     <string name="technical_detailes">Security Details</string>
-    <string name="cand_find_an_app_to_open_file">cant find an app to open it</string>
-    <string name="failed_to_create_file_to_open">failed to create filr</string>
+    <string name="cand_find_an_app_to_open_file">Can\'t find proper app</string>
+    <string name="failed_to_create_file_to_open">Failed to create file</string>
     <string name="described_what_going_to_be">Notify here if some of details already exist - TODO</string>
     <string name="new_contact_to_add">You\'ve been discovered, would you like to add this contact?</string>
     <string name="no">NO</string>
