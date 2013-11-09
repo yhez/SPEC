@@ -3,8 +3,7 @@
     android:layout_height="fill_parent"
     android:alpha="0"
     android:background="@android:color/white"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/file_content_length"
@@ -125,9 +124,7 @@
         <ListView
             android:id="@+id/en_list_contact"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/default_gap"
-            android:paddingRight="@dimen/default_gap" />
+            android:layout_height="match_parent" />
 
         <ImageButton
             android:id="@+id/add_file"

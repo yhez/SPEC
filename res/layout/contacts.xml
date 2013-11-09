@@ -4,7 +4,6 @@
     android:layout_height="fill_parent"
     android:background="@android:color/white"
     android:alpha="0"
-    android:padding="@dimen/default_gap"
     android:orientation="vertical">
 
     <LinearLayout
@@ -41,7 +40,6 @@
     </LinearLayout>
 
     <ListView
-        android:padding="@dimen/default_gap"
         android:id="@+id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />

@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -83,6 +84,9 @@ class FragmentManagement extends Fragment {
                             if (motionEvent.getX() < startPoint) {
                                 String myEmail = ((EditText) getActivity().findViewById(R.id.email))
                                         .getText().toString();
+                                Log.d("email",myEmail);
+                                Log.d("email check",validateEmail(myEmail)+"");
+
                                 String myName = ((EditText) getActivity().findViewById(R.id.name))
                                         .getText().toString();
                                 if (!validateEmail(myEmail)
@@ -352,6 +356,8 @@ class FragmentManagement extends Fragment {
                     getActivity().findViewById(R.id.bottom_panel_dm).setVisibility(View.GONE);
                     tv.setText(getActivity().getString(R.string.cant_decrypt));
                 } else {
+                    ((TextView)getActivity().findViewById(R.id.general_details))
+                            .setText("From:\t"+CryptMethods.decryptedMsg.getName()+" , "+CryptMethods.decryptedMsg.getEmail());
                     cds.open();
                     Contact c = cds.findContact(CryptMethods.decryptedMsg.getPublicKey());
                     cds.close();
@@ -392,18 +398,11 @@ class FragmentManagement extends Fragment {
             }
     }
     private boolean validateEmail(String email){
-        if(email==null)
-            return false;
+        if(email==null) return false;
         String[] parse = email.split("@");
-        if(parse.length<2)
-            return false;
-        if(parse[0].length()<2)
-            return false;
-        if(parse[1].length()<4)
-            return false;
-        parse=parse[1].split(".");
-        if(parse.length<2)
-            return false;
+        if (parse.length < 2 ||parse.length>2|| parse[0].length() < 2 || parse[1].length() < 4) return false;
+        String[] parse2=parse[1].split("\\.");
+        if (parse2.length < 2 || parse2[0].length() < 2 || parse2[1].length() < 2) return false;
         return true;
     }
 }
