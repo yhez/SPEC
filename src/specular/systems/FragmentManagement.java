@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,7 +51,7 @@ class FragmentManagement extends Fragment {
         }
     };
     private float startPoint;
-
+    private float width;
     public FragmentManagement(Main w) {
         this.w = w;
     }
@@ -60,8 +59,7 @@ class FragmentManagement extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Main.currentLayout = getArguments().getInt("layout");
-        View rootView = inflater.inflate(getArguments().getInt("layout"),
+        View rootView = inflater.inflate(Main.currentLayout,
                 container, false);
         rootView.animate().setDuration(1000).alpha(1).start();
         return rootView;
@@ -84,9 +82,6 @@ class FragmentManagement extends Fragment {
                             if (motionEvent.getX() < startPoint) {
                                 String myEmail = ((EditText) getActivity().findViewById(R.id.email))
                                         .getText().toString();
-                                Log.d("email",myEmail);
-                                Log.d("email check",validateEmail(myEmail)+"");
-
                                 String myName = ((EditText) getActivity().findViewById(R.id.name))
                                         .getText().toString();
                                 if (!validateEmail(myEmail)
@@ -219,11 +214,12 @@ class FragmentManagement extends Fragment {
                         cont.setOnTouchListener(new View.OnTouchListener() {
                             @Override
                             public boolean onTouch(View view, MotionEvent motionEvent) {
-                                //final float width = 1f/(float)cont.getWidth();
-                                if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN)
-                                    startPoint = motionEvent.getX();
+                                if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN){
+                                    startPoint = motionEvent.getRawX();
+                                    width = cont.getWidth();
+                                }
                                 else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
-                                    if (cont.getAlpha() < 0.3) {
+                                    if (cont.getAlpha() < 0.2) {
                                         cont.setVisibility(View.GONE);
                                         ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
                                         getActivity().findViewById(R.id.en_list_contact).setVisibility(View.VISIBLE);
@@ -232,8 +228,9 @@ class FragmentManagement extends Fragment {
                                         cont.setX(0);
                                     }
                                 } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
-                                    cont.setAlpha(cont.getAlpha() - 0.03f);
                                     cont.setX(motionEvent.getRawX() - startPoint);
+                                    float f =Math.abs(motionEvent.getRawX() - startPoint)*2/width;
+                                    cont.setAlpha(1-f);
                                 }
                                 return true;
                             }

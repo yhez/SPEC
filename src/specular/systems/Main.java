@@ -487,13 +487,11 @@ public class Main extends Activity {
             }
         }
         // update selected item and title, then close the main
+        currentLayout=layout;
         mDrawerList.setItemChecked(menu, true);
         setTitle(menuTitles[menu]);
         mDrawerLayout.closeDrawer(mDrawerList);
         Fragment fragment = new FragmentManagement(this);
-        Bundle args = new Bundle();
-        args.putInt("layout", layout);
-        fragment.setArguments(args);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame, fragment).commit();
@@ -577,7 +575,6 @@ public class Main extends Activity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        //int defaultScreenMenu, defaultScreenLayout;
         final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
                 R.layout.share, R.layout.contacts, R.layout.help,
                 R.layout.setup};
