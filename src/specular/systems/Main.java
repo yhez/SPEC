@@ -24,6 +24,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -412,6 +413,7 @@ public class Main extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if(currentLayout==R.layout.contacts||currentLayout==R.layout.encrypt){
+            Log.d("layout", "" + currentLayout);
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.main, menu);
             return super.onCreateOptionsMenu(menu);
@@ -454,6 +456,7 @@ public class Main extends Activity {
     private void selectItem(int position, int layout_screen) {
         // update the main content by replacing fragments
         int layout = layout_screen;
+        invalidateOptionsMenu();
         int menu = position;
         if (layout_screen == 0 && position != -1) {
             layout = layouts[position];

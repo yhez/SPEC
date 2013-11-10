@@ -87,17 +87,7 @@
     <favorites_list name="build.gradle" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="FragmentManagement.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/specular/systems/FragmentManagement.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="231" column="91" selection-start="12670" selection-end="12670" vertical-scroll-proportion="0.33123028" vertical-offset="2989" max-vertical-offset="6120">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -491,9 +481,9 @@
         <option value="$PROJECT_DIR$/res/menu/main.xml" />
         <option value="$PROJECT_DIR$/res/layout/decrypted_msg.xml" />
         <option value="$PROJECT_DIR$/res/layout/contacts.xml" />
+        <option value="$PROJECT_DIR$/src/specular/systems/FragmentManagement.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Main.java" />
         <option value="$PROJECT_DIR$/res/layout/encrypt.xml" />
-        <option value="$PROJECT_DIR$/src/specular/systems/FragmentManagement.java" />
       </list>
     </option>
   </component>
@@ -576,6 +566,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -584,52 +576,8 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SPEC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SPEC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SPEC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SPEC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="systems" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SPEC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SPEC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -728,6 +676,19 @@
       </ExternalSystemSettings>
       <method />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -753,19 +714,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -886,7 +834,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="728" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -896,20 +844,20 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32767403" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30153322" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31698775" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32111692" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28896672" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28896672" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24539877" sideWeight="0.6940195" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31762654" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14723927" sideWeight="0.6940195" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31698775" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" x="92" y="92" width="1416" height="676" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -953,13 +901,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/splash.xml">
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
           <folding />
         </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
@@ -1001,31 +949,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="788" column="26" selection-start="33549" selection-end="33549" vertical-scroll-proportion="0.0" vertical-offset="13396" max-vertical-offset="14518">
           <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1807#1822#0" expanded="true" />
-            <element signature="e#2285#2317#0" expanded="true" />
-            <element signature="e#2702#2740#0" expanded="true" />
-            <element signature="e#6448#6486#0" expanded="true" />
-            <element signature="e#9575#9592#0" expanded="true" />
-            <element signature="e#10162#10179#0" expanded="true" />
-            <element signature="e#11920#11961#0" expanded="true" />
-            <element signature="e#14533#14550#0" expanded="true" />
-            <element signature="e#16401#16432#0" expanded="true" />
-            <element signature="e#24168#24188#0" expanded="true" />
-            <element signature="e#24254#24275#0" expanded="true" />
-            <element signature="e#26275#26305#0" expanded="true" />
-            <element signature="e#27560#27582#0" expanded="true" />
-            <element signature="class#27770:28493" expanded="false" />
-            <element signature="e#28375#28403#0" expanded="true" />
-            <element signature="e#31477#31527#0" expanded="true" />
-            <element signature="e#32110#32138#0" expanded="true" />
-            <element signature="e#32404#32475#0" expanded="true" />
-            <element signature="e#32543#32582#0" expanded="true" />
-            <element signature="e#33414#33439#0" expanded="true" />
-            <element signature="e#33961#33981#0" expanded="true" />
-            <element signature="e#34057#34083#0" expanded="true" />
-            <element signature="e#34180#34200#0" expanded="true" />
-            <element signature="e#34253#34277#0" expanded="true" />
+            <element signature="class#27877:28600" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1041,31 +965,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="731" column="39" selection-start="31092" selection-end="31092" vertical-scroll-proportion="0.0" vertical-offset="12427" max-vertical-offset="14229">
           <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1807#1822#0" expanded="true" />
-            <element signature="e#2285#2317#0" expanded="true" />
-            <element signature="e#2702#2740#0" expanded="true" />
-            <element signature="e#6448#6486#0" expanded="true" />
-            <element signature="e#9575#9592#0" expanded="true" />
-            <element signature="e#10162#10179#0" expanded="true" />
-            <element signature="e#11920#11961#0" expanded="true" />
-            <element signature="e#14533#14550#0" expanded="true" />
-            <element signature="e#16401#16432#0" expanded="true" />
-            <element signature="e#24168#24188#0" expanded="true" />
-            <element signature="e#24254#24275#0" expanded="true" />
-            <element signature="e#26275#26305#0" expanded="true" />
-            <element signature="e#27560#27582#0" expanded="true" />
-            <element signature="class#27770:28493" expanded="false" />
-            <element signature="e#28375#28403#0" expanded="true" />
-            <element signature="e#31477#31527#0" expanded="true" />
-            <element signature="e#32110#32138#0" expanded="true" />
-            <element signature="e#32404#32475#0" expanded="true" />
-            <element signature="e#32543#32582#0" expanded="true" />
-            <element signature="e#33414#33439#0" expanded="true" />
-            <element signature="e#33961#33981#0" expanded="true" />
-            <element signature="e#34057#34083#0" expanded="true" />
-            <element signature="e#34180#34200#0" expanded="true" />
-            <element signature="e#34253#34277#0" expanded="true" />
+            <element signature="class#27877:28600" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1106,19 +1006,19 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/list_row.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="42" column="35" selection-start="1494" selection-end="1504" vertical-scroll-proportion="-3.64" vertical-offset="623" max-vertical-offset="1020" />
       </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/add_contact_dlg.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="30" selection-start="2388" selection-end="2388" vertical-scroll-proportion="2.269565" vertical-offset="305" max-vertical-offset="1275" />
-      </provider>
       <provider editor-type-id="android-designer">
         <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="30" selection-start="2388" selection-end="2388" vertical-scroll-proportion="2.269565" vertical-offset="305" max-vertical-offset="1275" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/CryptMethods.java">
@@ -1137,11 +1037,11 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/edit_contact.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="10" selection-start="1175" selection-end="1180" vertical-scroll-proportion="-0.465625" vertical-offset="676" max-vertical-offset="2839" />
-      </provider>
       <provider editor-type-id="android-designer">
         <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="10" selection-start="1175" selection-end="1180" vertical-scroll-proportion="-0.465625" vertical-offset="676" max-vertical-offset="2839" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/ic_unknown.png">
@@ -1176,26 +1076,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/AddContactDlg.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="28" selection-start="1429" selection-end="1429" vertical-scroll-proportion="0.547486" vertical-offset="229" max-vertical-offset="782">
-          <folding>
-            <element signature="e#1025#1036#0" expanded="false" />
-            <element signature="e#1038#1525#0" expanded="false" />
-            <element signature="e#1506#1507#0" expanded="false" />
-            <element signature="e#1562#1577#0" expanded="false" />
-            <element signature="e#1579#1797#0" expanded="false" />
-            <element signature="e#1778#1779#0" expanded="false" />
-          </folding>
-        </state>
+        <state line="33" column="28" selection-start="1429" selection-end="1429" vertical-scroll-proportion="0.547486" vertical-offset="229" max-vertical-offset="782" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/menu/main.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="38" selection-start="267" selection-end="280" vertical-scroll-proportion="0.31070495" vertical-offset="0" max-vertical-offset="383">
-          <folding />
-        </state>
+        <state line="7" column="38" selection-start="267" selection-end="280" vertical-scroll-proportion="0.31070495" vertical-offset="0" max-vertical-offset="383" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/decrypted_msg.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="20" selection-start="255" selection-end="255" vertical-scroll-proportion="0.29565218" vertical-offset="0" max-vertical-offset="748">
           <folding>
@@ -1209,18 +1101,15 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/contacts.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/contacts.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="20" selection-start="257" selection-end="257" vertical-scroll-proportion="0.24637681" vertical-offset="0" max-vertical-offset="884">
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
@@ -1245,13 +1134,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/splash.xml">
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
           <folding />
         </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/logo.png">
@@ -1260,68 +1149,55 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/drawer_shadow.9.png">
-      <provider selected="true" editor-type-id="ninepatcheditor">
-        <state />
-      </provider>
       <provider editor-type-id="images">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="489" column="17" selection-start="20732" selection-end="20732" vertical-scroll-proportion="-0.20504732" vertical-offset="7545" max-vertical-offset="13736">
-          <folding>
-            <element signature="e#1807#1822#0" expanded="true" />
-            <element signature="e#2285#2317#0" expanded="true" />
-            <element signature="e#2702#2740#0" expanded="true" />
-            <element signature="e#6448#6486#0" expanded="true" />
-            <element signature="e#9575#9592#0" expanded="true" />
-            <element signature="e#10162#10179#0" expanded="true" />
-            <element signature="e#11920#11961#0" expanded="true" />
-            <element signature="e#14533#14550#0" expanded="true" />
-            <element signature="e#16401#16432#0" expanded="true" />
-            <element signature="e#24168#24188#0" expanded="true" />
-            <element signature="e#24254#24275#0" expanded="true" />
-            <element signature="e#26275#26305#0" expanded="true" />
-            <element signature="e#27560#27582#0" expanded="true" />
-            <element signature="class#27770:28493" expanded="false" />
-            <element signature="e#28375#28403#0" expanded="true" />
-            <element signature="e#31477#31527#0" expanded="true" />
-            <element signature="e#32110#32138#0" expanded="true" />
-            <element signature="e#32404#32475#0" expanded="true" />
-            <element signature="e#32543#32582#0" expanded="true" />
-            <element signature="e#33414#33439#0" expanded="true" />
-            <element signature="e#33961#33981#0" expanded="true" />
-            <element signature="e#34057#34083#0" expanded="true" />
-            <element signature="e#34180#34200#0" expanded="true" />
-            <element signature="e#34253#34277#0" expanded="true" />
-          </folding>
-        </state>
+      <provider selected="true" editor-type-id="ninepatcheditor">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/share.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="78" column="27" selection-start="3104" selection-end="3104" vertical-scroll-proportion="3.877193" vertical-offset="0" max-vertical-offset="1921">
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/encrypt.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="20" selection-start="174" selection-end="174" vertical-scroll-proportion="0.1491228" vertical-offset="0" max-vertical-offset="3247">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/FragmentManagement.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="231" column="91" selection-start="12670" selection-end="12670" vertical-scroll-proportion="0.33123028" vertical-offset="2989" max-vertical-offset="6120">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/ic_send_disabled_holo_light.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/ic_attachment_universal_small.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="458" column="32" selection-start="19602" selection-end="19602" vertical-scroll-proportion="0.49211356" vertical-offset="6780" max-vertical-offset="13753">
+          <folding>
+            <element signature="class#27877:28600" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/encrypt.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="76" column="30" selection-start="2864" selection-end="2864" vertical-scroll-proportion="0.47887325" vertical-offset="1122" max-vertical-offset="3230">
           <folding />
         </state>
       </provider>
