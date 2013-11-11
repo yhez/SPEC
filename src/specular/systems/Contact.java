@@ -23,7 +23,7 @@ public class Contact {
     public Contact(Activity a, String contactName, String email,
                    String publicKey) {
         if (publicKey != null) {
-            this.contactName = contactName != null ? contactName : email.split("@")[0];
+            this.contactName = contactName != null&&contactName.length()>1 ? contactName : email.split("@")[0];
             this.publicKey = publicKey;
             this.email = email;
             this.session = new Session() + "";
@@ -32,6 +32,11 @@ public class Contact {
             dataSrc.open();
             this.id = dataSrc.createContact(this);
             dataSrc.close();
+        }
+        if(Main.currentLayout==R.layout.encrypt||Main.currentLayout==R.layout.contacts){
+            FragmentManagement.alc.add(this);
+            //((ListView)a.findViewById(Main.currentLayout)).getAdapter().notify();
+            //todo refresh adapter - remove the use of variable change
         }
     }
     public Contact(long id, String contactName, String email, String publicKey,

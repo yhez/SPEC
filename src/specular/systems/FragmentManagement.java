@@ -37,6 +37,7 @@ import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 class FragmentManagement extends Fragment {
+    public static List<Contact> alc;
     private static Main w;
     final int TURN_TEXT_TRIGGER = 0;
     private final Handler hndl = new Handler() {
@@ -104,7 +105,7 @@ class FragmentManagement extends Fragment {
                 ListView lv = (ListView) getActivity().findViewById(R.id.list);
                 cds = new ContactsDataSource(getActivity());
                 cds.open();
-                List<Contact> alc = cds.getAllContacts();
+                alc = cds.getAllContacts();
                 cds.close();
                 if (alc.size() > 0) {
                     getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);

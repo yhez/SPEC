@@ -38,7 +38,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -170,13 +169,15 @@ public class Main extends Activity {
         //Log.d("name",name);
         //String tmp[] = name.split(".");
         //String extension = tmp[tmp.length - 1];
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse("file://" + new File(getFilesDir(), "File")), "*/*");
-        try {
+        NotImplemented ni3=new NotImplemented();
+        ni3.show(getFragmentManager(),"ni3");
+        //Intent intent = new Intent(Intent.ACTION_VIEW);
+        //intent.setDataAndType(Uri.parse("file://" + new File(getFilesDir(), "File")), "*/*");
+        /*try {
             startActivityForResult(intent, 23);
         } catch (Exception e) {
             Toast.makeText(this, R.string.cand_find_an_app_to_open_file, Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     @Override
