@@ -18,6 +18,7 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
 import android.provider.Settings;
@@ -59,6 +60,7 @@ public class Main extends Activity {
     public static int currentLayout;
     public static boolean changed;
     public static boolean comingFromSettings=false;
+    public Handler handler;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -358,6 +360,7 @@ public class Main extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        handler=new Handler(Looper.getMainLooper());
         setContentView(R.layout.main);
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
@@ -505,10 +508,15 @@ public class Main extends Activity {
         mDrawerList.setItemChecked(menu, true);
         setTitle(menuTitles[menu]);
         mDrawerLayout.closeDrawer(mDrawerList);
-        Fragment fragment = new FragmentManagement(this);
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment).commit();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Fragment fragment = new FragmentManagement(Main.this);
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, fragment).commit();
+            }
+        },100);
     }
 
     @Override

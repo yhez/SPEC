@@ -48,7 +48,6 @@ public class ShareDialog extends DialogFragment {
                         if (mSelectedItems.size() == 0) {
                             Toast.makeText(getActivity(), R.string.not_chosen, Toast.LENGTH_LONG).show();
                         } else {
-
                             Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
                             intent.setType("*/*");
                             intent.putExtra(Intent.EXTRA_SUBJECT,
