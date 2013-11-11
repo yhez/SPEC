@@ -81,11 +81,11 @@
     <string name="yes">YES</string>
     <string name="save_changes_back_pressed">Would you like to save the changes?</string>
     <string name="verify_delete_msg">Are you sure you want to delete this contact?</string>
-    <string name="clean_up">clean up:</string>
-    <string name="clear">delete</string>
-    <string name="not_cosen_clean">Please choose what to clean</string>
+    <string name="clean_up">Clean up:</string>
+    <string name="clear">Delete</string>
+    <string name="not_cosen_clean">Please choose what to delete/clean</string>
     <string name="i_understand">I understand</string>
-    <string name="not_implement_msg">this hasn\'t been implement yet :-(</string>
+    <string name="not_implement_msg">This hasn\'t been implemented yet :-(</string>
     <string name="turn_nfc_on_nfc_wait">NFC is OFF go to settings and turn it on</string>
     <string-array name="menus">
         <item>Encrypt</item>
@@ -104,6 +104,6 @@
         <item>Temp files</item>
         <item>Keys</item>
         <item>Contacts</item>
-        <item>delete NFC</item>
+        <item>Erase NFC</item>
     </string-array>
 </resources>
