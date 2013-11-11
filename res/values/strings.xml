@@ -11,7 +11,7 @@
     <string name="explain"> I\'m attaching my public encryption key. You should verify that this public key belongs to the sender.</string>
     <string name="encrypting">Encrypting message\nSecuring communications</string>
     <string name="ok">OK</string>
-    <string name="hint_enter_your_name">username&#8230;</string>
+    <string name="hint_enter_your_name">username (optional)&#8230;</string>
     <string name="hint_enter_your_email">email&#8230;</string>
     <string name="wait_for_nfc_to_write">Tap NFC tag</string>
     <string name="skip_save_to_phone">Skip and save private decryption key on device (LESS SECURE)</string>
@@ -34,7 +34,7 @@
     <string name="cant_decrypt">This message hasn\'t been encrypted for you</string>
     <string name="subject_encrypt">An encrypted message just for you - SPEC APP</string>
     <string name="share_public_descripton">Your Public Key:</string>
-    <string name="fill_all">Please enter a valid email.\nThis email will enable other users to contact you.\nUsername is optional.</string>
+    <string name="fill_all">Please enter a valid email.\nThis email will enable other users to contact you.</string>
     <string name="subject_share">My Public Key - SPEC APP</string>
     <string name="contact_saved">SAVED TO CONTACTS</string>
     <string name="contact_exist">Contact already exists</string>

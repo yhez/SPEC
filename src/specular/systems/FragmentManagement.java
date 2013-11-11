@@ -86,8 +86,7 @@ class FragmentManagement extends Fragment {
                                         .getText().toString();
                                 String myName = ((EditText) getActivity().findViewById(R.id.name))
                                         .getText().toString();
-                                if (!validateEmail(myEmail)
-                                        || myName == null)
+                                if (!validateEmail(myEmail))
                                     Toast.makeText(getActivity(), R.string.fill_all,
                                             Toast.LENGTH_LONG).show();
                                 else {
