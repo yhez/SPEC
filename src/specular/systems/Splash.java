@@ -9,7 +9,6 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,7 +96,6 @@ public class Splash extends Activity {
 
                         is.close();
                         reader.close();
-                        Log.d("success",buf.length()+"");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

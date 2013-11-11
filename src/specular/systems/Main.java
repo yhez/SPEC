@@ -20,11 +20,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
+import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,12 +43,22 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
+import specular.systems.Dialogs.AddContactDlg;
+import specular.systems.Dialogs.DeleteDataDialog;
+import specular.systems.Dialogs.DeleteDialog;
+import specular.systems.Dialogs.ExitWithoutSave;
+import specular.systems.Dialogs.NotImplemented;
+import specular.systems.Dialogs.ProgressDlg;
+import specular.systems.Dialogs.ShareDialog;
+import specular.systems.Dialogs.TurnNFCOn;
+
 
 public class Main extends Activity {
     public final static int MSG_LIMIT_FOR_QR = 141;
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3;
     public static int currentLayout;
-    static boolean changed;
+    public static boolean changed;
+    public static boolean comingFromSettings=false;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -196,7 +206,8 @@ public class Main extends Activity {
                     }).start();
                 }
             } else if (requestCode == 71) {
-                //nothing to do, it just helping that the call set up views will not called
+                //coming back from turn nfc on
+                createKeysManager();
             } else if (requestCode == 23) {
                 //nothing to do, it just helping that the call set up views will not called
             } else {
@@ -238,64 +249,66 @@ public class Main extends Activity {
         }
     }
 
+    public void onClickSkipNFC(View v) {
+        NfcAdapter.getDefaultAdapter(getApplicationContext())
+                .disableForegroundDispatch(Main.this);
+        synchronized (this) {
+            while (createKeys.isAlive()) {
+                try {
+                    wait(150);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        handleByOnNewIntent = false;
+        saveKeys.start(this);
+        synchronized (this) {
+            while (saveKeys.isAlive()) {
+                try {
+                    wait(150);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        setUpViews();
+    }
+
+    public void onClickEncrypt(View v) {
+        switch (v.getId()) {
+            case R.id.add_file:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*");
+                Intent i = Intent.createChooser(intent, getString(R.string.choose_file_to_attach));
+                startActivityForResult(i, ATTACH_FILE);
+                break;
+            case R.id.send:
+                EditText et = (EditText) findViewById(R.id.message);
+                userInput = et.getText().toString();
+                // hides the keyboard when the user starts the encryption process
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+                long id = Long.parseLong(((TextView) findViewById(R.id.contact_id_to_send)).getText().toString());
+                ContactsDataSource cds = new ContactsDataSource(this);
+                cds.open();
+                contact = cds.findContact(id);
+                cds.close();
+                encryptManager();
+                break;
+            case R.id.add_contact:
+                Intent intt = new Intent(this, StartScan.class);
+                startActivityForResult(intt, SCAN_QR);
+                break;
+        }
+    }
+
     public void onClick(final View v) {
         switch (currentLayout) {
-            case R.layout.setup:
-                selectItem(-1, R.layout.create_new_keys);
-                break;
-
-            case R.layout.wait_nfc_to_write:
-                NfcAdapter.getDefaultAdapter(getApplicationContext())
-                        .disableForegroundDispatch(Main.this);
-                synchronized (this) {
-                    while (createKeys.isAlive()) {
-                        try {
-                            wait(150);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                handleByOnNewIntent = false;
-                saveKeys.start(this);
-                synchronized (this) {
-                    while (saveKeys.isAlive()) {
-                        try {
-                            wait(150);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                setUpViews();
-                break;
-            case R.layout.encrypt:
-                switch (v.getId()) {
-                    case R.id.add_file:
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.addCategory(Intent.CATEGORY_OPENABLE);
-                        intent.setType("*/*");
-                        Intent i = Intent.createChooser(intent, getString(R.string.choose_file_to_attach));
-                        startActivityForResult(i, ATTACH_FILE);
-                        break;
-                    case R.id.send:
-                        EditText et = (EditText) findViewById(R.id.message);
-                        userInput = et.getText().toString();
-                        // hides the keyboard when the user starts the encryption process
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-                        long id = Long.parseLong(((TextView) findViewById(R.id.contact_id_to_send)).getText().toString());
-                        ContactsDataSource cds = new ContactsDataSource(this);
-                        cds.open();
-                        contact = cds.findContact(id);
-                        cds.close();
-                        encryptManager();
-                        break;
-                    case R.id.add_contact:
-                        Intent intt = new Intent(this, StartScan.class);
-                        startActivityForResult(intt, SCAN_QR);
-                        break;
-                }
+            case R.layout.wait_nfc_decrypt:
+                Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
+                startActivity(i);
                 break;
             case R.layout.decrypt:
                 Intent intent = new Intent(Main.this, StartScan.class);
@@ -331,8 +344,6 @@ public class Main extends Activity {
                         dlg.show(getFragmentManager(), "delete");
                         break;
                 }
-                break;
-            default:
                 break;
         }
     }
@@ -399,9 +410,9 @@ public class Main extends Activity {
             return true;
         }
         // Handle action buttons
-         View b = findViewById(R.id.filter_ll);
-        View lst = currentLayout==R.layout.encrypt?findViewById(R.id.en_list_contact):findViewById(R.id.list);
-        if(lst.getVisibility()==View.VISIBLE){
+        View b = findViewById(R.id.filter_ll);
+        View lst = currentLayout == R.layout.encrypt ? findViewById(R.id.en_list_contact) : findViewById(R.id.list);
+        if (lst.getVisibility() == View.VISIBLE) {
             if (b.getVisibility() == View.GONE)
                 b.setVisibility(View.VISIBLE);
             else
@@ -410,27 +421,27 @@ public class Main extends Activity {
         return super.onOptionsItemSelected(item);
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(currentLayout==R.layout.contacts||currentLayout==R.layout.encrypt){
-            Log.d("layout", "" + currentLayout);
+        if (currentLayout == R.layout.contacts || currentLayout == R.layout.encrypt) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.main, menu);
             return super.onCreateOptionsMenu(menu);
         }
         return false;
     }
+
     /* Called whenever we call invalidateOptionsMenu() */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav main is open, hide action items related to the content
         // view
-        if(currentLayout==R.layout.contacts||currentLayout==R.layout.encrypt){
+        if (currentLayout == R.layout.contacts || currentLayout == R.layout.encrypt) {
             boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
             menu.findItem(R.id.action_search).setVisible(!drawerOpen);
             return super.onPrepareOptionsMenu(menu);
-        }
-        else
+        } else
             return false;
     }
 
@@ -490,7 +501,7 @@ public class Main extends Activity {
             }
         }
         // update selected item and title, then close the main
-        currentLayout=layout;
+        currentLayout = layout;
         mDrawerList.setItemChecked(menu, true);
         setTitle(menuTitles[menu]);
         mDrawerLayout.closeDrawer(mDrawerList);
@@ -790,7 +801,7 @@ public class Main extends Activity {
             }
             // work out how much space we need for the data
             int size = message.toByteArray().length;
-            if (ndef==null||ndef.getMaxSize() < size) {
+            if (ndef == null || ndef.getMaxSize() < size) {
                 // attempt to format tag
                 NdefFormatable format = NdefFormatable.get(tag);
                 if (format != null) {
@@ -814,11 +825,14 @@ public class Main extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(!comingFromSettings){
+            comingFromSettings=false;
         FilesManagement.getKeysFromSDCard(this);
         if (handleByOnActivityResult)
             handleByOnActivityResult = false;
         else {
             setUpViews();
+        }
         }
     }
 
@@ -831,7 +845,27 @@ public class Main extends Activity {
         acd.show(getFragmentManager(), "acd3");
     }
 
-    static class createKeys {
+    public void onClickManage(View v) {
+        switch (v.getId()) {
+            case R.id.button1:
+                selectItem(-1, R.layout.create_new_keys);
+                break;
+            case R.id.button2:
+                NotImplemented ni2 = new NotImplemented();
+                ni2.show(getFragmentManager(), "ni2");
+                break;
+            case R.id.button3:
+                NotImplemented ni3 = new NotImplemented();
+                ni3.show(getFragmentManager(), "ni3");
+                break;
+            case R.id.button4:
+                DeleteDataDialog ddd = new DeleteDataDialog();
+                ddd.show(getFragmentManager(), "ddd");
+                break;
+        }
+    }
+
+    public static class createKeys {
         static Thread t;
 
         public static void start() {
@@ -851,7 +885,7 @@ public class Main extends Activity {
         }
     }
 
-    static class saveKeys {
+    public static class saveKeys {
         static Thread t;
 
         public static void start(final Activity a) {

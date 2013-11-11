@@ -1,4 +1,4 @@
-package specular.systems;
+package specular.systems.Dialogs;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -6,6 +6,9 @@ import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+
+import specular.systems.Dialogs.HoloCircularProgressBar;
+import specular.systems.R;
 
 /**
  * Created by yehezkelk on 10/28/13.

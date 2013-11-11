@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 import static android.graphics.Typeface.createFromAsset;
 
-final class FilesManagement {
+public final class FilesManagement {
     private final static String FILE_NAME = "PublicKey.SPEC";
     private final static String QR_NAME = "PublicKeyQR.SPEC.png";
     private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";

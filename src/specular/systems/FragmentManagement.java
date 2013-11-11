@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,6 +33,7 @@ import static specular.systems.R.layout.edit_contact;
 import static specular.systems.R.layout.encrypt;
 import static specular.systems.R.layout.setup;
 import static specular.systems.R.layout.share;
+import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 class FragmentManagement extends Fragment {
@@ -342,6 +344,13 @@ class FragmentManagement extends Fragment {
                 break;
             case wait_nfc_to_write:
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.wait_nfc_to_write));
+                break;
+            case wait_nfc_decrypt:
+                if(NfcAdapter.getDefaultAdapter(getActivity())==null)
+                    Toast.makeText(getActivity(), "something goes wrong", Toast.LENGTH_LONG).show();
+                else if(!NfcAdapter.getDefaultAdapter(getActivity()).isEnabled())
+                    getActivity().findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
+                setAllFonts(getActivity(),(ViewGroup)getActivity().findViewById(R.id.wait_nfc_decrypt));
                 break;
             case setup:
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.setup));

@@ -1,4 +1,4 @@
-package specular.systems;
+package specular.systems.Dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import specular.systems.R;
 
 
 public class ExitWithoutSave extends DialogFragment {

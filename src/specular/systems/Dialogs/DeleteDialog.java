@@ -1,4 +1,4 @@
-package specular.systems;
+package specular.systems.Dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -6,6 +6,10 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import specular.systems.Contact;
+import specular.systems.ContactsDataSource;
+import specular.systems.R;
 
 
 public class DeleteDialog extends DialogFragment {

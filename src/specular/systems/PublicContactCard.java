@@ -2,7 +2,7 @@ package specular.systems;
 
 import android.app.Activity;
 
-class PublicContactCard
+public class PublicContactCard
 {
     private Activity a;
     private String publicKey = null, email = null, name = null;

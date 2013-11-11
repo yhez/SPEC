@@ -1,4 +1,4 @@
-package specular.systems;
+package specular.systems.Dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,12 +10,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import specular.systems.Contact;
+import specular.systems.Main;
+import specular.systems.PublicContactCard;
+import specular.systems.R;
+import specular.systems.Splash;
+
 
 public class AddContactDlg extends DialogFragment {
     PublicContactCard pcc;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        pcc=Splash.fileContactCard;
+        pcc= Splash.fileContactCard;
         Splash.fileContactCard=null;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater

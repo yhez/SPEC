@@ -1,4 +1,4 @@
-package specular.systems;
+package specular.systems.Dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,7 +13,11 @@ import android.widget.Toast;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-class ShareDialog extends DialogFragment {
+import specular.systems.CryptMethods;
+import specular.systems.FilesManagement;
+import specular.systems.R;
+
+public class ShareDialog extends DialogFragment {
     private ArrayList mSelectedItems;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

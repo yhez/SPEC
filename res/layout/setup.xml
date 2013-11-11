@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:onClick="onClick"
+            android:onClick="onClickManage"
             android:padding="@dimen/default_gap"
             android:text="@string/create_keys"
             android:textColor="@android:color/white"
@@ -45,6 +45,7 @@
 
         <Button
             android:id="@+id/button2"
+            android:onClick="onClickManage"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,6 +59,7 @@
             android:layout_height="1dp"
             android:background="@android:color/white" />
         <Button
+            android:onClick="onClickManage"
             android:id="@+id/button3"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
@@ -72,6 +74,7 @@
             android:layout_height="1dp"
             android:background="@android:color/white" />
         <Button
+            android:onClick="onClickManage"
             android:id="@+id/button4"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"

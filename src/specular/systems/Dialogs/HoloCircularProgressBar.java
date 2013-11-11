@@ -1,4 +1,4 @@
-package specular.systems;
+package specular.systems.Dialogs;
 
 
 //import android.annotation.SuppressLint;
@@ -14,6 +14,8 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+
+import specular.systems.R;
 
 /**
  * The Class HoloCircularProgressBar.

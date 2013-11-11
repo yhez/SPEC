@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-class ContactsDataSource
+public class ContactsDataSource
 {
     private final String[] allColumns = {MySQLiteHelper.COLUMN_ID,
 		MySQLiteHelper.COLUMN_CONTACT_NAME, MySQLiteHelper.COLUMN_EMAIL,

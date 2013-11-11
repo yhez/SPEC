@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <specular.systems.HoloCircularProgressBar
+    <specular.systems.Dialogs.HoloCircularProgressBar
         android:id="@+id/circle"
         style="@style/CircularProgressBarLight"
         android:layout_height="match_parent"
