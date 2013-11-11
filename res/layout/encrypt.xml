@@ -128,6 +128,16 @@
             android:id="@+id/en_list_contact"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        <TextView
+            android:textSize="22sp"
+            android:textColor="@color/spec_black"
+            android:id="@+id/no_contacts"
+            android:visibility="gone"
+            android:text="@string/no_contacts"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
         <ImageButton
             android:id="@+id/add_file"
             style="?android:attr/borderlessButtonStyle"

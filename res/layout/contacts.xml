@@ -43,4 +43,14 @@
         android:id="@+id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+    <TextView
+        android:textSize="22sp"
+        android:textColor="@color/spec_black"
+        android:id="@+id/no_contacts"
+        android:visibility="gone"
+        android:text="@string/no_contacts"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

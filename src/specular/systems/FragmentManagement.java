@@ -54,6 +54,7 @@ class FragmentManagement extends Fragment {
     };
     private float startPoint;
     private float width;
+
     public FragmentManagement(Main w) {
         this.w = w;
     }
@@ -99,32 +100,34 @@ class FragmentManagement extends Fragment {
                 });
                 break;
             case contacts:
-                Main.changed=false;
+                Main.changed = false;
                 ListView lv = (ListView) getActivity().findViewById(R.id.list);
                 cds = new ContactsDataSource(getActivity());
                 cds.open();
                 List<Contact> alc = cds.getAllContacts();
                 cds.close();
-                String[] secRowText = new String[alc.size()];
-
-                final MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(
-                        getActivity().getBaseContext(), secRowText, alc);
-                lv.setAdapter(adapter);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> p1, View p2, int p3,
-                                            long p4) {
-                        Fragment fragment = new FragmentManagement(w);
-                        Bundle args = new Bundle();
-                        args.putInt("layout", edit_contact);
-                        args.putLong("contactId", Long.parseLong(((TextView) p2
-                                .findViewById(R.id.id_contact)).getText()
-                                .toString()));
-                        fragment.setArguments(args);
-                        FragmentManager fragmentManager = getFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.content_frame, fragment).commit();
-                    }
-                });
+                if (alc.size() > 0) {
+                    getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
+                    String[] secRowText = new String[alc.size()];
+                    final MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(
+                            getActivity().getBaseContext(), secRowText, alc);
+                    lv.setAdapter(adapter);
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        public void onItemClick(AdapterView<?> p1, View p2, int p3,
+                                                long p4) {
+                            Fragment fragment = new FragmentManagement(w);
+                            Bundle args = new Bundle();
+                            Main.currentLayout = edit_contact;
+                            args.putLong("contactId", Long.parseLong(((TextView) p2
+                                    .findViewById(R.id.id_contact)).getText()
+                                    .toString()));
+                            fragment.setArguments(args);
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.content_frame, fragment).commit();
+                        }
+                    });
+                } else getActivity().findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
                 break;
             case edit_contact:
                 Long id = getArguments().getLong("contactId");
@@ -179,164 +182,166 @@ class FragmentManagement extends Fragment {
                 });
                 break;
             case encrypt:
-                Main.changed=false;
+                Main.changed = false;
                 lv = (ListView) getActivity().findViewById(R.id.en_list_contact);
                 cds = new ContactsDataSource(getActivity());
                 cds.open();
                 alc = cds.getAllContacts();
                 cds.close();
-                secRowText = new String[alc.size()];
-                final MySimpleArrayAdapter adapter2 = new MySimpleArrayAdapter(
-                        getActivity().getBaseContext(), secRowText, alc);
-                lv.setAdapter(adapter2);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> p1, View p2, int p3,
-                                            long p4) {
-                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
-                        getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
-                        getActivity().findViewById(R.id.en_list_contact).setVisibility(View.GONE);
-                        ContactsDataSource cdsss = new ContactsDataSource(getActivity());
-                        cdsss.open();
-                        long l = Long.parseLong(((TextView) p2
-                                .findViewById(R.id.id_contact)).getText()
-                                .toString());
-                        Contact cvc = cdsss.findContact(l);
-                        cdsss.close();
-                        ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(l + "");
-                        ((TextView) getActivity().findViewById(R.id.chosen_name)).setText(cvc.getContactName());
-                        ((TextView) getActivity().findViewById(R.id.chosen_email)).setText(cvc.getEmail());
-                        ((ImageView) getActivity().findViewById(R.id.chosen_icon)).setImageBitmap(Contact.getPhoto(cvc.getPublicKey()));
-                        final View cont = getActivity().findViewById(R.id.en_contact);
-                        cont.setVisibility(View.VISIBLE);
-                        cont.setAlpha(1);
-                        cont.setX(0);
-                        cont.setOnTouchListener(new View.OnTouchListener() {
-                            @Override
-                            public boolean onTouch(View view, MotionEvent motionEvent) {
-                                if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN){
-                                    startPoint = motionEvent.getRawX();
-                                    width = cont.getWidth();
-                                }
-                                else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
-                                    if (cont.getAlpha() < 0.2) {
-                                        cont.setVisibility(View.GONE);
-                                        ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
-                                        getActivity().findViewById(R.id.en_list_contact).setVisibility(View.VISIBLE);
-                                    } else {
-                                        cont.setAlpha(1);
-                                        cont.setX(0);
+                if (alc.size() > 0) {
+                    getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
+                    String[] secRowTextt = new String[alc.size()];
+                    final MySimpleArrayAdapter adapter2 = new MySimpleArrayAdapter(
+                            getActivity().getBaseContext(), secRowTextt, alc);
+                    lv.setAdapter(adapter2);
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> p1, View p2, int p3,
+                                                long p4) {
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
+                            getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
+                            getActivity().findViewById(R.id.en_list_contact).setVisibility(View.GONE);
+                            ContactsDataSource cdsss = new ContactsDataSource(getActivity());
+                            cdsss.open();
+                            long l = Long.parseLong(((TextView) p2
+                                    .findViewById(R.id.id_contact)).getText()
+                                    .toString());
+                            Contact cvc = cdsss.findContact(l);
+                            cdsss.close();
+                            ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(l + "");
+                            ((TextView) getActivity().findViewById(R.id.chosen_name)).setText(cvc.getContactName());
+                            ((TextView) getActivity().findViewById(R.id.chosen_email)).setText(cvc.getEmail());
+                            ((ImageView) getActivity().findViewById(R.id.chosen_icon)).setImageBitmap(Contact.getPhoto(cvc.getPublicKey()));
+                            final View cont = getActivity().findViewById(R.id.en_contact);
+                            cont.setVisibility(View.VISIBLE);
+                            cont.setAlpha(1);
+                            cont.setX(0);
+                            cont.setOnTouchListener(new View.OnTouchListener() {
+                                @Override
+                                public boolean onTouch(View view, MotionEvent motionEvent) {
+                                    if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                                        startPoint = motionEvent.getRawX();
+                                        width = cont.getWidth();
+                                    } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
+                                        if (cont.getAlpha() < 0.2) {
+                                            cont.setVisibility(View.GONE);
+                                            ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
+                                            getActivity().findViewById(R.id.en_list_contact).setVisibility(View.VISIBLE);
+                                        } else {
+                                            cont.setAlpha(1);
+                                            cont.setX(0);
+                                        }
+                                    } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
+                                        cont.setX(motionEvent.getRawX() - startPoint);
+                                        float f = Math.abs(motionEvent.getRawX() - startPoint) * 2 / width;
+                                        cont.setAlpha(1 - f);
                                     }
-                                } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
-                                    cont.setX(motionEvent.getRawX() - startPoint);
-                                    float f =Math.abs(motionEvent.getRawX() - startPoint)*2/width;
-                                    cont.setAlpha(1-f);
+                                    return true;
                                 }
-                                return true;
-                            }
-                        });
-                    }
-                });
-                getActivity().findViewById(R.id.send).setEnabled(false);
-                ((EditText) getActivity().findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                            });
+                        }
+                    });
+                    getActivity().findViewById(R.id.send).setEnabled(false);
+                    ((EditText) getActivity().findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                    }
+                        }
 
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        //TODO update list view by query to sqlite
-                    }
-                });
-                final EditText et = (EditText) getActivity().findViewById(R.id.message);
-                et.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            //TODO update list view by query to sqlite
+                        }
+                    });
+                    final EditText et = (EditText) getActivity().findViewById(R.id.message);
+                    et.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                    }
+                        }
 
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        String len = ((TextView) getActivity().findViewById(R.id.file_content_length)).getText().toString();
-                        int num = editable.toString().length() + (len.length() > 0 ?
-                                Integer.parseInt(len) : 0);
-                        TextView tv = (TextView) getActivity().findViewById(R.id.text_counter);
-                        ImageButton bt = (ImageButton) getActivity().findViewById(R.id.send);
-                        boolean choosedContact = ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).getText().toString().length() > 0;
-                        bt.setEnabled(choosedContact);
-                        bt.setImageResource(choosedContact ? R.drawable.ic_send_holo_light : R.drawable.ic_send_disabled_holo_light);
-                        if (num == 0) {
-                            Main.changed=choosedContact;
-                            tv.setVisibility(View.GONE);
-                            bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
-                            bt.setEnabled(false);
-                        } else {
-                            Main.changed=true;
-                            tv.setVisibility(View.VISIBLE);
-                            if (num > 0) {
-                                if (choosedContact) {
-                                    bt.setEnabled(true);
-                                    bt.setImageResource(R.drawable.ic_send_holo_light);
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            String len = ((TextView) getActivity().findViewById(R.id.file_content_length)).getText().toString();
+                            int num = editable.toString().length() + (len.length() > 0 ?
+                                    Integer.parseInt(len) : 0);
+                            TextView tv = (TextView) getActivity().findViewById(R.id.text_counter);
+                            ImageButton bt = (ImageButton) getActivity().findViewById(R.id.send);
+                            boolean choosedContact = ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).getText().toString().length() > 0;
+                            bt.setEnabled(choosedContact);
+                            bt.setImageResource(choosedContact ? R.drawable.ic_send_holo_light : R.drawable.ic_send_disabled_holo_light);
+                            if (num == 0) {
+                                Main.changed = choosedContact;
+                                tv.setVisibility(View.GONE);
+                                bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
+                                bt.setEnabled(false);
+                            } else {
+                                Main.changed = true;
+                                tv.setVisibility(View.VISIBLE);
+                                if (num > 0) {
+                                    if (choosedContact) {
+                                        bt.setEnabled(true);
+                                        bt.setImageResource(R.drawable.ic_send_holo_light);
+                                    }
+                                    if (num == 1) {
+                                        tv.setVisibility(View.VISIBLE);
+                                        tv.setText(Main.MSG_LIMIT_FOR_QR - num + "");
+                                    } else if (num <= Main.MSG_LIMIT_FOR_QR) {
+                                        tv.setText(Main.MSG_LIMIT_FOR_QR - num + "");
+                                    } else
+                                        tv.setText(getActivity().getString(R.string.no_qr));
                                 }
-                                if (num == 1) {
-                                    tv.setVisibility(View.VISIBLE);
-                                    tv.setText(Main.MSG_LIMIT_FOR_QR - num + "");
-                                } else if (num <= Main.MSG_LIMIT_FOR_QR) {
-                                    tv.setText(Main.MSG_LIMIT_FOR_QR - num + "");
-                                } else
-                                    tv.setText(getActivity().getString(R.string.no_qr));
                             }
                         }
-                    }
-                });
-                TextView tvfl = (TextView) getActivity().findViewById(R.id.file_content_length);
-                tvfl.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                    });
+                    TextView tvfl = (TextView) getActivity().findViewById(R.id.file_content_length);
+                    tvfl.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                    }
+                        }
 
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        Message msg = hndl.obtainMessage(TURN_TEXT_TRIGGER);
-                        hndl.sendMessage(msg);
-                    }
-                });
-                TextView tvci = (TextView) getActivity().findViewById(R.id.contact_id_to_send);
-                tvci.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            Message msg = hndl.obtainMessage(TURN_TEXT_TRIGGER);
+                            hndl.sendMessage(msg);
+                        }
+                    });
+                    TextView tvci = (TextView) getActivity().findViewById(R.id.contact_id_to_send);
+                    tvci.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                    }
+                        }
 
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        Message msg = hndl.obtainMessage(TURN_TEXT_TRIGGER);
-                        hndl.sendMessage(msg);
-                    }
-                });
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            Message msg = hndl.obtainMessage(TURN_TEXT_TRIGGER);
+                            hndl.sendMessage(msg);
+                        }
+                    });
+                } else getActivity().findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
                 break;
             case decrypt:
                 ((TextView) getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManagement.getOs(getActivity()));
@@ -345,11 +350,11 @@ class FragmentManagement extends Fragment {
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.wait_nfc_to_write));
                 break;
             case wait_nfc_decrypt:
-                if(NfcAdapter.getDefaultAdapter(getActivity())==null)
+                if (NfcAdapter.getDefaultAdapter(getActivity()) == null)
                     Toast.makeText(getActivity(), "something goes wrong", Toast.LENGTH_LONG).show();
-                else if(!NfcAdapter.getDefaultAdapter(getActivity()).isEnabled())
+                else if (!NfcAdapter.getDefaultAdapter(getActivity()).isEnabled())
                     getActivity().findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
-                setAllFonts(getActivity(),(ViewGroup)getActivity().findViewById(R.id.wait_nfc_decrypt));
+                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.wait_nfc_decrypt));
                 break;
             case setup:
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.setup));
@@ -361,29 +366,29 @@ class FragmentManagement extends Fragment {
                     getActivity().findViewById(R.id.bottom_panel_dm).setVisibility(View.GONE);
                     tv.setText(getActivity().getString(R.string.cant_decrypt));
                 } else {
-                    ((TextView)getActivity().findViewById(R.id.general_details))
-                            .setText("From:\t"+CryptMethods.decryptedMsg.getName()+" , "+CryptMethods.decryptedMsg.getEmail());
+                    ((TextView) getActivity().findViewById(R.id.general_details))
+                            .setText("From:\t" + CryptMethods.decryptedMsg.getName() + " , " + CryptMethods.decryptedMsg.getEmail());
                     cds.open();
                     Contact c = cds.findContact(CryptMethods.decryptedMsg.getPublicKey());
                     cds.close();
-                    if(c!=null){
+                    if (c != null) {
                         getActivity().findViewById(R.id.add_contact_decrypt).setVisibility(View.GONE);
                     }
                     if (CryptMethods.decryptedMsg.getFileContent() == null)
                         getActivity().findViewById(R.id.open_file).setVisibility(View.GONE);
                     tv.setText(CryptMethods.decryptedMsg.getMsgContent());
-                    if(CryptMethods.decryptedMsg.checkHash())
-                        ((ImageView)getActivity().findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_ok);
+                    if (CryptMethods.decryptedMsg.checkHash())
+                        ((ImageView) getActivity().findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_ok);
                     else
-                        ((ImageView)getActivity().findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_bad);
-                    if(CryptMethods.decryptedMsg.checkReplay())
-                        ((ImageView)getActivity().findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_ok);
+                        ((ImageView) getActivity().findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_bad);
+                    if (CryptMethods.decryptedMsg.checkReplay())
+                        ((ImageView) getActivity().findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_ok);
                     else
-                        ((ImageView)getActivity().findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_bad);
-                    if(CryptMethods.decryptedMsg.checkHash())
-                        ((ImageView)getActivity().findViewById(R.id.session_check)).setImageResource(R.drawable.ic_ok);
+                        ((ImageView) getActivity().findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_bad);
+                    if (CryptMethods.decryptedMsg.checkHash())
+                        ((ImageView) getActivity().findViewById(R.id.session_check)).setImageResource(R.drawable.ic_ok);
                     else
-                        ((ImageView)getActivity().findViewById(R.id.session_check)).setImageResource(R.drawable.ic_bad);
+                        ((ImageView) getActivity().findViewById(R.id.session_check)).setImageResource(R.drawable.ic_bad);
                 }
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.decrypted_msg_ll));
 
@@ -402,11 +407,13 @@ class FragmentManagement extends Fragment {
                 }
             }
     }
-    private boolean validateEmail(String email){
-        if(email==null) return false;
+
+    private boolean validateEmail(String email) {
+        if (email == null) return false;
         String[] parse = email.split("@");
-        if (parse.length < 2 ||parse.length>2|| parse[0].length() < 2 || parse[1].length() < 4) return false;
-        String[] parse2=parse[1].split("\\.");
+        if (parse.length < 2 || parse.length > 2 || parse[0].length() < 2 || parse[1].length() < 4)
+            return false;
+        String[] parse2 = parse[1].split("\\.");
         if (parse2.length < 2 || parse2[0].length() < 2 || parse2[1].length() < 2) return false;
         return true;
     }

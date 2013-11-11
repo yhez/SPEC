@@ -87,6 +87,7 @@
     <string name="i_understand">I understand</string>
     <string name="not_implement_msg">This hasn\'t been implemented yet :-(</string>
     <string name="turn_nfc_on_nfc_wait">NFC is OFF go to settings and turn it on</string>
+    <string name="no_contacts">you don\'t have any contacts yet\nto get more contacts,\nyou can scan their QR code or get the contact card and open it</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
