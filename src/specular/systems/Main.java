@@ -54,12 +54,12 @@ import specular.systems.Dialogs.TurnNFCOn;
 
 
 public class Main extends Activity {
+    public static String currentText="";
     public final static int MSG_LIMIT_FOR_QR = 141;
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3;
     public static int currentLayout;
     public static boolean changed;
-    public static boolean comingFromSettings=false;
-    public Handler handler;
+    public static boolean comingFromSettings = false;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -86,6 +86,7 @@ public class Main extends Activity {
         }
     };
     private final int ATTACH_FILE = 0, SCAN_QR = 1;
+    public Handler handler;
     boolean exit = false;
     private boolean handleByOnActivityResult = false;
     private int layouts[];
@@ -163,14 +164,17 @@ public class Main extends Activity {
             }
         }).start();
     }
-
+public void notImp(View v){
+    NotImplemented ni3 = new NotImplemented();
+    ni3.show(getFragmentManager(), "aaaa");
+}
     public void openFile(View v) {
         //String name = CryptMethods.decryptedMsg.getFileName();
         //Log.d("name",name);
         //String tmp[] = name.split(".");
         //String extension = tmp[tmp.length - 1];
-        NotImplemented ni3=new NotImplemented();
-        ni3.show(getFragmentManager(),"ni3");
+        notImp(null);
+
         //Intent intent = new Intent(Intent.ACTION_VIEW);
         //intent.setDataAndType(Uri.parse("file://" + new File(getFilesDir(), "File")), "*/*");
         /*try {
@@ -361,7 +365,7 @@ public class Main extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        handler=new Handler(Looper.getMainLooper());
+        handler = new Handler(Looper.getMainLooper());
         setContentView(R.layout.main);
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
@@ -517,7 +521,7 @@ public class Main extends Activity {
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame, fragment).commit();
             }
-        },100);
+        }, 100);
     }
 
     @Override
@@ -696,8 +700,10 @@ public class Main extends Activity {
         } else {
             switch (currentLayout) {
                 case R.layout.encrypt:
-                    if (changed)
+                    if (changed){
+                        currentText="";
                         selectItem(-1, currentLayout);
+                    }
                     else
                         new prepareToExit();
                     break;
@@ -732,10 +738,14 @@ public class Main extends Activity {
                     }
                     break;
                 case R.layout.create_new_keys:
-                    new prepareToExit();
+                    if (CryptMethods.publicExist())
+                        setUpViews();
+                    else
+                        new prepareToExit();
                     break;
                 case R.layout.decrypted_msg:
-                    new prepareToExit();
+                    CryptMethods.decryptedMsg = null;
+                    setUpViews();
                     break;
                 case R.layout.wait_nfc_decrypt:
                     new prepareToExit();
@@ -834,14 +844,14 @@ public class Main extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(!comingFromSettings){
-            comingFromSettings=false;
-        FilesManagement.getKeysFromSDCard(this);
-        if (handleByOnActivityResult)
-            handleByOnActivityResult = false;
-        else {
-            setUpViews();
-        }
+        if (!comingFromSettings) {
+            comingFromSettings = false;
+            FilesManagement.getKeysFromSDCard(this);
+            if (handleByOnActivityResult)
+                handleByOnActivityResult = false;
+            else {
+                setUpViews();
+            }
         }
     }
 
@@ -860,12 +870,10 @@ public class Main extends Activity {
                 selectItem(-1, R.layout.create_new_keys);
                 break;
             case R.id.button2:
-                NotImplemented ni2 = new NotImplemented();
-                ni2.show(getFragmentManager(), "ni2");
+                notImp(null);
                 break;
             case R.id.button3:
-                NotImplemented ni3 = new NotImplemented();
-                ni3.show(getFragmentManager(), "ni3");
+                notImp(null);
                 break;
             case R.id.button4:
                 DeleteDataDialog ddd = new DeleteDataDialog();

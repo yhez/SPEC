@@ -261,6 +261,7 @@ class FragmentManagement extends Fragment {
                         }
                     });
                     final EditText et = (EditText) getActivity().findViewById(R.id.message);
+
                     et.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -274,6 +275,8 @@ class FragmentManagement extends Fragment {
 
                         @Override
                         public void afterTextChanged(Editable editable) {
+                            if(editable.length()!=0||Main.currentText.length()==1)
+                                Main.currentText=editable.toString();
                             String len = ((TextView) getActivity().findViewById(R.id.file_content_length)).getText().toString();
                             int num = editable.toString().length() + (len.length() > 0 ?
                                     Integer.parseInt(len) : 0);
@@ -306,6 +309,8 @@ class FragmentManagement extends Fragment {
                             }
                         }
                     });
+                    //todo why is he entering here twice in start???
+                    et.setText(Main.currentText);
                     TextView tvfl = (TextView) getActivity().findViewById(R.id.file_content_length);
                     tvfl.addTextChangedListener(new TextWatcher() {
                         @Override

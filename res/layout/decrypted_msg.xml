@@ -30,6 +30,7 @@
                 android:layout_gravity="top|right" />
 
             <ImageButton
+                android:onClick="notImp"
                 style="@android:style/Widget.Holo.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,6 +50,7 @@
                 android:layout_gravity="top|right" />
 
             <ImageButton
+                android:onClick="notImp"
                 style="@android:style/Widget.Holo.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,6 +70,7 @@
                 android:layout_gravity="top|right" />
 
             <ImageButton
+                android:onClick="notImp"
                 style="@android:style/Widget.Holo.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -150,8 +153,8 @@
             android:id="@+id/decrypted_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
+            android:gravity="start"
             android:textColor="@color/spec_black"
-            android:textSize="50sp" />
+            android:textSize="25sp" />
     </ScrollView>
 </RelativeLayout>

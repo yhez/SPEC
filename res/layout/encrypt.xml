@@ -71,7 +71,7 @@
             android:layout_weight="1.0"
             android:autoText="true"
             android:capitalize="sentences"
-            android:gravity="center_vertical|left"
+            android:gravity="center_vertical|start"
             android:hint="@string/hint_msg"
             android:imeOptions="actionSend"
             android:inputType="textAutoCorrect|textCapSentences|textMultiLine"

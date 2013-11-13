@@ -39,6 +39,9 @@ public class AddContactDlg extends DialogFragment {
                             Main.changed=true;
                             getActivity().onBackPressed();
                         }
+                        else{
+                            getActivity().findViewById(R.id.add_contact_decrypt).setVisibility(View.GONE);
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

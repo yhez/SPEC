@@ -74,8 +74,12 @@ public class Splash extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         Intent thisIntent = getIntent();
-        if (thisIntent != null && thisIntent.getType() != null
-                && thisIntent.getType().equals("application/octet-stream")
+        if (thisIntent.getType() != null){
+            if(thisIntent.getAction().equals(Intent.ACTION_SEND)){
+                Main.currentText = thisIntent.getStringExtra(Intent.EXTRA_TEXT);
+                go();
+            }
+            else if(thisIntent.getType().equals("application/octet-stream")
                 && thisIntent.getData() != null) {
             PublicContactCard qrp;
             Uri uri = getIntent().getData();
@@ -125,5 +129,6 @@ public class Splash extends Activity {
             }
         } else
             go();
-    }
+    }else go();
+}
 }
