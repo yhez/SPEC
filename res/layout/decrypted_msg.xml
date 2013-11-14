@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
-            android:onClick="openFile"
+            android:onClick="notImp"
             android:padding="@dimen/default_gap"
             android:src="@drawable/after_attach" />
         <!--add to contact if doesn't exist-->
@@ -96,7 +96,7 @@
             android:layout_column="4"
             android:onClick="addToContacts"
             android:padding="@dimen/default_gap"
-            android:src="@android:drawable/ic_menu_add" />
+            android:src="@drawable/plus" />
     </GridLayout>
 
     <LinearLayout
@@ -112,6 +112,8 @@
         android:padding="@dimen/default_gap">
 
         <Button
+            android:id="@+id/answer"
+            android:onClick="decryptedMsgClick"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -125,6 +127,8 @@
             android:background="@android:color/white" />
 
         <Button
+            android:id="@+id/secure_info"
+            android:onClick="decryptedMsgClick"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

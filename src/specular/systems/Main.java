@@ -152,7 +152,6 @@ public class Main extends Activity {
         final ProgressDlg prgd = new ProgressDlg(this);
         prgd.setCancelable(false);
         //prgd.setMessage(getString(R.string.encrypting));
-        //prgd.setProgressStyle(android.R.style.Theme_Holo_Dialog);
         prgd.show();
         new Thread(new Runnable() {
             @Override
@@ -161,6 +160,7 @@ public class Main extends Activity {
                         contact.getPublicKey());
                 sendMessage();
                 prgd.cancel();
+                currentText="";
             }
         }).start();
     }
@@ -168,20 +168,30 @@ public void notImp(View v){
     NotImplemented ni3 = new NotImplemented();
     ni3.show(getFragmentManager(), "aaaa");
 }
-    public void openFile(View v) {
-        //String name = CryptMethods.decryptedMsg.getFileName();
-        //Log.d("name",name);
-        //String tmp[] = name.split(".");
-        //String extension = tmp[tmp.length - 1];
-        notImp(null);
+    public void decryptedMsgClick(View v){
+        switch (v.getId()){
+            case R.id.open_file:
+                //String name = CryptMethods.decryptedMsg.getFileName();
+                //Log.d("name",name);
+                //String tmp[] = name.split(".");
+                //String extension = tmp[tmp.length - 1];
+                notImp(null);
 
-        //Intent intent = new Intent(Intent.ACTION_VIEW);
-        //intent.setDataAndType(Uri.parse("file://" + new File(getFilesDir(), "File")), "*/*");
+                //Intent intent = new Intent(Intent.ACTION_VIEW);
+                //intent.setDataAndType(Uri.parse("file://" + new File(getFilesDir(), "File")), "*/*");
         /*try {
             startActivityForResult(intent, 23);
         } catch (Exception e) {
             Toast.makeText(this, R.string.cand_find_an_app_to_open_file, Toast.LENGTH_SHORT).show();
         }*/
+                break;
+            case R.id.answer:
+                notImp(null);
+                break;
+            case R.id.secure_info:
+                notImp(null);
+                break;
+        }
     }
 
     @Override

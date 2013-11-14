@@ -17,7 +17,6 @@ public class ContactsDataSource
     // Database fields
     private SQLiteDatabase database;
     private final MySQLiteHelper dbHelper;
-
    public ContactsDataSource(Context context)
 	{
         dbHelper = new MySQLiteHelper(context);

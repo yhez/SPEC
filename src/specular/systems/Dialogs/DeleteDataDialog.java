@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import specular.systems.FilesManagement;
 import specular.systems.R;
 
 public class DeleteDataDialog extends DialogFragment {
@@ -43,8 +44,22 @@ public class DeleteDataDialog extends DialogFragment {
                             Toast.makeText(getActivity(), R.string.not_cosen_clean, Toast.LENGTH_LONG).show();
                         } else {
                             //todo
-                            NotImplemented ni = new NotImplemented();
-                            ni.show(getFragmentManager(),"ni0");
+                            if (mSelectedItems.contains(Integer.valueOf(0))) {
+                                FilesManagement.deleteTmp(getActivity());
+                                Toast.makeText(getActivity(), R.string.tmp_files_deleted, Toast.LENGTH_LONG).show();
+                            }
+                            if (mSelectedItems.contains(Integer.valueOf(1))) {
+                                Toast.makeText(getActivity(), R.string.keys_deleted, Toast.LENGTH_LONG).show();
+                                FilesManagement.deleteKeys(getActivity());
+                            }
+                            if (mSelectedItems.contains(Integer.valueOf(2))) {
+                                FilesManagement.deleteContacts(getActivity());
+                                Toast.makeText(getActivity(), R.string.contacts_deleted, Toast.LENGTH_LONG).show();
+                            }
+                            if (mSelectedItems.contains(Integer.valueOf(3))) {
+                                NotImplemented ni = new NotImplemented();
+                                ni.show(getFragmentManager(), "ni0");
+                            }
                         }
                     }
                 })

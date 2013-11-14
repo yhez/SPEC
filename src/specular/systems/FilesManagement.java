@@ -286,4 +286,21 @@ public final class FilesManagement {
             }
         return Bitmap.createBitmap(bitmap, border, border, width - (border * 2), width - (border * 2));
     }
+    public static void deleteKeys(Activity a){
+        SharedPreferences srp = PreferenceManager
+                .getDefaultSharedPreferences(a.getApplicationContext());
+        SharedPreferences.Editor edt = srp.edit();
+        edt.clear();
+        edt.commit();
+    }
+    public static void deleteContacts(Activity a){
+        a.deleteDatabase(MySQLiteHelper.DATABASE_NAME);
+    }
+    public static void deleteTmp(Activity a){
+        a.deleteFile(QR_NAME);
+        a.deleteFile(QR_NAME_SEND);
+        a.deleteFile(QR_NAME_T);
+        a.deleteFile(FILE_NAME);
+        a.deleteFile(FILE_NAME_SEND);
+    }
 }

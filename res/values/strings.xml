@@ -88,6 +88,9 @@
     <string name="not_implement_msg">This hasn\'t been implemented yet :-(</string>
     <string name="turn_nfc_on_nfc_wait">NFC is OFF go to settings and turn it on</string>
     <string name="no_contacts">You don\'t have any contacts yet.\nTo add contacts,\nyou can scan their QR code or ask them to send a contact card.</string>
+    <string name="tmp_files_deleted">temp files successfully deleted</string>
+    <string name="keys_deleted">Keys successfully deleted</string>
+    <string name="contacts_deleted">contacts successfully deleted</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
