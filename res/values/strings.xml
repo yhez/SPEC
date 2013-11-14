@@ -91,6 +91,7 @@
     <string name="tmp_files_deleted">temp files successfully deleted</string>
     <string name="keys_deleted">Keys successfully deleted</string>
     <string name="contacts_deleted">contacts successfully deleted</string>
+    <string name="add_contact_first">add contact to your contacts book first</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

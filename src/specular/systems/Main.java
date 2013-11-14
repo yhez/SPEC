@@ -54,6 +54,7 @@ import specular.systems.Dialogs.TurnNFCOn;
 
 
 public class Main extends Activity {
+    public static ContactsDataSource contactsDataSource;
     public static String currentText="";
     public final static int MSG_LIMIT_FOR_QR = 141;
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3;
@@ -186,7 +187,10 @@ public void notImp(View v){
         }*/
                 break;
             case R.id.answer:
-                notImp(null);
+                if(findViewById(R.id.add_contact_decrypt).getVisibility()==View.VISIBLE)
+                    Toast.makeText(getBaseContext(),R.string.add_contact_first,Toast.LENGTH_LONG).show();
+                else
+                    notImp(null);
                 break;
             case R.id.secure_info:
                 notImp(null);
@@ -308,10 +312,7 @@ public void notImp(View v){
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
                 long id = Long.parseLong(((TextView) findViewById(R.id.contact_id_to_send)).getText().toString());
-                ContactsDataSource cds = new ContactsDataSource(this);
-                cds.open();
-                contact = cds.findContact(id);
-                cds.close();
+                contact = contactsDataSource.findContact(id);
                 encryptManager();
                 break;
             case R.id.add_contact:
@@ -337,12 +338,9 @@ public void notImp(View v){
                 startActivityForResult(intt, SCAN_QR);
                 break;
             case R.layout.edit_contact:
-                ContactsDataSource cds = new ContactsDataSource(this);
-                cds.open();
-                Contact contact = cds.findContact(Long
+                Contact contact = contactsDataSource.findContact(Long
                         .valueOf(((TextView) findViewById(R.id.contact_id))
                                 .getText().toString()));
-                cds.close();
                 switch (v.getId()) {
                     case R.id.save:
                         String name = ((EditText) findViewById(R.id.contact_name)).getText()
@@ -350,7 +348,7 @@ public void notImp(View v){
                         String email = ((EditText) findViewById(R.id.contact_email)).getText()
                                 .toString();
                         if (name.length() > 0 && email.length() > 0)
-                            contact.update(this, name, email, null, null, -1);
+                            contact.update(name, email, null, null, -1);
                         else
                             Toast.makeText(getBaseContext(), R.string.fill_all,
                                     Toast.LENGTH_LONG).show();
@@ -376,6 +374,7 @@ public void notImp(View v){
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler = new Handler(Looper.getMainLooper());
+        contactsDataSource=new ContactsDataSource(this);
         setContentView(R.layout.main);
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
@@ -661,11 +660,8 @@ public void notImp(View v){
             return true;
         } else if (Splash.fileContactCard != null) {
             selectItem(-1, R.layout.contacts);
-            ContactsDataSource cds = new ContactsDataSource(this);
-            cds.open();
             //TODO search also in names and emails
-            Contact c = cds.findContact(Splash.fileContactCard.getPublicKey());
-            cds.close();
+            Contact c = contactsDataSource.findContact(Splash.fileContactCard.getPublicKey());
             if (c == null) {
                 AddContactDlg acd = new AddContactDlg();
                 acd.show(getFragmentManager(), "acd");

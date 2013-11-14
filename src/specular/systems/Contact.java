@@ -28,13 +28,10 @@ public class Contact {
             this.email = email;
             this.session = new Session() + "";
             this.conversationStatus = WE_STRANGERS;
-            ContactsDataSource dataSrc = new ContactsDataSource(a);
-            dataSrc.open();
-            this.id = dataSrc.createContact(this);
-            dataSrc.close();
+            this.id=Main.contactsDataSource.createContact(this);
         }
         if(Main.currentLayout==R.layout.encrypt||Main.currentLayout==R.layout.contacts){
-            FragmentManagement.alc.add(this);
+          Main.contactsDataSource.contactList.add(this);
             //((ListView)a.findViewById(Main.currentLayout)).getAdapter().notify();
             //todo refresh adapter - remove the use of variable change
         }
@@ -81,11 +78,9 @@ public class Contact {
                 + session + "\nConversation status: " + conversationStatus;
     }
 
-    public void update(Activity a, String contactName, String email,
+    public void update(String contactName, String email,
                        String publicKey, String session, int conversationStatus) {
-        ContactsDataSource dataSrc = new ContactsDataSource(a);
-        dataSrc.open();
-        dataSrc.deleteContact(this);
+        Main.contactsDataSource.deleteContact(this);
         if (contactName != null)
             this.contactName = contactName;
         if (publicKey != null)
@@ -96,8 +91,7 @@ public class Contact {
             this.session = session;
         if (!(conversationStatus < 0))
             this.conversationStatus = conversationStatus;
-        this.id = dataSrc.createContact(this);
-        dataSrc.close();
+        this.id = Main.contactsDataSource.createContact(this);
     }
     public static Bitmap getPhoto(String publicKey) {
 

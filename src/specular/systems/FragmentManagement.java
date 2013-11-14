@@ -23,8 +23,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
-
 import static specular.systems.R.layout.contacts;
 import static specular.systems.R.layout.create_new_keys;
 import static specular.systems.R.layout.decrypt;
@@ -37,7 +35,7 @@ import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 class FragmentManagement extends Fragment {
-    public static List<Contact> alc;
+    //public static List<Contact> alc;
     private static Main w;
     final int TURN_TEXT_TRIGGER = 0;
     private final Handler hndl = new Handler() {
@@ -73,7 +71,6 @@ class FragmentManagement extends Fragment {
     public void onStart() {
         super.onStart();
         Contact contact;
-        ContactsDataSource cds = new ContactsDataSource(getActivity());
         switch (Main.currentLayout) {
             case create_new_keys:
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.create_new_keys));
@@ -103,15 +100,11 @@ class FragmentManagement extends Fragment {
             case contacts:
                 Main.changed = false;
                 ListView lv = (ListView) getActivity().findViewById(R.id.list);
-                cds = new ContactsDataSource(getActivity());
-                cds.open();
-                alc = cds.getAllContacts();
-                cds.close();
-                if (alc.size() > 0) {
+                if (Main.contactsDataSource.contactList.size() > 0) {
                     getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
-                    String[] secRowText = new String[alc.size()];
+                    String[] secRowText = new String[Main.contactsDataSource.contactList.size()];
                     final MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(
-                            getActivity().getBaseContext(), secRowText, alc);
+                            getActivity().getBaseContext(), secRowText, Main.contactsDataSource.contactList);
                     lv.setAdapter(adapter);
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> p1, View p2, int p3,
@@ -134,9 +127,7 @@ class FragmentManagement extends Fragment {
                 Long id = getArguments().getLong("contactId");
                 ((TextView) getActivity().findViewById(R.id.contact_id)).setText(""
                         + id);
-                cds.open();
-                contact = cds.findContact(id);
-                cds.close();
+                contact = Main.contactsDataSource.findContact(id);
                 ((EditText) getActivity().findViewById(R.id.contact_name))
                         .setText(contact.getContactName());
                 ((TextView) getActivity().findViewById(R.id.orig_name))
@@ -185,15 +176,11 @@ class FragmentManagement extends Fragment {
             case encrypt:
                 Main.changed = false;
                 lv = (ListView) getActivity().findViewById(R.id.en_list_contact);
-                cds = new ContactsDataSource(getActivity());
-                cds.open();
-                alc = cds.getAllContacts();
-                cds.close();
-                if (alc.size() > 0) {
+                if (Main.contactsDataSource.contactList.size() > 0) {
                     getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
-                    String[] secRowTextt = new String[alc.size()];
+                    String[] secRowTextt = new String[Main.contactsDataSource.contactList.size()];
                     final MySimpleArrayAdapter adapter2 = new MySimpleArrayAdapter(
-                            getActivity().getBaseContext(), secRowTextt, alc);
+                            getActivity().getBaseContext(), secRowTextt, Main.contactsDataSource.contactList);
                     lv.setAdapter(adapter2);
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -203,13 +190,10 @@ class FragmentManagement extends Fragment {
                             imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
                             getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
                             getActivity().findViewById(R.id.en_list_contact).setVisibility(View.GONE);
-                            ContactsDataSource cdsss = new ContactsDataSource(getActivity());
-                            cdsss.open();
                             long l = Long.parseLong(((TextView) p2
                                     .findViewById(R.id.id_contact)).getText()
                                     .toString());
-                            Contact cvc = cdsss.findContact(l);
-                            cdsss.close();
+                            Contact cvc = Main.contactsDataSource.findContact(l);
                             ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(l + "");
                             ((TextView) getActivity().findViewById(R.id.chosen_name)).setText(cvc.getContactName());
                             ((TextView) getActivity().findViewById(R.id.chosen_email)).setText(cvc.getEmail());
@@ -374,9 +358,7 @@ class FragmentManagement extends Fragment {
                 } else {
                     ((TextView) getActivity().findViewById(R.id.general_details))
                             .setText("From:\t" + CryptMethods.decryptedMsg.getName() + " , " + CryptMethods.decryptedMsg.getEmail());
-                    cds.open();
-                    Contact c = cds.findContact(CryptMethods.decryptedMsg.getPublicKey());
-                    cds.close();
+                    Contact c = Main.contactsDataSource.findContact(CryptMethods.decryptedMsg.getPublicKey());
                     if (c != null) {
                         getActivity().findViewById(R.id.add_contact_decrypt).setVisibility(View.GONE);
                     }
