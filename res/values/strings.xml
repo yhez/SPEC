@@ -92,10 +92,10 @@
     <string name="keys_deleted">Keys successfully deleted</string>
     <string name="contacts_deleted">Contacts successfully deleted</string>
     <string name="add_contact_first">Add this contact to your CONTACTS first</string>
-    <string name="hash_explain">MD5 or SHA1 hashes are sometimes posted along with files on websites or forums
-        to allow verification of integrity. This practice is not secure because of the chain of trust problem
+    <string name="hash_explain">MD5 or SHA1 crypto hashes are sometimes posted along with files on websites or forums
+        to allow integrity verification. This practice is not secure because of the chain of trust problem
         — posted hashes cannot be trusted equally as files, unless these websites are authenticated by HTTPS —
-        but in this case the hashes are redundant.What is HASH?","An important application of secure hashes is
+        but in this case the hashes are redundant. What is HASH?","An important application of secure hashes is
         verification of message integrity. Determining whether any changes have been made to a message (or a file),
         for example, can be accomplished by comparing message digests calculated before, and after, transmission
         (or any other event).\n\"\"For this reason, most digital signature algorithms only confirm the authenticity
