@@ -10,13 +10,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class MySimpleArrayAdapter extends ArrayAdapter<String> {
+class MySimpleArrayAdapter extends ArrayAdapter<String> {
     private final Context context;
-    public static List<Contact> lst;
+    private final List<Contact> lst;
 
-    public MySimpleArrayAdapter(Context context, String[] s) {
+    public MySimpleArrayAdapter(Context context, String[] s, List<Contact> lst) {
         super(context, R.layout.list_row, s);
         this.context = context;
+        this.lst = lst;
     }
 
     @Override

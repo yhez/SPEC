@@ -100,9 +100,12 @@ class FragmentManagement extends Fragment {
             case contacts:
                 Main.changed = false;
                 ListView lv = (ListView) getActivity().findViewById(R.id.list);
-                if (Main.adapter.lst.size() > 0) {
+                if (Main.contactsDataSource.contactList.size() > 0) {
                     getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
-                    lv.setAdapter(Main.adapter);
+                    String[] secRowText = new String[Main.contactsDataSource.contactList.size()];
+                    final MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(
+                            getActivity().getBaseContext(), secRowText, Main.contactsDataSource.contactList);
+                    lv.setAdapter(adapter);
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> p1, View p2, int p3,
                                                 long p4) {
@@ -125,7 +128,6 @@ class FragmentManagement extends Fragment {
                 ((TextView) getActivity().findViewById(R.id.contact_id)).setText(""
                         + id);
                 contact = Main.contactsDataSource.findContact(id);
-                //todo need to fix null pointer missing view
                 ((EditText) getActivity().findViewById(R.id.contact_name))
                         .setText(contact.getContactName());
                 ((TextView) getActivity().findViewById(R.id.orig_name))
@@ -173,10 +175,13 @@ class FragmentManagement extends Fragment {
                 break;
             case encrypt:
                 Main.changed = false;
-                lv = (ListView) getActivity().findViewById(R.id.list);
-                if (Main.adapter.lst.size() > 0) {
+                lv = (ListView) getActivity().findViewById(R.id.en_list_contact);
+                if (Main.contactsDataSource.contactList.size() > 0) {
                     getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
-                    lv.setAdapter(Main.adapter);
+                    String[] secRowTextt = new String[Main.contactsDataSource.contactList.size()];
+                    final MySimpleArrayAdapter adapter2 = new MySimpleArrayAdapter(
+                            getActivity().getBaseContext(), secRowTextt, Main.contactsDataSource.contactList);
+                    lv.setAdapter(adapter2);
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> p1, View p2, int p3,
@@ -184,7 +189,7 @@ class FragmentManagement extends Fragment {
                             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
                             getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
-                            getActivity().findViewById(R.id.list).setVisibility(View.GONE);
+                            getActivity().findViewById(R.id.en_list_contact).setVisibility(View.GONE);
                             long l = Long.parseLong(((TextView) p2
                                     .findViewById(R.id.id_contact)).getText()
                                     .toString());
@@ -207,7 +212,7 @@ class FragmentManagement extends Fragment {
                                         if (cont.getAlpha() < 0.2) {
                                             cont.setVisibility(View.GONE);
                                             ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
-                                            getActivity().findViewById(R.id.list).setVisibility(View.VISIBLE);
+                                            getActivity().findViewById(R.id.en_list_contact).setVisibility(View.VISIBLE);
                                         } else {
                                             cont.setAlpha(1);
                                             cont.setX(0);

@@ -30,6 +30,11 @@ public class Contact {
             this.conversationStatus = WE_STRANGERS;
             this.id=Main.contactsDataSource.createContact(this);
         }
+        if(Main.currentLayout==R.layout.encrypt||Main.currentLayout==R.layout.contacts){
+          Main.contactsDataSource.contactList.add(this);
+            //((ListView)a.findViewById(Main.currentLayout)).getAdapter().notify();
+            //todo refresh adapter - remove the use of variable change
+        }
     }
     public Contact(long id, String contactName, String email, String publicKey,
                    String session, int conversationStatus) {

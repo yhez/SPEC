@@ -1,29 +1,27 @@
 package specular.systems;
 
-import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactsDataSource {
-    Activity actvity;
     private final String[] allColumns = {MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_CONTACT_NAME, MySQLiteHelper.COLUMN_EMAIL,
             MySQLiteHelper.COLUMN_PUBLIC_KEY, MySQLiteHelper.COLUMN_SESSION,
             MySQLiteHelper.COLUMN_FIRST};
     private final MySQLiteHelper dbHelper;
+    public List<Contact> contactList;
     // Database fields
     private SQLiteDatabase database;
 
-    public ContactsDataSource(Activity activity) {
-        this.actvity =activity;
-        dbHelper = new MySQLiteHelper(activity);
+    public ContactsDataSource(Context context) {
+        dbHelper = new MySQLiteHelper(context);
         database = dbHelper.getReadableDatabase();
-        Main.adapter.lst = getAllContacts();
+        contactList = getAllContacts();
         dbHelper.close();
     }
 
@@ -39,9 +37,6 @@ public class ContactsDataSource {
         long l = database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
                 values);
         dbHelper.close();
-        Main.adapter.lst.add(contact);
-        ListView lv=(ListView)((Activity) actvity).findViewById(R.id.list);
-        lv.setAdapter(Main.adapter);
         return l;
     }
 
@@ -51,9 +46,6 @@ public class ContactsDataSource {
         database.delete(MySQLiteHelper.TABLE_CONTACTS, MySQLiteHelper.COLUMN_ID
                 + " = " + id, null);
         dbHelper.close();
-        Main.adapter.lst.remove(contact);
-        ListView lv=(ListView)((Activity) actvity).findViewById(R.id.list);
-        lv.setAdapter(Main.adapter);
     }
 
     public Contact findContact(long id) {

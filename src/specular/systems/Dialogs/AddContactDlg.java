@@ -36,8 +36,8 @@ public class AddContactDlg extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         new Contact(getActivity(),pcc.getName(),pcc.getEmail(),pcc.getPublicKey());
                         if(Main.currentLayout!=R.layout.decrypted_msg){
-                            //Main.changed=true;
-                            //getActivity().onBackPressed();
+                            Main.changed=true;
+                            getActivity().onBackPressed();
                         }
                         else{
                             getActivity().findViewById(R.id.add_contact_decrypt).setVisibility(View.GONE);
