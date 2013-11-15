@@ -92,15 +92,7 @@
     <string name="keys_deleted">Keys successfully deleted</string>
     <string name="contacts_deleted">Contacts successfully deleted</string>
     <string name="add_contact_first">Add this contact to your CONTACTS first</string>
-    <string name="hash_explain">MD5 or SHA1 crypto hashes are sometimes posted along with files on websites or forums
-        to allow integrity verification. This practice is not secure because of the chain of trust problem
-        — posted hashes cannot be trusted equally as files, unless these websites are authenticated by HTTPS —
-        but in this case the hashes are redundant. What is HASH?","An important application of secure hashes is
-        verification of message integrity. Determining whether any changes have been made to a message (or a file),
-        for example, can be accomplished by comparing message digests calculated before, and after, transmission
-        (or any other event).\n\"\"For this reason, most digital signature algorithms only confirm the authenticity
-        of a hashed digest of the message to be \"signed\". Verifying the authenticity of a hashed digest of the
-        message is considered proof that the message itself is authentic.</string>
+    <string name="hash_explain">The main application of secure cryptographic hashes is verification of message integrity - determining whether any changes have been made to a message or a file. SPEC verifies that your message are secure and complete, we fight data tampering 24/7.</string>
     <string name="what_is_hash">What is a Crypto Hash?</string>
     <string name="what_is_session">What is a Session?</string>
     <string name="session_explain">In computer science, a session identifier, session ID or session token is a piece
@@ -114,7 +106,7 @@
     <string name="what_is_replay">What is a Replay Attack?</string>
     <string name="replay_explain">A replay attack is a form of network attack in which a valid data transmission is
         maliciously or fraudulently repeated or delayed (after it has been possibly tampered with). This is mostly carried out by an adversary
-        whom intercepts the data and retransmits it, possibly as part of a masquerading Man in the Middle Attack.</string>
+        whom intercepts the data and retransmits it, possibly as part of a Man in the Middle Attack. SPEC verifies that this type of attack and similar ones aren\'t carried out.</string>
     <string name="no_result">cant find result</string>
     <string-array name="menus">
         <item>Encrypt</item>
