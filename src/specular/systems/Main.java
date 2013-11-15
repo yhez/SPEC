@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 
 import specular.systems.Dialogs.AddContactDlg;
 import specular.systems.Dialogs.DeleteDataDialog;
@@ -62,6 +63,7 @@ public class Main extends Activity {
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3;
     public static int currentLayout;
     public static boolean changed;
+    public MySimpleArrayAdapter adapter;
     public static boolean comingFromSettings = false;
     private final Handler hndl = new Handler() {
         @Override
@@ -391,12 +393,17 @@ public void notImp(View v){
         // Pass any configuration change to the main toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-
+public static List<Contact> currentList;
+public static List<Contact> fullList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler = new Handler(Looper.getMainLooper());
         contactsDataSource=new ContactsDataSource(this);
+        currentList =contactsDataSource.getAllContacts();
+        fullList = new ArrayList<Contact>();
+        fullList.addAll(currentList);
+        adapter = new MySimpleArrayAdapter(this, currentList);
         setContentView(R.layout.main);
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
@@ -454,8 +461,14 @@ public void notImp(View v){
         if (lst.getVisibility() == View.VISIBLE) {
             if (b.getVisibility() == View.GONE)
                 b.setVisibility(View.VISIBLE);
-            else
+            else{
+                for(int a=0;a<fullList.size();a++)
+                    if(!currentList.contains(fullList.get(a)))
+                        currentList.add(fullList.get(a));
+                ((EditText)findViewById(R.id.filter)).setText("");
+                adapter.notifyDataSetChanged();
                 b.setVisibility(View.GONE);
+            }
         }
         return super.onOptionsItemSelected(item);
 
@@ -742,10 +755,7 @@ public void notImp(View v){
                     setUpViews();
                     break;
                 case R.layout.contacts:
-                    if (changed)
-                        selectItem(-1, currentLayout);
-                    else
-                        setUpViews();
+                    setUpViews();
                     break;
                 case R.layout.help:
                     setUpViews();

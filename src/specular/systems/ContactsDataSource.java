@@ -1,7 +1,6 @@
 package specular.systems;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -9,19 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactsDataSource {
+    Main m;
     private final String[] allColumns = {MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_CONTACT_NAME, MySQLiteHelper.COLUMN_EMAIL,
             MySQLiteHelper.COLUMN_PUBLIC_KEY, MySQLiteHelper.COLUMN_SESSION,
             MySQLiteHelper.COLUMN_FIRST};
     private final MySQLiteHelper dbHelper;
-    public List<Contact> contactList;
     // Database fields
     private SQLiteDatabase database;
 
-    public ContactsDataSource(Context context) {
-        dbHelper = new MySQLiteHelper(context);
+    public ContactsDataSource(Main m) {
+        this.m=m;
+        dbHelper = new MySQLiteHelper(m);
         database = dbHelper.getReadableDatabase();
-        contactList = getAllContacts();
         dbHelper.close();
     }
 
@@ -37,15 +36,24 @@ public class ContactsDataSource {
         long l = database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
                 values);
         dbHelper.close();
+        m.adapter.addCont(contact);
         return l;
     }
 
     public void deleteContact(Contact contact) {
         long id = contact.getId();
+        int position=-1;
+        for(int a=0;a<Main.currentList.size();a++)
+            if(contact.getPublicKey().equals(Main.currentList.get(a).getPublicKey())){
+                position=a;
+                break;
+            }
         database=dbHelper.getWritableDatabase();
         database.delete(MySQLiteHelper.TABLE_CONTACTS, MySQLiteHelper.COLUMN_ID
                 + " = " + id, null);
         dbHelper.close();
+        if(!(position<0))
+            m.adapter.removeCont(position);
     }
 
     public Contact findContact(long id) {
@@ -82,7 +90,8 @@ public class ContactsDataSource {
         return null;
     }
 
-    private List<Contact> getAllContacts() {
+    public List<Contact> getAllContacts() {
+        database=dbHelper.getReadableDatabase();
         List<Contact> contacts = new ArrayList<Contact>();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
                 allColumns, null, null, null, null, null);
@@ -97,6 +106,7 @@ public class ContactsDataSource {
         }
         // Make sure to close the cursor
         cursor.close();
+        dbHelper.close();
         return contacts;
     }
 

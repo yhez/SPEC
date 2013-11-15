@@ -100,12 +100,9 @@ class FragmentManagement extends Fragment {
             case contacts:
                 Main.changed = false;
                 ListView lv = (ListView) getActivity().findViewById(R.id.list);
-                if (Main.contactsDataSource.contactList.size() > 0) {
+                if (w.adapter.isNotEmpty()) {
                     getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
-                    String[] secRowText = new String[Main.contactsDataSource.contactList.size()];
-                    final MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(
-                            getActivity().getBaseContext(), secRowText, Main.contactsDataSource.contactList);
-                    lv.setAdapter(adapter);
+                    lv.setAdapter(w.adapter);
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> p1, View p2, int p3,
                                                 long p4) {
@@ -122,6 +119,23 @@ class FragmentManagement extends Fragment {
                         }
                     });
                 } else getActivity().findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+                EditText filterCOnt = (EditText)getActivity().findViewById(R.id.filter);
+                filterCOnt.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        w.adapter.getFilter().filter(charSequence.toString());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
                 break;
             case edit_contact:
                 Long id = getArguments().getLong("contactId");
@@ -176,12 +190,9 @@ class FragmentManagement extends Fragment {
             case encrypt:
                 Main.changed = false;
                 lv = (ListView) getActivity().findViewById(R.id.en_list_contact);
-                if (Main.contactsDataSource.contactList.size() > 0) {
+                if (w.adapter.isNotEmpty()) {
                     getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
-                    String[] secRowTextt = new String[Main.contactsDataSource.contactList.size()];
-                    final MySimpleArrayAdapter adapter2 = new MySimpleArrayAdapter(
-                            getActivity().getBaseContext(), secRowTextt, Main.contactsDataSource.contactList);
-                    lv.setAdapter(adapter2);
+                    lv.setAdapter(w.adapter);
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> p1, View p2, int p3,
@@ -236,12 +247,12 @@ class FragmentManagement extends Fragment {
 
                         @Override
                         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
+                            w.adapter.getFilter().filter(charSequence.toString());
                         }
 
                         @Override
                         public void afterTextChanged(Editable editable) {
-                            //TODO update list view by query to sqlite
+
                         }
                     });
                     final EditText et = (EditText) getActivity().findViewById(R.id.message);
