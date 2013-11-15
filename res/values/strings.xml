@@ -95,10 +95,9 @@
     <string name="hash_explain">The main application of secure cryptographic hashes is verification of message integrity - determining whether any changes have been made to a message or a file. SPEC verifies that your message are secure and complete, we fight data tampering 24/7.</string>
     <string name="what_is_hash">What is a Crypto Hash?</string>
     <string name="what_is_session">What is a Session?</string>
-    <string name="session_explain">In computer science, a session identifier, session ID or session token is a piece
-        of data that is used in network communications (often over HTTP) to identify a session, a series of related
-        message exchanges. Session identifiers become necessary in cases where the communications infrastructure uses
-        a stateless protocol such as HTTP. For example, a buyer who visits a seller\'s site wants to collect a number
+    <string name="session_explain">A session identifier or session token is a piece
+        of data that is used in network communications to identify a session, a series of related
+        message exchanges. For example, a buyer who visits a seller\'s site wants to collect a number
         of articles in a virtual shopping cart and then finalize the shopping by going to the site\'s checkout page.
         This typically involves an ongoing communication where several webpages are requested by the client and sent
         back to them by the server. In such a situation, it is vital to keep track of the current state of the shopper\'s
