@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -452,10 +453,12 @@ public static List<Contact> fullList;
     public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the main.
         // ActionBarDrawerToggle will take care of this.
+        final Drawable share=getResources().getDrawable(R.drawable.share),search=getResources().getDrawable(R.drawable.search);
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         // Handle action buttons
+        if(item.getIcon()==search){
         View b = findViewById(R.id.filter_ll);
         View lst = currentLayout == R.layout.encrypt ? findViewById(R.id.en_list_contact) : findViewById(R.id.list);
         if (lst.getVisibility() == View.VISIBLE) {
@@ -469,6 +472,11 @@ public static List<Contact> fullList;
                 adapter.notifyDataSetChanged();
                 b.setVisibility(View.GONE);
             }
+        }
+
+        }else{
+            ShareDialog sd = new ShareDialog();
+            sd.show(getFragmentManager(),"friend");
         }
         return super.onOptionsItemSelected(item);
 
@@ -491,9 +499,15 @@ public static List<Contact> fullList;
         // view
         if (currentLayout == R.layout.contacts || currentLayout == R.layout.encrypt) {
             boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+            menu.findItem(R.id.action_search).setIcon(R.drawable.search);
             menu.findItem(R.id.action_search).setVisible(!drawerOpen);
             return super.onPrepareOptionsMenu(menu);
-        } else
+        } else if(currentLayout==R.layout.edit_contact){
+            boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+            menu.findItem(R.id.action_search).setVisible(!drawerOpen);
+            menu.findItem(R.id.action_search).setIcon(R.drawable.share);
+            return super.onPrepareOptionsMenu(menu);
+        }
             return false;
     }
 
@@ -797,7 +811,7 @@ public static List<Contact> fullList;
 
     public void share(View v) {
         ShareDialog dlg = new ShareDialog();
-        dlg.show(getFragmentManager(), "share");
+        dlg.show(getFragmentManager(), "me");
     }
 
     //TODO

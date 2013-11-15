@@ -106,6 +106,7 @@ class FragmentManagement extends Fragment {
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> p1, View p2, int p3,
                                                 long p4) {
+                            getActivity().invalidateOptionsMenu();
                             Fragment fragment = new FragmentManagement(w);
                             Bundle args = new Bundle();
                             Main.currentLayout = edit_contact;
