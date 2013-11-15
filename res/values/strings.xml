@@ -91,7 +91,7 @@
     <string name="tmp_files_deleted">Temp files successfully deleted</string>
     <string name="keys_deleted">Keys successfully deleted</string>
     <string name="contacts_deleted">Contacts successfully deleted</string>
-    <string name="add_contact_first">Add contact to your contacts book first</string>
+    <string name="add_contact_first">Add this contact to your CONTACTS first</string>
     <string name="hash_explain">MD5 or SHA1 hashes are sometimes posted along with files on websites or forums
         to allow verification of integrity. This practice is not secure because of the chain of trust problem
         — posted hashes cannot be trusted equally as files, unless these websites are authenticated by HTTPS —
@@ -101,8 +101,8 @@
         (or any other event).\n\"\"For this reason, most digital signature algorithms only confirm the authenticity
         of a hashed digest of the message to be \"signed\". Verifying the authenticity of a hashed digest of the
         message is considered proof that the message itself is authentic.</string>
-    <string name="what_is_hash">What is HASH?</string>
-    <string name="what_is_session">What is session?</string>
+    <string name="what_is_hash">What is a Crypto Hash?</string>
+    <string name="what_is_session">What is a Session?</string>
     <string name="session_explain">In computer science, a session identifier, session ID or session token is a piece
         of data that is used in network communications (often over HTTP) to identify a session, a series of related
         message exchanges. Session identifiers become necessary in cases where the communications infrastructure uses
@@ -111,7 +111,7 @@
         This typically involves an ongoing communication where several webpages are requested by the client and sent
         back to them by the server. In such a situation, it is vital to keep track of the current state of the shopper\'s
         cart, and a session ID is one way to achieve that goal.</string>
-    <string name="what_is_replay">What is Replay attack?</string>
+    <string name="what_is_replay">What is a Replay Attack?</string>
     <string name="replay_explain">A replay attack is a form of network attack in which a valid data transmission is
         maliciously or fraudulently repeated or delayed. This is carried out either by the originator or by an adversary
         who intercepts the data and retransmits it, possibly as part of a masquerade attack by IP packet substitution
