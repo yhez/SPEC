@@ -125,7 +125,7 @@
         android:layout_below="@id/filter_ll">
 
         <ListView
-            android:id="@+id/en_list_contact"
+            android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <TextView

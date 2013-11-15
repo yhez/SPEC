@@ -57,6 +57,7 @@ import specular.systems.Dialogs.TurnNFCOn;
 
 public class Main extends Activity {
     public static ContactsDataSource contactsDataSource;
+    public static MySimpleArrayAdapter adapter;
     public static String currentText="";
     public final static int MSG_LIMIT_FOR_QR = 141;
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3;
@@ -397,6 +398,8 @@ public void notImp(View v){
         super.onCreate(savedInstanceState);
         handler = new Handler(Looper.getMainLooper());
         contactsDataSource=new ContactsDataSource(this);
+        String[] secRowText = new String[adapter.lst.size()];
+        adapter = new MySimpleArrayAdapter(getBaseContext(), secRowText);
         setContentView(R.layout.main);
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
@@ -450,7 +453,7 @@ public void notImp(View v){
         }
         // Handle action buttons
         View b = findViewById(R.id.filter_ll);
-        View lst = currentLayout == R.layout.encrypt ? findViewById(R.id.en_list_contact) : findViewById(R.id.list);
+        View lst = currentLayout == R.layout.encrypt ? findViewById(R.id.list) : findViewById(R.id.list);
         if (lst.getVisibility() == View.VISIBLE) {
             if (b.getVisibility() == View.GONE)
                 b.setVisibility(View.VISIBLE);
@@ -552,7 +555,7 @@ public void notImp(View v){
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame, fragment).commit();
             }
-        }, 100);
+        }, 150);
     }
 
     @Override
@@ -742,10 +745,7 @@ public void notImp(View v){
                     setUpViews();
                     break;
                 case R.layout.contacts:
-                    if (changed)
-                        selectItem(-1, currentLayout);
-                    else
-                        setUpViews();
+                    setUpViews();
                     break;
                 case R.layout.help:
                     setUpViews();
