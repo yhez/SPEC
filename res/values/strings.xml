@@ -113,9 +113,8 @@
         cart, and a session ID is one way to achieve that goal.</string>
     <string name="what_is_replay">What is a Replay Attack?</string>
     <string name="replay_explain">A replay attack is a form of network attack in which a valid data transmission is
-        maliciously or fraudulently repeated or delayed. This is carried out either by the originator or by an adversary
-        who intercepts the data and retransmits it, possibly as part of a masquerade attack by IP packet substitution
-        (such as stream cipher attack).</string>
+        maliciously or fraudulently repeated or delayed (after it has been possibly tampered with). This is mostly carried out by an adversary
+        whom intercepts the data and retransmits it, possibly as part of a masquerading Man in the Middle Attack.</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
