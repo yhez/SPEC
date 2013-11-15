@@ -353,7 +353,7 @@ class FragmentManagement extends Fragment {
                 TextView tv = (TextView) getActivity().findViewById(R.id.decrypted_msg);
                 if (CryptMethods.decryptedMsg == null) {
                     getActivity().findViewById(R.id.top_pannel).setVisibility(View.GONE);
-                    getActivity().findViewById(R.id.bottom_panel_dm).setVisibility(View.GONE);
+                    getActivity().findViewById(R.id.from).setVisibility(View.GONE);
                     tv.setText(getActivity().getString(R.string.cant_decrypt));
                 } else {
                     ((TextView) getActivity().findViewById(R.id.general_details))

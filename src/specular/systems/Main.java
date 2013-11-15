@@ -47,8 +47,10 @@ import specular.systems.Dialogs.AddContactDlg;
 import specular.systems.Dialogs.DeleteDataDialog;
 import specular.systems.Dialogs.DeleteDialog;
 import specular.systems.Dialogs.ExitWithoutSave;
+import specular.systems.Dialogs.ExplainDialog;
 import specular.systems.Dialogs.NotImplemented;
 import specular.systems.Dialogs.ProgressDlg;
+import specular.systems.Dialogs.Response;
 import specular.systems.Dialogs.ShareDialog;
 import specular.systems.Dialogs.TurnNFCOn;
 
@@ -171,6 +173,15 @@ public void notImp(View v){
 }
     public void decryptedMsgClick(View v){
         switch (v.getId()){
+            case R.id.send:
+                EditText et = (EditText)  findViewById(R.id.message);
+                userInput = et.getText().toString();
+                // hides the keyboard when the user starts the encryption process
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+                contact = contactsDataSource.findContact(CryptMethods.decryptedMsg.getPublicKey());
+                encryptManager();
+                break;
             case R.id.open_file:
                 //String name = CryptMethods.decryptedMsg.getFileName();
                 //Log.d("name",name);
@@ -189,11 +200,22 @@ public void notImp(View v){
             case R.id.answer:
                 if(findViewById(R.id.add_contact_decrypt).getVisibility()==View.VISIBLE)
                     Toast.makeText(getBaseContext(),R.string.add_contact_first,Toast.LENGTH_LONG).show();
-                else
-                    notImp(null);
+                else{
+                    Response r = new Response();
+                    r.show(getFragmentManager(),"r");
+                }
                 break;
-            case R.id.secure_info:
-                notImp(null);
+            case R.id.hash:
+                ExplainDialog edlg = new ExplainDialog(R.string.what_is_hash,R.string.hash_explain);
+                edlg.show(getFragmentManager(),"hash");
+                break;
+            case R.id.session:
+                ExplainDialog edl = new ExplainDialog(R.string.what_is_session,R.string.session_explain);
+                edl.show(getFragmentManager(),"session");
+                break;
+            case R.id.replay:
+                ExplainDialog ed = new ExplainDialog(R.string.what_is_replay,R.string.replay_explain);
+                ed.show(getFragmentManager(),"replay");
                 break;
         }
     }

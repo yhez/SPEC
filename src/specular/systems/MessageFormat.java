@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-class MessageFormat {
+public class MessageFormat {
     private String name, email, publicKey, msgContent, session, hash, sentTime,fileName;
     private byte[] fileContent=null;
 

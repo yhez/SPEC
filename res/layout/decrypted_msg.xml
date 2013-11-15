@@ -30,10 +30,11 @@
                 android:layout_gravity="top|right" />
 
             <ImageButton
-                android:onClick="notImp"
+                android:id="@+id/hash"
                 style="@android:style/Widget.Holo.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="decryptedMsgClick"
                 android:padding="@dimen/default_gap"
                 android:src="@drawable/hash_not_ok" />
         </FrameLayout>
@@ -50,10 +51,11 @@
                 android:layout_gravity="top|right" />
 
             <ImageButton
-                android:onClick="notImp"
+                android:id="@+id/replay"
                 style="@android:style/Widget.Holo.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="decryptedMsgClick"
                 android:padding="@dimen/default_gap"
                 android:src="@drawable/replay_atack" />
         </FrameLayout>
@@ -70,10 +72,11 @@
                 android:layout_gravity="top|right" />
 
             <ImageButton
-                android:onClick="notImp"
+                android:id="@+id/session"
                 style="@android:style/Widget.Holo.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="decryptedMsgClick"
                 android:padding="@dimen/default_gap"
                 android:src="@drawable/session" />
         </FrameLayout>
@@ -99,65 +102,47 @@
             android:src="@drawable/plus" />
     </GridLayout>
 
-    <LinearLayout
-        android:id="@+id/bottom_panel_dm"
-        style="?android:attr/buttonBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/default_gap"
-        android:background="@color/spec_dark_blue"
-        android:orientation="horizontal"
-        android:padding="@dimen/default_gap">
-
-        <Button
-            android:id="@+id/answer"
-            android:onClick="decryptedMsgClick"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/default_gap"
-            android:text="@string/response"
-            android:textColor="@android:color/white" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/white" />
-
-        <Button
-            android:id="@+id/secure_info"
-            android:onClick="decryptedMsgClick"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/default_gap"
-            android:text="@string/technical_detailes"
-            android:textColor="@android:color/white" />
-    </LinearLayout>
-
-    <TextView
-        android:textColor="@color/spec_black"
-        android:paddingLeft="@dimen/default_gap"
-        android:paddingRight="@dimen/default_gap"
-        android:id="@+id/general_details"
+    <RelativeLayout
+        android:id="@+id/from"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/top_pannel" />
+        android:layout_below="@id/top_pannel">
+        <ImageButton
+            android:layout_alignParentRight="true"
+            android:id="@+id/answer"
+            android:paddingRight="@dimen/default_gap"
+            android:paddingLeft="@dimen/default_gap"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="decryptedMsgClick"
+            android:src="@drawable/respond" />
+        <TextView
+            android:layout_centerVertical="true"
+            android:id="@+id/general_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="@dimen/default_gap"
+            android:textColor="@color/spec_black" />
+
+
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/bottom_panel_dm"
-        android:layout_below="@id/general_details"
+        android:layout_below="@id/from"
+        android:layout_alignParentBottom="true"
         android:padding="@dimen/default_gap">
 
         <TextView
-            android:autoLink="all"
             android:id="@+id/decrypted_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autoLink="all"
             android:gravity="start"
             android:textColor="@color/spec_black"
             android:textSize="25sp" />
