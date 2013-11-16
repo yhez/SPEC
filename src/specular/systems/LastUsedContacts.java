@@ -16,7 +16,9 @@ public class LastUsedContacts {
     Activity a;
     long[] ids;
     int[] num;
-
+public boolean showed(){
+    return gl.getVisibility()==View.VISIBLE;
+}
     public LastUsedContacts(Activity a) {
         this.a = a;
         lasts = new Contact[NUM_LASTS];
@@ -111,10 +113,12 @@ public class LastUsedContacts {
     class ViewLastContact {
         ImageButton ib;
         TextView tv;
+        TextView id;
 
         public ViewLastContact(LinearLayout fl) {
             tv = (TextView) fl.getChildAt(1);
             ib = (ImageButton) fl.getChildAt(0);
+            id = (TextView)fl.getChildAt(2);
         }
 
         public ImageButton getImage() {
@@ -128,6 +132,7 @@ public class LastUsedContacts {
         public void setContent(Contact contact) {
             ib.setImageBitmap(Contact.getPhoto(contact.getPublicKey()));
             tv.setText(contact.getContactName());
+            id.setText(contact.getId()+"");
         }
     }
 }

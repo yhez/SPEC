@@ -200,46 +200,9 @@ class FragmentManagement extends Fragment {
                         @Override
                         public void onItemClick(AdapterView<?> p1, View p2, int p3,
                                                 long p4) {
-                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
-                            getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
-                            getActivity().findViewById(R.id.en_list_contact).setVisibility(View.GONE);
-                            long l = Long.parseLong(((TextView) p2
+                            contactChosen(Long.parseLong(((TextView) p2
                                     .findViewById(R.id.id_contact)).getText()
-                                    .toString());
-                            Contact cvc = Main.contactsDataSource.findContact(l);
-                            ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(l + "");
-                            ((TextView) getActivity().findViewById(R.id.chosen_name)).setText(cvc.getContactName());
-                            ((TextView) getActivity().findViewById(R.id.chosen_email)).setText(cvc.getEmail());
-                            ((ImageView) getActivity().findViewById(R.id.chosen_icon)).setImageBitmap(Contact.getPhoto(cvc.getPublicKey()));
-                            final View cont = getActivity().findViewById(R.id.en_contact);
-                            cont.setVisibility(View.VISIBLE);
-                            getActivity().findViewById(R.id.grid_lasts).setVisibility(View.GONE);
-                            cont.setAlpha(1);
-                            cont.setX(0);
-                            cont.setOnTouchListener(new View.OnTouchListener() {
-                                @Override
-                                public boolean onTouch(View view, MotionEvent motionEvent) {
-                                    if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                                        startPoint = motionEvent.getRawX();
-                                        width = cont.getWidth();
-                                    } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
-                                        if (cont.getAlpha() < 0.2) {
-                                            cont.setVisibility(View.GONE);
-                                            ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
-                                            getActivity().findViewById(R.id.en_list_contact).setVisibility(View.VISIBLE);
-                                        } else {
-                                            cont.setAlpha(1);
-                                            cont.setX(0);
-                                        }
-                                    } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
-                                        cont.setX(motionEvent.getRawX() - startPoint);
-                                        float f = Math.abs(motionEvent.getRawX() - startPoint) * 2 / width;
-                                        cont.setAlpha(1 - f);
-                                    }
-                                    return true;
-                                }
-                            });
+                                    .toString()));
                         }
                     });
                     getActivity().findViewById(R.id.send).setEnabled(false);
@@ -260,7 +223,6 @@ class FragmentManagement extends Fragment {
                         }
                     });
                     final EditText et = (EditText) getActivity().findViewById(R.id.message);
-
                     et.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -349,6 +311,18 @@ class FragmentManagement extends Fragment {
                 } else getActivity().findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
                 luc=new LastUsedContacts(getActivity());
                 luc.show();
+                if(luc.showed()){
+                    ViewGroup vg = (ViewGroup)getActivity().findViewById(R.id.grid_lasts);
+                    for(int af=0;af<vg.getChildCount();af++){
+                        final ViewGroup vg2=(ViewGroup)vg.getChildAt(af);
+                        vg2.getChildAt(0).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                contactChosen(Long.parseLong(((TextView)vg2.getChildAt(2)).getText().toString()));
+                            }
+                        });
+                    }
+                }
                 break;
             case decrypt:
                 ((TextView) getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManagement.getOs(getActivity()));
@@ -421,5 +395,44 @@ class FragmentManagement extends Fragment {
         String[] parse2 = parse[1].split("\\.");
         if (parse2.length < 2 || parse2[0].length() < 2 || parse2[1].length() < 2) return false;
         return true;
+    }
+    private void contactChosen(long l){
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
+        getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.en_list_contact).setVisibility(View.GONE);
+        Contact cvc = Main.contactsDataSource.findContact(l);
+        ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(l + "");
+        ((TextView) getActivity().findViewById(R.id.chosen_name)).setText(cvc.getContactName());
+        ((TextView) getActivity().findViewById(R.id.chosen_email)).setText(cvc.getEmail());
+        ((ImageView) getActivity().findViewById(R.id.chosen_icon)).setImageBitmap(Contact.getPhoto(cvc.getPublicKey()));
+        final View cont = getActivity().findViewById(R.id.en_contact);
+        cont.setVisibility(View.VISIBLE);
+        getActivity().findViewById(R.id.grid_lasts).setVisibility(View.GONE);
+        cont.setAlpha(1);
+        cont.setX(0);
+        cont.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                    startPoint = motionEvent.getRawX();
+                    width = cont.getWidth();
+                } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
+                    if (cont.getAlpha() < 0.2) {
+                        cont.setVisibility(View.GONE);
+                        ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
+                        getActivity().findViewById(R.id.en_list_contact).setVisibility(View.VISIBLE);
+                    } else {
+                        cont.setAlpha(1);
+                        cont.setX(0);
+                    }
+                } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
+                    cont.setX(motionEvent.getRawX() - startPoint);
+                    float f = Math.abs(motionEvent.getRawX() - startPoint) * 2 / width;
+                    cont.setAlpha(1 - f);
+                }
+                return true;
+            }
+        });
     }
 }

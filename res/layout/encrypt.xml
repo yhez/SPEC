@@ -141,7 +141,6 @@
                 android:layout_row="0">
 
                 <ImageButton
-                    android:id="@+id/qr1"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -149,10 +148,12 @@
                 <TextView
                     android:layout_gravity="center_horizontal"
                     android:textColor="@android:color/black"
-                    android:id="@+id/name_email_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
+                <TextView
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -170,6 +171,10 @@
                     android:layout_gravity="center_horizontal"
                     android:textColor="@android:color/black"
                     android:id="@+id/name_email_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -191,6 +196,10 @@
                     android:id="@+id/name_email_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+                <TextView
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -208,6 +217,10 @@
                     android:layout_gravity="center_horizontal"
                     android:textColor="@android:color/black"
                     android:id="@+id/name_email_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
