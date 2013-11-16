@@ -355,4 +355,17 @@ public final class FilesManagement {
         a.deleteFile(a.getString(FRIENDS_SHARE_QR));
         a.deleteFile(a.getString(FRIEND_CONTACT_CARD));
     }
+    public static String getlasts(Activity a){
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a.getApplicationContext());
+        String t = srp.getString("lasts",null);
+        if(t==null)
+            return null;
+        return t;
+    }
+    public static void updateLasts(Activity a,String s){
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a.getApplicationContext());
+        SharedPreferences.Editor edt = srp.edit();
+        edt.putString("lasts",s);
+        edt.commit();
+    }
 }

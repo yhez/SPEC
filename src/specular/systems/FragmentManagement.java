@@ -37,6 +37,7 @@ import static specular.systems.R.layout.wait_nfc_to_write;
 class FragmentManagement extends Fragment {
     //public static List<Contact> alc;
     private static Main w;
+    public static LastUsedContacts luc;
     final int TURN_TEXT_TRIGGER = 0;
     private final Handler hndl = new Handler() {
         @Override
@@ -101,7 +102,8 @@ class FragmentManagement extends Fragment {
             case contacts:
                 Main.changed = false;
                 ListView lv = (ListView) getActivity().findViewById(R.id.list);
-                if (w.adapter.isNotEmpty()) {
+                w.refreshList();
+                if (Main.fullList!=null&&Main.fullList.size()>0) {
                     getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
                     lv.setAdapter(w.adapter);
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -191,7 +193,7 @@ class FragmentManagement extends Fragment {
             case encrypt:
                 Main.changed = false;
                 lv = (ListView) getActivity().findViewById(R.id.en_list_contact);
-                if (w.adapter.isNotEmpty()) {
+                if (Main.fullList!=null&&Main.fullList.size()>0) {
                     getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
                     lv.setAdapter(w.adapter);
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -212,6 +214,7 @@ class FragmentManagement extends Fragment {
                             ((ImageView) getActivity().findViewById(R.id.chosen_icon)).setImageBitmap(Contact.getPhoto(cvc.getPublicKey()));
                             final View cont = getActivity().findViewById(R.id.en_contact);
                             cont.setVisibility(View.VISIBLE);
+                            getActivity().findViewById(R.id.grid_lasts).setVisibility(View.GONE);
                             cont.setAlpha(1);
                             cont.setX(0);
                             cont.setOnTouchListener(new View.OnTouchListener() {
@@ -344,6 +347,8 @@ class FragmentManagement extends Fragment {
                         }
                     });
                 } else getActivity().findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+                luc=new LastUsedContacts(getActivity());
+                luc.show();
                 break;
             case decrypt:
                 ((TextView) getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManagement.getOs(getActivity()));

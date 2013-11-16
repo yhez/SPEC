@@ -58,14 +58,17 @@ import specular.systems.Dialogs.TurnNFCOn;
 
 
 public class Main extends Activity {
-    public static ContactsDataSource contactsDataSource;
-    public static String currentText="";
     public final static int MSG_LIMIT_FOR_QR = 141;
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3;
+    public static ContactsDataSource contactsDataSource;
+    public static String currentText = "";
     public static int currentLayout;
     public static boolean changed;
-    public MySimpleArrayAdapter adapter;
     public static boolean comingFromSettings = false;
+    //the list that the user see
+    public static List<Contact> currentList;
+    //the complete list
+    public static List<Contact> fullList;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -92,6 +95,7 @@ public class Main extends Activity {
         }
     };
     private final int ATTACH_FILE = 0, SCAN_QR = 1;
+    public MySimpleArrayAdapter adapter;
     public Handler handler;
     boolean exit = false;
     private boolean handleByOnActivityResult = false;
@@ -153,11 +157,11 @@ public class Main extends Activity {
     }
 
     void encryptManager() {
+        FragmentManagement.luc.change(contact);
         final MessageFormat msg = new MessageFormat(fileContent, fileName, userInput,
                 contact.getSession());
         final ProgressDlg prgd = new ProgressDlg(this);
         prgd.setCancelable(false);
-        //prgd.setMessage(getString(R.string.encrypting));
         prgd.show();
         new Thread(new Runnable() {
             @Override
@@ -166,18 +170,20 @@ public class Main extends Activity {
                         contact.getPublicKey());
                 sendMessage();
                 prgd.cancel();
-                currentText="";
+                currentText = "";
             }
         }).start();
     }
-public void notImp(View v){
-    NotImplemented ni3 = new NotImplemented();
-    ni3.show(getFragmentManager(), "aaaa");
-}
-    public void decryptedMsgClick(View v){
-        switch (v.getId()){
+
+    public void notImp(View v) {
+        NotImplemented ni3 = new NotImplemented();
+        ni3.show(getFragmentManager(), "aaaa");
+    }
+
+    public void decryptedMsgClick(View v) {
+        switch (v.getId()) {
             case R.id.send:
-                EditText et = (EditText)  findViewById(R.id.message);
+                EditText et = (EditText) findViewById(R.id.message);
                 userInput = et.getText().toString();
                 // hides the keyboard when the user starts the encryption process
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -201,24 +207,24 @@ public void notImp(View v){
         }*/
                 break;
             case R.id.answer:
-                if(findViewById(R.id.add_contact_decrypt).getVisibility()==View.VISIBLE)
-                    Toast.makeText(getBaseContext(),R.string.add_contact_first,Toast.LENGTH_LONG).show();
-                else{
+                if (findViewById(R.id.add_contact_decrypt).getVisibility() == View.VISIBLE)
+                    Toast.makeText(getBaseContext(), R.string.add_contact_first, Toast.LENGTH_LONG).show();
+                else {
                     Response r = new Response();
-                    r.show(getFragmentManager(),"r");
+                    r.show(getFragmentManager(), "r");
                 }
                 break;
             case R.id.hash:
-                ExplainDialog edlg = new ExplainDialog(R.string.what_is_hash,R.string.hash_explain);
-                edlg.show(getFragmentManager(),"hash");
+                ExplainDialog edlg = new ExplainDialog(R.string.what_is_hash, R.string.hash_explain);
+                edlg.show(getFragmentManager(), "hash");
                 break;
             case R.id.session:
-                ExplainDialog edl = new ExplainDialog(R.string.what_is_session,R.string.session_explain);
-                edl.show(getFragmentManager(),"session");
+                ExplainDialog edl = new ExplainDialog(R.string.what_is_session, R.string.session_explain);
+                edl.show(getFragmentManager(), "session");
                 break;
             case R.id.replay:
-                ExplainDialog ed = new ExplainDialog(R.string.what_is_replay,R.string.replay_explain);
-                ed.show(getFragmentManager(),"replay");
+                ExplainDialog ed = new ExplainDialog(R.string.what_is_replay, R.string.replay_explain);
+                ed.show(getFragmentManager(), "replay");
                 break;
         }
     }
@@ -385,7 +391,7 @@ public void notImp(View v){
                         break;
                     case R.id.answer:
                         Response r = new Response();
-                        r.show(getFragmentManager(),"n");
+                        r.show(getFragmentManager(), "n");
                         break;
                 }
                 break;
@@ -398,14 +404,13 @@ public void notImp(View v){
         // Pass any configuration change to the main toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-public static List<Contact> currentList;
-public static List<Contact> fullList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler = new Handler(Looper.getMainLooper());
-        contactsDataSource=new ContactsDataSource(this);
-        currentList =contactsDataSource.getAllContacts();
+        contactsDataSource = new ContactsDataSource(this);
+        currentList = contactsDataSource.getAllContacts();
         fullList = new ArrayList<Contact>();
         fullList.addAll(currentList);
         adapter = new MySimpleArrayAdapter(this, currentList);
@@ -460,27 +465,25 @@ public static List<Contact> fullList;
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        // Handle action buttons
-        if(currentLayout==R.layout.encrypt||currentLayout==R.layout.contacts){
-        View b = findViewById(R.id.filter_ll);
-        View lst = currentLayout == R.layout.encrypt ? findViewById(R.id.en_list_contact) : findViewById(R.id.list);
-        if (lst.getVisibility() == View.VISIBLE) {
-            if (b.getVisibility() == View.GONE)
-                b.setVisibility(View.VISIBLE);
-            else{
-                for(int a=0;a<fullList.size();a++)
-                    if(!currentList.contains(fullList.get(a)))
-                        currentList.add(fullList.get(a));
-                ((EditText)findViewById(R.id.filter)).setText("");
-                adapter.notifyDataSetChanged();
-                b.setVisibility(View.GONE);
-            }
-        }
 
-        }else if(currentLayout==R.layout.edit_contact){
+        // Handle action buttons
+        if (currentLayout == R.layout.encrypt || currentLayout == R.layout.contacts) {
+            View b = findViewById(R.id.filter_ll);
+            View lst = currentLayout == R.layout.encrypt ? findViewById(R.id.en_list_contact) : findViewById(R.id.list);
+            if (lst.getVisibility() == View.VISIBLE) {
+                if (b.getVisibility() == View.GONE) {
+                    b.setVisibility(View.VISIBLE);
+                    FragmentManagement.luc.hide(this);
+                } else {
+                    refreshList();
+                    ((EditText) findViewById(R.id.filter)).setText("");
+                    b.setVisibility(View.GONE);
+                }
+            }
+        } else if (currentLayout == R.layout.edit_contact) {
             ShareContactDlg sd = new ShareContactDlg();
-            sd.show(getFragmentManager(),((EditText)findViewById(R.id.contact_name)).getText()
-                    +": " +((EditText)findViewById(R.id.contact_email)).getText());
+            sd.show(getFragmentManager(), ((EditText) findViewById(R.id.contact_name)).getText()
+                    + ": " + ((EditText) findViewById(R.id.contact_email)).getText());
         }
         return super.onOptionsItemSelected(item);
 
@@ -492,8 +495,7 @@ public static List<Contact> fullList;
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.main, menu);
             return super.onCreateOptionsMenu(menu);
-        }
-        else if(currentLayout==R.layout.edit_contact){
+        } else if (currentLayout == R.layout.edit_contact) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.main, menu);
             return super.onCreateOptionsMenu(menu);
@@ -506,15 +508,15 @@ public static List<Contact> fullList;
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav main is open, hide action items related to the content
         // view
+        MenuItem mi = menu.findItem(R.id.action_search);
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         if (currentLayout == R.layout.contacts || currentLayout == R.layout.encrypt) {
-            boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-            menu.findItem(R.id.action_search).setIcon(R.drawable.search);
-            menu.findItem(R.id.action_search).setVisible(!drawerOpen);
+            mi.setIcon(R.drawable.search);
+            mi.setVisible(!drawerOpen);
             return super.onPrepareOptionsMenu(menu);
-        } else if(currentLayout==R.layout.edit_contact){
-            boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-            menu.findItem(R.id.action_search).setVisible(true);
-            menu.findItem(R.id.action_search).setIcon(android.R.drawable.ic_menu_share);
+        } else if (currentLayout == R.layout.edit_contact) {
+            mi.setVisible(!drawerOpen);
+            mi.setIcon(android.R.drawable.ic_menu_share);
             return super.onPrepareOptionsMenu(menu);
         }
         return false;
@@ -763,11 +765,10 @@ public static List<Contact> fullList;
         } else {
             switch (currentLayout) {
                 case R.layout.encrypt:
-                    if (changed){
-                        currentText="";
+                    if (changed) {
+                        currentText = "";
                         selectItem(-1, currentLayout);
-                    }
-                    else
+                    } else
                         new prepareToExit();
                     break;
                 case R.layout.decrypt:
@@ -940,6 +941,15 @@ public static List<Contact> fullList;
                 ddd.show(getFragmentManager(), "ddd");
                 break;
         }
+    }
+
+    public void refreshList() {
+        for (int a = 0; a < fullList.size(); a++)
+            if (!currentList.contains(fullList.get(a)))
+                currentList.add(fullList.get(a));
+        if (currentLayout == R.layout.encrypt)
+            FragmentManagement.luc.show();
+        adapter.notifyDataSetChanged();
     }
 
     public static class createKeys {

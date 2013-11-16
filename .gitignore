@@ -9,8 +9,8 @@ build/classes/
 build/dependency-cache/
 build/incremental/
 .gradle/
-.idea/
 gradle/
+.idea/
 build.gradle
 SPEC.iml
 proguard.cfg
