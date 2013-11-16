@@ -86,7 +86,7 @@
     <string name="not_cosen_clean">Please choose what to delete/clean</string>
     <string name="i_understand">I understand</string>
     <string name="not_implement_msg">This hasn\'t been implemented yet :-(</string>
-    <string name="turn_nfc_on_nfc_wait">NFC is OFF go to settings and turn it ON</string>
+    <string name="turn_nfc_on_nfc_wait">NFC is OFF, go to settings and turn it ON</string>
     <string name="no_contacts">You don\'t have any contacts yet.\nTo add contacts,\nyou can scan their QR code or ask them to send a contact card.</string>
     <string name="tmp_files_deleted">Temp files successfully deleted</string>
     <string name="keys_deleted">Keys successfully deleted</string>
@@ -102,7 +102,7 @@
     <string name="replay_explain">A replay attack is a form of network attack in which a valid data transmission is
         maliciously or fraudulently repeated or delayed (after it has been possibly tampered with). This is mostly carried out by an adversary
         whom intercepts the data and retransmits it, possibly as part of a Man in the Middle Attack. SPEC verifies that this type of attack and similar ones aren\'t carried out.</string>
-    <string name="no_result">cant find result</string>
+    <string name="no_result">Can\'t find contact</string>
     <string name="ok_for_explain">Cool!</string><string name="contact_to_share">Contact to share:
  </string>
     <string name="share_contact_subject">Share Contact Card</string>
