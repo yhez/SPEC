@@ -6,6 +6,8 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import specular.systems.R;
+
 
 public class ExplainDialog extends DialogFragment{
     int title,content;
@@ -16,7 +18,7 @@ public class ExplainDialog extends DialogFragment{
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setPositiveButton("cool", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.ok_for_explain, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 ExplainDialog.this.getDialog().cancel();

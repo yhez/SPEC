@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -53,6 +52,7 @@ import specular.systems.Dialogs.ExplainDialog;
 import specular.systems.Dialogs.NotImplemented;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.Dialogs.Response;
+import specular.systems.Dialogs.ShareContactDlg;
 import specular.systems.Dialogs.ShareDialog;
 import specular.systems.Dialogs.TurnNFCOn;
 
@@ -383,6 +383,10 @@ public void notImp(View v){
                         DeleteDialog dlg = new DeleteDialog();
                         dlg.show(getFragmentManager(), "delete");
                         break;
+                    case R.id.answer:
+                        Response r = new Response();
+                        r.show(getFragmentManager(),"n");
+                        break;
                 }
                 break;
         }
@@ -453,12 +457,11 @@ public static List<Contact> fullList;
     public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the main.
         // ActionBarDrawerToggle will take care of this.
-        final Drawable share=getResources().getDrawable(R.drawable.share),search=getResources().getDrawable(R.drawable.search);
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         // Handle action buttons
-        if(item.getIcon()==search){
+        if(currentLayout==R.layout.encrypt||currentLayout==R.layout.contacts){
         View b = findViewById(R.id.filter_ll);
         View lst = currentLayout == R.layout.encrypt ? findViewById(R.id.en_list_contact) : findViewById(R.id.list);
         if (lst.getVisibility() == View.VISIBLE) {
@@ -474,9 +477,10 @@ public static List<Contact> fullList;
             }
         }
 
-        }else{
-            ShareDialog sd = new ShareDialog();
-            sd.show(getFragmentManager(),"friend");
+        }else if(currentLayout==R.layout.edit_contact){
+            ShareContactDlg sd = new ShareContactDlg();
+            sd.show(getFragmentManager(),((EditText)findViewById(R.id.contact_name)).getText()
+                    +": " +((EditText)findViewById(R.id.contact_email)).getText());
         }
         return super.onOptionsItemSelected(item);
 
@@ -485,6 +489,11 @@ public static List<Contact> fullList;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (currentLayout == R.layout.contacts || currentLayout == R.layout.encrypt) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.main, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
+        else if(currentLayout==R.layout.edit_contact){
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.main, menu);
             return super.onCreateOptionsMenu(menu);
@@ -504,11 +513,11 @@ public static List<Contact> fullList;
             return super.onPrepareOptionsMenu(menu);
         } else if(currentLayout==R.layout.edit_contact){
             boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-            menu.findItem(R.id.action_search).setVisible(!drawerOpen);
-            menu.findItem(R.id.action_search).setIcon(R.drawable.share);
+            menu.findItem(R.id.action_search).setVisible(true);
+            menu.findItem(R.id.action_search).setIcon(android.R.drawable.ic_menu_share);
             return super.onPrepareOptionsMenu(menu);
         }
-            return false;
+        return false;
     }
 
     @Override
@@ -533,7 +542,6 @@ public static List<Contact> fullList;
     private void selectItem(int position, int layout_screen) {
         // update the main content by replacing fragments
         int layout = layout_screen;
-        invalidateOptionsMenu();
         int menu = position;
         if (layout_screen == 0 && position != -1) {
             layout = layouts[position];
@@ -811,7 +819,7 @@ public static List<Contact> fullList;
 
     public void share(View v) {
         ShareDialog dlg = new ShareDialog();
-        dlg.show(getFragmentManager(), "me");
+        dlg.show(getFragmentManager(), "share");
     }
 
     //TODO

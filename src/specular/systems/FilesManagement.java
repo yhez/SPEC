@@ -10,6 +10,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -25,11 +27,13 @@ import java.util.ArrayList;
 import static android.graphics.Typeface.createFromAsset;
 
 public final class FilesManagement {
-    private final static String FILE_NAME = "PublicKey.SPEC";
-    private final static String QR_NAME = "PublicKeyQR.SPEC.png";
+    private final static int FRIEND_CONTACT_CARD=R.string.file_name_shared_contact_card;
+    private final static int FRIENDS_SHARE_QR=R.string.file_name_friends_qr;
+    private final static int FILE_NAME = R.string.file_name_my_public_key;
+    private final static int QR_NAME = R.string.file_name_my_qr_key;
     private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
-    private final static String FILE_NAME_SEND = "SecureMessage.SPEC";
-    private final static String QR_NAME_SEND = "SecureQRMessage.SPEC.png";
+    private final static int FILE_NAME_SEND = R.string.file_name_secure_msg;
+    private final static int QR_NAME_SEND = R.string.file_name_qr_msg;
     private final static String PUBLIC_KEY = "public_key", PRIVATE_KEY = "private_key", NAME = "name", EMAIL = "email";
     private static Bitmap myQRPublicKey;
     private static Typeface tfos = null;
@@ -86,7 +90,7 @@ public final class FilesManagement {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
             FileOutputStream fos2;
             try {
-                fos2 = a.openFileOutput(QR_NAME_SEND,
+                fos2 = a.openFileOutput(a.getString(QR_NAME_SEND),
                         Context.MODE_WORLD_READABLE);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -110,8 +114,8 @@ public final class FilesManagement {
 
     private static boolean saveFileToSend(Activity a) {
         try {
-            FileOutputStream fos = a.openFileOutput(
-                    FILE_NAME_SEND, Context.MODE_WORLD_READABLE);
+            FileOutputStream fos = a.openFileOutput(a.getString(
+                    FILE_NAME_SEND), Context.MODE_WORLD_READABLE);
             fos.write(CryptMethods.encryptedMsgToSend.getBytes());
             fos.close();
         } catch (Exception e) {
@@ -126,7 +130,7 @@ public final class FilesManagement {
         if (qr)
             qrSuccess = saveQRToSend(a);
         else
-            new File(a.getFilesDir(), QR_NAME_SEND).delete();
+            new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
         fileSuccess = saveFileToSend(a);
         return qrSuccess || fileSuccess;
     }
@@ -135,8 +139,8 @@ public final class FilesManagement {
         try {
             File root = a.getFilesDir();
             ArrayList<Uri> uris = new ArrayList<Uri>(2);
-            uris.add(Uri.parse("file://" + new File(root, FILE_NAME_SEND)));
-            File f = new File(root, QR_NAME_SEND);
+            uris.add(Uri.parse("file://" + new File(root, a.getString(FILE_NAME_SEND))));
+            File f = new File(root, a.getString(QR_NAME_SEND));
             if (f.exists())
                 uris.add(Uri.parse("file://" + f));
             return uris;
@@ -147,15 +151,61 @@ public final class FilesManagement {
 
     public static Uri getFileToShare(Activity a) {
         try {
-            return Uri.parse("file://" + new File(a.getFilesDir(), FILE_NAME));
+            return Uri.parse("file://" + new File(a.getFilesDir(), a.getString(FILE_NAME)));
         } catch (Exception e) {
             return null;
         }
     }
+    public static Uri getContactCardToShare(Activity a){
+        String name = ((EditText)a.findViewById(R.id.contact_name)).getText().toString();
+        String email = ((EditText)a.findViewById(R.id.contact_email)).getText().toString();
+        String publicKey = ((TextView)a.findViewById(R.id.contact_pb)).getText().toString();
+       PublicContactCard pcc = new PublicContactCard(a,publicKey,email,name);
+        FileOutputStream fos = null;
+        try {
+            fos = a.openFileOutput(a.getString(FRIEND_CONTACT_CARD),
+                    Context.MODE_WORLD_READABLE);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (fos != null) {
+            try {
+                fos.write(pcc.getQRToPublish().getBytes());
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return Uri.parse("file://" + new File(a.getFilesDir(), a.getString(FRIEND_CONTACT_CARD)));
+    }
+    public static Uri getQRFriendToShare(Activity a){
+        String name = ((EditText)a.findViewById(R.id.contact_name)).getText().toString();
+        String email = ((EditText)a.findViewById(R.id.contact_email)).getText().toString();
+        String publicKey = ((TextView)a.findViewById(R.id.contact_pb)).getText().toString();
+        PublicContactCard pcc = new PublicContactCard(a,publicKey,email,name);
+        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(pcc.getQRToPublish(), BarcodeFormat.QR_CODE.toString(), 512);
+        try {
+            Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
+            Bitmap crop = crop(bitmap);
+            FileOutputStream fos = null;
+            try {
+                fos = a.openFileOutput(a.getString(FRIENDS_SHARE_QR),
+                        Context.MODE_WORLD_READABLE);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (fos != null) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Uri.parse("file://" + new File(a.getFilesDir(), a.getString(FRIENDS_SHARE_QR)));
+    }
 
     public static Uri getQRToShare(Activity a) {
         try {
-            return Uri.parse("file://" + new File(a.getFilesDir(), QR_NAME));
+            return Uri.parse("file://" + new File(a.getFilesDir(), a.getString(QR_NAME)));
         } catch (Exception e) {
             return null;
         }
@@ -178,7 +228,7 @@ public final class FilesManagement {
             PublicContactCard qrpk = new PublicContactCard(a);
             FileOutputStream fos = null;
             try {
-                fos = a.openFileOutput(FILE_NAME,
+                fos = a.openFileOutput(a.getString(FILE_NAME),
                         Context.MODE_WORLD_READABLE);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -204,7 +254,7 @@ public final class FilesManagement {
                 Bitmap crop = crop(bitmap);
                 FileOutputStream fos2 = null;
                 try {
-                    fos2 = a.openFileOutput(QR_NAME,
+                    fos2 = a.openFileOutput(a.getString(QR_NAME),
                             Context.MODE_WORLD_READABLE);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -297,10 +347,12 @@ public final class FilesManagement {
         a.deleteDatabase(MySQLiteHelper.DATABASE_NAME);
     }
     public static void deleteTmp(Activity a){
-        a.deleteFile(QR_NAME);
-        a.deleteFile(QR_NAME_SEND);
+        a.deleteFile(a.getString(QR_NAME));
+        a.deleteFile(a.getString(QR_NAME_SEND));
         a.deleteFile(QR_NAME_T);
-        a.deleteFile(FILE_NAME);
-        a.deleteFile(FILE_NAME_SEND);
+        a.deleteFile(a.getString(FILE_NAME));
+        a.deleteFile(a.getString(FILE_NAME_SEND));
+        a.deleteFile(a.getString(FRIENDS_SHARE_QR));
+        a.deleteFile(a.getString(FRIEND_CONTACT_CARD));
     }
 }

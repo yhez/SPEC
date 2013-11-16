@@ -107,6 +107,16 @@
         maliciously or fraudulently repeated or delayed (after it has been possibly tampered with). This is mostly carried out by an adversary
         whom intercepts the data and retransmits it, possibly as part of a Man in the Middle Attack. SPEC verifies that this type of attack and similar ones aren\'t carried out.</string>
     <string name="no_result">cant find result</string>
+    <string name="ok_for_explain">cool</string><string name="contact_to_share">contact to share,
+ </string>
+    <string name="share_contact_subject">share contact</string>
+    <string name="quick_msg">quick message</string>
+    <string name="file_name_shared_contact_card">SharedContactCard.SPEC</string>
+    <string name="file_name_friends_qr">SharedQR.SPEC.png</string>
+    <string name="file_name_my_public_key">PublicKey.SPEC</string>
+    <string name="file_name_my_qr_key">PublicKeyQR.SPEC.png</string>
+    <string name="file_name_secure_msg">SecureMessage.SPEC</string>
+    <string name="file_name_qr_msg">SecureQRMessage.SPEC.png</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

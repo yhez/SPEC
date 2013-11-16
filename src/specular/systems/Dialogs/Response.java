@@ -31,6 +31,7 @@ import specular.systems.R;
  * Created by yehezkelk on 11/15/13.
  */
 public class Response extends DialogFragment {
+    Contact contact;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -40,6 +41,10 @@ public class Response extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         View v = inflater.inflate(R.layout.response, null);
         builder.setView(v);
+        contact=Main.currentLayout==R.layout.decrypted_msg
+                ?Main.contactsDataSource.findContact(CryptMethods.decryptedMsg.getPublicKey())
+                :Main.contactsDataSource.findContact(Long.parseLong(
+                ((TextView)getActivity().findViewById(R.id.contact_id)).getText().toString()));
         final TextView tv = (TextView)v.findViewById(R.id.text_counter);
         final ImageButton bt = (ImageButton)v.findViewById(R.id.send);
         bt.setEnabled(false);
@@ -73,7 +78,6 @@ public class Response extends DialogFragment {
             @Override
             public void onClick(View view) {
                 final String userInput=et.getText().toString();
-                final Contact contact=Main.contactsDataSource.findContact(CryptMethods.decryptedMsg.getPublicKey());
                 final MessageFormat msg = new MessageFormat(null, "", userInput,
                         contact.getSession());
                 final ProgressDlg prgd = new ProgressDlg(getActivity());
@@ -87,7 +91,7 @@ public class Response extends DialogFragment {
                         boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < Main.MSG_LIMIT_FOR_QR);
                         if (success) {
                             Intent intentShare = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                            intentShare.putExtra(Intent.EXTRA_EMAIL, new String[]{CryptMethods.decryptedMsg.getEmail()});
+                            intentShare.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
                             intentShare.setType("*/*");
                             intentShare.putExtra(Intent.EXTRA_SUBJECT,
                                     getResources().getString(R.string.subject_encrypt));
@@ -106,7 +110,6 @@ public class Response extends DialogFragment {
                             if (files == null)
                                 Toast.makeText(getActivity(), R.string.failed_attach_files, Toast.LENGTH_LONG).show();
                             else {
-                                //TODO add intentShare.putExtra(Intent.EXTRA_EMAIL,)
                                 intentShare.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
                                 startActivity(Intent.createChooser(intentShare, getResources()
                                         .getString(R.string.send_dialog)));
@@ -115,6 +118,7 @@ public class Response extends DialogFragment {
                             Toast.makeText(getActivity(), R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
                         }
                         prgd.cancel();
+                        Response.this.getDialog().cancel();
                     }
                 }).start();
             }

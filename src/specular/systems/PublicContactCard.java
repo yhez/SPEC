@@ -58,7 +58,7 @@ public class PublicContactCard
         return explain + "\n" + name + "\n" + email + "\n" + publicKey;
     }
 
-    boolean validate(String raw)
+    private boolean validate(String raw)
 	{
         if (raw == null)
             return false;

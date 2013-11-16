@@ -61,6 +61,7 @@ class FragmentManagement extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getActivity().invalidateOptionsMenu();
         View rootView = inflater.inflate(Main.currentLayout,
                 container, false);
         rootView.animate().setDuration(1000).alpha(1).start();
@@ -106,7 +107,6 @@ class FragmentManagement extends Fragment {
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> p1, View p2, int p3,
                                                 long p4) {
-                            getActivity().invalidateOptionsMenu();
                             Fragment fragment = new FragmentManagement(w);
                             Bundle args = new Bundle();
                             Main.currentLayout = edit_contact;
@@ -143,8 +143,8 @@ class FragmentManagement extends Fragment {
                 ((TextView) getActivity().findViewById(R.id.contact_id)).setText(""
                         + id);
                 contact = Main.contactsDataSource.findContact(id);
-                ((EditText) getActivity().findViewById(R.id.contact_name))
-                        .setText(contact.getContactName());
+                EditText etName = (EditText) getActivity().findViewById(R.id.contact_name);
+                etName.setText(contact.getContactName());
                 ((TextView) getActivity().findViewById(R.id.orig_name))
                         .setText(contact.getContactName());
                 ((EditText) getActivity().findViewById(R.id.contact_email))

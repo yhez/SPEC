@@ -5,6 +5,17 @@
     style="@android:style/Theme.Holo.Dialog"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
+    <TextView
+        android:background="@android:color/white"
+        android:text="@string/quick_msg"
+        android:textSize="20sp"
+        android:gravity="start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <View
+        android:background="@color/spec_blue"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
     <LinearLayout
         android:paddingLeft="@dimen/default_gap"
         android:paddingBottom="@dimen/default_gap"
