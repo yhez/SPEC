@@ -123,7 +123,63 @@
         android:layout_above="@id/divider"
         android:layout_marginBottom="@dimen/default_gap"
         android:layout_below="@id/filter_ll">
-
+        <GridLayout
+            android:visibility="gone"
+            android:columnCount="5"
+            android:rowCount="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <FrameLayout
+                android:layout_column="0"
+                android:layout_row="0">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_column="1"
+                android:layout_row="0">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_column="2"
+                android:layout_row="0">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_column="3"
+                android:layout_row="0">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+            <FrameLayout
+                android:layout_column="4"
+                android:layout_row="0">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+            </GridLayout>
         <ListView
             android:id="@+id/en_list_contact"
             android:layout_width="match_parent"
@@ -147,7 +203,6 @@
             android:drawablePadding="0dip"
             android:onClick="onClickEncrypt"
             android:src="@drawable/ic_attachment_universal_small" />
-
         <RelativeLayout
             android:id="@+id/en_contact"
             android:layout_width="wrap_content"

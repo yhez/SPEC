@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="decryptedMsgClick"
                 android:padding="@dimen/default_gap"
-                android:src="@drawable/hash_not_ok" />
+                android:src="@drawable/ic_hash" />
         </FrameLayout>
         <!--replay attack-->
         <FrameLayout
