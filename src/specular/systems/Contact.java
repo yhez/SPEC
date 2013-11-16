@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
-public class Contact {
+public class Contact{
     public static final int WE_STRANGERS = 0, I_KNOW_HIS_SESS = 1,
             HE_KNOW_MY_SESS = 2, WE_FRIENDS = 3;
 

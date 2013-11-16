@@ -42,6 +42,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import specular.systems.Dialogs.AddContactDlg;
@@ -411,6 +413,12 @@ public class Main extends Activity {
         handler = new Handler(Looper.getMainLooper());
         contactsDataSource = new ContactsDataSource(this);
         currentList = contactsDataSource.getAllContacts();
+        Collections.sort(currentList,new Comparator<Contact>() {
+            @Override
+            public int compare(Contact contact, Contact contact2) {
+                return contact.getEmail().compareTo(contact2.getEmail());
+            }
+        });
         fullList = new ArrayList<Contact>();
         fullList.addAll(currentList);
         adapter = new MySimpleArrayAdapter(this, currentList);
