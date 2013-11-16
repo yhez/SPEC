@@ -92,7 +92,7 @@
     <string name="keys_deleted">Keys successfully deleted</string>
     <string name="contacts_deleted">Contacts successfully deleted</string>
     <string name="add_contact_first">Add this contact to your CONTACTS first</string>
-    <string name="hash_explain">The main application of secure cryptographic hashes is verification of message integrity - determining whether any changes have been made to a message or a file. SPEC verifies that your message are secure and complete, we fight data tampering 24/7.</string>
+    <string name="hash_explain">The main application of secure cryptographic hashes is verification of message integrity - determining whether any changes have been made to a message or a file. SPEC verifies that your messages are secure and complete. WE FIGHT DATA TAMPERING 24/7.</string>
     <string name="what_is_hash">What is a Crypto Hash?</string>
     <string name="what_is_session">What is a Session?</string>
     <string name="session_explain">A session identifier or session token is a piece
