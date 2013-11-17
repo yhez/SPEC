@@ -820,6 +820,7 @@ public class Main extends Activity {
         if (exit) {
             CryptMethods.deleteKeys();
             super.onBackPressed();
+            finish();
         } else {
             switch (currentLayout) {
                 case R.layout.encrypt:

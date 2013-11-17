@@ -23,6 +23,7 @@ public class Splash extends Activity {
     public void onBackPressed(){
 
     }
+    public static long time=System.currentTimeMillis();
     final private static int TIME_FOR_SPLASH = 3500;
     public static String message;
     public static PublicContactCard fileContactCard;
@@ -62,7 +63,8 @@ public class Splash extends Activity {
         }
         if (!newUser) {
             Intent intent = new Intent(Splash.this, Main.class);
-            if (message != null) {
+            if (message != null||fileContactCard!=null||System.currentTimeMillis()-time>60000) {
+
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
             startActivity(intent);
