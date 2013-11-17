@@ -13,8 +13,8 @@
     <string name="ok">OK</string>
     <string name="hint_enter_your_name">username (optional)&#8230;</string>
     <string name="hint_enter_your_email">email&#8230;</string>
-    <string name="wait_for_nfc_to_write">Tap NFC tag</string>
-    <string name="skip_save_to_phone">Skip and save private decryption key on device (LESS SECURE)</string>
+    <string name="wait_for_nfc_to_write">Tap NFC tag and store decryption key on it (More Secure)</string>
+    <string name="skip_save_to_phone">Skip and save private decryption key on device</string>
     <string name="explain_and_about">LEARN ABOUT SPEC</string>
     <string name="create_keys">Create New Keys</string>
     <string name="share_on_server">Publish</string>
