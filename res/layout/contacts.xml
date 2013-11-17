@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="bottom"
-            android:layout_marginLeft="8dip"
+            android:layout_marginRight="@dimen/default_gap"
             android:hint="@string/encrypt_explain"
             android:inputType="textFilter" />
 
@@ -35,7 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:onClick="onClick"
-            android:padding="@dimen/default_gap"
             android:src="@drawable/add_qr" />
     </LinearLayout>
 

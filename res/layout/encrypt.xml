@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:alpha="0"
+    android:alpha="1"
     android:background="@android:color/white"
     android:orientation="vertical">
 
@@ -228,8 +228,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/default_gap">
+            android:layout_height="match_parent">
 
             <ListView
                 android:id="@+id/en_list_contact"
@@ -301,6 +300,5 @@
                 </LinearLayout>
             </RelativeLayout>
         </FrameLayout>
-
     </LinearLayout>
 </RelativeLayout>

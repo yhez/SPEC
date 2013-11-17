@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import static android.graphics.Typeface.createFromAsset;
 
 public final class FilesManagement {
+    private final static int LIMIT_FILE_SIZE=10485760;
     private final static int FRIEND_CONTACT_CARD=R.string.file_name_shared_contact_card;
     private final static int FRIENDS_SHARE_QR=R.string.file_name_friends_qr;
     private final static int FILE_NAME = R.string.file_name_my_public_key;
@@ -285,8 +286,8 @@ public final class FilesManagement {
             edt.commit();
         }
     }
-
-    public static byte[] addFile(Activity a, Uri uri) {
+public final static int RESULT_ADD_FILE_FAILED=5,RESULT_ADD_FILE_TO_BIG=10,RESULT_ADD_FILE_EMPTY=20,RESULT_ADD_FILE_OK=40;
+    public static int addFile(Activity a, Uri uri) {
         ContentResolver cr = a.getContentResolver();
         int size = 0;
         try {
@@ -297,9 +298,13 @@ public final class FilesManagement {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return RESULT_ADD_FILE_FAILED;
         } catch (IOException e) {
             e.printStackTrace();
+            return RESULT_ADD_FILE_FAILED;
         }
+        if(size>LIMIT_FILE_SIZE)
+            return RESULT_ADD_FILE_TO_BIG;
         byte[] result = new byte[size];
         try {
             InputStream input = null;
@@ -320,10 +325,16 @@ public final class FilesManagement {
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
+            return RESULT_ADD_FILE_FAILED;
         } catch (IOException ex) {
             ex.printStackTrace();
+            return RESULT_ADD_FILE_FAILED;
         }
-        return result;
+        if(result.length>0){
+            Main.fileContent=result;
+            return RESULT_ADD_FILE_OK;
+        }
+        return RESULT_ADD_FILE_EMPTY;
     }
 
     private static Bitmap crop(Bitmap bitmap) {

@@ -71,13 +71,12 @@ public class Main extends Activity {
     public static List<Contact> currentList;
     //the complete list
     public static List<Contact> fullList;
+    public static byte[] fileContent;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case FAILED:
-                    Toast.makeText(getBaseContext(), R.string.failed,
-                            Toast.LENGTH_LONG).show();
                     break;
                 case REPLACE_PHOTO:
                     ((TextView) findViewById(R.id.file_content_length)).setText(fileContent.length + "");
@@ -93,6 +92,16 @@ public class Main extends Activity {
                             Toast.makeText(Main.this, R.string.failed_to_create_file_to_open, Toast.LENGTH_SHORT).show();
                     selectItem(1, R.layout.decrypted_msg);
                     break;
+                    case FilesManagement.RESULT_ADD_FILE_TO_BIG:
+                        Toast.makeText(getBaseContext(),R.string.file_to_big,Toast.LENGTH_SHORT).show();
+                        break;
+                    case FilesManagement.RESULT_ADD_FILE_FAILED:
+                        Toast.makeText(getBaseContext(), R.string.failed,
+                                Toast.LENGTH_LONG).show();
+                        break;
+                    case FilesManagement.RESULT_ADD_FILE_EMPTY:
+                        Toast.makeText(getBaseContext(),R.string.file_is_empty,Toast.LENGTH_SHORT).show();
+                        break;
             }
         }
     };
@@ -110,7 +119,6 @@ public class Main extends Activity {
     private int[] menuDrawables;
     private CharSequence mTitle;
     private String userInput;
-    private byte[] fileContent;
     private String fileName = "";
     private Contact contact;
     private boolean handleByOnNewIntent = false;
@@ -185,6 +193,7 @@ public class Main extends Activity {
     public void decryptedMsgClick(View v) {
         switch (v.getId()) {
             case R.id.send:
+                findViewById(R.id.answer).setVisibility(View.GONE);
                 EditText et = (EditText) findViewById(R.id.message);
                 userInput = et.getText().toString();
                 // hides the keyboard when the user starts the encryption process
@@ -242,21 +251,17 @@ public class Main extends Activity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            byte[] data = FilesManagement.addFile(Main.this, uri);
-                            if (data != null) {
-                                if (data.length > 0) {
+                            int r =FilesManagement.addFile(Main.this, uri);
+                                if(r== FilesManagement.RESULT_ADD_FILE_OK){
                                     String w[] = uri.getEncodedPath().split("/");
                                     fileName = w[w.length - 1];
-                                    fileContent = data;
                                     Message msg = hndl.obtainMessage(REPLACE_PHOTO);
                                     hndl.sendMessage(msg);
+                                }else{
+                                    Message msg = hndl.obtainMessage(r);
+                                    hndl.sendMessage(msg);
                                 }
-                                //TODO handle empty file
-                            } else {
-                                Message msg = hndl.obtainMessage(FAILED);
-                                hndl.sendMessage(msg);
                             }
-                        }
                     }).start();
                 }
             } else if (requestCode == 71) {
@@ -413,7 +418,7 @@ public class Main extends Activity {
         handler = new Handler(Looper.getMainLooper());
         contactsDataSource = new ContactsDataSource(this);
         currentList = contactsDataSource.getAllContacts();
-        Collections.sort(currentList,new Comparator<Contact>() {
+        Collections.sort(currentList, new Comparator<Contact>() {
             @Override
             public int compare(Contact contact, Contact contact2) {
                 return contact.getEmail().compareTo(contact2.getEmail());
@@ -477,17 +482,24 @@ public class Main extends Activity {
         // Handle action buttons
         if (currentLayout == R.layout.encrypt || currentLayout == R.layout.contacts) {
             View b = findViewById(R.id.filter_ll);
-            View lst = currentLayout == R.layout.encrypt ? findViewById(R.id.en_list_contact) : findViewById(R.id.list);
-            if (lst.getVisibility() == View.VISIBLE) {
+            //View lst = currentLayout == R.layout.encrypt ? findViewById(R.id.en_list_contact) : findViewById(R.id.list);
+            if (fullList != null && fullList.size() > 0) {
                 if (b.getVisibility() == View.GONE) {
                     b.setVisibility(View.VISIBLE);
-                    FragmentManagement.luc.hide(this);
+                    if (currentLayout == R.layout.encrypt)
+                        FragmentManagement.luc.hide(this);
                 } else {
                     refreshList();
                     ((EditText) findViewById(R.id.filter)).setText("");
                     b.setVisibility(View.GONE);
+                    if (currentLayout == R.layout.encrypt)
+                        FragmentManagement.luc.show();
                 }
+            } else {
+                Intent i = new Intent(this, StartScan.class);
+                startActivityForResult(i, SCAN_QR);
             }
+
         } else if (currentLayout == R.layout.edit_contact) {
             ShareContactDlg sd = new ShareContactDlg();
             sd.show(getFragmentManager(), ((EditText) findViewById(R.id.contact_name)).getText()
@@ -519,7 +531,10 @@ public class Main extends Activity {
         MenuItem mi = menu.findItem(R.id.action_search);
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         if (currentLayout == R.layout.contacts || currentLayout == R.layout.encrypt) {
-            mi.setIcon(R.drawable.search);
+            if (fullList == null || fullList.size() == 0)
+                mi.setIcon(R.drawable.sun);
+            else
+                mi.setIcon(R.drawable.search);
             mi.setVisible(!drawerOpen);
             return super.onPrepareOptionsMenu(menu);
         } else if (currentLayout == R.layout.edit_contact) {
