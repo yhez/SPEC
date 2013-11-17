@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -17,20 +18,24 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -38,6 +43,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -72,6 +78,7 @@ public class Main extends Activity {
     //the complete list
     public static List<Contact> fullList;
     public static byte[] fileContent;
+    public static boolean handleByOnActivityResult = false;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -92,16 +99,16 @@ public class Main extends Activity {
                             Toast.makeText(Main.this, R.string.failed_to_create_file_to_open, Toast.LENGTH_SHORT).show();
                     selectItem(1, R.layout.decrypted_msg);
                     break;
-                    case FilesManagement.RESULT_ADD_FILE_TO_BIG:
-                        Toast.makeText(getBaseContext(),R.string.file_to_big,Toast.LENGTH_SHORT).show();
-                        break;
-                    case FilesManagement.RESULT_ADD_FILE_FAILED:
-                        Toast.makeText(getBaseContext(), R.string.failed,
-                                Toast.LENGTH_LONG).show();
-                        break;
-                    case FilesManagement.RESULT_ADD_FILE_EMPTY:
-                        Toast.makeText(getBaseContext(),R.string.file_is_empty,Toast.LENGTH_SHORT).show();
-                        break;
+                case FilesManagement.RESULT_ADD_FILE_TO_BIG:
+                    Toast.makeText(getBaseContext(), R.string.file_to_big, Toast.LENGTH_SHORT).show();
+                    break;
+                case FilesManagement.RESULT_ADD_FILE_FAILED:
+                    Toast.makeText(getBaseContext(), R.string.failed,
+                            Toast.LENGTH_LONG).show();
+                    break;
+                case FilesManagement.RESULT_ADD_FILE_EMPTY:
+                    Toast.makeText(getBaseContext(), R.string.file_is_empty, Toast.LENGTH_SHORT).show();
+                    break;
             }
         }
     };
@@ -109,7 +116,6 @@ public class Main extends Activity {
     public MySimpleArrayAdapter adapter;
     public Handler handler;
     boolean exit = false;
-    public static boolean handleByOnActivityResult = false;
     private int layouts[];
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -176,7 +182,7 @@ public class Main extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                CryptMethods.encrypt(msg.getFormatedMsg().getBytes(),
+                CryptMethods.encrypt(msg.getFormatedMsg(),
                         contact.getPublicKey());
                 sendMessage();
                 prgd.cancel();
@@ -203,19 +209,20 @@ public class Main extends Activity {
                 encryptManager();
                 break;
             case R.id.open_file:
-                //String name = CryptMethods.decryptedMsg.getFileName();
-                //Log.d("name",name);
-                //String tmp[] = name.split(".");
-                //String extension = tmp[tmp.length - 1];
-                notImp(null);
-
-                //Intent intent = new Intent(Intent.ACTION_VIEW);
-                //intent.setDataAndType(Uri.parse("file://" + new File(getFilesDir(), "File")), "*/*");
-        /*try {
-            startActivityForResult(intent, 23);
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.cand_find_an_app_to_open_file, Toast.LENGTH_SHORT).show();
-        }*/
+                String name = CryptMethods.decryptedMsg.getFileName();
+                Log.d("name", name);
+                File f = new File(Environment.getExternalStorageDirectory(), name);
+                String ext=f.getName().substring(f.getName().indexOf(".") + 1);
+                MimeTypeMap mtm = MimeTypeMap.getSingleton();
+                String type = mtm.getMimeTypeFromExtension(ext);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.fromFile(f), type);
+                try {
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, R.string.cand_find_an_app_to_open_file, Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.answer:
                 if (findViewById(R.id.add_contact_decrypt).getVisibility() == View.VISIBLE)
@@ -240,6 +247,21 @@ public class Main extends Activity {
         }
     }
 
+    private String getRealPathFromURI(Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         FilesManagement.getKeysFromSDCard(this);
@@ -251,17 +273,19 @@ public class Main extends Activity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            int r =FilesManagement.addFile(Main.this, uri);
-                                if(r== FilesManagement.RESULT_ADD_FILE_OK){
-                                    String w[] = uri.getEncodedPath().split("/");
-                                    fileName = w[w.length - 1];
-                                    Message msg = hndl.obtainMessage(REPLACE_PHOTO);
-                                    hndl.sendMessage(msg);
-                                }else{
-                                    Message msg = hndl.obtainMessage(r);
-                                    hndl.sendMessage(msg);
-                                }
+                            int r = FilesManagement.addFile(Main.this, uri);
+                            if (r == FilesManagement.RESULT_ADD_FILE_OK) {
+                                String w[] = getRealPathFromURI(uri).split("/");
+                                //File f =new File(uri.getPath());
+                                fileName = w[w.length - 1];
+                                //Log.d("File",fileName);
+                                Message msg = hndl.obtainMessage(REPLACE_PHOTO);
+                                hndl.sendMessage(msg);
+                            } else {
+                                Message msg = hndl.obtainMessage(r);
+                                hndl.sendMessage(msg);
                             }
+                        }
                     }).start();
                 }
             } else if (requestCode == 71) {
@@ -280,14 +304,13 @@ public class Main extends Activity {
                         case R.layout.encrypt:
                             Splash.fileContactCard = new PublicContactCard(this, result);
                             if (Splash.fileContactCard.getPublicKey() != null) {
-                                Contact contact1=contactsDataSource.findContact(Splash.fileContactCard.getPublicKey());
-                                if(contact1!=null){
-                                    Toast.makeText(getBaseContext(),R.string.contact_exist,
+                                Contact contact1 = contactsDataSource.findContact(Splash.fileContactCard.getPublicKey());
+                                if (contact1 != null) {
+                                    Toast.makeText(getBaseContext(), R.string.contact_exist,
                                             Toast.LENGTH_LONG).show();
-                                    Splash.fileContactCard=null;
+                                    Splash.fileContactCard = null;
                                     FragmentManagement.f.contactChosen(contact1.getId());
-                                }
-                                else{
+                                } else {
                                     AddContactDlg acd = new AddContactDlg();
                                     acd.show(getFragmentManager(), "acd2");
                                 }
@@ -298,12 +321,11 @@ public class Main extends Activity {
                         case R.layout.contacts:
                             Splash.fileContactCard = new PublicContactCard(this, result);
                             if (Splash.fileContactCard.getPublicKey() != null) {
-                                if(contactsDataSource.findContact(Splash.fileContactCard.getPublicKey())!=null){
-                                    Toast.makeText(getBaseContext(),R.string.contact_exist,
+                                if (contactsDataSource.findContact(Splash.fileContactCard.getPublicKey()) != null) {
+                                    Toast.makeText(getBaseContext(), R.string.contact_exist,
                                             Toast.LENGTH_LONG).show();
-                                    Splash.fileContactCard=null;
-                                }
-                                else{
+                                    Splash.fileContactCard = null;
+                                } else {
                                     AddContactDlg acd = new AddContactDlg();
                                     acd.show(getFragmentManager(), "acd2");
                                 }
@@ -544,8 +566,8 @@ public class Main extends Activity {
                 mi.setIcon(R.drawable.sun);
             else
                 mi.setIcon(R.drawable.search);
-            TextView textView = (TextView)findViewById(R.id.contact_id_to_send);
-            if(textView!=null&&textView.getText().toString().length()>0)
+            TextView textView = (TextView) findViewById(R.id.contact_id_to_send);
+            if (textView != null && textView.getText().toString().length() > 0)
                 mi.setVisible(false);
             else
                 mi.setVisible(!drawerOpen);

@@ -86,7 +86,7 @@ public class Response extends DialogFragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        CryptMethods.encrypt(msg.getFormatedMsg().getBytes(),
+                        CryptMethods.encrypt(msg.getFormatedMsg(),
                                 contact.getPublicKey());
                         boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < Main.MSG_LIMIT_FOR_QR);
                         if (success) {

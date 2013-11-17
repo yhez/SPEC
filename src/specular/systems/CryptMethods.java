@@ -134,7 +134,7 @@ public class CryptMethods {
             cipher.init(Cipher.DECRYPT_MODE, mPtK, iesParams);
             byte[] rawMsg = Visual.hex2bin(encryptedMessage);
             byte[] decryptedBytes = cipher.doFinal(rawMsg);
-            decryptedMsg = new MessageFormat(new String(decryptedBytes));
+            decryptedMsg = new MessageFormat(decryptedBytes);
         } catch (Exception e) {
             decryptedMsg = null;
             e.printStackTrace();

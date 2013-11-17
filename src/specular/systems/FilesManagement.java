@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import static android.graphics.Typeface.createFromAsset;
@@ -56,9 +58,11 @@ public final class FilesManagement {
         if (CryptMethods.decryptedMsg.getFileContent() == null)
             return false;
         try {
-            FileOutputStream fos = a.openFileOutput("File", Context.MODE_WORLD_WRITEABLE);
-            fos.write(CryptMethods.decryptedMsg.getFileContent());
-            fos.close();
+            File path = Environment.getExternalStorageDirectory();
+            File file = new File(path, CryptMethods.decryptedMsg.getFileName());
+            OutputStream os = new FileOutputStream(file);
+            os.write(CryptMethods.decryptedMsg.getFileContent());
+            os.close();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
