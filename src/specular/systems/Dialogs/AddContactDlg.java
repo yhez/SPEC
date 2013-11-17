@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import specular.systems.Contact;
+import specular.systems.FragmentManagement;
 import specular.systems.Main;
 import specular.systems.PublicContactCard;
 import specular.systems.R;
@@ -34,14 +35,12 @@ public class AddContactDlg extends DialogFragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        new Contact(getActivity(),pcc.getName(),pcc.getEmail(),pcc.getPublicKey());
-                        if(Main.currentLayout!=R.layout.decrypted_msg){
-                            //Main.changed=true;
-                            //getActivity().onBackPressed();
-                        }
-                        else{
+                        Contact c = new Contact(getActivity(), pcc.getName(), pcc.getEmail(), pcc.getPublicKey());
+                        if (Main.currentLayout == R.layout.decrypted_msg)
                             getActivity().findViewById(R.id.add_contact_decrypt).setVisibility(View.GONE);
-                        }
+                        if (Main.currentLayout == R.layout.encrypt) {
+                            FragmentManagement.f.contactChosen(c.getId());
+                        }//todo call contactChosen
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

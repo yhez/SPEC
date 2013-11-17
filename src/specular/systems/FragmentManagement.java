@@ -34,8 +34,8 @@ import static specular.systems.R.layout.share;
 import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
-class FragmentManagement extends Fragment {
-    //public static List<Contact> alc;
+public class FragmentManagement extends Fragment {
+    public static FragmentManagement f;
     private static Main w;
     public static LastUsedContacts luc;
     final int TURN_TEXT_TRIGGER = 0;
@@ -57,6 +57,7 @@ class FragmentManagement extends Fragment {
 
     public FragmentManagement(Main w) {
         this.w = w;
+        f=this;
     }
 
     @Override
@@ -72,6 +73,10 @@ class FragmentManagement extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        if(Main.handleByOnActivityResult){
+         //   Main.handleByOnActivityResult=false;
+        }
+        else{
         Contact contact;
         switch (Main.currentLayout) {
             case create_new_keys:
@@ -373,6 +378,7 @@ class FragmentManagement extends Fragment {
 
                 break;
         }
+        }
     }
 
     void setAllFonts(Activity act, ViewGroup v) {
@@ -396,19 +402,20 @@ class FragmentManagement extends Fragment {
         if (parse2.length < 2 || parse2[0].length() < 2 || parse2[1].length() < 2) return false;
         return true;
     }
-    private void contactChosen(long l){
+     public void contactChosen(long contactID){
+        getActivity().invalidateOptionsMenu();
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
         getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
         getActivity().findViewById(R.id.en_list_contact).setVisibility(View.GONE);
-        Contact cvc = Main.contactsDataSource.findContact(l);
-        ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(l + "");
+         luc.hide(w);
+         Contact cvc = Main.contactsDataSource.findContact(contactID);
+        ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(contactID + "");
         ((TextView) getActivity().findViewById(R.id.chosen_name)).setText(cvc.getContactName());
         ((TextView) getActivity().findViewById(R.id.chosen_email)).setText(cvc.getEmail());
         ((ImageView) getActivity().findViewById(R.id.chosen_icon)).setImageBitmap(Contact.getPhoto(cvc.getPublicKey()));
         final View cont = getActivity().findViewById(R.id.en_contact);
         cont.setVisibility(View.VISIBLE);
-        getActivity().findViewById(R.id.grid_lasts).setVisibility(View.GONE);
         cont.setAlpha(1);
         cont.setX(0);
         cont.setOnTouchListener(new View.OnTouchListener() {

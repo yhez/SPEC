@@ -99,53 +99,113 @@
       <file leaf-file-name="Main.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/specular/systems/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="102" column="55" selection-start="4256" selection-end="4256" vertical-scroll-proportion="0.7352025" vertical-offset="1498" max-vertical-offset="17408">
+            <state line="545" column="25" selection-start="23895" selection-end="23895" vertical-scroll-proportion="0.49221185" vertical-offset="8903" max-vertical-offset="17323">
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2586#4368#0" expanded="true" />
                 <element signature="e#3136#3168#0" expanded="true" />
                 <element signature="e#3553#3591#0" expanded="true" />
                 <element signature="e#3828#3848#0" expanded="true" />
                 <element signature="e#4030#4045#0" expanded="true" />
                 <element signature="e#4257#4279#0" expanded="true" />
-                <element signature="e#4361#4362#0" expanded="true" />
-                <element signature="e#7097#7406#0" expanded="true" />
-                <element signature="e#7395#7396#0" expanded="true" />
-                <element signature="e#9132#9158#0" expanded="true" />
-                <element signature="e#9438#9459#0" expanded="true" />
-                <element signature="e#9461#9482#0" expanded="true" />
-                <element signature="e#9650#9674#0" expanded="true" />
-                <element signature="e#9676#9700#0" expanded="true" />
-                <element signature="e#9868#9891#0" expanded="true" />
-                <element signature="e#9893#9916#0" expanded="true" />
-                <element signature="e#10404#11197#0" expanded="true" />
-                <element signature="e#11174#11175#0" expanded="true" />
-                <element signature="e#12882#12899#0" expanded="true" />
-                <element signature="e#13469#13486#0" expanded="true" />
-                <element signature="e#14793#14834#0" expanded="true" />
-                <element signature="e#17241#17258#0" expanded="true" />
-                <element signature="e#18429#18644#0" expanded="true" />
-                <element signature="e#18633#18634#0" expanded="true" />
-                <element signature="e#19821#19852#0" expanded="true" />
-                <element signature="e#25890#26251#0" expanded="true" />
-                <element signature="e#26240#26241#0" expanded="true" />
-                <element signature="e#29320#29340#0" expanded="true" />
-                <element signature="e#29406#29427#0" expanded="true" />
-                <element signature="e#31427#31457#0" expanded="true" />
-                <element signature="e#31508#31943#0" expanded="true" />
-                <element signature="e#31928#31929#0" expanded="true" />
-                <element signature="e#32611#32633#0" expanded="true" />
-                <element signature="e#33426#33454#0" expanded="true" />
-                <element signature="e#36623#36673#0" expanded="true" />
-                <element signature="e#37256#37284#0" expanded="true" />
-                <element signature="e#37550#37621#0" expanded="true" />
-                <element signature="e#37689#37728#0" expanded="true" />
-                <element signature="e#38560#38585#0" expanded="true" />
-                <element signature="e#39111#39131#0" expanded="true" />
-                <element signature="e#39207#39233#0" expanded="true" />
-                <element signature="e#39330#39350#0" expanded="true" />
-                <element signature="e#39403#39427#0" expanded="true" />
+                <element signature="e#9138#9164#0" expanded="true" />
+                <element signature="e#9444#9465#0" expanded="true" />
+                <element signature="e#9467#9488#0" expanded="true" />
+                <element signature="e#9656#9680#0" expanded="true" />
+                <element signature="e#9682#9706#0" expanded="true" />
+                <element signature="e#9874#9897#0" expanded="true" />
+                <element signature="e#9899#9922#0" expanded="true" />
+                <element signature="e#12317#12339#0" expanded="true" />
+                <element signature="e#12926#12943#0" expanded="true" />
+                <element signature="e#13447#13469#0" expanded="true" />
+                <element signature="e#13966#13983#0" expanded="true" />
+                <element signature="e#15260#15301#0" expanded="true" />
+                <element signature="e#17708#17725#0" expanded="true" />
+                <element signature="e#20288#20319#0" expanded="true" />
+                <element signature="e#30000#30020#0" expanded="true" />
+                <element signature="e#30086#30107#0" expanded="true" />
+                <element signature="e#32107#32137#0" expanded="true" />
+                <element signature="e#33291#33313#0" expanded="true" />
+                <element signature="e#34106#34134#0" expanded="true" />
+                <element signature="e#37303#37353#0" expanded="true" />
+                <element signature="e#37936#37964#0" expanded="true" />
+                <element signature="e#38230#38301#0" expanded="true" />
+                <element signature="e#38369#38408#0" expanded="true" />
+                <element signature="e#39240#39265#0" expanded="true" />
+                <element signature="e#39791#39811#0" expanded="true" />
+                <element signature="e#39887#39913#0" expanded="true" />
+                <element signature="e#40010#40030#0" expanded="true" />
+                <element signature="e#40083#40107#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FragmentManagement.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/specular/systems/FragmentManagement.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="405" column="7" selection-start="21174" selection-end="21174" vertical-scroll-proportion="1.6" vertical-offset="6693" max-vertical-offset="7344">
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1488#1915#0" expanded="true" />
+                <element signature="e#1908#1909#0" expanded="true" />
+                <element signature="e#2905#4207#0" expanded="true" />
+                <element signature="e#3801#3818#0" expanded="true" />
+                <element signature="e#4188#4189#0" expanded="true" />
+                <element signature="e#4661#5587#0" expanded="true" />
+                <element signature="e#5564#5565#0" expanded="true" />
+                <element signature="e#8522#9729#0" expanded="true" />
+                <element signature="e#9710#9711#0" expanded="true" />
+                <element signature="e#10151#10616#0" expanded="true" />
+                <element signature="e#10593#10594#0" expanded="true" />
+                <element signature="e#14201#14240#0" expanded="true" />
+                <element signature="class#15419:16054" expanded="false" />
+                <element signature="e#16561#16859#0" expanded="true" />
+                <element signature="e#16832#16833#0" expanded="true" />
+                <element signature="e#18305#18351#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AddContactDlg.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/AddContactDlg.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="39" column="69" selection-start="1659" selection-end="1659" vertical-scroll-proportion="-6.12" vertical-offset="255" max-vertical-offset="799">
+              <folding>
+                <element signature="e#1244#1255#0" expanded="true" />
+                <element signature="e#1257#1932#0" expanded="true" />
+                <element signature="e#1913#1914#0" expanded="true" />
+                <element signature="e#1969#1984#0" expanded="true" />
+                <element signature="e#1986#2204#0" expanded="true" />
+                <element signature="e#2185#2186#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Contact.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/specular/systems/Contact.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="25" column="34" selection-start="688" selection-end="688" vertical-scroll-proportion="-6.12" vertical-offset="204" max-vertical-offset="1887">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ContactsDataSource.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/specular/systems/ContactsDataSource.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="28" column="33" selection-start="914" selection-end="928" vertical-scroll-proportion="-1.88" vertical-offset="297" max-vertical-offset="2074">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MySimpleArrayAdapter.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/specular/systems/MySimpleArrayAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="35" column="32" selection-start="989" selection-end="989" vertical-scroll-proportion="-6.88" vertical-offset="219" max-vertical-offset="1547">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -153,14 +213,8 @@
       <file leaf-file-name="FilesManagement.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/specular/systems/FilesManagement.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="60" selection-start="944" selection-end="944" vertical-scroll-proportion="-4.08" vertical-offset="0" max-vertical-offset="6171">
-              <folding>
-                <element signature="e#1019#1048#0" expanded="true" />
-                <element signature="e#1091#1123#0" expanded="true" />
-                <element signature="e#1164#1192#0" expanded="true" />
-                <element signature="e#1309#1338#0" expanded="true" />
-                <element signature="e#1384#1409#0" expanded="true" />
-              </folding>
+            <state line="30" column="60" selection-start="944" selection-end="944" vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="6579">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -168,18 +222,8 @@
       <file leaf-file-name="DeleteDataDialog.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/DeleteDataDialog.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="67" column="14" selection-start="3685" selection-end="3685" vertical-scroll-proportion="-4.84" vertical-offset="814" max-vertical-offset="1224">
-              <folding>
-                <element signature="e#768#785#0" expanded="true" />
-                <element signature="e#1069#1861#0" expanded="true" />
-                <element signature="e#1834#1835#0" expanded="true" />
-                <element signature="e#1948#1962#0" expanded="true" />
-                <element signature="e#1964#3710#0" expanded="true" />
-                <element signature="e#3691#3692#0" expanded="true" />
-                <element signature="e#3747#3762#0" expanded="true" />
-                <element signature="e#3764#3988#0" expanded="true" />
-                <element signature="e#3969#3970#0" expanded="true" />
-              </folding>
+            <state line="67" column="14" selection-start="3685" selection-end="3685" vertical-scroll-proportion="0.0" vertical-offset="1139" max-vertical-offset="1428">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -190,11 +234,8 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state line="112" column="35" selection-start="4415" selection-end="4415" vertical-scroll-proportion="-13.6" vertical-offset="0" max-vertical-offset="816">
-              <folding>
-                <element signature="tag#GridLayout#0;tag#RelativeLayout#0" expanded="false" />
-                <element signature="tag#ScrollView#0;tag#RelativeLayout#0" expanded="false" />
-              </folding>
+            <state line="112" column="35" selection-start="4415" selection-end="4415" vertical-scroll-proportion="0.0" vertical-offset="1904" max-vertical-offset="2635">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -594,7 +635,6 @@
         <option value="$PROJECT_DIR$/src/specular/systems/MySQLiteHelper.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/Responde.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/MessageFormat.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/AddContactDlg.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/DeleteDialog.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/ContactsDataSource.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/MySimpleArrayAdapter.java" />
@@ -608,7 +648,6 @@
         <option value="$PROJECT_DIR$/res/layout/response.xml" />
         <option value="$PROJECT_DIR$/res/layout/decrypted_msg.xml" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/src/specular/systems/FragmentManagement.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/LastUsedContacts.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Contact.java" />
         <option value="$PROJECT_DIR$/res/layout/contacts.xml" />
@@ -617,6 +656,8 @@
         <option value="$PROJECT_DIR$/res/layout/edit_contact.xml" />
         <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/DeleteDataDialog.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/FilesManagement.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/AddContactDlg.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/FragmentManagement.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Main.java" />
       </list>
     </option>
@@ -700,7 +741,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -737,23 +778,9 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SPEC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SPEC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -855,19 +882,6 @@
       </ExternalSystemSettings>
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -893,6 +907,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -1018,7 +1045,6 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32285276" sideWeight="0.681431" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32767403" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1042,6 +1068,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32285276" sideWeight="0.681431" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31826088" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.392555" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1067,6 +1094,16 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/res/layout/decrypted_msg.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="112" column="35" selection-start="4415" selection-end="4415" vertical-scroll-proportion="0.0" vertical-offset="1904" max-vertical-offset="2635">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/share.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -1209,16 +1246,6 @@
         <state line="6" column="7" selection-start="133" selection-end="133" vertical-scroll-proportion="-2.72" vertical-offset="0" max-vertical-offset="1581" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/ContactsDataSource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="33" selection-start="2173" selection-end="2173" vertical-scroll-proportion="0.2896936" vertical-offset="814" max-vertical-offset="2074" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/AddContactDlg.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="30" selection-start="1559" selection-end="1559" vertical-scroll-proportion="0.42896935" vertical-offset="220" max-vertical-offset="748" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="117" column="54" selection-start="8931" selection-end="8931" vertical-scroll-proportion="0.6334232" vertical-offset="1754" max-vertical-offset="2448">
@@ -1316,30 +1343,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/MySimpleArrayAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="14" selection-start="889" selection-end="895" vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="1751">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/FragmentManagement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="316" column="73" selection-start="16357" selection-end="16357" vertical-scroll-proportion="0.0" vertical-offset="5372" max-vertical-offset="7548">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/LastUsedContacts.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="134" column="43" selection-start="4211" selection-end="4211" vertical-scroll-proportion="0.5264624" vertical-offset="2089" max-vertical-offset="2448">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Contact.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="20" selection-start="190" selection-end="190" vertical-scroll-proportion="0.18941504" vertical-offset="0" max-vertical-offset="1887">
           <folding />
         </state>
       </provider>
@@ -1354,7 +1360,7 @@
             <element signature="tag#TextView#0;tag#RelativeLayout#0" expanded="false" />
             <element signature="tag#TextView#1;tag#RelativeLayout#0" expanded="false" />
             <element signature="tag#LinearLayout#0;tag#RelativeLayout#0" expanded="false" />
-            <element signature="e#2274#2294#0" expanded="true" />
+            <element signature="e#2274#2294#0" expanded="false" />
             <element signature="tag#View#0;tag#RelativeLayout#0" expanded="false" />
             <element signature="tag#GridLayout#0;tag#LinearLayout#2;tag#RelativeLayout#0" expanded="false" />
             <element signature="tag#RelativeLayout#0;tag#FrameLayout#0;tag#LinearLayout#2;tag#RelativeLayout#0" expanded="false" />
@@ -1396,11 +1402,8 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="112" column="35" selection-start="4415" selection-end="4415" vertical-scroll-proportion="-13.6" vertical-offset="0" max-vertical-offset="816">
-          <folding>
-            <element signature="tag#GridLayout#0;tag#RelativeLayout#0" expanded="false" />
-            <element signature="tag#ScrollView#0;tag#RelativeLayout#0" expanded="false" />
-          </folding>
+        <state line="112" column="35" selection-start="4415" selection-end="4415" vertical-scroll-proportion="0.0" vertical-offset="1904" max-vertical-offset="2635">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1411,82 +1414,116 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/DeleteDataDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="14" selection-start="3685" selection-end="3685" vertical-scroll-proportion="-4.84" vertical-offset="814" max-vertical-offset="1224">
-          <folding>
-            <element signature="e#768#785#0" expanded="true" />
-            <element signature="e#1069#1861#0" expanded="true" />
-            <element signature="e#1834#1835#0" expanded="true" />
-            <element signature="e#1948#1962#0" expanded="true" />
-            <element signature="e#1964#3710#0" expanded="true" />
-            <element signature="e#3691#3692#0" expanded="true" />
-            <element signature="e#3747#3762#0" expanded="true" />
-            <element signature="e#3764#3988#0" expanded="true" />
-            <element signature="e#3969#3970#0" expanded="true" />
-          </folding>
+        <state line="67" column="14" selection-start="3685" selection-end="3685" vertical-scroll-proportion="0.0" vertical-offset="1139" max-vertical-offset="1428">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/FilesManagement.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="60" selection-start="944" selection-end="944" vertical-scroll-proportion="-4.08" vertical-offset="0" max-vertical-offset="6171">
+        <state line="30" column="60" selection-start="944" selection-end="944" vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="6579">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Contact.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="34" selection-start="688" selection-end="688" vertical-scroll-proportion="-6.12" vertical-offset="204" max-vertical-offset="1887">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/ContactsDataSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="33" selection-start="914" selection-end="928" vertical-scroll-proportion="-1.88" vertical-offset="297" max-vertical-offset="2074">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/MySimpleArrayAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="32" selection-start="989" selection-end="989" vertical-scroll-proportion="-6.88" vertical-offset="219" max-vertical-offset="1547">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/AddContactDlg.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="69" selection-start="1659" selection-end="1659" vertical-scroll-proportion="-6.12" vertical-offset="255" max-vertical-offset="799">
           <folding>
-            <element signature="e#1019#1048#0" expanded="true" />
-            <element signature="e#1091#1123#0" expanded="true" />
-            <element signature="e#1164#1192#0" expanded="true" />
-            <element signature="e#1309#1338#0" expanded="true" />
-            <element signature="e#1384#1409#0" expanded="true" />
+            <element signature="e#1244#1255#0" expanded="true" />
+            <element signature="e#1257#1932#0" expanded="true" />
+            <element signature="e#1913#1914#0" expanded="true" />
+            <element signature="e#1969#1984#0" expanded="true" />
+            <element signature="e#1986#2204#0" expanded="true" />
+            <element signature="e#2185#2186#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/FragmentManagement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="405" column="7" selection-start="21174" selection-end="21174" vertical-scroll-proportion="1.6" vertical-offset="6693" max-vertical-offset="7344">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1488#1915#0" expanded="true" />
+            <element signature="e#1908#1909#0" expanded="true" />
+            <element signature="e#2905#4207#0" expanded="true" />
+            <element signature="e#3801#3818#0" expanded="true" />
+            <element signature="e#4188#4189#0" expanded="true" />
+            <element signature="e#4661#5587#0" expanded="true" />
+            <element signature="e#5564#5565#0" expanded="true" />
+            <element signature="e#8522#9729#0" expanded="true" />
+            <element signature="e#9710#9711#0" expanded="true" />
+            <element signature="e#10151#10616#0" expanded="true" />
+            <element signature="e#10593#10594#0" expanded="true" />
+            <element signature="e#14201#14240#0" expanded="true" />
+            <element signature="class#15419:16054" expanded="false" />
+            <element signature="e#16561#16859#0" expanded="true" />
+            <element signature="e#16832#16833#0" expanded="true" />
+            <element signature="e#18305#18351#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="55" selection-start="4256" selection-end="4256" vertical-scroll-proportion="0.7352025" vertical-offset="1498" max-vertical-offset="17408">
+        <state line="545" column="25" selection-start="23895" selection-end="23895" vertical-scroll-proportion="0.49221185" vertical-offset="8903" max-vertical-offset="17323">
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2586#4368#0" expanded="true" />
             <element signature="e#3136#3168#0" expanded="true" />
             <element signature="e#3553#3591#0" expanded="true" />
             <element signature="e#3828#3848#0" expanded="true" />
             <element signature="e#4030#4045#0" expanded="true" />
             <element signature="e#4257#4279#0" expanded="true" />
-            <element signature="e#4361#4362#0" expanded="true" />
-            <element signature="e#7097#7406#0" expanded="true" />
-            <element signature="e#7395#7396#0" expanded="true" />
-            <element signature="e#9132#9158#0" expanded="true" />
-            <element signature="e#9438#9459#0" expanded="true" />
-            <element signature="e#9461#9482#0" expanded="true" />
-            <element signature="e#9650#9674#0" expanded="true" />
-            <element signature="e#9676#9700#0" expanded="true" />
-            <element signature="e#9868#9891#0" expanded="true" />
-            <element signature="e#9893#9916#0" expanded="true" />
-            <element signature="e#10404#11197#0" expanded="true" />
-            <element signature="e#11174#11175#0" expanded="true" />
-            <element signature="e#12882#12899#0" expanded="true" />
-            <element signature="e#13469#13486#0" expanded="true" />
-            <element signature="e#14793#14834#0" expanded="true" />
-            <element signature="e#17241#17258#0" expanded="true" />
-            <element signature="e#18429#18644#0" expanded="true" />
-            <element signature="e#18633#18634#0" expanded="true" />
-            <element signature="e#19821#19852#0" expanded="true" />
-            <element signature="e#25890#26251#0" expanded="true" />
-            <element signature="e#26240#26241#0" expanded="true" />
-            <element signature="e#29320#29340#0" expanded="true" />
-            <element signature="e#29406#29427#0" expanded="true" />
-            <element signature="e#31427#31457#0" expanded="true" />
-            <element signature="e#31508#31943#0" expanded="true" />
-            <element signature="e#31928#31929#0" expanded="true" />
-            <element signature="e#32611#32633#0" expanded="true" />
-            <element signature="e#33426#33454#0" expanded="true" />
-            <element signature="e#36623#36673#0" expanded="true" />
-            <element signature="e#37256#37284#0" expanded="true" />
-            <element signature="e#37550#37621#0" expanded="true" />
-            <element signature="e#37689#37728#0" expanded="true" />
-            <element signature="e#38560#38585#0" expanded="true" />
-            <element signature="e#39111#39131#0" expanded="true" />
-            <element signature="e#39207#39233#0" expanded="true" />
-            <element signature="e#39330#39350#0" expanded="true" />
-            <element signature="e#39403#39427#0" expanded="true" />
+            <element signature="e#9138#9164#0" expanded="true" />
+            <element signature="e#9444#9465#0" expanded="true" />
+            <element signature="e#9467#9488#0" expanded="true" />
+            <element signature="e#9656#9680#0" expanded="true" />
+            <element signature="e#9682#9706#0" expanded="true" />
+            <element signature="e#9874#9897#0" expanded="true" />
+            <element signature="e#9899#9922#0" expanded="true" />
+            <element signature="e#12317#12339#0" expanded="true" />
+            <element signature="e#12926#12943#0" expanded="true" />
+            <element signature="e#13447#13469#0" expanded="true" />
+            <element signature="e#13966#13983#0" expanded="true" />
+            <element signature="e#15260#15301#0" expanded="true" />
+            <element signature="e#17708#17725#0" expanded="true" />
+            <element signature="e#20288#20319#0" expanded="true" />
+            <element signature="e#30000#30020#0" expanded="true" />
+            <element signature="e#30086#30107#0" expanded="true" />
+            <element signature="e#32107#32137#0" expanded="true" />
+            <element signature="e#33291#33313#0" expanded="true" />
+            <element signature="e#34106#34134#0" expanded="true" />
+            <element signature="e#37303#37353#0" expanded="true" />
+            <element signature="e#37936#37964#0" expanded="true" />
+            <element signature="e#38230#38301#0" expanded="true" />
+            <element signature="e#38369#38408#0" expanded="true" />
+            <element signature="e#39240#39265#0" expanded="true" />
+            <element signature="e#39791#39811#0" expanded="true" />
+            <element signature="e#39887#39913#0" expanded="true" />
+            <element signature="e#40010#40030#0" expanded="true" />
+            <element signature="e#40083#40107#0" expanded="true" />
           </folding>
         </state>
       </provider>

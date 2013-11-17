@@ -109,7 +109,7 @@ public class Main extends Activity {
     public MySimpleArrayAdapter adapter;
     public Handler handler;
     boolean exit = false;
-    private boolean handleByOnActivityResult = false;
+    public static boolean handleByOnActivityResult = false;
     private int layouts[];
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -278,16 +278,19 @@ public class Main extends Activity {
                             setUpViews();
                             break;
                         case R.layout.encrypt:
-                            PublicContactCard qrpbk = new PublicContactCard(this, result);
-                            if (qrpbk.getPublicKey() != null) {
-                                //TODO
-                               /* Contact c = Contact.giveMeContact(this, qrpbk);
-                                findViewById(R.id.en_list_contact).setVisibility(View.GONE);
-                                ((TextView) findViewById(R.id.contact_id_to_send)).setText(c.getId() + "");
-                                ((TextView) findViewById(R.id.chosen_name)).setText(c.getContactName());
-                                ((TextView) findViewById(R.id.chosen_email)).setText(c.getEmail());
-                                ((ImageView) findViewById(R.id.chosen_icon)).setImageBitmap(c.getPhoto());
-                                findViewById(R.id.en_contact).setVisibility(View.VISIBLE);*/
+                            Splash.fileContactCard = new PublicContactCard(this, result);
+                            if (Splash.fileContactCard.getPublicKey() != null) {
+                                Contact contact1=contactsDataSource.findContact(Splash.fileContactCard.getPublicKey());
+                                if(contact1!=null){
+                                    Toast.makeText(getBaseContext(),R.string.contact_exist,
+                                            Toast.LENGTH_LONG).show();
+                                    Splash.fileContactCard=null;
+                                    FragmentManagement.f.contactChosen(contact1.getId());
+                                }
+                                else{
+                                    AddContactDlg acd = new AddContactDlg();
+                                    acd.show(getFragmentManager(), "acd2");
+                                }
                             } else
                                 Toast.makeText(getBaseContext(), R.string.bad_data,
                                         Toast.LENGTH_LONG).show();
@@ -295,12 +298,18 @@ public class Main extends Activity {
                         case R.layout.contacts:
                             Splash.fileContactCard = new PublicContactCard(this, result);
                             if (Splash.fileContactCard.getPublicKey() != null) {
-                                AddContactDlg acd = new AddContactDlg();
-                                acd.show(getFragmentManager(), "acd2");
-                            } else {
+                                if(contactsDataSource.findContact(Splash.fileContactCard.getPublicKey())!=null){
+                                    Toast.makeText(getBaseContext(),R.string.contact_exist,
+                                            Toast.LENGTH_LONG).show();
+                                    Splash.fileContactCard=null;
+                                }
+                                else{
+                                    AddContactDlg acd = new AddContactDlg();
+                                    acd.show(getFragmentManager(), "acd2");
+                                }
+                            } else
                                 Toast.makeText(getBaseContext(), R.string.bad_data,
                                         Toast.LENGTH_LONG).show();
-                            }
                             break;
                     }
                 }
@@ -535,7 +544,11 @@ public class Main extends Activity {
                 mi.setIcon(R.drawable.sun);
             else
                 mi.setIcon(R.drawable.search);
-            mi.setVisible(!drawerOpen);
+            TextView textView = (TextView)findViewById(R.id.contact_id_to_send);
+            if(textView!=null&&textView.getText().toString().length()>0)
+                mi.setVisible(false);
+            else
+                mi.setVisible(!drawerOpen);
             return super.onPrepareOptionsMenu(menu);
         } else if (currentLayout == R.layout.edit_contact) {
             mi.setVisible(!drawerOpen);
