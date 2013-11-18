@@ -1,6 +1,7 @@
 package specular.systems;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,7 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
             // status.setText("" + c.getConversationStatus());
         return rowView;
     }
-
+    Toast t =Toast.makeText(getContext(), R.string.no_result, Toast.LENGTH_LONG);
     @Override
     public Filter getFilter() {
         Filter filter = new Filter() {
@@ -67,8 +68,12 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 List<Contact> lc = (List<Contact>) results.values;
-                if (lc.size() == 0)
-                    Toast.makeText(getContext(), R.string.no_result, Toast.LENGTH_LONG).show();
+                if (lc.size() == 0){
+                    t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    t.show();
+                }
+                else
+                    t.cancel();
                 for (int a = 0; a < lc.size(); a++)
                     if (!Main.currentList.contains(lc.get(a)))
                         Main.currentList.add(lc.get(a));

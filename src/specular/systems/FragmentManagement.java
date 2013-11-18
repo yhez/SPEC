@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -88,9 +89,12 @@ public class FragmentManagement extends Fragment {
                                         .getText().toString();
                                 String myName = ((EditText) getActivity().findViewById(R.id.name))
                                         .getText().toString();
-                                if (!validateEmail(myEmail))
-                                    Toast.makeText(getActivity(), R.string.fill_all,
-                                            Toast.LENGTH_LONG).show();
+                                if (!validateEmail(myEmail)){
+                                    Toast t = Toast.makeText(getActivity(), R.string.fill_all,
+                                            Toast.LENGTH_LONG);
+                                    t.setGravity(Gravity.TOP,0,0);
+                                    t.show();
+                                }
                                 else {
                                     CryptMethods.setDetails(myName, myEmail);
                                     w.createKeysManager();

@@ -30,6 +30,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -100,7 +101,9 @@ public class Main extends Activity {
                     selectItem(1, R.layout.decrypted_msg);
                     break;
                 case FilesManagement.RESULT_ADD_FILE_TO_BIG:
-                    Toast.makeText(getBaseContext(), R.string.file_to_big, Toast.LENGTH_SHORT).show();
+                    Toast t = Toast.makeText(getBaseContext(), R.string.file_to_big, Toast.LENGTH_SHORT);
+                    t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+                    t.show();
                     break;
                 case FilesManagement.RESULT_ADD_FILE_FAILED:
                     Toast.makeText(getBaseContext(), R.string.failed,
@@ -306,8 +309,10 @@ public class Main extends Activity {
                             if (Splash.fileContactCard.getPublicKey() != null) {
                                 Contact contact1 = contactsDataSource.findContact(Splash.fileContactCard.getPublicKey());
                                 if (contact1 != null) {
-                                    Toast.makeText(getBaseContext(), R.string.contact_exist,
-                                            Toast.LENGTH_LONG).show();
+                                    t=Toast.makeText(getBaseContext(), R.string.contact_exist,
+                                            Toast.LENGTH_LONG);
+                                    t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+                                    t.show();
                                     Splash.fileContactCard = null;
                                     FragmentManagement.f.contactChosen(contact1.getId());
                                 } else {
@@ -322,8 +327,10 @@ public class Main extends Activity {
                             Splash.fileContactCard = new PublicContactCard(this, result);
                             if (Splash.fileContactCard.getPublicKey() != null) {
                                 if (contactsDataSource.findContact(Splash.fileContactCard.getPublicKey()) != null) {
-                                    Toast.makeText(getBaseContext(), R.string.contact_exist,
-                                            Toast.LENGTH_LONG).show();
+                                    t = Toast.makeText(getBaseContext(), R.string.contact_exist,
+                                            Toast.LENGTH_LONG);
+                                    t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+                                    t.show();
                                     Splash.fileContactCard = null;
                                 } else {
                                     AddContactDlg acd = new AddContactDlg();
@@ -419,8 +426,10 @@ public class Main extends Activity {
                         if (name.length() > 0 && email.length() > 0)
                             contact.update(name, email, null, null, -1);
                         else
-                            Toast.makeText(getBaseContext(), R.string.fill_all,
-                                    Toast.LENGTH_LONG).show();
+                            t=Toast.makeText(getBaseContext(), R.string.fill_all,
+                                    Toast.LENGTH_LONG);
+                        t.setGravity(Gravity.TOP,0,0);
+                        t.show();
                         selectItem(-1, R.layout.contacts);
                         break;
                     case R.id.delete:
@@ -790,15 +799,16 @@ public class Main extends Activity {
             } else {
                 //TODO what if some of the details are not exist
                 Splash.fileContactCard = null;
-                Toast.makeText(getBaseContext(),
-                        R.string.contact_exist, Toast.LENGTH_LONG)
-                        .show();
+                t=Toast.makeText(getBaseContext(),
+                        R.string.contact_exist, Toast.LENGTH_LONG);
+                t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+                t.show();
             }
             return true;
         }
         return false;
     }
-
+    Toast t;
     @Override
     public void onBackPressed() {
         class prepareToExit {
@@ -818,13 +828,15 @@ public class Main extends Activity {
 
             public prepareToExit() {
                 exit = true;
-                Toast.makeText(getBaseContext(), R.string.exit_by_back_notify, Toast.LENGTH_SHORT).show();
+                t = Toast.makeText(getBaseContext(),R.string.exit_by_back_notify,Toast.LENGTH_SHORT);
+                t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+                t.show();
                 prepareExit.start();
             }
         }
         if (exit) {
             CryptMethods.deleteKeys();
-            super.onBackPressed();
+            t.cancel();
             finish();
         } else {
             switch (currentLayout) {
