@@ -26,7 +26,6 @@ public class TurnNFCOn extends DialogFragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Main.comingFromSettings=true;
                         Intent intent = new Intent(Settings.ACTION_NFC_SETTINGS);
                         startActivity(intent);
                     }

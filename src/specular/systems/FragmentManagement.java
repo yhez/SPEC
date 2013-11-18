@@ -73,10 +73,6 @@ public class FragmentManagement extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(Main.handleByOnActivityResult){
-         //   Main.handleByOnActivityResult=false;
-        }
-        else{
         Contact contact;
         switch (Main.currentLayout) {
             case create_new_keys:
@@ -377,7 +373,6 @@ public class FragmentManagement extends Fragment {
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.decrypted_msg_ll));
 
                 break;
-        }
         }
     }
 

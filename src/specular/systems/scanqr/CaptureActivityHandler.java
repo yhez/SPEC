@@ -2,7 +2,6 @@ package specular.systems.scanqr;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 
@@ -63,11 +62,6 @@ public final class CaptureActivityHandler extends Handler {
         } else if (message.what == R.id.return_scan_result) {
             activity.setResult(Activity.RESULT_OK, (Intent) message.obj);
             activity.finish();
-        } else if (message.what == R.id.launch_product_query) {
-            String url = (String) message.obj;
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            activity.startActivity(intent);
         }
     }
 

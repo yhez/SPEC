@@ -72,13 +72,13 @@ public class Main extends Activity {
     public static String currentText = "";
     public static int currentLayout;
     public static boolean changed;
-    public static boolean comingFromSettings = false;
     //the list that the user see
     public static List<Contact> currentList;
     //the complete list
     public static List<Contact> fullList;
     public static byte[] fileContent;
     public static boolean handleByOnActivityResult = false;
+    private static int currentKeys = 0;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -212,7 +212,7 @@ public class Main extends Activity {
                 String name = CryptMethods.decryptedMsg.getFileName();
                 Log.d("name", name);
                 File f = new File(Environment.getExternalStorageDirectory(), name);
-                String ext=f.getName().substring(f.getName().indexOf(".") + 1);
+                String ext = f.getName().substring(f.getName().indexOf(".") + 1);
                 MimeTypeMap mtm = MimeTypeMap.getSingleton();
                 String type = mtm.getMimeTypeFromExtension(ext);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -582,8 +582,10 @@ public class Main extends Activity {
 
     @Override
     public void onPause() {
-        if (!handleByOnNewIntent)
+        if (!handleByOnNewIntent) {
+            currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
             CryptMethods.deleteKeys();
+        }
         super.onPause();
     }
 
@@ -604,7 +606,10 @@ public class Main extends Activity {
         int layout = layout_screen;
         int menu = position;
         if (layout_screen == 0 && position != -1) {
-            layout = layouts[position];
+            if (menuTitles[menu].equals("Decrypt") && CryptMethods.decryptedMsg != null)
+                layout = R.layout.decrypted_msg;
+            else
+                layout = layouts[position];
             menu = position;
         } else if (layout_screen != 0 && position == -1) {
             layout = layout_screen;
@@ -647,7 +652,7 @@ public class Main extends Activity {
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame, fragment).commit();
             }
-        }, 100);
+        }, 150);
     }
 
     @Override
@@ -830,6 +835,10 @@ public class Main extends Activity {
                     } else
                         new prepareToExit();
                     break;
+                case R.layout.decrypted_msg:
+                    CryptMethods.decryptedMsg = null;
+                    selectItem(-1, R.layout.decrypt);
+                    break;
                 case R.layout.decrypt:
                     setUpViews();
                     break;
@@ -862,10 +871,6 @@ public class Main extends Activity {
                         setUpViews();
                     else
                         new prepareToExit();
-                    break;
-                case R.layout.decrypted_msg:
-                    CryptMethods.decryptedMsg = null;
-                    setUpViews();
                     break;
                 case R.layout.wait_nfc_decrypt:
                     new prepareToExit();
@@ -964,14 +969,10 @@ public class Main extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!comingFromSettings) {
-            comingFromSettings = false;
-            FilesManagement.getKeysFromSDCard(this);
-            if (handleByOnActivityResult)
-                handleByOnActivityResult = false;
-            else {
-                setUpViews();
-            }
+        FilesManagement.getKeysFromSDCard(this);
+        int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
+        if (newkeys != currentKeys) {
+            setUpViews();
         }
     }
 
