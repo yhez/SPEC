@@ -652,7 +652,7 @@ public class Main extends Activity {
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame, fragment).commit();
             }
-        }, 150);
+        }, 300);
     }
 
     @Override
@@ -836,6 +836,7 @@ public class Main extends Activity {
                         new prepareToExit();
                     break;
                 case R.layout.decrypted_msg:
+                    Toast.makeText(this,R.string.notify_msg_deleted,Toast.LENGTH_SHORT).show();
                     CryptMethods.decryptedMsg = null;
                     selectItem(-1, R.layout.decrypt);
                     break;
@@ -998,6 +999,7 @@ public class Main extends Activity {
                 break;
             case R.id.button4:
                 DeleteDataDialog ddd = new DeleteDataDialog();
+                ddd.setStyle(android.R.attr.dialogLayout,android.R.attr.dialogTheme);
                 ddd.show(getFragmentManager(), "ddd");
                 break;
         }

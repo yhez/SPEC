@@ -117,6 +117,7 @@
     <string name="delete_keys_verify_title">Delete Keys?</string><string name="file_to_big">cant attach file, to big.
 ( current limit 10 MB )</string>
     <string name="file_is_empty">the file is empty</string>
+    <string name="notify_msg_deleted">message have been successfully deleted</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

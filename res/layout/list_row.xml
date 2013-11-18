@@ -1,7 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="6dip">
+    android:paddingBottom="6dip"
+    android:paddingLeft="6dip"
+    android:paddingTop="6dip"
+    android:paddingRight="6dip">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -49,6 +52,6 @@
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
         android:background="#eeeeee" />
 </RelativeLayout>
