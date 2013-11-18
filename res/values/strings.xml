@@ -16,7 +16,7 @@
     <string name="wait_for_nfc_to_write">Tap NFC tag and store decryption key on it (More Secure)</string>
     <string name="skip_save_to_phone">Skip and save private decryption key on device</string>
     <string name="explain_and_about">LEARN ABOUT SPEC</string>
-    <string name="create_keys">Create New Keys</string>
+    <string name="create_keys">Generate New Keys</string>
     <string name="share_on_server">Publish</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
