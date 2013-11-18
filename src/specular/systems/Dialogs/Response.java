@@ -77,6 +77,7 @@ public class Response extends DialogFragment {
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getActivity().findViewById(R.id.answer).setVisibility(View.GONE);
                 final String userInput=et.getText().toString();
                 final MessageFormat msg = new MessageFormat(null, "", userInput,
                         contact.getSession());
