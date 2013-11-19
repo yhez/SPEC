@@ -20,7 +20,7 @@ import java.io.InputStreamReader;
 
 public class Splash extends Activity {
     private final static int TIME_FOR_SPLASH = 3500;
-    private final static long TIME_FOR_CLEAR_TASK=400000;
+    private final static long TIME_FOR_CLEAR_TASK=15;//in minute
     private final Thread waitForSplash = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -64,7 +64,8 @@ public class Splash extends Activity {
         if (!newUser) {
             Intent intent = new Intent(Splash.this, Main.class);
                 if (PublicStaticVariables.message != null || PublicStaticVariables.fileContactCard != null
-                        || PublicStaticVariables.time == null||(System.currentTimeMillis() - PublicStaticVariables.time) >TIME_FOR_CLEAR_TASK ) {
+                        || PublicStaticVariables.time == null||(System.currentTimeMillis() - PublicStaticVariables.time) >(1000*60*TIME_FOR_CLEAR_TASK) ) {
+                    FilesManagement.deleteTempDecryptedMSG(this);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 }
             startActivity(intent);

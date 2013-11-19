@@ -63,6 +63,16 @@ public class MessageFormat {
         name = CryptMethods.getName();
         hash = hashing(name + email + publicKey + msgContent + (fileContent != null ? new String(fileContent) : "") + session + sentTime);
     }
+    public MessageFormat(){
+        email = PublicStaticVariables.decryptedMsg.getEmail();
+        publicKey = PublicStaticVariables.decryptedMsg.getPublicKey();
+        sentTime = PublicStaticVariables.decryptedMsg.getSentTime();
+        session = PublicStaticVariables.decryptedMsg.getSession();
+        fileName = PublicStaticVariables.decryptedMsg.getFileName();
+        name = PublicStaticVariables.decryptedMsg.getName();
+        msgContent=PublicStaticVariables.decryptedMsg.msgContent;
+        hash="";
+    }
 
     public String getFileName() {
         return fileName;

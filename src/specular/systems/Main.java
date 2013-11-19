@@ -180,10 +180,7 @@ public class Main extends Activity {
                         contact.getPublicKey());
                 sendMessage();
                 prgd.cancel();
-                PublicStaticVariables.fileContent=null;
-                PublicStaticVariables.currentText = "";
-                Message msg = hndl.obtainMessage(CHANGE_HINT);
-                hndl.sendMessage(msg);
+                msgSended=true;
             }
         }).start();
     }
@@ -221,7 +218,7 @@ public class Main extends Activity {
                 }
                 break;
             case R.id.answer:
-                if (findViewById(R.id.add_contact_decrypt).getVisibility() == View.VISIBLE)
+                if (((TextView)findViewById(R.id.flag_contact_exist)).getText().toString().equals(false+""))
                     Toast.makeText(getBaseContext(), R.string.add_contact_first, Toast.LENGTH_LONG).show();
                 else {
                     Response r = new Response();
@@ -537,6 +534,12 @@ public class Main extends Activity {
             ShareContactDlg sd = new ShareContactDlg();
             sd.show(getFragmentManager(), ((EditText) findViewById(R.id.contact_name)).getText()
                     + ": " + ((EditText) findViewById(R.id.contact_email)).getText());
+        }else if(PublicStaticVariables.currentLayout==R.layout.decrypted_msg){
+            PublicStaticVariables.fileContactCard = new PublicContactCard(this
+                    , PublicStaticVariables.decryptedMsg.getPublicKey()
+                    , PublicStaticVariables.decryptedMsg.getEmail(), PublicStaticVariables.decryptedMsg.getName());
+            AddContactDlg acd = new AddContactDlg();
+            acd.show(getFragmentManager(), "acd3");
         }
         return super.onOptionsItemSelected(item);
 
@@ -544,11 +547,10 @@ public class Main extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (PublicStaticVariables.currentLayout == R.layout.contacts || PublicStaticVariables.currentLayout == R.layout.encrypt) {
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.main, menu);
-            return super.onCreateOptionsMenu(menu);
-        } else if (PublicStaticVariables.currentLayout == R.layout.edit_contact) {
+        if (PublicStaticVariables.currentLayout == R.layout.contacts ||
+                PublicStaticVariables.currentLayout == R.layout.encrypt||
+                PublicStaticVariables.currentLayout == R.layout.edit_contact||
+                PublicStaticVariables.currentLayout==R.layout.decrypted_msg) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.main, menu);
             return super.onCreateOptionsMenu(menu);
@@ -578,6 +580,13 @@ public class Main extends Activity {
             mi.setVisible(!drawerOpen);
             mi.setIcon(android.R.drawable.ic_menu_share);
             return super.onPrepareOptionsMenu(menu);
+        }else if(PublicStaticVariables.currentLayout==R.layout.decrypted_msg){
+            TextView tv = (TextView)findViewById(R.id.flag_contact_exist);
+            if(tv==null||tv.getText().toString().equals("true"))
+                return false;
+            mi.setVisible(!drawerOpen);
+            mi.setIcon(android.R.drawable.ic_menu_add);
+            return super.onPrepareOptionsMenu(menu);
         }
         return false;
     }
@@ -586,8 +595,9 @@ public class Main extends Activity {
     public void onPause() {
         if (!handleByOnNewIntent) {
             currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
-            if(PublicStaticVariables.currentLayout==R.layout.decrypted_msg)
-                FilesManagement.saveTempDecryptedMSG(this,((TextView)findViewById(R.id.decrypted_msg)).getText().toString());
+            if(PublicStaticVariables.currentLayout==R.layout.decrypted_msg){
+                FilesManagement.saveTempDecryptedMSG(this);
+            }
             //todo delete view content
             CryptMethods.deleteKeys();
         }
@@ -831,6 +841,7 @@ public class Main extends Activity {
             }
         }
         if (exit) {
+            FilesManagement.deleteTempDecryptedMSG(this);
             CryptMethods.deleteKeys();
             t.cancel();
             finish();
@@ -847,6 +858,7 @@ public class Main extends Activity {
                 case R.layout.decrypted_msg:
                     Toast.makeText(this, R.string.notify_msg_deleted, Toast.LENGTH_SHORT).show();
                     PublicStaticVariables.decryptedMsg = null;
+                    FilesManagement.deleteTempDecryptedMSG(this);
                     selectItem(-1, R.layout.decrypt);
                     break;
                 case R.layout.decrypt:
@@ -975,7 +987,7 @@ public class Main extends Activity {
             return R.string.failed_to_write;
         }
     }
-
+boolean msgSended = false;
     @Override
     protected void onResume() {
         super.onResume();
@@ -983,16 +995,10 @@ public class Main extends Activity {
         int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         if (newkeys != currentKeys) {
             setUpViews();
+        }else if(msgSended){
+                onBackPressed();
+                msgSended=false;
         }
-    }
-
-    public void addToContacts(View v) {
-
-        PublicStaticVariables.fileContactCard = new PublicContactCard(this
-                , PublicStaticVariables.decryptedMsg.getPublicKey()
-                , PublicStaticVariables.decryptedMsg.getEmail(), PublicStaticVariables.decryptedMsg.getName());
-        AddContactDlg acd = new AddContactDlg();
-        acd.show(getFragmentManager(), "acd3");
     }
 
     public void onClickManage(View v) {

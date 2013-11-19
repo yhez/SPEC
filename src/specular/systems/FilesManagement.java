@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import static android.graphics.Typeface.createFromAsset;
@@ -69,17 +70,42 @@ public final class FilesManagement {
         }
         return true;
     }
-    public static void saveTempDecryptedMSG(Activity a,String msg){
+
+    public static void saveTempDecryptedMSG(Activity a){
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         SharedPreferences.Editor edt = srp.edit();
-        edt.putString("msg",msg);
+        try {
+            edt.putString("msg",new String(new MessageFormat().getFormatedMsg(),"UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        edt.putString("flag_hash",((TextView)a.findViewById(R.id.flag_hash)).getText().toString());
+        edt.putString("flag_session",((TextView)a.findViewById(R.id.flag_session)).getText().toString());
+        edt.putString("flag_replay",((TextView)a.findViewById(R.id.flag_replay)).getText().toString());
         edt.commit();
     }
-    public static String getTempDecryptedMSG(Activity a){
+    public static void deleteTempDecryptedMSG(Activity a){
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
-        return srp.getString("msg",null);
+        SharedPreferences.Editor edt = srp.edit();
+        edt.remove("msg");
+        edt.remove("flag_hash");
+        edt.remove("flag_session");
+        edt.remove("flag_replay");
+        edt.commit();
+    }
+    public static void getTempDecryptedMSG(Activity a){
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
+                .getApplicationContext());
+        try {
+            PublicStaticVariables.decryptedMsg=new MessageFormat(srp.getString("msg",null).getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        ((TextView)a.findViewById(R.id.flag_hash)).setText(srp.getString("flag_hash",false+""));
+        ((TextView)a.findViewById(R.id.flag_session)).setText(srp.getString("flag_session",false+""));
+        ((TextView)a.findViewById(R.id.flag_replay)).setText(srp.getString("flag_replay",false+""));
     }
 
     public static Typeface getOld(Activity a) {
@@ -177,7 +203,7 @@ public final class FilesManagement {
         String name = ((EditText)a.findViewById(R.id.contact_name)).getText().toString();
         String email = ((EditText)a.findViewById(R.id.contact_email)).getText().toString();
         String publicKey = ((TextView)a.findViewById(R.id.contact_pb)).getText().toString();
-       PublicContactCard pcc = new PublicContactCard(a,publicKey,email,name);
+        PublicContactCard pcc = new PublicContactCard(a,publicKey,email,name);
         FileOutputStream fos = null;
         try {
             fos = a.openFileOutput(a.getString(FRIEND_CONTACT_CARD),

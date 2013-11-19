@@ -80,7 +80,7 @@
                 android:src="@drawable/session" />
         </FrameLayout>
         <!--add to contact if doesn't exist-->
-        <ImageButton
+<!--        <ImageButton
             android:id="@+id/add_contact_decrypt"
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
@@ -88,7 +88,7 @@
             android:layout_column="3"
             android:onClick="addToContacts"
             android:padding="@dimen/default_gap"
-            android:src="@drawable/plus" />
+            android:src="@drawable/plus" />-->
     </GridLayout>
 
     <RelativeLayout
@@ -135,16 +135,16 @@
             android:id="@+id/open_file_rlt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end">
+            android:padding="@dimen/default_gap"
+            android:layout_gravity="bottom|right">
             <TextView
-                android:gravity="center_horizontal"
+                android:maxLength="6"
                 android:textColor="@color/spec_black"
                 android:id="@+id/file_name"
                 android:layout_alignParentBottom="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <ImageButton
-                android:gravity="center_horizontal"
                 style="?android:attr/borderlessButtonStyle"
                 android:id="@+id/open_file"
                 android:layout_width="wrap_content"
@@ -168,4 +168,24 @@
                 android:textSize="25sp" />
         </ScrollView>
     </FrameLayout>
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/flag_contact_exist"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/flag_hash"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/flag_session"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/flag_replay"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
 </RelativeLayout>

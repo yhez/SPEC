@@ -34,11 +34,13 @@ public class AddContactDlg extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Contact c = new Contact(getActivity(), pcc.getName(), pcc.getEmail(), pcc.getPublicKey());
-                        if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg)
-                            getActivity().findViewById(R.id.add_contact_decrypt).setVisibility(View.GONE);
+                        if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg){
+                            ((TextView)getActivity().findViewById(R.id.flag_contact_exist)).setText(true+"");//.setVisibility(View.GONE);
+                            getActivity().invalidateOptionsMenu();
+                        }
                         if (PublicStaticVariables.currentLayout == R.layout.encrypt) {
                             PublicStaticVariables.f.contactChosen(c.getId());
-                        }//todo call contactChosen
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
