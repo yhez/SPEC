@@ -55,19 +55,31 @@ public final class FilesManagement {
     }
 
     public static boolean createFileToOpen(Activity a) {
-        if (CryptMethods.decryptedMsg.getFileContent() == null)
+        if (PublicStaticVariables.decryptedMsg.getFileContent() == null)
             return false;
         try {
             File path = Environment.getExternalStorageDirectory();
-            File file = new File(path, CryptMethods.decryptedMsg.getFileName());
+            File file = new File(path, PublicStaticVariables.decryptedMsg.getFileName());
             OutputStream os = new FileOutputStream(file);
-            os.write(CryptMethods.decryptedMsg.getFileContent());
+            os.write(PublicStaticVariables.decryptedMsg.getFileContent());
             os.close();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+    public static void saveTempDecryptedMSG(Activity a,String msg){
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
+                .getApplicationContext());
+        SharedPreferences.Editor edt = srp.edit();
+        edt.putString("msg",msg);
+        edt.commit();
+    }
+    public static String getTempDecryptedMSG(Activity a){
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
+                .getApplicationContext());
+        return srp.getString("msg",null);
     }
 
     public static Typeface getOld(Activity a) {
@@ -89,7 +101,7 @@ public final class FilesManagement {
     private static boolean saveQRToSend(Activity a) {
         int qrCodeDimention = 500;
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(
-                CryptMethods.encryptedMsgToSend, BarcodeFormat.QR_CODE
+                PublicStaticVariables.encryptedMsgToSend, BarcodeFormat.QR_CODE
                 .toString(), qrCodeDimention);
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
@@ -121,7 +133,7 @@ public final class FilesManagement {
         try {
             FileOutputStream fos = a.openFileOutput(a.getString(
                     FILE_NAME_SEND), Context.MODE_WORLD_READABLE);
-            fos.write(CryptMethods.encryptedMsgToSend.getBytes());
+            fos.write(PublicStaticVariables.encryptedMsgToSend.getBytes());
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -283,14 +295,13 @@ public final class FilesManagement {
             edt.putString(PUBLIC_KEY, qrpk.getPublicKey());
             edt.putString(EMAIL, qrpk.getEmail());
             edt.putString(NAME, qrpk.getName());
-            if (!CryptMethods.NFCMode)
+            if (!PublicStaticVariables.NFCMode)
                 edt.putString(PRIVATE_KEY, CryptMethods.getPrivateToSave());
             else
                 edt.remove(PRIVATE_KEY);
             edt.commit();
         }
     }
-public final static int RESULT_ADD_FILE_FAILED=5,RESULT_ADD_FILE_TO_BIG=10,RESULT_ADD_FILE_EMPTY=20,RESULT_ADD_FILE_OK=40;
     public static int addFile(Activity a, Uri uri) {
         ContentResolver cr = a.getContentResolver();
         int size = 0;
@@ -302,13 +313,13 @@ public final static int RESULT_ADD_FILE_FAILED=5,RESULT_ADD_FILE_TO_BIG=10,RESUL
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return RESULT_ADD_FILE_FAILED;
+            return PublicStaticVariables.RESULT_ADD_FILE_FAILED;
         } catch (IOException e) {
             e.printStackTrace();
-            return RESULT_ADD_FILE_FAILED;
+            return PublicStaticVariables.RESULT_ADD_FILE_FAILED;
         }
         if(size>LIMIT_FILE_SIZE)
-            return RESULT_ADD_FILE_TO_BIG;
+            return PublicStaticVariables.RESULT_ADD_FILE_TO_BIG;
         byte[] result = new byte[size];
         try {
             InputStream input = null;
@@ -329,16 +340,16 @@ public final static int RESULT_ADD_FILE_FAILED=5,RESULT_ADD_FILE_TO_BIG=10,RESUL
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
-            return RESULT_ADD_FILE_FAILED;
+            return PublicStaticVariables.RESULT_ADD_FILE_FAILED;
         } catch (IOException ex) {
             ex.printStackTrace();
-            return RESULT_ADD_FILE_FAILED;
+            return PublicStaticVariables.RESULT_ADD_FILE_FAILED;
         }
         if(result.length>0){
-            Main.fileContent=result;
-            return RESULT_ADD_FILE_OK;
+            PublicStaticVariables.fileContent=result;
+            return PublicStaticVariables.RESULT_ADD_FILE_OK;
         }
-        return RESULT_ADD_FILE_EMPTY;
+        return PublicStaticVariables.RESULT_ADD_FILE_EMPTY;
     }
 
     private static Bitmap crop(Bitmap bitmap) {
@@ -351,6 +362,7 @@ public final static int RESULT_ADD_FILE_FAILED=5,RESULT_ADD_FILE_TO_BIG=10,RESUL
             }
         return Bitmap.createBitmap(bitmap, border, border, width - (border * 2), width - (border * 2));
     }
+
     public static void deleteKeys(Activity a){
         SharedPreferences srp = PreferenceManager
                 .getDefaultSharedPreferences(a.getApplicationContext());

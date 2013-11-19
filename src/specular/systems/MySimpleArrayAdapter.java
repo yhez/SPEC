@@ -24,18 +24,18 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
     }
 
     public boolean isNotEmpty() {
-        return Main.fullList.size() != 0;
+        return PublicStaticVariables.fullList.size() != 0;
     }
 
     public void removeCont(int index) {
-        Main.currentList.remove(index);
-        Main.fullList.remove(index);
+        PublicStaticVariables.currentList.remove(index);
+        PublicStaticVariables.fullList.remove(index);
         notifyDataSetChanged();
     }
 
     public void addCont(Contact c) {
-        Main.currentList.add(c);
-        Main.fullList.add(c);
+        PublicStaticVariables.currentList.add(c);
+        PublicStaticVariables.fullList.add(c);
         notifyDataSetChanged();
     }
 
@@ -44,7 +44,7 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_row, parent, false);
-            Contact c = Main.currentList.get(position);
+            Contact c = PublicStaticVariables.currentList.get(position);
             TextView name = (TextView) rowView.findViewById(R.id.first_line);
             TextView email = (TextView) rowView.findViewById(R.id.sec_line);
             // TextView session = (TextView) rowView.findViewById(R.id.thirdLine);
@@ -75,11 +75,11 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
                 else
                     t.cancel();
                 for (int a = 0; a < lc.size(); a++)
-                    if (!Main.currentList.contains(lc.get(a)))
-                        Main.currentList.add(lc.get(a));
-                for (int a = 0; a < Main.currentList.size(); a++)
-                    if (!lc.contains(Main.currentList.get(a)))
-                        Main.currentList.remove(Main.currentList.get(a));
+                    if (!PublicStaticVariables.currentList.contains(lc.get(a)))
+                        PublicStaticVariables.currentList.add(lc.get(a));
+                for (int a = 0; a < PublicStaticVariables.currentList.size(); a++)
+                    if (!lc.contains(PublicStaticVariables.currentList.get(a)))
+                        PublicStaticVariables.currentList.remove(PublicStaticVariables.currentList.get(a));
                 notifyDataSetChanged();
             }
 
@@ -88,10 +88,10 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
                 FilterResults results = new FilterResults();
                 ArrayList<Contact> FilteredArrayNames = new ArrayList<Contact>();
                 constraint = constraint.toString().toLowerCase();
-                for (int i = 0; i < Main.fullList.size(); i++) {
-                    String dataNames = Main.fullList.get(i).getEmail() + Main.fullList.get(i).getContactName();
+                for (int i = 0; i < PublicStaticVariables.fullList.size(); i++) {
+                    String dataNames = PublicStaticVariables.fullList.get(i).getEmail() + PublicStaticVariables.fullList.get(i).getContactName();
                     if (dataNames.toLowerCase().contains(constraint.toString())) {
-                        FilteredArrayNames.add(Main.fullList.get(i));
+                        FilteredArrayNames.add(PublicStaticVariables.fullList.get(i));
                     }
                 }
                 results.values = FilteredArrayNames;

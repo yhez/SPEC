@@ -43,8 +43,8 @@ public class ContactsDataSource {
     public void deleteContact(Contact contact) {
         long id = contact.getId();
         int position=-1;
-        for(int a=0;a<Main.currentList.size();a++)
-            if(contact.getPublicKey().equals(Main.currentList.get(a).getPublicKey())){
+        for(int a=0;a<PublicStaticVariables.currentList.size();a++)
+            if(contact.getPublicKey().equals(PublicStaticVariables.currentList.get(a).getPublicKey())){
                 position=a;
                 break;
             }

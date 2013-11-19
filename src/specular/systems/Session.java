@@ -5,8 +5,6 @@ import java.util.Random;
 class Session
 {
 
-    public final static int VERIFIED = 0, FAILED = 1, DONT_TRUST = 2;// ,
-
     public static int check(Contact contact, String session)
 	{
         String my[] = contact.getSession().split(" ");
@@ -15,14 +13,14 @@ class Session
         // String mHisSess = my.length >= 16 ? my[11] + my[15] : "";
         String hHisSess = his.length >= 8 ? his[3] + my[7] : "";
         String hMySess = his.length >= 16 ? his[11] + my[15] : "";
-        if (contact.getConversationStatus() == Contact.WE_FRIENDS)
+        if (contact.getConversationStatus() == PublicStaticVariables.WE_FRIENDS)
 		{
             if (hMySess.equals("") || !hHisSess.equals(mMySess)
 				|| hHisSess.equals(""))
-                return FAILED;
-            return VERIFIED;
+                return PublicStaticVariables.FAILED;
+            return PublicStaticVariables.VERIFIED;
         }
-        return DONT_TRUST;
+        return PublicStaticVariables.DONT_TRUST;
         /*
 		 * if(Contact.WE_STRANGERS==contact.getConversationStatus()){
 		 * if(hMySess.equals("")||hHisSess.equals("")) return DONT_TRUST;
@@ -73,12 +71,12 @@ class Session
     @Override
     public String toString()
 	{
-        return "My session id: "
+        return "my session id: "
 			+ mySession
-			+ "   My secret sign: "
+			+ "   my secret sign: "
 			+ mySymbol
 			+ " "
 			+ (hisSession.equals("") ? "" : "\nYour session id: "
-			+ hisSession + "   Your secret sign: " + hisSymbol);
+			+ hisSession + " ;    Your secret sign: " + hisSymbol);
     }
 }

@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import specular.systems.Contact;
 import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
-import specular.systems.Main;
 import specular.systems.MessageFormat;
+import specular.systems.PublicStaticVariables;
 import specular.systems.R;
 
 /**
@@ -41,9 +41,9 @@ public class Response extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         View v = inflater.inflate(R.layout.response, null);
         builder.setView(v);
-        contact=Main.currentLayout==R.layout.decrypted_msg
-                ?Main.contactsDataSource.findContact(CryptMethods.decryptedMsg.getPublicKey())
-                :Main.contactsDataSource.findContact(Long.parseLong(
+        contact= PublicStaticVariables.currentLayout==R.layout.decrypted_msg
+                ?PublicStaticVariables.contactsDataSource.findContact(PublicStaticVariables.decryptedMsg.getPublicKey())
+                :PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(
                 ((TextView)getActivity().findViewById(R.id.contact_id)).getText().toString()));
         final TextView tv = (TextView)v.findViewById(R.id.text_counter);
         final ImageButton bt = (ImageButton)v.findViewById(R.id.send);
@@ -70,14 +70,14 @@ public class Response extends DialogFragment {
                     bt.setEnabled(true);
                     bt.setImageResource(R.drawable.ic_send_holo_light);
                     tv.setVisibility(View.VISIBLE);
-                    tv.setText(Main.MSG_LIMIT_FOR_QR-editable.length()>0?Main.MSG_LIMIT_FOR_QR-editable.length()+"":getString(R.string.no_qr));
+                    tv.setText(PublicStaticVariables.MSG_LIMIT_FOR_QR-editable.length()>0?PublicStaticVariables.MSG_LIMIT_FOR_QR-editable.length()+"":getString(R.string.no_qr));
                 }
             }
         });
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Main.currentLayout==R.layout.decrypted_msg)
+                if(PublicStaticVariables.currentLayout==R.layout.decrypted_msg)
                     getActivity().findViewById(R.id.answer).setVisibility(View.GONE);
                 final String userInput=et.getText().toString();
                 final MessageFormat msg = new MessageFormat(null, "", userInput,
@@ -90,7 +90,7 @@ public class Response extends DialogFragment {
                     public void run() {
                         CryptMethods.encrypt(msg.getFormatedMsg(),
                                 contact.getPublicKey());
-                        boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < Main.MSG_LIMIT_FOR_QR);
+                        boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < PublicStaticVariables.MSG_LIMIT_FOR_QR);
                         if (success) {
                             Intent intentShare = new Intent(Intent.ACTION_SEND_MULTIPLE);
                             intentShare.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});

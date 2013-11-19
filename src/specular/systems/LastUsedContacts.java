@@ -33,9 +33,9 @@ public boolean showed(){
                 num[c] = Integer.parseInt(t[c].split("-")[1]);
             for (int c = 0; c < t.length && c < NUM_LASTS; c++) {
                 long lg = Long.parseLong(t[c].split("-")[0]);
-                for (int b = 0; b < Main.fullList.size(); b++) {
-                    if (Main.fullList.get(b).getId() == lg) {
-                        lasts[c] = Main.fullList.get(b);
+                for (int b = 0; b < PublicStaticVariables.fullList.size(); b++) {
+                    if (PublicStaticVariables.fullList.get(b).getId() == lg) {
+                        lasts[c] = PublicStaticVariables.fullList.get(b);
                         ids[c] = lg;
                         break;
                     }

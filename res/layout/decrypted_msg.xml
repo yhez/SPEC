@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/decrypted_msg_ll"
     android:layout_width="match_parent"
@@ -14,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:columnCount="5"
+        android:columnCount="4"
         android:padding="@dimen/default_gap"
         android:rowCount="1">
         <!--hash ok or not-->
@@ -80,23 +79,13 @@
                 android:padding="@dimen/default_gap"
                 android:src="@drawable/session" />
         </FrameLayout>
-        <!--file to open-->
-        <ImageButton
-            android:id="@+id/open_file"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:onClick="decryptedMsgClick"
-            android:padding="@dimen/default_gap"
-            android:src="@drawable/after_attach" />
         <!--add to contact if doesn't exist-->
         <ImageButton
             android:id="@+id/add_contact_decrypt"
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="4"
+            android:layout_column="3"
             android:onClick="addToContacts"
             android:padding="@dimen/default_gap"
             android:src="@drawable/plus" />
@@ -104,47 +93,79 @@
 
     <RelativeLayout
         android:id="@+id/from"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/top_pannel">
+
         <ImageButton
-            android:layout_alignParentRight="true"
             android:id="@+id/answer"
-            android:paddingRight="@dimen/default_gap"
-            android:paddingLeft="@dimen/default_gap"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:onClick="decryptedMsgClick"
+            android:paddingLeft="@dimen/default_gap"
+            android:paddingRight="@dimen/default_gap"
             android:src="@drawable/respond" />
+
         <TextView
-            android:layout_centerVertical="true"
             android:id="@+id/general_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:paddingLeft="@dimen/default_gap"
             android:textColor="@color/spec_black" />
 
 
     </RelativeLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
+    <!--file to open-->
+    <FrameLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/from"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/from"
         android:padding="@dimen/default_gap">
 
-        <TextView
-            android:id="@+id/decrypted_msg"
+        <RelativeLayout
+            android:id="@+id/open_file_rlt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end">
+            <TextView
+                android:gravity="center_horizontal"
+                android:textColor="@color/spec_black"
+                android:id="@+id/file_name"
+                android:layout_alignParentBottom="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageButton
+                android:gravity="center_horizontal"
+                style="?android:attr/borderlessButtonStyle"
+                android:id="@+id/open_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/file_name"
+                android:onClick="decryptedMsgClick" />
+        </RelativeLayout>
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autoLink="all"
-            android:gravity="start"
-            android:textColor="@color/spec_black"
-            android:textSize="25sp" />
-    </ScrollView>
+            android:layout_gravity="top">
+
+            <TextView
+                android:id="@+id/decrypted_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="all"
+                android:gravity="start"
+                android:textColor="@color/spec_black"
+                android:textSize="25sp" />
+        </ScrollView>
+    </FrameLayout>
 </RelativeLayout>

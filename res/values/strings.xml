@@ -118,6 +118,7 @@
     <string name="file_to_big">can\'t attach file, to big.( current limit 10 MB )</string>
     <string name="file_is_empty">the file is empty</string>
     <string name="notify_msg_deleted">Message has been deleted</string>
+    <string name="send_another_msg">send another message</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

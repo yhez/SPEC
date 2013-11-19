@@ -11,19 +11,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import specular.systems.Contact;
-import specular.systems.FragmentManagement;
-import specular.systems.Main;
 import specular.systems.PublicContactCard;
+import specular.systems.PublicStaticVariables;
 import specular.systems.R;
-import specular.systems.Splash;
 
 
 public class AddContactDlg extends DialogFragment {
     PublicContactCard pcc;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        pcc= Splash.fileContactCard;
-        Splash.fileContactCard=null;
+        pcc= PublicStaticVariables.fileContactCard;
+        PublicStaticVariables.fileContactCard=null;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -36,10 +34,10 @@ public class AddContactDlg extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Contact c = new Contact(getActivity(), pcc.getName(), pcc.getEmail(), pcc.getPublicKey());
-                        if (Main.currentLayout == R.layout.decrypted_msg)
+                        if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg)
                             getActivity().findViewById(R.id.add_contact_decrypt).setVisibility(View.GONE);
-                        if (Main.currentLayout == R.layout.encrypt) {
-                            FragmentManagement.f.contactChosen(c.getId());
+                        if (PublicStaticVariables.currentLayout == R.layout.encrypt) {
+                            PublicStaticVariables.f.contactChosen(c.getId());
                         }//todo call contactChosen
                     }
                 })

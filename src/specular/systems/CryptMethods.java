@@ -23,9 +23,6 @@ import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
 public class CryptMethods {
-    public static MessageFormat decryptedMsg = null;
-    public static String encryptedMsgToSend = null;
-    public static boolean NFCMode = false;
     private static PrivateKey mPtK = null;
     private static String myName = null, myEmail = null, myPublicKey = null,
             myPrivateKey = null;
@@ -41,7 +38,7 @@ public class CryptMethods {
     public static void deleteKeys() {
         myPrivateKey = null;
         mPtK = null;
-        decryptedMsg = null;
+        PublicStaticVariables.decryptedMsg = null;
     }
 
     public static boolean setPrivate(String p) {
@@ -134,9 +131,9 @@ public class CryptMethods {
             cipher.init(Cipher.DECRYPT_MODE, mPtK, iesParams);
             byte[] rawMsg = Visual.hex2bin(encryptedMessage);
             byte[] decryptedBytes = cipher.doFinal(rawMsg);
-            decryptedMsg = new MessageFormat(decryptedBytes);
+            PublicStaticVariables.decryptedMsg = new MessageFormat(decryptedBytes);
         } catch (Exception e) {
-            decryptedMsg = null;
+            PublicStaticVariables.decryptedMsg = null;
             e.printStackTrace();
         }
     }
@@ -153,7 +150,7 @@ public class CryptMethods {
             IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",
                     "HmacSHA1", null, null);
             cipher.init(Cipher.ENCRYPT_MODE, frndPbK, iesParams);
-            encryptedMsgToSend = Visual.bin2hex(cipher.doFinal(msg));
+            PublicStaticVariables.encryptedMsgToSend = Visual.bin2hex(cipher.doFinal(msg));
         } catch (Exception ignore) {
             ignore.printStackTrace();
         }

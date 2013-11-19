@@ -6,31 +6,28 @@ import android.graphics.Bitmap;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
-public class Contact{
-    public static final int WE_STRANGERS = 0, I_KNOW_HIS_SESS = 1,
-            HE_KNOW_MY_SESS = 2, WE_FRIENDS = 3;
+public class Contact {
 
     private String contactName;
     private int conversationStatus;
     private String email;
     private long id;
-
     private String publicKey;
-
     private String session;
 
     // new contact from scratch
     public Contact(Activity a, String contactName, String email,
                    String publicKey) {
         if (publicKey != null) {
-            this.contactName = contactName != null&&contactName.length()>1 ? contactName : email.split("@")[0];
+            this.contactName = contactName != null && contactName.length() > 1 ? contactName : email.split("@")[0];
             this.publicKey = publicKey;
             this.email = email;
             this.session = new Session() + "";
-            this.conversationStatus = WE_STRANGERS;
-            this.id=Main.contactsDataSource.createContact(this);
+            this.conversationStatus = PublicStaticVariables.WE_STRANGERS;
+            this.id = PublicStaticVariables.contactsDataSource.createContact(this);
         }
     }
+
     public Contact(long id, String contactName, String email, String publicKey,
                    String session, int conversationStatus) {
         this.conversationStatus = conversationStatus;
@@ -39,6 +36,37 @@ public class Contact{
         this.publicKey = publicKey;
         this.email = email;
         this.session = session;
+    }
+
+    public static Bitmap getPhoto(String publicKey) {
+
+        //TODO add colors String color = pbk.substring(pbk.length()/2,pbk.length()/2+6);
+        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(publicKey, BarcodeFormat.QR_CODE.toString(), 128);
+        Bitmap bitmap = null;
+        try {
+            bitmap = qrCodeEncoder.encodeAsBitmap();
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        /*int sqrSize;
+        for (int x = 0; ; x++)
+            if (bitmap.getPixel(x, x) != Color.BLACK) {
+                sqrSize = x;
+                break;
+            }
+        int width = bitmap.getWidth() / sqrSize;
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < width; y++)
+                if (bitmap.getPixel(x * sqrSize, y * sqrSize) == Color.WHITE)
+                    for (int z = x * sqrSize; z < sqrSize * (x + 1); z++)
+                        for (int q = y * sqrSize; q < sqrSize * (y + 1); q++)
+                            bitmap.setPixel(z, q, Color.TRANSPARENT);
+                else
+                    for (int z = x * sqrSize; z < sqrSize * (x + 1); z++)
+                        for (int q = y * sqrSize; q < sqrSize * (y + 1); q++)
+                            bitmap.setPixel(z, q, Color.parseColor("#"+color));
+                            */
+        return bitmap;
     }
 
     public String getContactName() {
@@ -75,7 +103,7 @@ public class Contact{
 
     public void update(String contactName, String email,
                        String publicKey, String session, int conversationStatus) {
-        Main.contactsDataSource.deleteContact(this);
+        PublicStaticVariables.contactsDataSource.deleteContact(this);
         if (contactName != null)
             this.contactName = contactName;
         if (publicKey != null)
@@ -86,36 +114,6 @@ public class Contact{
             this.session = session;
         if (!(conversationStatus < 0))
             this.conversationStatus = conversationStatus;
-        this.id = Main.contactsDataSource.createContact(this);
-    }
-    public static Bitmap getPhoto(String publicKey) {
-
-        //TODO add colors String color = pbk.substring(pbk.length()/2,pbk.length()/2+6);
-        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(publicKey, BarcodeFormat.QR_CODE.toString(), 128);
-        Bitmap bitmap = null;
-        try {
-            bitmap = qrCodeEncoder.encodeAsBitmap();
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-        /*int sqrSize;
-        for (int x = 0; ; x++)
-            if (bitmap.getPixel(x, x) != Color.BLACK) {
-                sqrSize = x;
-                break;
-            }
-        int width = bitmap.getWidth() / sqrSize;
-        for (int x = 0; x < width; x++)
-            for (int y = 0; y < width; y++)
-                if (bitmap.getPixel(x * sqrSize, y * sqrSize) == Color.WHITE)
-                    for (int z = x * sqrSize; z < sqrSize * (x + 1); z++)
-                        for (int q = y * sqrSize; q < sqrSize * (y + 1); q++)
-                            bitmap.setPixel(z, q, Color.TRANSPARENT);
-                else
-                    for (int z = x * sqrSize; z < sqrSize * (x + 1); z++)
-                        for (int q = y * sqrSize; q < sqrSize * (y + 1); q++)
-                            bitmap.setPixel(z, q, Color.parseColor("#"+color));
-                            */
-        return bitmap;
+        this.id = PublicStaticVariables.contactsDataSource.createContact(this);
     }
 }

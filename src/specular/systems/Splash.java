@@ -19,14 +19,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class Splash extends Activity {
-    @Override
-    public void onBackPressed(){
-
-    }
-    public static Long time=System.currentTimeMillis();
-    final private static int TIME_FOR_SPLASH = 3500;
-    public static String message;
-    public static PublicContactCard fileContactCard;
+    private final static int TIME_FOR_SPLASH = 3500;
+    private final static long TIME_FOR_CLEAR_TASK=400000;
     private final Thread waitForSplash = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -42,6 +36,12 @@ public class Splash extends Activity {
             finish();
         }
     });
+
+    @Override
+    public void onBackPressed() {
+
+    }
+
     void go() {
         boolean newUser = FilesManagement.isItNewUser(this);
         if (newUser) {
@@ -63,10 +63,10 @@ public class Splash extends Activity {
         }
         if (!newUser) {
             Intent intent = new Intent(Splash.this, Main.class);
-            if(time !=null)
-            if (message != null||fileContactCard!=null||System.currentTimeMillis()-time>400000) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            }
+                if (PublicStaticVariables.message != null || PublicStaticVariables.fileContactCard != null
+                        || PublicStaticVariables.time == null||(System.currentTimeMillis() - PublicStaticVariables.time) >TIME_FOR_CLEAR_TASK ) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                }
             startActivity(intent);
             finish();
         }
@@ -76,61 +76,59 @@ public class Splash extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         Intent thisIntent = getIntent();
-        if (thisIntent.getType() != null){
-            if(thisIntent.getAction().equals(Intent.ACTION_SEND)){
-                Main.currentText = thisIntent.getStringExtra(Intent.EXTRA_TEXT);
+        if (thisIntent.getType() != null) {
+            if (thisIntent.getAction().equals(Intent.ACTION_SEND)) {
+                PublicStaticVariables.currentText = thisIntent.getStringExtra(Intent.EXTRA_TEXT);
                 go();
-            }
-            else if(thisIntent.getType().equals("application/octet-stream")
-                && thisIntent.getData() != null) {
-            PublicContactCard qrp;
-            Uri uri = getIntent().getData();
-            if (uri != null) {
-                String data = null;
-                try {
-                    ContentResolver cr = getBaseContext().getContentResolver();
-                    InputStream is;
-                    is = cr.openInputStream(uri);
-                    StringBuilder buf = new StringBuilder();
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(is));
-                    String str;
+            } else if (thisIntent.getType().equals("application/octet-stream")
+                    && thisIntent.getData() != null) {
+                PublicContactCard qrp;
+                Uri uri = getIntent().getData();
+                if (uri != null) {
+                    String data = null;
                     try {
-                        while ((str = reader.readLine()) != null) {
-                            buf.append(str).append("\n");
-                        }
+                        ContentResolver cr = getBaseContext().getContentResolver();
+                        InputStream is;
+                        is = cr.openInputStream(uri);
+                        StringBuilder buf = new StringBuilder();
+                        BufferedReader reader = new BufferedReader(
+                                new InputStreamReader(is));
+                        String str;
+                        try {
+                            while ((str = reader.readLine()) != null) {
+                                buf.append(str).append("\n");
+                            }
 
-                        is.close();
-                        reader.close();
-                    } catch (IOException e) {
+                            is.close();
+                            reader.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        buf.deleteCharAt(buf.length() - 1);
+                        data = buf.toString();
+                    } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    buf.deleteCharAt(buf.length() - 1);
-                    data = buf.toString();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                if (data != null) {
-                    qrp = new PublicContactCard(this, data);
-                    if (qrp.getPublicKey() != null) {
-                        fileContactCard=qrp;
+                    if (data != null) {
+                        qrp = new PublicContactCard(this, data);
+                        if (qrp.getPublicKey() != null) {
+                            PublicStaticVariables.fileContactCard = qrp;
+                        } else {
+                            PublicStaticVariables.message = data;
+                        }
+                        go();
                     } else {
-                        message = data;
+                        Toast.makeText(getBaseContext(), R.string.failed,
+                                Toast.LENGTH_LONG).show();
+                        finish();
                     }
-                    go();
-                }
-                else{
+                } else {
                     Toast.makeText(getBaseContext(), R.string.failed,
                             Toast.LENGTH_LONG).show();
                     finish();
                 }
-            } else{
-                Toast.makeText(getBaseContext(), R.string.failed,
-                        Toast.LENGTH_LONG).show();
-                finish();
-            }
-        } else
-            go();
-    }else go();
-}
+            } else
+                go();
+        } else go();
+    }
 }
