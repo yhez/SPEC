@@ -173,19 +173,4 @@
         android:id="@+id/flag_contact_exist"
         android:layout_width="0dp"
         android:layout_height="0dp" />
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/flag_hash"
-        android:layout_width="0dp"
-        android:layout_height="0dp" />
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/flag_session"
-        android:layout_width="0dp"
-        android:layout_height="0dp" />
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/flag_replay"
-        android:layout_width="0dp"
-        android:layout_height="0dp" />
 </RelativeLayout>

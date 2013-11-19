@@ -80,9 +80,6 @@ public final class FilesManagement {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        edt.putString("flag_hash",((TextView)a.findViewById(R.id.flag_hash)).getText().toString());
-        edt.putString("flag_session",((TextView)a.findViewById(R.id.flag_session)).getText().toString());
-        edt.putString("flag_replay",((TextView)a.findViewById(R.id.flag_replay)).getText().toString());
         edt.commit();
     }
     public static void deleteTempDecryptedMSG(Activity a){
@@ -90,9 +87,6 @@ public final class FilesManagement {
                 .getApplicationContext());
         SharedPreferences.Editor edt = srp.edit();
         edt.remove("msg");
-        edt.remove("flag_hash");
-        edt.remove("flag_session");
-        edt.remove("flag_replay");
         edt.commit();
     }
     public static void getTempDecryptedMSG(Activity a){
@@ -103,9 +97,6 @@ public final class FilesManagement {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        ((TextView)a.findViewById(R.id.flag_hash)).setText(srp.getString("flag_hash",false+""));
-        ((TextView)a.findViewById(R.id.flag_session)).setText(srp.getString("flag_session",false+""));
-        ((TextView)a.findViewById(R.id.flag_replay)).setText(srp.getString("flag_replay",false+""));
     }
 
     public static Typeface getOld(Activity a) {

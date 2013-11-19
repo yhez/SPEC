@@ -351,15 +351,15 @@ public class FragmentManagement extends Fragment {
             case decrypted_msg:
                 Log.d("on resume calls on start", "nothing");
                 TextView tv = (TextView) getActivity().findViewById(R.id.decrypted_msg);
-                if (PublicStaticVariables.decryptedMsg == null) {
+                if (PublicStaticVariables.decryptedMsg == null||PublicStaticVariables.decryptedMsg.getHash().length()==0) {
                     FilesManagement.getTempDecryptedMSG(getActivity());
                     MessageFormat mf = new MessageFormat();
                         if(mf.getPublicKey()!=null&&mf.getPublicKey().length()>5)
-                            PublicStaticVariables.decryptedMsg = new MessageFormat();
+                            PublicStaticVariables.decryptedMsg = mf;
                 }else{
-                    ((TextView)getActivity().findViewById(R.id.flag_session)).setText(false+"");
-                    ((TextView)getActivity().findViewById(R.id.flag_hash)).setText(false+"");
-                    ((TextView)getActivity().findViewById(R.id.flag_replay)).setText(false+"");
+                    PublicStaticVariables.flag_hash=false;
+                    PublicStaticVariables.flag_session=false;
+                    PublicStaticVariables.flag_replay=false;
                 }
                 if (PublicStaticVariables.decryptedMsg == null) {
                     getActivity().findViewById(R.id.top_pannel).setVisibility(View.GONE);
@@ -394,33 +394,30 @@ public class FragmentManagement extends Fragment {
                         ((TextView) getActivity().findViewById(R.id.file_name)).setText(name);
                     }
                     tv.setText(PublicStaticVariables.decryptedMsg.getMsgContent());
-                    if (PublicStaticVariables.decryptedMsg.checkHash()||
-                            ((TextView)getActivity().findViewById(R.id.flag_hash)).getText().toString().equals("true")){
+                    if (PublicStaticVariables.decryptedMsg.checkHash()||PublicStaticVariables.flag_hash){
                         ((ImageView) getActivity().findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_ok);
-                        ((TextView)getActivity().findViewById(R.id.flag_hash)).setText(true+"");
+                        PublicStaticVariables.flag_hash=true;
                     }
                     else{
                         ((ImageView) getActivity().findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_bad);
-                        ((TextView)getActivity().findViewById(R.id.flag_hash)).setText(false+"");
+                        PublicStaticVariables.flag_hash=false;
                     }
-                    if (PublicStaticVariables.decryptedMsg.checkReplay()||
-                            ((TextView)getActivity().findViewById(R.id.flag_replay)).getText().toString().equals("true")){
+                    if (PublicStaticVariables.decryptedMsg.checkReplay()||PublicStaticVariables.flag_replay){
                         ((ImageView) getActivity().findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_ok);
-                        ((TextView)getActivity().findViewById(R.id.flag_replay)).setText(true+"");
+                        PublicStaticVariables.flag_replay=true;
                     }
                     else{
-                        ((TextView)getActivity().findViewById(R.id.flag_replay)).setText(false+"");
+                        PublicStaticVariables.flag_replay=false;
                         ((ImageView) getActivity().findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_bad);
                     }
                     //todo check session
-                    if (PublicStaticVariables.decryptedMsg.checkHash()||
-                            ((TextView)getActivity().findViewById(R.id.flag_session)).getText().toString().equals("true")){
+                    if (PublicStaticVariables.decryptedMsg.checkHash()||PublicStaticVariables.flag_session){
                         ((ImageView) getActivity().findViewById(R.id.session_check)).setImageResource(R.drawable.ic_ok);
-                        ((TextView)getActivity().findViewById(R.id.flag_session)).setText(true+"");
+                        PublicStaticVariables.flag_session=true;
                     }
                     else{
                         ((ImageView) getActivity().findViewById(R.id.session_check)).setImageResource(R.drawable.ic_bad);
-                        ((TextView)getActivity().findViewById(R.id.flag_session)).setText(false+"");
+                        PublicStaticVariables.flag_session=false;
                     }
                 }
                 setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.decrypted_msg_ll));

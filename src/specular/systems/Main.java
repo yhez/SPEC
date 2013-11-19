@@ -595,9 +595,8 @@ public class Main extends Activity {
     public void onPause() {
         if (!handleByOnNewIntent) {
             currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
-            if(PublicStaticVariables.currentLayout==R.layout.decrypted_msg){
+            if(PublicStaticVariables.decryptedMsg!=null)
                 FilesManagement.saveTempDecryptedMSG(this);
-            }
             //todo delete view content
             CryptMethods.deleteKeys();
         }
