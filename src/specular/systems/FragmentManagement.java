@@ -213,7 +213,7 @@ public class FragmentManagement extends Fragment {
                                     .toString()));
                         }
                     });
-                    getActivity().findViewById(R.id.send).setEnabled(false);
+                    PublicStaticVariables.readyToSend=false;
                     ((EditText) getActivity().findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -252,19 +252,19 @@ public class FragmentManagement extends Fragment {
                             TextView tv = (TextView) getActivity().findViewById(R.id.text_counter);
                             ImageButton bt = (ImageButton) getActivity().findViewById(R.id.send);
                             boolean choosedContact = ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).getText().toString().length() > 0;
-                            bt.setEnabled(choosedContact);
+                            PublicStaticVariables.readyToSend=choosedContact;
                             bt.setImageResource(choosedContact ? R.drawable.ic_send_holo_light : R.drawable.ic_send_disabled_holo_light);
                             if (num == 0) {
                                 PublicStaticVariables.changed = choosedContact;
                                 tv.setVisibility(View.GONE);
                                 bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
-                                bt.setEnabled(false);
+                                PublicStaticVariables.readyToSend=false;
                             } else {
                                 PublicStaticVariables.changed = true;
                                 tv.setVisibility(View.VISIBLE);
                                 if (num > 0) {
                                     if (choosedContact) {
-                                        bt.setEnabled(true);
+                                        PublicStaticVariables.readyToSend=true;
                                         bt.setImageResource(R.drawable.ic_send_holo_light);
                                     }
                                     if (num == 1) {

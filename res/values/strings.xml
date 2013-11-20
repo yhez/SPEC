@@ -119,6 +119,7 @@
     <string name="file_is_empty">the file is empty</string>
     <string name="notify_msg_deleted">Message has been deleted</string>
     <string name="send_another_msg">send another message</string>
+    <string name="send_orders">steps:\n------\n1. choose contact.\n2.enter content.\n3. add file (optional)</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

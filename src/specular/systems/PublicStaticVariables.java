@@ -34,6 +34,7 @@ public class PublicStaticVariables {
     //from fragment
     public static FragmentManagement f;
     public static LastUsedContacts luc;
+    public static boolean readyToSend=false;
     //from files management
     public final static int RESULT_ADD_FILE_FAILED=5,RESULT_ADD_FILE_TO_BIG=10,RESULT_ADD_FILE_EMPTY=20,RESULT_ADD_FILE_OK=40;
     public static boolean flag_hash=false,flag_session=false,flag_replay=false;
