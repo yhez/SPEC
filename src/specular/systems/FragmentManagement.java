@@ -76,8 +76,8 @@ public class FragmentManagement extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         Contact contact;
         switch (PublicStaticVariables.currentLayout) {
             case create_new_keys:

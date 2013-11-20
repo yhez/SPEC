@@ -540,6 +540,9 @@ public class Main extends Activity {
                     , PublicStaticVariables.decryptedMsg.getEmail(), PublicStaticVariables.decryptedMsg.getName());
             AddContactDlg acd = new AddContactDlg();
             acd.show(getFragmentManager(), "acd3");
+        }else if(PublicStaticVariables.currentLayout==R.layout.share){
+            ShareDialog dlg = new ShareDialog();
+            dlg.show(getFragmentManager(), "share");
         }
         return super.onOptionsItemSelected(item);
 
@@ -550,7 +553,8 @@ public class Main extends Activity {
         if (PublicStaticVariables.currentLayout == R.layout.contacts ||
                 PublicStaticVariables.currentLayout == R.layout.encrypt||
                 PublicStaticVariables.currentLayout == R.layout.edit_contact||
-                PublicStaticVariables.currentLayout==R.layout.decrypted_msg) {
+                PublicStaticVariables.currentLayout==R.layout.decrypted_msg||
+                PublicStaticVariables.currentLayout==R.layout.share) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.main, menu);
             return super.onCreateOptionsMenu(menu);
@@ -576,7 +580,7 @@ public class Main extends Activity {
             else
                 mi.setVisible(!drawerOpen);
             return super.onPrepareOptionsMenu(menu);
-        } else if (PublicStaticVariables.currentLayout == R.layout.edit_contact) {
+        } else if (PublicStaticVariables.currentLayout == R.layout.edit_contact||PublicStaticVariables.currentLayout==R.layout.share) {
             mi.setVisible(!drawerOpen);
             mi.setIcon(android.R.drawable.ic_menu_share);
             return super.onPrepareOptionsMenu(menu);
@@ -657,16 +661,23 @@ public class Main extends Activity {
         PublicStaticVariables.currentLayout = layout;
         mDrawerList.setItemChecked(menu, true);
         setTitle(menuTitles[menu]);
-        mDrawerLayout.closeDrawer(mDrawerList);
+        View v =findViewById(PublicStaticVariables.currentLayout);
+        if(v!=null)v.animate().setDuration(100).alpha(0).start();
+        final Fragment fragment = new FragmentManagement(Main.this);
+        final FragmentManager fragmentManager = getFragmentManager();
+        if(mDrawerLayout.isDrawerOpen(mDrawerList)){
+            mDrawerLayout.closeDrawer(mDrawerList);
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Fragment fragment = new FragmentManagement(Main.this);
-                FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame, fragment).commit();
-            }
+                }
         }, 300);
+        }
+        else
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, fragment).commit();
     }
 
     @Override
@@ -901,11 +912,6 @@ public class Main extends Activity {
                     break;
             }
         }
-    }
-
-    public void share(View v) {
-        ShareDialog dlg = new ShareDialog();
-        dlg.show(getFragmentManager(), "share");
     }
 
     //TODO

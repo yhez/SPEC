@@ -1,108 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/share_fl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:alpha="0"
+    android:alpha="1"
     android:background="@android:color/white"
     android:orientation="vertical"
     android:padding="@dimen/default_gap">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/your_public_key"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:alpha="1"
+        android:gravity="center"
+        android:padding="6dp"
+        android:text="@string/share_public_descripton"
+        android:textColor="@color/spec_black"
+        android:textSize="25sp" />
+
+    <View
+        android:id="@+id/div_down"
+        android:layout_width="240dp"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/spec_blue" />
+
+    <Button
+        android:id="@+id/share_panel"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/div_down"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:padding="@dimen/default_gap"
+        android:text="my details"
+        android:onClick="notImp"
+        android:textColor="@color/spec_black" />
+
+    <View
+        android:id="@+id/div_up"
+        android:layout_width="240dp"
+        android:layout_height="1dp"
+        android:layout_above="@id/share_panel"
+        android:layout_centerHorizontal="true"
+        android:background="@color/spec_blue" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/share_panel"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/swipe" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/div_up"
+        android:layout_below="@id/your_public_key"
+        android:padding="@dimen/default_gap">
 
         <TextView
-            android:id="@+id/your_public_key"
+            android:id="@+id/me_public"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:alpha="1"
-            android:gravity="center"
-            android:padding="6dp"
-            android:text="@string/share_public_descripton"
-            android:textColor="@color/spec_black"
-            android:textSize="25sp" />
-
-        <LinearLayout
-            android:id="@+id/share_panel"
-            style="?android:attr/buttonBarStyle"
-            android:layout_width="240dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:background="@color/spec_dark_blue"
-            android:orientation="horizontal"
-            android:padding="@dimen/default_gap">
-
-            <Button
-                android:id="@+id/button_share"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="share"
-                android:padding="@dimen/default_gap"
-                android:text="@string/share_button" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/white" />
-
-            <Button
-                android:id="@+id/button_publish"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:onClick="shareWeb"
-                android:padding="@dimen/default_gap"
-                android:text="@string/share_on_server" />
-        </LinearLayout>
+            android:background="@android:drawable/alert_light_frame"
+            android:gravity="fill_horizontal"
+            android:padding="32dp"
+            android:textColor="#28bedf"
+            android:textSize="20sp" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/share_panel"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/swipe" />
-
-        <FrameLayout
+            android:id="@+id/qr_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/share_panel"
-            android:layout_below="@id/your_public_key"
-            android:padding="@dimen/default_gap">
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:alpha="0"
+            android:background="@android:drawable/alert_light_frame"
+            android:padding="32dp" />
 
-            <TextView
-                android:padding="32dp"
-                android:id="@+id/me_public"
-                android:background="@android:drawable/alert_light_frame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:alpha="1"
-                android:gravity="fill_horizontal"
-                android:textColor="#28bedf"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:padding="32dp"
-                android:background="@android:drawable/alert_light_frame"
-                android:id="@+id/qr_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="top"
-                android:alpha="0" />
-
-            <View
-                android:id="@+id/touch"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </FrameLayout>
-    </RelativeLayout>
-</FrameLayout>
+        <View
+            android:id="@+id/touch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+</RelativeLayout>
