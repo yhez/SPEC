@@ -389,8 +389,11 @@ public class FragmentManagement extends Fragment {
                         String type = mtm.getMimeTypeFromExtension(ext);
                         intent.setType(type);
                         final List<ResolveInfo> matches = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+                        if(matches.size()>0)
                         ((ImageButton) getActivity().findViewById(R.id.open_file))
                                 .setImageDrawable(matches.get(0).loadIcon(getActivity().getPackageManager()));
+                        else
+                            ((ImageButton) getActivity().findViewById(R.id.open_file)).setImageResource(R.drawable.unknown);
                         ((TextView) getActivity().findViewById(R.id.file_name)).setText(name);
                     }
                     tv.setText(PublicStaticVariables.decryptedMsg.getMsgContent());
