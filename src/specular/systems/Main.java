@@ -215,7 +215,7 @@ public class Main extends Activity {
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(this, R.string.cand_find_an_app_to_open_file, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.cant_find_an_app_to_open_file, Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.answer:
@@ -245,7 +245,7 @@ public class Main extends Activity {
         Cursor cursor = null;
         try {
             String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = getContentResolver().query(contentUri, proj, null, null, null);
+            cursor = Main.this.getContentResolver().query(contentUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);
@@ -256,32 +256,36 @@ public class Main extends Activity {
         }
     }
 
+    private void attachFile(final Uri uri) {
+        if (uri != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int r = FilesManagement.addFile(Main.this, uri);
+                    if (r == PublicStaticVariables.RESULT_ADD_FILE_OK) {
+                        //if(uri.)
+                        String w[] = getRealPathFromURI(uri).split("/");
+                        //File f =new File(uri.getPath());
+                        fileName = w[w.length - 1];
+                        //Log.d("File",fileName);
+                        Message msg = hndl.obtainMessage(REPLACE_PHOTO);
+                        hndl.sendMessage(msg);
+                    } else {
+                        Message msg = hndl.obtainMessage(r);
+                        hndl.sendMessage(msg);
+                    }
+                }
+            }).start();
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         FilesManagement.getKeysFromSDCard(this);
         PublicStaticVariables.handleByOnActivityResult = true;
         if (resultCode == RESULT_OK) {
             if (requestCode == ATTACH_FILE) {
-                final Uri uri = intent.getData();
-                if (uri != null) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            int r = FilesManagement.addFile(Main.this, uri);
-                            if (r == PublicStaticVariables.RESULT_ADD_FILE_OK) {
-                                String w[] = getRealPathFromURI(uri).split("/");
-                                //File f =new File(uri.getPath());
-                                fileName = w[w.length - 1];
-                                //Log.d("File",fileName);
-                                Message msg = hndl.obtainMessage(REPLACE_PHOTO);
-                                hndl.sendMessage(msg);
-                            } else {
-                                Message msg = hndl.obtainMessage(r);
-                                hndl.sendMessage(msg);
-                            }
-                        }
-                    }).start();
-                }
+                attachFile(intent.getData());
             } else if (requestCode == 71) {
                 //coming back from turn nfc on
                 createKeysManager();
@@ -519,7 +523,6 @@ public class Main extends Activity {
         // Handle action buttons
         if (PublicStaticVariables.currentLayout == R.layout.encrypt || PublicStaticVariables.currentLayout == R.layout.contacts) {
             View b = findViewById(R.id.filter_ll);
-            //View lst = currentLayout == R.layout.encrypt ? findViewById(R.id.en_list_contact) : findViewById(R.id.list);
             if (PublicStaticVariables.fullList != null && PublicStaticVariables.fullList.size() > 0) {
                 if (b.getVisibility() == View.GONE) {
                     b.setVisibility(View.VISIBLE);
@@ -1009,6 +1012,26 @@ public class Main extends Activity {
         } else if (msgSended) {
             onBackPressed();
             msgSended = false;
+        }
+        if (PublicStaticVariables.currentLayout == R.layout.encrypt) {
+            final Uri uri = getIntent().getParcelableExtra("attach");
+            if (uri != null) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int r = FilesManagement.addFile(Main.this, uri);
+                        if (r == PublicStaticVariables.RESULT_ADD_FILE_OK) {
+                            String w[] = uri.getPath().split("/");
+                            fileName = w[w.length - 1];
+                            Message msg = hndl.obtainMessage(REPLACE_PHOTO);
+                            hndl.sendMessage(msg);
+                        } else {
+                            Message msg = hndl.obtainMessage(r);
+                            hndl.sendMessage(msg);
+                        }
+                    }
+                }).start();
+            }
         }
     }
 

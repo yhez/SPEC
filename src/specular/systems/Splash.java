@@ -20,7 +20,7 @@ import java.io.InputStreamReader;
 
 public class Splash extends Activity {
     private final static int TIME_FOR_SPLASH = 3500;
-    private final static long TIME_FOR_CLEAR_TASK=15;//in minute
+    private final static long TIME_FOR_CLEAR_TASK = 15;//in minute
     private final Thread waitForSplash = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -63,11 +63,13 @@ public class Splash extends Activity {
         }
         if (!newUser) {
             Intent intent = new Intent(Splash.this, Main.class);
-                if (PublicStaticVariables.message != null || PublicStaticVariables.fileContactCard != null
-                        || PublicStaticVariables.time == null||(System.currentTimeMillis() - PublicStaticVariables.time) >(1000*60*TIME_FOR_CLEAR_TASK) ) {
-                    FilesManagement.deleteTempDecryptedMSG(this);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                }
+            if (PublicStaticVariables.message != null || PublicStaticVariables.fileContactCard != null
+                    || PublicStaticVariables.time == null || (System.currentTimeMillis() - PublicStaticVariables.time) > (1000 * 60 * TIME_FOR_CLEAR_TASK)) {
+                FilesManagement.deleteTempDecryptedMSG(this);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            }
+            if (getIntent().getParcelableExtra(Intent.EXTRA_STREAM) != null)
+                intent.putExtra("attach", getIntent().getParcelableExtra(Intent.EXTRA_STREAM));
             startActivity(intent);
             finish();
         }
@@ -79,7 +81,10 @@ public class Splash extends Activity {
         Intent thisIntent = getIntent();
         if (thisIntent.getType() != null) {
             if (thisIntent.getAction().equals(Intent.ACTION_SEND)) {
-                PublicStaticVariables.currentText = thisIntent.getStringExtra(Intent.EXTRA_TEXT);
+                String s = thisIntent.getStringExtra(Intent.EXTRA_TEXT);
+                if (s != null){
+                    PublicStaticVariables.currentText = s;
+                }
                 go();
             } else if (thisIntent.getType().equals("application/octet-stream")
                     && thisIntent.getData() != null) {

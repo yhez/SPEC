@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import static android.graphics.Typeface.createFromAsset;
 
 public final class FilesManagement {
-    private final static int LIMIT_FILE_SIZE=10485760;
     private final static int FRIEND_CONTACT_CARD=R.string.file_name_shared_contact_card;
     private final static int FRIENDS_SHARE_QR=R.string.file_name_friends_qr;
     private final static int FILE_NAME = R.string.file_name_my_public_key;
@@ -335,7 +334,7 @@ public final class FilesManagement {
             e.printStackTrace();
             return PublicStaticVariables.RESULT_ADD_FILE_FAILED;
         }
-        if(size>LIMIT_FILE_SIZE)
+        if(size>PublicStaticVariables.LIMIT_FILE_SIZE)
             return PublicStaticVariables.RESULT_ADD_FILE_TO_BIG;
         byte[] result = new byte[size];
         try {

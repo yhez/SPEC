@@ -72,8 +72,7 @@
     <string name="editable_fields">Contact\'s Info:</string>
     <string name="not_editable_fields">Security Audit Info:</string>
     <string name="response">Respond</string>
-    <string name="technical_detailes">Security Info</string>
-    <string name="cand_find_an_app_to_open_file">Can\'t find proper app</string>
+    <string name="cant_find_an_app_to_open_file">Can\'t find proper app</string>
     <string name="failed_to_create_file_to_open">Failed to create file</string>
     <string name="described_what_going_to_be">Notify if some of details already exist-TODO</string>
     <string name="new_contact_to_add">You\'ve been discovered, would you like to add this contact?</string>
@@ -115,7 +114,7 @@
     <string name="file_name_qr_msg">SecureQRMessage.SPEC.png</string>
     <string name="delete_keys_verify">by deleting your keys you\'ll lose access for your old messages, please verify that you have a copy of the keys!</string>
     <string name="delete_keys_verify_title">Delete Keys?</string>
-    <string name="file_to_big">can\'t attach file, to big.( current limit 10 MB )</string>
+    <string name="file_to_big">sorry.\n------\ncan\'t attach file, to big.\n-current limit 50 MB-</string>
     <string name="file_is_empty">the file is empty</string>
     <string name="notify_msg_deleted">Message has been deleted</string>
     <string name="send_another_msg">send another message</string>
