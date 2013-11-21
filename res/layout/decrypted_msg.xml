@@ -80,15 +80,15 @@
                 android:src="@drawable/session" />
         </FrameLayout>
         <!--add to contact if doesn't exist-->
-<!--        <ImageButton
-            android:id="@+id/add_contact_decrypt"
-            style="@android:style/Widget.Holo.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="3"
-            android:onClick="addToContacts"
-            android:padding="@dimen/default_gap"
-            android:src="@drawable/plus" />-->
+        <!--        <ImageButton
+                    android:id="@+id/add_contact_decrypt"
+                    style="@android:style/Widget.Holo.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="3"
+                    android:onClick="addToContacts"
+                    android:padding="@dimen/default_gap"
+                    android:src="@drawable/plus" />-->
     </GridLayout>
 
     <RelativeLayout
@@ -137,6 +137,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/default_gap"
             android:layout_gravity="bottom|right">
+
             <TextView
                 android:maxLength="6"
                 android:textColor="@color/spec_black"
@@ -144,6 +145,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
             <ImageButton
                 style="?android:attr/borderlessButtonStyle"
                 android:id="@+id/open_file"
@@ -168,6 +170,7 @@
                 android:textSize="25sp" />
         </ScrollView>
     </FrameLayout>
+
     <TextView
         android:visibility="gone"
         android:id="@+id/flag_contact_exist"

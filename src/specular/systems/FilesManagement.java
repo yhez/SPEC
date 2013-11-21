@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import static android.graphics.Typeface.createFromAsset;
 
 public final class FilesManagement {
-    private final static int FRIEND_CONTACT_CARD=R.string.file_name_shared_contact_card;
-    private final static int FRIENDS_SHARE_QR=R.string.file_name_friends_qr;
+    private final static int FRIEND_CONTACT_CARD = R.string.file_name_shared_contact_card;
+    private final static int FRIENDS_SHARE_QR = R.string.file_name_friends_qr;
     private final static int FILE_NAME = R.string.file_name_my_public_key;
     private final static int QR_NAME = R.string.file_name_my_qr_key;
     private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
@@ -70,29 +70,31 @@ public final class FilesManagement {
         return true;
     }
 
-    public static void saveTempDecryptedMSG(Activity a){
+    public static void saveTempDecryptedMSG(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         SharedPreferences.Editor edt = srp.edit();
         try {
-            edt.putString("msg",new String(new MessageFormat().getFormatedMsg(),"UTF-8"));
+            edt.putString("msg", new String(new MessageFormat().getFormatedMsg(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         edt.commit();
     }
-    public static void deleteTempDecryptedMSG(Activity a){
+
+    public static void deleteTempDecryptedMSG(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         SharedPreferences.Editor edt = srp.edit();
         edt.remove("msg");
         edt.commit();
     }
-    public static void getTempDecryptedMSG(Activity a){
+
+    public static void getTempDecryptedMSG(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         try {
-            PublicStaticVariables.decryptedMsg=new MessageFormat(srp.getString("msg",null).getBytes("UTF-8"));
+            PublicStaticVariables.decryptedMsg = new MessageFormat(srp.getString("msg", null).getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -189,11 +191,12 @@ public final class FilesManagement {
             return null;
         }
     }
-    public static Uri getContactCardToShare(Activity a){
-        String name = ((EditText)a.findViewById(R.id.contact_name)).getText().toString();
-        String email = ((EditText)a.findViewById(R.id.contact_email)).getText().toString();
-        String publicKey = ((TextView)a.findViewById(R.id.contact_pb)).getText().toString();
-        PublicContactCard pcc = new PublicContactCard(a,publicKey,email,name);
+
+    public static Uri getContactCardToShare(Activity a) {
+        String name = ((EditText) a.findViewById(R.id.contact_name)).getText().toString();
+        String email = ((EditText) a.findViewById(R.id.contact_email)).getText().toString();
+        String publicKey = ((TextView) a.findViewById(R.id.contact_pb)).getText().toString();
+        PublicContactCard pcc = new PublicContactCard(a, publicKey, email, name);
         FileOutputStream fos = null;
         try {
             fos = a.openFileOutput(a.getString(FRIEND_CONTACT_CARD),
@@ -211,15 +214,16 @@ public final class FilesManagement {
         }
         return Uri.parse("file://" + new File(a.getFilesDir(), a.getString(FRIEND_CONTACT_CARD)));
     }
-    public static Uri getQRFriendToShare(Activity a){
-        String name = ((EditText)a.findViewById(R.id.contact_name)).getText().toString();
-        String email = ((EditText)a.findViewById(R.id.contact_email)).getText().toString();
-        String publicKey = ((TextView)a.findViewById(R.id.contact_pb)).getText().toString();
-        PublicContactCard pcc = new PublicContactCard(a,publicKey,email,name);
+
+    public static Uri getQRFriendToShare(Activity a) {
+        String name = ((EditText) a.findViewById(R.id.contact_name)).getText().toString();
+        String email = ((EditText) a.findViewById(R.id.contact_email)).getText().toString();
+        String publicKey = ((TextView) a.findViewById(R.id.contact_pb)).getText().toString();
+        PublicContactCard pcc = new PublicContactCard(a, publicKey, email, name);
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(pcc.getQRToPublish(), BarcodeFormat.QR_CODE.toString(), 512);
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
-            Bitmap crop = crop(bitmap);
+            //Bitmap crop = crop(bitmap);
             FileOutputStream fos = null;
             try {
                 fos = a.openFileOutput(a.getString(FRIENDS_SHARE_QR),
@@ -318,6 +322,7 @@ public final class FilesManagement {
             edt.commit();
         }
     }
+
     public static int addFile(Activity a, Uri uri) {
         ContentResolver cr = a.getContentResolver();
         int size = 0;
@@ -334,7 +339,7 @@ public final class FilesManagement {
             e.printStackTrace();
             return PublicStaticVariables.RESULT_ADD_FILE_FAILED;
         }
-        if(size>PublicStaticVariables.LIMIT_FILE_SIZE)
+        if (size > PublicStaticVariables.LIMIT_FILE_SIZE)
             return PublicStaticVariables.RESULT_ADD_FILE_TO_BIG;
         byte[] result = new byte[size];
         try {
@@ -361,8 +366,8 @@ public final class FilesManagement {
             ex.printStackTrace();
             return PublicStaticVariables.RESULT_ADD_FILE_FAILED;
         }
-        if(result.length>0){
-            PublicStaticVariables.fileContent=result;
+        if (result.length > 0) {
+            PublicStaticVariables.fileContent = result;
             return PublicStaticVariables.RESULT_ADD_FILE_OK;
         }
         return PublicStaticVariables.RESULT_ADD_FILE_EMPTY;
@@ -379,17 +384,19 @@ public final class FilesManagement {
         return Bitmap.createBitmap(bitmap, border, border, width - (border * 2), width - (border * 2));
     }
 
-    public static void deleteKeys(Activity a){
+    public static void deleteKeys(Activity a) {
         SharedPreferences srp = PreferenceManager
                 .getDefaultSharedPreferences(a.getApplicationContext());
         SharedPreferences.Editor edt = srp.edit();
         edt.clear();
         edt.commit();
     }
-    public static void deleteContacts(Activity a){
+
+    public static void deleteContacts(Activity a) {
         a.deleteDatabase(MySQLiteHelper.DATABASE_NAME);
     }
-    public static void deleteTmp(Activity a){
+
+    public static void deleteTmp(Activity a) {
         a.deleteFile(a.getString(QR_NAME));
         a.deleteFile(a.getString(QR_NAME_SEND));
         a.deleteFile(QR_NAME_T);
@@ -398,17 +405,19 @@ public final class FilesManagement {
         a.deleteFile(a.getString(FRIENDS_SHARE_QR));
         a.deleteFile(a.getString(FRIEND_CONTACT_CARD));
     }
-    public static String getlasts(Activity a){
+
+    public static String getlasts(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a.getApplicationContext());
-        String t = srp.getString("lasts",null);
-        if(t==null)
+        String t = srp.getString("lasts", null);
+        if (t == null)
             return null;
         return t;
     }
-    public static void updateLasts(Activity a,String s){
+
+    public static void updateLasts(Activity a, String s) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a.getApplicationContext());
         SharedPreferences.Editor edt = srp.edit();
-        edt.putString("lasts",s);
+        edt.putString("lasts", s);
         edt.commit();
     }
 }

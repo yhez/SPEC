@@ -20,10 +20,11 @@ import specular.systems.Visual;
 
 public class AddContactDlg extends DialogFragment {
     PublicContactCard pcc;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        pcc= PublicStaticVariables.fileContactCard;
-        PublicStaticVariables.fileContactCard=null;
+        pcc = PublicStaticVariables.fileContactCard;
+        PublicStaticVariables.fileContactCard = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -36,8 +37,8 @@ public class AddContactDlg extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Contact c = new Contact(getActivity(), pcc.getName(), pcc.getEmail(), pcc.getPublicKey());
-                        if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg){
-                            ((TextView)getActivity().findViewById(R.id.flag_contact_exist)).setText(true+"");//.setVisibility(View.GONE);
+                        if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
+                            ((TextView) getActivity().findViewById(R.id.flag_contact_exist)).setText(true + "");//.setVisibility(View.GONE);
                             getActivity().invalidateOptionsMenu();
                         }
                         if (PublicStaticVariables.currentLayout == R.layout.encrypt) {
@@ -50,10 +51,10 @@ public class AddContactDlg extends DialogFragment {
                         AddContactDlg.this.getDialog().cancel();
                     }
                 });
-        ((TextView)v.findViewById(R.id.acd_chosen_name)).setText(pcc.getName());
-        ((TextView)v.findViewById(R.id.acd_chosen_email)).setText(pcc.getEmail());
-        ((ImageView)v.findViewById(R.id.acd_chosen_icon)).setImageBitmap(Contact.getPhoto(pcc.getPublicKey()));
-        Visual.setAllFonts(getActivity(),(ViewGroup)v);
+        ((TextView) v.findViewById(R.id.acd_chosen_name)).setText(pcc.getName());
+        ((TextView) v.findViewById(R.id.acd_chosen_email)).setText(pcc.getEmail());
+        ((ImageView) v.findViewById(R.id.acd_chosen_icon)).setImageBitmap(Contact.getPhoto(pcc.getPublicKey()));
+        Visual.setAllFonts(getActivity(), (ViewGroup) v);
         return builder.create();
     }
 }

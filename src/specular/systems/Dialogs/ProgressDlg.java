@@ -7,24 +7,22 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 
-import specular.systems.Dialogs.HoloCircularProgressBar;
 import specular.systems.R;
 
-/**
- * Created by yehezkelk on 10/28/13.
- */
 public class ProgressDlg extends ProgressDialog {
     private ObjectAnimator mProgressBarAnimator;
     protected boolean mAnimationHasEnded = false;
     HoloCircularProgressBar hcpb;
+
     public ProgressDlg(Context context) {
         super(context);
     }
+
     @Override
-    public void onCreate(Bundle b){
+    public void onCreate(Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.circular);
-        hcpb = (HoloCircularProgressBar)findViewById(R.id.circle);
+        hcpb = (HoloCircularProgressBar) findViewById(R.id.circle);
         animate(hcpb, new Animator.AnimatorListener() {
 
             @Override
@@ -50,11 +48,13 @@ public class ProgressDlg extends ProgressDialog {
             }
         });
     }
+
     private void animate(final HoloCircularProgressBar progressBar, final Animator.AnimatorListener listener) {
         final float progress = (float) (Math.random() * 2);
         int duration = 1500;
         animate(progressBar, listener, progress, duration);
     }
+
     private void animate(final HoloCircularProgressBar progressBar, final Animator.AnimatorListener listener,
                          final float progress, final int duration) {
 
@@ -93,4 +93,5 @@ public class ProgressDlg extends ProgressDialog {
         });
         progressBar.setMarkerProgress(progress);
         mProgressBarAnimator.start();
-    }}
+    }
+}

@@ -12,17 +12,14 @@ import specular.systems.Main;
 import specular.systems.R;
 import specular.systems.Splash;
 
-/**
- * Created by yehezkelk on 10/29/13.
- */
 public class TurnNFCOn extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(false)
-        .setTitle(getActivity().getString(R.string.title_turn_nfc_on))
-                // Set the action buttons
+                .setTitle(getActivity().getString(R.string.title_turn_nfc_on))
+                        // Set the action buttons
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -52,7 +49,7 @@ public class TurnNFCOn extends DialogFragment {
                                     e.printStackTrace();
                                 }
                             }
-                        Intent intent = new Intent(getActivity(),Splash.class);
+                        Intent intent = new Intent(getActivity(), Splash.class);
                         startActivity(intent);
                     }
                 });

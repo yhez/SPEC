@@ -28,11 +28,10 @@ import specular.systems.MessageFormat;
 import specular.systems.PublicStaticVariables;
 import specular.systems.R;
 
-/**
- * Created by yehezkelk on 11/15/13.
- */
+
 public class Response extends DialogFragment {
     Contact contact;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -42,19 +41,19 @@ public class Response extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         View v = inflater.inflate(R.layout.response, null);
         builder.setView(v);
-        if(PublicStaticVariables.currentLayout==R.layout.decrypted_msg){
-            if(PublicStaticVariables.decryptedMsg!=null)
-                contact=PublicStaticVariables.contactsDataSource.findContact(PublicStaticVariables.decryptedMsg.getPublicKey());
+        if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
+            if (PublicStaticVariables.decryptedMsg != null)
+                contact = PublicStaticVariables.contactsDataSource.findContact(PublicStaticVariables.decryptedMsg.getPublicKey());
             else
-                Log.e("quick response","cant open response cant find contact");
-        }else{
-            contact=PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(
-                    ((TextView)getActivity().findViewById(R.id.contact_id)).getText().toString()));
+                Log.e("quick response", "cant open response cant find contact");
+        } else {
+            contact = PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(
+                    ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));
         }
-        final TextView tv = (TextView)v.findViewById(R.id.text_counter);
-        final ImageButton bt = (ImageButton)v.findViewById(R.id.send);
+        final TextView tv = (TextView) v.findViewById(R.id.text_counter);
+        final ImageButton bt = (ImageButton) v.findViewById(R.id.send);
         bt.setEnabled(false);
-        final EditText et =(EditText)v.findViewById(R.id.message);
+        final EditText et = (EditText) v.findViewById(R.id.message);
         et.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -68,24 +67,24 @@ public class Response extends DialogFragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(editable.length()==0){
+                if (editable.length() == 0) {
                     bt.setEnabled(false);
                     bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
                     tv.setVisibility(View.GONE);
-                }else{
+                } else {
                     bt.setEnabled(true);
                     bt.setImageResource(R.drawable.ic_send_holo_light);
                     tv.setVisibility(View.VISIBLE);
-                    tv.setText(PublicStaticVariables.MSG_LIMIT_FOR_QR-editable.length()>0?PublicStaticVariables.MSG_LIMIT_FOR_QR-editable.length()+"":getString(R.string.no_qr));
+                    tv.setText(PublicStaticVariables.MSG_LIMIT_FOR_QR - editable.length() > 0 ? PublicStaticVariables.MSG_LIMIT_FOR_QR - editable.length() + "" : getString(R.string.no_qr));
                 }
             }
         });
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(PublicStaticVariables.currentLayout==R.layout.decrypted_msg)
+                if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg)
                     getActivity().findViewById(R.id.answer).setVisibility(View.GONE);
-                final String userInput=et.getText().toString();
+                final String userInput = et.getText().toString();
                 final MessageFormat msg = new MessageFormat(null, "", userInput,
                         contact.getSession());
                 final ProgressDlg prgd = new ProgressDlg(getActivity());

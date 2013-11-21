@@ -41,6 +41,7 @@ final class DecodeHandler extends Handler {
             Looper.myLooper().quit();
         }
     }
+
     private void decode(byte[] data, int width, int height) {
         Result rawResult = null;
         PlanarYUVLuminanceSource source = activity.getCameraManager().buildLuminanceSource(data, width, height);

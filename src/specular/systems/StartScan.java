@@ -20,10 +20,11 @@ public class StartScan extends CaptureActivity {
         super.onBackPressed();
         setResult(RESULT_CANCELED);
     }
+
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
-        if(getIntent().getBooleanExtra("decrypt",false))
-            ((TextView)findViewById(R.id.status_view)).setText(getString(R.string.decrypt_qr_message_explain));
+        if (getIntent().getBooleanExtra("decrypt", false))
+            ((TextView) findViewById(R.id.status_view)).setText(getString(R.string.decrypt_qr_message_explain));
     }
 }

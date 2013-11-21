@@ -21,12 +21,11 @@ public class MessageFormat {
                 loc++;
             }
             //String data[] = new String(raw, 0, loc).split("\n");
-           byte[] b = new byte[loc];
-            for(int a=0;a<b.length;a++)
-                b[a]=raw[a];
+            byte[] b = new byte[loc];
+            System.arraycopy(raw, 0, b, 0, b.length);
             String data[] = new String[0];
             try {
-                data = new String(b,"UTF-8").split("\n");
+                data = new String(b, "UTF-8").split("\n");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -63,15 +62,16 @@ public class MessageFormat {
         name = CryptMethods.getName();
         hash = hashing(name + email + publicKey + msgContent + (fileContent != null ? new String(fileContent) : "") + session + sentTime);
     }
-    public MessageFormat(){
+
+    public MessageFormat() {
         email = PublicStaticVariables.decryptedMsg.getEmail();
         publicKey = PublicStaticVariables.decryptedMsg.getPublicKey();
         sentTime = PublicStaticVariables.decryptedMsg.getSentTime();
         session = PublicStaticVariables.decryptedMsg.getSession();
         fileName = PublicStaticVariables.decryptedMsg.getFileName();
         name = PublicStaticVariables.decryptedMsg.getName();
-        msgContent=PublicStaticVariables.decryptedMsg.msgContent;
-        hash="";
+        msgContent = PublicStaticVariables.decryptedMsg.msgContent;
+        hash = "";
     }
 
     public String getFileName() {
@@ -99,10 +99,10 @@ public class MessageFormat {
     }
 
     public byte[] getFormatedMsg() {
-        byte[] msgContent=null;
-        byte[] fileName=null;
+        byte[] msgContent = null;
+        byte[] fileName = null;
         try {
-            fileName= this.fileName.getBytes("UTF-8");
+            fileName = this.fileName.getBytes("UTF-8");
             msgContent = this.msgContent.getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

@@ -37,6 +37,7 @@ final class InactivityTimer {
                         INACTIVITY_DELAY_SECONDS,
                         TimeUnit.SECONDS);
             } catch (RejectedExecutionException ree) {
+                ree.printStackTrace();
             }
         }
     }

@@ -7,32 +7,38 @@
     android:layout_width="match_parent"
     android:gravity="center"
     android:layout_height="match_parent">
+
     <EditText
         android:id="@+id/my_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/my_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <Button
-        android:text="backup you profile"
+        android:text="@string/beckup_profile"
         android:onClick="notImp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <Button
         android:onClick="notImp"
-        android:text="restore profile"
+        android:text="@string/restore_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <Button
         android:onClick="notImp"
         android:text="@string/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <Button
         android:onClick="notImp"
-        android:text="Create new keys"
+        android:text="@string/create_new_keys"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

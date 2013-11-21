@@ -38,23 +38,23 @@ public class ShareCustomDialog extends DialogFragment {
 
         builder.setView(v);
 
-        GridLayout glFile = (GridLayout)v.findViewById(R.id.gl_app_file);
+        GridLayout glFile = (GridLayout) v.findViewById(R.id.gl_app_file);
         List<ResolveInfo> file = getApps("file/*");
-        for(int a=0;a<file.size();a++){
+        for (ResolveInfo aFile : file) {
             ImageButton b = new ImageButton(getActivity());
             b.setBackgroundColor(Color.TRANSPARENT);
-            final ResolveInfo rs =file.get(a);
+            final ResolveInfo rs = aFile;
             b.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ComponentName cn;
-                    cn = new ComponentName(rs.activityInfo.packageName,rs.activityInfo.name);
+                    cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
                     Intent i = new Intent();
                     i.setComponent(cn);
                     i.setType("file/*");
                     i.setAction(Intent.ACTION_SEND);
-                    i.putExtra(Intent.EXTRA_STREAM,FilesManagement.getFileToShare(getActivity()));
+                    i.putExtra(Intent.EXTRA_STREAM, FilesManagement.getFileToShare(getActivity()));
                     try {
                         InputStream is = getActivity().getAssets().open("spec_temp_share.html");
                         int size = is.available();
@@ -74,18 +74,18 @@ public class ShareCustomDialog extends DialogFragment {
             glFile.addView(b);
         }
 
-        glFile = (GridLayout)v.findViewById(R.id.gl_app_image);
+        glFile = (GridLayout) v.findViewById(R.id.gl_app_image);
         file = getApps("image/*");
-        for(int a=0;a<file.size();a++){
+        for (ResolveInfo aFile : file) {
             ImageButton b = new ImageButton(getActivity());
             b.setBackgroundColor(Color.TRANSPARENT);
-            final ResolveInfo rs = file.get(a);
+            final ResolveInfo rs = aFile;
             b.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ComponentName cn;
-                    cn = new ComponentName(rs.activityInfo.packageName,rs.activityInfo.name);
+                    cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
                     Intent i = new Intent();
                     i.setComponent(cn);
                     i.setType("image/*");
@@ -109,18 +109,18 @@ public class ShareCustomDialog extends DialogFragment {
             });
             glFile.addView(b);
         }
-        glFile = (GridLayout)v.findViewById(R.id.gl_app_text);
+        glFile = (GridLayout) v.findViewById(R.id.gl_app_text);
         file = getApps("text/*");
-        for(int a=0;a<file.size();a++){
+        for (ResolveInfo aFile : file) {
             ImageButton b = new ImageButton(getActivity());
             b.setBackgroundColor(Color.TRANSPARENT);
-            final ResolveInfo rs = file.get(a);
+            final ResolveInfo rs = aFile;
             b.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ComponentName cn;
-                    cn = new ComponentName(rs.activityInfo.packageName,rs.activityInfo.name);
+                    cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
                     Intent i = new Intent();
                     i.setComponent(cn);
                     i.setType("text/*");
@@ -133,10 +133,11 @@ public class ShareCustomDialog extends DialogFragment {
             });
             glFile.addView(b);
         }
-        Visual.setAllFonts(getActivity(),(ViewGroup)v);
+        Visual.setAllFonts(getActivity(), (ViewGroup) v);
         return builder.create();
     }
-    private List<ResolveInfo> getApps(String type){
+
+    private List<ResolveInfo> getApps(String type) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType(type);
         return getActivity().getPackageManager().queryIntentActivities(intent, 0);

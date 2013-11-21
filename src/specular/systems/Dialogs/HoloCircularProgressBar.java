@@ -2,6 +2,7 @@ package specular.systems.Dialogs;
 
 
 //import android.annotation.SuppressLint;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -21,9 +22,8 @@ import specular.systems.R;
  * The Class HoloCircularProgressBar.
  *
  * @author Pascal.Welsch
- * @since 05.03.2013
- *
  * @version 1.1 (12.10.2013)
+ * @since 05.03.2013
  */
 public class HoloCircularProgressBar extends View {
 
@@ -85,7 +85,7 @@ public class HoloCircularProgressBar extends View {
 
     /**
      * Radius of the circle
-     *
+     * <p/>
      * <p>
      * Note: (Re)calculated in {@link #onMeasure(int, int)}.
      * </p>
@@ -135,7 +135,7 @@ public class HoloCircularProgressBar extends View {
     /**
      * The gravity of the view. Where should the Circle be drawn within the
      * given bounds
-     *
+     * <p/>
      * {@link #computeInsets(int, int)}
      */
     private final int mGravity;
@@ -166,7 +166,7 @@ public class HoloCircularProgressBar extends View {
 
     /**
      * The Thumb pos x.
-     *
+     * <p/>
      * Care. the position is not the position of the rotated thumb. The position
      * is only calculated in {@link #onMeasure(int, int)}
      */
@@ -174,7 +174,7 @@ public class HoloCircularProgressBar extends View {
 
     /**
      * The Thumb pos y.
-     *
+     * <p/>
      * Care. the position is not the position of the rotated thumb. The position
      * is only calculated in {@link #onMeasure(int, int)}
      */
@@ -182,7 +182,6 @@ public class HoloCircularProgressBar extends View {
 
     /**
      * the overdraw is true if the progress is over 1.0.
-     *
      */
     private boolean mOverrdraw = false;
 
@@ -199,8 +198,7 @@ public class HoloCircularProgressBar extends View {
     /**
      * Instantiates a new holo circular progress bar.
      *
-     * @param context
-     *            the context
+     * @param context the context
      */
     public HoloCircularProgressBar(final Context context) {
         this(context, null);
@@ -209,10 +207,8 @@ public class HoloCircularProgressBar extends View {
     /**
      * Instantiates a new holo circular progress bar.
      *
-     * @param context
-     *            the context
-     * @param attrs
-     *            the attrs
+     * @param context the context
+     * @param attrs   the attrs
      */
     public HoloCircularProgressBar(final Context context, final AttributeSet attrs) {
         this(context, attrs, R.attr.circularProgressBarStyle);
@@ -221,12 +217,9 @@ public class HoloCircularProgressBar extends View {
     /**
      * Instantiates a new holo circular progress bar.
      *
-     * @param context
-     *            the context
-     * @param attrs
-     *            the attrs
-     * @param defStyle
-     *            the def style
+     * @param context  the context
+     * @param attrs    the attrs
+     * @param defStyle the def style
      */
     public HoloCircularProgressBar(final Context context, final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
@@ -385,7 +378,7 @@ public class HoloCircularProgressBar extends View {
 
     /**
      * Compute insets.
-     *
+     * <p/>
      * <pre>
      *  ______________________
      * |_________dx/2_________|
@@ -395,12 +388,10 @@ public class HoloCircularProgressBar extends View {
      * |________ dx/2_________|
      * </pre>
      *
-     * @param dx
-     *            the dx the horizontal unfilled space
-     * @param dy
-     *            the dy the horizontal unfilled space
+     * @param dx the dx the horizontal unfilled space
+     * @param dy the dy the horizontal unfilled space
      */
-  //  @SuppressLint("NewApi")
+    //  @SuppressLint("NewApi")
     private void computeInsets(final int dx, final int dy) {
         final int layoutDirection;
         int absoluteGravity = mGravity;
@@ -457,8 +448,7 @@ public class HoloCircularProgressBar extends View {
     /**
      * Sets the wheel size.
      *
-     * @param dimension
-     *            the new wheel size
+     * @param dimension the new wheel size
      */
     private void setWheelSize(final int dimension) {
         mCircleStrokeWidth = dimension;
@@ -535,7 +525,6 @@ public class HoloCircularProgressBar extends View {
     }
 
     /**
-     *
      * @return true if the marker is visible
      */
     public boolean isMarkerEnabled() {
@@ -543,7 +532,6 @@ public class HoloCircularProgressBar extends View {
     }
 
     /**
-     *
      * @return true if the marker is visible
      */
     public boolean isThumbEnabled() {
@@ -553,8 +541,7 @@ public class HoloCircularProgressBar extends View {
     /**
      * Sets the marker enabled.
      *
-     * @param enabled
-     *            the new marker enabled
+     * @param enabled the new marker enabled
      */
     public void setMarkerEnabled(final boolean enabled) {
         mIsMarkerEnabled = enabled;
@@ -563,8 +550,7 @@ public class HoloCircularProgressBar extends View {
     /**
      * Sets the marker progress.
      *
-     * @param progress
-     *            the new marker progress
+     * @param progress the new marker progress
      */
     public void setMarkerProgress(final float progress) {
         mIsMarkerEnabled = true;
@@ -574,8 +560,7 @@ public class HoloCircularProgressBar extends View {
     /**
      * Sets the progress.
      *
-     * @param progress
-     *            the new progress
+     * @param progress the new progress
      */
     public void setProgress(final float progress) {
         if (progress == mProgress) {
@@ -587,11 +572,7 @@ public class HoloCircularProgressBar extends View {
             mProgress = 1;
         } else {
 
-            if (progress >= 1) {
-                mOverrdraw = true;
-            } else {
-                mOverrdraw = false;
-            }
+            mOverrdraw = progress >= 1;
 
             mProgress = progress % 1.0f;
         }
@@ -604,8 +585,7 @@ public class HoloCircularProgressBar extends View {
     /**
      * Sets the progress background color.
      *
-     * @param color
-     *            the new progress background color
+     * @param color the new progress background color
      */
     public void setProgressBackgroundColor(final int color) {
         mProgressBackgroundColor = color;
@@ -616,8 +596,7 @@ public class HoloCircularProgressBar extends View {
     /**
      * Sets the progress color.
      *
-     * @param color
-     *            the new progress color
+     * @param color the new progress color
      */
     public void setProgressColor(final int color) {
         mProgressColor = color;

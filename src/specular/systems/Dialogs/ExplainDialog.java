@@ -14,39 +14,41 @@ import specular.systems.R;
 import specular.systems.Visual;
 
 
-public class ExplainDialog extends DialogFragment{
-    int title,content;
-    String details;
-    public final static int HASH=0,SESSION=1,REPLAY=2;
-    public ExplainDialog(int type,String details){
-        switch (type){
+public class ExplainDialog extends DialogFragment {
+    int title, content;
+    final String details;
+    public final static int HASH = 0, SESSION = 1, REPLAY = 2;
+
+    public ExplainDialog(int type, String details) {
+        switch (type) {
             case HASH:
-                content=R.string.hash_explain;
-                title=R.string.what_is_hash;
+                content = R.string.hash_explain;
+                title = R.string.what_is_hash;
                 break;
             case SESSION:
-                content=R.string.session_explain;
-                title=R.string.what_is_session;
+                content = R.string.session_explain;
+                title = R.string.what_is_session;
                 break;
             case REPLAY:
-                content=R.string.replay_explain;
-                title=R.string.what_is_replay;
+                content = R.string.replay_explain;
+                title = R.string.what_is_replay;
                 break;
         }
-        this.details=details;
+        this.details = details;
     }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View v = inflater.inflate(R.layout.tech_details, null);
         builder.setView(v);
-        final TextView tvTitle = (TextView)v.findViewById(R.id.title);
+        final TextView tvTitle = (TextView) v.findViewById(R.id.title);
         tvTitle.setText("technical info");
-        final TextView tvContent = (TextView)v.findViewById(R.id.text_content);
+        final TextView tvContent = (TextView) v.findViewById(R.id.text_content);
         tvContent.setText(details);
-        final Button btDetails = (Button)v.findViewById(R.id.my_details);
-        final Button btExplain = (Button)v.findViewById(R.id.general_explain);
+        final Button btDetails = (Button) v.findViewById(R.id.my_details);
+        final Button btExplain = (Button) v.findViewById(R.id.general_explain);
         btExplain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

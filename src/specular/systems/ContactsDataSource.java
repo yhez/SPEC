@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactsDataSource {
-    Main m;
+    final Main m;
     private final String[] allColumns = {MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_CONTACT_NAME, MySQLiteHelper.COLUMN_EMAIL,
             MySQLiteHelper.COLUMN_PUBLIC_KEY, MySQLiteHelper.COLUMN_SESSION,
@@ -18,7 +18,7 @@ public class ContactsDataSource {
     private SQLiteDatabase database;
 
     public ContactsDataSource(Main m) {
-        this.m=m;
+        this.m = m;
         dbHelper = new MySQLiteHelper(m);
         database = dbHelper.getReadableDatabase();
         dbHelper.close();
@@ -42,27 +42,27 @@ public class ContactsDataSource {
 
     public void deleteContact(Contact contact) {
         long id = contact.getId();
-        int position=-1;
-        for(int a=0;a<PublicStaticVariables.currentList.size();a++)
-            if(contact.getPublicKey().equals(PublicStaticVariables.currentList.get(a).getPublicKey())){
-                position=a;
+        int position = -1;
+        for (int a = 0; a < PublicStaticVariables.currentList.size(); a++)
+            if (contact.getPublicKey().equals(PublicStaticVariables.currentList.get(a).getPublicKey())) {
+                position = a;
                 break;
             }
-        database=dbHelper.getWritableDatabase();
+        database = dbHelper.getWritableDatabase();
         database.delete(MySQLiteHelper.TABLE_CONTACTS, MySQLiteHelper.COLUMN_ID
                 + " = " + id, null);
         dbHelper.close();
-        if(!(position<0))
+        if (!(position < 0))
             PublicStaticVariables.adapter.removeCont(position);
     }
 
     public Contact findContact(long id) {
-        database=dbHelper.getReadableDatabase();
+        database = dbHelper.getReadableDatabase();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
                 allColumns, MySQLiteHelper.COLUMN_ID + " = " + id, null, null,
                 null, null);
         cursor.moveToFirst();
-        if (cursor.getCount() > 0){
+        if (cursor.getCount() > 0) {
             Contact c = new Contact(cursor.getLong(0), cursor.getString(1),
                     cursor.getString(2), cursor.getString(3),
                     cursor.getString(4), Integer.parseInt(cursor.getString(5)));
@@ -74,12 +74,12 @@ public class ContactsDataSource {
     }
 
     public Contact findContact(String pbk) {
-        database=dbHelper.getReadableDatabase();
+        database = dbHelper.getReadableDatabase();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
                 allColumns, MySQLiteHelper.COLUMN_PUBLIC_KEY + " = '" + pbk
                 + "' ", null, null, null, null);
         cursor.moveToFirst();
-        if (cursor.getCount() > 0){
+        if (cursor.getCount() > 0) {
             Contact c = new Contact(cursor.getLong(0), cursor.getString(1),
                     cursor.getString(2), cursor.getString(3),
                     cursor.getString(4), Integer.parseInt(cursor.getString(5)));
@@ -91,7 +91,7 @@ public class ContactsDataSource {
     }
 
     public List<Contact> getAllContacts() {
-        database=dbHelper.getReadableDatabase();
+        database = dbHelper.getReadableDatabase();
         List<Contact> contacts = new ArrayList<Contact>();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
                 allColumns, null, null, null, null, null);

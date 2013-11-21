@@ -76,6 +76,7 @@ public final class CaptureActivityHandler extends Handler {
             // Wait at most half a second; should be enough time, and onPause() will timeout quickly
             decodeThread.join(500L);
         } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         // Be absolutely sure we don't send any queued up messages

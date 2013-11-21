@@ -76,9 +76,9 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
                 } else {
                     a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
                     a.findViewById(R.id.list).setVisibility(View.VISIBLE);
-                    for (int a = 0; a < lc.size(); a++)
-                        if (!PublicStaticVariables.currentList.contains(lc.get(a)))
-                            PublicStaticVariables.currentList.add(lc.get(a));
+                    for (Contact aLc : lc)
+                        if (!PublicStaticVariables.currentList.contains(aLc))
+                            PublicStaticVariables.currentList.add(aLc);
                     for (int a = 0; a < PublicStaticVariables.currentList.size(); a++)
                         if (!lc.contains(PublicStaticVariables.currentList.get(a)))
                             PublicStaticVariables.currentList.remove(PublicStaticVariables.currentList.get(a));
@@ -114,8 +114,8 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
         for (int a = 0; a < PublicStaticVariables.fullList.size(); a++)
             if (!PublicStaticVariables.currentList.contains(PublicStaticVariables.fullList.get(a)))
                 PublicStaticVariables.currentList.add(PublicStaticVariables.fullList.get(a));
-        if (PublicStaticVariables.currentLayout == R.layout.encrypt&&
-                PublicStaticVariables.fullList.size()>PublicStaticVariables.minContactSize)
+        if (PublicStaticVariables.currentLayout == R.layout.encrypt &&
+                PublicStaticVariables.fullList.size() > PublicStaticVariables.minContactSize)
             PublicStaticVariables.luc.show();
         Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
             @Override

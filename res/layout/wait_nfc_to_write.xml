@@ -18,9 +18,11 @@
         android:layout_height="wrap_content"
         android:text="@string/wait_for_nfc_to_write"
         android:textSize="40sp" />
+
     <View
         android:layout_height="100dp"
-        android:layout_width="match_parent"/>
+        android:layout_width="match_parent" />
+
     <LinearLayout
         android:layout_width="240dp"
         android:layout_height="wrap_content"

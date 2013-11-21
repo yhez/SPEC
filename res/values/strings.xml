@@ -9,7 +9,6 @@
     <string name="encrypt_explain">Search contacts&#8230;</string>
     <string name="hint_msg">Enter message&#8230;</string>
     <string name="explain"> I\'m attaching my public encryption key. You should verify that this public key belongs to the sender.</string>
-    <string name="encrypting">Encrypting message\nSecuring communications</string>
     <string name="ok">OK</string>
     <string name="hint_enter_your_name">username (optional)&#8230;</string>
     <string name="hint_enter_your_email">email&#8230;</string>
@@ -17,7 +16,6 @@
     <string name="skip_save_to_phone">Skip and save key on device</string>
     <string name="explain_and_about">LEARN ABOUT SPEC</string>
     <string name="create_keys">Generate New Keys</string>
-    <string name="share_on_server">Publish</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
@@ -119,6 +117,15 @@
     <string name="notify_msg_deleted">Message has been deleted</string>
     <string name="send_another_msg">send another message</string>
     <string name="send_orders">steps:\n------\n1. choose contact.\n2.enter content.\n3. add file (optional)</string>
+    <string name="beckup_profile">backup you profile</string>
+    <string name="share_file">share file</string>
+    <string name="restore_profile">restore profile</string>
+    <string name="my_details">my details</string>
+    <string name="create_new_keys">Create new keys</string>
+    <string name="share_image">share image</string>
+    <string name="explain_button">explain</string>
+    <string name="share_text">share text</string>
+    <string name="edit_contact_title_pbk">public key:</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
@@ -128,7 +135,7 @@
         <item>Manage</item>
     </string-array>
     <string-array name="choice">
-        <item >Contact Card</item>
+        <item>Contact Card</item>
         <item>QR Image</item>
         <item>Raw Key Text</item>
     </string-array>

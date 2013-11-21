@@ -2,15 +2,12 @@ package specular.systems;
 
 import android.app.Activity;
 
-public class PublicContactCard
-{
+public class PublicContactCard {
     private Activity a;
     private String publicKey = null, email = null, name = null;
 
-    public PublicContactCard(Activity a)
-	{
-        if (a != null)
-		{
+    public PublicContactCard(Activity a) {
+        if (a != null) {
             publicKey = CryptMethods.getPublic();
             email = CryptMethods.getEmail();
             name = CryptMethods.getName();
@@ -18,17 +15,15 @@ public class PublicContactCard
         }
     }
 
-   public PublicContactCard(Activity a,String publicKey,String email,String name)
-	{
+    public PublicContactCard(Activity a, String publicKey, String email, String name) {
         this.publicKey = publicKey;
         this.email = email;
         this.name = name;
         this.a = a;
     }
-    public PublicContactCard(Activity a, String raw)
-	{
-        if (validate(raw))
-		{
+
+    public PublicContactCard(Activity a, String raw) {
+        if (validate(raw)) {
             String data[] = raw.split("\n");
             publicKey = data[3];
             email = data[2];
@@ -37,29 +32,24 @@ public class PublicContactCard
         }
     }
 
-    public String getEmail()
-	{
+    public String getEmail() {
         return email;
     }
 
-    public String getName()
-	{
+    public String getName() {
         return name;
     }
 
-    public String getPublicKey()
-	{
+    public String getPublicKey() {
         return publicKey;
     }
 
-    public String getQRToPublish()
-	{
+    public String getQRToPublish() {
         String explain = a.getResources().getString(R.string.explain);
         return explain + "\n" + name + "\n" + email + "\n" + publicKey;
     }
 
-    private boolean validate(String raw)
-	{
+    private boolean validate(String raw) {
         if (raw == null)
             return false;
         String data[] = raw.split("\n");

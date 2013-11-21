@@ -93,18 +93,14 @@
                 android:id="@+id/contact_picture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_gravity="center"
-                android:layout_row="0" />
+                android:layout_gravity="center" />
 
             <ImageButton
                 android:id="@+id/answer"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2"
                 android:layout_gravity="center"
-                android:layout_row="1"
                 android:onClick="onClick"
                 android:src="@drawable/respond" />
         </LinearLayout>
@@ -137,7 +133,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:paddingLeft="@dimen/default_gap"
-        android:text="public key:"
+        android:text="@string/edit_contact_title_pbk"
         android:textColor="@color/spec_black" />
 
     <TextView

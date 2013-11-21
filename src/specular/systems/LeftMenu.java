@@ -11,13 +11,14 @@ import android.widget.TextView;
 
 class LeftMenu extends ArrayAdapter<String> {
     private final Context context;
-    private String[] s;
-    private int[] drb;
-    public LeftMenu(Context context, String[] s,int[] m) {
+    private final String[] s;
+    private final int[] drb;
+
+    public LeftMenu(Context context, String[] s, int[] m) {
         super(context, R.layout.drawer_list_item, s);
         this.context = context;
-        this.s=s;
-        this.drb=m;
+        this.s = s;
+        this.drb = m;
     }
 
     @Override

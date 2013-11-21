@@ -17,6 +17,7 @@
         android:layout_gravity="center"
         android:text="@string/wait_for_nfc_to_read"
         android:textSize="25sp" />
+
     <LinearLayout
         android:id="@+id/ll_wait"
         android:visibility="gone"

@@ -184,8 +184,8 @@ public class FragmentManagement extends Fragment {
                 final int[] coordination = new int[2];
                 frameLayout.getLocationInWindow(coordination);
                 //todo find a better way to implement that
-                final float x = coordination[0]+frameLayout.getPaddingLeft();
-                final float y = coordination[1]-frameLayout.getPaddingTop();
+                final float x = coordination[0] + frameLayout.getPaddingLeft();
+                final float y = coordination[1] - frameLayout.getPaddingTop();
                 frameLayout.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -460,8 +460,7 @@ public class FragmentManagement extends Fragment {
         if (parse.length < 2 || parse.length > 2 || parse[0].length() < 2 || parse[1].length() < 4)
             return false;
         String[] parse2 = parse[1].split("\\.");
-        if (parse2.length < 2 || parse2[0].length() < 2 || parse2[1].length() < 2) return false;
-        return true;
+        return !(parse2.length < 2 || parse2[0].length() < 2 || parse2[1].length() < 2);
     }
 
     public void contactChosen(long contactID) {

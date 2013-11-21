@@ -2,12 +2,9 @@ package specular.systems;
 
 import java.util.List;
 
-/**
- * Created by yehezkelk on 11/19/13.
- */
 public class PublicStaticVariables {
     //defines how long does the list have to be to show the last used contacts
-    public static int minContactSize=10;
+    public static final int minContactSize = 10;
     //from CryptoMethods
     public static MessageFormat decryptedMsg = null;
     public static String encryptedMsgToSend = null;
@@ -38,10 +35,10 @@ public class PublicStaticVariables {
     //from fragment
     public static FragmentManagement fragmentManagement;
     public static LastUsedContacts luc;
-    public static boolean readyToSend=false;
+    public static boolean readyToSend = false;
     //from files management
-    public final static int LIMIT_FILE_SIZE=52428800;
-    public final static int RESULT_ADD_FILE_FAILED=5,RESULT_ADD_FILE_TO_BIG=10,RESULT_ADD_FILE_EMPTY=20,RESULT_ADD_FILE_OK=40;
-    public static Boolean flag_hash,flag_session,flag_replay;
+    public final static int LIMIT_FILE_SIZE = 52428800;
+    public final static int RESULT_ADD_FILE_FAILED = 5, RESULT_ADD_FILE_TO_BIG = 10, RESULT_ADD_FILE_EMPTY = 20, RESULT_ADD_FILE_OK = 40;
+    public static Boolean flag_hash, flag_session, flag_replay;
 
 }

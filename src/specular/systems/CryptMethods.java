@@ -57,11 +57,11 @@ public class CryptMethods {
 
     public static void moveKeysFromTmp() {
         myPublicKey = tmpPublicKey;
-        tmpPublicKey=null;
+        tmpPublicKey = null;
         mPtK = tmpPtK;
-        tmpPtK=null;
+        tmpPtK = null;
         myPrivateKey = tmpPrivateKey;
-        tmpPrivateKey=null;
+        tmpPrivateKey = null;
     }
 
     public static String getName() {
@@ -132,8 +132,8 @@ public class CryptMethods {
             byte[] rawMsg = Visual.hex2bin(encryptedMessage);
             byte[] decryptedBytes = cipher.doFinal(rawMsg);
             PublicStaticVariables.decryptedMsg = new MessageFormat(decryptedBytes);
-            if(PublicStaticVariables.decryptedMsg==null){
-                PublicStaticVariables.flag_hash=null;
+            if (PublicStaticVariables.decryptedMsg == null) {
+                PublicStaticVariables.flag_hash = null;
             }
         } catch (Exception e) {
             PublicStaticVariables.decryptedMsg = null;

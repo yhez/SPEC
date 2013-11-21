@@ -20,8 +20,7 @@ import java.util.Collection;
 import specular.systems.R;
 import specular.systems.scanqr.camera.CameraManager;
 
-public class CaptureActivity extends Activity implements SurfaceHolder.Callback
-{
+public class CaptureActivity extends Activity implements SurfaceHolder.Callback {
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
@@ -30,31 +29,26 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
     private String characterSet;
     private InactivityTimer inactivityTimer;
 
-    ViewfinderView getViewfinderView()
-	{
+    ViewfinderView getViewfinderView() {
         return viewfinderView;
     }
 
-    public Handler getHandler()
-	{
+    public Handler getHandler() {
         return handler;
     }
 
-    CameraManager getCameraManager()
-	{
+    CameraManager getCameraManager() {
         return cameraManager;
     }
 
-	@Override
-    public boolean onTouchEvent(MotionEvent event)
-	{
-		cameraManager.onF(event.getActionMasked() == MotionEvent.ACTION_DOWN || event.getActionMasked() != MotionEvent.ACTION_UP);
-		return true;
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        cameraManager.onF(event.getActionMasked() == MotionEvent.ACTION_DOWN || event.getActionMasked() != MotionEvent.ACTION_UP);
+        return true;
     }
 
     @Override
-    public void onCreate(Bundle icicle)
-	{
+    public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -64,8 +58,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
     }
 
     @Override
-    protected void onResume()
-	{
+    protected void onResume() {
         super.onResume();
 
         // CameraManager must be initialized here, not in onCreate(). This is necessary because we don't
@@ -79,14 +72,11 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
         handler = null;
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
-        if (hasSurface)
-		{
+        if (hasSurface) {
             // The activity was paused but not stopped, so the surface still exists. Therefore
             // surfaceCreated() won't be called, so init the camera here.
             initCamera(surfaceHolder);
-        }
-		else
-		{
+        } else {
             // Install the callback and wait for surfaceCreated() to init the camera.
             surfaceHolder.addCallback(this);
             surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -95,21 +85,19 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
         Intent intent = getIntent();
         decodeFormats = null;
         characterSet = null;
-		decodeFormats = DecodeFormatManager.parseDecodeFormats(intent);
-		characterSet = intent.getStringExtra(Intents.Scan.CHARACTER_SET);
+        decodeFormats = DecodeFormatManager.parseDecodeFormats(intent);
+        characterSet = intent.getStringExtra(Intents.Scan.CHARACTER_SET);
     }
+
     @Override
-    protected void onPause()
-	{
-        if (handler != null)
-		{
+    protected void onPause() {
+        if (handler != null) {
             handler.quitSynchronously();
             handler = null;
         }
         inactivityTimer.onPause();
         cameraManager.closeDriver();
-        if (!hasSurface)
-		{
+        if (!hasSurface) {
             SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
             SurfaceHolder surfaceHolder = surfaceView.getHolder();
             if (surfaceHolder != null) {
@@ -120,62 +108,49 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
     }
 
     @Override
-    protected void onDestroy()
-	{
+    protected void onDestroy() {
         inactivityTimer.shutdown();
         super.onDestroy();
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder)
-	{
-        if (!hasSurface)
-		{
+    public void surfaceCreated(SurfaceHolder holder) {
+        if (!hasSurface) {
             hasSurface = true;
             initCamera(holder);
         }
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder)
-	{
+    public void surfaceDestroyed(SurfaceHolder holder) {
         hasSurface = false;
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
-	{
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
     }
 
-    public void handleDecode(Result rawResult)
-	{
+    public void handleDecode(Result rawResult) {
     }
-    private void initCamera(SurfaceHolder surfaceHolder)
-	{
-        try
-		{
+
+    private void initCamera(SurfaceHolder surfaceHolder) {
+        try {
             cameraManager.openDriver(surfaceHolder);
             // Creating the handler starts the preview, which can also throw a RuntimeException.
-            if (handler == null)
-			{
+            if (handler == null) {
                 handler = new CaptureActivityHandler(this, decodeFormats, characterSet, cameraManager);
             }
-        }
-		catch (IOException ioe)
-		{
+        } catch (IOException ioe) {
             displayFrameworkBugMessageAndExit();
-        }
-		catch (RuntimeException e)
-		{
+        } catch (RuntimeException e) {
             // Barcode Scanner has seen crashes in the wild of this variety:
             // java.?lang.?RuntimeException: Fail to connect to camera service
             displayFrameworkBugMessageAndExit();
         }
     }
 
-    private void displayFrameworkBugMessageAndExit()
-	{
+    private void displayFrameworkBugMessageAndExit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.title_scan_error_msg));
         builder.setMessage(getString(R.string.content_scan_error_msg));
@@ -185,8 +160,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback
     }
 
 
-    public void drawViewfinder()
-	{
+    public void drawViewfinder() {
         viewfinderView.drawViewfinder();
     }
 }

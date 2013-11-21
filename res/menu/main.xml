@@ -5,5 +5,5 @@
         android:title="search contact"
         android:showAsAction="ifRoom|withText"
         android:icon="@drawable/search"
-        android:id="@+id/action_search"/>
+        android:id="@+id/action_search" />
 </menu>

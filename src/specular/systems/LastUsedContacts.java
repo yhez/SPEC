@@ -1,7 +1,6 @@
 package specular.systems;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -10,12 +9,11 @@ import android.widget.TextView;
 
 
 public class LastUsedContacts {
-    //GridLayout gl;
-    int NUM_LASTS = 4;
-    Contact[] lasts;
+    final int NUM_LASTS = 4;
+    final Contact[] lasts;
     ViewLastContact[] vlc;
-    Activity a;
-    long[] ids;
+    final Activity a;
+    final long[] ids;
     int[] num;
 
     public LastUsedContacts(Activity a) {
@@ -53,22 +51,16 @@ public class LastUsedContacts {
 
     public void hide() {
         a.findViewById(R.id.grid_lasts).setVisibility(View.GONE);
-   /*this is if we want to remove from list the ones that are in the top list
-   for(int con =0;con<lasts.length;con++)
-            Main.currentList.add(lasts[con]);
-        m.adapter.notifyDataSetChanged();
-        */
     }
 
     public boolean show() {
-        if (lasts == null || lasts.length == 0 || lasts[0] == null){
-            Log.d("what happened",(lasts == null)+"-"+(lasts.length == 0)+"-"+(lasts[0] == null));
+        if (lasts == null || lasts.length == 0 || lasts[0] == null || a.findViewById(R.id.grid_lasts) == null) {
             return false;
         }
         a.findViewById(R.id.grid_lasts).setVisibility(View.VISIBLE);
         vlc = new ViewLastContact[NUM_LASTS];
         for (int c = 0; c < NUM_LASTS; c++) {
-            vlc[c] = new ViewLastContact((LinearLayout)((GridLayout) a.findViewById(R.id.grid_lasts)).getChildAt(c));
+            vlc[c] = new ViewLastContact((LinearLayout) ((GridLayout) a.findViewById(R.id.grid_lasts)).getChildAt(c));
         }
         for (int c = 0; c < NUM_LASTS; c++)
             if (lasts[c] != null)
@@ -107,9 +99,9 @@ public class LastUsedContacts {
     }
 
     class ViewLastContact {
-        ImageButton ib;
-        TextView tv;
-        TextView id;
+        final ImageButton ib;
+        final TextView tv;
+        final TextView id;
 
         public ViewLastContact(LinearLayout fl) {
             tv = (TextView) fl.getChildAt(1);

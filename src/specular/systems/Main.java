@@ -226,15 +226,15 @@ public class Main extends Activity {
                 }
                 break;
             case R.id.hash:
-                ExplainDialog edlg = new ExplainDialog(ExplainDialog.HASH,PublicStaticVariables.decryptedMsg.getHash());
+                ExplainDialog edlg = new ExplainDialog(ExplainDialog.HASH, PublicStaticVariables.decryptedMsg.getHash());
                 edlg.show(getFragmentManager(), "hash");
                 break;
             case R.id.session:
-                ExplainDialog edl = new ExplainDialog(ExplainDialog.SESSION,PublicStaticVariables.decryptedMsg.getSession());
+                ExplainDialog edl = new ExplainDialog(ExplainDialog.SESSION, PublicStaticVariables.decryptedMsg.getSession());
                 edl.show(getFragmentManager(), "session");
                 break;
             case R.id.replay:
-                ExplainDialog ed = new ExplainDialog(ExplainDialog.REPLAY,PublicStaticVariables.decryptedMsg.getSentTime());
+                ExplainDialog ed = new ExplainDialog(ExplainDialog.REPLAY, PublicStaticVariables.decryptedMsg.getSentTime());
                 ed.show(getFragmentManager(), "replay");
                 break;
         }
@@ -549,7 +549,7 @@ public class Main extends Activity {
             //ShareDialog dlg = new ShareDialog();
             //dlg.show(getFragmentManager(), "share");
             ShareCustomDialog scd = new ShareCustomDialog();
-           scd.show(getFragmentManager(),"scd");
+            scd.show(getFragmentManager(), "scd");
         }
         return super.onOptionsItemSelected(item);
 
@@ -659,7 +659,7 @@ public class Main extends Activity {
                         menu = 1;
                         break;
                     case R.layout.profile:
-                        menu=2;
+                        menu = 2;
                         break;
                     default:
                         menu = 0;
@@ -837,7 +837,7 @@ public class Main extends Activity {
     @Override
     public void onBackPressed() {
         class prepareToExit {
-            Thread prepareExit = new Thread(new Runnable() {
+            final Thread prepareExit = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     synchronized (this) {
@@ -908,7 +908,7 @@ public class Main extends Activity {
                     }
                     break;
                 case R.layout.profile:
-                    selectItem(-1,R.layout.share);
+                    selectItem(-1, R.layout.share);
                     break;
                 case R.layout.create_new_keys:
                     if (CryptMethods.publicExist())
@@ -924,11 +924,6 @@ public class Main extends Activity {
                     break;
             }
         }
-    }
-
-    //TODO
-    public void shareWeb(View v) {
-
     }
 
     void sendMessage() {
@@ -1004,9 +999,11 @@ public class Main extends Activity {
             return R.string.failed_to_write;
         }
     }
-public void onClickShare(View v){
-    selectItem(-1,R.layout.profile);
-}
+
+    public void onClickShare(View v) {
+        selectItem(-1, R.layout.profile);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();

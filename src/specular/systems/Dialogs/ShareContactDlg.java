@@ -19,12 +19,13 @@ import specular.systems.R;
 
 public class ShareContactDlg extends DialogFragment {
     private ArrayList mSelectedItems;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         mSelectedItems = new ArrayList();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getString(R.string.what_to_share)+"\n"+getTag())
+        builder.setTitle(getString(R.string.what_to_share) + "\n" + getTag())
                 // Specify the list array, the items to be selected by default (null for none),
                 // and the listener through which to receive callbacks when items are selected
                 .setMultiChoiceItems(R.array.choice, null,
@@ -74,7 +75,7 @@ public class ShareContactDlg extends DialogFragment {
                                 intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, file);
                             }
                             if (mSelectedItems.contains(Integer.valueOf(2))) {
-                                intent.putExtra(Intent.EXTRA_TEXT, ((TextView)getActivity().findViewById(R.id.contact_pb)).getText().toString());
+                                intent.putExtra(Intent.EXTRA_TEXT, ((TextView) getActivity().findViewById(R.id.contact_pb)).getText().toString());
                             }
                             startActivity(Intent.createChooser(intent, getResources()
                                     .getString(R.string.share_dialog)));

@@ -16,6 +16,7 @@ import specular.systems.Splash;
 
 public class DeleteDataDialog extends DialogFragment {
     private ArrayList mSelectedItems;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
