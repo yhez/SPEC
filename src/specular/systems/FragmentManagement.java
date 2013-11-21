@@ -1,6 +1,5 @@
 package specular.systems;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -80,7 +79,7 @@ public class FragmentManagement extends Fragment {
         Contact contact;
         switch (PublicStaticVariables.currentLayout) {
             case create_new_keys:
-                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.create_new_keys));
+                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.create_new_keys));
                 getActivity().findViewById(R.id.gesture).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -163,13 +162,13 @@ public class FragmentManagement extends Fragment {
                 ((TextView) getActivity().findViewById(R.id.contact_session))
                         .setText(contact.getSession());
                 ((ImageView) getActivity().findViewById(R.id.contact_picture)).setImageBitmap(Contact.getPhoto(contact.getPublicKey()));
-                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.edit_contact));
+                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.edit_contact));
                 TextView tvt = (TextView) getActivity().findViewById(R.id.contact_pb);
                 tvt.setText(contact.getPublicKey());
                 tvt.setTypeface(FilesManagement.getOld(getActivity()));
                 break;
             case share:
-                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.share_fl));
+                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.share_fl));
                 ((TextView) getActivity().findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
                 if (FilesManagement.getMyQRPublicKey(getActivity()) != null)
                     ((ImageView) getActivity().findViewById(R.id.qr_image))
@@ -339,17 +338,17 @@ public class FragmentManagement extends Fragment {
                 ((TextView) getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManagement.getOs(getActivity()));
                 break;
             case wait_nfc_to_write:
-                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.wait_nfc_to_write));
+                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.wait_nfc_to_write));
                 break;
             case wait_nfc_decrypt:
                 if (NfcAdapter.getDefaultAdapter(getActivity()) == null)
                     Toast.makeText(getActivity(), "something goes wrong", Toast.LENGTH_LONG).show();
                 else if (!NfcAdapter.getDefaultAdapter(getActivity()).isEnabled())
                     getActivity().findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
-                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.wait_nfc_decrypt));
+                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.wait_nfc_decrypt));
                 break;
             case setup:
-                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.setup));
+                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.setup));
                 break;
             case decrypted_msg:
                 Log.d("on resume calls on start", "nothing");
@@ -423,22 +422,10 @@ public class FragmentManagement extends Fragment {
                         PublicStaticVariables.flag_session = false;
                     }
                 }
-                setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.decrypted_msg_ll));
+                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.decrypted_msg_ll));
 
                 break;
         }
-    }
-
-    void setAllFonts(Activity act, ViewGroup v) {
-        for (int a = 0; a < v.getChildCount(); a++)
-            try {
-                setAllFonts(act, (ViewGroup) v.getChildAt(a));
-            } catch (Exception e) {
-                try {
-                    ((TextView) v.getChildAt(a)).setTypeface(FilesManagement.getOs(act));
-                } catch (Exception ee) {
-                }
-            }
     }
 
     private boolean validateEmail(String email) {

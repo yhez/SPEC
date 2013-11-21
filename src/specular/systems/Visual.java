@@ -1,6 +1,10 @@
 package specular.systems;
 
-class Visual
+import android.app.Activity;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+public class Visual
 {
     private static final String HEXES = "0123456789ABCDEF";
 
@@ -45,5 +49,16 @@ class Visual
             bin[a / 2] = (byte) n;
         }
         return bin;
+    }
+    public static void setAllFonts(Activity act, ViewGroup v) {
+        for (int a = 0; a < v.getChildCount(); a++)
+            try {
+                setAllFonts(act, (ViewGroup) v.getChildAt(a));
+            } catch (Exception e) {
+                try {
+                    ((TextView) v.getChildAt(a)).setTypeface(FilesManagement.getOs(act));
+                } catch (Exception ee) {
+                }
+            }
     }
 }

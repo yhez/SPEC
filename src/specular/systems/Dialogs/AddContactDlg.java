@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import specular.systems.Contact;
 import specular.systems.PublicContactCard;
 import specular.systems.PublicStaticVariables;
 import specular.systems.R;
+import specular.systems.Visual;
 
 
 public class AddContactDlg extends DialogFragment {
@@ -51,6 +53,7 @@ public class AddContactDlg extends DialogFragment {
         ((TextView)v.findViewById(R.id.acd_chosen_name)).setText(pcc.getName());
         ((TextView)v.findViewById(R.id.acd_chosen_email)).setText(pcc.getEmail());
         ((ImageView)v.findViewById(R.id.acd_chosen_icon)).setImageBitmap(Contact.getPhoto(pcc.getPublicKey()));
+        Visual.setAllFonts(getActivity(),(ViewGroup)v);
         return builder.create();
     }
 }

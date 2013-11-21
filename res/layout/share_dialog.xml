@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:drawable/alert_light_frame"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:textColor="@color/spec_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="share file" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue" />
+
+        <GridLayout
+            android:id="@+id/gl_app_file"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"></GridLayout>
+
+        <TextView
+            android:textColor="@color/spec_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="share image" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue" />
+
+        <GridLayout
+            android:id="@+id/gl_app_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"></GridLayout>
+
+        <TextView
+            android:textColor="@color/spec_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="share text" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue" />
+
+        <GridLayout
+            android:id="@+id/gl_app_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4">
+        </GridLayout>
+    </LinearLayout>
+</ScrollView>

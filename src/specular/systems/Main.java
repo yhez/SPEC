@@ -60,7 +60,7 @@ import specular.systems.Dialogs.NotImplemented;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.Dialogs.Response;
 import specular.systems.Dialogs.ShareContactDlg;
-import specular.systems.Dialogs.ShareDialog;
+import specular.systems.Dialogs.ShareCustomDialog;
 import specular.systems.Dialogs.TurnNFCOn;
 
 
@@ -546,8 +546,10 @@ public class Main extends Activity {
             AddContactDlg acd = new AddContactDlg();
             acd.show(getFragmentManager(), "acd3");
         } else if (PublicStaticVariables.currentLayout == R.layout.share) {
-            ShareDialog dlg = new ShareDialog();
-            dlg.show(getFragmentManager(), "share");
+            //ShareDialog dlg = new ShareDialog();
+            //dlg.show(getFragmentManager(), "share");
+            ShareCustomDialog scd = new ShareCustomDialog();
+           scd.show(getFragmentManager(),"scd");
         }
         return super.onOptionsItemSelected(item);
 

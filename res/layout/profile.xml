@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:alpha="0"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:gravity="center"
     android:layout_height="match_parent">
     <EditText
         android:id="@+id/my_name"
@@ -26,5 +30,9 @@
         android:text="@string/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
+    <Button
+        android:onClick="notImp"
+        android:text="Create new keys"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>
