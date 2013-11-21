@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -56,8 +57,8 @@ public class FragmentManagement extends Fragment {
             }
         }
     };
-    private float startPoint;
-    private float width;
+    //for touch response
+    private float startPointX, startPointY, width, height;
 
     public FragmentManagement() {
         PublicStaticVariables.fragmentManagement = this;
@@ -76,6 +77,8 @@ public class FragmentManagement extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        if (PublicStaticVariables.luc == null)
+            PublicStaticVariables.luc = new LastUsedContacts(getActivity());
         Contact contact;
         switch (PublicStaticVariables.currentLayout) {
             case create_new_keys:
@@ -84,9 +87,9 @@ public class FragmentManagement extends Fragment {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
                         if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN)
-                            startPoint = motionEvent.getX();
+                            startPointX = motionEvent.getX();
                         else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP)
-                            if (motionEvent.getX() < startPoint) {
+                            if (motionEvent.getX() < startPointX) {
                                 String myEmail = ((EditText) getActivity().findViewById(R.id.email))
                                         .getText().toString();
                                 String myName = ((EditText) getActivity().findViewById(R.id.name))
@@ -175,22 +178,45 @@ public class FragmentManagement extends Fragment {
                             .setImageBitmap(FilesManagement.getMyQRPublicKey(getActivity()));
                 ((TextView) getActivity().findViewById(R.id.me_public))
                         .setText(CryptMethods.getPublic());
-                getActivity().findViewById(R.id.touch).setOnTouchListener(new View.OnTouchListener() {
+                final ImageView imageView = (ImageView) getActivity().findViewById(R.id.qr_image);
+                final TextView textView = (TextView) getActivity().findViewById(R.id.me_public);
+                final FrameLayout frameLayout = (FrameLayout) getActivity().findViewById(R.id.touch);
+                final int[] coordination = new int[2];
+                frameLayout.getLocationInWindow(coordination);
+                //todo find a better way to implement that
+                final float x = coordination[0]+frameLayout.getPaddingLeft();
+                final float y = coordination[1]-frameLayout.getPaddingTop();
+                frameLayout.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
-                        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
-                            startPoint = motionEvent.getX();
-                        else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                            if (motionEvent.getX() < startPoint) {
-                                View mePublic = getActivity().findViewById(R.id.me_public), qrImage = getActivity().findViewById(R.id.qr_image);
-                                if (mePublic.getAlpha() == 0) {
-                                    qrImage.animate().setDuration(500).alpha(0).start();
-                                    mePublic.animate().setDuration(500).alpha(1).start();
+                        if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                            startPointX = motionEvent.getRawX();
+                            startPointY = motionEvent.getRawY();
+                            width = frameLayout.getWidth();
+                            height = frameLayout.getHeight();
+                        } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
+                            if (frameLayout.getAlpha() < 0.2) {
+                                View curr, hidden;
+                                if (imageView.getVisibility() == View.VISIBLE) {
+                                    curr = imageView;
+                                    hidden = textView;
                                 } else {
-                                    mePublic.animate().setDuration(500).alpha(0).start();
-                                    qrImage.animate().setDuration(500).alpha(1).start();
+                                    curr = textView;
+                                    hidden = imageView;
                                 }
+                                curr.setVisibility(View.INVISIBLE);
+                                hidden.setVisibility(View.VISIBLE);
                             }
+                            frameLayout.setX(x);
+                            frameLayout.setY(y);
+                            frameLayout.setAlpha(1);
+                        } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
+                            frameLayout.setX(motionEvent.getRawX() - startPointX);
+                            frameLayout.setY(motionEvent.getRawY() - startPointY);
+                            float fx = Math.abs(motionEvent.getRawX() - startPointX) * 2 / width;
+                            float fy = Math.abs(motionEvent.getRawY() - startPointY) * 2 / height;
+                            float rslt = (float) Math.sqrt(fx * fx + fy * fy);
+                            frameLayout.setAlpha(1 - rslt);
                         }
                         return true;
                     }
@@ -198,7 +224,8 @@ public class FragmentManagement extends Fragment {
                 break;
             case encrypt:
                 PublicStaticVariables.changed = false;
-                lv = (ListView) getActivity().findViewById(R.id.en_list_contact);
+                PublicStaticVariables.adapter.refreshList();
+                lv = (ListView) getActivity().findViewById(R.id.list);
                 if (PublicStaticVariables.fullList != null && PublicStaticVariables.fullList.size() > 0) {
                     View v = getActivity().findViewById(R.id.no_contacts);
                     v.setVisibility(View.GONE);
@@ -316,11 +343,10 @@ public class FragmentManagement extends Fragment {
                         }
                     });
                 } else getActivity().findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
-                TextView tvvv=(TextView) getActivity().findViewById(R.id.contact_id_to_send);
-                if (tvvv==null||tvvv.getText().toString().length() == 0) {
-                    PublicStaticVariables.luc = new LastUsedContacts(getActivity());
-                    PublicStaticVariables.luc.show();
-                    if (PublicStaticVariables.luc.showed()) {
+                TextView tvvv = (TextView) getActivity().findViewById(R.id.contact_id_to_send);
+                if ((tvvv == null || tvvv.getText().toString().length() == 0) &&
+                        PublicStaticVariables.fullList.size() > PublicStaticVariables.minContactSize) {
+                    if (PublicStaticVariables.luc.show()) {
                         ViewGroup vg = (ViewGroup) getActivity().findViewById(R.id.grid_lasts);
                         for (int af = 0; af < vg.getChildCount(); af++) {
                             final ViewGroup vg2 = (ViewGroup) vg.getChildAt(af);
@@ -443,7 +469,7 @@ public class FragmentManagement extends Fragment {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
         getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
-        getActivity().findViewById(R.id.en_list_contact).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.list).setVisibility(View.GONE);
         PublicStaticVariables.luc.hide();
         Contact cvc = PublicStaticVariables.contactsDataSource.findContact(contactID);
         ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(contactID + "");
@@ -458,21 +484,22 @@ public class FragmentManagement extends Fragment {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    startPoint = motionEvent.getRawX();
+                    startPointX = motionEvent.getRawX();
                     width = cont.getWidth();
                 } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
                     if (cont.getAlpha() < 0.2) {
                         cont.setVisibility(View.GONE);
                         ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
-                        getActivity().findViewById(R.id.en_list_contact).setVisibility(View.VISIBLE);
+                        getActivity().findViewById(R.id.list).setVisibility(View.VISIBLE);
+                        PublicStaticVariables.luc.show();
                         getActivity().invalidateOptionsMenu();
                     } else {
                         cont.setAlpha(1);
                         cont.setX(0);
                     }
                 } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
-                    cont.setX(motionEvent.getRawX() - startPoint);
-                    float f = Math.abs(motionEvent.getRawX() - startPoint) * 2 / width;
+                    cont.setX(motionEvent.getRawX() - startPointX);
+                    float f = Math.abs(motionEvent.getRawX() - startPointX) * 2 / width;
                     cont.setAlpha(1 - f);
                 }
                 return true;

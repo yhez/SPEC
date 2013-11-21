@@ -6,6 +6,8 @@ import java.util.List;
  * Created by yehezkelk on 11/19/13.
  */
 public class PublicStaticVariables {
+    //defines how long does the list have to be to show the last used contacts
+    public static int minContactSize=10;
     //from CryptoMethods
     public static MessageFormat decryptedMsg = null;
     public static String encryptedMsgToSend = null;

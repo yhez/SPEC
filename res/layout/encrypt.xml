@@ -246,16 +246,15 @@
             android:layout_height="match_parent">
 
             <ListView
-                android:id="@+id/en_list_contact"
+                android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/no_contacts"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
                 android:text="@string/no_contacts"
                 android:textColor="@color/spec_black"
                 android:textSize="22sp"

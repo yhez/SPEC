@@ -1,6 +1,7 @@
 package specular.systems;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -9,7 +10,7 @@ import android.widget.TextView;
 
 
 public class LastUsedContacts {
-    GridLayout gl;
+    //GridLayout gl;
     int NUM_LASTS = 4;
     Contact[] lasts;
     ViewLastContact[] vlc;
@@ -22,7 +23,7 @@ public class LastUsedContacts {
         lasts = new Contact[NUM_LASTS];
         ids = new long[NUM_LASTS];
         num = new int[NUM_LASTS];
-        gl = (GridLayout) a.findViewById(R.id.grid_lasts);
+        //gl = (GridLayout) a.findViewById(R.id.grid_lasts);
         String m = FilesManagement.getlasts(a);
         if (m != null) {
             String[] t = m.split(",");
@@ -42,10 +43,6 @@ public class LastUsedContacts {
         }
     }
 
-    public boolean showed() {
-        return gl.getVisibility() == View.VISIBLE;
-    }
-
     private int smallest(int[] arr) {
         int small = 0;
         for (int a = 1; a < arr.length; a++)
@@ -55,7 +52,7 @@ public class LastUsedContacts {
     }
 
     public void hide() {
-        gl.setVisibility(View.GONE);
+        a.findViewById(R.id.grid_lasts).setVisibility(View.GONE);
    /*this is if we want to remove from list the ones that are in the top list
    for(int con =0;con<lasts.length;con++)
             Main.currentList.add(lasts[con]);
@@ -63,23 +60,20 @@ public class LastUsedContacts {
         */
     }
 
-    public void show() {
-        if (lasts == null || lasts.length == 0 || lasts[0] == null)
-            return;
-        gl.setVisibility(View.VISIBLE);
+    public boolean show() {
+        if (lasts == null || lasts.length == 0 || lasts[0] == null){
+            Log.d("what happened",(lasts == null)+"-"+(lasts.length == 0)+"-"+(lasts[0] == null));
+            return false;
+        }
+        a.findViewById(R.id.grid_lasts).setVisibility(View.VISIBLE);
         vlc = new ViewLastContact[NUM_LASTS];
         for (int c = 0; c < NUM_LASTS; c++) {
-            vlc[c] = new ViewLastContact((LinearLayout) gl.getChildAt(c));
+            vlc[c] = new ViewLastContact((LinearLayout)((GridLayout) a.findViewById(R.id.grid_lasts)).getChildAt(c));
         }
         for (int c = 0; c < NUM_LASTS; c++)
             if (lasts[c] != null)
                 vlc[c].setContent(lasts[c]);
-        /*this is if we want to remove from list the ones that are in the top list
-        for (int c = 0; c < NUM_LASTS; c++)
-            if (lasts[c] != null){
-                Log.d("remove",""+Main.currentList.remove(lasts[c]));
-            }
-        m.adapter.notifyDataSetChanged();*/
+        return true;
     }
 
     public void change(Contact contact) {

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/share_fl"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:alpha="1"
     android:background="@android:color/white"
-    android:orientation="vertical"
     android:padding="@dimen/default_gap">
 
     <TextView
@@ -51,30 +50,22 @@
         android:layout_centerHorizontal="true"
         android:background="@color/spec_blue" />
 
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/share_panel"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/swipe" />
-
     <FrameLayout
+        android:id="@+id/touch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/div_up"
-        android:layout_below="@id/your_public_key"
-        android:padding="@dimen/default_gap">
+        android:background="@android:drawable/alert_light_frame"
+        android:layout_below="@id/your_public_key">
 
         <TextView
             android:id="@+id/me_public"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:alpha="0"
-            android:background="@android:drawable/alert_light_frame"
             android:gravity="fill_horizontal"
             android:padding="32dp"
+            android:visibility="invisible"
             android:textColor="#28bedf"
             android:textSize="20sp" />
 
@@ -83,13 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="top"
-            android:alpha="1"
-            android:background="@android:drawable/alert_light_frame"
             android:padding="32dp" />
 
-        <View
-            android:id="@+id/touch"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </FrameLayout>
 </RelativeLayout>
