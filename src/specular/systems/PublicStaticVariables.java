@@ -21,7 +21,9 @@ public class PublicStaticVariables {
     public static String message;
     public final static int MSG_LIMIT_FOR_QR = 141;
     //form main
+    public static Main main;
     public static ContactsDataSource contactsDataSource;
+    public static MySimpleArrayAdapter adapter;
     public static String currentText = "";
     public static int currentLayout;
     public static boolean changed;
@@ -32,7 +34,7 @@ public class PublicStaticVariables {
     public static byte[] fileContent;
     public static boolean handleByOnActivityResult = false;
     //from fragment
-    public static FragmentManagement f;
+    public static FragmentManagement fragmentManagement;
     public static LastUsedContacts luc;
     public static boolean readyToSend=false;
     //from files management

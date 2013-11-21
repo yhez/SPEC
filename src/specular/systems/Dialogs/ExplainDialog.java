@@ -3,27 +3,62 @@ package specular.systems.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import specular.systems.R;
 
 
 public class ExplainDialog extends DialogFragment{
     int title,content;
-    public ExplainDialog(int title,int content){
-        this.title=title;
-        this.content=content;
+    String details;
+    public final static int HASH=0,SESSION=1,REPLAY=2;
+    public ExplainDialog(int type,String details){
+        switch (type){
+            case HASH:
+                content=R.string.hash_explain;
+                title=R.string.what_is_hash;
+                break;
+            case SESSION:
+                content=R.string.session_explain;
+                title=R.string.what_is_session;
+                break;
+            case REPLAY:
+                content=R.string.replay_explain;
+                title=R.string.what_is_replay;
+                break;
+        }
+        this.details=details;
     }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setPositiveButton(R.string.ok_for_explain, new DialogInterface.OnClickListener() {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View v = inflater.inflate(R.layout.tech_details, null);
+        builder.setView(v);
+        final TextView tvTitle = (TextView)v.findViewById(R.id.title);
+        tvTitle.setText("technical info");
+        final TextView tvContent = (TextView)v.findViewById(R.id.text_content);
+        tvContent.setText(details);
+        final Button btDetails = (Button)v.findViewById(R.id.my_details);
+        final Button btExplain = (Button)v.findViewById(R.id.general_explain);
+        btExplain.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int id) {
-                ExplainDialog.this.getDialog().cancel();
+            public void onClick(View view) {
+                tvTitle.setText(title);
+                tvContent.setText(content);
             }
-        }).setMessage(content).setTitle(title);
+        });
+        btDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tvTitle.setText("technical info");
+                tvContent.setText(details);
+            }
+        });
         return builder.create();
     }
 }

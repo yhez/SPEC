@@ -16,9 +16,7 @@ public class LastUsedContacts {
     Activity a;
     long[] ids;
     int[] num;
-public boolean showed(){
-    return gl.getVisibility()==View.VISIBLE;
-}
+
     public LastUsedContacts(Activity a) {
         this.a = a;
         lasts = new Contact[NUM_LASTS];
@@ -44,6 +42,10 @@ public boolean showed(){
         }
     }
 
+    public boolean showed() {
+        return gl.getVisibility() == View.VISIBLE;
+    }
+
     private int smallest(int[] arr) {
         int small = 0;
         for (int a = 1; a < arr.length; a++)
@@ -52,7 +54,7 @@ public boolean showed(){
         return small;
     }
 
-    public void hide(Main m) {
+    public void hide() {
         gl.setVisibility(View.GONE);
    /*this is if we want to remove from list the ones that are in the top list
    for(int con =0;con<lasts.length;con++)
@@ -62,7 +64,7 @@ public boolean showed(){
     }
 
     public void show() {
-        if(lasts==null||lasts.length==0||lasts[0]==null)
+        if (lasts == null || lasts.length == 0 || lasts[0] == null)
             return;
         gl.setVisibility(View.VISIBLE);
         vlc = new ViewLastContact[NUM_LASTS];
@@ -118,7 +120,7 @@ public boolean showed(){
         public ViewLastContact(LinearLayout fl) {
             tv = (TextView) fl.getChildAt(1);
             ib = (ImageButton) fl.getChildAt(0);
-            id = (TextView)fl.getChildAt(2);
+            id = (TextView) fl.getChildAt(2);
         }
 
         public ImageButton getImage() {
@@ -132,7 +134,7 @@ public boolean showed(){
         public void setContent(Contact contact) {
             ib.setImageBitmap(Contact.getPhoto(contact.getPublicKey()));
             tv.setText(contact.getContactName());
-            id.setText(contact.getId()+"");
+            id.setText(contact.getId() + "");
         }
     }
 }

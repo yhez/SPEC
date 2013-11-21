@@ -106,7 +106,6 @@ public class Main extends Activity {
         }
     };
     private final int ATTACH_FILE = 0, SCAN_QR = 1;
-    public MySimpleArrayAdapter adapter;
     public Handler handler;
     boolean exit = false;
     Toast t;
@@ -227,15 +226,15 @@ public class Main extends Activity {
                 }
                 break;
             case R.id.hash:
-                ExplainDialog edlg = new ExplainDialog(R.string.what_is_hash, R.string.hash_explain);
+                ExplainDialog edlg = new ExplainDialog(ExplainDialog.HASH,PublicStaticVariables.decryptedMsg.getHash());
                 edlg.show(getFragmentManager(), "hash");
                 break;
             case R.id.session:
-                ExplainDialog edl = new ExplainDialog(R.string.what_is_session, R.string.session_explain);
+                ExplainDialog edl = new ExplainDialog(ExplainDialog.SESSION,PublicStaticVariables.decryptedMsg.getSession());
                 edl.show(getFragmentManager(), "session");
                 break;
             case R.id.replay:
-                ExplainDialog ed = new ExplainDialog(R.string.what_is_replay, R.string.replay_explain);
+                ExplainDialog ed = new ExplainDialog(ExplainDialog.REPLAY,PublicStaticVariables.decryptedMsg.getSentTime());
                 ed.show(getFragmentManager(), "replay");
                 break;
         }
@@ -265,7 +264,7 @@ public class Main extends Activity {
                     if (r == PublicStaticVariables.RESULT_ADD_FILE_OK) {
                         //if(uri.)
                         String w[] = getRealPathFromURI(uri).split("/");
-                        //File f =new File(uri.getPath());
+                        //File fragmentManagement =new File(uri.getPath());
                         fileName = w[w.length - 1];
                         //Log.d("File",fileName);
                         Message msg = hndl.obtainMessage(REPLACE_PHOTO);
@@ -286,11 +285,6 @@ public class Main extends Activity {
         if (resultCode == RESULT_OK) {
             if (requestCode == ATTACH_FILE) {
                 attachFile(intent.getData());
-            } else if (requestCode == 71) {
-                //coming back from turn nfc on
-                createKeysManager();
-            } else if (requestCode == 23) {
-                //nothing to do, it just helping that the call set up views will not called
             } else {
                 String result = intent.getStringExtra("barcode");
                 if (result != null) {
@@ -309,7 +303,7 @@ public class Main extends Activity {
                                     t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                     t.show();
                                     PublicStaticVariables.fileContactCard = null;
-                                    PublicStaticVariables.f.contactChosen(contact1.getId());
+                                    PublicStaticVariables.fragmentManagement.contactChosen(contact1.getId());
                                 } else {
                                     AddContactDlg acd = new AddContactDlg();
                                     acd.show(getFragmentManager(), "acd2");
@@ -459,6 +453,7 @@ public class Main extends Activity {
         handler = new Handler(Looper.getMainLooper());
         PublicStaticVariables.contactsDataSource = new ContactsDataSource(this);
         PublicStaticVariables.currentList = PublicStaticVariables.contactsDataSource.getAllContacts();
+        PublicStaticVariables.main = this;
         Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
             @Override
             public int compare(Contact contact, Contact contact2) {
@@ -467,7 +462,7 @@ public class Main extends Activity {
         });
         PublicStaticVariables.fullList = new ArrayList<Contact>();
         PublicStaticVariables.fullList.addAll(PublicStaticVariables.currentList);
-        adapter = new MySimpleArrayAdapter(this, PublicStaticVariables.currentList);
+        PublicStaticVariables.adapter = new MySimpleArrayAdapter(this, PublicStaticVariables.currentList);
         setContentView(R.layout.main);
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
@@ -527,9 +522,9 @@ public class Main extends Activity {
                 if (b.getVisibility() == View.GONE) {
                     b.setVisibility(View.VISIBLE);
                     if (PublicStaticVariables.currentLayout == R.layout.encrypt)
-                        PublicStaticVariables.luc.hide(this);
+                        PublicStaticVariables.luc.hide();
                 } else {
-                    refreshList();
+                    PublicStaticVariables.adapter.refreshList();
                     ((EditText) findViewById(R.id.filter)).setText("");
                     b.setVisibility(View.GONE);
                     if (PublicStaticVariables.currentLayout == R.layout.encrypt)
@@ -661,6 +656,9 @@ public class Main extends Activity {
                     case R.layout.decrypted_msg:
                         menu = 1;
                         break;
+                    case R.layout.profile:
+                        menu=2;
+                        break;
                     default:
                         menu = 0;
                         break;
@@ -673,7 +671,7 @@ public class Main extends Activity {
         setTitle(menuTitles[menu]);
         View v = findViewById(PublicStaticVariables.currentLayout);
         if (v != null) v.animate().setDuration(100).alpha(0).start();
-        final Fragment fragment = new FragmentManagement(Main.this);
+        final Fragment fragment = new FragmentManagement();
         final FragmentManager fragmentManager = getFragmentManager();
         if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
             mDrawerLayout.closeDrawer(mDrawerList);
@@ -907,6 +905,9 @@ public class Main extends Activity {
                         dlg.show(getFragmentManager(), "exit");
                     }
                     break;
+                case R.layout.profile:
+                    selectItem(-1,R.layout.share);
+                    break;
                 case R.layout.create_new_keys:
                     if (CryptMethods.publicExist())
                         setUpViews();
@@ -1001,7 +1002,9 @@ public class Main extends Activity {
             return R.string.failed_to_write;
         }
     }
-
+public void onClickShare(View v){
+    selectItem(-1,R.layout.profile);
+}
     @Override
     protected void onResume() {
         super.onResume();
@@ -1052,15 +1055,6 @@ public class Main extends Activity {
                 ddd.show(getFragmentManager(), "ddd");
                 break;
         }
-    }
-
-    public void refreshList() {
-        for (int a = 0; a < PublicStaticVariables.fullList.size(); a++)
-            if (!PublicStaticVariables.currentList.contains(PublicStaticVariables.fullList.get(a)))
-                PublicStaticVariables.currentList.add(PublicStaticVariables.fullList.get(a));
-        if (PublicStaticVariables.currentLayout == R.layout.encrypt)
-            PublicStaticVariables.luc.show();
-        adapter.notifyDataSetChanged();
     }
 
     public static class createKeys {

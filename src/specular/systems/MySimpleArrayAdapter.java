@@ -100,4 +100,12 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
         };
         return filter;
     }
+    public void refreshList() {
+        for (int a = 0; a < PublicStaticVariables.fullList.size(); a++)
+            if (!PublicStaticVariables.currentList.contains(PublicStaticVariables.fullList.get(a)))
+                PublicStaticVariables.currentList.add(PublicStaticVariables.fullList.get(a));
+        if (PublicStaticVariables.currentLayout == R.layout.encrypt)
+            PublicStaticVariables.luc.show();
+        PublicStaticVariables.adapter.notifyDataSetChanged();
+    }
 }

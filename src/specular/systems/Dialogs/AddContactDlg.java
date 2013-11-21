@@ -39,7 +39,7 @@ public class AddContactDlg extends DialogFragment {
                             getActivity().invalidateOptionsMenu();
                         }
                         if (PublicStaticVariables.currentLayout == R.layout.encrypt) {
-                            PublicStaticVariables.f.contactChosen(c.getId());
+                            PublicStaticVariables.fragmentManagement.contactChosen(c.getId());
                         }
                     }
                 })

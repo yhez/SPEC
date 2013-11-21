@@ -40,7 +40,7 @@
         android:gravity="center"
         android:padding="@dimen/default_gap"
         android:text="my details"
-        android:onClick="notImp"
+        android:onClick="onClickShare"
         android:textColor="@color/spec_black" />
 
     <View

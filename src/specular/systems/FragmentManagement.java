@@ -42,7 +42,7 @@ import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 public class FragmentManagement extends Fragment {
-    private static Main w;
+    //private static Main w;
     private final int TURN_TEXT_TRIGGER = 0;
     private final Handler hndl = new Handler() {
         @Override
@@ -60,9 +60,8 @@ public class FragmentManagement extends Fragment {
     private float startPoint;
     private float width;
 
-    public FragmentManagement(Main w) {
-        this.w = w;
-        PublicStaticVariables.f = this;
+    public FragmentManagement() {
+        PublicStaticVariables.fragmentManagement = this;
     }
 
     @Override
@@ -100,7 +99,7 @@ public class FragmentManagement extends Fragment {
                                     t.show();
                                 } else {
                                     CryptMethods.setDetails(myName, myEmail);
-                                    w.createKeysManager();
+                                    PublicStaticVariables.main.createKeysManager();
                                 }
                             }
                         return true;
@@ -110,14 +109,14 @@ public class FragmentManagement extends Fragment {
             case contacts:
                 PublicStaticVariables.changed = false;
                 ListView lv = (ListView) getActivity().findViewById(R.id.list);
-                w.refreshList();
+                PublicStaticVariables.adapter.refreshList();
                 if (PublicStaticVariables.fullList != null && PublicStaticVariables.fullList.size() > 0) {
                     getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
-                    lv.setAdapter(w.adapter);
+                    lv.setAdapter(PublicStaticVariables.adapter);
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         public void onItemClick(AdapterView<?> p1, View p2, int p3,
                                                 long p4) {
-                            Fragment fragment = new FragmentManagement(w);
+                            Fragment fragment = new FragmentManagement();
                             Bundle args = new Bundle();
                             PublicStaticVariables.currentLayout = edit_contact;
                             args.putLong("contactId", Long.parseLong(((TextView) p2
@@ -139,7 +138,7 @@ public class FragmentManagement extends Fragment {
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                        w.adapter.getFilter().filter(charSequence.toString());
+                        PublicStaticVariables.adapter.getFilter().filter(charSequence.toString());
                     }
 
                     @Override
@@ -204,7 +203,7 @@ public class FragmentManagement extends Fragment {
                 if (PublicStaticVariables.fullList != null && PublicStaticVariables.fullList.size() > 0) {
                     View v = getActivity().findViewById(R.id.no_contacts);
                     v.setVisibility(View.GONE);
-                    lv.setAdapter(w.adapter);
+                    lv.setAdapter(PublicStaticVariables.adapter);
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> p1, View p2, int p3,
@@ -223,7 +222,7 @@ public class FragmentManagement extends Fragment {
 
                         @Override
                         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                            w.adapter.getFilter().filter(charSequence.toString());
+                            PublicStaticVariables.adapter.getFilter().filter(charSequence.toString());
                         }
 
                         @Override
@@ -458,7 +457,7 @@ public class FragmentManagement extends Fragment {
         imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
         getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
         getActivity().findViewById(R.id.en_list_contact).setVisibility(View.GONE);
-        PublicStaticVariables.luc.hide(w);
+        PublicStaticVariables.luc.hide();
         Contact cvc = PublicStaticVariables.contactsDataSource.findContact(contactID);
         ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(contactID + "");
         ((TextView) getActivity().findViewById(R.id.chosen_name)).setText(cvc.getContactName());
