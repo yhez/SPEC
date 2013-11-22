@@ -126,6 +126,8 @@
     <string name="explain_button">explain</string>
     <string name="share_text">share text</string>
     <string name="edit_contact_title_pbk">public key:</string>
+    <string name="both_qr_file">both qr code and file</string>
+    <string name="files_details">file details</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
