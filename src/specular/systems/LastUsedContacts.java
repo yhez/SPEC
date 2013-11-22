@@ -21,7 +21,6 @@ public class LastUsedContacts {
         lasts = new Contact[NUM_LASTS];
         ids = new long[NUM_LASTS];
         num = new int[NUM_LASTS];
-        //gl = (GridLayout) a.findViewById(R.id.grid_lasts);
         String m = FilesManagement.getlasts(a);
         if (m != null) {
             String[] t = m.split(",");
@@ -50,11 +49,12 @@ public class LastUsedContacts {
     }
 
     public void hide() {
-        a.findViewById(R.id.grid_lasts).setVisibility(View.GONE);
+        View v =a.findViewById(R.id.grid_lasts);
+                if(v!=null)v.setVisibility(View.GONE);
     }
 
     public boolean show() {
-        if (lasts == null || lasts.length == 0 || lasts[0] == null || a.findViewById(R.id.grid_lasts) == null) {
+        if (lasts.length == 0 || lasts[0] == null || a.findViewById(R.id.grid_lasts) == null) {
             return false;
         }
         a.findViewById(R.id.grid_lasts).setVisibility(View.VISIBLE);

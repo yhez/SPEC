@@ -1,7 +1,5 @@
 package specular.systems;
 
-import android.util.Log;
-
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
@@ -110,7 +108,6 @@ public class MessageFormat {
         byte[] fm = new byte[name.length() + email.length() + publicKey.length()
                 + hash.length() + session.length() + sentTime.length() + fileName.length
                 + msgContent.length + (fileContent != null ? fileContent.length : 0) + 13];
-        Log.d("array length", fm.length + " ");
         int b = 0;
         for (int a = 0; a < name.length(); b++, a++)
             fm[b] = (byte) name.charAt(a);
@@ -147,7 +144,6 @@ public class MessageFormat {
         if (fileContent != null)
             for (int a = 0; a < fileContent.length; b++, a++)
                 fm[b] = fileContent[a];
-        Log.d("current pos", b + " ");
         return fm;
     }
 

@@ -28,7 +28,6 @@ import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.text.Html;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,7 +44,6 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,6 +57,7 @@ import specular.systems.Dialogs.ExplainDialog;
 import specular.systems.Dialogs.NotImplemented;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.Dialogs.Response;
+import specular.systems.Dialogs.SendMsgDialog;
 import specular.systems.Dialogs.ShareContactDlg;
 import specular.systems.Dialogs.ShareCustomDialog;
 import specular.systems.Dialogs.TurnNFCOn;
@@ -929,30 +928,13 @@ public class Main extends Activity {
     void sendMessage() {
         boolean success = FilesManagement.createFilesToSend(this, (userInput.length() + (PublicStaticVariables.fileContent != null ? PublicStaticVariables.fileContent.length : 0)) < PublicStaticVariables.MSG_LIMIT_FOR_QR);
         if (success) {
-            Intent intentShare = new Intent(Intent.ACTION_SEND_MULTIPLE);
-            intentShare.putExtra(Intent.EXTRA_EMAIL, new String[]{((TextView) findViewById(R.id.chosen_email)).getText().toString()});
-            intentShare.setType("*/*");
-            intentShare.putExtra(Intent.EXTRA_SUBJECT,
-                    getResources().getString(R.string.subject_encrypt));
-            InputStream is;
-            try {
-                is = getAssets().open("spec_tmp_msg.html");
-                int size = is.available();
-                byte[] buffer = new byte[size];
-                is.read(buffer);
-                is.close();
-                intentShare.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
             ArrayList<Uri> files = FilesManagement.getFilesToSend(this);
             if (files == null)
                 Toast.makeText(this, R.string.failed_attach_files, Toast.LENGTH_LONG).show();
             else {
-                //TODO add intentShare.putExtra(Intent.EXTRA_EMAIL,)
-                intentShare.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
-                startActivity(Intent.createChooser(intentShare, getResources()
-                        .getString(R.string.send_dialog)));
+                SendMsgDialog smd = new SendMsgDialog(files);
+                smd.show(getFragmentManager(),"smd");
             }
         } else {
             Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();

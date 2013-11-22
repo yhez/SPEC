@@ -49,19 +49,19 @@ public class Splash extends Activity {
             ((TextView) findViewById(R.id.company)).setTypeface(FilesManagement.getOs(this));
             findViewById(R.id.splash).animate().setDuration(TIME_FOR_SPLASH).alpha(1).start();
             waitForSplash.start();
-        }
-        FilesManagement.getKeysFromSDCard(this);
-        if (!CryptMethods.privateExist() && getIntent().getType() != null) {
-            Parcelable raw[] = getIntent().getParcelableArrayExtra(
-                    NfcAdapter.EXTRA_NDEF_MESSAGES);
-            if (raw != null) {
-                NdefMessage msg = (NdefMessage) raw[0];
-                NdefRecord pvk = msg.getRecords()[0];
-                CryptMethods.setPrivate(Visual.bin2hex(pvk
-                        .getPayload()));
+        } else {
+            FilesManagement.getKeysFromSDCard(this);
+            if (!CryptMethods.privateExist() && getIntent().getType() != null) {
+                Parcelable raw[] = getIntent().getParcelableArrayExtra(
+                        NfcAdapter.EXTRA_NDEF_MESSAGES);
+                if (raw != null) {
+                    NdefMessage msg = (NdefMessage) raw[0];
+                    NdefRecord pvk = msg.getRecords()[0];
+                    CryptMethods.setPrivate(Visual.bin2hex(pvk
+                            .getPayload()));
+                }
             }
-        }
-        if (!newUser) {
+
             Intent intent = new Intent(Splash.this, Main.class);
             if (PublicStaticVariables.message != null || PublicStaticVariables.fileContactCard != null
                     || PublicStaticVariables.time == null || (System.currentTimeMillis() - PublicStaticVariables.time) > (1000 * 60 * TIME_FOR_CLEAR_TASK)) {
@@ -79,18 +79,26 @@ public class Splash extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         Intent thisIntent = getIntent();
-        if (thisIntent.getType() != null) {
+        if (thisIntent==null||thisIntent.getType() == null) {
+            go();
+        } else {
             if (thisIntent.getAction() != null && thisIntent.getAction().equals(Intent.ACTION_SEND)) {
                 String s = thisIntent.getStringExtra(Intent.EXTRA_TEXT);
                 if (s != null) {
                     PublicStaticVariables.currentText = s;
                 }
                 go();
-            } else if (thisIntent.getType().equals("application/octet-stream")
-                    && thisIntent.getData() != null) {
+            } else if (!thisIntent.getType().equals("application/octet-stream")
+                    || thisIntent.getData() == null) {
+                go();
+            } else {
                 PublicContactCard qrp;
                 Uri uri = getIntent().getData();
-                if (uri != null) {
+                if (uri == null) {
+                    Toast.makeText(getBaseContext(), R.string.failed,
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
                     String data = null;
                     try {
                         ContentResolver cr = getBaseContext().getContentResolver();
@@ -115,7 +123,11 @@ public class Splash extends Activity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    if (data != null) {
+                    if (data == null) {
+                        Toast.makeText(getBaseContext(), R.string.failed,
+                                Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
                         qrp = new PublicContactCard(this, data);
                         if (qrp.getPublicKey() != null) {
                             PublicStaticVariables.fileContactCard = qrp;
@@ -123,18 +135,9 @@ public class Splash extends Activity {
                             PublicStaticVariables.message = data;
                         }
                         go();
-                    } else {
-                        Toast.makeText(getBaseContext(), R.string.failed,
-                                Toast.LENGTH_LONG).show();
-                        finish();
                     }
-                } else {
-                    Toast.makeText(getBaseContext(), R.string.failed,
-                            Toast.LENGTH_LONG).show();
-                    finish();
                 }
-            } else
-                go();
-        } else go();
+            }
+        }
     }
 }

@@ -178,6 +178,8 @@ public final class FilesManagement {
             File f = new File(root, a.getString(QR_NAME_SEND));
             if (f.exists())
                 uris.add(Uri.parse("file://" + f));
+            else
+                uris.add(null);
             return uris;
         } catch (Exception e) {
             return null;

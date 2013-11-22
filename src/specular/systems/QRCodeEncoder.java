@@ -11,7 +11,7 @@ import com.google.zxing.common.BitMatrix;
 import java.util.EnumMap;
 import java.util.Map;
 
-final class QRCodeEncoder {
+final public class QRCodeEncoder {
     private static final int WHITE = 0xFFFFFFFF;
     private final int BLACK;
 

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:drawable/alert_light_frame"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/title_file_details"
+            android:textColor="@color/spec_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/files_details" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue" />
+        <LinearLayout
+            android:id="@+id/file_details"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/file_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textColor="@color/spec_black"
+                android:id="@+id/file_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="@color/spec_gray"
+                android:id="@+id/name_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/qr_details"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/qr_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textColor="@color/spec_black"
+                android:id="@+id/qr_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="@color/spec_gray"
+                android:id="@+id/qr_name_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/text_both_share"
+            android:textColor="@color/spec_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/both_qr_file" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue" />
+
+
+        <GridLayout
+            android:id="@+id/gl_both"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"></GridLayout>
+
+        <TextView
+            android:id="@+id/title_file"
+            android:textColor="@color/spec_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share_file" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue" />
+
+        <GridLayout
+            android:id="@+id/gl_app_file"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"></GridLayout>
+
+        <TextView
+            android:id="@+id/title_image"
+            android:textColor="@color/spec_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share_image" />
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue" />
+
+        <GridLayout
+            android:id="@+id/gl_app_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"></GridLayout>
+
+    </LinearLayout>
+</ScrollView>
