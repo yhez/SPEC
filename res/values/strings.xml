@@ -28,7 +28,7 @@
     <string name="bad_data">Please scan again</string>
     <string name="public_key">Public Key</string>
     <string name="share_dialog">Share your Public Key&#8230;</string>
-    <string name="send_dialog">Send encrypted message&#8230;</string>
+    <string name="send_dialog">Send encrypted message via&#8230;</string>
     <string name="cant_decrypt">This message hasn\'t been encrypted for you</string>
     <string name="subject_encrypt">An encrypted message just for you - SPEC APP</string>
     <string name="share_public_descripton">My Public Key:</string>
