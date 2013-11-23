@@ -1,44 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:alpha="0"
-    android:background="@android:color/white"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="1"
+    android:background="@android:color/white"
     android:gravity="center"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/my_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/my_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:gravity="center"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="my name:"
+                android:textColor="@color/spec_black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:gravity="center"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="my email:"
+                android:textColor="@color/spec_black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:paddingRight="@dimen/default_gap"
+                android:id="@+id/my_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:paddingRight="@dimen/default_gap"
+                android:id="@+id/my_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
 
     <Button
-        android:text="@string/beckup_profile"
-        android:onClick="notImp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:onClick="notImp"
+        android:text="@string/backup_profile" />
 
     <Button
-        android:onClick="notImp"
-        android:text="@string/restore_profile"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:onClick="notImp"
+        android:text="@string/restore_profile" />
 
     <Button
-        android:onClick="notImp"
-        android:text="@string/save"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:onClick="notImp"
+        android:text="@string/save" />
 
     <Button
-        android:onClick="notImp"
-        android:text="@string/create_new_keys"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:onClick="notImp"
+        android:text="@string/create_new_keys" />
 </LinearLayout>

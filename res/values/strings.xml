@@ -117,7 +117,7 @@
     <string name="notify_msg_deleted">Message has been deleted</string>
     <string name="send_another_msg">send another message</string>
     <string name="send_orders">steps:\n------\n1. choose contact.\n2.enter content.\n3. add file (optional)</string>
-    <string name="beckup_profile">backup you profile</string>
+    <string name="backup_profile">backup you profile</string>
     <string name="share_file">share file</string>
     <string name="restore_profile">restore profile</string>
     <string name="my_details">My Details</string>
