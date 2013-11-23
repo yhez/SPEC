@@ -50,8 +50,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import specular.systems.Dialogs.AddContactDlg;
+import specular.systems.Dialogs.DeleteContactDialog;
 import specular.systems.Dialogs.DeleteDataDialog;
-import specular.systems.Dialogs.DeleteDialog;
 import specular.systems.Dialogs.ExitWithoutSave;
 import specular.systems.Dialogs.ExplainDialog;
 import specular.systems.Dialogs.NotImplemented;
@@ -161,7 +161,9 @@ public class Main extends Activity {
                         e.printStackTrace();
                     }
                 }
-            setUpViews();
+            finish();
+            Intent intent = new Intent(this,Splash.class);
+            startActivity(intent);
         }
     }
 
@@ -427,7 +429,7 @@ public class Main extends Activity {
                         selectItem(-1, R.layout.contacts);
                         break;
                     case R.id.delete:
-                        DeleteDialog dlg = new DeleteDialog();
+                        DeleteContactDialog dlg = new DeleteContactDialog();
                         dlg.show(getFragmentManager(), "delete");
                         break;
                     case R.id.answer:
@@ -877,7 +879,7 @@ public class Main extends Activity {
                     Toast.makeText(this, R.string.notify_msg_deleted, Toast.LENGTH_SHORT).show();
                     PublicStaticVariables.decryptedMsg = null;
                     FilesManagement.deleteTempDecryptedMSG(this);
-                    selectItem(-1, R.layout.decrypt);
+                    setUpViews();
                     break;
                 case R.layout.decrypt:
                     setUpViews();
@@ -1032,7 +1034,6 @@ public class Main extends Activity {
                 break;
             case R.id.button4:
                 DeleteDataDialog ddd = new DeleteDataDialog();
-                ddd.setStyle(android.R.attr.dialogLayout, android.R.attr.dialogTheme);
                 ddd.show(getFragmentManager(), "ddd");
                 break;
         }

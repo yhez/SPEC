@@ -36,15 +36,16 @@ public class ContactsDataSource {
         long l = database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
                 values);
         dbHelper.close();
-        PublicStaticVariables.adapter.addCont(contact);
+        PublicStaticVariables.fullList.add(contact);
+        PublicStaticVariables.adapter.refreshList();
         return l;
     }
 
     public void deleteContact(Contact contact) {
         long id = contact.getId();
         int position = -1;
-        for (int a = 0; a < PublicStaticVariables.currentList.size(); a++)
-            if (contact.getPublicKey().equals(PublicStaticVariables.currentList.get(a).getPublicKey())) {
+        for (int a = 0; a < PublicStaticVariables.fullList.size(); a++)
+            if (contact.getPublicKey().equals(PublicStaticVariables.fullList.get(a).getPublicKey())) {
                 position = a;
                 break;
             }
@@ -52,8 +53,10 @@ public class ContactsDataSource {
         database.delete(MySQLiteHelper.TABLE_CONTACTS, MySQLiteHelper.COLUMN_ID
                 + " = " + id, null);
         dbHelper.close();
-        if (!(position < 0))
+        if (!(position < 0)){
             PublicStaticVariables.adapter.removeCont(position);
+            PublicStaticVariables.fullList.remove(position);
+        }
     }
 
     public Contact findContact(long id) {

@@ -12,7 +12,7 @@ import specular.systems.PublicStaticVariables;
 import specular.systems.R;
 
 
-public class DeleteDialog extends DialogFragment {
+public class DeleteContactDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -28,7 +28,7 @@ public class DeleteDialog extends DialogFragment {
         })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        DeleteDialog.this.getDialog().cancel();
+                        DeleteContactDialog.this.getDialog().cancel();
                     }
                 }).setMessage(R.string.verify_delete_msg);
         return builder.create();

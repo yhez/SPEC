@@ -97,7 +97,7 @@ public class FragmentManagement extends Fragment {
                                 if (!validateEmail(myEmail)) {
                                     Toast t = Toast.makeText(getActivity(), R.string.fill_all,
                                             Toast.LENGTH_LONG);
-                                    t.setGravity(Gravity.TOP, 0, 0);
+                                    t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                     t.show();
                                 } else {
                                     CryptMethods.setDetails(myName, myEmail);
