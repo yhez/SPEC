@@ -8,7 +8,7 @@
     <string name="decrypt_explain">Decrypt message using barcode scanner, press button to scan:\n</string>
     <string name="encrypt_explain">Search contacts&#8230;</string>
     <string name="hint_msg">Enter message&#8230;</string>
-    <string name="explain"> I\'m attaching my public encryption key. You should verify that this public key belongs to the sender.</string>
+    <string name="explain">Attached is a SPEC public encryption key. You should verify that this public key belongs to the sender.</string>
     <string name="ok">OK</string>
     <string name="hint_enter_your_name">username (optional)&#8230;</string>
     <string name="hint_enter_your_email">email&#8230;</string>
