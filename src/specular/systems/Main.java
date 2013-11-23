@@ -50,6 +50,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import specular.systems.Dialogs.AddContactDlg;
+import specular.systems.Dialogs.ContactQR;
 import specular.systems.Dialogs.DeleteContactDialog;
 import specular.systems.Dialogs.DeleteDataDialog;
 import specular.systems.Dialogs.ExitWithoutSave;
@@ -432,6 +433,10 @@ public class Main extends Activity {
                     case R.id.answer:
                         Response r = new Response();
                         r.show(getFragmentManager(), "n");
+                        break;
+                    case R.id.contact_picture:
+                        ContactQR cqr = new ContactQR();
+                        cqr.show(getFragmentManager(),"cqr");
                         break;
                 }
                 break;
@@ -873,9 +878,11 @@ public class Main extends Activity {
                         new prepareToExit();
                     break;
                 case R.layout.decrypted_msg:
-                    Toast.makeText(this, R.string.notify_msg_deleted, Toast.LENGTH_SHORT).show();
-                    PublicStaticVariables.decryptedMsg = null;
-                    FilesManagement.deleteTempDecryptedMSG(this);
+                    if(PublicStaticVariables.decryptedMsg!=null){
+                        Toast.makeText(this, R.string.notify_msg_deleted, Toast.LENGTH_SHORT).show();
+                        PublicStaticVariables.decryptedMsg = null;
+                        FilesManagement.deleteTempDecryptedMSG(this);
+                    }
                     setUpViews();
                     break;
                 case R.layout.decrypt:
@@ -925,14 +932,16 @@ public class Main extends Activity {
     }
 
     void sendMessage() {
-        boolean success = FilesManagement.createFilesToSend(this, (userInput.length() + (PublicStaticVariables.fileContent != null ? PublicStaticVariables.fileContent.length : 0)) < PublicStaticVariables.MSG_LIMIT_FOR_QR);
+        boolean success = FilesManagement.createFilesToSend(this, (userInput.length() +
+                (PublicStaticVariables.fileContent != null ?
+                        PublicStaticVariables.fileContent.length : 0)) <
+                PublicStaticVariables.MSG_LIMIT_FOR_QR);
         if (success) {
-
             ArrayList<Uri> files = FilesManagement.getFilesToSend(this);
             if (files == null)
                 Toast.makeText(this, R.string.failed_attach_files, Toast.LENGTH_LONG).show();
             else {
-                SendMsgDialog smd = new SendMsgDialog(files);
+                SendMsgDialog smd = new SendMsgDialog(files,contact.getEmail());
                 smd.show(getFragmentManager(),"smd");
             }
         } else {

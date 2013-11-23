@@ -382,10 +382,14 @@ public class FragmentManagement extends Fragment {
             case decrypted_msg:
                 TextView tv = (TextView) getActivity().findViewById(R.id.decrypted_msg);
                 if (PublicStaticVariables.decryptedMsg == null && PublicStaticVariables.flag_hash != null) {
-                    FilesManagement.getTempDecryptedMSG(getActivity());
-                    MessageFormat mf = new MessageFormat();
-                    if (mf.getPublicKey() != null && mf.getPublicKey().length() > 5)
+                    if(FilesManagement.getTempDecryptedMSG(getActivity())){
+                        MessageFormat mf = new MessageFormat();
                         PublicStaticVariables.decryptedMsg = mf;
+                        //PublicStaticVariables.flag_hash=mf.checkHash();
+                        //todo actually check session
+                        //PublicStaticVariables.flag_session=mf.checkReplay();
+                        //PublicStaticVariables.flag_replay=mf.checkReplay();
+                    }
                 } else {
                     PublicStaticVariables.flag_hash = null;
                     PublicStaticVariables.flag_session = null;
@@ -427,7 +431,7 @@ public class FragmentManagement extends Fragment {
                         ((TextView) getActivity().findViewById(R.id.file_name)).setText(name);
                     }
                     tv.setText(PublicStaticVariables.decryptedMsg.getMsgContent());
-                    if (PublicStaticVariables.decryptedMsg.checkHash() || PublicStaticVariables.flag_hash) {
+                    if (PublicStaticVariables.decryptedMsg.checkHash() || (PublicStaticVariables.flag_hash!=null&&PublicStaticVariables.flag_hash)) {
                         ((ImageView) getActivity().findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_ok);
                         PublicStaticVariables.flag_hash = true;
                     } else {

@@ -91,14 +91,19 @@ public final class FilesManagement {
         edt.commit();
     }
 
-    public static void getTempDecryptedMSG(Activity a) {
+    public static boolean getTempDecryptedMSG(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         try {
-            PublicStaticVariables.decryptedMsg = new MessageFormat(srp.getString("msg", null).getBytes("UTF-8"));
+            String dcrMsg = srp.getString("msg", null);
+            if(dcrMsg!=null){
+                PublicStaticVariables.decryptedMsg = new MessageFormat(dcrMsg.getBytes("UTF-8"));
+                return true;
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public static Typeface getOld(Activity a) {

@@ -134,6 +134,8 @@ public class CryptMethods {
             PublicStaticVariables.decryptedMsg = new MessageFormat(decryptedBytes);
             if (PublicStaticVariables.decryptedMsg == null) {
                 PublicStaticVariables.flag_hash = null;
+                PublicStaticVariables.flag_replay = null;
+                PublicStaticVariables.flag_session = null;
             }
         } catch (Exception e) {
             PublicStaticVariables.decryptedMsg = null;

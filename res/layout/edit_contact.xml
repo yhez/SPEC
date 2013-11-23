@@ -45,6 +45,7 @@
                 android:textSize="15sp" />
 
             <EditText
+                android:inputType="textPersonName"
                 android:id="@+id/contact_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="1"
                 android:layout_row="1"
-                android:autoText="false"
+                android:inputType="textEmailAddress"
                 android:gravity="bottom|start"
                 android:minWidth="100dp"
                 android:padding="@dimen/default_gap"
@@ -89,7 +90,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <ImageButton
+                android:onClick="onClick"
+                style="?android:attr/borderlessButtonStyle"
                 android:id="@+id/contact_picture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

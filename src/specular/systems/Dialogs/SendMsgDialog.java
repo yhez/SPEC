@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +42,10 @@ public class SendMsgDialog extends DialogFragment {
     private static List<ResolveInfo> file, image, both;
     ArrayList<Uri> uris;
     View v;
-    public SendMsgDialog(ArrayList<Uri> uris) {
+    String email;
+    public SendMsgDialog(ArrayList<Uri> uris,String email) {
         this.uris = uris;
+        this.email=email;
     }
 
     @Override
@@ -52,12 +56,28 @@ public class SendMsgDialog extends DialogFragment {
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         v = inflater.inflate(R.layout.send_msg_dlg, null);
+        final char[] dang = "|\\?*<\":>+[]/'".toCharArray();
+        InputFilter filter = new InputFilter() {
+            public CharSequence filter(CharSequence source, int start, int end,
+                                       Spanned dest, int dstart, int dend) {
+                for (int i = start; i < end; i++) {
+                    for(char c:dang)
+                        if (source.charAt(i)==c) {
+                            return "";
+                        }
+                }
+                return null;
+            }
+        };
         builder.setView(v);
         updateViews();
         if (uris.get(0) != null) {
             ((TextView) v.findViewById(R.id.file_size)).setText(new File(uris.get(0).getPath()).length() + "");
             ((ImageView) v.findViewById(R.id.file_icon)).setImageResource(R.drawable.logo);
-            ((EditText) v.findViewById(R.id.name_file)).setText(getName(FILE));
+            EditText etFile = (EditText) v.findViewById(R.id.name_file);
+            etFile.setText(getName(FILE));
+            etFile.setFilters(new InputFilter[]{filter});
+
         }
         if (uris.get(1) != null) {
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(PublicStaticVariables.encryptedMsgToSend,
@@ -71,7 +91,9 @@ public class SendMsgDialog extends DialogFragment {
                 e.printStackTrace();
             }
             ((TextView) v.findViewById(R.id.qr_size)).setText(new File(uris.get(1).getPath()).length() + "");
-            ((EditText) v.findViewById(R.id.qr_name_file)).setText(getName(IMAGE));
+            EditText etImage = (EditText) v.findViewById(R.id.qr_name_file);
+            etImage.setText(getName(IMAGE));
+            etImage.setFilters(new InputFilter[]{filter});
         }
         Visual.setAllFonts(getActivity(), (ViewGroup) v);
         return builder.create();
@@ -128,8 +150,7 @@ public class SendMsgDialog extends DialogFragment {
         ComponentName cn;
         cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
         Intent i = new Intent();
-        i.putExtra(Intent.EXTRA_EMAIL, new String[]{((TextView) getActivity()
-                .findViewById(R.id.chosen_email)).getText().toString()});
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
         i.setComponent(cn);
         i.putExtra(Intent.EXTRA_SUBJECT,
                 getResources().getString(R.string.subject_encrypt));

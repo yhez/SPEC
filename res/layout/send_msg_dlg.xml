@@ -38,12 +38,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <EditText
+                android:maxLength="25"
                 android:layout_weight="1"
                 android:textSize="12sp"
                 android:textColor="@color/spec_gray"
                 android:id="@+id/name_file"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textNoSuggestions" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/qr_details"
@@ -60,6 +62,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <EditText
+                android:maxLength="25"
+                android:inputType="textNoSuggestions"
                 android:layout_weight="1"
                 android:textSize="12sp"
                 android:textColor="@color/spec_gray"
