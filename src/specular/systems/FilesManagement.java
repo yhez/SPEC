@@ -38,6 +38,7 @@ public final class FilesManagement {
     private final static int FILE_NAME_SEND = R.string.file_name_secure_msg;
     private final static int QR_NAME_SEND = R.string.file_name_qr_msg;
     private final static String PUBLIC_KEY = "public_key", PRIVATE_KEY = "private_key", NAME = "name", EMAIL = "email";
+    private static final String FILE = "file://";
     private static Bitmap myQRPublicKey;
     private static Typeface tfos = null;
     private static Typeface tfold = null;
@@ -174,10 +175,10 @@ public final class FilesManagement {
         try {
             File root = a.getFilesDir();
             ArrayList<Uri> uris = new ArrayList<Uri>(2);
-            uris.add(Uri.parse("file://" + new File(root, a.getString(FILE_NAME_SEND))));
+            uris.add(Uri.parse(FILE + new File(root, a.getString(FILE_NAME_SEND))));
             File f = new File(root, a.getString(QR_NAME_SEND));
             if (f.exists())
-                uris.add(Uri.parse("file://" + f));
+                uris.add(Uri.parse(FILE + f));
             else
                 uris.add(null);
             return uris;
@@ -188,7 +189,7 @@ public final class FilesManagement {
 
     public static Uri getFileToShare(Activity a) {
         try {
-            return Uri.parse("file://" + new File(a.getFilesDir(), a.getString(FILE_NAME)));
+            return Uri.parse(FILE + new File(a.getFilesDir(), a.getString(FILE_NAME)));
         } catch (Exception e) {
             return null;
         }
@@ -214,7 +215,7 @@ public final class FilesManagement {
                 e.printStackTrace();
             }
         }
-        return Uri.parse("file://" + new File(a.getFilesDir(), a.getString(FRIEND_CONTACT_CARD)));
+        return Uri.parse(FILE + new File(a.getFilesDir(), a.getString(FRIEND_CONTACT_CARD)));
     }
 
     public static Uri getQRFriendToShare(Activity a) {
@@ -239,12 +240,12 @@ public final class FilesManagement {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Uri.parse("file://" + new File(a.getFilesDir(), a.getString(FRIENDS_SHARE_QR)));
+        return Uri.parse(FILE + new File(a.getFilesDir(), a.getString(FRIENDS_SHARE_QR)));
     }
 
     public static Uri getQRToShare(Activity a) {
         try {
-            return Uri.parse("file://" + new File(a.getFilesDir(), a.getString(QR_NAME)));
+            return Uri.parse(FILE + new File(a.getFilesDir(), a.getString(QR_NAME)));
         } catch (Exception e) {
             return null;
         }
@@ -260,6 +261,7 @@ public final class FilesManagement {
 
     public static void save(Activity a) {
         if (a != null) {
+            myQRPublicKey=null;
             CryptMethods.moveKeysFromTmp();
             SharedPreferences srp = PreferenceManager
                     .getDefaultSharedPreferences(a.getApplicationContext());

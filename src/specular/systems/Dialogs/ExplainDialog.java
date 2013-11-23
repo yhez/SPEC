@@ -44,7 +44,7 @@ public class ExplainDialog extends DialogFragment {
         View v = inflater.inflate(R.layout.tech_details, null);
         builder.setView(v);
         final TextView tvTitle = (TextView) v.findViewById(R.id.title);
-        tvTitle.setText("technical info");
+        tvTitle.setText(R.string.technical_info);
         final TextView tvContent = (TextView) v.findViewById(R.id.text_content);
         tvContent.setText(details);
         final Button btDetails = (Button) v.findViewById(R.id.my_details);
@@ -59,7 +59,7 @@ public class ExplainDialog extends DialogFragment {
         btDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tvTitle.setText("technical info");
+                tvTitle.setText(R.string.technical_info);
                 tvContent.setText(details);
             }
         });

@@ -70,7 +70,7 @@ class Session {
                 + "   my secret sign: "
                 + mySymbol
                 + " "
-                + (hisSession.equals("") ? "" : "\nYour session id: "
-                + hisSession + " ;    Your secret sign: " + hisSymbol);
+                + (hisSession.equals("") ? "" : "\nyour session id: "
+                + hisSession + " ;    your secret sign: " + hisSymbol);
     }
 }

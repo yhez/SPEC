@@ -36,8 +36,7 @@ public class ContactsDataSource {
         long l = database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
                 values);
         dbHelper.close();
-        PublicStaticVariables.fullList.add(contact);
-        PublicStaticVariables.adapter.refreshList();
+        PublicStaticVariables.adapter.addCont(contact);
         return l;
     }
 
@@ -55,7 +54,6 @@ public class ContactsDataSource {
         dbHelper.close();
         if (!(position < 0)){
             PublicStaticVariables.adapter.removeCont(position);
-            PublicStaticVariables.fullList.remove(position);
         }
     }
 

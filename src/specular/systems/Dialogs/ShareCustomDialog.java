@@ -75,7 +75,7 @@ public class ShareCustomDialog extends DialogFragment {
         }
 
         glFile = (GridLayout) v.findViewById(R.id.gl_app_image);
-        file = getApps("image/*");
+        file = getApps("image/png");
         for (ResolveInfo aFile : file) {
             ImageButton b = new ImageButton(getActivity());
             b.setBackgroundColor(Color.TRANSPARENT);
@@ -88,7 +88,7 @@ public class ShareCustomDialog extends DialogFragment {
                     cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
                     Intent i = new Intent();
                     i.setComponent(cn);
-                    i.setType("image/*");
+                    i.setType("image/png");
                     i.setAction(Intent.ACTION_SEND);
                     i.putExtra(Intent.EXTRA_STREAM, FilesManagement.getQRToShare(getActivity()));
                     try {

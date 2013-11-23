@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -44,8 +43,6 @@ public class Response extends DialogFragment {
         if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
             if (PublicStaticVariables.decryptedMsg != null)
                 contact = PublicStaticVariables.contactsDataSource.findContact(PublicStaticVariables.decryptedMsg.getPublicKey());
-            else
-                Log.e("quick response", "cant open response cant find contact");
         } else {
             contact = PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(
                     ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));

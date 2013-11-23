@@ -128,6 +128,12 @@
     <string name="edit_contact_title_pbk">public key:</string>
     <string name="both_qr_file">both qr code and file</string>
     <string name="files_details">file details</string>
+    <string name="technical_info">technical info</string>
+    <string name="cant_connect_nfc_adapter">something goes wrong</string>
+    <string name="no_result_filter">no result</string>
+    <string name="not_implemented_title">wait for it..</string>
+    <string name="profile_my_name">my name:</string>
+    <string name="profile_my_email">my email:</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

@@ -161,9 +161,6 @@ public class Main extends Activity {
                         e.printStackTrace();
                     }
                 }
-            finish();
-            Intent intent = new Intent(this,Splash.class);
-            startActivity(intent);
         }
     }
 
@@ -594,7 +591,7 @@ public class Main extends Activity {
             return super.onPrepareOptionsMenu(menu);
         } else if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
             TextView tv = (TextView) findViewById(R.id.flag_contact_exist);
-            if (tv == null || tv.getText().toString().equals("true"))
+            if (tv == null || tv.getText().toString().equals(true+""))
                 return false;
             mi.setVisible(!drawerOpen);
             mi.setIcon(android.R.drawable.ic_menu_add);
@@ -946,8 +943,8 @@ public class Main extends Activity {
     int writeTag(Tag tag, byte[] binText) {
         // record to launch Play Store if app is not installed
         NdefRecord appRecord = NdefRecord
-                .createApplicationRecord("specular.systems");
-        byte[] mimeBytes = "application/*"
+                .createApplicationRecord(this.getPackageName());
+        byte[] mimeBytes = ("application/"+this.getPackageName())
                 .getBytes(Charset.forName("US-ASCII"));
         NdefRecord cardRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
                 mimeBytes, new byte[0], binText);

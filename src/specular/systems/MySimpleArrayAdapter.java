@@ -29,15 +29,13 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
     }
 
     public void removeCont(int index) {
-        PublicStaticVariables.currentList.remove(index);
         PublicStaticVariables.fullList.remove(index);
-        notifyDataSetChanged();
+        refreshList();
     }
 
     public void addCont(Contact c) {
-        PublicStaticVariables.currentList.add(c);
         PublicStaticVariables.fullList.add(c);
-        notifyDataSetChanged();
+        refreshList();
     }
 
     @Override
@@ -71,7 +69,7 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
                 List<Contact> lc = (List<Contact>) results.values;
                 if (lc.size() == 0) {
                     a.findViewById(R.id.list).setVisibility(View.GONE);
-                    ((TextView) a.findViewById(R.id.no_contacts)).setText("no result");
+                    ((TextView) a.findViewById(R.id.no_contacts)).setText(R.string.no_result_filter);
                     a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
                 } else {
                     a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
@@ -124,5 +122,16 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
             }
         });
         PublicStaticVariables.adapter.notifyDataSetChanged();
+        View v = a.findViewById(R.id.list);
+        if (v != null)
+            if (v.getVisibility() == View.GONE) {
+                v.setVisibility(View.VISIBLE);
+                a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
+            } else {
+                if (PublicStaticVariables.fullList.size() == 0) {
+                    v.setVisibility(View.GONE);
+                    a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+                }
+            }
     }
 }

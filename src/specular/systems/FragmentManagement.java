@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -112,25 +111,29 @@ public class FragmentManagement extends Fragment {
                 PublicStaticVariables.changed = false;
                 ListView lv = (ListView) getActivity().findViewById(R.id.list);
                 PublicStaticVariables.adapter.refreshList();
-                if (PublicStaticVariables.fullList != null && PublicStaticVariables.fullList.size() > 0) {
+                lv.setAdapter(PublicStaticVariables.adapter);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> p1, View p2, int p3,
+                                            long p4) {
+                        Fragment fragment = new FragmentManagement();
+                        Bundle args = new Bundle();
+                        PublicStaticVariables.currentLayout = edit_contact;
+                        args.putLong("contactId", Long.parseLong(((TextView) p2
+                                .findViewById(R.id.id_contact)).getText()
+                                .toString()));
+                        fragment.setArguments(args);
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.content_frame, fragment).commit();
+                    }
+                });
+                if (PublicStaticVariables.fullList == null || PublicStaticVariables.fullList.size() == 0) {
+                    getActivity().findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+                    lv.setVisibility(View.GONE);
+                } else {
                     getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
-                    lv.setAdapter(PublicStaticVariables.adapter);
-                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        public void onItemClick(AdapterView<?> p1, View p2, int p3,
-                                                long p4) {
-                            Fragment fragment = new FragmentManagement();
-                            Bundle args = new Bundle();
-                            PublicStaticVariables.currentLayout = edit_contact;
-                            args.putLong("contactId", Long.parseLong(((TextView) p2
-                                    .findViewById(R.id.id_contact)).getText()
-                                    .toString()));
-                            fragment.setArguments(args);
-                            FragmentManager fragmentManager = getFragmentManager();
-                            fragmentManager.beginTransaction()
-                                    .replace(R.id.content_frame, fragment).commit();
-                        }
-                    });
-                } else getActivity().findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+                    lv.setVisibility(View.VISIBLE);
+                }
                 EditText filterCOnt = (EditText) getActivity().findViewById(R.id.filter);
                 filterCOnt.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -368,7 +371,7 @@ public class FragmentManagement extends Fragment {
                 break;
             case wait_nfc_decrypt:
                 if (NfcAdapter.getDefaultAdapter(getActivity()) == null)
-                    Toast.makeText(getActivity(), "something goes wrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), R.string.cant_connect_nfc_adapter, Toast.LENGTH_LONG).show();
                 else if (!NfcAdapter.getDefaultAdapter(getActivity()).isEnabled())
                     getActivity().findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
                 Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.wait_nfc_decrypt));
@@ -377,7 +380,6 @@ public class FragmentManagement extends Fragment {
                 Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.setup));
                 break;
             case decrypted_msg:
-                Log.d("on resume calls on start", "nothing");
                 TextView tv = (TextView) getActivity().findViewById(R.id.decrypted_msg);
                 if (PublicStaticVariables.decryptedMsg == null && PublicStaticVariables.flag_hash != null) {
                     FilesManagement.getTempDecryptedMSG(getActivity());

@@ -174,7 +174,7 @@ public class SendMsgDialog extends DialogFragment {
                 i.putExtra(Intent.EXTRA_STREAM, uris.get(0));
                 break;
             case IMAGE:
-                i.setType("image/*");
+                i.setType("image/png");
                 i.putExtra(Intent.EXTRA_STREAM, uris.get(1));
                 break;
             case BOTH:
