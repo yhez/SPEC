@@ -530,7 +530,8 @@ public class Main extends Activity {
                     PublicStaticVariables.adapter.refreshList();
                     ((EditText) findViewById(R.id.filter)).setText("");
                     b.setVisibility(View.GONE);
-                    if (PublicStaticVariables.currentLayout == R.layout.encrypt)
+                    if (PublicStaticVariables.currentLayout == R.layout.encrypt&&
+                            PublicStaticVariables.fullList.size()>PublicStaticVariables.minContactSize)
                         PublicStaticVariables.luc.show();
                 }
             } else {

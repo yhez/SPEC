@@ -227,138 +227,140 @@ public class FragmentManagement extends Fragment {
                 break;
             case encrypt:
                 PublicStaticVariables.changed = false;
-                PublicStaticVariables.adapter.refreshList();
-                lv = (ListView) getActivity().findViewById(R.id.list);
-                if (PublicStaticVariables.fullList != null && PublicStaticVariables.fullList.size() > 0) {
-                    View v = getActivity().findViewById(R.id.no_contacts);
-                    v.setVisibility(View.GONE);
-                    lv.setAdapter(PublicStaticVariables.adapter);
-                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> p1, View p2, int p3,
-                                                long p4) {
-                            contactChosen(Long.parseLong(((TextView) p2
-                                    .findViewById(R.id.id_contact)).getText()
-                                    .toString()));
-                        }
-                    });
-                    PublicStaticVariables.readyToSend = false;
-                    ((EditText) getActivity().findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                if (((TextView) getActivity().findViewById(R.id.contact_id_to_send)).getText().length() == 0) {
+                    PublicStaticVariables.adapter.refreshList();
+                    lv = (ListView) getActivity().findViewById(R.id.list);
+                    if (PublicStaticVariables.fullList != null && PublicStaticVariables.fullList.size() > 0) {
+                        View v = getActivity().findViewById(R.id.no_contacts);
+                        v.setVisibility(View.GONE);
+                        lv.setAdapter(PublicStaticVariables.adapter);
+                        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> p1, View p2, int p3,
+                                                    long p4) {
+                                contactChosen(Long.parseLong(((TextView) p2
+                                        .findViewById(R.id.id_contact)).getText()
+                                        .toString()));
+                            }
+                        });
+                        PublicStaticVariables.readyToSend = false;
+                        ((EditText) getActivity().findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                            PublicStaticVariables.adapter.getFilter().filter(charSequence.toString());
-                        }
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                                PublicStaticVariables.adapter.getFilter().filter(charSequence.toString());
+                            }
 
-                        @Override
-                        public void afterTextChanged(Editable editable) {
+                            @Override
+                            public void afterTextChanged(Editable editable) {
 
-                        }
-                    });
-                    final EditText et = (EditText) getActivity().findViewById(R.id.message);
-                    et.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                            }
+                        });
+                        final EditText et = (EditText) getActivity().findViewById(R.id.message);
+                        et.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                        }
+                            }
 
-                        @Override
-                        public void afterTextChanged(Editable editable) {
-                            if (editable.length() != 0 || PublicStaticVariables.currentText.length() == 1)
-                                PublicStaticVariables.currentText = editable.toString();
-                            String len = ((TextView) getActivity().findViewById(R.id.file_content_length)).getText().toString();
-                            int num = editable.toString().length() + (len.length() > 0 ?
-                                    Integer.parseInt(len) : 0);
-                            TextView tv = (TextView) getActivity().findViewById(R.id.text_counter);
-                            ImageButton bt = (ImageButton) getActivity().findViewById(R.id.send);
-                            boolean choosedContact = ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).getText().toString().length() > 0;
-                            PublicStaticVariables.readyToSend = choosedContact;
-                            bt.setImageResource(choosedContact ? R.drawable.ic_send_holo_light : R.drawable.ic_send_disabled_holo_light);
-                            if (num == 0) {
-                                PublicStaticVariables.changed = choosedContact;
-                                tv.setVisibility(View.GONE);
-                                bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
-                                PublicStaticVariables.readyToSend = false;
-                            } else {
-                                PublicStaticVariables.changed = true;
-                                tv.setVisibility(View.VISIBLE);
-                                if (num > 0) {
-                                    if (choosedContact) {
-                                        PublicStaticVariables.readyToSend = true;
-                                        bt.setImageResource(R.drawable.ic_send_holo_light);
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+                                if (editable.length() != 0 || PublicStaticVariables.currentText.length() == 1)
+                                    PublicStaticVariables.currentText = editable.toString();
+                                String len = ((TextView) getActivity().findViewById(R.id.file_content_length)).getText().toString();
+                                int num = editable.toString().length() + (len.length() > 0 ?
+                                        Integer.parseInt(len) : 0);
+                                TextView tv = (TextView) getActivity().findViewById(R.id.text_counter);
+                                ImageButton bt = (ImageButton) getActivity().findViewById(R.id.send);
+                                boolean choosedContact = ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).getText().toString().length() > 0;
+                                PublicStaticVariables.readyToSend = choosedContact;
+                                bt.setImageResource(choosedContact ? R.drawable.ic_send_holo_light : R.drawable.ic_send_disabled_holo_light);
+                                if (num == 0) {
+                                    PublicStaticVariables.changed = choosedContact;
+                                    tv.setVisibility(View.GONE);
+                                    bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
+                                    PublicStaticVariables.readyToSend = false;
+                                } else {
+                                    PublicStaticVariables.changed = true;
+                                    tv.setVisibility(View.VISIBLE);
+                                    if (num > 0) {
+                                        if (choosedContact) {
+                                            PublicStaticVariables.readyToSend = true;
+                                            bt.setImageResource(R.drawable.ic_send_holo_light);
+                                        }
+                                        if (num == 1) {
+                                            tv.setVisibility(View.VISIBLE);
+                                            tv.setText(PublicStaticVariables.MSG_LIMIT_FOR_QR - num + "");
+                                        } else if (num <= PublicStaticVariables.MSG_LIMIT_FOR_QR) {
+                                            tv.setText(PublicStaticVariables.MSG_LIMIT_FOR_QR - num + "");
+                                        } else
+                                            tv.setText(getActivity().getString(R.string.no_qr));
                                     }
-                                    if (num == 1) {
-                                        tv.setVisibility(View.VISIBLE);
-                                        tv.setText(PublicStaticVariables.MSG_LIMIT_FOR_QR - num + "");
-                                    } else if (num <= PublicStaticVariables.MSG_LIMIT_FOR_QR) {
-                                        tv.setText(PublicStaticVariables.MSG_LIMIT_FOR_QR - num + "");
-                                    } else
-                                        tv.setText(getActivity().getString(R.string.no_qr));
                                 }
                             }
-                        }
-                    });
-                    //todo why is he entering here twice in start???
-                    et.setText(PublicStaticVariables.currentText);
-                    TextView tvfl = (TextView) getActivity().findViewById(R.id.file_content_length);
-                    tvfl.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        });
+                        //todo why is he entering here twice in start???
+                        et.setText(PublicStaticVariables.currentText);
+                        TextView tvfl = (TextView) getActivity().findViewById(R.id.file_content_length);
+                        tvfl.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                        }
+                            }
 
-                        @Override
-                        public void afterTextChanged(Editable editable) {
-                            Message msg = hndl.obtainMessage(TURN_TEXT_TRIGGER);
-                            hndl.sendMessage(msg);
-                        }
-                    });
-                    TextView tvci = (TextView) getActivity().findViewById(R.id.contact_id_to_send);
-                    tvci.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+                                Message msg = hndl.obtainMessage(TURN_TEXT_TRIGGER);
+                                hndl.sendMessage(msg);
+                            }
+                        });
+                        TextView tvci = (TextView) getActivity().findViewById(R.id.contact_id_to_send);
+                        tvci.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-                        }
+                            }
 
-                        @Override
-                        public void afterTextChanged(Editable editable) {
-                            Message msg = hndl.obtainMessage(TURN_TEXT_TRIGGER);
-                            hndl.sendMessage(msg);
-                        }
-                    });
-                } else getActivity().findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
-                TextView tvvv = (TextView) getActivity().findViewById(R.id.contact_id_to_send);
-                if ((tvvv == null || tvvv.getText().toString().length() == 0) &&
-                        PublicStaticVariables.fullList.size() > PublicStaticVariables.minContactSize) {
-                    if (PublicStaticVariables.luc.show()) {
-                        ViewGroup vg = (ViewGroup) getActivity().findViewById(R.id.grid_lasts);
-                        for (int af = 0; af < vg.getChildCount(); af++) {
-                            final ViewGroup vg2 = (ViewGroup) vg.getChildAt(af);
-                            vg2.getChildAt(0).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    contactChosen(Long.parseLong(((TextView) vg2.getChildAt(2)).getText().toString()));
-                                }
-                            });
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+                                Message msg = hndl.obtainMessage(TURN_TEXT_TRIGGER);
+                                hndl.sendMessage(msg);
+                            }
+                        });
+                    } else getActivity().findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+                    TextView tvvv = (TextView) getActivity().findViewById(R.id.contact_id_to_send);
+                    if ((tvvv == null || tvvv.getText().toString().length() == 0) &&
+                            PublicStaticVariables.fullList.size() > PublicStaticVariables.minContactSize) {
+                        if (PublicStaticVariables.luc.show()) {
+                            ViewGroup vg = (ViewGroup) getActivity().findViewById(R.id.grid_lasts);
+                            for (int af = 0; af < vg.getChildCount(); af++) {
+                                final ViewGroup vg2 = (ViewGroup) vg.getChildAt(af);
+                                vg2.getChildAt(0).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        contactChosen(Long.parseLong(((TextView) vg2.getChildAt(2)).getText().toString()));
+                                    }
+                                });
+                            }
                         }
                     }
                 }
@@ -382,7 +384,7 @@ public class FragmentManagement extends Fragment {
             case decrypted_msg:
                 TextView tv = (TextView) getActivity().findViewById(R.id.decrypted_msg);
                 if (PublicStaticVariables.decryptedMsg == null && PublicStaticVariables.flag_hash != null) {
-                    if(FilesManagement.getTempDecryptedMSG(getActivity())){
+                    if (FilesManagement.getTempDecryptedMSG(getActivity())) {
                         MessageFormat mf = new MessageFormat();
                         PublicStaticVariables.decryptedMsg = mf;
                         //PublicStaticVariables.flag_hash=mf.checkHash();
@@ -431,7 +433,7 @@ public class FragmentManagement extends Fragment {
                         ((TextView) getActivity().findViewById(R.id.file_name)).setText(name);
                     }
                     tv.setText(PublicStaticVariables.decryptedMsg.getMsgContent());
-                    if (PublicStaticVariables.decryptedMsg.checkHash() || (PublicStaticVariables.flag_hash!=null&&PublicStaticVariables.flag_hash)) {
+                    if (PublicStaticVariables.decryptedMsg.checkHash() || (PublicStaticVariables.flag_hash != null && PublicStaticVariables.flag_hash)) {
                         ((ImageView) getActivity().findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_ok);
                         PublicStaticVariables.flag_hash = true;
                     } else {
