@@ -419,11 +419,12 @@ public class Main extends Activity {
                                 .toString();
                         if (name.length() > 0 && email.length() > 0)
                             contact.update(name, email, null, null, -1);
-                        else
+                        else{
                             t = Toast.makeText(getBaseContext(), R.string.fill_all,
                                     Toast.LENGTH_LONG);
-                        t.setGravity(Gravity.TOP, 0, 0);
-                        t.show();
+                            t.setGravity(Gravity.TOP, 0, 0);
+                            t.show();
+                        }
                         selectItem(-1, R.layout.contacts);
                         break;
                     case R.id.delete:
