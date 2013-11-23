@@ -109,9 +109,14 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
     }
 
     public void refreshList() {
-        for (int a = 0; a < PublicStaticVariables.fullList.size(); a++)
-            if (!PublicStaticVariables.currentList.contains(PublicStaticVariables.fullList.get(a)))
-                PublicStaticVariables.currentList.add(PublicStaticVariables.fullList.get(a));
+        ArrayList<Contact> tmp = new ArrayList<Contact>();
+        for(Contact c:PublicStaticVariables.currentList)
+            if(!PublicStaticVariables.fullList.contains(c))
+                tmp.add(c);
+        PublicStaticVariables.currentList.removeAll(tmp);
+        for (Contact c:PublicStaticVariables.fullList)
+            if (!PublicStaticVariables.currentList.contains(c))
+                PublicStaticVariables.currentList.add(c);
         if (PublicStaticVariables.currentLayout == R.layout.encrypt &&
                 PublicStaticVariables.fullList.size() > PublicStaticVariables.minContactSize)
             PublicStaticVariables.luc.show();

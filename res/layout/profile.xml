@@ -49,12 +49,14 @@
             android:orientation="vertical">
 
             <EditText
+                android:textCursorDrawable="@null"
                 android:paddingRight="@dimen/default_gap"
                 android:id="@+id/my_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <EditText
+                android:textCursorDrawable="@null"
                 android:paddingRight="@dimen/default_gap"
                 android:id="@+id/my_email"
                 android:layout_width="wrap_content"

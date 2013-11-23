@@ -30,6 +30,7 @@
         android:paddingTop="@dimen/default_gap">
 
         <EditText
+            android:textCursorDrawable="@null"
             android:id="@+id/message"
             android:layout_width="0dip"
             android:layout_height="match_parent"

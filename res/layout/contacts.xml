@@ -15,6 +15,7 @@
         android:orientation="horizontal">
 
         <EditText
+            android:textCursorDrawable="@null"
             android:textSize="16sp"
             android:textColor="@color/spec_black"
             android:id="@+id/filter"

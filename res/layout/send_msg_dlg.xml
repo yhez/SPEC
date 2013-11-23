@@ -38,6 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <EditText
+                android:textCursorDrawable="@null"
                 android:maxLength="25"
                 android:layout_weight="1"
                 android:textSize="12sp"
@@ -62,6 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <EditText
+                android:textCursorDrawable="@null"
                 android:maxLength="25"
                 android:inputType="textNoSuggestions"
                 android:layout_weight="1"

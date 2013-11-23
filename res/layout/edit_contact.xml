@@ -45,6 +45,7 @@
                 android:textSize="15sp" />
 
             <EditText
+                android:textCursorDrawable="@null"
                 android:inputType="textPersonName"
                 android:id="@+id/contact_name"
                 android:layout_width="wrap_content"
@@ -70,6 +71,7 @@
                 android:textSize="14sp" />
 
             <EditText
+                android:textCursorDrawable="@null"
                 android:id="@+id/contact_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
