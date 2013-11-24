@@ -6,7 +6,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
@@ -16,7 +15,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -48,8 +46,7 @@ import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 public class FragmentManagement extends Fragment {
-    //private static Main w;
-    private final int TURN_TEXT_TRIGGER = 0,ADD_VIEW=1;
+    private final int TURN_TEXT_TRIGGER = 0;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -59,9 +56,6 @@ public class FragmentManagement extends Fragment {
                     String ss = et.getText() + "";
                     et.setText(" " + ss);
                     et.setText(ss);
-                    break;
-                case ADD_VIEW:
-                    ((GridLayout)getActivity().findViewById(R.id.grid_login)).addView((ImageButton)msg.obj);
                     break;
             }
         }
@@ -82,26 +76,46 @@ public class FragmentManagement extends Fragment {
         rootView.animate().setDuration(1000).alpha(1).start();
         return rootView;
     }
-private void addSocialLogin(){
-    new Thread(new Runnable() {
-        @Override
-        public void run() {
-            AccountManager manager = (AccountManager) getActivity().getSystemService(getActivity().ACCOUNT_SERVICE);
-            Account[] list = manager.getAccounts();
-            for (final Account acc : list) {
-                Log.d("account", acc.toString());
-                List<PackageInfo> rs = getActivity().getPackageManager().getInstalledPackages(PackageManager.GET_ACTIVITIES);
-                if (acc.type.equalsIgnoreCase("com.google")) {
+
+    private void addSocialLogin() {
+        final Account[] list = ((AccountManager) getActivity()
+                .getSystemService(getActivity().ACCOUNT_SERVICE)).getAccounts();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        final List<ResolveInfo> rs = getActivity().getPackageManager().queryIntentActivities(intent,0);
+        for (final Account acc : list) {
+            if (acc.type.equalsIgnoreCase("com.google")) {
+                ImageButton ib = new ImageButton(PublicStaticVariables.main);
+                ib.setBackgroundColor(Color.TRANSPARENT);
+                try {
+                    ib.setImageDrawable(PublicStaticVariables.main
+                            .getPackageManager()
+                            .getApplicationInfo("com.google.android.gm", PackageManager.GET_META_DATA)
+                            .loadIcon(getActivity().getPackageManager()));
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                    //todo another google symbol
+                    ib.setImageResource(R.drawable.unknown);
+                }
+                ib.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((EditText) getActivity().findViewById(R.id.email)).setText(acc.name);
+                        ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name.split("@")[0]);
+                    }
+                });
+                ((GridLayout) getActivity().findViewById(R.id.grid_login)).addView(ib);
+
+            } else if (acc.type.startsWith("com.google")) {
+                if (acc.type.contains("pop3")) {
                     ImageButton ib = new ImageButton(getActivity());
                     ib.setBackgroundColor(Color.TRANSPARENT);
                     try {
                         ib.setImageDrawable(getActivity()
                                 .getPackageManager()
-                                .getApplicationInfo("com.google.android.gm", PackageManager.GET_META_DATA)
+                                .getApplicationInfo("com.google.android.email", PackageManager.GET_META_DATA)
                                 .loadIcon(getActivity().getPackageManager()));
                     } catch (PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
-                        //todo another google symbol
                         ib.setImageResource(R.drawable.unknown);
                     }
                     ib.setOnClickListener(new View.OnClickListener() {
@@ -111,75 +125,48 @@ private void addSocialLogin(){
                             ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name.split("@")[0]);
                         }
                     });
-                    Message msg = hndl.obtainMessage(ADD_VIEW,ib);
-                    hndl.sendMessage(msg);
-                } else if (acc.type.startsWith("com.google")) {
-                    if (acc.type.contains("pop3")) {
+                    ((GridLayout) getActivity().findViewById(R.id.grid_login)).addView(ib);
+                } else {
+                    //todo add exchange app
+                }
+            } else {
+                String company = acc.type.split("\\.")[1];
+                for (ResolveInfo pi : rs) {
+                    if (pi.activityInfo.packageName.contains(company)) {
                         ImageButton ib = new ImageButton(getActivity());
+                        ib.setImageDrawable(pi.activityInfo.loadIcon(getActivity().getPackageManager()));
                         ib.setBackgroundColor(Color.TRANSPARENT);
-                        try {
-                            ib.setImageDrawable(getActivity()
-                                    .getPackageManager()
-                                    .getApplicationInfo("com.google.android.email", PackageManager.GET_META_DATA)
-                                    .loadIcon(getActivity().getPackageManager()));
-                        } catch (PackageManager.NameNotFoundException e) {
-                            e.printStackTrace();
-                            ib.setImageResource(R.drawable.unknown);
-                        }
                         ib.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                ((EditText) getActivity().findViewById(R.id.email)).setText(acc.name);
-                                ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name.split("@")[0]);
+                                if (acc.name.contains("@")) {
+                                    ((EditText) getActivity().findViewById(R.id.email)).setText(acc.name);
+                                    ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name.split("@")[0]);
+                                } else {
+                                    ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name);
+                                    ((EditText) getActivity().findViewById(R.id.email)).setText("");
+                                }
                             }
                         });
-                        Message msg = hndl.obtainMessage(ADD_VIEW,ib);
-                        hndl.sendMessage(msg);
-                    } else {
-                        //todo add exchange app
-                    }
-                } else {
-                    String company = acc.type.split("\\.")[1];
-                    for (PackageInfo pi : rs) {
-                        if (pi.packageName.contains(company)) {
-                            ImageButton ib = new ImageButton(getActivity());
-                            ib.setImageDrawable(pi.applicationInfo.loadIcon(getActivity().getPackageManager()));
-                            ib.setBackgroundColor(Color.TRANSPARENT);
-                            ib.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (acc.name.contains("@")) {
-                                        ((EditText) getActivity().findViewById(R.id.email)).setText(acc.name);
-                                        ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name.split("@")[0]);
-                                    } else {
-                                        ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name);
-                                        ((EditText) getActivity().findViewById(R.id.email)).setText("");
-                                    }
-                                }
-                            });
-                            Message msg = hndl.obtainMessage(ADD_VIEW,ib);
-                            hndl.sendMessage(msg);
-                            break;
-                        }
+                        ((GridLayout) getActivity().findViewById(R.id.grid_login)).addView(ib);
+                        break;
                     }
                 }
             }
-            ImageButton ib = new ImageButton(getActivity());
-            ib.setBackgroundColor(Color.TRANSPARENT);
-            ib.setImageResource(R.drawable.clear);
-            ib.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            ib.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((EditText)getActivity().findViewById(R.id.email)).setText("");
-                    ((EditText)getActivity().findViewById(R.id.name)).setText("");
-                }
-            });
-            Message msg = hndl.obtainMessage(ADD_VIEW,ib);
-            hndl.sendMessage(msg);
         }
-    }).start();
-}
+        ImageButton ib = new ImageButton(getActivity());
+        ib.setBackgroundColor(Color.TRANSPARENT);
+        ib.setImageResource(R.drawable.clear);
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((EditText) getActivity().findViewById(R.id.email)).setText("");
+                ((EditText) getActivity().findViewById(R.id.name)).setText("");
+            }
+        });
+        ((GridLayout) getActivity().findViewById(R.id.grid_login)).addView(ib);
+    }
+
     @Override
     public void onStart() {
         super.onStart();

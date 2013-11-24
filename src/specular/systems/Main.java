@@ -59,6 +59,7 @@ import specular.systems.Dialogs.NotImplemented;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.Dialogs.Response;
 import specular.systems.Dialogs.SendMsgDialog;
+import specular.systems.Dialogs.SendReport;
 import specular.systems.Dialogs.ShareContactDlg;
 import specular.systems.Dialogs.ShareCustomDialog;
 import specular.systems.Dialogs.TurnNFCOn;
@@ -70,6 +71,7 @@ public class Main extends Activity {
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+
             switch (msg.what) {
                 case FAILED:
                     break;
@@ -124,6 +126,7 @@ public class Main extends Activity {
     private boolean handleByOnNewIntent = false;
 
     public void createKeysManager() {
+
         createKeys.start();
         if (NfcAdapter.getDefaultAdapter(this) != null)
             if (!NfcAdapter.getDefaultAdapter(this).isEnabled()) {
@@ -166,6 +169,7 @@ public class Main extends Activity {
     }
 
     void encryptManager() {
+
         PublicStaticVariables.luc.change(contact);
         final MessageFormat msg = new MessageFormat(PublicStaticVariables.fileContent, fileName, userInput,
                 contact.getSession());
@@ -190,6 +194,7 @@ public class Main extends Activity {
     }
 
     public void decryptedMsgClick(View v) {
+
         switch (v.getId()) {
             case R.id.send:
                 findViewById(R.id.answer).setVisibility(View.GONE);
@@ -240,6 +245,7 @@ public class Main extends Activity {
     }
 
     private String getRealPathFromURI(Uri contentUri) {
+
         Cursor cursor = null;
         try {
             String[] proj = {MediaStore.Images.Media.DATA};
@@ -255,6 +261,7 @@ public class Main extends Activity {
     }
 
     private void attachFile(final Uri uri) {
+
         if (uri != null) {
             new Thread(new Runnable() {
                 @Override
@@ -279,6 +286,7 @@ public class Main extends Activity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
         FilesManagement.getKeysFromSDCard(this);
         PublicStaticVariables.handleByOnActivityResult = true;
         if (resultCode == RESULT_OK) {
@@ -332,9 +340,11 @@ public class Main extends Activity {
                 }
             }
         }
+
     }
 
     public void onClickSkipNFC(View v) {
+
         NfcAdapter.getDefaultAdapter(getApplicationContext())
                 .disableForegroundDispatch(Main.this);
         synchronized (this) {
@@ -358,9 +368,11 @@ public class Main extends Activity {
             }
         }
         setUpViews();
+
     }
 
     public void onClickEncrypt(View v) {
+
         switch (v.getId()) {
             case R.id.add_file:
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -393,6 +405,7 @@ public class Main extends Activity {
     }
 
     public void onClick(final View v) {
+
         switch (PublicStaticVariables.currentLayout) {
             case R.layout.wait_nfc_decrypt:
                 Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
@@ -419,7 +432,7 @@ public class Main extends Activity {
                                 .toString();
                         if (name.length() > 0 && email.length() > 0)
                             contact.update(name, email, null, null, -1);
-                        else{
+                        else {
                             t = Toast.makeText(getBaseContext(), R.string.fill_all,
                                     Toast.LENGTH_LONG);
                             t.setGravity(Gravity.TOP, 0, 0);
@@ -437,7 +450,7 @@ public class Main extends Activity {
                         break;
                     case R.id.contact_picture:
                         ContactQR cqr = new ContactQR();
-                        cqr.show(getFragmentManager(),"cqr");
+                        cqr.show(getFragmentManager(), "cqr");
                         break;
                 }
                 break;
@@ -531,8 +544,8 @@ public class Main extends Activity {
                     PublicStaticVariables.adapter.refreshList();
                     ((EditText) findViewById(R.id.filter)).setText("");
                     b.setVisibility(View.GONE);
-                    if (PublicStaticVariables.currentLayout == R.layout.encrypt&&
-                            PublicStaticVariables.fullList.size()>PublicStaticVariables.minContactSize)
+                    if (PublicStaticVariables.currentLayout == R.layout.encrypt &&
+                            PublicStaticVariables.fullList.size() > PublicStaticVariables.minContactSize)
                         PublicStaticVariables.luc.show();
                 }
             } else {
@@ -557,7 +570,6 @@ public class Main extends Activity {
             scd.show(getFragmentManager(), "scd");
         }
         return super.onOptionsItemSelected(item);
-
     }
 
     @Override
@@ -579,42 +591,54 @@ public class Main extends Activity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav main is open, hide action items related to the content
         // view
-        MenuItem mi = menu.findItem(R.id.action_search);
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        if (PublicStaticVariables.currentLayout == R.layout.contacts || PublicStaticVariables.currentLayout == R.layout.encrypt) {
-            if (PublicStaticVariables.fullList == null || PublicStaticVariables.fullList.size() == 0)
-                mi.setIcon(R.drawable.sun);
-            else
-                mi.setIcon(R.drawable.search);
-            TextView textView = (TextView) findViewById(R.id.contact_id_to_send);
-            if (textView != null && textView.getText().toString().length() > 0)
-                mi.setVisible(false);
-            else
+        try {
+            MenuItem mi = menu.findItem(R.id.action_search);
+            boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+            if (PublicStaticVariables.currentLayout == R.layout.contacts || PublicStaticVariables.currentLayout == R.layout.encrypt) {
+                if (PublicStaticVariables.fullList == null || PublicStaticVariables.fullList.size() == 0)
+                    mi.setIcon(R.drawable.sun);
+                else
+                    mi.setIcon(R.drawable.search);
+                TextView textView = (TextView) findViewById(R.id.contact_id_to_send);
+                if (textView != null && textView.getText().toString().length() > 0)
+                    mi.setVisible(false);
+                else
+                    mi.setVisible(!drawerOpen);
+                return super.onPrepareOptionsMenu(menu);
+            } else if (PublicStaticVariables.currentLayout == R.layout.edit_contact || PublicStaticVariables.currentLayout == R.layout.share) {
                 mi.setVisible(!drawerOpen);
-            return super.onPrepareOptionsMenu(menu);
-        } else if (PublicStaticVariables.currentLayout == R.layout.edit_contact || PublicStaticVariables.currentLayout == R.layout.share) {
-            mi.setVisible(!drawerOpen);
-            mi.setIcon(android.R.drawable.ic_menu_share);
-            return super.onPrepareOptionsMenu(menu);
-        } else if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
-            TextView tv = (TextView) findViewById(R.id.flag_contact_exist);
-            if (tv == null || tv.getText().toString().equals(true+""))
-                return false;
-            mi.setVisible(!drawerOpen);
-            mi.setIcon(android.R.drawable.ic_menu_add);
-            return super.onPrepareOptionsMenu(menu);
+                mi.setIcon(android.R.drawable.ic_menu_share);
+                return super.onPrepareOptionsMenu(menu);
+            } else if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
+                TextView tv = (TextView) findViewById(R.id.flag_contact_exist);
+                if (tv == null || tv.getText().toString().equals(true + ""))
+                    return false;
+                mi.setVisible(!drawerOpen);
+                mi.setIcon(android.R.drawable.ic_menu_add);
+                return super.onPrepareOptionsMenu(menu);
+            }
+        } catch (Exception e) {
+
+            SendReport sr = new SendReport(e.getLocalizedMessage());
+            sr.show(getFragmentManager(), "ll");
         }
         return false;
     }
 
     @Override
     public void onPause() {
-        if (!handleByOnNewIntent) {
-            currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
-            if (PublicStaticVariables.decryptedMsg != null)
-                FilesManagement.saveTempDecryptedMSG(this);
-            //todo delete view content
-            CryptMethods.deleteKeys();
+        try {
+            if (!handleByOnNewIntent) {
+                currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
+                if (PublicStaticVariables.decryptedMsg != null)
+                    FilesManagement.saveTempDecryptedMSG(this);
+                //todo delete view content
+                CryptMethods.deleteKeys();
+            }
+        } catch (Exception e) {
+
+            SendReport sr = new SendReport(e.getLocalizedMessage());
+            sr.show(getFragmentManager(), "ll");
         }
         super.onPause();
     }
@@ -880,7 +904,7 @@ public class Main extends Activity {
                         new prepareToExit();
                     break;
                 case R.layout.decrypted_msg:
-                    if(PublicStaticVariables.decryptedMsg!=null){
+                    if (PublicStaticVariables.decryptedMsg != null) {
                         Toast.makeText(this, R.string.notify_msg_deleted, Toast.LENGTH_SHORT).show();
                         PublicStaticVariables.decryptedMsg = null;
                         FilesManagement.deleteTempDecryptedMSG(this);
@@ -943,8 +967,8 @@ public class Main extends Activity {
             if (files == null)
                 Toast.makeText(this, R.string.failed_attach_files, Toast.LENGTH_LONG).show();
             else {
-                SendMsgDialog smd = new SendMsgDialog(files,contact.getEmail());
-                smd.show(getFragmentManager(),"smd");
+                SendMsgDialog smd = new SendMsgDialog(files, contact.getEmail());
+                smd.show(getFragmentManager(), "smd");
             }
         } else {
             Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
@@ -955,7 +979,7 @@ public class Main extends Activity {
         // record to launch Play Store if app is not installed
         NdefRecord appRecord = NdefRecord
                 .createApplicationRecord(this.getPackageName());
-        byte[] mimeBytes = ("application/"+this.getPackageName())
+        byte[] mimeBytes = ("application/" + this.getPackageName())
                 .getBytes(Charset.forName("US-ASCII"));
         NdefRecord cardRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
                 mimeBytes, new byte[0], binText);
