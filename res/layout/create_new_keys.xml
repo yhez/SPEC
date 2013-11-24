@@ -1,32 +1,55 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/create_new_keys"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="@android:color/white"
     android:alpha="0"
-    android:id="@+id/create_new_keys"
-    android:padding="37dp">
+    android:background="@android:color/white">
 
-    <TextView
-        android:textSize="19sp"
-        android:text="@string/welcome"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/spec_black"
-        android:padding="@dimen/default_gap"
-        android:id="@+id/welcome"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true">
+
+        <GridLayout
+            android:id="@+id/grid_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="1">
+
+        </GridLayout>
+    </ScrollView>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/scroll"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/default_gap"
+        android:paddingLeft="@dimen/default_gap"
+        android:paddingTop="@dimen/default_gap">
+
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="@dimen/default_gap"
+            android:text="@string/welcome"
+            android:textColor="@color/spec_black"
+            android:textSize="19sp" />
+
 
         <EditText
             android:textCursorDrawable="@null"
             android:id="@+id/name"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_enter_your_name"
             android:inputType="textPersonName"
@@ -36,21 +59,21 @@
 
         <EditText
             android:textCursorDrawable="@null"
-            android:maxLength="40"
-            android:textColor="@color/spec_black"
-            android:textColorHint="@color/spec_gray"
-            android:padding="@dimen/default_gap"
             android:id="@+id/email"
-            android:hint="@string/hint_enter_your_email"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
+            android:hint="@string/hint_enter_your_email"
+            android:inputType="textEmailAddress"
+            android:maxLength="40"
+            android:padding="@dimen/default_gap"
+            android:textColor="@color/spec_black"
+            android:textColorHint="@color/spec_gray" />
 
         <ImageView
-            android:src="@drawable/swipe_create_keys"
             android:id="@+id/gesture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:src="@drawable/swipe_create_keys" />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

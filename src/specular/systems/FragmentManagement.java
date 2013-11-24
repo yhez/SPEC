@@ -1,16 +1,22 @@
 package specular.systems;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -21,6 +27,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -42,7 +49,7 @@ import static specular.systems.R.layout.wait_nfc_to_write;
 
 public class FragmentManagement extends Fragment {
     //private static Main w;
-    private final int TURN_TEXT_TRIGGER = 0;
+    private final int TURN_TEXT_TRIGGER = 0,ADD_VIEW=1;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -52,6 +59,9 @@ public class FragmentManagement extends Fragment {
                     String ss = et.getText() + "";
                     et.setText(" " + ss);
                     et.setText(ss);
+                    break;
+                case ADD_VIEW:
+                    ((GridLayout)getActivity().findViewById(R.id.grid_login)).addView((ImageButton)msg.obj);
                     break;
             }
         }
@@ -72,7 +82,104 @@ public class FragmentManagement extends Fragment {
         rootView.animate().setDuration(1000).alpha(1).start();
         return rootView;
     }
-
+private void addSocialLogin(){
+    new Thread(new Runnable() {
+        @Override
+        public void run() {
+            AccountManager manager = (AccountManager) getActivity().getSystemService(getActivity().ACCOUNT_SERVICE);
+            Account[] list = manager.getAccounts();
+            for (final Account acc : list) {
+                Log.d("account", acc.toString());
+                List<PackageInfo> rs = getActivity().getPackageManager().getInstalledPackages(PackageManager.GET_ACTIVITIES);
+                if (acc.type.equalsIgnoreCase("com.google")) {
+                    ImageButton ib = new ImageButton(getActivity());
+                    ib.setBackgroundColor(Color.TRANSPARENT);
+                    try {
+                        ib.setImageDrawable(getActivity()
+                                .getPackageManager()
+                                .getApplicationInfo("com.google.android.gm", PackageManager.GET_META_DATA)
+                                .loadIcon(getActivity().getPackageManager()));
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                        //todo another google symbol
+                        ib.setImageResource(R.drawable.unknown);
+                    }
+                    ib.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ((EditText) getActivity().findViewById(R.id.email)).setText(acc.name);
+                            ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name.split("@")[0]);
+                        }
+                    });
+                    Message msg = hndl.obtainMessage(ADD_VIEW,ib);
+                    hndl.sendMessage(msg);
+                } else if (acc.type.startsWith("com.google")) {
+                    if (acc.type.contains("pop3")) {
+                        ImageButton ib = new ImageButton(getActivity());
+                        ib.setBackgroundColor(Color.TRANSPARENT);
+                        try {
+                            ib.setImageDrawable(getActivity()
+                                    .getPackageManager()
+                                    .getApplicationInfo("com.google.android.email", PackageManager.GET_META_DATA)
+                                    .loadIcon(getActivity().getPackageManager()));
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                            ib.setImageResource(R.drawable.unknown);
+                        }
+                        ib.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ((EditText) getActivity().findViewById(R.id.email)).setText(acc.name);
+                                ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name.split("@")[0]);
+                            }
+                        });
+                        Message msg = hndl.obtainMessage(ADD_VIEW,ib);
+                        hndl.sendMessage(msg);
+                    } else {
+                        //todo add exchange app
+                    }
+                } else {
+                    String company = acc.type.split("\\.")[1];
+                    for (PackageInfo pi : rs) {
+                        if (pi.packageName.contains(company)) {
+                            ImageButton ib = new ImageButton(getActivity());
+                            ib.setImageDrawable(pi.applicationInfo.loadIcon(getActivity().getPackageManager()));
+                            ib.setBackgroundColor(Color.TRANSPARENT);
+                            ib.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (acc.name.contains("@")) {
+                                        ((EditText) getActivity().findViewById(R.id.email)).setText(acc.name);
+                                        ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name.split("@")[0]);
+                                    } else {
+                                        ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name);
+                                        ((EditText) getActivity().findViewById(R.id.email)).setText("");
+                                    }
+                                }
+                            });
+                            Message msg = hndl.obtainMessage(ADD_VIEW,ib);
+                            hndl.sendMessage(msg);
+                            break;
+                        }
+                    }
+                }
+            }
+            ImageButton ib = new ImageButton(getActivity());
+            ib.setBackgroundColor(Color.TRANSPARENT);
+            ib.setImageResource(R.drawable.clear);
+            ib.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ib.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((EditText)getActivity().findViewById(R.id.email)).setText("");
+                    ((EditText)getActivity().findViewById(R.id.name)).setText("");
+                }
+            });
+            Message msg = hndl.obtainMessage(ADD_VIEW,ib);
+            hndl.sendMessage(msg);
+        }
+    }).start();
+}
     @Override
     public void onStart() {
         super.onStart();
@@ -81,6 +188,7 @@ public class FragmentManagement extends Fragment {
         Contact contact;
         switch (PublicStaticVariables.currentLayout) {
             case create_new_keys:
+                addSocialLogin();
                 Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.create_new_keys));
                 getActivity().findViewById(R.id.gesture).setOnTouchListener(new View.OnTouchListener() {
                     @Override
