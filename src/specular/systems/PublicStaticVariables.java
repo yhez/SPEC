@@ -1,5 +1,7 @@
 package specular.systems;
 
+import android.text.method.KeyListener;
+
 import java.util.List;
 
 public class PublicStaticVariables {
@@ -23,6 +25,7 @@ public class PublicStaticVariables {
     public static Main main;
     public static ContactsDataSource contactsDataSource;
     public static MySimpleArrayAdapter adapter;
+    public static KeyListener editEmail,editName;
     public static String currentText = "";
     public static int currentLayout;
     public static boolean changed;

@@ -40,7 +40,6 @@ public class Contact {
 
     public static Bitmap getPhoto(String publicKey) {
 
-        //TODO add colors String color = pbk.substring(pbk.length()/2,pbk.length()/2+6);
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(publicKey, BarcodeFormat.QR_CODE.toString(), 128);
         Bitmap bitmap = null;
         try {
@@ -101,9 +100,11 @@ public class Contact {
                 + session + "\nConversation status: " + conversationStatus;
     }
 
-    public void update(String contactName, String email,
+    public void update(int index,String contactName, String email,
                        String publicKey, String session, int conversationStatus) {
-        PublicStaticVariables.contactsDataSource.deleteContact(this);
+        PublicStaticVariables.fullList.remove(
+                PublicStaticVariables.currentList.get(index));
+        PublicStaticVariables.currentList.remove(index);
         if (contactName != null)
             this.contactName = contactName;
         if (publicKey != null)
@@ -112,8 +113,11 @@ public class Contact {
             this.email = email;
         if (session != null)
             this.session = session;
+        //flag -1 not changed
         if (!(conversationStatus < 0))
             this.conversationStatus = conversationStatus;
-        this.id = PublicStaticVariables.contactsDataSource.createContact(this);
+        PublicStaticVariables.contactsDataSource.updateDB(id,
+                contactName,email,publicKey,session,conversationStatus);
+        PublicStaticVariables.adapter.updateCont(this);
     }
 }

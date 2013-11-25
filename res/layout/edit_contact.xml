@@ -2,7 +2,7 @@
     android:id="@+id/edit_contact"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:alpha="0"
+    android:alpha="1"
     android:background="@android:color/white"
     android:gravity="center"
     android:orientation="vertical"
@@ -21,16 +21,10 @@
         android:layout_height="1dp"
         android:background="@color/spec_blue" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
         <GridLayout
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="2"
+            android:columnCount="3"
             android:rowCount="2">
 
             <TextView
@@ -58,7 +52,13 @@
                 android:padding="@dimen/default_gap"
                 android:textColor="@color/spec_black"
                 android:textSize="15sp" />
-
+            <ImageButton
+                android:onClick="onClickEditContact"
+                android:id="@+id/edit_name_icon"
+                android:layout_column="2"
+                android:layout_row="0"
+                style="?android:attr/borderlessButtonStyle"
+                android:src="@drawable/edit"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,33 +83,14 @@
                 android:padding="@dimen/default_gap"
                 android:textColor="@color/spec_black"
                 android:textSize="15sp" />
+            <ImageButton
+                android:onClick="onClickEditContact"
+                android:id="@+id/edit_email_icon"
+                android:layout_column="2"
+                android:layout_row="1"
+                style="?android:attr/borderlessButtonStyle"
+                android:src="@drawable/edit"/>
         </GridLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageButton
-                android:onClick="onClick"
-                style="?android:attr/borderlessButtonStyle"
-                android:id="@+id/contact_picture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-
-            <ImageButton
-                android:id="@+id/answer"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:onClick="onClick"
-                android:src="@drawable/respond" />
-        </LinearLayout>
-    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -156,51 +137,55 @@
         android:layout_height="1dp"
         android:layout_marginBottom="@dimen/default_gap"
         android:background="@color/spec_blue" />
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <ImageButton
+        android:padding="@dimen/default_gap"
+        android:layout_weight="1"
+        android:onClick="onClickEditContact"
+        style="?android:attr/borderlessButtonStyle"
+        android:id="@+id/contact_picture"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+    <LinearLayout
+        android:padding="@dimen/default_gap"
+        android:layout_gravity="right|center_vertical"
+        android:id="@+id/ll_images"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            style="?android:attr/buttonBarStyle"
+        <ImageButton
+            android:id="@+id/answer"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@color/spec_dark_blue"
-            android:orientation="horizontal"
-            android:padding="@dimen/default_gap">
+            android:onClick="onClickEditContact"
+            android:src="@drawable/respond" />
 
-            <Button
-                android:id="@+id/save"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:padding="@dimen/default_gap"
-                android:text="@string/save" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/white" />
-
-            <Button
-                android:id="@+id/delete"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:padding="@dimen/default_gap"
-                android:text="@string/delete" />
-        </LinearLayout>
+        <ImageButton
+            android:id="@+id/delete"
+            android:onClick="onClickEditContact"
+            style="?android:attr/borderlessButtonStyle"
+            android:src="@drawable/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
+</LinearLayout>
+
 
     <TextView
         android:id="@+id/contact_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+    <TextView
+        android:id="@+id/contact_index"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone" />

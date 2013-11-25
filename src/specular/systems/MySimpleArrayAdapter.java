@@ -24,8 +24,11 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
         this.a = a;
     }
 
-    public boolean isNotEmpty() {
-        return PublicStaticVariables.fullList.size() != 0;
+    public void updateCont(Contact c){
+        Contact contact = PublicStaticVariables.contactsDataSource.findContact(c.getId());
+        PublicStaticVariables.currentList.add(contact);
+        PublicStaticVariables.fullList.add(contact);
+        refreshList();
     }
 
     public void removeCont(int index) {

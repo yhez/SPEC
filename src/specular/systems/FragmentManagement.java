@@ -216,6 +216,7 @@ public class FragmentManagement extends Fragment {
                         args.putLong("contactId", Long.parseLong(((TextView) p2
                                 .findViewById(R.id.id_contact)).getText()
                                 .toString()));
+                        args.putInt("index",p3);
                         fragment.setArguments(args);
                         FragmentManager fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction()
@@ -249,15 +250,23 @@ public class FragmentManagement extends Fragment {
                 break;
             case edit_contact:
                 Long id = getArguments().getLong("contactId");
+                int index = getArguments().getInt("index");
                 ((TextView) getActivity().findViewById(R.id.contact_id)).setText(""
                         + id);
-                contact = PublicStaticVariables.contactsDataSource.findContact(id);
+                ((TextView)getActivity().findViewById(R.id.contact_index)).setText(""+index);
+                contact = PublicStaticVariables.currentList.get(index);
                 EditText etName = (EditText) getActivity().findViewById(R.id.contact_name);
                 etName.setText(contact.getContactName());
+                PublicStaticVariables.editName=etName.getKeyListener();
+                etName.setKeyListener(null);
+                etName.setFocusable(false);
                 ((TextView) getActivity().findViewById(R.id.orig_name))
                         .setText(contact.getContactName());
-                ((EditText) getActivity().findViewById(R.id.contact_email))
-                        .setText(contact.getEmail());
+                EditText etEmail =(EditText) getActivity().findViewById(R.id.contact_email);
+                etEmail.setText(contact.getEmail());
+                PublicStaticVariables.editEmail=etEmail.getKeyListener();
+                etEmail.setKeyListener(null);
+                etEmail.setFocusable(false);
                 ((TextView) getActivity().findViewById(R.id.orig_eamil))
                         .setText(contact.getEmail());
                 ((TextView) getActivity().findViewById(R.id.contact_session))
@@ -535,7 +544,9 @@ public class FragmentManagement extends Fragment {
                         ((ImageView) getActivity().findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_bad);
                         PublicStaticVariables.flag_hash = false;
                     }
-                    if (PublicStaticVariables.decryptedMsg.checkReplay() || PublicStaticVariables.flag_replay) {
+                    if (PublicStaticVariables.decryptedMsg.checkReplay() ||
+                            (PublicStaticVariables.flag_replay!=null&&
+                    PublicStaticVariables.flag_replay)) {
                         ((ImageView) getActivity().findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_ok);
                         PublicStaticVariables.flag_replay = true;
                     } else {
@@ -543,7 +554,8 @@ public class FragmentManagement extends Fragment {
                         ((ImageView) getActivity().findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_bad);
                     }
                     //todo check session
-                    if (PublicStaticVariables.decryptedMsg.checkHash() || PublicStaticVariables.flag_session) {
+                    if (PublicStaticVariables.decryptedMsg.checkHash() ||
+                            (PublicStaticVariables.flag_session!=null&&PublicStaticVariables.flag_session)) {
                         ((ImageView) getActivity().findViewById(R.id.session_check)).setImageResource(R.drawable.ic_ok);
                         PublicStaticVariables.flag_session = true;
                     } else {
@@ -552,7 +564,6 @@ public class FragmentManagement extends Fragment {
                     }
                 }
                 Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.decrypted_msg_ll));
-
                 break;
         }
     }
