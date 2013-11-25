@@ -8,12 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,6 +33,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
 
 import java.util.List;
 
@@ -60,6 +65,7 @@ public class FragmentManagement extends Fragment {
             }
         }
     };
+    View rootView;
     //for touch response
     private float startPointX, startPointY, width, height;
 
@@ -71,7 +77,7 @@ public class FragmentManagement extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getActivity().invalidateOptionsMenu();
-        View rootView = inflater.inflate(PublicStaticVariables.currentLayout,
+        rootView = inflater.inflate(PublicStaticVariables.currentLayout,
                 container, false);
         rootView.animate().setDuration(1000).alpha(1).start();
         return rootView;
@@ -81,7 +87,7 @@ public class FragmentManagement extends Fragment {
         final Account[] list = ((AccountManager) getActivity()
                 .getSystemService(getActivity().ACCOUNT_SERVICE)).getAccounts();
         Intent intent = new Intent(Intent.ACTION_MAIN);
-        final List<ResolveInfo> rs = getActivity().getPackageManager().queryIntentActivities(intent,0);
+        final List<ResolveInfo> rs = getActivity().getPackageManager().queryIntentActivities(intent, 0);
         for (final Account acc : list) {
             if (acc.type.equalsIgnoreCase("com.google")) {
                 ImageButton ib = new ImageButton(PublicStaticVariables.main);
@@ -176,7 +182,6 @@ public class FragmentManagement extends Fragment {
         switch (PublicStaticVariables.currentLayout) {
             case create_new_keys:
                 addSocialLogin();
-                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.create_new_keys));
                 getActivity().findViewById(R.id.gesture).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -216,7 +221,7 @@ public class FragmentManagement extends Fragment {
                         args.putLong("contactId", Long.parseLong(((TextView) p2
                                 .findViewById(R.id.id_contact)).getText()
                                 .toString()));
-                        args.putInt("index",p3);
+                        args.putInt("index", p3);
                         fragment.setArguments(args);
                         FragmentManager fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction()
@@ -253,32 +258,115 @@ public class FragmentManagement extends Fragment {
                 int index = getArguments().getInt("index");
                 ((TextView) getActivity().findViewById(R.id.contact_id)).setText(""
                         + id);
-                ((TextView)getActivity().findViewById(R.id.contact_index)).setText(""+index);
+                ((TextView) getActivity().findViewById(R.id.contact_index)).setText("" + index);
+                ((TextView) getActivity().findViewById(R.id.contact_name).
+                        findViewById(R.id.text_view)).setText(getString(R.string.edit_name) + "\t");
+                ((TextView) getActivity().findViewById(R.id.contact_email).
+                        findViewById(R.id.text_view)).setText(getString(R.string.edit_email) + "\t");
                 contact = PublicStaticVariables.currentList.get(index);
-                EditText etName = (EditText) getActivity().findViewById(R.id.contact_name);
+                final EditText etName = (EditText) getActivity().findViewById(R.id.contact_name).findViewById(R.id.edit_text);
                 etName.setText(contact.getContactName());
-                PublicStaticVariables.editName=etName.getKeyListener();
+                if (PublicStaticVariables.edit == null)
+                    PublicStaticVariables.edit = etName.getKeyListener();
                 etName.setKeyListener(null);
                 etName.setFocusable(false);
+                etName.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                 ((TextView) getActivity().findViewById(R.id.orig_name))
                         .setText(contact.getContactName());
-                EditText etEmail =(EditText) getActivity().findViewById(R.id.contact_email);
+                final EditText etEmail = (EditText) getActivity().findViewById(R.id.contact_email).findViewById(R.id.edit_text);
                 etEmail.setText(contact.getEmail());
-                PublicStaticVariables.editEmail=etEmail.getKeyListener();
                 etEmail.setKeyListener(null);
                 etEmail.setFocusable(false);
+                etEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 ((TextView) getActivity().findViewById(R.id.orig_eamil))
                         .setText(contact.getEmail());
                 ((TextView) getActivity().findViewById(R.id.contact_session))
                         .setText(contact.getSession());
-                ((ImageView) getActivity().findViewById(R.id.contact_picture)).setImageBitmap(Contact.getPhoto(contact.getPublicKey()));
-                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.edit_contact));
+                ImageButton ibb = (ImageButton) getActivity().findViewById(R.id.contact_picture);
+                QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(contact.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 256);
+                Bitmap bitmap = null;
+                try {
+                    bitmap = qrCodeEncoder.encodeAsBitmap();
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+                ibb.setImageBitmap(bitmap);
                 TextView tvt = (TextView) getActivity().findViewById(R.id.contact_pb);
                 tvt.setText(contact.getPublicKey());
+                //todo move it after last line
                 tvt.setTypeface(FilesManagement.getOld(getActivity()));
+                final ImageButton ib = (ImageButton) getActivity().findViewById(R.id.contact_email)
+                        .findViewById(R.id.image_button);
+                getActivity().findViewById(R.id.contact_email)
+                        .findViewById(R.id.image_button).setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Contact contact = PublicStaticVariables.contactsDataSource.findContact(Long
+                                        .valueOf(((TextView) getActivity().findViewById(R.id.contact_id))
+                                                .getText().toString()));
+                                int index = Integer.parseInt(((TextView) getActivity().findViewById(R.id.contact_index)).getText().toString());
+
+                                if (etEmail.getKeyListener() == null)
+                                    Visual.edit(getActivity(), etEmail, ib, true);
+                                else {
+                                    String email = etEmail.getText().toString();
+                                    String origEmail = ((TextView) getActivity().findViewById(R.id.orig_eamil)).getText()
+                                            .toString();
+                                    if (!email.equals(origEmail))
+                                        if (email.length() > 2) {
+                                            contact.update(index, null, email, null, null, -1);
+                                            ((TextView) getActivity().findViewById(R.id.orig_eamil)).setText(email);
+                                        } else {
+                                            etEmail.setText(origEmail);
+                                            Toast t = Toast.makeText(getActivity(), "change not valid discarded", Toast.LENGTH_LONG);
+                                            t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                            t.show();
+                                        }
+                                    Visual.edit(getActivity(), etEmail, ib, false);
+                                }
+
+
+                            }
+                        }
+                );
+                getActivity().findViewById(R.id.contact_name)
+                        .findViewById(R.id.image_button).setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Contact contact = PublicStaticVariables.contactsDataSource.findContact(Long
+                                        .valueOf(((TextView) getActivity().findViewById(R.id.contact_id))
+                                                .getText().toString()));
+                                int index = Integer.parseInt(((TextView) getActivity().findViewById(R.id.contact_index)).getText().toString());
+
+                                ImageButton ib = (ImageButton) getActivity()
+                                        .findViewById(R.id.contact_name)
+                                        .findViewById(R.id.image_button);
+                                if (etName.getKeyListener() == null)
+                                    Visual.edit(getActivity(), etName, ib, true);
+                                else {
+                                    String origName = ((TextView) getActivity().findViewById(R.id.orig_name)).getText()
+                                            .toString();
+                                    String name = etName.getText().toString();
+                                    if (!name.equals(origName))
+                                        if (name.length() > 2) {
+                                            contact.update(index, name, null, null, null, -1);
+                                            ((TextView) getActivity().findViewById(R.id.orig_name)).setText(name);
+                                        } else {
+                                            etName.setText(origName);
+                                            Toast t = Toast.makeText(getActivity(), "change not valid discarded",
+                                                    Toast.LENGTH_LONG);
+                                            t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                            t.show();
+                                        }
+                                    Visual.edit(getActivity(), etName, ib, false);
+                                }
+                            }
+                        }
+                );
                 break;
             case share:
-                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.share_fl));
                 ((TextView) getActivity().findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
                 if (FilesManagement.getMyQRPublicKey(getActivity()) != null)
                     ((ImageView) getActivity().findViewById(R.id.qr_image))
@@ -473,17 +561,14 @@ public class FragmentManagement extends Fragment {
                 ((TextView) getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManagement.getOs(getActivity()));
                 break;
             case wait_nfc_to_write:
-                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.wait_nfc_to_write));
                 break;
             case wait_nfc_decrypt:
                 if (NfcAdapter.getDefaultAdapter(getActivity()) == null)
                     Toast.makeText(getActivity(), R.string.cant_connect_nfc_adapter, Toast.LENGTH_LONG).show();
                 else if (!NfcAdapter.getDefaultAdapter(getActivity()).isEnabled())
                     getActivity().findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
-                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.wait_nfc_decrypt));
                 break;
             case setup:
-                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.setup));
                 break;
             case decrypted_msg:
                 TextView tv = (TextView) getActivity().findViewById(R.id.decrypted_msg);
@@ -545,8 +630,8 @@ public class FragmentManagement extends Fragment {
                         PublicStaticVariables.flag_hash = false;
                     }
                     if (PublicStaticVariables.decryptedMsg.checkReplay() ||
-                            (PublicStaticVariables.flag_replay!=null&&
-                    PublicStaticVariables.flag_replay)) {
+                            (PublicStaticVariables.flag_replay != null &&
+                                    PublicStaticVariables.flag_replay)) {
                         ((ImageView) getActivity().findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_ok);
                         PublicStaticVariables.flag_replay = true;
                     } else {
@@ -555,7 +640,7 @@ public class FragmentManagement extends Fragment {
                     }
                     //todo check session
                     if (PublicStaticVariables.decryptedMsg.checkHash() ||
-                            (PublicStaticVariables.flag_session!=null&&PublicStaticVariables.flag_session)) {
+                            (PublicStaticVariables.flag_session != null && PublicStaticVariables.flag_session)) {
                         ((ImageView) getActivity().findViewById(R.id.session_check)).setImageResource(R.drawable.ic_ok);
                         PublicStaticVariables.flag_session = true;
                     } else {
@@ -563,9 +648,45 @@ public class FragmentManagement extends Fragment {
                         PublicStaticVariables.flag_session = false;
                     }
                 }
-                Visual.setAllFonts(getActivity(), (ViewGroup) getActivity().findViewById(R.id.decrypted_msg_ll));
+                break;
+            case R.layout.profile:
+                final ImageButton ibMyName = (ImageButton) getActivity().findViewById(R.id.test).findViewById(R.id.image_button);
+                final ImageButton ibMyEmail = (ImageButton) getActivity().findViewById(R.id.test1).findViewById(R.id.image_button);
+                final EditText etMyName = (EditText) getActivity().findViewById(R.id.test).findViewById(R.id.edit_text);
+                final EditText etMyEmail = (EditText) getActivity().findViewById(R.id.test1).findViewById(R.id.edit_text);
+                final TextView tvMyName = (TextView) getActivity().findViewById(R.id.test).findViewById(R.id.text_view);
+                final TextView tvMyEmail = (TextView) getActivity().findViewById(R.id.test1).findViewById(R.id.text_view);
+                tvMyName.setText("my name\t");
+                tvMyEmail.setText("my email\t");
+                etMyName.setText(CryptMethods.getName());
+                if (PublicStaticVariables.edit == null)
+                    PublicStaticVariables.edit = etMyName.getKeyListener();
+                etMyEmail.setKeyListener(null);
+                etMyName.setKeyListener(null);
+                etMyEmail.setText(CryptMethods.getEmail());
+                ibMyEmail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        boolean enabled = etMyEmail.getKeyListener() != null;
+                        if (enabled) {
+                            Toast.makeText(getActivity(), "do something", Toast.LENGTH_LONG).show();
+                        }
+                        Visual.edit(getActivity(), etMyEmail, ibMyEmail, !enabled);
+                    }
+                });
+                ibMyName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        boolean enabled = etMyName.getKeyListener() != null;
+                        if (enabled) {
+                            Toast.makeText(getActivity(), "do something", Toast.LENGTH_LONG).show();
+                        }
+                        Visual.edit(getActivity(), etMyName, ibMyName, !enabled);
+                    }
+                });
                 break;
         }
+        Visual.setAllFonts(getActivity(), (ViewGroup) rootView);
     }
 
     private boolean validateEmail(String email) {

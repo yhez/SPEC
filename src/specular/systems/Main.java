@@ -1086,10 +1086,6 @@ public class Main extends Activity {
         }
     }
     public void onClickEditContact(View v){
-        Contact contact = PublicStaticVariables.contactsDataSource.findContact(Long
-                .valueOf(((TextView) findViewById(R.id.contact_id))
-                        .getText().toString()));
-        int index = Integer.parseInt(((TextView)findViewById(R.id.contact_index)).getText().toString());
         switch (v.getId()) {
             case R.id.delete:
                 DeleteContactDialog dlg = new DeleteContactDialog();
@@ -1102,68 +1098,6 @@ public class Main extends Activity {
             case R.id.contact_picture:
                 ContactQR cqr = new ContactQR();
                 cqr.show(getFragmentManager(), "cqr");
-                break;
-            case R.id.edit_email_icon:
-                ImageButton ib=(ImageButton)v;
-                EditText et = (EditText)findViewById(R.id.contact_email);
-                if(et.getKeyListener()==null){
-                    ib.setImageResource(R.drawable.save);
-                    et.setKeyListener(PublicStaticVariables.editEmail);
-                    et.setFocusable(true);
-                    et.setFocusableInTouchMode(true);
-                    et.requestFocus();
-                }
-                else{
-                    String email = et.getText().toString();
-                    String origEmail = ((TextView) findViewById(R.id.orig_eamil)).getText()
-                            .toString();
-                    if(!email.equals(origEmail))
-                        if (email.length() > 2){
-                            contact.update(index,null, email, null, null, -1);
-                            ((TextView) findViewById(R.id.orig_eamil)).setText(email);
-                        }
-                        else {
-                            et.setText(origEmail);
-                            t = Toast.makeText(getBaseContext(), "change not valid discarded",
-                                    Toast.LENGTH_LONG);
-                            t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                            t.show();
-                        }
-                    ib.setImageResource(R.drawable.edit);
-                    et.setKeyListener(null);
-                    et.setFocusable(false);
-                }
-                break;
-            case R.id.edit_name_icon:
-                ib=(ImageButton)v;
-                et = (EditText)findViewById(R.id.contact_name);
-                if(et.getKeyListener()==null){
-                    ib.setImageResource(R.drawable.save);
-                    et.setKeyListener(PublicStaticVariables.editName);
-                    et.setFocusable(true);
-                    et.setFocusableInTouchMode(true);
-                    et.requestFocus();
-                }
-                else{
-                    String origName = ((TextView) findViewById(R.id.orig_name)).getText()
-                            .toString();
-                    String name=et.getText().toString();
-                    if(!name.equals(origName))
-                        if (name.length() > 2){
-                            contact.update(index,name, null, null, null, -1);
-                            ((TextView) findViewById(R.id.orig_name)).setText(name);
-                        }
-                        else {
-                            et.setText(origName);
-                            t = Toast.makeText(getBaseContext(), "change not valid discarded",
-                                Toast.LENGTH_LONG);
-                            t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                            t.show();
-                        }
-                    ib.setImageResource(R.drawable.edit);
-                    et.setKeyListener(null);
-                    et.setFocusable(false);
-                }
                 break;
         }
     }

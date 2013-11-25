@@ -1,7 +1,11 @@
 package specular.systems;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class Visual {
@@ -56,5 +60,22 @@ public class Visual {
                 } catch (Exception ignore) {
                 }
             }
+    }
+    public static void edit(Activity a,EditText et, ImageButton ib,boolean enable){
+        if(enable){
+            ib.setImageResource(R.drawable.save);
+            et.setKeyListener(PublicStaticVariables.edit);
+            et.setFocusable(true);
+            et.setFocusableInTouchMode(true);
+            et.requestFocus();
+            InputMethodManager imm = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(et, 0);
+        }else{
+            ib.setImageResource(R.drawable.edit);
+            et.setKeyListener(null);
+            et.setFocusable(false);
+            InputMethodManager imm = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+        }
     }
 }

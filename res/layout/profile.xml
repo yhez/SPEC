@@ -3,88 +3,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:alpha="1"
+    android:alpha="0"
     android:background="@android:color/white"
     android:gravity="center"
+    android:padding="@dimen/default_gap"
     android:orientation="vertical">
+<include layout="@layout/edit_text"
+    android:id="@+id/test"
+    />
+    <include layout="@layout/edit_text"
+        android:id="@+id/test1"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:gravity="center"
-                android:paddingRight="8dp"
-                android:paddingLeft="8dp"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/profile_my_name"
-                android:textColor="@color/spec_black"
-                android:textSize="15sp" />
-
-            <TextView
-                android:gravity="center"
-                android:paddingRight="8dp"
-                android:paddingLeft="8dp"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/profile_my_email"
-                android:textColor="@color/spec_black"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <EditText
-                android:textCursorDrawable="@null"
-                android:paddingRight="@dimen/default_gap"
-                android:id="@+id/my_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <EditText
-                android:textCursorDrawable="@null"
-                android:paddingRight="@dimen/default_gap"
-                android:id="@+id/my_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </LinearLayout>
-
+<View
+    android:layout_marginTop="32dp"
+    android:background="@color/spec_blue"
+    android:layout_width="240dp"
+    android:layout_height="1dp"/>
     <Button
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="@color/spec_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="notImp"
         android:text="@string/backup_profile" />
-
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="notImp"
-        android:text="@string/restore_profile" />
+        android:background="@color/spec_blue"
+        android:layout_width="240dp"
+        android:layout_height="1dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="notImp"
-        android:text="@string/save" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="notImp"
-        android:text="@string/create_new_keys" />
 </LinearLayout>
