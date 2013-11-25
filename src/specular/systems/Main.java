@@ -28,6 +28,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -172,7 +173,7 @@ public class Main extends Activity {
         PublicStaticVariables.luc.change(contact);
         final MessageFormat msg = new MessageFormat(PublicStaticVariables.fileContent, fileName, userInput,
                 contact.getSession());
-        final ProgressDlg prgd = new ProgressDlg(this);
+        final ProgressDlg prgd = new ProgressDlg(this,"Encrypting...");
         prgd.setCancelable(false);
         prgd.show();
         new Thread(new Runnable() {
@@ -244,7 +245,6 @@ public class Main extends Activity {
     }
 
     private String getRealPathFromURI(Uri contentUri) {
-
         Cursor cursor = null;
         try {
             String[] proj = {MediaStore.Images.Media.DATA};
@@ -252,11 +252,14 @@ public class Main extends Activity {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);
+        }catch (Exception e){
+            e.printStackTrace();
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
+        return null;
     }
 
     private void attachFile(final Uri uri) {
@@ -268,12 +271,17 @@ public class Main extends Activity {
                     int r = FilesManagement.addFile(Main.this, uri);
                     if (r == PublicStaticVariables.RESULT_ADD_FILE_OK) {
                         //if(uri.)
-                        String w[] = getRealPathFromURI(uri).split("/");
+                        String tmp = getRealPathFromURI(uri);
+                        if(tmp!=null){
+                        String w[] = tmp.split("/");
                         //File fragmentManagement =new File(uri.getPath());
                         fileName = w[w.length - 1];
                         //Log.d("File",fileName);
                         Message msg = hndl.obtainMessage(REPLACE_PHOTO);
                         hndl.sendMessage(msg);
+                        }else{
+                            Log.d("getrealpath problem",uri.getPath());
+                        }
                     } else {
                         Message msg = hndl.obtainMessage(r);
                         hndl.sendMessage(msg);
@@ -371,7 +379,6 @@ public class Main extends Activity {
     }
 
     public void onClickEncrypt(View v) {
-
         switch (v.getId()) {
             case R.id.add_file:
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -396,10 +403,6 @@ public class Main extends Activity {
                     t.show();
                 }
                 break;
-            case R.id.add_contact:
-                Intent intt = new Intent(this, StartScan.class);
-                startActivityForResult(intt, SCAN_QR);
-                break;
         }
     }
 
@@ -415,12 +418,11 @@ public class Main extends Activity {
                 intent.putExtra("decrypt", true);
                 startActivityForResult(intent, SCAN_QR);
                 break;
-            case R.layout.contacts:
-                Intent intt = new Intent(this, StartScan.class);
-                startActivityForResult(intt, SCAN_QR);
-                break;
             }
     }
+    public void onClickFilter(View v){
+        Intent intt = new Intent(this, StartScan.class);
+        startActivityForResult(intt, SCAN_QR);    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -791,7 +793,7 @@ public class Main extends Activity {
     private boolean openByFile() {
         final String msg = getIntent().getStringExtra("message");
         if (PublicStaticVariables.message != null || msg != null) {
-            final ProgressDlg prgd = new ProgressDlg(this);
+            final ProgressDlg prgd = new ProgressDlg(this,"Decrypting");
             prgd.setCancelable(false);
             prgd.setMessage(getString(R.string.decrypting));
             prgd.show();

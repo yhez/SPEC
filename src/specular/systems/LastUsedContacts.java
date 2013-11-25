@@ -49,15 +49,15 @@ public class LastUsedContacts {
     }
 
     public void hide() {
-        View v =a.findViewById(R.id.grid_lasts);
+        View v =a.findViewById(R.id.frame_grid_last);
                 if(v!=null)v.setVisibility(View.GONE);
     }
 
     public boolean show() {
-        if (lasts.length == 0 || lasts[0] == null || a.findViewById(R.id.grid_lasts) == null) {
+        if (lasts.length == 0 || lasts[0] == null || a.findViewById(R.id.frame_grid_last) == null) {
             return false;
         }
-        a.findViewById(R.id.grid_lasts).setVisibility(View.VISIBLE);
+        a.findViewById(R.id.frame_grid_last).setVisibility(View.VISIBLE);
         vlc = new ViewLastContact[NUM_LASTS];
         for (int c = 0; c < NUM_LASTS; c++) {
             vlc[c] = new ViewLastContact((LinearLayout) ((GridLayout) a.findViewById(R.id.grid_lasts)).getChildAt(c));

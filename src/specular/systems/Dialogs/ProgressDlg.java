@@ -6,22 +6,39 @@ import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.widget.TextView;
 
 import specular.systems.R;
 
 public class ProgressDlg extends ProgressDialog {
-    private ObjectAnimator mProgressBarAnimator;
     protected boolean mAnimationHasEnded = false;
     HoloCircularProgressBar hcpb;
+    TextView textViewSec,textViewDec;
+    long startTimeMillis;
+    String title;
+    private ObjectAnimator mProgressBarAnimator;
+    private Handler hndl = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            int dec = (int) ((System.currentTimeMillis()-startTimeMillis)/100);
+            int sec = dec/10;
+            textViewSec.setText(sec+"");
+            textViewDec.setText((dec%10)+"");
+        }
+    };
 
-    public ProgressDlg(Context context) {
+    public ProgressDlg(Context context, String title) {
         super(context);
+        this.title=title;
     }
 
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.circular);
+        ((TextView)findViewById(R.id.title_progress_bar)).setText(title);
         hcpb = (HoloCircularProgressBar) findViewById(R.id.circle);
         animate(hcpb, new Animator.AnimatorListener() {
 
@@ -47,6 +64,28 @@ public class ProgressDlg extends ProgressDialog {
             public void onAnimationStart(final Animator animation) {
             }
         });
+        textViewSec = (TextView) findViewById(R.id.sec_progress);
+        textViewDec = (TextView) findViewById(R.id.dec_progress);
+        startTimeMillis=System.currentTimeMillis();
+        animateText();
+    }
+
+    private void animateText() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (mProgressBarAnimator.isRunning()) {
+                    synchronized (this) {
+                        hndl.sendEmptyMessage(0);
+                        try {
+                            wait(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }).start();
     }
 
     private void animate(final HoloCircularProgressBar progressBar, final Animator.AnimatorListener listener) {

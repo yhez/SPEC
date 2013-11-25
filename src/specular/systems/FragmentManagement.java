@@ -57,7 +57,7 @@ public class FragmentManagement extends Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case TURN_TEXT_TRIGGER:
-                    EditText et = (EditText) getActivity().findViewById(R.id.message);
+                    EditText et = (EditText) rootView.findViewById(R.id.message);
                     String ss = et.getText() + "";
                     et.setText(" " + ss);
                     et.setText(ss);
@@ -105,11 +105,11 @@ public class FragmentManagement extends Fragment {
                 ib.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ((EditText) getActivity().findViewById(R.id.email)).setText(acc.name);
-                        ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name.split("@")[0]);
+                        ((EditText) rootView.findViewById(R.id.email)).setText(acc.name);
+                        ((EditText) rootView.findViewById(R.id.name)).setText(acc.name.split("@")[0]);
                     }
                 });
-                ((GridLayout) getActivity().findViewById(R.id.grid_login)).addView(ib);
+                ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
 
             } else if (acc.type.startsWith("com.google")) {
                 if (acc.type.contains("pop3")) {
@@ -127,11 +127,11 @@ public class FragmentManagement extends Fragment {
                     ib.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            ((EditText) getActivity().findViewById(R.id.email)).setText(acc.name);
-                            ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name.split("@")[0]);
+                            ((EditText) rootView.findViewById(R.id.email)).setText(acc.name);
+                            ((EditText) rootView.findViewById(R.id.name)).setText(acc.name.split("@")[0]);
                         }
                     });
-                    ((GridLayout) getActivity().findViewById(R.id.grid_login)).addView(ib);
+                    ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
                 } else {
                     //todo add exchange app
                 }
@@ -146,15 +146,15 @@ public class FragmentManagement extends Fragment {
                             @Override
                             public void onClick(View view) {
                                 if (acc.name.contains("@")) {
-                                    ((EditText) getActivity().findViewById(R.id.email)).setText(acc.name);
-                                    ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name.split("@")[0]);
+                                    ((EditText) rootView.findViewById(R.id.email)).setText(acc.name);
+                                    ((EditText) rootView.findViewById(R.id.name)).setText(acc.name.split("@")[0]);
                                 } else {
-                                    ((EditText) getActivity().findViewById(R.id.name)).setText(acc.name);
-                                    ((EditText) getActivity().findViewById(R.id.email)).setText("");
+                                    ((EditText) rootView.findViewById(R.id.name)).setText(acc.name);
+                                    ((EditText) rootView.findViewById(R.id.email)).setText("");
                                 }
                             }
                         });
-                        ((GridLayout) getActivity().findViewById(R.id.grid_login)).addView(ib);
+                        ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
                         break;
                     }
                 }
@@ -166,11 +166,11 @@ public class FragmentManagement extends Fragment {
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((EditText) getActivity().findViewById(R.id.email)).setText("");
-                ((EditText) getActivity().findViewById(R.id.name)).setText("");
+                ((EditText) rootView.findViewById(R.id.email)).setText("");
+                ((EditText) rootView.findViewById(R.id.name)).setText("");
             }
         });
-        ((GridLayout) getActivity().findViewById(R.id.grid_login)).addView(ib);
+        ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
     }
 
     @Override
@@ -182,16 +182,16 @@ public class FragmentManagement extends Fragment {
         switch (PublicStaticVariables.currentLayout) {
             case create_new_keys:
                 addSocialLogin();
-                getActivity().findViewById(R.id.gesture).setOnTouchListener(new View.OnTouchListener() {
+                rootView.findViewById(R.id.gesture).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
                         if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN)
                             startPointX = motionEvent.getX();
                         else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP)
                             if (motionEvent.getX() < startPointX) {
-                                String myEmail = ((EditText) getActivity().findViewById(R.id.email))
+                                String myEmail = ((EditText) rootView.findViewById(R.id.email))
                                         .getText().toString();
-                                String myName = ((EditText) getActivity().findViewById(R.id.name))
+                                String myName = ((EditText) rootView.findViewById(R.id.name))
                                         .getText().toString();
                                 if (!validateEmail(myEmail)) {
                                     Toast t = Toast.makeText(getActivity(), R.string.fill_all,
@@ -209,7 +209,7 @@ public class FragmentManagement extends Fragment {
                 break;
             case contacts:
                 PublicStaticVariables.changed = false;
-                ListView lv = (ListView) getActivity().findViewById(R.id.list);
+                ListView lv = (ListView) rootView.findViewById(R.id.list);
                 PublicStaticVariables.adapter.refreshList();
                 lv.setAdapter(PublicStaticVariables.adapter);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -229,13 +229,13 @@ public class FragmentManagement extends Fragment {
                     }
                 });
                 if (PublicStaticVariables.fullList == null || PublicStaticVariables.fullList.size() == 0) {
-                    getActivity().findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+                    rootView.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
                     lv.setVisibility(View.GONE);
                 } else {
-                    getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
+                    rootView.findViewById(R.id.no_contacts).setVisibility(View.GONE);
                     lv.setVisibility(View.VISIBLE);
                 }
-                EditText filterCOnt = (EditText) getActivity().findViewById(R.id.filter);
+                EditText filterCOnt = (EditText) rootView.findViewById(R.id.filter);
                 filterCOnt.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -256,33 +256,33 @@ public class FragmentManagement extends Fragment {
             case edit_contact:
                 Long id = getArguments().getLong("contactId");
                 int index = getArguments().getInt("index");
-                ((TextView) getActivity().findViewById(R.id.contact_id)).setText(""
+                ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
                         + id);
-                ((TextView) getActivity().findViewById(R.id.contact_index)).setText("" + index);
-                ((TextView) getActivity().findViewById(R.id.contact_name).
+                ((TextView) rootView.findViewById(R.id.contact_index)).setText("" + index);
+                ((TextView) rootView.findViewById(R.id.contact_name).
                         findViewById(R.id.text_view)).setText(getString(R.string.edit_name) + "\t");
-                ((TextView) getActivity().findViewById(R.id.contact_email).
+                ((TextView) rootView.findViewById(R.id.contact_email).
                         findViewById(R.id.text_view)).setText(getString(R.string.edit_email) + "\t");
                 contact = PublicStaticVariables.currentList.get(index);
-                final EditText etName = (EditText) getActivity().findViewById(R.id.contact_name).findViewById(R.id.edit_text);
+                final EditText etName = (EditText) rootView.findViewById(R.id.contact_name).findViewById(R.id.edit_text);
                 etName.setText(contact.getContactName());
                 if (PublicStaticVariables.edit == null)
                     PublicStaticVariables.edit = etName.getKeyListener();
                 etName.setKeyListener(null);
                 etName.setFocusable(false);
                 etName.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                ((TextView) getActivity().findViewById(R.id.orig_name))
+                ((TextView) rootView.findViewById(R.id.orig_name))
                         .setText(contact.getContactName());
-                final EditText etEmail = (EditText) getActivity().findViewById(R.id.contact_email).findViewById(R.id.edit_text);
+                final EditText etEmail = (EditText) rootView.findViewById(R.id.contact_email).findViewById(R.id.edit_text);
                 etEmail.setText(contact.getEmail());
                 etEmail.setKeyListener(null);
                 etEmail.setFocusable(false);
                 etEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                ((TextView) getActivity().findViewById(R.id.orig_eamil))
+                ((TextView) rootView.findViewById(R.id.orig_eamil))
                         .setText(contact.getEmail());
-                ((TextView) getActivity().findViewById(R.id.contact_session))
+                ((TextView) rootView.findViewById(R.id.contact_session))
                         .setText(contact.getSession());
-                ImageButton ibb = (ImageButton) getActivity().findViewById(R.id.contact_picture);
+                ImageButton ibb = (ImageButton) rootView.findViewById(R.id.contact_picture);
                 QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(contact.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 256);
                 Bitmap bitmap = null;
                 try {
@@ -291,32 +291,32 @@ public class FragmentManagement extends Fragment {
                     e.printStackTrace();
                 }
                 ibb.setImageBitmap(bitmap);
-                TextView tvt = (TextView) getActivity().findViewById(R.id.contact_pb);
+                TextView tvt = (TextView) rootView.findViewById(R.id.contact_pb);
                 tvt.setText(contact.getPublicKey());
                 //todo move it after last line
                 tvt.setTypeface(FilesManagement.getOld(getActivity()));
-                final ImageButton ib = (ImageButton) getActivity().findViewById(R.id.contact_email)
+                final ImageButton ib = (ImageButton) rootView.findViewById(R.id.contact_email)
                         .findViewById(R.id.image_button);
-                getActivity().findViewById(R.id.contact_email)
+                rootView.findViewById(R.id.contact_email)
                         .findViewById(R.id.image_button).setOnClickListener(
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Contact contact = PublicStaticVariables.contactsDataSource.findContact(Long
-                                        .valueOf(((TextView) getActivity().findViewById(R.id.contact_id))
+                                        .valueOf(((TextView) rootView.findViewById(R.id.contact_id))
                                                 .getText().toString()));
-                                int index = Integer.parseInt(((TextView) getActivity().findViewById(R.id.contact_index)).getText().toString());
+                                int index = Integer.parseInt(((TextView) rootView.findViewById(R.id.contact_index)).getText().toString());
 
                                 if (etEmail.getKeyListener() == null)
                                     Visual.edit(getActivity(), etEmail, ib, true);
                                 else {
                                     String email = etEmail.getText().toString();
-                                    String origEmail = ((TextView) getActivity().findViewById(R.id.orig_eamil)).getText()
+                                    String origEmail = ((TextView) rootView.findViewById(R.id.orig_eamil)).getText()
                                             .toString();
                                     if (!email.equals(origEmail))
                                         if (email.length() > 2) {
                                             contact.update(index, null, email, null, null, -1);
-                                            ((TextView) getActivity().findViewById(R.id.orig_eamil)).setText(email);
+                                            ((TextView) rootView.findViewById(R.id.orig_eamil)).setText(email);
                                         } else {
                                             etEmail.setText(origEmail);
                                             Toast t = Toast.makeText(getActivity(), "change not valid discarded", Toast.LENGTH_LONG);
@@ -330,15 +330,15 @@ public class FragmentManagement extends Fragment {
                             }
                         }
                 );
-                getActivity().findViewById(R.id.contact_name)
+                rootView.findViewById(R.id.contact_name)
                         .findViewById(R.id.image_button).setOnClickListener(
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Contact contact = PublicStaticVariables.contactsDataSource.findContact(Long
-                                        .valueOf(((TextView) getActivity().findViewById(R.id.contact_id))
+                                        .valueOf(((TextView) rootView.findViewById(R.id.contact_id))
                                                 .getText().toString()));
-                                int index = Integer.parseInt(((TextView) getActivity().findViewById(R.id.contact_index)).getText().toString());
+                                int index = Integer.parseInt(((TextView) rootView.findViewById(R.id.contact_index)).getText().toString());
 
                                 ImageButton ib = (ImageButton) getActivity()
                                         .findViewById(R.id.contact_name)
@@ -346,13 +346,13 @@ public class FragmentManagement extends Fragment {
                                 if (etName.getKeyListener() == null)
                                     Visual.edit(getActivity(), etName, ib, true);
                                 else {
-                                    String origName = ((TextView) getActivity().findViewById(R.id.orig_name)).getText()
+                                    String origName = ((TextView) rootView.findViewById(R.id.orig_name)).getText()
                                             .toString();
                                     String name = etName.getText().toString();
                                     if (!name.equals(origName))
                                         if (name.length() > 2) {
                                             contact.update(index, name, null, null, null, -1);
-                                            ((TextView) getActivity().findViewById(R.id.orig_name)).setText(name);
+                                            ((TextView) rootView.findViewById(R.id.orig_name)).setText(name);
                                         } else {
                                             etName.setText(origName);
                                             Toast t = Toast.makeText(getActivity(), "change not valid discarded",
@@ -367,15 +367,15 @@ public class FragmentManagement extends Fragment {
                 );
                 break;
             case share:
-                ((TextView) getActivity().findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
+                ((TextView) rootView.findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
                 if (FilesManagement.getMyQRPublicKey(getActivity()) != null)
-                    ((ImageView) getActivity().findViewById(R.id.qr_image))
+                    ((ImageView) rootView.findViewById(R.id.qr_image))
                             .setImageBitmap(FilesManagement.getMyQRPublicKey(getActivity()));
-                ((TextView) getActivity().findViewById(R.id.me_public))
+                ((TextView) rootView.findViewById(R.id.me_public))
                         .setText(CryptMethods.getPublic());
-                final ImageView imageView = (ImageView) getActivity().findViewById(R.id.qr_image);
-                final TextView textView = (TextView) getActivity().findViewById(R.id.me_public);
-                final FrameLayout frameLayout = (FrameLayout) getActivity().findViewById(R.id.touch);
+                final ImageView imageView = (ImageView) rootView.findViewById(R.id.qr_image);
+                final TextView textView = (TextView) rootView.findViewById(R.id.me_public);
+                final FrameLayout frameLayout = (FrameLayout) rootView.findViewById(R.id.touch);
                 final int[] coordination = new int[2];
                 frameLayout.getLocationInWindow(coordination);
                 //todo find a better way to implement that
@@ -419,11 +419,11 @@ public class FragmentManagement extends Fragment {
                 break;
             case encrypt:
                 PublicStaticVariables.changed = false;
-                if (((TextView) getActivity().findViewById(R.id.contact_id_to_send)).getText().length() == 0) {
+                if (((TextView) rootView.findViewById(R.id.contact_id_to_send)).getText().length() == 0) {
                     PublicStaticVariables.adapter.refreshList();
-                    lv = (ListView) getActivity().findViewById(R.id.list);
+                    lv = (ListView) rootView.findViewById(R.id.list);
                     if (PublicStaticVariables.fullList != null && PublicStaticVariables.fullList.size() > 0) {
-                        View v = getActivity().findViewById(R.id.no_contacts);
+                        View v = rootView.findViewById(R.id.no_contacts);
                         v.setVisibility(View.GONE);
                         lv.setAdapter(PublicStaticVariables.adapter);
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -436,7 +436,7 @@ public class FragmentManagement extends Fragment {
                             }
                         });
                         PublicStaticVariables.readyToSend = false;
-                        ((EditText) getActivity().findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
+                        ((EditText) rootView.findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
@@ -452,7 +452,7 @@ public class FragmentManagement extends Fragment {
 
                             }
                         });
-                        final EditText et = (EditText) getActivity().findViewById(R.id.message);
+                        final EditText et = (EditText) rootView.findViewById(R.id.message);
                         et.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -468,12 +468,12 @@ public class FragmentManagement extends Fragment {
                             public void afterTextChanged(Editable editable) {
                                 if (editable.length() != 0 || PublicStaticVariables.currentText.length() == 1)
                                     PublicStaticVariables.currentText = editable.toString();
-                                String len = ((TextView) getActivity().findViewById(R.id.file_content_length)).getText().toString();
+                                String len = ((TextView) rootView.findViewById(R.id.file_content_length)).getText().toString();
                                 int num = editable.toString().length() + (len.length() > 0 ?
                                         Integer.parseInt(len) : 0);
-                                TextView tv = (TextView) getActivity().findViewById(R.id.text_counter);
-                                ImageButton bt = (ImageButton) getActivity().findViewById(R.id.send);
-                                boolean choosedContact = ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).getText().toString().length() > 0;
+                                TextView tv = (TextView) rootView.findViewById(R.id.text_counter);
+                                ImageButton bt = (ImageButton) rootView.findViewById(R.id.send);
+                                boolean choosedContact = ((TextView) rootView.findViewById(R.id.contact_id_to_send)).getText().toString().length() > 0;
                                 PublicStaticVariables.readyToSend = choosedContact;
                                 bt.setImageResource(choosedContact ? R.drawable.ic_send_holo_light : R.drawable.ic_send_disabled_holo_light);
                                 if (num == 0) {
@@ -502,7 +502,7 @@ public class FragmentManagement extends Fragment {
                         });
                         //todo why is he entering here twice in start???
                         et.setText(PublicStaticVariables.currentText);
-                        TextView tvfl = (TextView) getActivity().findViewById(R.id.file_content_length);
+                        TextView tvfl = (TextView) rootView.findViewById(R.id.file_content_length);
                         tvfl.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -520,7 +520,7 @@ public class FragmentManagement extends Fragment {
                                 hndl.sendMessage(msg);
                             }
                         });
-                        TextView tvci = (TextView) getActivity().findViewById(R.id.contact_id_to_send);
+                        TextView tvci = (TextView) rootView.findViewById(R.id.contact_id_to_send);
                         tvci.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -538,12 +538,12 @@ public class FragmentManagement extends Fragment {
                                 hndl.sendMessage(msg);
                             }
                         });
-                    } else getActivity().findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
-                    TextView tvvv = (TextView) getActivity().findViewById(R.id.contact_id_to_send);
+                    } else rootView.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+                    TextView tvvv = (TextView) rootView.findViewById(R.id.contact_id_to_send);
                     if ((tvvv == null || tvvv.getText().toString().length() == 0) &&
                             PublicStaticVariables.fullList.size() > PublicStaticVariables.minContactSize) {
                         if (PublicStaticVariables.luc.show()) {
-                            ViewGroup vg = (ViewGroup) getActivity().findViewById(R.id.grid_lasts);
+                            ViewGroup vg = (ViewGroup) rootView.findViewById(R.id.grid_lasts);
                             for (int af = 0; af < vg.getChildCount(); af++) {
                                 final ViewGroup vg2 = (ViewGroup) vg.getChildAt(af);
                                 vg2.getChildAt(0).setOnClickListener(new View.OnClickListener() {
@@ -558,7 +558,7 @@ public class FragmentManagement extends Fragment {
                 }
                 break;
             case decrypt:
-                ((TextView) getActivity().findViewById(R.id.text_decrypt)).setTypeface(FilesManagement.getOs(getActivity()));
+                ((TextView) rootView.findViewById(R.id.text_decrypt)).setTypeface(FilesManagement.getOs(getActivity()));
                 break;
             case wait_nfc_to_write:
                 break;
@@ -566,12 +566,12 @@ public class FragmentManagement extends Fragment {
                 if (NfcAdapter.getDefaultAdapter(getActivity()) == null)
                     Toast.makeText(getActivity(), R.string.cant_connect_nfc_adapter, Toast.LENGTH_LONG).show();
                 else if (!NfcAdapter.getDefaultAdapter(getActivity()).isEnabled())
-                    getActivity().findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
+                    rootView.findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
                 break;
             case setup:
                 break;
             case decrypted_msg:
-                TextView tv = (TextView) getActivity().findViewById(R.id.decrypted_msg);
+                TextView tv = (TextView) rootView.findViewById(R.id.decrypted_msg);
                 if (PublicStaticVariables.decryptedMsg == null && PublicStaticVariables.flag_hash != null) {
                     if (FilesManagement.getTempDecryptedMSG(getActivity())) {
                         MessageFormat mf = new MessageFormat();
@@ -587,26 +587,26 @@ public class FragmentManagement extends Fragment {
                     PublicStaticVariables.flag_replay = null;
                 }
                 if (PublicStaticVariables.decryptedMsg == null) {
-                    getActivity().findViewById(R.id.top_pannel).setVisibility(View.GONE);
-                    getActivity().findViewById(R.id.from).setVisibility(View.GONE);
-                    ((TextView) getActivity().findViewById(R.id.flag_contact_exist)).setText(true + "");
+                    rootView.findViewById(R.id.top_pannel).setVisibility(View.GONE);
+                    rootView.findViewById(R.id.from).setVisibility(View.GONE);
+                    ((TextView) rootView.findViewById(R.id.flag_contact_exist)).setText(true + "");
                     tv.setText(getActivity().getString(R.string.cant_decrypt));
                 } else {
-                    ((TextView) getActivity().findViewById(R.id.general_details))
+                    ((TextView) rootView.findViewById(R.id.general_details))
                             .setText("From:\t" + PublicStaticVariables.decryptedMsg.getName() + " , " + PublicStaticVariables.decryptedMsg.getEmail());
                     Contact c = PublicStaticVariables.contactsDataSource.findContact(PublicStaticVariables.decryptedMsg.getPublicKey());
                     if (c != null)
-                        ((TextView) getActivity().findViewById(R.id.flag_contact_exist)).setText(true + "");
+                        ((TextView) rootView.findViewById(R.id.flag_contact_exist)).setText(true + "");
                     else
-                        ((TextView) getActivity().findViewById(R.id.flag_contact_exist)).setText(false + "");
+                        ((TextView) rootView.findViewById(R.id.flag_contact_exist)).setText(false + "");
                     getActivity().invalidateOptionsMenu();
                     if (PublicStaticVariables.decryptedMsg.getFileContent() == null) {
                         if (PublicStaticVariables.decryptedMsg.getFileName().length() > 0)
-                            getActivity().findViewById(R.id.open_file_rlt).setVisibility(View.VISIBLE);
+                            rootView.findViewById(R.id.open_file_rlt).setVisibility(View.VISIBLE);
                         else
-                            getActivity().findViewById(R.id.open_file_rlt).setVisibility(View.GONE);
+                            rootView.findViewById(R.id.open_file_rlt).setVisibility(View.GONE);
                     } else {
-                        getActivity().findViewById(R.id.open_file_rlt).setVisibility(View.VISIBLE);
+                        rootView.findViewById(R.id.open_file_rlt).setVisibility(View.VISIBLE);
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         String name = PublicStaticVariables.decryptedMsg.getFileName();
                         String ext = name.substring(name.indexOf(".") + 1);
@@ -615,47 +615,47 @@ public class FragmentManagement extends Fragment {
                         intent.setType(type);
                         List<ResolveInfo> matches = getActivity().getPackageManager().queryIntentActivities(intent, 0);
                         if (matches.size() > 0)
-                            ((ImageButton) getActivity().findViewById(R.id.open_file))
+                            ((ImageButton) rootView.findViewById(R.id.open_file))
                                     .setImageDrawable(matches.get(0).loadIcon(getActivity().getPackageManager()));
                         else
-                            ((ImageButton) getActivity().findViewById(R.id.open_file)).setImageResource(R.drawable.unknown);
-                        ((TextView) getActivity().findViewById(R.id.file_name)).setText(name);
+                            ((ImageButton) rootView.findViewById(R.id.open_file)).setImageResource(R.drawable.unknown);
+                        ((TextView) rootView.findViewById(R.id.file_name)).setText(name);
                     }
                     tv.setText(PublicStaticVariables.decryptedMsg.getMsgContent());
                     if (PublicStaticVariables.decryptedMsg.checkHash() || (PublicStaticVariables.flag_hash != null && PublicStaticVariables.flag_hash)) {
-                        ((ImageView) getActivity().findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_ok);
+                        ((ImageView) rootView.findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_ok);
                         PublicStaticVariables.flag_hash = true;
                     } else {
-                        ((ImageView) getActivity().findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_bad);
+                        ((ImageView) rootView.findViewById(R.id.hash_check)).setImageResource(R.drawable.ic_bad);
                         PublicStaticVariables.flag_hash = false;
                     }
                     if (PublicStaticVariables.decryptedMsg.checkReplay() ||
                             (PublicStaticVariables.flag_replay != null &&
                                     PublicStaticVariables.flag_replay)) {
-                        ((ImageView) getActivity().findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_ok);
+                        ((ImageView) rootView.findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_ok);
                         PublicStaticVariables.flag_replay = true;
                     } else {
                         PublicStaticVariables.flag_replay = false;
-                        ((ImageView) getActivity().findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_bad);
+                        ((ImageView) rootView.findViewById(R.id.replay_check)).setImageResource(R.drawable.ic_bad);
                     }
                     //todo check session
                     if (PublicStaticVariables.decryptedMsg.checkHash() ||
                             (PublicStaticVariables.flag_session != null && PublicStaticVariables.flag_session)) {
-                        ((ImageView) getActivity().findViewById(R.id.session_check)).setImageResource(R.drawable.ic_ok);
+                        ((ImageView) rootView.findViewById(R.id.session_check)).setImageResource(R.drawable.ic_ok);
                         PublicStaticVariables.flag_session = true;
                     } else {
-                        ((ImageView) getActivity().findViewById(R.id.session_check)).setImageResource(R.drawable.ic_bad);
+                        ((ImageView) rootView.findViewById(R.id.session_check)).setImageResource(R.drawable.ic_bad);
                         PublicStaticVariables.flag_session = false;
                     }
                 }
                 break;
             case R.layout.profile:
-                final ImageButton ibMyName = (ImageButton) getActivity().findViewById(R.id.test).findViewById(R.id.image_button);
-                final ImageButton ibMyEmail = (ImageButton) getActivity().findViewById(R.id.test1).findViewById(R.id.image_button);
-                final EditText etMyName = (EditText) getActivity().findViewById(R.id.test).findViewById(R.id.edit_text);
-                final EditText etMyEmail = (EditText) getActivity().findViewById(R.id.test1).findViewById(R.id.edit_text);
-                final TextView tvMyName = (TextView) getActivity().findViewById(R.id.test).findViewById(R.id.text_view);
-                final TextView tvMyEmail = (TextView) getActivity().findViewById(R.id.test1).findViewById(R.id.text_view);
+                final ImageButton ibMyName = (ImageButton) rootView.findViewById(R.id.test).findViewById(R.id.image_button);
+                final ImageButton ibMyEmail = (ImageButton) rootView.findViewById(R.id.test1).findViewById(R.id.image_button);
+                final EditText etMyName = (EditText) rootView.findViewById(R.id.test).findViewById(R.id.edit_text);
+                final EditText etMyEmail = (EditText) rootView.findViewById(R.id.test1).findViewById(R.id.edit_text);
+                final TextView tvMyName = (TextView) rootView.findViewById(R.id.test).findViewById(R.id.text_view);
+                final TextView tvMyEmail = (TextView) rootView.findViewById(R.id.test1).findViewById(R.id.text_view);
                 tvMyName.setText("my name\t");
                 tvMyEmail.setText("my email\t");
                 etMyName.setText(CryptMethods.getName());
@@ -701,16 +701,16 @@ public class FragmentManagement extends Fragment {
     public void contactChosen(long contactID) {
         getActivity().invalidateOptionsMenu();
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
-        getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
-        getActivity().findViewById(R.id.list).setVisibility(View.GONE);
+        imm.hideSoftInputFromWindow(rootView.findViewById(R.id.filter).getWindowToken(), 0);
+        rootView.findViewById(R.id.filter_ll).setVisibility(View.GONE);
+        rootView.findViewById(R.id.list).setVisibility(View.GONE);
         PublicStaticVariables.luc.hide();
         Contact cvc = PublicStaticVariables.contactsDataSource.findContact(contactID);
-        ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(contactID + "");
-        ((TextView) getActivity().findViewById(R.id.chosen_name)).setText(cvc.getContactName());
-        ((TextView) getActivity().findViewById(R.id.chosen_email)).setText(cvc.getEmail());
-        ((ImageView) getActivity().findViewById(R.id.chosen_icon)).setImageBitmap(Contact.getPhoto(cvc.getPublicKey()));
-        final View cont = getActivity().findViewById(R.id.en_contact);
+        ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText(contactID + "");
+        ((TextView) rootView.findViewById(R.id.chosen_name)).setText(cvc.getContactName());
+        ((TextView) rootView.findViewById(R.id.chosen_email)).setText(cvc.getEmail());
+        ((ImageView) rootView.findViewById(R.id.chosen_icon)).setImageBitmap(Contact.getPhoto(cvc.getPublicKey()));
+        final View cont = rootView.findViewById(R.id.en_contact);
         cont.setVisibility(View.VISIBLE);
         cont.setAlpha(1);
         cont.setX(0);
@@ -723,8 +723,8 @@ public class FragmentManagement extends Fragment {
                 } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
                     if (cont.getAlpha() < 0.2) {
                         cont.setVisibility(View.GONE);
-                        ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
-                        getActivity().findViewById(R.id.list).setVisibility(View.VISIBLE);
+                        ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText("");
+                        rootView.findViewById(R.id.list).setVisibility(View.VISIBLE);
                         PublicStaticVariables.luc.show();
                         getActivity().invalidateOptionsMenu();
                     } else {

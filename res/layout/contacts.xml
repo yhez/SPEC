@@ -6,42 +6,9 @@
     android:alpha="0"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/filter_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <EditText
-            android:textCursorDrawable="@null"
-            android:textSize="16sp"
-            android:textColor="@color/spec_black"
-            android:id="@+id/filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:layout_marginRight="@dimen/default_gap"
-            android:hint="@string/encrypt_explain"
-            android:inputType="textFilter" />
-
-        <ImageButton
-            android:drawablePadding="0dip"
-            android:layout_marginLeft="8dp"
-            style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/add_contact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:onClick="onClick"
-            android:src="@drawable/add_qr" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp" />
+<include
+    layout="@layout/search_view"
+    android:id="@+id/filter_ll"/>
 
     <ListView
         android:id="@+id/list"
@@ -49,12 +16,13 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:padding="@dimen/default_gap"
         android:textSize="22sp"
         android:textColor="@color/spec_black"
         android:id="@+id/no_contacts"
         android:visibility="gone"
         android:text="@string/no_contacts"
-        android:layout_gravity="top"
+        android:layout_gravity="top|center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

@@ -18,39 +18,9 @@
         android:layout_height="wrap_content"
         android:text=""
         android:visibility="gone" />
-
-    <LinearLayout
-        android:id="@+id/filter_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <EditText
-            android:textCursorDrawable="@null"
-            android:id="@+id/filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/default_gap"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:hint="@string/encrypt_explain"
-            android:inputType="textFilter"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
-
-        <ImageButton
-            android:id="@+id/add_contact"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:drawablePadding="0dip"
-            android:onClick="onClickEncrypt"
-            android:src="@drawable/add_qr" />
-    </LinearLayout>
+    <include
+        layout="@layout/search_view"
+        android:id="@+id/filter_ll"/>
 
     <LinearLayout
         android:id="@+id/bottom_panel"
@@ -129,6 +99,7 @@
         android:orientation="vertical">
 
         <FrameLayout
+            android:id="@+id/frame_grid_last"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -253,10 +224,11 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:padding="@dimen/default_gap"
                 android:id="@+id/no_contacts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
+                android:layout_gravity="top|center_horizontal"
                 android:text="@string/no_contacts"
                 android:textColor="@color/spec_black"
                 android:textSize="22sp"
