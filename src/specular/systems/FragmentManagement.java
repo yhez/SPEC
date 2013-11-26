@@ -57,7 +57,7 @@ public class FragmentManagement extends Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case TURN_TEXT_TRIGGER:
-                    EditText et = (EditText) rootView.findViewById(R.id.message);
+                    EditText et = (EditText) getActivity().findViewById(R.id.message);
                     String ss = et.getText() + "";
                     et.setText(" " + ss);
                     et.setText(ss);
@@ -65,7 +65,7 @@ public class FragmentManagement extends Fragment {
             }
         }
     };
-    View rootView;
+    //View rootView;
     //for touch response
     private float startPointX, startPointY, width, height;
 
@@ -77,111 +77,14 @@ public class FragmentManagement extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getActivity().invalidateOptionsMenu();
-        rootView = inflater.inflate(PublicStaticVariables.currentLayout,
+        final View rootView = inflater.inflate(PublicStaticVariables.currentLayout,
                 container, false);
-        rootView.animate().setDuration(1000).alpha(1).start();
-        return rootView;
-    }
-
-    private void addSocialLogin() {
-        final Account[] list = ((AccountManager) getActivity()
-                .getSystemService(getActivity().ACCOUNT_SERVICE)).getAccounts();
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        final List<ResolveInfo> rs = getActivity().getPackageManager().queryIntentActivities(intent, 0);
-        for (final Account acc : list) {
-            if (acc.type.equalsIgnoreCase("com.google")) {
-                ImageButton ib = new ImageButton(PublicStaticVariables.main);
-                ib.setBackgroundColor(Color.TRANSPARENT);
-                try {
-                    ib.setImageDrawable(PublicStaticVariables.main
-                            .getPackageManager()
-                            .getApplicationInfo("com.google.android.gm", PackageManager.GET_META_DATA)
-                            .loadIcon(getActivity().getPackageManager()));
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                    //todo another google symbol
-                    ib.setImageResource(R.drawable.unknown);
-                }
-                ib.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ((EditText) rootView.findViewById(R.id.email)).setText(acc.name);
-                        ((EditText) rootView.findViewById(R.id.name)).setText(acc.name.split("@")[0]);
-                    }
-                });
-                ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
-
-            } else if (acc.type.startsWith("com.google")) {
-                if (acc.type.contains("pop3")) {
-                    ImageButton ib = new ImageButton(getActivity());
-                    ib.setBackgroundColor(Color.TRANSPARENT);
-                    try {
-                        ib.setImageDrawable(getActivity()
-                                .getPackageManager()
-                                .getApplicationInfo("com.google.android.email", PackageManager.GET_META_DATA)
-                                .loadIcon(getActivity().getPackageManager()));
-                    } catch (PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
-                        ib.setImageResource(R.drawable.unknown);
-                    }
-                    ib.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            ((EditText) rootView.findViewById(R.id.email)).setText(acc.name);
-                            ((EditText) rootView.findViewById(R.id.name)).setText(acc.name.split("@")[0]);
-                        }
-                    });
-                    ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
-                } else {
-                    //todo add exchange app
-                }
-            } else {
-                String company = acc.type.split("\\.")[1];
-                for (ResolveInfo pi : rs) {
-                    if (pi.activityInfo.packageName.contains(company)) {
-                        ImageButton ib = new ImageButton(getActivity());
-                        ib.setImageDrawable(pi.activityInfo.loadIcon(getActivity().getPackageManager()));
-                        ib.setBackgroundColor(Color.TRANSPARENT);
-                        ib.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (acc.name.contains("@")) {
-                                    ((EditText) rootView.findViewById(R.id.email)).setText(acc.name);
-                                    ((EditText) rootView.findViewById(R.id.name)).setText(acc.name.split("@")[0]);
-                                } else {
-                                    ((EditText) rootView.findViewById(R.id.name)).setText(acc.name);
-                                    ((EditText) rootView.findViewById(R.id.email)).setText("");
-                                }
-                            }
-                        });
-                        ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
-                        break;
-                    }
-                }
-            }
-        }
-        ImageButton ib = new ImageButton(getActivity());
-        ib.setBackgroundColor(Color.TRANSPARENT);
-        ib.setImageResource(R.drawable.clear);
-        ib.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((EditText) rootView.findViewById(R.id.email)).setText("");
-                ((EditText) rootView.findViewById(R.id.name)).setText("");
-            }
-        });
-        ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         if (PublicStaticVariables.luc == null)
             PublicStaticVariables.luc = new LastUsedContacts(getActivity());
         Contact contact;
         switch (PublicStaticVariables.currentLayout) {
             case create_new_keys:
-                addSocialLogin();
+                addSocialLogin(rootView);
                 rootView.findViewById(R.id.gesture).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -265,19 +168,17 @@ public class FragmentManagement extends Fragment {
                         findViewById(R.id.text_view)).setText(getString(R.string.edit_email) + "\t");
                 contact = PublicStaticVariables.currentList.get(index);
                 final EditText etName = (EditText) rootView.findViewById(R.id.contact_name).findViewById(R.id.edit_text);
-                etName.setText(contact.getContactName());
                 if (PublicStaticVariables.edit == null)
                     PublicStaticVariables.edit = etName.getKeyListener();
+                etName.setText(contact.getContactName());
                 etName.setKeyListener(null);
                 etName.setFocusable(false);
-                etName.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                 ((TextView) rootView.findViewById(R.id.orig_name))
                         .setText(contact.getContactName());
                 final EditText etEmail = (EditText) rootView.findViewById(R.id.contact_email).findViewById(R.id.edit_text);
                 etEmail.setText(contact.getEmail());
                 etEmail.setKeyListener(null);
                 etEmail.setFocusable(false);
-                etEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 ((TextView) rootView.findViewById(R.id.orig_eamil))
                         .setText(contact.getEmail());
                 ((TextView) rootView.findViewById(R.id.contact_session))
@@ -306,10 +207,10 @@ public class FragmentManagement extends Fragment {
                                         .valueOf(((TextView) rootView.findViewById(R.id.contact_id))
                                                 .getText().toString()));
                                 int index = Integer.parseInt(((TextView) rootView.findViewById(R.id.contact_index)).getText().toString());
-
-                                if (etEmail.getKeyListener() == null)
-                                    Visual.edit(getActivity(), etEmail, ib, true);
-                                else {
+                                if(etEmail.getKeyListener()==null) {
+                                    Visual.edit(getActivity(), etEmail, ib);
+                                    etEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                                }else{
                                     String email = etEmail.getText().toString();
                                     String origEmail = ((TextView) rootView.findViewById(R.id.orig_eamil)).getText()
                                             .toString();
@@ -323,10 +224,7 @@ public class FragmentManagement extends Fragment {
                                             t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                             t.show();
                                         }
-                                    Visual.edit(getActivity(), etEmail, ib, false);
                                 }
-
-
                             }
                         }
                 );
@@ -343,9 +241,10 @@ public class FragmentManagement extends Fragment {
                                 ImageButton ib = (ImageButton) getActivity()
                                         .findViewById(R.id.contact_name)
                                         .findViewById(R.id.image_button);
-                                if (etName.getKeyListener() == null)
-                                    Visual.edit(getActivity(), etName, ib, true);
-                                else {
+                                if (etName.getKeyListener() == null){
+                                    Visual.edit(getActivity(), etName, ib);
+                                    etName.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                                }else{
                                     String origName = ((TextView) rootView.findViewById(R.id.orig_name)).getText()
                                             .toString();
                                     String name = etName.getText().toString();
@@ -360,7 +259,7 @@ public class FragmentManagement extends Fragment {
                                             t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                             t.show();
                                         }
-                                    Visual.edit(getActivity(), etName, ib, false);
+                                    Visual.edit(getActivity(), etName, ib);
                                 }
                             }
                         }
@@ -667,27 +566,121 @@ public class FragmentManagement extends Fragment {
                 ibMyEmail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        boolean enabled = etMyEmail.getKeyListener() != null;
-                        if (enabled) {
+                        if (etMyEmail.getKeyListener() != null) {
                             Toast.makeText(getActivity(), "do something", Toast.LENGTH_LONG).show();
                         }
-                        Visual.edit(getActivity(), etMyEmail, ibMyEmail, !enabled);
+                        Visual.edit(getActivity(), etMyEmail, ibMyEmail);
                     }
                 });
                 ibMyName.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        boolean enabled = etMyName.getKeyListener() != null;
-                        if (enabled) {
+                        if (etMyName.getKeyListener() != null) {
                             Toast.makeText(getActivity(), "do something", Toast.LENGTH_LONG).show();
                         }
-                        Visual.edit(getActivity(), etMyName, ibMyName, !enabled);
+                        Visual.edit(getActivity(), etMyName, ibMyName);
                     }
                 });
                 break;
         }
         Visual.setAllFonts(getActivity(), (ViewGroup) rootView);
+
+        rootView.animate().setDuration(1000).alpha(1).start();
+        return rootView;
     }
+
+    private void addSocialLogin(final View rootView) {
+        final Account[] list = ((AccountManager) getActivity()
+                .getSystemService(getActivity().ACCOUNT_SERVICE)).getAccounts();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        final List<ResolveInfo> rs = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+        for (final Account acc : list) {
+            if (acc.type.equalsIgnoreCase("com.google")) {
+                ImageButton ib = new ImageButton(PublicStaticVariables.main);
+                ib.setBackgroundColor(Color.TRANSPARENT);
+                try {
+                    ib.setImageDrawable(PublicStaticVariables.main
+                            .getPackageManager()
+                            .getApplicationInfo("com.google.android.gm", PackageManager.GET_META_DATA)
+                            .loadIcon(getActivity().getPackageManager()));
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                    //todo another google symbol
+                    ib.setImageResource(R.drawable.unknown);
+                }
+                ib.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((EditText) rootView.findViewById(R.id.email)).setText(acc.name);
+                        ((EditText) rootView.findViewById(R.id.name)).setText(acc.name.split("@")[0]);
+                    }
+                });
+                ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
+
+            } else if (acc.type.startsWith("com.google")) {
+                if (acc.type.contains("pop3")) {
+                    ImageButton ib = new ImageButton(getActivity());
+                    ib.setBackgroundColor(Color.TRANSPARENT);
+                    try {
+                        ib.setImageDrawable(getActivity()
+                                .getPackageManager()
+                                .getApplicationInfo("com.google.android.email", PackageManager.GET_META_DATA)
+                                .loadIcon(getActivity().getPackageManager()));
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                        ib.setImageResource(R.drawable.unknown);
+                    }
+                    ib.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ((EditText) rootView.findViewById(R.id.email)).setText(acc.name);
+                            ((EditText) rootView.findViewById(R.id.name)).setText(acc.name.split("@")[0]);
+                        }
+                    });
+                    ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
+                } else {
+                    //todo add exchange app
+                }
+            } else {
+                String company = acc.type.split("\\.")[1];
+                for (ResolveInfo pi : rs) {
+                    if (pi.activityInfo.packageName.contains(company)) {
+                        ImageButton ib = new ImageButton(getActivity());
+                        ib.setImageDrawable(pi.activityInfo.loadIcon(getActivity().getPackageManager()));
+                        ib.setBackgroundColor(Color.TRANSPARENT);
+                        ib.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (acc.name.contains("@")) {
+                                    ((EditText) rootView.findViewById(R.id.email)).setText(acc.name);
+                                    ((EditText) rootView.findViewById(R.id.name)).setText(acc.name.split("@")[0]);
+                                } else {
+                                    ((EditText) rootView.findViewById(R.id.name)).setText(acc.name);
+                                    ((EditText) rootView.findViewById(R.id.email)).setText("");
+                                }
+                            }
+                        });
+                        ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
+                        break;
+                    }
+                }
+            }
+        }
+        ImageButton ib = new ImageButton(getActivity());
+        ib.setBackgroundColor(Color.TRANSPARENT);
+        ib.setImageResource(R.drawable.clear);
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((EditText) rootView.findViewById(R.id.email)).setText("");
+                ((EditText) rootView.findViewById(R.id.name)).setText("");
+            }
+        });
+        ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
+    }
+
+    //@Override
+
 
     private boolean validateEmail(String email) {
         if (email == null) return false;
@@ -701,16 +694,16 @@ public class FragmentManagement extends Fragment {
     public void contactChosen(long contactID) {
         getActivity().invalidateOptionsMenu();
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(rootView.findViewById(R.id.filter).getWindowToken(), 0);
-        rootView.findViewById(R.id.filter_ll).setVisibility(View.GONE);
-        rootView.findViewById(R.id.list).setVisibility(View.GONE);
+        imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
+        getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.list).setVisibility(View.GONE);
         PublicStaticVariables.luc.hide();
         Contact cvc = PublicStaticVariables.contactsDataSource.findContact(contactID);
-        ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText(contactID + "");
-        ((TextView) rootView.findViewById(R.id.chosen_name)).setText(cvc.getContactName());
-        ((TextView) rootView.findViewById(R.id.chosen_email)).setText(cvc.getEmail());
-        ((ImageView) rootView.findViewById(R.id.chosen_icon)).setImageBitmap(Contact.getPhoto(cvc.getPublicKey()));
-        final View cont = rootView.findViewById(R.id.en_contact);
+        ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(contactID + "");
+        ((TextView) getActivity().findViewById(R.id.chosen_name)).setText(cvc.getContactName());
+        ((TextView) getActivity().findViewById(R.id.chosen_email)).setText(cvc.getEmail());
+        ((ImageView) getActivity().findViewById(R.id.chosen_icon)).setImageBitmap(Contact.getPhoto(cvc.getPublicKey()));
+        final View cont = getActivity().findViewById(R.id.en_contact);
         cont.setVisibility(View.VISIBLE);
         cont.setAlpha(1);
         cont.setX(0);
@@ -723,8 +716,8 @@ public class FragmentManagement extends Fragment {
                 } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
                     if (cont.getAlpha() < 0.2) {
                         cont.setVisibility(View.GONE);
-                        ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText("");
-                        rootView.findViewById(R.id.list).setVisibility(View.VISIBLE);
+                        ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText("");
+                        getActivity().findViewById(R.id.list).setVisibility(View.VISIBLE);
                         PublicStaticVariables.luc.show();
                         getActivity().invalidateOptionsMenu();
                     } else {

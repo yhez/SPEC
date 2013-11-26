@@ -56,8 +56,10 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
         id.setText("" + c.getId());
         imageView.setImageBitmap(Contact.getPhoto(c.getPublicKey()));
         email.setText(c.getEmail());
+        email.setTypeface(FilesManagement.getOs(a));
         // session.setText(c.getSession());
         name.setText(c.getContactName());
+        name.setTypeface(FilesManagement.getOs(a));
         //pbk.setText(c.getPublicKey());
         // status.setText("" + c.getConversationStatus());
         return rowView;

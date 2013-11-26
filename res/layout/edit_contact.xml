@@ -20,11 +20,14 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/spec_blue" />
-<include layout="@layout/edit_text"
-    android:id="@+id/contact_name"/>
-<include
-    layout="@layout/edit_text"
-    android:id="@+id/contact_email"/>
+
+    <include
+        layout="@layout/edit_text"
+        android:id="@+id/contact_name" />
+
+    <include
+        layout="@layout/edit_text"
+        android:id="@+id/contact_email" />
 
     <TextView
         android:layout_width="wrap_content"

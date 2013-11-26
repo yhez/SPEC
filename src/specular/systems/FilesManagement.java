@@ -201,8 +201,8 @@ public final class FilesManagement {
     }
 
     public static Uri getContactCardToShare(Activity a) {
-        String name = ((EditText) a.findViewById(R.id.contact_name)).getText().toString();
-        String email = ((EditText) a.findViewById(R.id.contact_email)).getText().toString();
+        String name = ((EditText) a.findViewById(R.id.contact_name).findViewById(R.id.edit_text)).getText().toString();
+        String email = ((EditText) a.findViewById(R.id.contact_email).findViewById(R.id.edit_text)).getText().toString();
         String publicKey = ((TextView) a.findViewById(R.id.contact_pb)).getText().toString();
         PublicContactCard pcc = new PublicContactCard(a, publicKey, email, name);
         FileOutputStream fos = null;
@@ -224,8 +224,8 @@ public final class FilesManagement {
     }
 
     public static Uri getQRFriendToShare(Activity a) {
-        String name = ((EditText) a.findViewById(R.id.contact_name)).getText().toString();
-        String email = ((EditText) a.findViewById(R.id.contact_email)).getText().toString();
+        String name = ((EditText) a.findViewById(R.id.contact_name).findViewById(R.id.edit_text)).getText().toString();
+        String email = ((EditText) a.findViewById(R.id.contact_email).findViewById(R.id.edit_text)).getText().toString();
         String publicKey = ((TextView) a.findViewById(R.id.contact_pb)).getText().toString();
         PublicContactCard pcc = new PublicContactCard(a, publicKey, email, name);
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(pcc.getQRToPublish(), BarcodeFormat.QR_CODE.toString(), 512);

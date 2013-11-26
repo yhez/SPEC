@@ -2,6 +2,7 @@ package specular.systems;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -61,8 +62,9 @@ public class Visual {
                 }
             }
     }
-    public static void edit(Activity a,EditText et, ImageButton ib,boolean enable){
-        if(enable){
+    public static void edit(Activity a,EditText et, ImageButton ib){
+        Log.d("click",et.getKeyListener()+"");
+        if(et.getKeyListener()==null){
             ib.setImageResource(R.drawable.save);
             et.setKeyListener(PublicStaticVariables.edit);
             et.setFocusable(true);

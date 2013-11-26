@@ -517,8 +517,10 @@ public class Main extends Activity {
 
         } else if (PublicStaticVariables.currentLayout == R.layout.edit_contact) {
             ShareContactDlg sd = new ShareContactDlg();
-            sd.show(getFragmentManager(), ((EditText) findViewById(R.id.contact_name)).getText()
-                    + ": " + ((EditText) findViewById(R.id.contact_email)).getText());
+            sd.show(getFragmentManager(), ((EditText) findViewById(R.id.contact_name)
+                    .findViewById(R.id.edit_text)).getText()
+                    + ": " + ((EditText) findViewById(R.id.contact_email)
+                    .findViewById(R.id.edit_text)).getText());
         } else if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
             PublicStaticVariables.fileContactCard = new PublicContactCard(this
                     , PublicStaticVariables.decryptedMsg.getPublicKey()

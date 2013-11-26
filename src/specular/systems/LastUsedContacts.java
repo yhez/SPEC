@@ -54,7 +54,8 @@ public class LastUsedContacts {
     }
 
     public boolean show() {
-        if (lasts.length == 0 || lasts[0] == null || a.findViewById(R.id.frame_grid_last) == null) {
+        if (PublicStaticVariables.fullList.size()<10||lasts.length == 0 || lasts[0] == null ||
+                a.findViewById(R.id.frame_grid_last) == null) {
             return false;
         }
         a.findViewById(R.id.frame_grid_last).setVisibility(View.VISIBLE);
