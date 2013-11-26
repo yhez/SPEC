@@ -16,9 +16,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
-        android:textColor="@color/viewfinder_laser"
-        android:textSize="35sp"
-        android:textStyle="bold" />
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -31,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/spec_blue"
-            android:textSize="40sp" />
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/dec_progress"
@@ -40,6 +39,6 @@
             android:layout_gravity="bottom"
             android:padding="@dimen/default_gap"
             android:textColor="@color/spec_dark_blue"
-            android:textSize="20sp" />
+            android:textSize="13sp" />
     </LinearLayout>
 </FrameLayout>

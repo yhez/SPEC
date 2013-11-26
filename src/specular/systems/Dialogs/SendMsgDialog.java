@@ -72,7 +72,25 @@ public class SendMsgDialog extends DialogFragment {
         builder.setView(v);
         updateViews();
         if (uris.get(0) != null) {
-            ((TextView) v.findViewById(R.id.file_size)).setText(new File(uris.get(0).getPath()).length() + "");
+            double size = new File(uris.get(0).getPath()).length();
+            String unit = "byte";
+            if(size>1023){
+                size/=1024;
+                unit="KB";
+            }
+            if(size>1023){
+                size/=1024;
+                unit="MB";
+            }
+            if(size>1023){
+                size/=1024;
+                unit="GB";
+            }
+            String total = (size+"").split("\\.")[0];
+            if((size+"").split("\\.").length>0){
+                total+="."+(size+"").split("\\.")[1].substring(0,2);
+            }
+            ((TextView) v.findViewById(R.id.file_size)).setText(total+"\n"+unit);
             ((ImageView) v.findViewById(R.id.file_icon)).setImageResource(R.drawable.logo);
             EditText etFile = (EditText) v.findViewById(R.id.name_file);
             etFile.setText(getName(FILE));

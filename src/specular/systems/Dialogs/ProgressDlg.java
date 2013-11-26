@@ -3,21 +3,23 @@ package specular.systems.Dialogs;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.TextView;
 
+import specular.systems.FilesManagement;
 import specular.systems.R;
 
 public class ProgressDlg extends ProgressDialog {
     protected boolean mAnimationHasEnded = false;
     HoloCircularProgressBar hcpb;
-    TextView textViewSec,textViewDec;
+    TextView textViewSec,textViewDec,textView;
     long startTimeMillis;
     String title;
+    Activity activity;
     private ObjectAnimator mProgressBarAnimator;
     private Handler hndl = new Handler() {
         @Override
@@ -29,8 +31,9 @@ public class ProgressDlg extends ProgressDialog {
         }
     };
 
-    public ProgressDlg(Context context, String title) {
-        super(context);
+    public ProgressDlg(Activity activity, String title) {
+        super(activity);
+        this.activity=activity;
         this.title=title;
     }
 
@@ -38,7 +41,6 @@ public class ProgressDlg extends ProgressDialog {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.circular);
-        ((TextView)findViewById(R.id.title_progress_bar)).setText(title);
         hcpb = (HoloCircularProgressBar) findViewById(R.id.circle);
         animate(hcpb, new Animator.AnimatorListener() {
 
@@ -64,8 +66,14 @@ public class ProgressDlg extends ProgressDialog {
             public void onAnimationStart(final Animator animation) {
             }
         });
+
+        textView = (TextView)findViewById(R.id.title_progress_bar);
+        textView.setText(title);
+        textView.setTypeface(FilesManagement.getOs(activity));
         textViewSec = (TextView) findViewById(R.id.sec_progress);
+        textViewSec.setTypeface(FilesManagement.getOs(activity));
         textViewDec = (TextView) findViewById(R.id.dec_progress);
+        textViewDec.setTypeface(FilesManagement.getOs(activity));
         startTimeMillis=System.currentTimeMillis();
         animateText();
     }
