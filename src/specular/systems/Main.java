@@ -170,7 +170,7 @@ public class Main extends Activity {
     void encryptManager() {
 
         PublicStaticVariables.luc.change(contact);
-        final ProgressDlg prgd = new ProgressDlg(this,"Encrypting...");
+        final ProgressDlg prgd = new ProgressDlg(this, "Encrypting...");
         prgd.setCancelable(false);
         prgd.show();
         new Thread(new Runnable() {
@@ -190,6 +190,16 @@ public class Main extends Activity {
     public void notImp(View v) {
         NotImplemented ni3 = new NotImplemented();
         ni3.show(getFragmentManager(), "aaaa");
+    }
+
+    private String getFileName(Uri contentURI) {
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null)
+            return contentURI.getLastPathSegment();
+        cursor.moveToFirst();
+        String rs = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME));
+        cursor.close();
+        return rs;
     }
 
     public void decryptedMsgClick(View v) {
@@ -243,21 +253,6 @@ public class Main extends Activity {
         }
     }
 
-    private String getRealPathFromURI(Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = {MediaStore.Files.FileColumns.DATA};
-            cursor = Main.this.getContentResolver().query(contentUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
-
     private void attachFile(final Uri uri) {
 
         if (uri != null) {
@@ -266,14 +261,7 @@ public class Main extends Activity {
                 public void run() {
                     int r = FilesManagement.addFile(Main.this, uri);
                     if (r == PublicStaticVariables.RESULT_ADD_FILE_OK) {
-                        //if(uri.)
-                        String tmp = getRealPathFromURI(uri);
-                        String w[];
-                        if(tmp!=null)
-                            w = tmp.split("/");
-                        else
-                            w = uri.getPath().split("/");
-                        fileName = w[w.length - 1];
+                        fileName = getFileName(uri);
                         Message msg = hndl.obtainMessage(REPLACE_PHOTO);
                         hndl.sendMessage(msg);
 
@@ -413,11 +401,13 @@ public class Main extends Activity {
                 intent.putExtra("decrypt", true);
                 startActivityForResult(intent, SCAN_QR);
                 break;
-            }
+        }
     }
-    public void onClickFilter(View v){
+
+    public void onClickFilter(View v) {
         Intent intt = new Intent(this, StartScan.class);
-        startActivityForResult(intt, SCAN_QR);    }
+        startActivityForResult(intt, SCAN_QR);
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -790,7 +780,7 @@ public class Main extends Activity {
     private boolean openByFile() {
         final String msg = getIntent().getStringExtra("message");
         if (PublicStaticVariables.message != null || msg != null) {
-            final ProgressDlg prgd = new ProgressDlg(this,"Decrypting...");
+            final ProgressDlg prgd = new ProgressDlg(this, "Decrypting...");
             prgd.setCancelable(false);
             prgd.show();
             new Thread(new Runnable() {
@@ -895,7 +885,7 @@ public class Main extends Activity {
                     //String newName = ((EditText) findViewById(R.id.contact_name)).getText().toString();
                     //String newEmail = ((EditText) findViewById(R.id.contact_email)).getText().toString();
                     //if (name.equals(newName) && email.equals(newEmail))
-                        selectItem(-1, R.layout.contacts);
+                    selectItem(-1, R.layout.contacts);
                     //else {
                     //    ExitWithoutSave dlg = new ExitWithoutSave();
                     //    dlg.show(getFragmentManager(), "exit");
@@ -1034,6 +1024,23 @@ public class Main extends Activity {
         }
     }
 
+    public void onClickEditContact(View v) {
+        switch (v.getId()) {
+            case R.id.delete:
+                DeleteContactDialog dlg = new DeleteContactDialog();
+                dlg.show(getFragmentManager(), "delete");
+                break;
+            case R.id.answer:
+                Response r = new Response();
+                r.show(getFragmentManager(), "n");
+                break;
+            case R.id.contact_picture:
+                ContactQR cqr = new ContactQR();
+                cqr.show(getFragmentManager(), "cqr");
+                break;
+        }
+    }
+
     public static class createKeys {
         static Thread t;
 
@@ -1081,22 +1088,6 @@ public class Main extends Activity {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
             selectItem(position, 0);
-        }
-    }
-    public void onClickEditContact(View v){
-        switch (v.getId()) {
-            case R.id.delete:
-                DeleteContactDialog dlg = new DeleteContactDialog();
-                dlg.show(getFragmentManager(), "delete");
-                break;
-            case R.id.answer:
-                Response r = new Response();
-                r.show(getFragmentManager(), "n");
-                break;
-            case R.id.contact_picture:
-                ContactQR cqr = new ContactQR();
-                cqr.show(getFragmentManager(), "cqr");
-                break;
         }
     }
 }

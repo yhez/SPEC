@@ -93,7 +93,58 @@
     <favorites_list name="build.gradle" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="Main.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/specular/systems/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="278" column="0" selection-start="11521" selection-end="11521" vertical-scroll-proportion="0.4378882" vertical-offset="3446" max-vertical-offset="17221">
+              <folding>
+                <element signature="e#2961#2993#0" expanded="true" />
+                <element signature="e#3396#3434#0" expanded="true" />
+                <element signature="e#3680#3700#0" expanded="true" />
+                <element signature="e#3965#3980#0" expanded="true" />
+                <element signature="e#4183#4205#0" expanded="true" />
+                <element signature="e#4364#4389#0" expanded="true" />
+                <element signature="e#9465#9503#0" expanded="true" />
+                <element signature="e#9769#9795#0" expanded="true" />
+                <element signature="e#10811#11396#0" expanded="true" />
+                <element signature="e#11381#11382#0" expanded="true" />
+                <element signature="e#12686#12708#0" expanded="true" />
+                <element signature="e#13421#13438#0" expanded="true" />
+                <element signature="e#14018#14040#0" expanded="true" />
+                <element signature="e#14643#14660#0" expanded="true" />
+                <element signature="e#15940#15981#0" expanded="true" />
+                <element signature="e#16872#16892#0" expanded="true" />
+                <element signature="e#19972#20003#0" expanded="true" />
+                <element signature="e#32849#32869#0" expanded="true" />
+                <element signature="e#32935#32956#0" expanded="true" />
+                <element signature="e#36212#36234#0" expanded="true" />
+                <element signature="e#37092#37120#0" expanded="true" />
+                <element signature="e#38092#38119#0" expanded="true" />
+                <element signature="e#40753#40781#0" expanded="true" />
+                <element signature="e#41030#41069#0" expanded="true" />
+                <element signature="e#41929#41954#0" expanded="true" />
+                <element signature="e#42480#42500#0" expanded="true" />
+                <element signature="e#42576#42602#0" expanded="true" />
+                <element signature="e#42699#42719#0" expanded="true" />
+                <element signature="e#42772#42796#0" expanded="true" />
+                <element signature="e#46115#46290#0" expanded="true" />
+                <element signature="e#46271#46272#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FilesManagement.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/specular/systems/FilesManagement.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="338" column="0" selection-start="13005" selection-end="13005" vertical-scroll-proportion="-2.22" vertical-offset="5176" max-vertical-offset="6970">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -461,57 +512,57 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/DeleteKeys.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/DeleteDataDialog.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/ShareContactDlg.java" />
-        <option value="$PROJECT_DIR$/res/layout/response.xml" />
-        <option value="$PROJECT_DIR$/res/values/colors.xml" />
-        <option value="$PROJECT_DIR$/res/layout/setup.xml" />
-        <option value="$PROJECT_DIR$/res/layout/list_row.xml" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Contact.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/DeleteDialog.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Session.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/NoticeDialogListener.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/NoticeDialogfragment.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/DeleteDialogMsg.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/NoticeDialogFragment.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/DeleteMsgDialog.java" />
         <option value="$PROJECT_DIR$/res/layout/decrypted_msg.xml" />
-        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/NotImplemented.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/AddContactDlg.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/ShareDialog.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/CryptMethods.java" />
-        <option value="$PROJECT_DIR$/res/layout/contacts.xml" />
-        <option value="$PROJECT_DIR$/res/layout/encrypt.xml" />
-        <option value="$PROJECT_DIR$/res/layout/profile.xml" />
         <option value="$PROJECT_DIR$/res/layout/tech_details.xml" />
-        <option value="$PROJECT_DIR$/res/layout/share.xml" />
-        <option value="$PROJECT_DIR$/res/layout/edit_contact.xml" />
         <option value="$PROJECT_DIR$/res/layout/share_dialog.xml" />
         <option value="$PROJECT_DIR$/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/src/specular/systems/FragmentManagement.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/HoloCircularProgressBar.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/ContactsDataSource.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/ExplainDialog.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/LastUsedContacts.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/LeftMenu.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/QRCodeEncoder.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Main.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/scanqr/CaptureActivityHandler.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/scanqr/DecodeFormatManager.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/scanqr/InactivityTimer.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/ProgressDlg.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/PublicStaticVariables.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/Response.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/TurnNFCOn.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/MySimpleArrayAdapter.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/ShareCustomDialog.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/MessageFormat.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/QRCodeEncoder.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/DeleteDialog.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/DeleteContactDialog.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/AddContactDlg.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/ExplainDialog.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/NotImplemented.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Session.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/ShareCustomDialog.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/ContactQR.java" />
+        <option value="$PROJECT_DIR$/res/layout/response.xml" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/res/layout/create_new_keys.xml" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/SendReport.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Splash.java" />
-        <option value="$PROJECT_DIR$/src/specular/systems/FilesManagement.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/ExitWithoutSave.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/ContactsDataSource.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Contact.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/PublicStaticVariables.java" />
+        <option value="$PROJECT_DIR$/res/layout/edit_text.xml" />
+        <option value="$PROJECT_DIR$/res/layout/profile.xml" />
+        <option value="$PROJECT_DIR$/res/layout/share.xml" />
+        <option value="$PROJECT_DIR$/res/layout/search_view.xml" />
+        <option value="$PROJECT_DIR$/res/layout/contacts.xml" />
+        <option value="$PROJECT_DIR$/res/layout/encrypt.xml" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/Response.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/CryptMethods.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/MySimpleArrayAdapter.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/LastUsedContacts.java" />
         <option value="$PROJECT_DIR$/src/specular/systems/Visual.java" />
+        <option value="$PROJECT_DIR$/res/layout/edit_contact.xml" />
+        <option value="$PROJECT_DIR$/src/specular/systems/FilesManagement.java" />
+        <option value="$PROJECT_DIR$/res/layout/circular.xml" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/ProgressDlg.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Dialogs/SendMsgDialog.java" />
+        <option value="$PROJECT_DIR$/res/layout/send_msg_dlg.xml" />
+        <option value="$PROJECT_DIR$/src/specular/systems/FragmentManagement.java" />
+        <option value="$PROJECT_DIR$/src/specular/systems/Main.java" />
       </list>
     </option>
   </component>
@@ -595,6 +646,7 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -603,9 +655,18 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SPEC" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SPEC" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -641,6 +702,9 @@
       <recent name="C:\Users\yehezkelk\Documents\GitHub\SPEC" />
       <recent name="C:\Users\shirank1\Documents\GitHub\SPEC\res\drawable-xhdpi" />
       <recent name="C:\Users\yehezkelk\Documents\GitHub\SPEC\libs" />
+    </key>
+    <key name="IntroduceConstantDialog.RECENTS_KEY">
+      <recent name="specular.systems.FilesManagement" />
     </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="specular.systems.Dialogs" />
@@ -710,19 +774,6 @@
       </ExternalSystemSettings>
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -748,6 +799,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -868,23 +932,21 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="728" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32285276" sideWeight="0.681431" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32767403" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31652173" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31698775" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3158813" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28621292" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31478262" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2852174" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -892,13 +954,15 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25460124" sideWeight="0.6940195" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39267015" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30890054" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3078261" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" x="92" y="92" width="1416" height="676" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32285276" sideWeight="0.681431" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31652173" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39130434" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -922,375 +986,370 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/layout/profile.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/DeleteContactDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="5" selection-start="332" selection-end="332" vertical-scroll-proportion="0.34615386" vertical-offset="54" max-vertical-offset="731">
-          <folding>
-            <element signature="e#644#668#0" expanded="false" />
-            <element signature="e#861#886#0" expanded="false" />
-            <element signature="e#1220#1245#0" expanded="false" />
-          </folding>
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="1471" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="459" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/create_new_keys.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/SendReport.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="4" selection-start="191" selection-end="191" vertical-scroll-proportion="-2.72" vertical-offset="0" max-vertical-offset="1020">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/wait_nfc_decrypt.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="4" selection-start="272" selection-end="272" vertical-scroll-proportion="0.3309859" vertical-offset="25" max-vertical-offset="731">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/decrypt.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="4" selection-start="185" selection-end="185" vertical-scroll-proportion="0.23943663" vertical-offset="0" max-vertical-offset="527">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/share_dialog.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="43" selection-start="437" selection-end="437" vertical-scroll-proportion="-1.72" vertical-offset="144" max-vertical-offset="1224">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/after_attach.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/contacts.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/decrypt.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/encrypt.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/ic_ok.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/ic_unknown.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/share.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1105">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/swipe_create_keys.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/contacts.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1054">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/edit_contact.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="163" column="25" selection-start="5975" selection-end="5975" vertical-scroll-proportion="-3.96" vertical-offset="2672" max-vertical-offset="3740">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/HoloCircularProgressBar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="589" column="12" selection-start="16800" selection-end="16800" vertical-scroll-proportion="-4.28" vertical-offset="9447" max-vertical-offset="10285">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/ExplainDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="10" selection-start="456" selection-end="456" vertical-scroll-proportion="-3.96" vertical-offset="20" max-vertical-offset="952">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/LeftMenu.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="24" selection-start="390" selection-end="390" vertical-scroll-proportion="-3.96" vertical-offset="37" max-vertical-offset="561">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/QRCodeEncoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="22" selection-start="414" selection-end="414" vertical-scroll-proportion="-3.96" vertical-offset="3" max-vertical-offset="1479">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/LastUsedContacts.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="14" selection-start="267" selection-end="267" vertical-scroll-proportion="-3.96" vertical-offset="88" max-vertical-offset="2176">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Contact.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="28" selection-start="428" selection-end="428" vertical-scroll-proportion="-3.96" vertical-offset="139" max-vertical-offset="1853">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/CryptMethods.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="4" selection-start="1421" selection-end="1421" vertical-scroll-proportion="-4.28" vertical-offset="250" max-vertical-offset="2805">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/scanqr/CaptureActivityHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="62" selection-start="2865" selection-end="2865" vertical-scroll-proportion="-3.96" vertical-offset="1023" max-vertical-offset="1530">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/scanqr/DecodeFormatManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="74" selection-start="1573" selection-end="1573" vertical-scroll-proportion="-3.96" vertical-offset="445" max-vertical-offset="884">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/scanqr/InactivityTimer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="76" selection-start="1370" selection-end="1370" vertical-scroll-proportion="-3.96" vertical-offset="360" max-vertical-offset="1445">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/ProgressDlg.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="272" selection-end="272" vertical-scroll-proportion="-2.04" vertical-offset="0" max-vertical-offset="1479">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/PublicStaticVariables.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="0" selection-start="50" selection-end="50" vertical-scroll-proportion="-2.04" vertical-offset="0" max-vertical-offset="850">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/TurnNFCOn.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="350" selection-end="350" vertical-scroll-proportion="-2.04" vertical-offset="0" max-vertical-offset="850">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/scanqr/CaptureActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="91" column="48" selection-start="2904" selection-end="2904" vertical-scroll-proportion="-3.76" vertical-offset="994" max-vertical-offset="2907">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/DeleteDataDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="36" selection-start="1493" selection-end="1493" vertical-scroll-proportion="-3.96" vertical-offset="207" max-vertical-offset="1054">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/MySimpleArrayAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="78" column="20" selection-start="3129" selection-end="3129" vertical-scroll-proportion="-3.76" vertical-offset="994" max-vertical-offset="1921">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/ShareCustomDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="113" column="8" selection-start="4903" selection-end="4903" vertical-scroll-proportion="-3.96" vertical-offset="1346" max-vertical-offset="2023">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/MessageFormat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="12" selection-start="829" selection-end="829" vertical-scroll-proportion="-4.12" vertical-offset="220" max-vertical-offset="2924">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/AddContactDlg.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="13" selection-start="551" selection-end="551" vertical-scroll-proportion="-3.4" vertical-offset="0" max-vertical-offset="765">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/scanqr/camera/CameraConfigurationManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="12" selection-start="986" selection-end="986" vertical-scroll-proportion="-3.96" vertical-offset="71" max-vertical-offset="2295">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/ContactsDataSource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="210" selection-end="210" vertical-scroll-proportion="-2.72" vertical-offset="0" max-vertical-offset="2074">
-          <folding />
-        </state>
+        <state line="38" column="21" selection-start="1499" selection-end="1499" vertical-scroll-proportion="0.425" vertical-offset="306" max-vertical-offset="799" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/Splash.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="68" selection-start="3067" selection-end="3067" vertical-scroll-proportion="-4.12" vertical-offset="968" max-vertical-offset="2159">
+        <state line="44" column="15" selection-start="1221" selection-end="1221" vertical-scroll-proportion="1.2247839" vertical-offset="0" max-vertical-offset="2210" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="57" selection-start="1049" selection-end="1049" vertical-scroll-proportion="0.0" vertical-offset="210" max-vertical-offset="1122">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Main.java">
+    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/respond.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/ContactsDataSource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="941" column="19" selection-start="42468" selection-end="42468" vertical-scroll-proportion="-4.12" vertical-offset="14500" max-vertical-offset="17323">
-          <folding />
-        </state>
+        <state line="58" column="38" selection-start="2256" selection-end="2256" vertical-scroll-proportion="0.0" vertical-offset="986" max-vertical-offset="2448" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Contact.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="106" column="56" selection-start="3626" selection-end="3626" vertical-scroll-proportion="0.0" vertical-offset="1802" max-vertical-offset="2193" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/ContactQR.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="18" selection-start="843" selection-end="843" vertical-scroll-proportion="0.0" vertical-offset="442" max-vertical-offset="867" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/QRCodeEncoder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="63" column="0" selection-start="2123" selection-end="2123" vertical-scroll-proportion="0.0" vertical-offset="1071" max-vertical-offset="1632" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/PublicStaticVariables.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="34" selection-start="1028" selection-end="1028" vertical-scroll-proportion="-0.68" vertical-offset="408" max-vertical-offset="867" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/add_contact_dlg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1275" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/capture.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/create_new_keys.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="46" selection-start="2203" selection-end="2203" vertical-scroll-proportion="-40.8" vertical-offset="0" max-vertical-offset="1445" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/decrypt.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="527" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/decrypted_msg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="114" column="18" selection-start="4567" selection-end="4567" vertical-scroll-proportion="-21.76" vertical-offset="0" max-vertical-offset="1734" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/drawer_list_item.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="816" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/edit_text.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="33" selection-start="616" selection-end="616" vertical-scroll-proportion="-10.88" vertical-offset="0" max-vertical-offset="680" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/help.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="816" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/profile.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="20" selection-start="214" selection-end="214" vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="663" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/response.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="46" selection-start="1129" selection-end="1129" vertical-scroll-proportion="0.0" vertical-offset="544" max-vertical-offset="1428" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/wait_nfc_decrypt.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/tech_details.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="952" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/splash.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/share_dialog.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1207" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/share.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="20" selection-start="244" selection-end="244" vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="1445" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/setup.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1632" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/wait_nfc_to_write.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="21" selection-start="324" selection-end="324" vertical-scroll-proportion="0.3429395" vertical-offset="0" max-vertical-offset="833" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/contacts.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="27" selection-start="628" selection-end="628" vertical-scroll-proportion="-5.72" vertical-offset="197" max-vertical-offset="578" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/search_view.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="42" selection-start="1344" selection-end="1344" vertical-scroll-proportion="0.9798271" vertical-offset="238" max-vertical-offset="833" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/Response.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="13" selection-start="840" selection-end="840" vertical-scroll-proportion="-3.4" vertical-offset="0" max-vertical-offset="1819">
-          <folding />
-        </state>
+        <state line="82" column="84" selection-start="3581" selection-end="3581" vertical-scroll-proportion="-40.12" vertical-offset="0" max-vertical-offset="1530" />
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-18/android.jar!/javax/crypto/Cipher.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="84" column="0" selection-start="6193" selection-end="6193" vertical-scroll-proportion="0.7258065" vertical-offset="1141" max-vertical-offset="1513" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/CryptMethods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="34" selection-start="221" selection-end="221" vertical-scroll-proportion="0.3552239" vertical-offset="0" max-vertical-offset="3196" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/MySimpleArrayAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="48" selection-start="2355" selection-end="2355" vertical-scroll-proportion="0.8818444" vertical-offset="493" max-vertical-offset="2244" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/LastUsedContacts.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="126" column="1" selection-start="3953" selection-end="3953" vertical-scroll-proportion="0.9005848" vertical-offset="1681" max-vertical-offset="2108" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/encrypt.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="101" column="39" selection-start="3781" selection-end="3785" vertical-scroll-proportion="0.35197368" vertical-offset="1610" max-vertical-offset="5049" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/res/all/debug/layout/edit_contact.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="21" selection-start="931" selection-end="931" vertical-scroll-proportion="-4.36" vertical-offset="384" max-vertical-offset="2686" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/source/r/debug/specular/systems/R.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="163" column="32" selection-start="8209" selection-end="8209" vertical-scroll-proportion="-2.02" vertical-offset="2585" max-vertical-offset="10591" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/ExitWithoutSave.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="68" selection-start="1070" selection-end="1070" vertical-scroll-proportion="-4.84" vertical-offset="202" max-vertical-offset="544" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/edit_contact.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="25" selection-start="935" selection-end="935" vertical-scroll-proportion="-2.1" vertical-offset="388" max-vertical-offset="2686" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/HoloCircularProgressBar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="13" selection-start="611" selection-end="611" vertical-scroll-proportion="0.6611111" vertical-offset="0" max-vertical-offset="9996" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Visual.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="46" selection-start="2172" selection-end="2172" vertical-scroll-proportion="-0.13333334" vertical-offset="1034" max-vertical-offset="1394" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/ShareContactDlg.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="35" selection-start="2998" selection-end="2998" vertical-scroll-proportion="-3.76" vertical-offset="535" max-vertical-offset="1241">
+        <state line="19" column="13" selection-start="477" selection-end="477" vertical-scroll-proportion="-0.7348703" vertical-offset="323" max-vertical-offset="1258" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/circular.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="32" selection-start="1520" selection-end="1520" vertical-scroll-proportion="0.64553314" vertical-offset="473" max-vertical-offset="833" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/ProgressDlg.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="74" column="65" selection-start="2418" selection-end="2418" vertical-scroll-proportion="0.4027778" vertical-offset="484" max-vertical-offset="1802" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/FragmentManagement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="226" column="76" selection-start="11895" selection-end="11895" vertical-scroll-proportion="4.2919254" vertical-offset="2273" max-vertical-offset="11764" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/send_msg_dlg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="106" column="48" selection-start="4221" selection-end="4221" vertical-scroll-proportion="0.2651297" vertical-offset="1710" max-vertical-offset="2380" />
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Dialogs/SendMsgDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="240" column="40" selection-start="9610" selection-end="9610" vertical-scroll-proportion="0.10559006" vertical-offset="4046" max-vertical-offset="5185" />
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-18/android.jar!/android/provider/MediaStore.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="356" column="25" selection-start="20972" selection-end="20972" vertical-scroll-proportion="0.33333334" vertical-offset="5911" max-vertical-offset="6307">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/specular/systems/FilesManagement.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="221" column="14" selection-start="8602" selection-end="8602" vertical-scroll-proportion="-3.96" vertical-offset="3199" max-vertical-offset="6664">
+        <state line="338" column="0" selection-start="13005" selection-end="13005" vertical-scroll-proportion="-2.22" vertical-offset="5176" max-vertical-offset="6970">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties">
+    <entry file="file://$PROJECT_DIR$/src/specular/systems/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="30" selection-end="30" vertical-scroll-proportion="0.03107861" vertical-offset="0" max-vertical-offset="547">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/FragmentManagement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="376" column="0" selection-start="20497" selection-end="20497" vertical-scroll-proportion="-0.0" vertical-offset="6069" max-vertical-offset="8347">
+        <state line="278" column="0" selection-start="11521" selection-end="11521" vertical-scroll-proportion="0.4378882" vertical-offset="3446" max-vertical-offset="17221">
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#2961#2993#0" expanded="true" />
+            <element signature="e#3396#3434#0" expanded="true" />
+            <element signature="e#3680#3700#0" expanded="true" />
+            <element signature="e#3965#3980#0" expanded="true" />
+            <element signature="e#4183#4205#0" expanded="true" />
+            <element signature="e#4364#4389#0" expanded="true" />
+            <element signature="e#9465#9503#0" expanded="true" />
+            <element signature="e#9769#9795#0" expanded="true" />
+            <element signature="e#10811#11396#0" expanded="true" />
+            <element signature="e#11381#11382#0" expanded="true" />
+            <element signature="e#12686#12708#0" expanded="true" />
+            <element signature="e#13421#13438#0" expanded="true" />
+            <element signature="e#14018#14040#0" expanded="true" />
+            <element signature="e#14643#14660#0" expanded="true" />
+            <element signature="e#15940#15981#0" expanded="true" />
+            <element signature="e#16872#16892#0" expanded="true" />
+            <element signature="e#19972#20003#0" expanded="true" />
+            <element signature="e#32849#32869#0" expanded="true" />
+            <element signature="e#32935#32956#0" expanded="true" />
+            <element signature="e#36212#36234#0" expanded="true" />
+            <element signature="e#37092#37120#0" expanded="true" />
+            <element signature="e#38092#38119#0" expanded="true" />
+            <element signature="e#40753#40781#0" expanded="true" />
+            <element signature="e#41030#41069#0" expanded="true" />
+            <element signature="e#41929#41954#0" expanded="true" />
+            <element signature="e#42480#42500#0" expanded="true" />
+            <element signature="e#42576#42602#0" expanded="true" />
+            <element signature="e#42699#42719#0" expanded="true" />
+            <element signature="e#42772#42796#0" expanded="true" />
+            <element signature="e#46115#46290#0" expanded="true" />
+            <element signature="e#46271#46272#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/specular/systems/Visual.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="26" selection-start="326" selection-end="326" vertical-scroll-proportion="-6.8" vertical-offset="0" max-vertical-offset="1088">
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="12" selection-start="2394" selection-end="2394" vertical-scroll-proportion="0.0" vertical-offset="526" max-vertical-offset="2618">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/ids.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/dimens.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="366">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="366">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/attrs.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="374">
-          <folding />
         </state>
       </provider>
     </entry>
