@@ -134,6 +134,8 @@
     <string name="not_implemented_title">wait for it..</string>
     <string name="profile_my_name">my name:</string>
     <string name="profile_my_email">my email:</string>
+    <string name="send_file">send file</string>
+    <string name="send_image">send QR image</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

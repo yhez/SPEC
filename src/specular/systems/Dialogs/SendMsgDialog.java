@@ -43,9 +43,10 @@ public class SendMsgDialog extends DialogFragment {
     ArrayList<Uri> uris;
     View v;
     String email;
-    public SendMsgDialog(ArrayList<Uri> uris,String email) {
+
+    public SendMsgDialog(ArrayList<Uri> uris, String email) {
         this.uris = uris;
-        this.email=email;
+        this.email = email;
     }
 
     @Override
@@ -61,8 +62,8 @@ public class SendMsgDialog extends DialogFragment {
             public CharSequence filter(CharSequence source, int start, int end,
                                        Spanned dest, int dstart, int dend) {
                 for (int i = start; i < end; i++) {
-                    for(char c:dang)
-                        if (source.charAt(i)==c) {
+                    for (char c : dang)
+                        if (source.charAt(i) == c) {
                             return "";
                         }
                 }
@@ -72,25 +73,7 @@ public class SendMsgDialog extends DialogFragment {
         builder.setView(v);
         updateViews();
         if (uris.get(0) != null) {
-            double size = new File(uris.get(0).getPath()).length();
-            String unit = "byte";
-            if(size>1023){
-                size/=1024;
-                unit="KB";
-            }
-            if(size>1023){
-                size/=1024;
-                unit="MB";
-            }
-            if(size>1023){
-                size/=1024;
-                unit="GB";
-            }
-            String total = (size+"").split("\\.")[0];
-            if((size+"").split("\\.").length>0){
-                total+="."+(size+"").split("\\.")[1].substring(0,2);
-            }
-            ((TextView) v.findViewById(R.id.file_size)).setText(total+"\n"+unit);
+            ((TextView) v.findViewById(R.id.file_size)).setText(getSize(uris.get(0)));
             ((ImageView) v.findViewById(R.id.file_icon)).setImageResource(R.drawable.logo);
             EditText etFile = (EditText) v.findViewById(R.id.name_file);
             etFile.setText(getName(FILE));
@@ -108,7 +91,7 @@ public class SendMsgDialog extends DialogFragment {
                 ((ImageView) v.findViewById(R.id.qr_icon)).setImageResource(R.drawable.logo);
                 e.printStackTrace();
             }
-            ((TextView) v.findViewById(R.id.qr_size)).setText(new File(uris.get(1).getPath()).length() + "");
+            ((TextView) v.findViewById(R.id.qr_size)).setText(getSize(uris.get(1)));
             EditText etImage = (EditText) v.findViewById(R.id.qr_name_file);
             etImage.setText(getName(IMAGE));
             etImage.setFilters(new InputFilter[]{filter});
@@ -116,7 +99,27 @@ public class SendMsgDialog extends DialogFragment {
         Visual.setAllFonts(getActivity(), (ViewGroup) v);
         return builder.create();
     }
-
+    private String getSize(Uri uri){
+        double size = new File(uri.getPath()).length();
+        String unit = "byte";
+        if (size > 1023) {
+            size /= 1024;
+            unit = "KB";
+        }
+        if (size > 1023) {
+            size /= 1024;
+            unit = "MB";
+        }
+        if (size > 1023) {
+            size /= 1024;
+            unit = "GB";
+        }
+        String total = (size + "").split("\\.")[0];
+        if ((size + "").split("\\.").length > 0) {
+            total += "." + (size + "").split("\\.")[1].substring(0, 2);
+        }
+        return total+"\n"+unit;
+    }
     private void getApps(int a) {
         Intent intent;
         switch (a) {
@@ -130,9 +133,24 @@ public class SendMsgDialog extends DialogFragment {
             case IMAGE:
                 if (image != null)
                     return;
-                intent = new Intent(Intent.ACTION_SEND);
+                intent = new Intent(Intent.ACTION_VIEW);
                 intent.setType("image/png");
+                List<ResolveInfo> temp = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+                intent.setAction(Intent.ACTION_SEND);
                 image = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+                int index = image.size() - 1;
+                while (index > 0) {
+                    String pn = image.get(index).activityInfo.packageName;
+                    if (pn.equals(getActivity().getPackageName()))
+                        image.remove(index);
+                    else
+                        for (ResolveInfo rt : temp)
+                            if (rt.activityInfo.packageName.equals(pn)) {
+                                image.remove(index);
+                                break;
+                            }
+                    index--;
+                }
                 return;
             case BOTH:
                 if (both != null)
@@ -186,7 +204,7 @@ public class SendMsgDialog extends DialogFragment {
         if (what == IMAGE || what == BOTH) {
             File f = new File(uris.get(1).getPath());
             File newPath = new File(getActivity().getFilesDir(), ((EditText) v.findViewById(R.id.qr_name_file)).getText() + ".png");
-            if (!f.equals(newPath)){
+            if (!f.equals(newPath)) {
                 if (newPath.exists())
                     newPath.delete();
                 f.renameTo(newPath);
@@ -196,7 +214,7 @@ public class SendMsgDialog extends DialogFragment {
         if (what == FILE || what == BOTH) {
             File f = new File(uris.get(0).getPath());
             File newPath = new File(getActivity().getFilesDir(), ((EditText) v.findViewById(R.id.name_file)).getText() + ".SPEC");
-            if (!f.equals(newPath)){
+            if (!f.equals(newPath)) {
                 if (newPath.exists())
                     newPath.delete();
                 f.renameTo(newPath);

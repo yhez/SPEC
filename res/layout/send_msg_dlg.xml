@@ -98,7 +98,7 @@
             android:textColor="@color/spec_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/share_file" />
+            android:text="@string/send_file" />
 
         <View
             android:id="@+id/divider2"
@@ -117,7 +117,7 @@
             android:textColor="@color/spec_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/share_image" />
+            android:text="@string/send_image" />
 
         <View
             android:id="@+id/divider3"

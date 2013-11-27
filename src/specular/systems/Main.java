@@ -33,6 +33,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
@@ -76,7 +78,10 @@ public class Main extends Activity {
                     break;
                 case REPLACE_PHOTO:
                     ((TextView) findViewById(R.id.file_content_length)).setText(PublicStaticVariables.fileContent.length + "");
-                    ((ImageButton) findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
+                    ImageButton imageButton = (ImageButton) findViewById(R.id.add_file);
+                    imageButton.clearAnimation();
+                    imageButton.setClickable(true);
+                    imageButton.setImageResource(R.drawable.after_attach);
                     break;
                 case CANT_DECRYPT:
                     String s = msg.obj != null ? (String) msg.obj : getString(R.string.cant_decrypt);
@@ -256,6 +261,27 @@ public class Main extends Activity {
     private void attachFile(final Uri uri) {
 
         if (uri != null) {
+            ImageButton aniView = (ImageButton)findViewById(R.id.add_file);
+            aniView.setImageResource(R.drawable.ic_attachment_universal_small);
+            Animation animation1 = AnimationUtils.loadAnimation(this, R.anim.rotate);
+            animation1.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            aniView.startAnimation(animation1);
+            aniView.setClickable(false);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -984,6 +1010,7 @@ public class Main extends Activity {
             onBackPressed();
             msgSended = false;
         }
+        //todo why is it here??????
         if (PublicStaticVariables.currentLayout == R.layout.encrypt) {
             final Uri uri = getIntent().getParcelableExtra("attach");
             if (uri != null) {
@@ -991,6 +1018,7 @@ public class Main extends Activity {
                     @Override
                     public void run() {
                         int r = FilesManagement.addFile(Main.this, uri);
+                        //animation1.cancel();
                         if (r == PublicStaticVariables.RESULT_ADD_FILE_OK) {
                             String w[] = uri.getPath().split("/");
                             fileName = w[w.length - 1];
