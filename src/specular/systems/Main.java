@@ -221,7 +221,7 @@ public class Main extends Activity {
                 encryptManager();
                 break;
             case R.id.open_file:
-                String name = PublicStaticVariables.decryptedMsg.getFileName();
+                String name = PublicStaticVariables.file_name;
                 File f = new File(Environment.getExternalStorageDirectory(), name);
                 String ext = f.getName().substring(f.getName().indexOf(".") + 1);
                 MimeTypeMap mtm = MimeTypeMap.getSingleton();
@@ -244,15 +244,15 @@ public class Main extends Activity {
                 }
                 break;
             case R.id.hash:
-                ExplainDialog edlg = new ExplainDialog(ExplainDialog.HASH, PublicStaticVariables.decryptedMsg.getHash());
+                ExplainDialog edlg = new ExplainDialog(ExplainDialog.HASH, PublicStaticVariables.hash);
                 edlg.show(getFragmentManager(), "hash");
                 break;
             case R.id.session:
-                ExplainDialog edl = new ExplainDialog(ExplainDialog.SESSION, PublicStaticVariables.decryptedMsg.getSession());
+                ExplainDialog edl = new ExplainDialog(ExplainDialog.SESSION, PublicStaticVariables.session);
                 edl.show(getFragmentManager(), "session");
                 break;
             case R.id.replay:
-                ExplainDialog ed = new ExplainDialog(ExplainDialog.REPLAY, PublicStaticVariables.decryptedMsg.getSentTime());
+                ExplainDialog ed = new ExplainDialog(ExplainDialog.REPLAY, PublicStaticVariables.timeStamp);
                 ed.show(getFragmentManager(), "replay");
                 break;
         }
@@ -282,7 +282,7 @@ public class Main extends Activity {
             });
             aniView.startAnimation(animation1);
             aniView.setClickable(false);
-            new Thread(new Runnable() {
+            addFile = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     int r = FilesManagement.addFile(Main.this, uri);
@@ -296,10 +296,10 @@ public class Main extends Activity {
                         hndl.sendMessage(msg);
                     }
                 }
-            }).start();
+            });addFile.start();
         }
     }
-
+Thread addFile;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
@@ -522,9 +522,8 @@ public class Main extends Activity {
                     PublicStaticVariables.adapter.refreshList();
                     ((EditText) findViewById(R.id.filter)).setText("");
                     b.setVisibility(View.GONE);
-                    if (PublicStaticVariables.currentLayout == R.layout.encrypt &&
-                            PublicStaticVariables.fullList.size() > PublicStaticVariables.minContactSize)
-                        PublicStaticVariables.luc.show();
+                    if (PublicStaticVariables.currentLayout == R.layout.encrypt)
+                        PublicStaticVariables.luc.showIfNeeded(null);
                 }
             } else {
                 Intent i = new Intent(this, StartScan.class);
@@ -607,19 +606,12 @@ public class Main extends Activity {
 
     @Override
     public void onPause() {
-        try {
             if (!handleByOnNewIntent) {
                 currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
-                if (PublicStaticVariables.decryptedMsg != null)
-                    FilesManagement.saveTempDecryptedMSG(this);
+                FilesManagement.saveTempDecryptedMSG(this);
                 //todo delete view content
                 CryptMethods.deleteKeys();
             }
-        } catch (Exception e) {
-
-            SendReport sr = new SendReport(e.getLocalizedMessage());
-            sr.show(getFragmentManager(), "ll");
-        }
         super.onPause();
     }
 
@@ -640,7 +632,7 @@ public class Main extends Activity {
         int layout = layout_screen;
         int menu = position;
         if (layout_screen == 0 && position != -1) {
-            if (menuTitles[menu].equals("Decrypt") && PublicStaticVariables.decryptedMsg != null)
+            if (menuTitles[menu].equals("Decrypt") && PublicStaticVariables.flag_msg!=null&&PublicStaticVariables.flag_msg)
                 layout = R.layout.decrypted_msg;
             else
                 layout = layouts[position];
@@ -814,6 +806,7 @@ public class Main extends Activity {
                 public void run() {
                     CryptMethods.decrypt(msg != null ? msg : PublicStaticVariables.message);
                     getIntent().removeExtra("message");
+                    FilesManagement.deleteTempDecryptedMSG(Main.this);
                     PublicStaticVariables.message = null;
                     Message msg = hndl.obtainMessage(DECRYPT_SCREEN);
                     hndl.sendMessage(msg);
@@ -875,15 +868,49 @@ public class Main extends Activity {
         } else {
             switch (PublicStaticVariables.currentLayout) {
                 case R.layout.encrypt:
-                    if (PublicStaticVariables.changed) {
+                    TextView contactChosen = (TextView)findViewById(R.id.contact_id_to_send);
+                    View filter = findViewById(R.id.filter_ll);
+                    EditText etMessage = (EditText)findViewById(R.id.message);
+                    ImageButton ibFile = (ImageButton)findViewById(R.id.add_file);
+                    boolean clearedSomething = false;
+                    if(filter.getVisibility()==View.VISIBLE){
+                        filter.setVisibility(View.GONE);
+                        ((EditText)filter.findViewById(R.id.filter)).setText("");
+                        PublicStaticVariables.adapter.refreshList();
+                        clearedSomething=true;
+                    }
+                    if(etMessage.getText().length()>0){
+                        clearedSomething=true;
+                        etMessage.setText("");
                         PublicStaticVariables.currentText = "";
-                        PublicStaticVariables.fileContent = null;
-                        selectItem(-1, PublicStaticVariables.currentLayout);
-                    } else
+                    }
+                    if(contactChosen.getText().length()>0){
+                        clearedSomething=true;
+                        findViewById(R.id.en_contact).setVisibility(View.GONE);
+                        contactChosen.setText("");
+                        findViewById(R.id.list).setVisibility(View.VISIBLE);
+                        PublicStaticVariables.luc.showIfNeeded(null);
+                        invalidateOptionsMenu();
+                    }
+                    if(PublicStaticVariables.fileContent!=null){
+                        clearedSomething=true;
+                        PublicStaticVariables.fileContent=null;
+                        ibFile.setImageResource(R.drawable.ic_attachment_universal_small);
+                        ibFile.clearAnimation();
+                    }
+                    if(addFile!=null&&addFile.isAlive()){
+                        addFile.interrupt();
+                        addFile=null;
+                        clearedSomething=true;
+                        ibFile.setClickable(true);
+                        PublicStaticVariables.fileContent=null;
+                        ibFile.clearAnimation();
+                    }
+                    if (!clearedSomething)
                         new prepareToExit();
                     break;
                 case R.layout.decrypted_msg:
-                    if (PublicStaticVariables.decryptedMsg != null) {
+                    if (PublicStaticVariables.flag_msg) {
                         Toast.makeText(this, R.string.notify_msg_deleted, Toast.LENGTH_SHORT).show();
                         PublicStaticVariables.decryptedMsg = null;
                         FilesManagement.deleteTempDecryptedMSG(this);
@@ -897,7 +924,16 @@ public class Main extends Activity {
                     setUpViews();
                     break;
                 case R.layout.contacts:
-                    setUpViews();
+                    clearedSomething=false;
+                    filter = findViewById(R.id.filter_ll);
+                    if(filter.getVisibility()==View.VISIBLE){
+                        clearedSomething=true;
+                        PublicStaticVariables.adapter.refreshList();
+                        ((TextView)filter.findViewById(R.id.filter)).setText("");
+                        filter.setVisibility(View.GONE);
+                    }
+                    if (!clearedSomething)
+                        setUpViews();
                     break;
                 case R.layout.help:
                     setUpViews();
@@ -1010,27 +1046,13 @@ public class Main extends Activity {
             onBackPressed();
             msgSended = false;
         }
-        //todo why is it here??????
-        if (PublicStaticVariables.currentLayout == R.layout.encrypt) {
-            final Uri uri = getIntent().getParcelableExtra("attach");
-            if (uri != null) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        int r = FilesManagement.addFile(Main.this, uri);
-                        //animation1.cancel();
-                        if (r == PublicStaticVariables.RESULT_ADD_FILE_OK) {
-                            String w[] = uri.getPath().split("/");
-                            fileName = w[w.length - 1];
-                            Message msg = hndl.obtainMessage(REPLACE_PHOTO);
-                            hndl.sendMessage(msg);
-                        } else {
-                            Message msg = hndl.obtainMessage(r);
-                            hndl.sendMessage(msg);
-                        }
-                    }
-                }).start();
-            }
+        //this is for when coming to the app with share
+        if (PublicStaticVariables.currentLayout == R.layout.encrypt){
+            attachFile((Uri)getIntent().getParcelableExtra("attach"));
+            //((EditText)findViewById(R.id.message)).setText(PublicStaticVariables.currentText);
+        }
+        if(PublicStaticVariables.flag_msg){
+            FilesManagement.getTempDecryptedMSG(this);
         }
     }
 

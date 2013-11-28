@@ -2,6 +2,7 @@ package specular.systems;
 
 import android.app.Activity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -53,11 +54,16 @@ public class LastUsedContacts {
                 if(v!=null)v.setVisibility(View.GONE);
     }
 
-    public boolean show() {
-        if (PublicStaticVariables.fullList.size()<10||lasts.length == 0 || lasts[0] == null ||
-                a.findViewById(R.id.frame_grid_last) == null) {
-            return false;
+    public void showIfNeeded(View a) {
+        if (PublicStaticVariables.fullList.size()<PublicStaticVariables.minContactSize
+                ||lasts.length == 0 || lasts[0] == null){
+            if(a!=null)
+                a.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
+            else
+                this.a.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
+            return;
         }
+        final ViewGroup vg = (ViewGroup) a.findViewById(R.id.grid_lasts);
         a.findViewById(R.id.frame_grid_last).setVisibility(View.VISIBLE);
         vlc = new ViewLastContact[NUM_LASTS];
         for (int c = 0; c < NUM_LASTS; c++) {
@@ -66,7 +72,18 @@ public class LastUsedContacts {
         for (int c = 0; c < NUM_LASTS; c++)
             if (lasts[c] != null)
                 vlc[c].setContent(lasts[c]);
-        return true;
+        for (int af = 0; af < vg.getChildCount(); af++) {
+            if(vg.getChildAt(af)==null)
+                break;
+            final ViewGroup vg2 = (ViewGroup) vg.getChildAt(af);
+            vg2.getChildAt(0).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PublicStaticVariables.fragmentManagement.contactChosen(
+                            Long.parseLong(((TextView) vg2.getChildAt(2)).getText().toString()));
+                }
+            });
+        }
     }
 
     public void change(Contact contact) {

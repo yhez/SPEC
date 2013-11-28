@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:inputType="none"
         android:id="@+id/file_content_length"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,8 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:columnCount="4"
-                android:rowCount="1"
-                android:visibility="gone">
+                android:rowCount="1">
 
                 <LinearLayout
                     android:layout_column="0"

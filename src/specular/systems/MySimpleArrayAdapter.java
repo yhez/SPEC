@@ -122,9 +122,8 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
         for (Contact c:PublicStaticVariables.fullList)
             if (!PublicStaticVariables.currentList.contains(c))
                 PublicStaticVariables.currentList.add(c);
-        if (PublicStaticVariables.currentLayout == R.layout.encrypt &&
-                PublicStaticVariables.fullList.size() > PublicStaticVariables.minContactSize)
-            PublicStaticVariables.luc.show();
+        //if (PublicStaticVariables.currentLayout == R.layout.encrypt)
+        //    PublicStaticVariables.luc.showIfNeeded();
         Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
             @Override
             public int compare(Contact contact, Contact contact2) {

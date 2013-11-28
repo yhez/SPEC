@@ -33,7 +33,6 @@ public class Splash extends Activity {
             }
             Intent intent = new Intent(Splash.this, Main.class);
             startActivity(intent);
-            finish();
         }
     });
 
@@ -71,7 +70,6 @@ public class Splash extends Activity {
             if (getIntent().getParcelableExtra(Intent.EXTRA_STREAM) != null)
                 intent.putExtra("attach", getIntent().getParcelableExtra(Intent.EXTRA_STREAM));
             startActivity(intent);
-            finish();
         }
     }
 

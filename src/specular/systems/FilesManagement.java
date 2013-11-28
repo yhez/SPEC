@@ -24,7 +24,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import static android.graphics.Typeface.createFromAsset;
@@ -72,14 +71,17 @@ public final class FilesManagement {
     }
 
     public static void saveTempDecryptedMSG(Activity a) {
+        if (PublicStaticVariables.currentLayout!=R.layout.decrypted_msg||PublicStaticVariables.decryptedMsg == null)
+            return;
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         SharedPreferences.Editor edt = srp.edit();
-        try {
-            edt.putString("msg", new String(new MessageFormat().getFormatedMsg(), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        edt.putString("msg", PublicStaticVariables.decryptedMsg.getMsgContent());
+        edt.putString("file_name", PublicStaticVariables.decryptedMsg.getFileName());
+        edt.putString("session",PublicStaticVariables.decryptedMsg.getSession());
+        PublicStaticVariables.session=null;
+        PublicStaticVariables.file_name=null;
+        PublicStaticVariables.msg_content=null;
         edt.commit();
     }
 
@@ -88,22 +90,21 @@ public final class FilesManagement {
                 .getApplicationContext());
         SharedPreferences.Editor edt = srp.edit();
         edt.remove("msg");
+        edt.remove("file_name");
+        edt.remove("session");
+        PublicStaticVariables.flag_msg=false;
+        PublicStaticVariables.session=null;
+        PublicStaticVariables.file_name=null;
+        PublicStaticVariables.msg_content=null;
         edt.commit();
     }
 
-    public static boolean getTempDecryptedMSG(Activity a) {
+    public static void getTempDecryptedMSG(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
-        try {
-            String dcrMsg = srp.getString("msg", null);
-            if(dcrMsg!=null){
-                PublicStaticVariables.decryptedMsg = new MessageFormat(dcrMsg.getBytes("UTF-8"));
-                return true;
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return false;
+        PublicStaticVariables.msg_content = srp.getString("msg", null);
+        PublicStaticVariables.session = srp.getString("session",null);
+        PublicStaticVariables.file_name=srp.getString("file_name",null);
     }
 
     public static Typeface getOld(Activity a) {

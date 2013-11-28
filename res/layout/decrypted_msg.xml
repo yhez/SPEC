@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="decryptedMsgClick"
                 android:padding="@dimen/default_gap"
-                android:src="@drawable/ic_hash" />
+                android:src="@drawable/hash" />
         </FrameLayout>
         <!--replay attack-->
         <FrameLayout
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="decryptedMsgClick"
                 android:padding="@dimen/default_gap"
-                android:src="@drawable/replay_atack" />
+                android:src="@drawable/replay" />
         </FrameLayout>
         <!--session-->
         <FrameLayout
@@ -79,16 +79,6 @@
                 android:padding="@dimen/default_gap"
                 android:src="@drawable/session" />
         </FrameLayout>
-        <!--add to contact if doesn't exist-->
-        <!--        <ImageButton
-                    android:id="@+id/add_contact_decrypt"
-                    style="@android:style/Widget.Holo.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="3"
-                    android:onClick="addToContacts"
-                    android:padding="@dimen/default_gap"
-                    android:src="@drawable/plus" />-->
     </GridLayout>
 
     <RelativeLayout
@@ -139,9 +129,10 @@
             android:layout_gravity="bottom|right">
 
             <TextView
-                android:maxLength="6"
+                android:maxLength="12"
                 android:textColor="@color/spec_black"
                 android:id="@+id/file_name"
+                android:lines="3"
                 android:layout_alignParentBottom="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
