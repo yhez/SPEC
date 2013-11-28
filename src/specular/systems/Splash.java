@@ -77,7 +77,7 @@ public class Splash extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         Intent thisIntent = getIntent();
-        if (thisIntent==null||thisIntent.getType() == null) {
+        if (thisIntent == null || thisIntent.getType() == null) {
             go();
         } else {
             if (thisIntent.getAction() != null && thisIntent.getAction().equals(Intent.ACTION_SEND)) {

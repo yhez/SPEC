@@ -16,7 +16,7 @@ import specular.systems.R;
 public class ProgressDlg extends ProgressDialog {
     protected boolean mAnimationHasEnded = false;
     HoloCircularProgressBar hcpb;
-    TextView textViewSec,textViewDec,textView;
+    TextView textViewSec, textViewDec, textView;
     long startTimeMillis;
     String title;
     Activity activity;
@@ -24,17 +24,17 @@ public class ProgressDlg extends ProgressDialog {
     private Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            int dec = (int) ((System.currentTimeMillis()-startTimeMillis)/100);
-            int sec = dec/10;
-            textViewSec.setText(sec+"");
-            textViewDec.setText((dec%10)+"");
+            int dec = (int) ((System.currentTimeMillis() - startTimeMillis) / 100);
+            int sec = dec / 10;
+            textViewSec.setText(sec + "");
+            textViewDec.setText((dec % 10) + "");
         }
     };
 
     public ProgressDlg(Activity activity, String title) {
         super(activity);
-        this.activity=activity;
-        this.title=title;
+        this.activity = activity;
+        this.title = title;
     }
 
     @Override
@@ -67,14 +67,14 @@ public class ProgressDlg extends ProgressDialog {
             }
         });
 
-        textView = (TextView)findViewById(R.id.title_progress_bar);
+        textView = (TextView) findViewById(R.id.title_progress_bar);
         textView.setText(title);
         textView.setTypeface(FilesManagement.getOs(activity));
         textViewSec = (TextView) findViewById(R.id.sec_progress);
         textViewSec.setTypeface(FilesManagement.getOs(activity));
         textViewDec = (TextView) findViewById(R.id.dec_progress);
         textViewDec.setTypeface(FilesManagement.getOs(activity));
-        startTimeMillis=System.currentTimeMillis();
+        startTimeMillis = System.currentTimeMillis();
         animateText();
     }
 

@@ -24,7 +24,7 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
         this.a = a;
     }
 
-    public void updateCont(Contact c){
+    public void updateCont(Contact c) {
         Contact contact = PublicStaticVariables.contactsDataSource.findContact(c.getId());
         PublicStaticVariables.currentList.add(contact);
         PublicStaticVariables.fullList.add(contact);
@@ -115,11 +115,11 @@ class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
 
     public void refreshList() {
         ArrayList<Contact> tmp = new ArrayList<Contact>();
-        for(Contact c:PublicStaticVariables.currentList)
-            if(!PublicStaticVariables.fullList.contains(c))
+        for (Contact c : PublicStaticVariables.currentList)
+            if (!PublicStaticVariables.fullList.contains(c))
                 tmp.add(c);
         PublicStaticVariables.currentList.removeAll(tmp);
-        for (Contact c:PublicStaticVariables.fullList)
+        for (Contact c : PublicStaticVariables.fullList)
             if (!PublicStaticVariables.currentList.contains(c))
                 PublicStaticVariables.currentList.add(c);
         //if (PublicStaticVariables.currentLayout == R.layout.encrypt)

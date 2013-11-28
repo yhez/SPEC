@@ -99,7 +99,8 @@ public class SendMsgDialog extends DialogFragment {
         Visual.setAllFonts(getActivity(), (ViewGroup) v);
         return builder.create();
     }
-    private String getSize(Uri uri){
+
+    private String getSize(Uri uri) {
         double size = new File(uri.getPath()).length();
         String unit = "byte";
         if (size > 1023) {
@@ -118,8 +119,9 @@ public class SendMsgDialog extends DialogFragment {
         if ((size + "").split("\\.").length > 0) {
             total += "." + (size + "").split("\\.")[1].substring(0, 2);
         }
-        return total+"\n"+unit;
+        return total + "\n" + unit;
     }
+
     private void getApps(int a) {
         Intent intent;
         switch (a) {

@@ -60,7 +60,6 @@ import specular.systems.Dialogs.NotImplemented;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.Dialogs.Response;
 import specular.systems.Dialogs.SendMsgDialog;
-import specular.systems.Dialogs.SendReport;
 import specular.systems.Dialogs.ShareContactDlg;
 import specular.systems.Dialogs.ShareCustomDialog;
 import specular.systems.Dialogs.TurnNFCOn;
@@ -261,7 +260,7 @@ public class Main extends Activity {
     private void attachFile(final Uri uri) {
 
         if (uri != null) {
-            ImageButton aniView = (ImageButton)findViewById(R.id.add_file);
+            ImageButton aniView = (ImageButton) findViewById(R.id.add_file);
             aniView.setImageResource(R.drawable.ic_attachment_universal_small);
             Animation animation1 = AnimationUtils.loadAnimation(this, R.anim.rotate);
             animation1.setAnimationListener(new Animation.AnimationListener() {
@@ -296,10 +295,13 @@ public class Main extends Activity {
                         hndl.sendMessage(msg);
                     }
                 }
-            });addFile.start();
+            });
+            addFile.start();
         }
     }
-Thread addFile;
+
+    Thread addFile;
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
@@ -517,7 +519,7 @@ Thread addFile;
                 if (b.getVisibility() == View.GONE) {
                     b.setVisibility(View.VISIBLE);
                     if (PublicStaticVariables.currentLayout == R.layout.encrypt)
-                        PublicStaticVariables.luc.hide();
+                        PublicStaticVariables.luc.showIfNeeded(null);
                 } else {
                     PublicStaticVariables.adapter.refreshList();
                     ((EditText) findViewById(R.id.filter)).setText("");
@@ -570,48 +572,44 @@ Thread addFile;
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav main is open, hide action items related to the content
         // view
-        try {
-            MenuItem mi = menu.findItem(R.id.action_search);
-            boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-            if (PublicStaticVariables.currentLayout == R.layout.contacts || PublicStaticVariables.currentLayout == R.layout.encrypt) {
-                if (PublicStaticVariables.fullList == null || PublicStaticVariables.fullList.size() == 0)
-                    mi.setIcon(R.drawable.sun);
-                else
-                    mi.setIcon(R.drawable.search);
-                TextView textView = (TextView) findViewById(R.id.contact_id_to_send);
-                if (textView != null && textView.getText().toString().length() > 0)
-                    mi.setVisible(false);
-                else
-                    mi.setVisible(!drawerOpen);
-                return super.onPrepareOptionsMenu(menu);
-            } else if (PublicStaticVariables.currentLayout == R.layout.edit_contact || PublicStaticVariables.currentLayout == R.layout.share) {
-                mi.setVisible(!drawerOpen);
-                mi.setIcon(android.R.drawable.ic_menu_share);
-                return super.onPrepareOptionsMenu(menu);
-            } else if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
-                TextView tv = (TextView) findViewById(R.id.flag_contact_exist);
-                if (tv == null || tv.getText().toString().equals(true + ""))
-                    return false;
-                mi.setVisible(!drawerOpen);
-                mi.setIcon(android.R.drawable.ic_menu_add);
-                return super.onPrepareOptionsMenu(menu);
-            }
-        } catch (Exception e) {
 
-            SendReport sr = new SendReport(e.getLocalizedMessage());
-            sr.show(getFragmentManager(), "ll");
+        MenuItem mi = menu.findItem(R.id.action_search);
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        if (PublicStaticVariables.currentLayout == R.layout.contacts || PublicStaticVariables.currentLayout == R.layout.encrypt) {
+            if (PublicStaticVariables.fullList == null || PublicStaticVariables.fullList.size() == 0)
+                mi.setIcon(R.drawable.sun);
+            else
+                mi.setIcon(R.drawable.search);
+            TextView textView = (TextView) findViewById(R.id.contact_id_to_send);
+            if (textView != null && textView.getText().toString().length() > 0)
+                mi.setVisible(false);
+            else
+                mi.setVisible(!drawerOpen);
+            return super.onPrepareOptionsMenu(menu);
+        } else if (PublicStaticVariables.currentLayout == R.layout.edit_contact || PublicStaticVariables.currentLayout == R.layout.share) {
+            mi.setVisible(!drawerOpen);
+            mi.setIcon(android.R.drawable.ic_menu_share);
+            return super.onPrepareOptionsMenu(menu);
+        } else if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
+            TextView tv = (TextView) findViewById(R.id.flag_contact_exist);
+            if (tv == null || tv.getText().toString().equals(true + ""))
+                return false;
+            mi.setVisible(!drawerOpen);
+            mi.setIcon(android.R.drawable.ic_menu_add);
+            return super.onPrepareOptionsMenu(menu);
         }
+
         return false;
     }
 
     @Override
     public void onPause() {
-            if (!handleByOnNewIntent) {
-                currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
-                FilesManagement.saveTempDecryptedMSG(this);
-                //todo delete view content
-                CryptMethods.deleteKeys();
-            }
+        if (!handleByOnNewIntent) {
+            currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
+            FilesManagement.saveTempDecryptedMSG(this);
+            //todo delete view content
+            CryptMethods.deleteKeys();
+        }
         super.onPause();
     }
 
@@ -632,7 +630,7 @@ Thread addFile;
         int layout = layout_screen;
         int menu = position;
         if (layout_screen == 0 && position != -1) {
-            if (menuTitles[menu].equals("Decrypt") && PublicStaticVariables.flag_msg!=null&&PublicStaticVariables.flag_msg)
+            if (menuTitles[menu].equals("Decrypt") && PublicStaticVariables.flag_msg != null && PublicStaticVariables.flag_msg)
                 layout = R.layout.decrypted_msg;
             else
                 layout = layouts[position];
@@ -868,42 +866,42 @@ Thread addFile;
         } else {
             switch (PublicStaticVariables.currentLayout) {
                 case R.layout.encrypt:
-                    TextView contactChosen = (TextView)findViewById(R.id.contact_id_to_send);
+                    TextView contactChosen = (TextView) findViewById(R.id.contact_id_to_send);
                     View filter = findViewById(R.id.filter_ll);
-                    EditText etMessage = (EditText)findViewById(R.id.message);
-                    ImageButton ibFile = (ImageButton)findViewById(R.id.add_file);
+                    EditText etMessage = (EditText) findViewById(R.id.message);
+                    ImageButton ibFile = (ImageButton) findViewById(R.id.add_file);
                     boolean clearedSomething = false;
-                    if(filter.getVisibility()==View.VISIBLE){
+                    if (filter.getVisibility() == View.VISIBLE) {
                         filter.setVisibility(View.GONE);
-                        ((EditText)filter.findViewById(R.id.filter)).setText("");
+                        ((EditText) filter.findViewById(R.id.filter)).setText("");
                         PublicStaticVariables.adapter.refreshList();
-                        clearedSomething=true;
+                        clearedSomething = true;
                     }
-                    if(etMessage.getText().length()>0){
-                        clearedSomething=true;
+                    if (etMessage.getText().length() > 0) {
+                        clearedSomething = true;
                         etMessage.setText("");
                         PublicStaticVariables.currentText = "";
                     }
-                    if(contactChosen.getText().length()>0){
-                        clearedSomething=true;
+                    if (contactChosen.getText().length() > 0) {
+                        clearedSomething = true;
                         findViewById(R.id.en_contact).setVisibility(View.GONE);
                         contactChosen.setText("");
                         findViewById(R.id.list).setVisibility(View.VISIBLE);
                         PublicStaticVariables.luc.showIfNeeded(null);
                         invalidateOptionsMenu();
                     }
-                    if(PublicStaticVariables.fileContent!=null){
-                        clearedSomething=true;
-                        PublicStaticVariables.fileContent=null;
+                    if (PublicStaticVariables.fileContent != null) {
+                        clearedSomething = true;
+                        PublicStaticVariables.fileContent = null;
                         ibFile.setImageResource(R.drawable.ic_attachment_universal_small);
                         ibFile.clearAnimation();
                     }
-                    if(addFile!=null&&addFile.isAlive()){
+                    if (addFile != null && addFile.isAlive()) {
                         addFile.interrupt();
-                        addFile=null;
-                        clearedSomething=true;
+                        addFile = null;
+                        clearedSomething = true;
                         ibFile.setClickable(true);
-                        PublicStaticVariables.fileContent=null;
+                        PublicStaticVariables.fileContent = null;
                         ibFile.clearAnimation();
                     }
                     if (!clearedSomething)
@@ -924,12 +922,12 @@ Thread addFile;
                     setUpViews();
                     break;
                 case R.layout.contacts:
-                    clearedSomething=false;
+                    clearedSomething = false;
                     filter = findViewById(R.id.filter_ll);
-                    if(filter.getVisibility()==View.VISIBLE){
-                        clearedSomething=true;
+                    if (filter.getVisibility() == View.VISIBLE) {
+                        clearedSomething = true;
                         PublicStaticVariables.adapter.refreshList();
-                        ((TextView)filter.findViewById(R.id.filter)).setText("");
+                        ((TextView) filter.findViewById(R.id.filter)).setText("");
                         filter.setVisibility(View.GONE);
                     }
                     if (!clearedSomething)
@@ -1047,11 +1045,10 @@ Thread addFile;
             msgSended = false;
         }
         //this is for when coming to the app with share
-        if (PublicStaticVariables.currentLayout == R.layout.encrypt){
-            attachFile((Uri)getIntent().getParcelableExtra("attach"));
-            //((EditText)findViewById(R.id.message)).setText(PublicStaticVariables.currentText);
+        if (PublicStaticVariables.currentLayout == R.layout.encrypt) {
+            attachFile((Uri) getIntent().getParcelableExtra("attach"));
         }
-        if(PublicStaticVariables.flag_msg){
+        if (PublicStaticVariables.flag_msg != null && PublicStaticVariables.flag_msg) {
             FilesManagement.getTempDecryptedMSG(this);
         }
     }

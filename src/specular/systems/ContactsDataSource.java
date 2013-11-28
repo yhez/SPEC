@@ -52,27 +52,29 @@ public class ContactsDataSource {
         database.delete(MySQLiteHelper.TABLE_CONTACTS, MySQLiteHelper.COLUMN_ID
                 + " = " + id, null);
         dbHelper.close();
-        if (!(position < 0)){
+        if (!(position < 0)) {
             PublicStaticVariables.adapter.removeCont(position);
         }
     }
+
     public void updateDB(long id, String contactName, String email,
-                         String publicKey, String session, int conversationStatus){
+                         String publicKey, String session, int conversationStatus) {
         ContentValues cv = new ContentValues();
-        if(contactName!=null)
-            cv.put(MySQLiteHelper.COLUMN_CONTACT_NAME,contactName);
-        if(email!=null)
-            cv.put(MySQLiteHelper.COLUMN_EMAIL,email);
-        if(publicKey!=null)
-            cv.put(MySQLiteHelper.COLUMN_PUBLIC_KEY,publicKey);
-        if(session!=null)
-            cv.put(MySQLiteHelper.COLUMN_SESSION,session);
+        if (contactName != null)
+            cv.put(MySQLiteHelper.COLUMN_CONTACT_NAME, contactName);
+        if (email != null)
+            cv.put(MySQLiteHelper.COLUMN_EMAIL, email);
+        if (publicKey != null)
+            cv.put(MySQLiteHelper.COLUMN_PUBLIC_KEY, publicKey);
+        if (session != null)
+            cv.put(MySQLiteHelper.COLUMN_SESSION, session);
         //flag -1 not changed
-        if(conversationStatus>0)
-            cv.put(MySQLiteHelper.COLUMN_FIRST,conversationStatus);
+        if (conversationStatus > 0)
+            cv.put(MySQLiteHelper.COLUMN_FIRST, conversationStatus);
         database = dbHelper.getWritableDatabase();
-        database.update(MySQLiteHelper.TABLE_CONTACTS,cv,"_id "+"="+id,null);
+        database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
     }
+
     public Contact findContact(long id) {
         database = dbHelper.getReadableDatabase();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,

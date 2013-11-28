@@ -22,7 +22,7 @@ public class ContactQR extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         TextView tv;
-        String pb = ((TextView)getActivity().findViewById(R.id.contact_pb)).getText().toString();
+        String pb = ((TextView) getActivity().findViewById(R.id.contact_pb)).getText().toString();
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(pb, BarcodeFormat.QR_CODE.toString(), 512);
         Bitmap bitmap;
         try {

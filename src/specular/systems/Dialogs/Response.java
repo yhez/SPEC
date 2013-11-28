@@ -80,7 +80,7 @@ public class Response extends DialogFragment {
                 final String userInput = et.getText().toString();
                 final MessageFormat msg = new MessageFormat(null, "", userInput,
                         contact.getSession());
-                final ProgressDlg prgd = new ProgressDlg(getActivity(),"Encrypting");
+                final ProgressDlg prgd = new ProgressDlg(getActivity(), "Encrypting");
                 prgd.setCancelable(false);
                 prgd.show();
                 new Thread(new Runnable() {
@@ -94,8 +94,8 @@ public class Response extends DialogFragment {
                             if (files == null)
                                 Toast.makeText(getActivity(), R.string.failed_attach_files, Toast.LENGTH_LONG).show();
                             else {
-                                SendMsgDialog sendMsgDialog=new SendMsgDialog(files,contact.getEmail());
-                                sendMsgDialog.show(getFragmentManager(),"smd");
+                                SendMsgDialog sendMsgDialog = new SendMsgDialog(files, contact.getEmail());
+                                sendMsgDialog.show(getFragmentManager(), "smd");
                             }
                         } else {
                             Toast.makeText(getActivity(), R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();

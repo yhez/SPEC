@@ -148,7 +148,6 @@ public class FragmentManagement extends Fragment {
         imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
         if (PublicStaticVariables.luc == null)
             PublicStaticVariables.luc = new LastUsedContacts(getActivity());
-        Contact contact;
         switch (PublicStaticVariables.currentLayout) {
             case create_new_keys:
                 addSocialLogin(rootView);
@@ -685,7 +684,7 @@ public class FragmentManagement extends Fragment {
         imm.hideSoftInputFromWindow(getActivity().findViewById(R.id.filter).getWindowToken(), 0);
         getActivity().findViewById(R.id.filter_ll).setVisibility(View.GONE);
         getActivity().findViewById(R.id.list).setVisibility(View.GONE);
-        PublicStaticVariables.luc.hide();
+        PublicStaticVariables.luc.showIfNeeded(null);
         Contact cvc = PublicStaticVariables.contactsDataSource.findContact(contactID);
         ((TextView) getActivity().findViewById(R.id.contact_id_to_send)).setText(contactID + "");
         ((TextView) getActivity().findViewById(R.id.chosen_name)).setText(cvc.getContactName());

@@ -49,18 +49,13 @@ public class LastUsedContacts {
         return small;
     }
 
-    public void hide() {
-        View v =a.findViewById(R.id.frame_grid_last);
-                if(v!=null)v.setVisibility(View.GONE);
-    }
-
-    public void showIfNeeded(View a) {
-        if (PublicStaticVariables.fullList.size()<PublicStaticVariables.minContactSize
-                ||lasts.length == 0 || lasts[0] == null){
-            if(a!=null)
-                a.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
+    public void showIfNeeded(View v) {
+        if (PublicStaticVariables.fullList.size() < PublicStaticVariables.minContactSize
+                || lasts.length == 0 || lasts[0] == null) {
+            if (v != null)
+                v.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
             else
-                this.a.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
+                a.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
             return;
         }
         final ViewGroup vg = (ViewGroup) a.findViewById(R.id.grid_lasts);
@@ -73,7 +68,7 @@ public class LastUsedContacts {
             if (lasts[c] != null)
                 vlc[c].setContent(lasts[c]);
         for (int af = 0; af < vg.getChildCount(); af++) {
-            if(vg.getChildAt(af)==null)
+            if (vg.getChildAt(af) == null)
                 break;
             final ViewGroup vg2 = (ViewGroup) vg.getChildAt(af);
             vg2.getChildAt(0).setOnClickListener(new View.OnClickListener() {

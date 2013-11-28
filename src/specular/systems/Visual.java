@@ -62,9 +62,10 @@ public class Visual {
                 }
             }
     }
-    public static void edit(Activity a,EditText et, ImageButton ib){
-        Log.d("click",et.getKeyListener()+"");
-        if(et.getKeyListener()==null){
+
+    public static void edit(Activity a, EditText et, ImageButton ib) {
+        Log.d("click", et.getKeyListener() + "");
+        if (et.getKeyListener() == null) {
             ib.setImageResource(R.drawable.save);
             et.setKeyListener(PublicStaticVariables.edit);
             et.setFocusable(true);
@@ -72,7 +73,7 @@ public class Visual {
             et.requestFocus();
             InputMethodManager imm = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(et, 0);
-        }else{
+        } else {
             ib.setImageResource(R.drawable.edit);
             et.setKeyListener(null);
             et.setFocusable(false);

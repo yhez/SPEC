@@ -43,8 +43,8 @@ public class PublicStaticVariables {
     public final static int RESULT_ADD_FILE_FAILED = 5, RESULT_ADD_FILE_TO_BIG = 10, RESULT_ADD_FILE_EMPTY = 20, RESULT_ADD_FILE_OK = 40;
     //restore decrypted msg after pause
     public static Boolean flag_hash, flag_session, flag_replay;
-    public static String hash,timeStamp,friendsPublicKey,name,email;
+    public static String hash, timeStamp, friendsPublicKey, name, email;
     public static Boolean flag_msg;
     //should be delete when goes to background
-    public static String msg_content=null,file_name=null,session=null;
+    public static String msg_content = null, file_name = null, session = null;
 }

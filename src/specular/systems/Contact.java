@@ -100,7 +100,7 @@ public class Contact {
                 + session + "\nConversation status: " + conversationStatus;
     }
 
-    public void update(int index,String contactName, String email,
+    public void update(int index, String contactName, String email,
                        String publicKey, String session, int conversationStatus) {
         PublicStaticVariables.fullList.remove(
                 PublicStaticVariables.currentList.get(index));
@@ -117,7 +117,7 @@ public class Contact {
         if (!(conversationStatus < 0))
             this.conversationStatus = conversationStatus;
         PublicStaticVariables.contactsDataSource.updateDB(id,
-                contactName,email,publicKey,session,conversationStatus);
+                contactName, email, publicKey, session, conversationStatus);
         PublicStaticVariables.adapter.updateCont(this);
     }
 }

@@ -71,17 +71,17 @@ public final class FilesManagement {
     }
 
     public static void saveTempDecryptedMSG(Activity a) {
-        if (PublicStaticVariables.currentLayout!=R.layout.decrypted_msg||PublicStaticVariables.decryptedMsg == null)
+        if (PublicStaticVariables.currentLayout != R.layout.decrypted_msg || PublicStaticVariables.decryptedMsg == null)
             return;
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         SharedPreferences.Editor edt = srp.edit();
         edt.putString("msg", PublicStaticVariables.decryptedMsg.getMsgContent());
         edt.putString("file_name", PublicStaticVariables.decryptedMsg.getFileName());
-        edt.putString("session",PublicStaticVariables.decryptedMsg.getSession());
-        PublicStaticVariables.session=null;
-        PublicStaticVariables.file_name=null;
-        PublicStaticVariables.msg_content=null;
+        edt.putString("session", PublicStaticVariables.decryptedMsg.getSession());
+        PublicStaticVariables.session = null;
+        PublicStaticVariables.file_name = null;
+        PublicStaticVariables.msg_content = null;
         edt.commit();
     }
 
@@ -92,10 +92,10 @@ public final class FilesManagement {
         edt.remove("msg");
         edt.remove("file_name");
         edt.remove("session");
-        PublicStaticVariables.flag_msg=false;
-        PublicStaticVariables.session=null;
-        PublicStaticVariables.file_name=null;
-        PublicStaticVariables.msg_content=null;
+        PublicStaticVariables.flag_msg = false;
+        PublicStaticVariables.session = null;
+        PublicStaticVariables.file_name = null;
+        PublicStaticVariables.msg_content = null;
         edt.commit();
     }
 
@@ -103,8 +103,8 @@ public final class FilesManagement {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         PublicStaticVariables.msg_content = srp.getString("msg", null);
-        PublicStaticVariables.session = srp.getString("session",null);
-        PublicStaticVariables.file_name=srp.getString("file_name",null);
+        PublicStaticVariables.session = srp.getString("session", null);
+        PublicStaticVariables.file_name = srp.getString("file_name", null);
     }
 
     public static Typeface getOld(Activity a) {
@@ -267,7 +267,7 @@ public final class FilesManagement {
 
     public static void save(Activity a) {
         if (a != null) {
-            myQRPublicKey=null;
+            myQRPublicKey = null;
             CryptMethods.moveKeysFromTmp();
             SharedPreferences srp = PreferenceManager
                     .getDefaultSharedPreferences(a.getApplicationContext());
