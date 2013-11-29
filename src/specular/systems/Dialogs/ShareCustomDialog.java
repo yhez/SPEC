@@ -19,7 +19,6 @@ import android.widget.Toast;
 import java.io.InputStream;
 import java.util.List;
 
-import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
 import specular.systems.R;
 import specular.systems.Visual;
@@ -109,30 +108,6 @@ public class ShareCustomDialog extends DialogFragment {
             });
             glFile.addView(b);
         }
-        glFile = (GridLayout) v.findViewById(R.id.gl_app_text);
-        file = getApps("text/*");
-        for (ResolveInfo aFile : file) {
-            ImageButton b = new ImageButton(getActivity());
-            b.setBackgroundColor(Color.TRANSPARENT);
-            final ResolveInfo rs = aFile;
-            b.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
-            b.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ComponentName cn;
-                    cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
-                    Intent i = new Intent();
-                    i.setComponent(cn);
-                    i.setType("text/*");
-                    i.setAction(Intent.ACTION_SEND);
-                    i.putExtra(Intent.EXTRA_SUBJECT,
-                            getResources().getString(R.string.subject_share));
-                    i.putExtra(Intent.EXTRA_TEXT, CryptMethods.getPublic());
-                    startActivity(i);
-                }
-            });
-            glFile.addView(b);
-        }
         Visual.setAllFonts(getActivity(), (ViewGroup) v);
         return builder.create();
     }
@@ -140,6 +115,15 @@ public class ShareCustomDialog extends DialogFragment {
     private List<ResolveInfo> getApps(String type) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType(type);
-        return getActivity().getPackageManager().queryIntentActivities(intent, 0);
+        List<ResolveInfo> tmp = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+        intent.setAction(Intent.ACTION_VIEW);
+        List<ResolveInfo> view = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+        tmp.removeAll(view);
+        for(int a=0;a<tmp.size();a++)
+            if(tmp.get(a).activityInfo.packageName.equals(getActivity().getPackageName())){
+                tmp.remove(a);
+                break;
+            }
+        return tmp;
     }
 }

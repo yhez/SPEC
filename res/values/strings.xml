@@ -136,6 +136,9 @@
     <string name="profile_my_email">my email:</string>
     <string name="send_file">send file</string>
     <string name="send_image">send QR image</string>
+    <string name="hash_title">HASH info:</string>
+    <string name="session_title">SESSION info:</string>
+    <string name="replay_title">REPLAY info:</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

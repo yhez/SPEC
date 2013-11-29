@@ -78,7 +78,6 @@ public class SendMsgDialog extends DialogFragment {
             EditText etFile = (EditText) v.findViewById(R.id.name_file);
             etFile.setText(getName(FILE));
             etFile.setFilters(new InputFilter[]{filter});
-
         }
         if (uris.get(1) != null) {
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(PublicStaticVariables.encryptedMsgToSend,
@@ -265,8 +264,10 @@ public class SendMsgDialog extends DialogFragment {
                 //todo both null
             }
         } else {
+            v.findViewById(R.id.gl_app_file).setVisibility(View.GONE);
+            v.findViewById(R.id.divider2).setVisibility(View.GONE);
+            v.findViewById(R.id.title_file).setVisibility(View.GONE);
             loadIcons(IMAGE);
-            loadIcons(FILE);
             loadIcons(BOTH);
         }
     }

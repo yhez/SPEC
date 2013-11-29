@@ -536,7 +536,11 @@ public class FragmentManagement extends Fragment {
                 } else if (PublicStaticVariables.flag_msg == null || !PublicStaticVariables.flag_msg) {
                     rootView.findViewById(R.id.top_pannel).setVisibility(View.GONE);
                     rootView.findViewById(R.id.open_file_rlt).setVisibility(View.GONE);
+                    rootView.findViewById(R.id.open_file_rlt).setVisibility(View.GONE);
+                    rootView.findViewById(R.id.from).setVisibility(View.GONE);
+                    ((TextView)rootView.findViewById(R.id.flag_contact_exist)).setText(true+"");
                     ((TextView) rootView.findViewById(R.id.decrypted_msg)).setText(R.string.cant_decrypt);
+                    getActivity().invalidateOptionsMenu();
                 } else {
 
                 }
@@ -548,8 +552,8 @@ public class FragmentManagement extends Fragment {
                 final EditText etMyEmail = (EditText) rootView.findViewById(R.id.test1).findViewById(R.id.edit_text);
                 final TextView tvMyName = (TextView) rootView.findViewById(R.id.test).findViewById(R.id.text_view);
                 final TextView tvMyEmail = (TextView) rootView.findViewById(R.id.test1).findViewById(R.id.text_view);
-                tvMyName.setText("my name\t");
-                tvMyEmail.setText("my email\t");
+                tvMyName.setText(R.string.profile_my_name);
+                tvMyEmail.setText(R.string.profile_my_email);
                 etMyName.setText(CryptMethods.getName());
                 if (PublicStaticVariables.edit == null)
                     PublicStaticVariables.edit = etMyName.getKeyListener();

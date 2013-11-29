@@ -3,93 +3,128 @@ package specular.systems.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
+import android.content.ComponentName;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.List;
 
 import specular.systems.FilesManagement;
 import specular.systems.R;
+import specular.systems.Visual;
+
 
 public class ShareContactDlg extends DialogFragment {
-    private ArrayList mSelectedItems;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
-        mSelectedItems = new ArrayList();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getString(R.string.what_to_share) + "\n" + getTag())
-                // Specify the list array, the items to be selected by default (null for none),
-                // and the listener through which to receive callbacks when items are selected
-                .setMultiChoiceItems(R.array.choice, null,
-                        new DialogInterface.OnMultiChoiceClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which,
-                                                boolean isChecked) {
-                                if (isChecked) {
-                                    // If the user checked the item, add it to the selected items
-                                    mSelectedItems.add(which);
-                                } else if (mSelectedItems.contains(which)) {
-                                    // Else, if the item is already in the array, remove it
-                                    mSelectedItems.remove(Integer.valueOf(which));
-                                }
-                            }
-                        })
-                        // Set the action buttons
-                .setPositiveButton(R.string.share_button, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        if (mSelectedItems.size() == 0) {
-                            Toast.makeText(getActivity(), R.string.not_chosen, Toast.LENGTH_LONG).show();
-                        } else {
-                            Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                            intent.setType("*/*");
-                            intent.putExtra(Intent.EXTRA_SUBJECT,
-                                    getString(R.string.share_contact_subject));
-                            try {
-                                InputStream is = getActivity().getAssets().open("spec_temp_share_contact.html");
-                                int size = is.available();
-                                byte[] buffer = new byte[size];
-                                is.read(buffer);
-                                is.close();
-                                intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
-                            } catch (Exception e) {
-                                Toast.makeText(getActivity(), R.string.failed, Toast.LENGTH_LONG)
-                                        .show();
-                            }
-                            ArrayList<Uri> file = new ArrayList<Uri>();
-                            if (mSelectedItems.contains(Integer.valueOf(0))) {
-                                file.add(FilesManagement.getContactCardToShare(getActivity()));
-                            }
-                            if (mSelectedItems.contains(Integer.valueOf(1))) {
-                                file.add(FilesManagement.getQRFriendToShare(getActivity()));
-                            }
-                            if (file.size() > 0) {
-                                intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, file);
-                            }
-                            if (mSelectedItems.contains(Integer.valueOf(2))) {
-                                intent.putExtra(Intent.EXTRA_TEXT, ((TextView) getActivity().findViewById(R.id.contact_pb)).getText().toString());
-                            }
-                            startActivity(Intent.createChooser(intent, getResources()
-                                    .getString(R.string.share_dialog)));
-                        }
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //...
-                        dialog.cancel();
-                    }
-                });
+        // Get the layout inflater
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        View v = inflater.inflate(R.layout.share_contact_dialog, null);
 
+        builder.setView(v);
+        ((TextView)v.findViewById(R.id.contact_to_share)).setText("Share:\n"+getTag());
+        GridLayout glFile = (GridLayout) v.findViewById(R.id.gl_app_file);
+        List<ResolveInfo> file = getApps("file/*");
+        for (ResolveInfo aFile : file) {
+            ImageButton b = new ImageButton(getActivity());
+            b.setBackgroundColor(Color.TRANSPARENT);
+            final ResolveInfo rs = aFile;
+            b.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ComponentName cn;
+                    cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
+                    Intent i = new Intent();
+                    i.setComponent(cn);
+                    i.setType("file/*");
+                    i.setAction(Intent.ACTION_SEND);
+                    i.putExtra(Intent.EXTRA_STREAM, FilesManagement.getContactCardToShare(getActivity()));
+                    try {
+                        InputStream is = getActivity().getAssets().open("spec_temp_share_contact.html");
+                        int size = is.available();
+                        byte[] buffer = new byte[size];
+                        is.read(buffer);
+                        is.close();
+                        i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+                    } catch (Exception e) {
+                        Toast.makeText(getActivity(), R.string.failed, Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    i.putExtra(Intent.EXTRA_SUBJECT,
+                            getResources().getString(R.string.share_contact_subject));
+                    startActivity(i);
+                }
+            });
+            glFile.addView(b);
+        }
+
+        glFile = (GridLayout) v.findViewById(R.id.gl_app_image);
+        file = getApps("image/png");
+        for (ResolveInfo aFile : file) {
+            ImageButton b = new ImageButton(getActivity());
+            b.setBackgroundColor(Color.TRANSPARENT);
+            final ResolveInfo rs = aFile;
+            b.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ComponentName cn;
+                    cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
+                    Intent i = new Intent();
+                    i.setComponent(cn);
+                    i.setType("image/png");
+                    i.setAction(Intent.ACTION_SEND);
+                    i.putExtra(Intent.EXTRA_STREAM, FilesManagement.getQRFriendToShare(getActivity()));
+                    try {
+                        InputStream is = getActivity().getAssets().open("spec_temp_share_contact.html");
+                        int size = is.available();
+                        byte[] buffer = new byte[size];
+                        is.read(buffer);
+                        is.close();
+                        i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+                    } catch (Exception e) {
+                        Toast.makeText(getActivity(), R.string.failed, Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    i.putExtra(Intent.EXTRA_SUBJECT,
+                            getResources().getString(R.string.share_contact_subject));
+                    startActivity(i);
+                }
+            });
+            glFile.addView(b);
+        }
+        Visual.setAllFonts(getActivity(), (ViewGroup) v);
         return builder.create();
+    }
+
+    private List<ResolveInfo> getApps(String type) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType(type);
+        List<ResolveInfo> tmp = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+        intent.setAction(Intent.ACTION_VIEW);
+        List<ResolveInfo> view = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+        tmp.removeAll(view);
+        for(int a=0;a<tmp.size();a++)
+            if(tmp.get(a).activityInfo.packageName.equals(getActivity().getPackageName())){
+                tmp.remove(a);
+                break;
+            }
+        return tmp;
     }
 }

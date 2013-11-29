@@ -15,7 +15,7 @@ import specular.systems.Visual;
 
 
 public class ExplainDialog extends DialogFragment {
-    int title, content;
+    int title,title2, content;
     final String details;
     public final static int HASH = 0, SESSION = 1, REPLAY = 2;
 
@@ -24,14 +24,17 @@ public class ExplainDialog extends DialogFragment {
             case HASH:
                 content = R.string.hash_explain;
                 title = R.string.what_is_hash;
+                title2 = R.string.hash_title;
                 break;
             case SESSION:
                 content = R.string.session_explain;
                 title = R.string.what_is_session;
+                title2 = R.string.session_title;
                 break;
             case REPLAY:
                 content = R.string.replay_explain;
                 title = R.string.what_is_replay;
+                title2 = R.string.replay_title;
                 break;
         }
         this.details = details;
@@ -44,7 +47,7 @@ public class ExplainDialog extends DialogFragment {
         View v = inflater.inflate(R.layout.tech_details, null);
         builder.setView(v);
         final TextView tvTitle = (TextView) v.findViewById(R.id.title);
-        tvTitle.setText(R.string.technical_info);
+        tvTitle.setText(title2);
         final TextView tvContent = (TextView) v.findViewById(R.id.text_content);
         tvContent.setText(details);
         final Button btDetails = (Button) v.findViewById(R.id.my_details);
@@ -59,7 +62,7 @@ public class ExplainDialog extends DialogFragment {
         btDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tvTitle.setText(R.string.technical_info);
+                tvTitle.setText(title2);
                 tvContent.setText(details);
             }
         });
