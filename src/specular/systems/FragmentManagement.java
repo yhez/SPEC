@@ -99,26 +99,23 @@ public class FragmentManagement extends Fragment {
             fileAttach.setVisibility(View.GONE);
         } else {
             fileAttach.setVisibility(View.VISIBLE);
-            String ext = PublicStaticVariables.file_name.substring(PublicStaticVariables.file_name.indexOf(".") + 1);
+            String ext = PublicStaticVariables.file_name.substring(PublicStaticVariables.file_name.lastIndexOf(".") + 1);
             MimeTypeMap mtm = MimeTypeMap.getSingleton();
             String type = mtm.getMimeTypeFromExtension(ext);
-            //todo my own icons...
-            if (type.startsWith("audio"))
+            if (type == null)
+                imageButton.setImageResource(R.drawable.unknown2);
+            else if (type.startsWith("audio"))
                 imageButton.setImageResource(R.drawable.music);
             else if (type.startsWith("video"))
                 imageButton.setImageResource(R.drawable.movie);
             else if (type.startsWith("image"))
                 imageButton.setImageResource(R.drawable.image);
-            else if (type.equals("application/vnd.android.package-archive"))
-                imageButton.setImageResource(R.drawable.apk);
             else if (type.contains("zip"))
                 imageButton.setImageResource(R.drawable.compressed);
             else if (type.contains("text"))
                 imageButton.setImageResource(R.drawable.text);
-            else if (ext.equals("doc") || ext.equals("docx"))
-                imageButton.setImageResource(R.drawable.word);
-            else if (ext.equals("pdf"))
-                imageButton.setImageResource(R.drawable.pdf);
+            else if(type.equals("application/vnd.android.package-archive"))
+                imageButton.setImageResource(R.drawable.apk);
             else {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setType(type);
@@ -128,8 +125,8 @@ public class FragmentManagement extends Fragment {
                 else
                     imageButton.setImageResource(R.drawable.unknown2);
             }
-            fileName.setText(PublicStaticVariables.file_name);
         }
+        fileName.setText(PublicStaticVariables.file_name);
         tv.setText(PublicStaticVariables.msg_content);
         int ok = R.drawable.ic_ok, notOk = R.drawable.ic_bad;
         hs.setImageResource(PublicStaticVariables.flag_hash ? ok : notOk);
@@ -538,7 +535,7 @@ public class FragmentManagement extends Fragment {
                     rootView.findViewById(R.id.open_file_rlt).setVisibility(View.GONE);
                     rootView.findViewById(R.id.open_file_rlt).setVisibility(View.GONE);
                     rootView.findViewById(R.id.from).setVisibility(View.GONE);
-                    ((TextView)rootView.findViewById(R.id.flag_contact_exist)).setText(true + "");
+                    ((TextView) rootView.findViewById(R.id.flag_contact_exist)).setText(true + "");
                     ((TextView) rootView.findViewById(R.id.decrypted_msg)).setText(R.string.cant_decrypt);
                     getActivity().invalidateOptionsMenu();
                 } else {

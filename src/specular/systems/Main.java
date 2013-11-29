@@ -115,6 +115,7 @@ public class Main extends Activity {
     boolean exit = false;
     Toast t;
     boolean msgSended = false;
+    Thread addFile;
     private int layouts[];
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -222,7 +223,7 @@ public class Main extends Activity {
             case R.id.open_file:
                 String name = PublicStaticVariables.file_name;
                 File f = new File(Environment.getExternalStorageDirectory(), name);
-                String ext = f.getName().substring(f.getName().indexOf(".") + 1);
+                String ext = name.substring(name.lastIndexOf(".") + 1);
                 MimeTypeMap mtm = MimeTypeMap.getSingleton();
                 String type = mtm.getMimeTypeFromExtension(ext);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -299,8 +300,6 @@ public class Main extends Activity {
             addFile.start();
         }
     }
-
-    Thread addFile;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -503,6 +502,7 @@ public class Main extends Activity {
         } else
             setUpViews();
     }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         // TODO Auto-generated method stub
@@ -510,8 +510,9 @@ public class Main extends Activity {
         //Here you can get the size!
         //View fd = findViewById(R.id.contact_picture);
         //if(fd!=null)
-         //  new CustomToast(this,fd,"");
+        //  new CustomToast(this,fd,"");
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the main.
