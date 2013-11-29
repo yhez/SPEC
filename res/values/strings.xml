@@ -102,7 +102,7 @@
     <string name="no_result">Can\'t find contact</string>
     <string name="ok_for_explain">Cool!</string><string name="contact_to_share">Contact to share:
  </string>
-    <string name="share_contact_subject">Share Contact Card</string>
+    <string name="share_contact_subject">Shared Contact Card, Recommendation - SPEC APP</string>
     <string name="quick_msg">Quick Message:</string>
     <string name="file_name_shared_contact_card">SharedContactCard.SPEC</string>
     <string name="file_name_friends_qr">SharedQR.SPEC.png</string>
