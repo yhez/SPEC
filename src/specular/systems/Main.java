@@ -503,7 +503,15 @@ public class Main extends Activity {
         } else
             setUpViews();
     }
-
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // TODO Auto-generated method stub
+        super.onWindowFocusChanged(hasFocus);
+        //Here you can get the size!
+        //View fd = findViewById(R.id.contact_picture);
+        //if(fd!=null)
+         //  new CustomToast(this,fd,"");
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the main.

@@ -538,7 +538,7 @@ public class FragmentManagement extends Fragment {
                     rootView.findViewById(R.id.open_file_rlt).setVisibility(View.GONE);
                     rootView.findViewById(R.id.open_file_rlt).setVisibility(View.GONE);
                     rootView.findViewById(R.id.from).setVisibility(View.GONE);
-                    ((TextView)rootView.findViewById(R.id.flag_contact_exist)).setText(true+"");
+                    ((TextView)rootView.findViewById(R.id.flag_contact_exist)).setText(true + "");
                     ((TextView) rootView.findViewById(R.id.decrypted_msg)).setText(R.string.cant_decrypt);
                     getActivity().invalidateOptionsMenu();
                 } else {
