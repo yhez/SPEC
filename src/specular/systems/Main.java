@@ -28,6 +28,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -199,10 +200,16 @@ public class Main extends Activity {
 
     private String getFileName(Uri contentURI) {
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null)
+        if (cursor == null){
+            Log.d("getname",contentURI.getLastPathSegment());
             return contentURI.getLastPathSegment();
+        }
         cursor.moveToFirst();
         String rs = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME));
+        if(!rs.contains(".")){
+            rs+="."+MimeTypeMap.getSingleton().getExtensionFromMimeType(
+                    cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)));
+        }
         cursor.close();
         return rs;
     }
@@ -949,16 +956,7 @@ public class Main extends Activity {
                     setUpViews();
                     break;
                 case R.layout.edit_contact:
-                    //String name = ((TextView) findViewById(R.id.orig_name)).getText().toString();
-                    //String email = ((TextView) findViewById(R.id.orig_eamil)).getText().toString();
-                    //String newName = ((EditText) findViewById(R.id.contact_name)).getText().toString();
-                    //String newEmail = ((EditText) findViewById(R.id.contact_email)).getText().toString();
-                    //if (name.equals(newName) && email.equals(newEmail))
                     selectItem(-1, R.layout.contacts);
-                    //else {
-                    //    ExitWithoutSave dlg = new ExitWithoutSave();
-                    //    dlg.show(getFragmentManager(), "exit");
-                    //}
                     break;
                 case R.layout.profile:
                     selectItem(-1, R.layout.share);

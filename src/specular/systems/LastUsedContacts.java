@@ -1,6 +1,5 @@
 package specular.systems;
 
-import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -13,16 +12,14 @@ public class LastUsedContacts {
     final int NUM_LASTS = 4;
     final Contact[] lasts;
     ViewLastContact[] vlc;
-    final Activity a;
     final long[] ids;
     int[] num;
 
-    public LastUsedContacts(Activity a) {
-        this.a = a;
+    public LastUsedContacts() {
         lasts = new Contact[NUM_LASTS];
         ids = new long[NUM_LASTS];
         num = new int[NUM_LASTS];
-        String m = FilesManagement.getlasts(a);
+        String m = FilesManagement.getlasts(PublicStaticVariables.main);
         if (m != null) {
             String[] t = m.split(",");
             num = new int[t.length];
@@ -54,17 +51,15 @@ public class LastUsedContacts {
                 || lasts.length == 0 || lasts[0] == null) {
             if (v != null)
                 v.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
-            else{
-                View vu = a.findViewById(R.id.frame_grid_last);
-                if(vu!=null)vu.setVisibility(View.GONE);//ugly fix
-            }
+            else
+                PublicStaticVariables.main.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
             return;
         }
-        final ViewGroup vg = (ViewGroup) a.findViewById(R.id.grid_lasts);
-        a.findViewById(R.id.frame_grid_last).setVisibility(View.VISIBLE);
+        final ViewGroup vg = (ViewGroup) PublicStaticVariables.main.findViewById(R.id.grid_lasts);
+        PublicStaticVariables.main.findViewById(R.id.frame_grid_last).setVisibility(View.VISIBLE);
         vlc = new ViewLastContact[NUM_LASTS];
         for (int c = 0; c < NUM_LASTS; c++) {
-            vlc[c] = new ViewLastContact((LinearLayout) ((GridLayout) a.findViewById(R.id.grid_lasts)).getChildAt(c));
+            vlc[c] = new ViewLastContact((LinearLayout) ((GridLayout) PublicStaticVariables.main.findViewById(R.id.grid_lasts)).getChildAt(c));
         }
         for (int c = 0; c < NUM_LASTS; c++)
             if (lasts[c] != null)
@@ -110,7 +105,7 @@ public class LastUsedContacts {
         String raw = "";
         for (int n = 0; n < NUM_LASTS; n++)
             raw += ids[n] + "-" + num[n] + ",";
-        FilesManagement.updateLasts(a, raw);
+        FilesManagement.updateLasts(PublicStaticVariables.main, raw);
     }
 
     class ViewLastContact {
