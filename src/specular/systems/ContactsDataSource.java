@@ -73,6 +73,7 @@ public class ContactsDataSource {
             cv.put(MySQLiteHelper.COLUMN_FIRST, conversationStatus);
         database = dbHelper.getWritableDatabase();
         database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
+        database.close();
     }
 
     public Contact findContact(long id) {

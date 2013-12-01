@@ -7,10 +7,12 @@
     android:orientation="vertical">
 
     <TextView
+        android:textColor="@color/spec_black"
+        android:padding="@dimen/default_gap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:gravity="start"
+        android:gravity="center_horizontal"
         android:text="@string/quick_msg"
         android:textSize="20sp" />
 
@@ -39,7 +41,7 @@
             android:layout_weight="1.0"
             android:autoText="true"
             android:capitalize="sentences"
-            android:gravity="bottom|start"
+            android:gravity="center_vertical|start"
             android:hint="@string/hint_msg"
             android:imeOptions="actionSend"
             android:inputType="textAutoCorrect|textCapSentences|textMultiLine"

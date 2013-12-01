@@ -54,7 +54,7 @@ import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 public class FragmentManagement extends Fragment {
-    private final int TURN_TEXT_TRIGGER = 0,CHECK_HASH_ENDED=1;
+    private final int TURN_TEXT_TRIGGER = 0, CHECK_HASH_ENDED = 1;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -67,18 +67,16 @@ public class FragmentManagement extends Fragment {
                     et.setText(ss);
                     break;
                 case CHECK_HASH_ENDED:
-                    ImageButton hshs = (ImageButton)rootView.findViewById(R.id.hash);
+                    ImageButton hshs = (ImageButton) rootView.findViewById(R.id.hash);
                     hshs.setClickable(true);
                     hshs.clearAnimation();
-                    ImageView iv = (ImageView)rootView.findViewById(R.id.hash_check);
+                    ImageView iv = (ImageView) rootView.findViewById(R.id.hash_check);
                     iv.setVisibility(View.VISIBLE);
                     iv.setImageResource(PublicStaticVariables.flag_hash ? R.drawable.ic_ok : R.drawable.ic_bad);
                     break;
             }
         }
     };
-    //for touch response
-    private float startPointX, startPointY, width, height;
     Thread checkHash = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -87,25 +85,30 @@ public class FragmentManagement extends Fragment {
             hndl.sendEmptyMessage(CHECK_HASH_ENDED);
         }
     });
+    View rootView;
+    //for touch response
+    private float startPointX, startPointY, width, height;
+
     public FragmentManagement() {
         PublicStaticVariables.fragmentManagement = this;
     }
 
     public void updateDecryptedScreen() {
-        TextView tv = (TextView)rootView.findViewById(R.id.decrypted_msg);
-        TextView contactExist = (TextView)rootView.findViewById(R.id.flag_contact_exist);
-        TextView sender = (TextView)rootView.findViewById(R.id.general_details);
+        TextView tv = (TextView) rootView.findViewById(R.id.decrypted_msg);
+        TextView contactExist = (TextView) rootView.findViewById(R.id.flag_contact_exist);
+        TextView sender = (TextView) rootView.findViewById(R.id.general_details);
         View fileAttach = rootView.findViewById(R.id.open_file_rlt);
-        ImageButton imageButton = (ImageButton)rootView.findViewById(R.id.open_file);
-        TextView fileName = (TextView)rootView.findViewById(R.id.file_name);
-        ImageView hs = (ImageView)rootView.findViewById(R.id.hash_check);
-        ImageView ss = (ImageView)rootView.findViewById(R.id.session_check);
-        ImageView rp = (ImageView)rootView.findViewById(R.id.replay_check);
-        ImageButton imageButtonh = (ImageButton)rootView.findViewById(R.id.hash);
+        ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.open_file);
+        TextView fileName = (TextView) rootView.findViewById(R.id.file_name);
+        ImageView hs = (ImageView) rootView.findViewById(R.id.hash_check);
+        ImageView ss = (ImageView) rootView.findViewById(R.id.session_check);
+        ImageView rp = (ImageView) rootView.findViewById(R.id.replay_check);
+        ImageButton imageButtonh = (ImageButton) rootView.findViewById(R.id.hash);
         Contact c = PublicStaticVariables.contactsDataSource.findContact(PublicStaticVariables.friendsPublicKey);
         if (c != null) {
             contactExist.setText(true + "");
             sender.setText("From:\t" + c.getContactName() + " , " + c.getEmail());
+            PublicStaticVariables.flag_session = Session.checkAndUpdate(c, PublicStaticVariables.session);
         } else {
             sender.setText("From:\t"
                     + PublicStaticVariables.name
@@ -122,7 +125,7 @@ public class FragmentManagement extends Fragment {
             String type = mtm.getMimeTypeFromExtension(ext);
             if (type == null)
                 imageButton.setImageResource(R.drawable.unknown2);
-            else if (type.startsWith("audio")||type.equals("application/ogg"))
+            else if (type.startsWith("audio") || type.equals("application/ogg"))
                 imageButton.setImageResource(R.drawable.music);
             else if (type.startsWith("video"))
                 imageButton.setImageResource(R.drawable.movie);
@@ -132,10 +135,10 @@ public class FragmentManagement extends Fragment {
                 imageButton.setImageResource(R.drawable.compressed);
             else if (type.contains("text"))
                 imageButton.setImageResource(R.drawable.text);
-            else if(type.equals("application/vnd.android.package-archive"))
+            else if (type.equals("application/vnd.android.package-archive"))
                 imageButton.setImageResource(R.drawable.apk);
             else {
-                Log.d("type",type);
+                Log.d("type", type);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setType(type);
                 List<ResolveInfo> matches = getActivity().getPackageManager().queryIntentActivities(intent, 0);
@@ -147,8 +150,8 @@ public class FragmentManagement extends Fragment {
         }
         fileName.setText(PublicStaticVariables.file_name);
         tv.setText(PublicStaticVariables.msg_content);
-        int ok = R.drawable.ic_ok, notOk = R.drawable.ic_bad;
-        if(checkHash.isAlive()){
+        int ok = R.drawable.ic_ok, notOk = R.drawable.ic_bad, unknown = R.drawable.ic_unknown, starting = R.drawable.ic_what;
+        if (checkHash.isAlive()) {
             Animation animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
             animation1.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -169,12 +172,14 @@ public class FragmentManagement extends Fragment {
             hs.setVisibility(View.INVISIBLE);
             imageButtonh.startAnimation(animation1);
             imageButtonh.setClickable(false);
-        }else
+        } else
             hs.setImageResource(PublicStaticVariables.flag_hash ? ok : notOk);
-        ss.setImageResource(PublicStaticVariables.flag_session ? ok : notOk);
+        ss.setImageResource(PublicStaticVariables.flag_session == Session.DONT_TRUST ? notOk :
+                (PublicStaticVariables.flag_session == Session.TRUSTED ? ok :
+                        (PublicStaticVariables.flag_session == Session.UNKNOWN ? unknown : starting)));
         rp.setImageResource(PublicStaticVariables.flag_replay ? ok : notOk);
     }
-    View rootView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -200,14 +205,25 @@ public class FragmentManagement extends Fragment {
                                         .getText().toString();
                                 String myName = ((EditText) rootView.findViewById(R.id.name))
                                         .getText().toString();
-                                if (!validateEmail(myEmail)) {
-                                    Toast t = Toast.makeText(getActivity(), R.string.fill_all,
+                                if (myName.length() == 0) {
+                                    myName = myEmail.split("@")[0];
+                                }
+                                if (myName.length() < 3 && myName.length() > 0) {
+                                    Toast t = Toast.makeText(getActivity(), R.string.too_short_name,
                                             Toast.LENGTH_LONG);
                                     t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                     t.show();
                                 } else {
-                                    CryptMethods.setDetails(myName, myEmail);
-                                    PublicStaticVariables.main.createKeysManager();
+                                    if (!validateEmail(myEmail)) {
+                                        Toast t = Toast.makeText(getActivity(), R.string.fill_all,
+                                                Toast.LENGTH_LONG);
+                                        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                        t.show();
+                                    } else {
+
+                                        CryptMethods.setDetails(myName, myEmail);
+                                        PublicStaticVariables.main.createKeysManager();
+                                    }
                                 }
                             }
                         return true;
@@ -550,7 +566,6 @@ public class FragmentManagement extends Fragment {
                 if (PublicStaticVariables.decryptedMsg != null) {
                     checkHash.start();
                     PublicStaticVariables.flag_replay = PublicStaticVariables.decryptedMsg.checkReplay();
-                    PublicStaticVariables.flag_session = PublicStaticVariables.decryptedMsg.checkReplay();
                     PublicStaticVariables.friendsPublicKey = PublicStaticVariables.decryptedMsg.getPublicKey();
                     PublicStaticVariables.hash = PublicStaticVariables.decryptedMsg.getHash();
                     PublicStaticVariables.timeStamp = PublicStaticVariables.decryptedMsg.getSentTime();

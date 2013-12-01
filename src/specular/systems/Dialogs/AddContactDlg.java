@@ -19,12 +19,17 @@ import specular.systems.Visual;
 
 
 public class AddContactDlg extends DialogFragment {
-    PublicContactCard pcc;
-
+    private PublicContactCard pcc;
+    private String session;
+    public AddContactDlg(PublicContactCard pcc,String session){
+        PublicStaticVariables.fileContactCard=null;
+        this.pcc=pcc;
+        this.session=session;
+    }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        pcc = PublicStaticVariables.fileContactCard;
-        PublicStaticVariables.fileContactCard = null;
+        //pcc = PublicStaticVariables.fileContactCard;
+        //PublicStaticVariables.fileContactCard = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -36,7 +41,7 @@ public class AddContactDlg extends DialogFragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Contact c = new Contact(getActivity(), pcc.getName(), pcc.getEmail(), pcc.getPublicKey());
+                        Contact c = new Contact(getActivity(), pcc.getName(), pcc.getEmail(), pcc.getPublicKey(),session);
                         if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
                             ((TextView) getActivity().findViewById(R.id.flag_contact_exist)).setText(true + "");
                             getActivity().invalidateOptionsMenu();

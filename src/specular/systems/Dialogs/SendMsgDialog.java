@@ -240,7 +240,11 @@ public class SendMsgDialog extends DialogFragment {
                 i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
                 break;
         }
-        startActivity(i);
+        try{
+            startActivity(i);
+        }catch (Exception e){
+            Toast.makeText(getActivity(),e.toString(),Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void updateViews() {

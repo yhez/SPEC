@@ -46,7 +46,6 @@
         android:id="@+id/contact_session"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_gap"
         android:gravity="left"
         android:padding="@dimen/default_gap"
         android:textColor="@color/spec_black" />

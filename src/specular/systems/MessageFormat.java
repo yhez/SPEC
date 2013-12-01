@@ -156,8 +156,6 @@ public class MessageFormat {
     }
 
     public String getName() {
-        if(name.length()==0)
-            return email.split("@")[0];
         return name;
     }
 

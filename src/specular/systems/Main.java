@@ -325,18 +325,17 @@ public class Main extends Activity {
                             setUpViews();
                             break;
                         case R.layout.encrypt:
-                            PublicStaticVariables.fileContactCard = new PublicContactCard(this, result);
-                            if (PublicStaticVariables.fileContactCard.getPublicKey() != null) {
-                                Contact contact1 = PublicStaticVariables.contactsDataSource.findContact(PublicStaticVariables.fileContactCard.getPublicKey());
+                            PublicContactCard pcc = new PublicContactCard(this, result);
+                            if (pcc.getPublicKey() != null) {
+                                Contact contact1 = PublicStaticVariables.contactsDataSource.findContact(pcc.getPublicKey());
                                 if (contact1 != null) {
                                     t = Toast.makeText(getBaseContext(), R.string.contact_exist,
                                             Toast.LENGTH_LONG);
                                     t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                     t.show();
-                                    PublicStaticVariables.fileContactCard = null;
                                     PublicStaticVariables.fragmentManagement.contactChosen(contact1.getId());
                                 } else {
-                                    AddContactDlg acd = new AddContactDlg();
+                                    AddContactDlg acd = new AddContactDlg(pcc,null);
                                     acd.show(getFragmentManager(), "acd2");
                                 }
                             } else
@@ -344,16 +343,15 @@ public class Main extends Activity {
                                         Toast.LENGTH_LONG).show();
                             break;
                         case R.layout.contacts:
-                            PublicStaticVariables.fileContactCard = new PublicContactCard(this, result);
-                            if (PublicStaticVariables.fileContactCard.getPublicKey() != null) {
-                                if (PublicStaticVariables.contactsDataSource.findContact(PublicStaticVariables.fileContactCard.getPublicKey()) != null) {
+                            pcc = new PublicContactCard(this, result);
+                            if (pcc.getPublicKey() != null) {
+                                if (PublicStaticVariables.contactsDataSource.findContact(pcc.getPublicKey()) != null) {
                                     t = Toast.makeText(getBaseContext(), R.string.contact_exist,
                                             Toast.LENGTH_LONG);
                                     t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                     t.show();
-                                    PublicStaticVariables.fileContactCard = null;
                                 } else {
-                                    AddContactDlg acd = new AddContactDlg();
+                                    AddContactDlg acd = new AddContactDlg(pcc,null);
                                     acd.show(getFragmentManager(), "acd2");
                                 }
                             } else
@@ -555,14 +553,12 @@ public class Main extends Activity {
                     + ": " + ((EditText) findViewById(R.id.contact_email)
                     .findViewById(R.id.edit_text)).getText());
         } else if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
-            PublicStaticVariables.fileContactCard = new PublicContactCard(this
+            PublicContactCard pcc = new PublicContactCard(this
                     , PublicStaticVariables.decryptedMsg.getPublicKey()
                     , PublicStaticVariables.decryptedMsg.getEmail(), PublicStaticVariables.decryptedMsg.getName());
-            AddContactDlg acd = new AddContactDlg();
+            AddContactDlg acd = new AddContactDlg(pcc,PublicStaticVariables.decryptedMsg.getSession());
             acd.show(getFragmentManager(), "acd3");
         } else if (PublicStaticVariables.currentLayout == R.layout.share) {
-            //ShareDialog dlg = new ShareDialog();
-            //dlg.show(getFragmentManager(), "share");
             ShareCustomDialog scd = new ShareCustomDialog();
             scd.show(getFragmentManager(), "scd");
         }
@@ -714,7 +710,7 @@ public class Main extends Activity {
     private void setUpViews() {
         final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, CONTACTS = 3, LEARN = 4, SETUP = 5;
         final String[] allMenus = getResources().getStringArray(R.array.menus);
-        final int[] allDrb = {R.drawable.encrypt, R.drawable.decrypt, R.drawable.share, R.drawable.contacts, R.drawable.learn, R.drawable.manage};
+        final int[] allDrb = {R.drawable.encrypt, R.drawable.decrypt, R.drawable.share, R.drawable.contacts, R.drawable.learn, R.drawable.manage,R.drawable.local};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.privateExist() ? 1 : CryptMethods.publicExist() ? 2 : 3;
         mTitle = mDrawerTitle = getTitle();
@@ -784,7 +780,7 @@ public class Main extends Activity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
                 R.layout.share, R.layout.contacts, R.layout.help,
-                R.layout.setup};
+                R.layout.setup,R.layout.local};
         switch (status) {
             case BOTH:
                 layouts = allLayouts;
@@ -834,7 +830,7 @@ public class Main extends Activity {
             //TODO search also in names and emails
             Contact c = PublicStaticVariables.contactsDataSource.findContact(PublicStaticVariables.fileContactCard.getPublicKey());
             if (c == null) {
-                AddContactDlg acd = new AddContactDlg();
+                AddContactDlg acd = new AddContactDlg(PublicStaticVariables.fileContactCard,null);
                 acd.show(getFragmentManager(), "acd");
             } else {
                 //TODO what if some of the details are not exist
@@ -1009,7 +1005,7 @@ public class Main extends Activity {
             // see if tag is already NDEF formatted
             Ndef ndef = Ndef.get(tag);
             ndef.connect();
-            //todo move this check to the right place
+            //todo move this checkAndUpdate to the right place
             if (!ndef.isWritable()) {
                 return R.string.failed_read_only;
             }

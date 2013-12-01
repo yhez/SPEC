@@ -17,17 +17,18 @@ public class Contact {
 
     // new contact from scratch
     public Contact(Activity a, String contactName, String email,
-                   String publicKey) {
+                   String publicKey,String session) {
         if (publicKey != null) {
-            this.contactName = contactName != null && contactName.length() > 1 ? contactName : email.split("@")[0];
+            this.contactName = contactName;// != null && contactName.length() > 0 ? contactName : email.split("@")[0];
             this.publicKey = publicKey;
             this.email = email;
-            this.session = new Session() + "";
+            this.session = new Session().toString();
+            if(session!=null)this.session+=this.session+"\n"+session;
             this.conversationStatus = PublicStaticVariables.WE_STRANGERS;
             this.id = PublicStaticVariables.contactsDataSource.createContact(this);
         }
     }
-
+    //create contact after pulling out from db
     public Contact(long id, String contactName, String email, String publicKey,
                    String session, int conversationStatus) {
         this.conversationStatus = conversationStatus;
@@ -102,9 +103,11 @@ public class Contact {
 
     public void update(int index, String contactName, String email,
                        String publicKey, String session, int conversationStatus) {
-        PublicStaticVariables.fullList.remove(
-                PublicStaticVariables.currentList.get(index));
-        PublicStaticVariables.currentList.remove(index);
+        if(!(index<0)){
+            PublicStaticVariables.fullList.remove(
+                     PublicStaticVariables.currentList.get(index));
+            PublicStaticVariables.currentList.remove(index);
+        }
         if (contactName != null)
             this.contactName = contactName;
         if (publicKey != null)
@@ -112,12 +115,12 @@ public class Contact {
         if (email != null)
             this.email = email;
         if (session != null)
-            this.session = session;
+            this.session =this.session+"\n"+ session;
         //flag -1 not changed
         if (!(conversationStatus < 0))
             this.conversationStatus = conversationStatus;
         PublicStaticVariables.contactsDataSource.updateDB(id,
-                contactName, email, publicKey, session, conversationStatus);
+                contactName, email, publicKey, session.toString(), conversationStatus);
         PublicStaticVariables.adapter.updateCont(this);
     }
 }

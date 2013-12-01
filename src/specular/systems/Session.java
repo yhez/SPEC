@@ -3,37 +3,50 @@ package specular.systems;
 import java.util.Random;
 
 class Session {
-
-    public static int check(Contact contact, String session) {
-        String my[] = contact.getSession().split(" ");
-        String his[] = session.split(" ");
-        String mMySess = my[3] + my[7];
-        // String mHisSess = my.length >= 16 ? my[11] + my[15] : "";
-        String hHisSess = his.length >= 8 ? his[3] + my[7] : "";
-        String hMySess = his.length >= 16 ? his[11] + my[15] : "";
-        if (contact.getConversationStatus() == PublicStaticVariables.WE_FRIENDS) {
-            if (hMySess.equals("") || !hHisSess.equals(mMySess)
-                    || hHisSess.equals(""))
-                return PublicStaticVariables.FAILED;
-            return PublicStaticVariables.VERIFIED;
+    public final static int WE_KNOW_EACH_OTHER=0,I_KNOW_HIM=1,HE_KNOWS_ME=2,WE_STRANGERS=3;
+    public final static int UNKNOWN=0,STARTING=1,DONT_TRUST=2,TRUSTED=3,NEW_TRUSTED=4;
+    public static int checkAndUpdate(Contact contact, String session) {
+        String my[] = contact.getSession().split("\n");
+        String his[] = session.split("\n");
+        if(my.length==1){
+            if(his.length==1){
+                PublicStaticVariables.contactsDataSource.updateDB(contact.getId(),null,null,null,contact.getSession()+"\n"+session.replace("my","his"),-1);
+                return UNKNOWN;
+            }else{
+                String mMy[]=my[0].split(" ");
+                String hHis[]=his[0].split(" ");
+                String hMy[]=his[1].split(" ");
+                if(hMy[3].equals(mMy[3])&&hMy[7].equals(mMy[7])){
+                    PublicStaticVariables.contactsDataSource.updateDB(contact.getId(),null,null,null,contact.getSession()+"\n"+session.replace("my","his"),-1);
+                    return STARTING;
+                }else {
+                    return DONT_TRUST;
+                }
+            }
+        }else{
+            String mHis[]=my[1].split(" ");
+            String hHis[] = his[0].split(" ");
+            if(!mHis[3].equals(hHis[3])||!mHis[7].equals(hHis[7])){
+                return DONT_TRUST;
+            }else{
+                if(his.length==2){
+                    String mMy[]=my[0].split(" ");
+                    String hMy[]=his[1].split(" ");
+                    if(!mMy[3].equals(hMy[3])||!mMy[7].equals(hMy[7])){
+                        return DONT_TRUST;
+                    }else{
+                        return TRUSTED;
+                    }
+                }else{
+                    return NEW_TRUSTED;
+                }
+            }
         }
-        return PublicStaticVariables.DONT_TRUST;
-        /*
-         * if(Contact.WE_STRANGERS==contact.getConversationStatus()){
-		 * if(hMySess.equals("")||hHisSess.equals("")) return DONT_TRUST;
-		 * contact.update(a, null, null, null, new Session(mMySess, hHisSess) +
-		 * "", null); return } if
-		 * (Contact.HE_KNOW_MY_SESS==contact.getConversationStatus()) return ;
-		 * else return UNKNOWN;
-		 */
     }
 
     private String hisSession = "";
     private String hisSymbol = "";
-    // VERIFIED_BUT_DONT_TRUST
-    // = 4;
     private String mySession = "";
-
     private String mySymbol = "";
 
     // to create a new session from nothing
@@ -48,21 +61,6 @@ class Session {
         mySymbol = Character.toString(s[rnd.nextInt(s.length)]);
     }
 
-    /*
-     * private Session(String my, String his) { this.mySession = my.substring(0,
-     * my.length() - 1); this.hisSession = his.substring(0, his.length() - 1);
-     * this.hisSymbol = his.substring(his.length() - 1); this.mySymbol =
-     * my.substring(my.length() - 1); }
-     */
-    public Session(String his) {
-        String[] data = his.split(" ");
-        hisSession = data[3];
-        hisSymbol = data[7];
-        Session s = new Session();
-        mySession = s.mySession;
-        mySymbol = s.mySymbol;
-    }
-
     @Override
     public String toString() {
         return "my session id: "
@@ -70,7 +68,7 @@ class Session {
                 + "   my secret sign: "
                 + mySymbol
                 + " "
-                + (hisSession.equals("") ? "" : "\nyour session id: "
-                + hisSession + " ;    your secret sign: " + hisSymbol);
+                + (hisSession.equals("") ? "" : "\nhis session id: "
+                + hisSession + " ;    his secret sign: " + hisSymbol);
     }
 }
