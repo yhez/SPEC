@@ -140,7 +140,7 @@
     <string name="hash_title">Crypto Hash Info:</string>
     <string name="session_title">Session ID Info:</string>
     <string name="replay_title">Replay Attack Info:</string>
-    <string name="too_short_name">Please insert name that he\'s at least 3 letters long</string>
+    <string name="too_short_name">Name should be at least 3 characters long</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
@@ -148,7 +148,7 @@
         <item>Contacts</item>
         <item>Learn</item>
         <item>Manage</item>
-        <item>Local</item>
+        <item>LocalStorage</item>
     </string-array>
     <string-array name="choice">
         <item>Contact Card</item>
