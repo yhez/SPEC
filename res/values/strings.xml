@@ -56,7 +56,7 @@
     <string name="cant_format">Unable to format tag to NDEF</string>
     <string name="tag_not_supported">Tag doesn\'t appear to support NDEF format</string>
     <string name="failed_to_write">Failed to write NFC tag</string>
-    <string name="working">Working&#8230;</string>
+    <string name="working">SPEC Magic&#8230;</string>
     <string name="qr_scan_explain">Place QR code within box to activate magic</string>
     <string name="decrypting">Decrypting&#8230;</string>
     <string name="encrypting">Encrypting&#8230;</string>
@@ -104,7 +104,7 @@
     <string name="ok_for_explain">Cool!</string><string name="contact_to_share">Contact to share:
  </string>
     <string name="share_contact_subject">Shared Contact Card, Recommendation - SPEC APP</string>
-    <string name="quick_msg">Quick Message:</string>
+    <string name="quick_msg">Quick Text Message:</string>
     <string name="file_name_shared_contact_card">SharedContactCard.SPEC</string>
     <string name="file_name_friends_qr">SharedQR.SPEC.png</string>
     <string name="file_name_my_public_key">ContactCard.SPEC</string>
