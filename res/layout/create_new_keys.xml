@@ -47,6 +47,7 @@
 
 
         <EditText
+            android:background="@android:color/white"
             android:textCursorDrawable="@null"
             android:id="@+id/name"
             android:layout_width="match_parent"
@@ -58,6 +59,7 @@
             android:textColorHint="@color/spec_gray" />
 
         <EditText
+            android:background="@android:color/white"
             android:textCursorDrawable="@null"
             android:id="@+id/email"
             android:layout_width="match_parent"

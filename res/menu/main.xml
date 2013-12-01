@@ -2,8 +2,7 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="search contact"
-        android:showAsAction="ifRoom|withText"
+        android:showAsAction="always"
         android:icon="@drawable/search"
         android:id="@+id/action_search" />
 </menu>

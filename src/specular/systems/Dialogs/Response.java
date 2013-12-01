@@ -80,7 +80,7 @@ public class Response extends DialogFragment {
                 final String userInput = et.getText().toString();
                 final MessageFormat msg = new MessageFormat(null, "", userInput,
                         contact.getSession());
-                final ProgressDlg prgd = new ProgressDlg(getActivity(), "Encrypting");
+                final ProgressDlg prgd = new ProgressDlg(getActivity(), R.string.encrypting);
                 prgd.setCancelable(false);
                 prgd.show();
                 new Thread(new Runnable() {

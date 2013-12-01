@@ -12,6 +12,7 @@
         android:orientation="horizontal">
 
         <EditText
+            android:background="@android:color/white"
             android:textCursorDrawable="@null"
             android:textSize="16sp"
             android:textColor="@color/spec_black"

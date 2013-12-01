@@ -14,6 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"/>
         <EditText
+            android:background="@android:color/white"
             android:maxLength="25"
             android:padding="@dimen/default_gap"
             android:textSize="15sp"

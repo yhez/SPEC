@@ -18,7 +18,7 @@ public class ProgressDlg extends ProgressDialog {
     HoloCircularProgressBar hcpb;
     TextView textViewSec, textViewDec, textView;
     long startTimeMillis;
-    String title;
+    int title;
     Activity activity;
     private ObjectAnimator mProgressBarAnimator;
     private Handler hndl = new Handler() {
@@ -31,7 +31,7 @@ public class ProgressDlg extends ProgressDialog {
         }
     };
 
-    public ProgressDlg(Activity activity, String title) {
+    public ProgressDlg(Activity activity, int title) {
         super(activity);
         this.activity = activity;
         this.title = title;

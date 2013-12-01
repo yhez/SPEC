@@ -176,7 +176,7 @@ public class Main extends Activity {
     void encryptManager() {
 
         PublicStaticVariables.luc.change(contact);
-        final ProgressDlg prgd = new ProgressDlg(this, "Encrypting...");
+        final ProgressDlg prgd = new ProgressDlg(this, R.string.encrypting);
         prgd.setCancelable(false);
         prgd.show();
         new Thread(new Runnable() {
@@ -812,7 +812,7 @@ public class Main extends Activity {
     private boolean openByFile() {
         final String msg = getIntent().getStringExtra("message");
         if (PublicStaticVariables.message != null || msg != null) {
-            final ProgressDlg prgd = new ProgressDlg(this, "Decrypting...");
+            final ProgressDlg prgd = new ProgressDlg(this, R.string.decrypting);
             prgd.setCancelable(false);
             prgd.show();
             new Thread(new Runnable() {
