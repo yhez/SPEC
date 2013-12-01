@@ -117,7 +117,7 @@
     <string name="file_is_empty">the file is empty</string>
     <string name="notify_msg_deleted">Message has been deleted</string>
     <string name="send_another_msg">send another message</string>
-    <string name="send_orders">Steps:\n------\n1. Choose contact\n2. Enter message\n3. Add file (optional)</string>
+    <string name="send_orders">Sending a message:\n------\n1. Choose contact\n2. Enter message\n3. Add file (optional)</string>
     <string name="backup_profile">Backup Profile</string>
     <string name="share_file">share file via:</string>
     <string name="restore_profile">Restore Profile</string>
