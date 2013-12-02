@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <EditText
-                android:background="@android:color/white"
+                android:background="@drawable/edit_text"
                 android:textCursorDrawable="@null"
                 android:maxLength="25"
                 android:layout_weight="1"
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <EditText
-                android:background="@android:color/white"
+                android:background="@drawable/edit_text"
                 android:textCursorDrawable="@null"
                 android:maxLength="25"
                 android:inputType="textNoSuggestions"
