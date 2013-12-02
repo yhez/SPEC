@@ -27,6 +27,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -561,6 +562,9 @@ public class FragmentManagement extends Fragment {
                     rootView.findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
                 break;
             case setup:
+                break;
+            case R.layout.help:
+                ((WebView)rootView.findViewById(R.id.web_learn)).loadUrl("file:///android_asset/help.htm");
                 break;
             case decrypted_msg:
                 if (PublicStaticVariables.decryptedMsg != null) {
