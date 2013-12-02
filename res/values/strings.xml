@@ -73,7 +73,7 @@
     <string name="response">Respond</string>
     <string name="cant_find_an_app_to_open_file">Can\'t find proper app</string>
     <string name="failed_to_create_file_to_open">Failed to create file</string>
-    <string name="described_what_going_to_be">Notify if some of details already exist-TODO</string>
+    <string name="described_what_going_to_be">SPEC CONTACT CARD</string>
     <string name="new_contact_to_add">You\'ve been discovered, would you like to add this contact?</string>
     <string name="no">NO</string>
     <string name="yes">YES</string>
@@ -148,7 +148,7 @@
         <item>Contacts</item>
         <item>Learn</item>
         <item>Manage</item>
-        <item>Secure Store</item>
+        <item>SPEC Vault</item>
     </string-array>
     <string-array name="choice">
         <item>Contact Card</item>
@@ -156,7 +156,7 @@
         <item>Raw Key Text</item>
     </string-array>
     <string-array name="data_to_delete">
-        <item>Temp files</item>
+        <item>Temp Files</item>
         <item>Keys</item>
         <item>Contacts</item>
         <item>Erase NFC</item>
