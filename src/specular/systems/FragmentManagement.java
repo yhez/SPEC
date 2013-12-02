@@ -43,6 +43,10 @@ import com.google.zxing.WriterException;
 
 import java.util.List;
 
+import specular.systems.showcaseview.OnShowcaseEventListener;
+import specular.systems.showcaseview.ShowcaseView;
+import specular.systems.showcaseview.targets.ViewTarget;
+
 import static specular.systems.R.layout.contacts;
 import static specular.systems.R.layout.create_new_keys;
 import static specular.systems.R.layout.decrypt;
