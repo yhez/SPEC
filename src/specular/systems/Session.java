@@ -6,18 +6,18 @@ class Session {
     public final static int WE_KNOW_EACH_OTHER=0,I_KNOW_HIM=1,HE_KNOWS_ME=2,WE_STRANGERS=3;
     public final static int UNKNOWN=0,STARTING=1,DONT_TRUST=2,TRUSTED=3,NEW_TRUSTED=4;
     public static int checkAndUpdate(Contact contact, String session) {
-        String my[] = contact.getSession().split("\n");
-        String his[] = session.split("\n");
+        String my[] = contact.getSession().split("---");
+        String his[] = session.split("---");
         if(my.length==1){
             if(his.length==1){
-                PublicStaticVariables.contactsDataSource.updateDB(contact.getId(),null,null,null,contact.getSession()+"\n"+session.replace("my","his"),-1);
+                PublicStaticVariables.contactsDataSource.updateDB(contact.getId(),null,null,null,contact.getSession()+"---"+session.replace("my","his"),-1);
                 return UNKNOWN;
             }else{
                 String mMy[]=my[0].split(" ");
                 String hHis[]=his[0].split(" ");
                 String hMy[]=his[1].split(" ");
                 if(hMy[3].equals(mMy[3])&&hMy[7].equals(mMy[7])){
-                    PublicStaticVariables.contactsDataSource.updateDB(contact.getId(),null,null,null,contact.getSession()+"\n"+session.replace("my","his"),-1);
+                    PublicStaticVariables.contactsDataSource.updateDB(contact.getId(),null,null,null,contact.getSession()+"---"+session.replace("my","his"),-1);
                     return STARTING;
                 }else {
                     return DONT_TRUST;
@@ -68,7 +68,7 @@ class Session {
                 + "   my secret sign: "
                 + mySymbol
                 + " "
-                + (hisSession.equals("") ? "" : "\nhis session id: "
+                + (hisSession.equals("") ? "" : "---his session id: "
                 + hisSession + " ;    his secret sign: " + hisSymbol);
     }
 }
