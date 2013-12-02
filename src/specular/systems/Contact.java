@@ -18,7 +18,7 @@ public class Contact {
     public Contact(String contactName, String email,
                    String publicKey,String session) {
         if (publicKey != null) {
-            this.contactName = contactName;// != null && contactName.length() > 0 ? contactName : email.split("@")[0];
+            this.contactName = contactName;
             this.publicKey = publicKey;
             this.email = email;
             this.session = new Session().toString()+(session!=null?"---"+session.replace("my","his"):"");
