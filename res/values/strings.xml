@@ -148,7 +148,7 @@
         <item>Contacts</item>
         <item>Learn</item>
         <item>Manage</item>
-        <item>FileStore</item>
+        <item>Secure Store</item>
     </string-array>
     <string-array name="choice">
         <item>Contact Card</item>
