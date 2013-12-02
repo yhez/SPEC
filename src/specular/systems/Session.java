@@ -3,11 +3,12 @@ package specular.systems;
 import java.util.Random;
 
 class Session {
-    public final static int WE_KNOW_EACH_OTHER=0,I_KNOW_HIM=1,HE_KNOWS_ME=2,WE_STRANGERS=3;
+
+    public final static String DIVIDE_SESSIONS="---";
     public final static int UNKNOWN=0,STARTING=1,DONT_TRUST=2,TRUSTED=3,NEW_TRUSTED=4;
     public static int checkAndUpdate(Contact contact, String session) {
-        String my[] = contact.getSession().split("---");
-        String his[] = session.split("---");
+        String my[] = contact.getSession().split(DIVIDE_SESSIONS);
+        String his[] = session.split(DIVIDE_SESSIONS);
         if(my.length==1){
             if(his.length==1){
                 contact.update(-1,null,null,null,contact.getSession()+"---"+session.replace("my","his"),-1);
@@ -66,9 +67,6 @@ class Session {
         return "my session id: "
                 + mySession
                 + "   my secret sign: "
-                + mySymbol
-                + " "
-                + (hisSession.equals("") ? "" : "---his session id: "
-                + hisSession + " ;    his secret sign: " + hisSymbol);
+                + mySymbol;
     }
 }

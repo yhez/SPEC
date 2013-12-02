@@ -1,6 +1,5 @@
 package specular.systems;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 
 import com.google.zxing.BarcodeFormat;
@@ -16,14 +15,13 @@ public class Contact {
     private String session;
 
     // new contact from scratch
-    public Contact(Activity a, String contactName, String email,
+    public Contact(String contactName, String email,
                    String publicKey,String session) {
         if (publicKey != null) {
             this.contactName = contactName;// != null && contactName.length() > 0 ? contactName : email.split("@")[0];
             this.publicKey = publicKey;
             this.email = email;
-            this.session = new Session().toString();
-            if(session!=null)this.session+=this.session+"\n"+session;
+            this.session = new Session().toString()+(session!=null?"---"+session.replace("my","his"):"");
             this.conversationStatus = PublicStaticVariables.WE_STRANGERS;
             this.id = PublicStaticVariables.contactsDataSource.createContact(this);
         }
@@ -103,20 +101,6 @@ public class Contact {
 
     public void update(int index, String contactName, String email,
                        String publicKey, String session, int conversationStatus) {
-        if(!(index<0)){
-            PublicStaticVariables.fullList.remove(
-                     PublicStaticVariables.currentList.get(index));
-            PublicStaticVariables.currentList.remove(index);
-        }
-        else{
-           for(int a=0;a<PublicStaticVariables.fullList.size();a++){
-                if(PublicStaticVariables.fullList.get(a).getId()==id){
-                    PublicStaticVariables.currentList.remove(PublicStaticVariables.fullList.get(a));
-                    PublicStaticVariables.fullList.remove(a);
-                    break;
-                }
-            }
-        }
         if (contactName != null)
             this.contactName = contactName;
         if (publicKey != null)
@@ -130,6 +114,6 @@ public class Contact {
             this.conversationStatus = conversationStatus;
         PublicStaticVariables.contactsDataSource.updateDB(id,
                 contactName, email, publicKey, session, conversationStatus);
-        PublicStaticVariables.adapter.updateCont(this);
+        PublicStaticVariables.adapter.updateCont(this,index);
     }
 }

@@ -54,7 +54,7 @@ public class AddContactDlg extends DialogFragment {
                             c.update(-1,null,null,pcc.getPublicKey(),null,-1);
                         }
                         else
-                            c = new Contact(getActivity(), pcc.getName(), pcc.getEmail(), pcc.getPublicKey(),session);
+                            c = new Contact(pcc.getName(), pcc.getEmail(), pcc.getPublicKey(),session);
                         if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
                             ((TextView) getActivity().findViewById(R.id.flag_contact_exist)).setText(true + "");
                             getActivity().invalidateOptionsMenu();

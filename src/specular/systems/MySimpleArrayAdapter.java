@@ -24,10 +24,21 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filter
         this.a = a;
     }
 
-    public void updateCont(Contact c) {
-        Contact contact = PublicStaticVariables.contactsDataSource.findContact(c.getId());
-        PublicStaticVariables.currentList.add(contact);
-        PublicStaticVariables.fullList.add(contact);
+    public void updateCont(Contact c,int index) {
+        if(!(index<0)){
+            PublicStaticVariables.fullList.remove(
+                    PublicStaticVariables.currentList.get(index));
+            PublicStaticVariables.currentList.remove(index);
+        }
+        else
+            for(int a=0;a<PublicStaticVariables.fullList.size();a++)
+                if(PublicStaticVariables.fullList.get(a).getId()==c.getId()){
+                    PublicStaticVariables.currentList.remove(PublicStaticVariables.fullList.get(a));
+                    PublicStaticVariables.fullList.remove(a);
+                    break;
+                }
+        PublicStaticVariables.currentList.add(c);
+        PublicStaticVariables.fullList.add(c);
         refreshList();
     }
 
