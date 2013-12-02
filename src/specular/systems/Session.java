@@ -1,5 +1,7 @@
 package specular.systems;
 
+import android.util.Log;
+
 import java.util.Random;
 
 class Session {
@@ -9,6 +11,8 @@ class Session {
         String my[] = contact.getSession().split("---");
         String his[] = session.split("---");
         if(my.length==1){
+            Log.d("one line","he send me his session and don't have my");
+            Log.d("session",contact.getSession());
             if(his.length==1){
                 PublicStaticVariables.contactsDataSource.updateDB(contact.getId(),null,null,null,contact.getSession()+"---"+session.replace("my","his"),-1);
                 return UNKNOWN;

@@ -255,7 +255,7 @@ public class Main extends Activity {
                 edlg.show(getFragmentManager(), "hash");
                 break;
             case R.id.session:
-                ExplainDialog edl = new ExplainDialog(ExplainDialog.SESSION, PublicStaticVariables.session);
+                ExplainDialog edl = new ExplainDialog(ExplainDialog.SESSION, PublicStaticVariables.session.replace("---","\n"));
                 edl.show(getFragmentManager(), "session");
                 break;
             case R.id.replay:

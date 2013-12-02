@@ -151,7 +151,8 @@ public class FragmentManagement extends Fragment {
         }
         fileName.setText(PublicStaticVariables.file_name);
         tv.setText(PublicStaticVariables.msg_content);
-        int ok = R.drawable.ic_ok, notOk = R.drawable.ic_bad, unknown = R.drawable.ic_unknown, starting = R.drawable.ic_what;
+        int ok = R.drawable.ic_ok, notOk = R.drawable.ic_bad,
+                unknown = R.drawable.ic_unknown, starting = R.drawable.ic_what;
         if (checkHash.isAlive()) {
             Animation animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
             animation1.setAnimationListener(new Animation.AnimationListener() {
@@ -304,7 +305,7 @@ public class FragmentManagement extends Fragment {
                 ((TextView) rootView.findViewById(R.id.orig_eamil))
                         .setText(currContact.getEmail());
                 ((TextView) rootView.findViewById(R.id.contact_session))
-                        .setText(currContact.getSession());
+                        .setText(currContact.getSession().replace("---","\n"));
                 ImageButton ibb = (ImageButton) rootView.findViewById(R.id.contact_picture);
                 QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(currContact.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 256);
                 Bitmap bitmap = null;
