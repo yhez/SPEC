@@ -108,6 +108,15 @@ public class Contact {
                      PublicStaticVariables.currentList.get(index));
             PublicStaticVariables.currentList.remove(index);
         }
+        else{
+           for(int a=0;a<PublicStaticVariables.fullList.size();a++){
+                if(PublicStaticVariables.fullList.get(a).getId()==id){
+                    PublicStaticVariables.currentList.remove(PublicStaticVariables.fullList.get(a));
+                    PublicStaticVariables.fullList.remove(a);
+                    break;
+                }
+            }
+        }
         if (contactName != null)
             this.contactName = contactName;
         if (publicKey != null)
@@ -115,12 +124,12 @@ public class Contact {
         if (email != null)
             this.email = email;
         if (session != null)
-            this.session =this.session+"\n"+ session;
+            this.session = session;
         //flag -1 not changed
         if (!(conversationStatus < 0))
             this.conversationStatus = conversationStatus;
         PublicStaticVariables.contactsDataSource.updateDB(id,
-                contactName, email, publicKey, session.toString(), conversationStatus);
+                contactName, email, publicKey, session, conversationStatus);
         PublicStaticVariables.adapter.updateCont(this);
     }
 }

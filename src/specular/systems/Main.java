@@ -224,7 +224,7 @@ public class Main extends Activity {
                 // hides the keyboard when the user starts the encryption process
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-                contact = PublicStaticVariables.contactsDataSource.findContact(PublicStaticVariables.decryptedMsg.getPublicKey());
+                contact = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.decryptedMsg.getPublicKey());
                 encryptManager();
                 break;
             case R.id.open_file:
@@ -327,7 +327,7 @@ public class Main extends Activity {
                         case R.layout.encrypt:
                             PublicContactCard pcc = new PublicContactCard(this, result);
                             if (pcc.getPublicKey() != null) {
-                                Contact contact1 = PublicStaticVariables.contactsDataSource.findContact(pcc.getPublicKey());
+                                Contact contact1 = PublicStaticVariables.contactsDataSource.findContactByKey(pcc.getPublicKey());
                                 if (contact1 != null) {
                                     t = Toast.makeText(getBaseContext(), R.string.contact_exist,
                                             Toast.LENGTH_LONG);
@@ -335,7 +335,8 @@ public class Main extends Activity {
                                     t.show();
                                     PublicStaticVariables.fragmentManagement.contactChosen(contact1.getId());
                                 } else {
-                                    AddContactDlg acd = new AddContactDlg(pcc,null);
+                                    Contact c = PublicStaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
+                                    AddContactDlg acd = new AddContactDlg(pcc,null,c!=null?c.getId():-1);
                                     acd.show(getFragmentManager(), "acd2");
                                 }
                             } else
@@ -345,13 +346,14 @@ public class Main extends Activity {
                         case R.layout.contacts:
                             pcc = new PublicContactCard(this, result);
                             if (pcc.getPublicKey() != null) {
-                                if (PublicStaticVariables.contactsDataSource.findContact(pcc.getPublicKey()) != null) {
+                                if (PublicStaticVariables.contactsDataSource.findContactByKey(pcc.getPublicKey()) != null) {
                                     t = Toast.makeText(getBaseContext(), R.string.contact_exist,
                                             Toast.LENGTH_LONG);
                                     t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                     t.show();
                                 } else {
-                                    AddContactDlg acd = new AddContactDlg(pcc,null);
+                                    Contact c = PublicStaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
+                                    AddContactDlg acd = new AddContactDlg(pcc,null,c!=null?c.getId():-1);
                                     acd.show(getFragmentManager(), "acd2");
                                 }
                             } else
@@ -556,7 +558,8 @@ public class Main extends Activity {
             PublicContactCard pcc = new PublicContactCard(this
                     , PublicStaticVariables.decryptedMsg.getPublicKey()
                     , PublicStaticVariables.decryptedMsg.getEmail(), PublicStaticVariables.decryptedMsg.getName());
-            AddContactDlg acd = new AddContactDlg(pcc,PublicStaticVariables.decryptedMsg.getSession());
+            Contact c = PublicStaticVariables.contactsDataSource.findContactByEmail(PublicStaticVariables.decryptedMsg.getEmail());
+            AddContactDlg acd = new AddContactDlg(pcc,PublicStaticVariables.decryptedMsg.getSession(),c!=null?c.getId():-1);
             acd.show(getFragmentManager(), "acd3");
         } else if (PublicStaticVariables.currentLayout == R.layout.share) {
             ShareCustomDialog scd = new ShareCustomDialog();
@@ -828,9 +831,15 @@ public class Main extends Activity {
         } else if (PublicStaticVariables.fileContactCard != null) {
             selectItem(-1, R.layout.contacts);
             //TODO search also in names and emails
-            Contact c = PublicStaticVariables.contactsDataSource.findContact(PublicStaticVariables.fileContactCard.getPublicKey());
+            Contact c = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.fileContactCard.getPublicKey());
             if (c == null) {
-                AddContactDlg acd = new AddContactDlg(PublicStaticVariables.fileContactCard,null);
+                Contact cc = PublicStaticVariables.contactsDataSource.findContactByEmail(PublicStaticVariables.fileContactCard.getEmail());
+                long id;
+                if(cc!=null)
+                    id=cc.getId();
+                else
+                    id=-1;
+                AddContactDlg acd = new AddContactDlg(PublicStaticVariables.fileContactCard,null,id);
                 acd.show(getFragmentManager(), "acd");
             } else {
                 //TODO what if some of the details are not exist

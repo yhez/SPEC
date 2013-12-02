@@ -38,7 +38,7 @@ public class Response extends DialogFragment {
         builder.setView(v);
         if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
             if (PublicStaticVariables.friendsPublicKey != null)
-                contact = PublicStaticVariables.contactsDataSource.findContact(PublicStaticVariables.friendsPublicKey);
+                contact = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.friendsPublicKey);
         } else {
             contact = PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(
                     ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));

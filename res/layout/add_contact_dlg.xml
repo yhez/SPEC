@@ -61,10 +61,12 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <TextView
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/described_what_going_to_be" />
+    <CheckBox
+        android:checked="false"
+        android:id="@+id/check_box_update"
+        android:visibility="gone"
+        android:text="contact with the same email already exit,\n would you like to update him?"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
+public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filterable {
     private final Activity a;
 
     public MySimpleArrayAdapter(Activity a, List<?> lst) {

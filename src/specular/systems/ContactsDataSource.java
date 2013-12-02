@@ -57,7 +57,7 @@ public class ContactsDataSource {
         }
     }
 
-    public void updateDB(long id, String contactName, String email,
+    public Contact updateDB(long id, String contactName, String email,
                          String publicKey, String session, int conversationStatus) {
         ContentValues cv = new ContentValues();
         if (contactName != null)
@@ -74,6 +74,7 @@ public class ContactsDataSource {
         database = dbHelper.getWritableDatabase();
         database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
         database.close();
+        return findContact(id);
     }
 
     public Contact findContact(long id) {
@@ -92,8 +93,23 @@ public class ContactsDataSource {
         dbHelper.close();
         return null;
     }
-
-    public Contact findContact(String pbk) {
+    public Contact findContactByEmail(String email){
+        database = dbHelper.getReadableDatabase();
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
+                allColumns, MySQLiteHelper.COLUMN_EMAIL + " = '" + email
+                + "' ", null, null, null, null);
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            Contact c = new Contact(cursor.getLong(0), cursor.getString(1),
+                    cursor.getString(2), cursor.getString(3),
+                    cursor.getString(4), Integer.parseInt(cursor.getString(5)));
+            dbHelper.close();
+            return c;
+        }
+        dbHelper.close();
+        return null;
+    }
+    public Contact findContactByKey(String pbk) {
         database = dbHelper.getReadableDatabase();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
                 allColumns, MySQLiteHelper.COLUMN_PUBLIC_KEY + " = '" + pbk

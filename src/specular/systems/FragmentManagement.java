@@ -105,7 +105,7 @@ public class FragmentManagement extends Fragment {
         ImageView ss = (ImageView) rootView.findViewById(R.id.session_check);
         ImageView rp = (ImageView) rootView.findViewById(R.id.replay_check);
         ImageButton imageButtonh = (ImageButton) rootView.findViewById(R.id.hash);
-        Contact c = PublicStaticVariables.contactsDataSource.findContact(PublicStaticVariables.friendsPublicKey);
+        Contact c = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.friendsPublicKey);
         if (c != null) {
             contactExist.setText(true + "");
             sender.setText("From:\t" + c.getContactName() + " , " + c.getEmail());
