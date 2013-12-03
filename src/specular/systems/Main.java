@@ -72,7 +72,6 @@ public class Main extends Activity {
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-
             switch (msg.what) {
                 case FAILED:
                     break;
@@ -186,6 +185,7 @@ public class Main extends Activity {
                         contact.getSession());
                 CryptMethods.encrypt(msg.getFormatedMsg(),
                         contact.getPublicKey());
+                contact.update(Contact.SENT);
                 sendMessage();
                 prgd.cancel();
                 msgSended = true;
@@ -255,7 +255,31 @@ public class Main extends Activity {
                 edlg.show(getFragmentManager(), "hash");
                 break;
             case R.id.session:
-                ExplainDialog edl = new ExplainDialog(ExplainDialog.SESSION, PublicStaticVariables.session.replace("---","\n"));
+                String msg;
+                switch (PublicStaticVariables.flag_session){
+                    case Session.TRUSTED:
+                        msg=PublicStaticVariables.session.replace("---","\n")+"\n"+getString(R.string.session_ok_explain);
+                        break;
+                    case Session.DONT_TRUST:
+                        msg = getString(R.string.dont_trust_session_explain)
+                                +contact.getSession().replace("---","\n")+"\n"+"his session is:\n"+PublicStaticVariables.session.replace("---","\n");
+                        break;
+                    case Session.NEW_TRUSTED:
+                        msg = getString(R.string.new_session_trust_created)
+                                +PublicStaticVariables.session.replace("---","\n");
+                        break;
+                    case Session.STARTING:
+                        msg=getString(R.string.starting_session_explain)
+                                +PublicStaticVariables.session.replace("---","\n");
+                        break;
+                    case Session.UNKNOWN:
+                        msg = getString(R.string.unknown_session_explain)
+                                +PublicStaticVariables.session.replace("---","\n");
+                        break;
+                    default:
+                        msg=PublicStaticVariables.session.replace("---","\n");
+                }
+                ExplainDialog edl = new ExplainDialog(ExplainDialog.SESSION, msg);
                 edl.show(getFragmentManager(), "session");
                 break;
             case R.id.replay:
@@ -295,12 +319,10 @@ public class Main extends Activity {
                     int r = FilesManagement.addFile(Main.this, uri);
                     if (r == PublicStaticVariables.RESULT_ADD_FILE_OK) {
                         fileName = getFileName(uri);
-                        Message msg = hndl.obtainMessage(REPLACE_PHOTO);
-                        hndl.sendMessage(msg);
+                        hndl.sendEmptyMessage(REPLACE_PHOTO);
 
                     } else {
-                        Message msg = hndl.obtainMessage(r);
-                        hndl.sendMessage(msg);
+                        hndl.sendEmptyMessage(r);
                     }
                 }
             });
@@ -821,8 +843,7 @@ public class Main extends Activity {
                     getIntent().removeExtra("message");
                     FilesManagement.deleteTempDecryptedMSG(Main.this);
                     PublicStaticVariables.message = null;
-                    Message msg = hndl.obtainMessage(DECRYPT_SCREEN);
-                    hndl.sendMessage(msg);
+                    hndl.sendEmptyMessage(DECRYPT_SCREEN);
                     prgd.cancel();
                 }
             }).start();

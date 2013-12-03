@@ -15,7 +15,6 @@
             android:layout_width="wrap_content"/>
         <EditText
             android:background="@drawable/edit_text"
-            android:maxLength="25"
             android:padding="@dimen/default_gap"
             android:textSize="15sp"
             android:gravity="bottom|start"

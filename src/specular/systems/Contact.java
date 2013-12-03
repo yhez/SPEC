@@ -8,11 +8,14 @@ import com.google.zxing.WriterException;
 public class Contact {
 
     private String contactName;
-    private int conversationStatus;
     private String email;
     private long id;
     private String publicKey;
     private String session;
+    private int added;
+    private long last;
+    private int sent;
+    private int received;
 
     // new contact from scratch
     public Contact(String contactName, String email,
@@ -22,19 +25,25 @@ public class Contact {
             this.publicKey = publicKey;
             this.email = email;
             this.session = new Session().toString()+(session!=null?"---"+session.replace("my","his"):"");
-            this.conversationStatus = PublicStaticVariables.WE_STRANGERS;
+            this.sent=0;
+            this.received=session!=null?1:0;
+            this.sent=0;
+            this.last=session!=null?System.currentTimeMillis():0;
             this.id = PublicStaticVariables.contactsDataSource.createContact(this);
         }
     }
     //create contact after pulling out from db
-    public Contact(long id, String contactName, String email, String publicKey,
-                   String session, int conversationStatus) {
-        this.conversationStatus = conversationStatus;
+    public Contact(long id, String contactName, String email,int added,int last,int sent,int received, String publicKey,
+                   String session) {
         this.id = id;
         this.contactName = contactName;
         this.publicKey = publicKey;
         this.email = email;
         this.session = session;
+        this.added=added;
+        this.last= last;
+        this.received=received;
+        this.sent=sent;
     }
 
     public static Bitmap getPhoto(String publicKey) {
@@ -71,10 +80,6 @@ public class Contact {
         return contactName;
     }
 
-    public int getConversationStatus() {
-        return conversationStatus;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -91,16 +96,23 @@ public class Contact {
         return session;
     }
 
+    public int getAdded(){return added;}
+
+    public long getLast(){return last;}
+
+    public int getSent(){return sent;}
+
+    public int getReceived(){return received;}
     // Will be used by the ArrayAdapter in the ListView
     @Override
     public String toString() {
         return contactName + "\n" + email + "\n" + publicKey.substring(0, 10)
                 + "...." + publicKey.substring(publicKey.length() - 10) + "\n"
-                + session + "\nConversation status: " + conversationStatus;
+                + session;
     }
 
     public void update(int index, String contactName, String email,
-                       String publicKey, String session, int conversationStatus) {
+                       String publicKey, String session) {
         if (contactName != null)
             this.contactName = contactName;
         if (publicKey != null)
@@ -109,11 +121,17 @@ public class Contact {
             this.email = email;
         if (session != null)
             this.session = session;
-        //flag -1 not changed
-        if (!(conversationStatus < 0))
-            this.conversationStatus = conversationStatus;
         PublicStaticVariables.contactsDataSource.updateDB(id,
-                contactName, email, publicKey, session, conversationStatus);
+                contactName, email, publicKey, session);
         PublicStaticVariables.adapter.updateCont(this,index);
+    }
+    public static final int SENT=0,RECEIVED=1;
+    public void update(int what){
+        this.last=System.currentTimeMillis();
+        if(what==SENT)
+            sent++;
+        else if(what==RECEIVED)
+            received++;
+        PublicStaticVariables.contactsDataSource.updateDB(id,last,received,sent);
     }
 }

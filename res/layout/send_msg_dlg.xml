@@ -40,7 +40,6 @@
             <EditText
                 android:background="@drawable/edit_text"
                 android:textCursorDrawable="@null"
-                android:maxLength="25"
                 android:layout_weight="1"
                 android:textSize="12sp"
                 android:textColor="@color/spec_gray"
@@ -66,7 +65,6 @@
             <EditText
                 android:background="@drawable/edit_text"
                 android:textCursorDrawable="@null"
-                android:maxLength="25"
                 android:inputType="textNoSuggestions"
                 android:layout_weight="1"
                 android:textSize="12sp"

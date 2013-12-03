@@ -11,8 +11,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,19 +55,7 @@ public class SendMsgDialog extends DialogFragment {
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         v = inflater.inflate(R.layout.send_msg_dlg, null);
-        final char[] dang = "|\\?*<\":>+[]/'".toCharArray();
-        InputFilter filter = new InputFilter() {
-            public CharSequence filter(CharSequence source, int start, int end,
-                                       Spanned dest, int dstart, int dend) {
-                for (int i = start; i < end; i++) {
-                    for (char c : dang)
-                        if (source.charAt(i) == c) {
-                            return "";
-                        }
-                }
-                return null;
-            }
-        };
+
         builder.setView(v);
         updateViews();
         if (uris.get(0) != null) {
@@ -77,11 +63,12 @@ public class SendMsgDialog extends DialogFragment {
             ((ImageView) v.findViewById(R.id.file_icon)).setImageResource(R.drawable.logo);
             EditText etFile = (EditText) v.findViewById(R.id.name_file);
             etFile.setText(getName(FILE));
-            etFile.setFilters(new InputFilter[]{filter});
+            etFile.setSelection(etFile.getText().length());
+            etFile.setFilters(Visual.filters());
         }
         if (uris.get(1) != null) {
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(PublicStaticVariables.encryptedMsgToSend,
-                    BarcodeFormat.QR_CODE.toString(), 96);
+                    BarcodeFormat.QR_CODE.toString(), 76);
             Bitmap bitmap;
             try {
                 bitmap = qrCodeEncoder.encodeAsBitmap();
@@ -93,7 +80,8 @@ public class SendMsgDialog extends DialogFragment {
             ((TextView) v.findViewById(R.id.qr_size)).setText(getSize(uris.get(1)));
             EditText etImage = (EditText) v.findViewById(R.id.qr_name_file);
             etImage.setText(getName(IMAGE));
-            etImage.setFilters(new InputFilter[]{filter});
+            etImage.setSelection(etImage.getText().length());
+            etImage.setFilters(Visual.filters());
         }
         Visual.setAllFonts(getActivity(), (ViewGroup) v);
         return builder.create();
@@ -241,6 +229,7 @@ public class SendMsgDialog extends DialogFragment {
                 break;
         }
         try{
+
             startActivity(i);
         }catch (Exception e){
             Toast.makeText(getActivity(),e.toString(),Toast.LENGTH_SHORT).show();

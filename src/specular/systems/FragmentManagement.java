@@ -43,10 +43,6 @@ import com.google.zxing.WriterException;
 
 import java.util.List;
 
-import specular.systems.showcaseview.OnShowcaseEventListener;
-import specular.systems.showcaseview.ShowcaseView;
-import specular.systems.showcaseview.targets.ViewTarget;
-
 import static specular.systems.R.layout.contacts;
 import static specular.systems.R.layout.create_new_keys;
 import static specular.systems.R.layout.decrypt;
@@ -114,6 +110,7 @@ public class FragmentManagement extends Fragment {
             contactExist.setText(true + "");
             sender.setText("From:\t" + c.getContactName() + " , " + c.getEmail());
             PublicStaticVariables.flag_session = Session.checkAndUpdate(c, PublicStaticVariables.session);
+            c.update(Contact.RECEIVED);
         } else {
             sender.setText("From:\t"
                     + PublicStaticVariables.name
@@ -200,6 +197,10 @@ public class FragmentManagement extends Fragment {
         switch (PublicStaticVariables.currentLayout) {
             case create_new_keys:
                 addSocialLogin();
+                final EditText etEmail1=(EditText) rootView.findViewById(R.id.email)
+                        ,etName1=(EditText) rootView.findViewById(R.id.name);
+                etEmail1.setFilters(Visual.filters());
+                etName1.setFilters(Visual.filters());
                 rootView.findViewById(R.id.gesture).setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -207,10 +208,8 @@ public class FragmentManagement extends Fragment {
                             startPointX = motionEvent.getX();
                         else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP)
                             if (motionEvent.getX() < startPointX) {
-                                String myEmail = ((EditText) rootView.findViewById(R.id.email))
-                                        .getText().toString();
-                                String myName = ((EditText) rootView.findViewById(R.id.name))
-                                        .getText().toString();
+                                String myEmail = etEmail1.getText().toString();
+                                String myName = etName1.getText().toString();
                                 if (myName.length() == 0) {
                                     myName = myEmail.split("@")[0];
                                 }
@@ -339,7 +338,7 @@ public class FragmentManagement extends Fragment {
                                             .toString();
                                     if (!email.equals(origEmail))
                                         if (email.length() > 2) {
-                                            currContact.update(index, null, email, null, null, -1);
+                                            currContact.update(index, null, email, null, null);
                                             ((TextView) rootView.findViewById(R.id.orig_eamil)).setText(email);
                                         } else {
                                             etEmail.setText(origEmail);
@@ -369,7 +368,7 @@ public class FragmentManagement extends Fragment {
                                     String name = etName.getText().toString();
                                     if (!name.equals(origName))
                                         if (name.length() > 2) {
-                                            currContact.update(index, name, null, null, null, -1);
+                                            currContact.update(index, name, null, null, null);
                                             ((TextView) rootView.findViewById(R.id.orig_name)).setText(name);
                                         } else {
                                             etName.setText(origName);

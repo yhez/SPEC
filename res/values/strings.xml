@@ -74,7 +74,7 @@
     <string name="cant_find_an_app_to_open_file">Can\'t find proper app</string>
     <string name="failed_to_create_file_to_open">Failed to create file</string>
     <string name="described_what_going_to_be">SPEC CONTACT CARD</string>
-    <string name="new_contact_to_add">You\'ve been discovered, would you like to add this contact?</string>
+    <string name="new_contact_to_add">new contact have been discovered!\nwould you like to add him to your contacts?</string>
     <string name="no">NO</string>
     <string name="yes">YES</string>
     <string name="save_changes_back_pressed">Would you like to save the changes?</string>
@@ -141,6 +141,14 @@
     <string name="session_title">Session ID Info:</string>
     <string name="replay_title">Replay Attack Info:</string>
     <string name="too_short_name">Name should be at least 3 characters long</string>
+    <string name="contact_with_same_email_exist">contact with the same email already exist,\nyou sure you want to update his public key?</string>
+    <string name="session_ok_explain">you both have the same session so you talking with the same person you talked before</string><string name="dont_trust_session_explain">you tow have different session.
+it\'s possible that some one else is faking that he\'s your friend.
+your session is:
+</string>
+    <string name="new_session_trust_created">congratulations you both  shared the secret now no one will be able to interfering your messages.</string><string name="starting_session_explain">you have his session so it\'ll probably the same person hwo send you the message before, but he does not have your session
+</string><string name="unknown_session_explain">you never got a message from this guy threat him carefully, he may be an attacker
+</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

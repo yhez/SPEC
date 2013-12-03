@@ -38,10 +38,8 @@
             android:id="@+id/acd_ll1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/acd_chosen_icon"
-            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:orientation="vertical"
             android:padding="@dimen/default_gap">
 
@@ -56,8 +54,8 @@
                 android:id="@+id/acd_chosen_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/spec_blue"
-                android:textSize="17sp" />
+                android:textColor="@color/spec_dark_blue"
+                android:textSize="14sp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -65,7 +63,7 @@
         android:checked="false"
         android:id="@+id/check_box_update"
         android:visibility="gone"
-        android:text="contact with the same email already exit,\n would you like to update him?"
+        android:text="@string/contact_with_same_email_exist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

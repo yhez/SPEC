@@ -11,8 +11,9 @@ public class ContactsDataSource {
     final Main m;
     private final String[] allColumns = {MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_CONTACT_NAME, MySQLiteHelper.COLUMN_EMAIL,
-            MySQLiteHelper.COLUMN_PUBLIC_KEY, MySQLiteHelper.COLUMN_SESSION,
-            MySQLiteHelper.COLUMN_FIRST};
+            MySQLiteHelper.COLUMN_CONTACT_ADDED_DATE, MySQLiteHelper.COLUMN_LAST_MSG,
+            MySQLiteHelper.MSG_I_SEND, MySQLiteHelper.MSG_RECEIVED,
+            MySQLiteHelper.COLUMN_PUBLIC_KEY, MySQLiteHelper.COLUMN_SESSION};
     private final MySQLiteHelper dbHelper;
     // Database fields
     private SQLiteDatabase database;
@@ -28,10 +29,13 @@ public class ContactsDataSource {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_CONTACT_NAME, contact.getContactName());
         values.put(MySQLiteHelper.COLUMN_EMAIL, contact.getEmail());
+        values.put(MySQLiteHelper.COLUMN_CONTACT_ADDED_DATE, contact.getAdded());
+        values.put(MySQLiteHelper.COLUMN_LAST_MSG, contact.getLast());
+        values.put(MySQLiteHelper.MSG_I_SEND, contact.getSent());
+        values.put(MySQLiteHelper.MSG_RECEIVED, contact.getReceived());
         values.put(MySQLiteHelper.COLUMN_PUBLIC_KEY, contact.getPublicKey());
         values.put(MySQLiteHelper.COLUMN_SESSION, contact.getSession());
-        values.put(MySQLiteHelper.COLUMN_FIRST,
-                "" + contact.getConversationStatus());
+
         database = dbHelper.getWritableDatabase();
         long l = database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
                 values);
@@ -58,7 +62,7 @@ public class ContactsDataSource {
     }
 
     public Contact updateDB(long id, String contactName, String email,
-                         String publicKey, String session, int conversationStatus) {
+                         String publicKey, String session) {
         ContentValues cv = new ContentValues();
         if (contactName != null)
             cv.put(MySQLiteHelper.COLUMN_CONTACT_NAME, contactName);
@@ -68,9 +72,19 @@ public class ContactsDataSource {
             cv.put(MySQLiteHelper.COLUMN_PUBLIC_KEY, publicKey);
         if (session != null)
             cv.put(MySQLiteHelper.COLUMN_SESSION, session);
-        //flag -1 not changed
-        if (conversationStatus > 0)
-            cv.put(MySQLiteHelper.COLUMN_FIRST, conversationStatus);
+        database = dbHelper.getWritableDatabase();
+        database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
+        database.close();
+        return findContact(id);
+    }
+    public Contact updateDB(long id, long last,int received,int sent) {
+        ContentValues cv = new ContentValues();
+        if (last>0)
+            cv.put(MySQLiteHelper.COLUMN_LAST_MSG, last);
+        if (received>0)
+            cv.put(MySQLiteHelper.MSG_RECEIVED, received);
+        if (sent>0)
+            cv.put(MySQLiteHelper.MSG_I_SEND, sent);
         database = dbHelper.getWritableDatabase();
         database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
         database.close();
@@ -84,9 +98,11 @@ public class ContactsDataSource {
                 null, null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
-            Contact c = new Contact(cursor.getLong(0), cursor.getString(1),
-                    cursor.getString(2), cursor.getString(3),
-                    cursor.getString(4), Integer.parseInt(cursor.getString(5)));
+            Contact c = new Contact(cursor.getLong(0), cursor.getString(1)
+                    ,cursor.getString(2),cursor.getInt(3)
+                    ,cursor.getInt(4),cursor.getInt(5)
+                    ,cursor.getInt(6), cursor.getString(7),
+                    cursor.getString(8));
             dbHelper.close();
             return c;
         }
@@ -100,9 +116,11 @@ public class ContactsDataSource {
                 + "' ", null, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
-            Contact c = new Contact(cursor.getLong(0), cursor.getString(1),
-                    cursor.getString(2), cursor.getString(3),
-                    cursor.getString(4), Integer.parseInt(cursor.getString(5)));
+            Contact c = new Contact(cursor.getLong(0), cursor.getString(1)
+                    ,cursor.getString(2),cursor.getInt(3)
+                    ,cursor.getInt(4),cursor.getInt(5)
+                    ,cursor.getInt(6), cursor.getString(7),
+                    cursor.getString(8));
             dbHelper.close();
             return c;
         }
@@ -116,9 +134,11 @@ public class ContactsDataSource {
                 + "' ", null, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
-            Contact c = new Contact(cursor.getLong(0), cursor.getString(1),
-                    cursor.getString(2), cursor.getString(3),
-                    cursor.getString(4), Integer.parseInt(cursor.getString(5)));
+            Contact c = new Contact(cursor.getLong(0), cursor.getString(1)
+                    ,cursor.getString(2),cursor.getInt(3)
+                    ,cursor.getInt(4),cursor.getInt(5)
+                    ,cursor.getInt(6), cursor.getString(7),
+                    cursor.getString(8));
             dbHelper.close();
             return c;
         }
@@ -133,10 +153,11 @@ public class ContactsDataSource {
                 allColumns, null, null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            Contact contact = new Contact(cursor.getLong(0),
-                    cursor.getString(1), cursor.getString(2),
-                    cursor.getString(3), cursor.getString(4),
-                    Integer.parseInt(cursor.getString(5)));
+            Contact contact = new Contact(cursor.getLong(0), cursor.getString(1)
+                    ,cursor.getString(2),cursor.getInt(3)
+                    ,cursor.getInt(4),cursor.getInt(5)
+                    ,cursor.getInt(6), cursor.getString(7),
+                    cursor.getString(8));
             contacts.add(contact);
             cursor.moveToNext();
         }
@@ -145,13 +166,4 @@ public class ContactsDataSource {
         dbHelper.close();
         return contacts;
     }
-
-	/*
-     * private Contact cursorToContact(Cursor cursor) { Contact contact = new
-	 * Contact(); contact.setId(cursor.getLong(0));
-	 * contact.setContactName(cursor.getString(1));
-	 * contact.setEmail(cursor.getString(2));
-	 * contact.setPublicKey(cursor.getString(3));
-	 * contact.setSession(cursor.getString(4)); return contact; }
-	 */
 }

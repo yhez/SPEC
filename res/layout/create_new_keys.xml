@@ -66,7 +66,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_enter_your_email"
             android:inputType="textEmailAddress"
-            android:maxLength="40"
             android:padding="@dimen/default_gap"
             android:textColor="@color/spec_black"
             android:textColorHint="@color/spec_gray" />

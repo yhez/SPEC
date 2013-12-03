@@ -2,7 +2,8 @@ package specular.systems;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -64,13 +65,14 @@ public class Visual {
     }
 
     public static void edit(Activity a, EditText et, ImageButton ib) {
-        Log.d("click", et.getKeyListener() + "");
         if (et.getKeyListener() == null) {
             ib.setImageResource(R.drawable.save);
             et.setKeyListener(PublicStaticVariables.edit);
             et.setFocusable(true);
             et.setFocusableInTouchMode(true);
             et.requestFocus();
+            et.setFilters(filters());
+            et.setSelection(et.getText().length());
             InputMethodManager imm = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(et, 0);
         } else {
@@ -80,5 +82,23 @@ public class Visual {
             InputMethodManager imm = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
         }
+    }
+    public static InputFilter[] filters(){
+        final char[] dang = "|\\?*<\":>+[]/'".toCharArray();
+        InputFilter[] filter = new InputFilter[2];
+        filter[0] = new InputFilter.LengthFilter(40);
+        filter[1] = new InputFilter() {
+            public CharSequence filter(CharSequence source, int start, int end,
+                                       Spanned dest, int dstart, int dend) {
+                for (int i = start; i < end; i++) {
+                    for (char c : dang)
+                        if (source.charAt(i) == c) {
+                            return "";
+                        }
+                }
+                return null;
+            }
+        };
+        return filter;
     }
 }
