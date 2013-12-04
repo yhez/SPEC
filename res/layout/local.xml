@@ -10,7 +10,7 @@
         android:gravity="center"
         android:textSize="25sp"
         android:textColor="@color/spec_black"
-        android:text="not implemented yet.\nthis is where you'll be able to explore your local encrypted files"
+        android:text="@string/not_implmented_local_files"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -132,7 +132,7 @@
     <string name="technical_info">Security Audit Info</string>
     <string name="cant_connect_nfc_adapter">Something went wrong</string>
     <string name="no_result_filter">No result</string>
-    <string name="not_implemented_title">Coming soon...</string>
+    <string name="not_implemented_title">Coming soon&#8230;</string>
     <string name="profile_my_name">my name:</string>
     <string name="profile_my_email">my email:</string>
     <string name="send_file">send file via:</string>
@@ -149,6 +149,7 @@ your session is:
     <string name="new_session_trust_created">congratulations you both  shared the secret now no one will be able to interfering your messages.</string><string name="starting_session_explain">you have his session so it\'ll probably the same person hwo send you the message before, but he does not have your session
 </string><string name="unknown_session_explain">you never got a message from this guy threat him carefully, he may be an attacker
 </string>
+    <string name="not_implmented_local_files">not implemented yet.\nthis is where you\'ll be able to explore your local encrypted files</string>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
