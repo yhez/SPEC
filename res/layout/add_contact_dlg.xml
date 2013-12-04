@@ -19,7 +19,6 @@
         android:background="@color/spec_dark_blue" />
 
     <RelativeLayout
-        android:id="@+id/acd_en_contact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:drawable/alert_light_frame"
@@ -35,7 +34,6 @@
             android:padding="@dimen/default_gap" />
 
         <LinearLayout
-            android:id="@+id/acd_ll1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/acd_chosen_icon"

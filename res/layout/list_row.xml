@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:gravity="left"
         android:orientation="vertical"
-        android:id="@+id/ll1"
         android:layout_toRightOf="@id/icon"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"

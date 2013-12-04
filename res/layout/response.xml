@@ -48,7 +48,6 @@
             android:maxLength="2000"
             android:maxLines="4"
             android:minHeight="48dp"
-            android:nextFocusRight="@+id/send_button"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
@@ -75,7 +74,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="0dip"
-                android:nextFocusLeft="@+id/embedded_text_editor"
                 android:src="@drawable/ic_send_disabled_holo_light" />
         </LinearLayout>
     </LinearLayout>

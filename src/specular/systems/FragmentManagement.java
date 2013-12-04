@@ -139,6 +139,10 @@ public class FragmentManagement extends Fragment {
                 imageButton.setImageResource(R.drawable.text);
             else if (type.equals("application/vnd.android.package-archive"))
                 imageButton.setImageResource(R.drawable.apk);
+            else if(type.endsWith("pdf"))
+                imageButton.setImageResource(R.drawable.pdf);
+            else if(ext.equals("doc")||ext.equals("docx"))
+                imageButton.setImageResource(R.drawable.word);
             else {
                 Log.d("type", type);
                 Intent intent = new Intent(Intent.ACTION_VIEW);

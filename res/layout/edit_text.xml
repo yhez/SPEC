@@ -23,7 +23,7 @@
             android:layout_weight="1"
             android:textColor="@color/spec_black"
             android:id="@+id/edit_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content" />
         <ImageButton
             android:id="@+id/image_button"

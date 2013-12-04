@@ -15,7 +15,7 @@ class Session {
                 return UNKNOWN;
             }else{
                 String mMy[]=my[0].split(" ");
-                String hHis[]=his[0].split(" ");
+                //String hHis[]=his[0].split(" ");
                 String hMy[]=his[1].split(" ");
                 if(hMy[3].equals(mMy[3])&&hMy[7].equals(mMy[7])){
                     contact.update(-1,null,null,null,contact.getSession()+DIVIDE_SESSIONS+his[0].replace("my","his"));

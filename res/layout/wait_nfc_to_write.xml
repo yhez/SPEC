@@ -6,11 +6,9 @@
     android:background="@android:color/white"
     android:gravity="center"
     android:alpha="0"
-    android:id="@+id/wait_nfc_to_write"
     android:padding="40dp">
 
     <TextView
-        android:id="@+id/tab_nfc"
         android:textColor="@color/spec_black"
         android:gravity="center"
         android:padding="@dimen/default_gap"
@@ -32,7 +30,6 @@
 
         <Button
             android:gravity="center"
-            android:id="@+id/button_skip_nfc"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
