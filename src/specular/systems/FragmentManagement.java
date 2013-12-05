@@ -88,7 +88,7 @@ public class FragmentManagement extends Fragment {
     });
     View rootView;
     //for touch response
-    private float startPointX, startPointY, width, height;
+    private float startPointX, startPointY, width, height,x=0,y=0;
 
     public FragmentManagement() {
         PublicStaticVariables.fragmentManagement = this;
@@ -388,21 +388,18 @@ public class FragmentManagement extends Fragment {
                 );
                 break;
             case share:
+
                 //todo move it after last line
                 //((TextView) rootView.findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
                 if (FilesManagement.getMyQRPublicKey(getActivity()) != null)
                     ((ImageView) rootView.findViewById(R.id.qr_image))
                             .setImageBitmap(FilesManagement.getMyQRPublicKey(getActivity()));
-                ((TextView) rootView.findViewById(R.id.me_public))
-                        .setText(CryptMethods.getPublic());
                 final ImageView imageView = (ImageView) rootView.findViewById(R.id.qr_image);
                 final TextView textView = (TextView) rootView.findViewById(R.id.me_public);
+                textView.setText(CryptMethods.getPublic());
+                //textView.
                 final FrameLayout frameLayout = (FrameLayout) rootView.findViewById(R.id.touch);
-                final int[] coordination = new int[2];
-                frameLayout.getLocationInWindow(coordination);
                 //todo find a better way to implement that
-                final float x = coordination[0] + frameLayout.getPaddingLeft();
-                final float y = coordination[1] - frameLayout.getPaddingTop();
                 frameLayout.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -411,6 +408,8 @@ public class FragmentManagement extends Fragment {
                             startPointY = motionEvent.getRawY();
                             width = frameLayout.getWidth();
                             height = frameLayout.getHeight();
+                            x=frameLayout.getX();
+                            y=frameLayout.getY();
                         } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
                             if (frameLayout.getAlpha() < 0.2) {
                                 View curr, hidden;
@@ -635,7 +634,6 @@ public class FragmentManagement extends Fragment {
                 break;
         }
         Visual.setAllFonts(getActivity(), (ViewGroup) rootView);
-
         rootView.animate().setDuration(1000).alpha(1).start();
         return rootView;
     }

@@ -58,15 +58,14 @@
         android:layout_below="@id/your_public_key">
 
         <TextView
+            android:padding="32dp"
+            android:textSize="17sp"
             android:id="@+id/me_public"
+            android:gravity="fill"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="fill_horizontal"
-            android:padding="32dp"
             android:visibility="invisible"
-            android:textColor="#28bedf"
-            android:textSize="20sp" />
+            android:textColor="#28bedf" />
 
         <ImageView
             android:id="@+id/qr_image"
