@@ -4,10 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -284,8 +284,8 @@ public class SendMsgDialog extends DialogFragment {
                 break;
         }
         for (ResolveInfo aFile : a) {
-            ImageButton b = new ImageButton(getActivity());
-            b.setBackgroundColor(Color.TRANSPARENT);
+            LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            ImageButton b = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
             final ResolveInfo rs = aFile;
             b.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
             b.setOnClickListener(new View.OnClickListener() {

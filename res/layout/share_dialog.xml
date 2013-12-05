@@ -19,13 +19,14 @@
             android:text="@string/share_file" />
 
         <View
-            android:layout_width="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_width="240dp"
             android:layout_height="1dp"
             android:background="@color/spec_blue" />
 
         <GridLayout
             android:id="@+id/gl_app_file"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:columnCount="4"></GridLayout>
 
@@ -36,13 +37,14 @@
             android:text="@string/share_image" />
 
         <View
-            android:layout_width="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_width="240dp"
             android:layout_height="1dp"
             android:background="@color/spec_blue" />
 
         <GridLayout
             android:id="@+id/gl_app_image"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:columnCount="4"></GridLayout>
     </LinearLayout>

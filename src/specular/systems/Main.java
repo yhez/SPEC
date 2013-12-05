@@ -573,9 +573,7 @@ public class Main extends Activity {
         } else if (PublicStaticVariables.currentLayout == R.layout.edit_contact) {
             ShareContactDlg sd = new ShareContactDlg();
             sd.show(getFragmentManager(), ((EditText) findViewById(R.id.contact_name)
-                    .findViewById(R.id.edit_text)).getText()
-                    + ": " + ((EditText) findViewById(R.id.contact_email)
-                    .findViewById(R.id.edit_text)).getText());
+                    .findViewById(R.id.edit_text)).getText().toString());
         } else if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
             PublicContactCard pcc = new PublicContactCard(this
                     , PublicStaticVariables.decryptedMsg.getPublicKey()

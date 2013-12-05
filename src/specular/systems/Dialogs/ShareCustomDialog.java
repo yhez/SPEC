@@ -4,9 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -40,8 +40,8 @@ public class ShareCustomDialog extends DialogFragment {
         GridLayout glFile = (GridLayout) v.findViewById(R.id.gl_app_file);
         List<ResolveInfo> file = getApps("file/*");
         for (ResolveInfo aFile : file) {
-            ImageButton b = new ImageButton(getActivity());
-            b.setBackgroundColor(Color.TRANSPARENT);
+            LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            ImageButton b = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
             final ResolveInfo rs = aFile;
             b.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
             b.setOnClickListener(new View.OnClickListener() {
@@ -76,8 +76,8 @@ public class ShareCustomDialog extends DialogFragment {
         glFile = (GridLayout) v.findViewById(R.id.gl_app_image);
         file = getApps("image/png");
         for (ResolveInfo aFile : file) {
-            ImageButton b = new ImageButton(getActivity());
-            b.setBackgroundColor(Color.TRANSPARENT);
+            LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            ImageButton b = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
             final ResolveInfo rs = aFile;
             b.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
             b.setOnClickListener(new View.OnClickListener() {

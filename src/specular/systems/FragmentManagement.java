@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Handler;
@@ -646,8 +645,8 @@ public class FragmentManagement extends Fragment {
         for (final Account acc : list) {
             if (acc.name.contains("@")) {
                 if (acc.type.equalsIgnoreCase("com.google")) {
-                    ImageButton ib = new ImageButton(PublicStaticVariables.main);
-                    ib.setBackgroundColor(Color.TRANSPARENT);
+                    LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    ImageButton ib = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
                     try {
                         ib.setImageDrawable(PublicStaticVariables.main
                                 .getPackageManager()
@@ -669,8 +668,8 @@ public class FragmentManagement extends Fragment {
 
                 } else if (acc.type.startsWith("com.google")) {
                     if (acc.type.contains("pop3")) {
-                        ImageButton ib = new ImageButton(getActivity());
-                        ib.setBackgroundColor(Color.TRANSPARENT);
+                        LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        ImageButton ib = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
                         try {
                             ib.setImageDrawable(getActivity()
                                     .getPackageManager()
@@ -695,9 +694,9 @@ public class FragmentManagement extends Fragment {
                     String company = acc.type.split("\\.")[1];
                     for (ResolveInfo pi : rs) {
                         if (pi.activityInfo.packageName.contains(company)) {
-                            ImageButton ib = new ImageButton(getActivity());
+                            LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                            ImageButton ib = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
                             ib.setImageDrawable(pi.activityInfo.loadIcon(getActivity().getPackageManager()));
-                            ib.setBackgroundColor(Color.TRANSPARENT);
                             ib.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -712,8 +711,8 @@ public class FragmentManagement extends Fragment {
                 }
             }
         }
-        ImageButton ib = new ImageButton(getActivity());
-        ib.setBackgroundColor(Color.TRANSPARENT);
+        LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ImageButton ib = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
         ib.setImageResource(R.drawable.clear);
         ib.setOnClickListener(new View.OnClickListener() {
             @Override

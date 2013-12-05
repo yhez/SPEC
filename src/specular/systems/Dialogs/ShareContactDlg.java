@@ -4,9 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -37,12 +37,12 @@ public class ShareContactDlg extends DialogFragment {
         View v = inflater.inflate(R.layout.share_contact_dialog, null);
 
         builder.setView(v);
-        ((TextView)v.findViewById(R.id.contact_to_share)).setText("Share:\n"+getTag());
+        ((TextView)v.findViewById(R.id.contact_to_share)).setText("Share:\t"+getTag());
         GridLayout glFile = (GridLayout) v.findViewById(R.id.gl_app_file);
         List<ResolveInfo> file = getApps("file/*");
         for (ResolveInfo aFile : file) {
-            ImageButton b = new ImageButton(getActivity());
-            b.setBackgroundColor(Color.TRANSPARENT);
+            LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            ImageButton b = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
             final ResolveInfo rs = aFile;
             b.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
             b.setOnClickListener(new View.OnClickListener() {
@@ -77,8 +77,8 @@ public class ShareContactDlg extends DialogFragment {
         glFile = (GridLayout) v.findViewById(R.id.gl_app_image);
         file = getApps("image/png");
         for (ResolveInfo aFile : file) {
-            ImageButton b = new ImageButton(getActivity());
-            b.setBackgroundColor(Color.TRANSPARENT);
+            LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            ImageButton b = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
             final ResolveInfo rs = aFile;
             b.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
             b.setOnClickListener(new View.OnClickListener() {
