@@ -258,11 +258,11 @@ public class Main extends Activity {
                 String msg;
                 switch (PublicStaticVariables.flag_session){
                     case Session.TRUSTED:
-                        msg=PublicStaticVariables.session.replace("---","\n")+"\n"+getString(R.string.session_ok_explain);
+                        msg=contact.getSession().replace("---","\n")+"\n"+getString(R.string.session_ok_explain);
                         break;
                     case Session.DONT_TRUST:
                         msg = getString(R.string.dont_trust_session_explain)
-                                +contact.getSession().replace("---","\n")+"\n"+"his session is:\n"+PublicStaticVariables.session.replace("---","\n");
+                                +contact.getSession().replace("---","\n")+"\n"+"their session is:\n"+PublicStaticVariables.session.replace("---","\n");
                         break;
                     case Session.NEW_TRUSTED:
                         msg = getString(R.string.new_session_trust_created)
