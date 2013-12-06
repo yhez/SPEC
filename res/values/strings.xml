@@ -126,13 +126,13 @@
     <string name="session_title">Session ID Info:</string>
     <string name="replay_title">Replay Attack Info:</string>
     <string name="too_short_name">Name should be at least 3 characters long</string>
-    <string name="contact_with_same_email_exist">contact with the same email already exist,\nyou sure you want to update their public key?</string>
+    <string name="contact_with_same_email_exist">A contact with the same email already exists,\ndo you want to update their Public Encryption Key?</string>
     <string name="session_ok_explain">you both have the same session so you talking with the same person you talked before</string>
     <string name="dont_trust_session_explain">you tow have different session.
         \nit\'s possible that some one else is faking that he\'s your friend.
         \nyour session is:\n</string>
     <string name="new_session_trust_created">congratulations you both  shared the secret now no one will be able to interfering your messages.</string><string name="starting_session_explain">you have their session so it\'ll probably the same person hwo send you the message before, but he does not have your session\n</string>
-    <string name="unknown_session_explain">you never got a message from this guy threat him carefully, he may be an attacker\n</string>
+    <string name="unknown_session_explain">First time receiving a message from this contact, verify identity (email).\n</string>
     <string name="not_implmented_local_files">not implemented yet.\nthis is where you\'ll be able to explore your local encrypted files</string>
     <string-array name="menus">
         <item>Encrypt</item>
@@ -141,7 +141,7 @@
         <item>Contacts</item>
         <item>Learn</item>
         <item>Manage</item>
-        <item>SPEC Vault</item>
+        <item>SPEC Safe</item>
     </string-array>
     <string-array name="data_to_delete">
         <item>Temp Files</item>
