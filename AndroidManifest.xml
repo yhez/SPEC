@@ -1,28 +1,30 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
     <uses-sdk
+        android:maxSdkVersion="19"
         android:minSdkVersion="14"
-        android:targetSdkVersion="19"
-        android:maxSdkVersion="19"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
-        android:largeHeap="true"
         android:allowBackup="true"
         android:icon="@drawable/logo"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:largeHeap="true">
         <activity
+            android:name=".Splash"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent"
-            android:name=".Splash"
-			android:launchMode="singleTask"
-            android:label="@string/app_name">
+            android:theme="@style/Theme.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -35,28 +37,35 @@
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/*" />
+                <data android:mimeType="application/specular.systems" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.EDIT" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data
-                    android:host="*"
-                    android:mimeType="application/octet-stream"
-                    android:pathPattern=".*\\.SPEC" />
+                    android:scheme="content"
+                    android:pathPattern=".*\\.SPEC"
+                    android:mimeType="application/octet-stream"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:scheme="content"
+                    android:pathPattern=".*\\.SPEC"
+                    android:mimeType="application/spec"/>
             </intent-filter>
         </activity>
         <activity
-           	android:screenOrientation="portrait"
-            android:icon="@drawable/menu"
             android:name=".Main"
+            android:icon="@drawable/menu"
+            android:label="Menu"
             android:launchMode="singleTask"
-            android:label="Menu" />
-         <activity
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".StartScan"
-            android:label="Menu" />
+            android:label="Menu"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
     </application>
 </manifest>

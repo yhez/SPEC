@@ -9,6 +9,7 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +78,8 @@ public class Splash extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         Intent thisIntent = getIntent();
+        if(thisIntent!=null&&thisIntent.getType()!=null)
+        Log.d("intent", thisIntent.getType());
         if (thisIntent == null || thisIntent.getType() == null) {
             go();
         } else {
@@ -86,7 +89,7 @@ public class Splash extends Activity {
                     PublicStaticVariables.currentText = s;
                 }
                 go();
-            } else if (!thisIntent.getType().equals("application/octet-stream")
+            } else if ((!thisIntent.getType().equals("application/octet-stream")&&!thisIntent.getType().equals("application/spec"))
                     || thisIntent.getData() == null) {
                 go();
             } else {
