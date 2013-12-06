@@ -65,7 +65,7 @@
     <string name="cant_find_an_app_to_open_file">Can\'t find proper app</string>
     <string name="failed_to_create_file_to_open">Failed to create file</string>
     <string name="described_what_going_to_be">SPEC CONTACT CARD</string>
-    <string name="new_contact_to_add">A new Contact Card.\nWould you like to approve this contact and communicate securely?\nVerify that you trust this email.</string>
+    <string name="new_contact_to_add">Would you like to approve this contact?\nVerify that you trust this email.</string>
     <string name="no">NO</string>
     <string name="yes">YES</string>
     <string name="save_changes_back_pressed">Would you like to save the changes?</string>
