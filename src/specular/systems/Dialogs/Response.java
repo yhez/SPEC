@@ -37,9 +37,9 @@ public class Response extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         View v = inflater.inflate(R.layout.response, null);
         builder.setView(v);
-        final CheckBox cb = (CheckBox)v.findViewById(R.id.quote);
+        final CheckBox cb = (CheckBox) v.findViewById(R.id.quote);
         if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
-            if (PublicStaticVariables.friendsPublicKey != null){
+            if (PublicStaticVariables.friendsPublicKey != null) {
                 contact = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.friendsPublicKey);
                 cb.setVisibility(View.VISIBLE);
                 cb.setChecked(true);
@@ -83,9 +83,26 @@ public class Response extends DialogFragment {
                 if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg)
                     getActivity().findViewById(R.id.answer).setVisibility(View.GONE);
                 final String userInput = et.getText().toString();
-                final MessageFormat msg = new MessageFormat(null, "", userInput+
-                        (cb.isChecked()?getString(R.string.quote_msg)+PublicStaticVariables.msg_content:""),
-                        contact.getSession());
+                String msgContent;
+                if (cb.isChecked())
+                    if (PublicStaticVariables.msg_content.contains(getString(R.string.quote_msg)))
+                        msgContent = getString(R.string.divide_msg)
+                                + getString(R.string.quote_msg)
+                                + getString(R.string.divide_msg)
+                                + PublicStaticVariables.msg_content
+                                .replace(getString(R.string.quote_msg)
+                                        + getString(R.string.divide_msg), "");
+
+                    else
+                        msgContent = getString(R.string.divide_msg)
+                                + getString(R.string.quote_msg)
+                                + getString(R.string.divide_msg)
+                                + PublicStaticVariables.msg_content;
+
+                else
+                    msgContent = "";
+                final MessageFormat msg = new MessageFormat(null, "", userInput + msgContent
+                        , contact.getSession());
                 final ProgressDlg prgd = new ProgressDlg(getActivity(), R.string.encrypting);
                 prgd.setCancelable(false);
                 prgd.show();

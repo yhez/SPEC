@@ -135,7 +135,8 @@
     <string name="unknown_session_explain">First time receiving a message from this contact, verify identity (email).\n</string>
     <string name="not_implmented_local_files">not implemented yet.\nthis is where you\'ll be able to explore your local encrypted files</string>
     <string name="quote">Quote previous message</string>
-    <string name="quote_msg">\n---------\nQuoted message\n---------\n</string>
+    <string name="divide_msg">\n---------\n</string>
+    <string name="quote_msg">Quoted message</string>
     <string name="learn_title">Learn About SPEC</string>
     <string name="how_spec">How SPEC Works</string>
     <string name="faq">FAQs</string>
