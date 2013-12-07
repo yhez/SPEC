@@ -152,7 +152,7 @@
     <string name="third_text">There is no going back if you change your keys (in current Beta version).</string>
     <string name="got_it">Got it</string>
     <string name="generate"><b>Generate New Keys!</b></string>
-    <string name="share_my_contact_card">Share My Contact card</string>
+    <string name="share_my_contact_card">Share My Public Key\n(Contact Card)</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>
