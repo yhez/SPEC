@@ -137,12 +137,12 @@
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
-        <item>Profile</item>
+        <item>Me</item>
         <item>Contacts</item>
         <item>Learn</item>
         <item>Manage</item>
-        <item>SPEC Safe</item>
     </string-array>
+    <!--<item>SPEC Safe</item>-->
     <string-array name="data_to_delete">
         <item>Temp Files</item>
         <item>Keys</item>

@@ -26,7 +26,7 @@ public class Visual {
 
     // return bin data from hexadecimal string
     public static byte[] hex2bin(String data) {
-        if (data.length() % 2 != 0)
+        if (data==null||data.length() % 2 != 0)
             return null;
         byte hexa[] = data.getBytes();
         byte bin[] = new byte[hexa.length / 2];

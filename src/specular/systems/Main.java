@@ -90,7 +90,7 @@ public class Main extends Activity {
                     if (PublicStaticVariables.decryptedMsg != null && PublicStaticVariables.decryptedMsg.getFileContent() != null)
                         if (!FilesManagement.createFileToOpen(Main.this))
                             Toast.makeText(Main.this, R.string.failed_to_create_file_to_open, Toast.LENGTH_SHORT).show();
-                    selectItem(1, R.layout.decrypted_msg);
+                    selectItem(1, R.layout.decrypted_msg,null);
                     break;
                 case PublicStaticVariables.RESULT_ADD_FILE_TO_BIG:
                     Toast t = Toast.makeText(getBaseContext(), R.string.file_to_big, Toast.LENGTH_SHORT);
@@ -138,7 +138,7 @@ public class Main extends Activity {
                 tno.show(getFragmentManager(), "nfc");
             } else {
                 handleByOnNewIntent = true;
-                selectItem(-1, R.layout.wait_nfc_to_write);
+                selectItem(-1, R.layout.wait_nfc_to_write,"Save");
                 PendingIntent pi = PendingIntent.getActivity(Main.this, 0,
                         new Intent(Main.this, getClass())
                                 .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -283,6 +283,8 @@ public class Main extends Activity {
                 edl.show(getFragmentManager(), "session");
                 break;
             case R.id.replay:
+                //if(!PublicStaticVariables.flag_replay)
+
                 ExplainDialog ed = new ExplainDialog(ExplainDialog.REPLAY, PublicStaticVariables.timeStamp);
                 ed.show(getFragmentManager(), "replay");
                 break;
@@ -509,9 +511,9 @@ public class Main extends Activity {
                         }
                     }
                 }
-                String rslt = getString(writeTag(tag, Visual.hex2bin(CryptMethods.getPrivateToSave())));
+                int rslt = writeTag(tag, Visual.hex2bin(CryptMethods.getPrivateToSave()));
                 Toast.makeText(getBaseContext(), rslt, Toast.LENGTH_LONG).show();
-                if (rslt.equals(getString(R.string.tag_written))) {
+                if (rslt==R.string.tag_written) {
                     PublicStaticVariables.NFCMode = true;
                     saveKeys.start(this);
                     setUpViews();
@@ -660,7 +662,7 @@ public class Main extends Activity {
         mDrawerToggle.syncState();
     }
 
-    private void selectItem(int position, int layout_screen) {
+    private void selectItem(int position, int layout_screen,String title) {
         // update the main content by replacing fragments
         int layout = layout_screen;
         int menu = position;
@@ -687,7 +689,7 @@ public class Main extends Activity {
                         menu = menuTitles.length - 1;
                         break;
                     case R.layout.wait_nfc_decrypt:
-                        menu = menuTitles.length - 1;
+                        menu = 1;
                         break;
                     case R.layout.decrypted_msg:
                         menu = 1;
@@ -704,7 +706,7 @@ public class Main extends Activity {
         // update selected item and title, then close the main
         PublicStaticVariables.currentLayout = layout;
         mDrawerList.setItemChecked(menu, true);
-        setTitle(menuTitles[menu]);
+        setTitle(title!=null?title:menuTitles[menu]);
         View v = findViewById(PublicStaticVariables.currentLayout);
         if (v != null) v.animate().setDuration(100).alpha(0).start();
         final Fragment fragment = new FragmentManagement();
@@ -733,7 +735,8 @@ public class Main extends Activity {
     private void setUpViews() {
         final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, CONTACTS = 3, LEARN = 4, SETUP = 5;
         final String[] allMenus = getResources().getStringArray(R.array.menus);
-        final int[] allDrb = {R.drawable.encrypt, R.drawable.decrypt, R.drawable.share, R.drawable.contacts, R.drawable.learn, R.drawable.manage,R.drawable.local};
+        final int[] allDrb = {R.drawable.encrypt, R.drawable.decrypt, R.drawable.contacts, R.drawable.share
+                , R.drawable.learn, R.drawable.manage/*,R.drawable.local*/};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.privateExist() ? 1 : CryptMethods.publicExist() ? 2 : 3;
         mTitle = mDrawerTitle = getTitle();
@@ -803,27 +806,52 @@ public class Main extends Activity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
                 R.layout.share, R.layout.contacts, R.layout.help,
-                R.layout.setup,R.layout.local};
+                R.layout.setup/*,R.layout.local*/};
         switch (status) {
             case BOTH:
                 layouts = allLayouts;
                 if (!openByFile())
-                    selectItem(0, R.layout.encrypt);
+                    selectItem(0, R.layout.encrypt,null);
                 break;
             case PB:
                 layouts = new int[]{allLayouts[ENCRYPT], allLayouts[SHARE],
                         allLayouts[CONTACTS], allLayouts[LEARN], allLayouts[SETUP]};
-                selectItem(1, R.layout.wait_nfc_decrypt);
+                final String msg = getIntent().getStringExtra("message");
+                if (PublicStaticVariables.message != null || msg != null)
+                    selectItem(0, R.layout.wait_nfc_decrypt,"Tab NFC");
+                else if(PublicStaticVariables.fileContactCard!=null)
+                    selectItem(2,R.layout.wait_nfc_decrypt,"Tab NFC");
+                else
+                    selectItem(1,R.layout.share,null);
+                /*Toast t = Toast.makeText(this,"",Toast.LENGTH_LONG);
+                FrameLayout fl = new FrameLayout(this);
+                ImageView iv = new ImageView(this);
+                iv.setImageResource(android.R.drawable.alert_light_frame);
+                //iv.set
+                TextView tv = new TextView(this);
+                tv.setText(R.string.wait_for_nfc_to_read);
+                tv.setTypeface(FilesManagement.getOs(this));
+                tv.setTextColor(R.color.spec_black);
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
+                tv.setBackgroundResource(android.R.drawable.alert_light_frame);
+                int padd = 70;
+                tv.setPadding(padd,padd,padd,padd);
+                //tv.setBackgroundColor(android.R.color.white);
+                //fl.addView(iv);
+                //fl.addView(tv);
+                t.setGravity(Gravity.TOP,0,0);
+                t.setView(tv);
+                t.show();*/
                 break;
             case PV:
                 layouts = new int[]{allLayouts[DECRYPT], allLayouts[CONTACTS],
                         allLayouts[LEARN], allLayouts[SETUP]};
                 if (!openByFile())
-                    selectItem(0, R.layout.decrypt);
+                    selectItem(0, R.layout.decrypt,null);
                 break;
             case NONE:
                 layouts = new int[]{allLayouts[LEARN], allLayouts[SETUP]};
-                selectItem(1, R.layout.create_new_keys);
+                selectItem(1, R.layout.create_new_keys,"Hello");
                 break;
         }
     }
@@ -848,7 +876,7 @@ public class Main extends Activity {
             getIntent().setData(null);
             return true;
         } else if (PublicStaticVariables.fileContactCard != null) {
-            selectItem(-1, R.layout.contacts);
+            selectItem(-1, R.layout.contacts,null);
             //TODO search also in names and emails
             Contact c = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.fileContactCard.getPublicKey());
             if (c == null) {
@@ -959,6 +987,8 @@ public class Main extends Activity {
                     setUpViews();
                     break;
                 case R.layout.share:
+                    if(CryptMethods.publicExist()&&!CryptMethods.privateExist())
+                        new prepareToExit();
                     setUpViews();
                     break;
                 case R.layout.contacts:
@@ -980,10 +1010,10 @@ public class Main extends Activity {
                     setUpViews();
                     break;
                 case R.layout.edit_contact:
-                    selectItem(-1, R.layout.contacts);
+                    selectItem(-1, R.layout.contacts,null);
                     break;
                 case R.layout.profile:
-                    selectItem(-1, R.layout.share);
+                    selectItem(-1, R.layout.share,null);
                     break;
                 case R.layout.create_new_keys:
                     if (CryptMethods.publicExist())
@@ -1061,7 +1091,7 @@ public class Main extends Activity {
     }
 
     public void onClickShare(View v) {
-        selectItem(-1, R.layout.profile);
+        selectItem(-1, R.layout.profile,null);
     }
 
     @Override
@@ -1111,7 +1141,7 @@ public class Main extends Activity {
     public void onClickManage(View v) {
         switch (v.getId()) {
             case R.id.button1:
-                selectItem(-1, R.layout.create_new_keys);
+                selectItem(-1, R.layout.create_new_keys,null);
                 break;
             case R.id.button2:
                 notImp(null);
@@ -1189,7 +1219,7 @@ public class Main extends Activity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-            selectItem(position, 0);
+            selectItem(position, 0,null);
         }
     }
 }

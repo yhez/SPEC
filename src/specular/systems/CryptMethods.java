@@ -1,6 +1,8 @@
 package specular.systems;
 
 
+import android.util.Log;
+
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -121,6 +123,10 @@ public class CryptMethods {
     }
 
     public static void decrypt(String encryptedMessage) {
+        if(encryptedMessage==null){
+            Log.d("null","null message");
+            return;
+        }
         if (notInit) {
             addProviders();
             notInit = false;
