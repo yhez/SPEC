@@ -263,7 +263,7 @@ public class Main extends Activity {
                         break;
                     case Session.DONT_TRUST:
                         msg = getString(R.string.dont_trust_session_explain)
-                                +PublicStaticVariables.session.replace("---","\n")+"\n"+"their session is:\n"+PublicStaticVariables.session.replace("---","\n");
+                                +PublicStaticVariables.session.replace("---", "\n")+"\n"+"their session is:\n"+PublicStaticVariables.session.replace("---","\n");
                         break;
                     case Session.NEW_TRUSTED:
                         msg = getString(R.string.new_session_trust_created)
@@ -806,7 +806,7 @@ public class Main extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
-                R.layout.share, R.layout.contacts, R.layout.help,
+                R.layout.share, R.layout.contacts, R.layout.learn,
                 R.layout.setup/*,R.layout.local*/};
         switch (status) {
             case BOTH:
@@ -1004,7 +1004,7 @@ public class Main extends Activity {
                     if (!clearedSomething)
                         setUpViews();
                     break;
-                case R.layout.help:
+                case R.layout.learn:
                     setUpViews();
                     break;
                 case R.layout.setup:

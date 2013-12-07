@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/wait_for_nfc_to_write"
-        android:textSize="22sp" />
+        android:textSize="30sp" />
 
     <View
         android:layout_height="100dp"

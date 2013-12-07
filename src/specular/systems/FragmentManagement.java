@@ -568,7 +568,7 @@ public class FragmentManagement extends Fragment {
                 break;
             case setup:
                 break;
-            case R.layout.help:
+            case R.layout.learn:
                 break;
             case decrypted_msg:
                 if (PublicStaticVariables.decryptedMsg != null) {
