@@ -134,6 +134,19 @@
     <string name="new_session_trust_created">congratulations you both  shared the secret now no one will be able to interfering your messages.</string><string name="starting_session_explain">you have their session so it\'ll probably the same person hwo send you the message before, but he does not have your session\n</string>
     <string name="unknown_session_explain">First time receiving a message from this contact, verify identity (email).\n</string>
     <string name="not_implmented_local_files">not implemented yet.\nthis is where you\'ll be able to explore your local encrypted files</string>
+    <string name="quote">Quote previous message</string>
+    <string name="quote_msg">\n---------\nQuoted message\n---------\n</string>
+    <string name="learn_title">Learn About SPEC</string>
+    <string name="how_spec">How SPEC Works</string>
+    <string name="faq">FAQs</string>
+    <string name="blog">SPEC Blog</string>
+    <string name="contact_spec">Contact specularX</string>
+    <string-array name="links">
+        <item>https://specularx.co/how-it-works/</item>
+        <item>https://specularx.co/faqs/</item>
+        <item>https://specularx.co/specularx-blog/</item>
+        <item>https://specularx.co/contact/</item>
+    </string-array>
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>

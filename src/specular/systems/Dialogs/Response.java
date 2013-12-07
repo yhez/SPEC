@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -36,9 +37,13 @@ public class Response extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         View v = inflater.inflate(R.layout.response, null);
         builder.setView(v);
+        final CheckBox cb = (CheckBox)v.findViewById(R.id.quote);
         if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
-            if (PublicStaticVariables.friendsPublicKey != null)
+            if (PublicStaticVariables.friendsPublicKey != null){
                 contact = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.friendsPublicKey);
+                cb.setVisibility(View.VISIBLE);
+                cb.setChecked(true);
+            }
         } else {
             contact = PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(
                     ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));
@@ -78,7 +83,8 @@ public class Response extends DialogFragment {
                 if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg)
                     getActivity().findViewById(R.id.answer).setVisibility(View.GONE);
                 final String userInput = et.getText().toString();
-                final MessageFormat msg = new MessageFormat(null, "", userInput,
+                final MessageFormat msg = new MessageFormat(null, "", userInput+
+                        (cb.isChecked()?getString(R.string.quote_msg)+PublicStaticVariables.msg_content:""),
                         contact.getSession());
                 final ProgressDlg prgd = new ProgressDlg(getActivity(), R.string.encrypting);
                 prgd.setCancelable(false);

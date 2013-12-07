@@ -1,150 +1,156 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:alpha="1"
+    android:alpha="0"
     android:background="@android:color/white"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="@dimen/default_gap">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:text="@string/editable_fields"
-        android:textColor="@color/spec_gray"
-        android:textSize="12sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/spec_blue" />
-
-    <include
-        layout="@layout/edit_text"
-        android:id="@+id/contact_name" />
-
-    <include
-        layout="@layout/edit_text"
-        android:id="@+id/contact_email" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:text="@string/not_editable_fields"
-        android:textColor="@color/spec_gray"
-        android:textSize="12sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/spec_blue" />
-
-    <TextView
-        android:id="@+id/contact_session"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:padding="@dimen/default_gap"
-        android:textColor="@color/spec_black" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:paddingLeft="@dimen/default_gap"
-        android:text="@string/edit_contact_title_pbk"
-        android:textColor="@color/spec_black" />
-
-    <TextView
-        android:id="@+id/contact_pb"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:padding="@dimen/default_gap"
-        android:textColor="@color/spec_black"
-        android:textIsSelectable="true"
-        android:textSize="11sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="@dimen/default_gap"
-        android:background="@color/spec_blue" />
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/default_gap">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <ImageButton
-                android:id="@+id/contact_picture"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:onClick="onClickEditContact"
-                android:padding="@dimen/default_gap" />
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:orientation="vertical">
+            android:layout_gravity="left"
+            android:text="@string/editable_fields"
+            android:textColor="@color/spec_gray"
+            android:textSize="12sp" />
 
-            <ImageButton
-                android:id="@+id/answer"
-                style="?android:attr/borderlessButtonStyle"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue" />
+
+        <include
+            android:id="@+id/contact_name"
+            layout="@layout/edit_text" />
+
+        <include
+            android:id="@+id/contact_email"
+            layout="@layout/edit_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/not_editable_fields"
+            android:textColor="@color/spec_gray"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue" />
+
+        <TextView
+            android:id="@+id/contact_session"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:padding="@dimen/default_gap"
+            android:textColor="@color/spec_black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:paddingLeft="@dimen/default_gap"
+            android:text="@string/edit_contact_title_pbk"
+            android:textColor="@color/spec_black" />
+
+        <TextView
+            android:id="@+id/contact_pb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:padding="@dimen/default_gap"
+            android:textColor="@color/spec_black"
+            android:textIsSelectable="true"
+            android:textSize="11sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/default_gap"
+            android:background="@color/spec_blue" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/contact_picture"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="onClickEditContact"
+                    android:padding="@dimen/default_gap" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:onClick="onClickEditContact"
-                android:padding="@dimen/default_gap"
-                android:src="@drawable/respond" />
+                android:layout_gravity="right|center_vertical"
+                android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/delete"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onClickEditContact"
-                android:padding="@dimen/default_gap"
-                android:src="@drawable/delete" />
+                <ImageButton
+                    android:id="@+id/answer"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="onClickEditContact"
+                    android:padding="@dimen/default_gap"
+                    android:src="@drawable/respond" />
+
+                <ImageButton
+                    android:id="@+id/delete"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClickEditContact"
+                    android:padding="@dimen/default_gap"
+                    android:src="@drawable/delete" />
+            </LinearLayout>
         </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/contact_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/contact_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/orig_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/orig_eamil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
     </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/contact_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/contact_index"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/orig_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/orig_eamil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-</LinearLayout>
+</ScrollView>

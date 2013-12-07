@@ -1155,7 +1155,28 @@ public class Main extends Activity {
                 break;
         }
     }
-
+    public void onClickAbout(View v){
+        String[] links = getResources().getStringArray(R.array.links);
+        Intent i = new Intent();
+        i.setAction(Intent.ACTION_VIEW);
+        switch (v.getId()){
+            case R.id.button1:
+                i.setData(Uri.parse(links[0]));
+                break;
+            case R.id.button2:
+                i.setData(Uri.parse(links[1]));
+                break;
+            case R.id.button3:
+                i.setData(Uri.parse(links[2]));
+                break;
+            case R.id.button4:
+                i.setData(Uri.parse(links[3]));
+                break;
+            default:
+                break;
+        }
+        startActivity(i);
+    }
     public void onClickEditContact(View v) {
         switch (v.getId()) {
             case R.id.delete:

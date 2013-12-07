@@ -77,4 +77,14 @@
                 android:src="@drawable/ic_send_disabled_holo_light" />
         </LinearLayout>
     </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/quote"
+        android:visibility="gone"
+        android:checked="false"
+        android:background="@android:color/white"
+        android:text="@string/quote"
+        android:textColor="@color/spec_black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
