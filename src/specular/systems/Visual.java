@@ -67,6 +67,7 @@ public class Visual {
     public static void edit(Activity a, EditText et, ImageButton ib) {
         if (et.getKeyListener() == null) {
             ib.setImageResource(R.drawable.save);
+            et.setSelection(et.getText().length());
             et.setKeyListener(PublicStaticVariables.edit);
             et.setFocusable(true);
             et.setFocusableInTouchMode(true);
@@ -74,7 +75,6 @@ public class Visual {
             et.setFilters(filters());
             InputMethodManager imm = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(et, 0);
-            et.setSelection(et.getText().length());
         } else {
             ib.setImageResource(R.drawable.edit);
             et.setKeyListener(null);

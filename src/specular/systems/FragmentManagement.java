@@ -47,8 +47,8 @@ import static specular.systems.R.layout.decrypt;
 import static specular.systems.R.layout.decrypted_msg;
 import static specular.systems.R.layout.edit_contact;
 import static specular.systems.R.layout.encrypt;
-import static specular.systems.R.layout.setup;
 import static specular.systems.R.layout.me;
+import static specular.systems.R.layout.setup;
 import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
@@ -334,6 +334,7 @@ public class FragmentManagement extends Fragment {
                                 if (etEmail.getKeyListener() == null) {
                                     Visual.edit(getActivity(), etEmail, ib);
                                     etEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                                    etEmail.setSelection(etEmail.getText().length());
                                 } else {
                                     String email = etEmail.getText().toString();
                                     String origEmail = ((TextView) rootView.findViewById(R.id.orig_eamil)).getText()
@@ -364,6 +365,7 @@ public class FragmentManagement extends Fragment {
                                 if (etName.getKeyListener() == null) {
                                     Visual.edit(getActivity(), etName, ib);
                                     etName.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                                    etName.setSelection(etName.getText().length());
                                 } else {
                                     String origName = ((TextView) rootView.findViewById(R.id.orig_name)).getText()
                                             .toString();
@@ -555,6 +557,8 @@ public class FragmentManagement extends Fragment {
                     }
                 });
                 PublicStaticVariables.luc.showIfNeeded(rootView);
+                if(PublicStaticVariables.currentText!=null)
+                    et.setText(PublicStaticVariables.currentText);
                 break;
             case decrypt:
                 break;

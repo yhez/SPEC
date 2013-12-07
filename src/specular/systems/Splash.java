@@ -63,8 +63,7 @@ public class Splash extends Activity {
             }
 
             Intent intent = new Intent(Splash.this, Main.class);
-            if (PublicStaticVariables.message != null || PublicStaticVariables.fileContactCard != null
-                    || PublicStaticVariables.time == null || (System.currentTimeMillis() - PublicStaticVariables.time) > (1000 * 60 * TIME_FOR_CLEAR_TASK)) {
+            if (PublicStaticVariables.time == null || (System.currentTimeMillis() - PublicStaticVariables.time) > (1000 * 60 * TIME_FOR_CLEAR_TASK)) {
                 FilesManagement.deleteTempDecryptedMSG(this);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
@@ -78,65 +77,64 @@ public class Splash extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         Intent thisIntent = getIntent();
-        if(thisIntent!=null&&thisIntent.getType()!=null)
-        Log.d("intent", thisIntent.getType());
+        if (thisIntent != null && thisIntent.getType() != null)
+            Log.d("intent", thisIntent.getType());
         if (thisIntent == null) {
             go();
-        } else if
-            (thisIntent.getAction() != null && thisIntent.getAction().equals(Intent.ACTION_SEND)) {
-                String s = thisIntent.getStringExtra(Intent.EXTRA_TEXT);
-                if (s != null) {
-                    PublicStaticVariables.currentText = s;
-                }
-                go();
-            } else if (thisIntent.getData() == null) {
-                go();
+        } else if(thisIntent.getAction() != null && thisIntent.getAction().equals(Intent.ACTION_SEND)) {
+            String s = thisIntent.getStringExtra(Intent.EXTRA_TEXT);
+            if (s != null) {
+                PublicStaticVariables.currentText = s;
+            }
+            go();
+        } else if (thisIntent.getData() == null) {
+            go();
+        } else {
+            PublicContactCard qrp;
+            Uri uri = getIntent().getData();
+            if (uri == null) {
+                Toast.makeText(getBaseContext(), R.string.failed,
+                        Toast.LENGTH_LONG).show();
+                finish();
             } else {
-                PublicContactCard qrp;
-                Uri uri = getIntent().getData();
-                if (uri == null) {
+                String data = null;
+                try {
+                    ContentResolver cr = getBaseContext().getContentResolver();
+                    InputStream is;
+                    is = cr.openInputStream(uri);
+                    StringBuilder buf = new StringBuilder();
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(is));
+                    String str;
+                    try {
+                        while ((str = reader.readLine()) != null) {
+                            buf.append(str).append("\n");
+                        }
+
+                        is.close();
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    buf.deleteCharAt(buf.length() - 1);
+                    data = buf.toString();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (data == null) {
                     Toast.makeText(getBaseContext(), R.string.failed,
                             Toast.LENGTH_LONG).show();
                     finish();
                 } else {
-                    String data = null;
-                    try {
-                        ContentResolver cr = getBaseContext().getContentResolver();
-                        InputStream is;
-                        is = cr.openInputStream(uri);
-                        StringBuilder buf = new StringBuilder();
-                        BufferedReader reader = new BufferedReader(
-                                new InputStreamReader(is));
-                        String str;
-                        try {
-                            while ((str = reader.readLine()) != null) {
-                                buf.append(str).append("\n");
-                            }
-
-                            is.close();
-                            reader.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        buf.deleteCharAt(buf.length() - 1);
-                        data = buf.toString();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    if (data == null) {
-                        Toast.makeText(getBaseContext(), R.string.failed,
-                                Toast.LENGTH_LONG).show();
-                        finish();
+                    qrp = new PublicContactCard(this, data);
+                    if (qrp.getPublicKey() != null) {
+                        PublicStaticVariables.fileContactCard = qrp;
                     } else {
-                        qrp = new PublicContactCard(this, data);
-                        if (qrp.getPublicKey() != null) {
-                            PublicStaticVariables.fileContactCard = qrp;
-                        } else {
-                            PublicStaticVariables.message = data;
-                        }
-                        go();
+                        PublicStaticVariables.message = data;
                     }
+                    go();
                 }
+            }
         }
     }
 }
