@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="welcome">Start bringing privacy and security to your online life and presence.\nLet the SPEC magic begin.\nEnter email and swipe arrow to generate keys.</string>
-    <string name="company_text">SPEC ; HOLD THE KEY TO YOUR SECURITY</string>
+    <string name="welcome">Start bringing privacy and security to your online life and presence.\n<b>Let the SPEC magic begin.</b>\nEnter email and swipe arrow to generate keys.</string>
+    <string name="company_text"><b>SPEC</b> ; HOLD THE KEY TO YOUR SECURITY</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="app_name">SPEC</string>
@@ -12,7 +12,7 @@
     <string name="ok">OK</string>
     <string name="hint_enter_your_name">username (optional)&#8230;</string>
     <string name="hint_enter_your_email">email&#8230;</string>
-    <string name="wait_for_nfc_to_write">Tap NFC to securely store key</string>
+    <string name="wait_for_nfc_to_write">Tap NFC to securely store decryption key (Enhanced SPEC Security Mode)</string>
     <string name="skip_save_to_phone">Skip and save key on device</string>
     <string name="explain_and_about">LEARN ABOUT SPEC</string>
     <string name="create_keys">Generate New Keys</string>
@@ -65,7 +65,7 @@
     <string name="cant_find_an_app_to_open_file">Can\'t find proper app</string>
     <string name="failed_to_create_file_to_open">Failed to create file</string>
     <string name="described_what_going_to_be">SPEC CONTACT CARD</string>
-    <string name="new_contact_to_add">Would you like to approve this contact?\nVerify that you trust this email.</string>
+    <string name="new_contact_to_add">Would you like to approve this contact?\nVerify that you trust the email below.\n</string>
     <string name="no">NO</string>
     <string name="yes">YES</string>
     <string name="save_changes_back_pressed">Would you like to save the changes?</string>
@@ -99,10 +99,10 @@
     <string name="file_name_my_qr_key">ContactCardQR.SPEC.png</string>
     <string name="file_name_secure_msg">SecureMessage.SPEC</string>
     <string name="file_name_qr_msg">SecureQRMessage.SPEC.png</string>
-    <string name="file_to_big">sorry.\n------\ncan\'t attach file, to big.\n-current limit 50 MB-</string>
-    <string name="file_is_empty">the file is empty</string>
+    <string name="file_to_big">Sorry.\nCan\'t attach file.\nCurrent limit is 50 MB.</string>
+    <string name="file_is_empty">File is empty</string>
     <string name="notify_msg_deleted">Message has been deleted</string>
-    <string name="send_another_msg">send another message</string>
+    <string name="send_another_msg">Send another message</string>
     <string name="send_orders">Sending a message:\n------\n1. Choose contact\n2. Enter message\n3. Add file (optional)</string>
     <string name="backup_profile">Backup Profile</string>
     <string name="share_file">share file via:</string>
@@ -127,10 +127,10 @@
     <string name="replay_title">Replay Attack Info:</string>
     <string name="too_short_name">Name should be at least 3 characters long</string>
     <string name="contact_with_same_email_exist">A contact with the same email already exists,\ndo you want to update their Public Encryption Key?</string>
-    <string name="session_ok_explain">you both have the same session so you talking with the same person you talked before</string>
-    <string name="dont_trust_session_explain">you tow have different session.
-        \nit\'s possible that some one else is faking that he\'s your friend.
-        \nyour session is:\n</string>
+    <string name="session_ok_explain">You both have the same session ID, so you\'re communicating with the same person as before.</string>
+    <string name="dont_trust_session_explain">You have a different session ID than your contact.
+        \nIt\'s possible that your contact is a fake, fraud.
+        \nYour session is:\n</string>
     <string name="new_session_trust_created">congratulations you both  shared the secret now no one will be able to interfering your messages.</string><string name="starting_session_explain">you have their session so it\'ll probably the same person hwo send you the message before, but he does not have your session\n</string>
     <string name="unknown_session_explain">First time receiving a message from this contact, verify identity (email).\n</string>
     <string name="not_implmented_local_files">not implemented yet.\nthis is where you\'ll be able to explore your local encrypted files</string>
