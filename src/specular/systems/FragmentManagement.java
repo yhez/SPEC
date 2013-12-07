@@ -48,7 +48,7 @@ import static specular.systems.R.layout.decrypted_msg;
 import static specular.systems.R.layout.edit_contact;
 import static specular.systems.R.layout.encrypt;
 import static specular.systems.R.layout.setup;
-import static specular.systems.R.layout.share;
+import static specular.systems.R.layout.me;
 import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
@@ -385,7 +385,7 @@ public class FragmentManagement extends Fragment {
                         }
                 );
                 break;
-            case share:
+            case me:
 
                 //todo move it after last line
                 //((TextView) rootView.findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
@@ -614,7 +614,11 @@ public class FragmentManagement extends Fragment {
                     @Override
                     public void onClick(View view) {
                         if (etMyEmail.getKeyListener() != null) {
-                            Toast.makeText(getActivity(), "do something", Toast.LENGTH_LONG).show();
+                            String em = etMyEmail.getText().toString();
+                            if(!em.equals(CryptMethods.getEmail())){
+                                CryptMethods.setDetails(null,em);
+                                FilesManagement.edit(getActivity());
+                            }
                         }
                         Visual.edit(getActivity(), etMyEmail, ibMyEmail);
                     }
@@ -623,11 +627,17 @@ public class FragmentManagement extends Fragment {
                     @Override
                     public void onClick(View view) {
                         if (etMyName.getKeyListener() != null) {
-                            Toast.makeText(getActivity(), "do something", Toast.LENGTH_LONG).show();
+                            String en = etMyName.getText().toString();
+                            if (!en.equals(CryptMethods.getName())) {
+                                CryptMethods.setDetails(en, null);
+                                FilesManagement.edit(getActivity());
+                            }
                         }
                         Visual.edit(getActivity(), etMyName, ibMyName);
                     }
                 });
+                ((ImageView)rootView.findViewById(R.id.my_qr_public_key)).setImageBitmap(FilesManagement.getMyQRPublicKey(getActivity()));
+                ((TextView)rootView.findViewById(R.id.my_public_key)).setText(CryptMethods.getPublic());
                 break;
         }
         Visual.setAllFonts(getActivity(), (ViewGroup) rootView);

@@ -72,9 +72,9 @@ public class Visual {
             et.setFocusableInTouchMode(true);
             et.requestFocus();
             et.setFilters(filters());
-            et.setSelection(et.getText().length());
             InputMethodManager imm = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(et, 0);
+            et.setSelection(et.getText().length());
         } else {
             ib.setImageResource(R.drawable.edit);
             et.setKeyListener(null);

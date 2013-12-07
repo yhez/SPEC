@@ -584,20 +584,22 @@ public class Main extends Activity {
             Contact c = PublicStaticVariables.contactsDataSource.findContactByEmail(PublicStaticVariables.decryptedMsg.getEmail());
             AddContactDlg acd = new AddContactDlg(pcc,PublicStaticVariables.decryptedMsg.getSession(),c!=null?c.getId():-1);
             acd.show(getFragmentManager(), "acd3");
-        } else if (PublicStaticVariables.currentLayout == R.layout.share) {
-            ShareCustomDialog scd = new ShareCustomDialog();
-            scd.show(getFragmentManager(), "scd");
+        } else if (PublicStaticVariables.currentLayout == R.layout.me) {
+            share(null);
         }
         return super.onOptionsItemSelected(item);
     }
-
+    public void share(View v){
+        ShareCustomDialog scd = new ShareCustomDialog();
+        scd.show(getFragmentManager(), "scd");
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (PublicStaticVariables.currentLayout == R.layout.contacts ||
                 PublicStaticVariables.currentLayout == R.layout.encrypt ||
                 PublicStaticVariables.currentLayout == R.layout.edit_contact ||
                 PublicStaticVariables.currentLayout == R.layout.decrypted_msg ||
-                PublicStaticVariables.currentLayout == R.layout.share) {
+                PublicStaticVariables.currentLayout == R.layout.me) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.main, menu);
             return super.onCreateOptionsMenu(menu);
@@ -624,7 +626,7 @@ public class Main extends Activity {
             else
                 mi.setVisible(!drawerOpen);
             return super.onPrepareOptionsMenu(menu);
-        } else if (PublicStaticVariables.currentLayout == R.layout.edit_contact || PublicStaticVariables.currentLayout == R.layout.share) {
+        } else if (PublicStaticVariables.currentLayout == R.layout.edit_contact || PublicStaticVariables.currentLayout == R.layout.me) {
             mi.setVisible(!drawerOpen);
             mi.setIcon(android.R.drawable.ic_menu_share);
             return super.onPrepareOptionsMenu(menu);
@@ -806,7 +808,7 @@ public class Main extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
-                R.layout.share, R.layout.contacts, R.layout.learn,
+                R.layout.me, R.layout.contacts, R.layout.learn,
                 R.layout.setup/*,R.layout.local*/};
         switch (status) {
             case BOTH:
@@ -823,7 +825,7 @@ public class Main extends Activity {
                 else if(PublicStaticVariables.fileContactCard!=null)
                     selectItem(2,R.layout.wait_nfc_decrypt,"Tab NFC");
                 else
-                    selectItem(1,R.layout.share,null);
+                    selectItem(1,R.layout.me,null);
                 /*Toast t = Toast.makeText(this,"",Toast.LENGTH_LONG);
                 FrameLayout fl = new FrameLayout(this);
                 ImageView iv = new ImageView(this);
@@ -987,7 +989,7 @@ public class Main extends Activity {
                 case R.layout.decrypt:
                     setUpViews();
                     break;
-                case R.layout.share:
+                case R.layout.me:
                     if(CryptMethods.publicExist()&&!CryptMethods.privateExist())
                         new prepareToExit();
                     setUpViews();
@@ -1014,7 +1016,7 @@ public class Main extends Activity {
                     selectItem(-1, R.layout.contacts,null);
                     break;
                 case R.layout.profile:
-                    selectItem(-1, R.layout.share,null);
+                    selectItem(-1, R.layout.me,null);
                     break;
                 case R.layout.create_new_keys:
                     if (CryptMethods.publicExist())
@@ -1106,7 +1108,7 @@ public class Main extends Activity {
             onBackPressed();
             msgSended = false;
         }
-        //this is for when coming to the app with share
+        //this is for when coming to the app with me
         if (PublicStaticVariables.currentLayout == R.layout.encrypt) {
             attachFile((Uri) getIntent().getParcelableExtra("attach"));
         }
@@ -1114,7 +1116,7 @@ public class Main extends Activity {
             FilesManagement.getTempDecryptedMSG(this);
         }
         /*
-        if(PublicStaticVariables.currentLayout==R.layout.share){
+        if(PublicStaticVariables.currentLayout==R.layout.me){
 
             ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
             co.hideOnClickOutside = true;

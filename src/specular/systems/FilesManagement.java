@@ -336,6 +336,55 @@ public final class FilesManagement {
             edt.commit();
         }
     }
+    public static void edit(Activity a) {
+        if (a != null) {
+            myQRPublicKey = null;
+            SharedPreferences srp = PreferenceManager
+                    .getDefaultSharedPreferences(a.getApplicationContext());
+            SharedPreferences.Editor edt = srp.edit();
+            PublicContactCard qrpk = new PublicContactCard(a);
+            FileOutputStream fos;
+            try {
+                fos = a.openFileOutput(a.getString(FILE_NAME),
+                        Context.MODE_WORLD_READABLE);
+                fos.write(qrpk.getQRToPublish().getBytes());
+                fos.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrpk.getQRToPublish(), BarcodeFormat.QR_CODE.toString(), 512);
+
+            Bitmap bitmap = null;
+            try {
+                bitmap = qrCodeEncoder.encodeAsBitmap();
+
+            Bitmap crop = crop(bitmap);
+                FileOutputStream fos2;
+                try {
+                    fos2 = a.openFileOutput(a.getString(QR_NAME),
+                            Context.MODE_WORLD_READABLE);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos2);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                FileOutputStream fos3;
+                try {
+                    fos3 = a.openFileOutput(QR_NAME_T,
+                            Context.MODE_WORLD_READABLE);
+                    crop.compress(Bitmap.CompressFormat.PNG, 90, fos3);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } catch (WriterException e) {
+                e.printStackTrace();
+            }
+            edt.putString(EMAIL, qrpk.getEmail());
+            edt.putString(NAME, qrpk.getName());
+            edt.commit();
+        }
+    }
 
     public static int addFile(Activity a, Uri uri) {
         ContentResolver cr = a.getContentResolver();

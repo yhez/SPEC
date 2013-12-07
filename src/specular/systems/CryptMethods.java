@@ -54,8 +54,10 @@ public class CryptMethods {
     }
 
     public static void setDetails(String name, String email) {
-        myName = name;
-        myEmail = email;
+        if(name!=null)
+            myName = name;
+        if(email!=null)
+            myEmail = email;
     }
 
     public static void moveKeysFromTmp() {
