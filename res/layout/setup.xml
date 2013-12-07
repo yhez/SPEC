@@ -68,21 +68,21 @@
             android:text="@string/Import"
             android:textColor="@color/spec_black" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/spec_blue" />
+        <!--      <View
+                 android:layout_width="match_parent"
+                 android:layout_height="1dp"
+                 android:background="@color/spec_blue" />
 
-        <Button
-            android:onClick="onClickManage"
-            android:id="@+id/button4"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="@dimen/default_gap"
-            android:text="@string/clean"
-            android:textColor="@color/spec_black" />
+            <Button
+                 android:onClick="onClickManage"
+                 android:id="@+id/button4"
+                 style="?android:attr/buttonBarButtonStyle"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:padding="@dimen/default_gap"
+                 android:text="@string/clean"
+                 android:textColor="@color/spec_black" />-->
     </LinearLayout>
 
 </LinearLayout>

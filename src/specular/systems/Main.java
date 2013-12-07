@@ -57,6 +57,7 @@ import specular.systems.Dialogs.ContactQR;
 import specular.systems.Dialogs.DeleteContactDialog;
 import specular.systems.Dialogs.DeleteDataDialog;
 import specular.systems.Dialogs.ExplainDialog;
+import specular.systems.Dialogs.GenerateKeys;
 import specular.systems.Dialogs.NotImplemented;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.Dialogs.Response;
@@ -1141,7 +1142,9 @@ public class Main extends Activity {
     public void onClickManage(View v) {
         switch (v.getId()) {
             case R.id.button1:
-                selectItem(-1, R.layout.create_new_keys,null);
+                GenerateKeys gk = new GenerateKeys();
+                gk.show(getFragmentManager(),"gk");
+                //selectItem(-1, R.layout.create_new_keys,null);
                 break;
             case R.id.button2:
                 notImp(null);
