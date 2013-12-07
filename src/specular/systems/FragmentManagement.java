@@ -596,7 +596,7 @@ public class FragmentManagement extends Fragment {
                     ((TextView) rootView.findViewById(R.id.decrypted_msg)).setText(R.string.cant_decrypt);
                     getActivity().invalidateOptionsMenu();
                 } else {
-
+                    updateDecryptedScreen();
                 }
                 break;
             case R.layout.profile:

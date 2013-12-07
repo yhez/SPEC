@@ -1108,37 +1108,13 @@ public class Main extends Activity {
             onBackPressed();
             msgSended = false;
         }
-        //this is for when coming to the app with me
+        //this is for when coming to the app from share
         if (PublicStaticVariables.currentLayout == R.layout.encrypt) {
             attachFile((Uri) getIntent().getParcelableExtra("attach"));
         }
         if (PublicStaticVariables.flag_msg != null && PublicStaticVariables.flag_msg) {
             FilesManagement.getTempDecryptedMSG(this);
         }
-        /*
-        if(PublicStaticVariables.currentLayout==R.layout.me){
-
-            ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
-            co.hideOnClickOutside = true;
-            ViewTarget target = new ViewTarget(R.id.touch, this);
-            ShowcaseView sv = ShowcaseView.insertShowcaseView(target, this, R.string.hash_title, R.string.welcome, co);
-            sv.setOnShowcaseEventListener(new OnShowcaseEventListener() {
-                @Override
-                public void onShowcaseViewHide(ShowcaseView showcaseView) {
-
-                }
-
-                @Override
-                public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
-                }
-
-                @Override
-                public void onShowcaseViewShow(ShowcaseView showcaseView) {
-
-                }
-            });
-        }*/
     }
 
     public void onClickManage(View v) {

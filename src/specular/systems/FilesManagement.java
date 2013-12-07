@@ -71,7 +71,7 @@ public final class FilesManagement {
     }
 
     public static void saveTempDecryptedMSG(Activity a) {
-        if (PublicStaticVariables.currentLayout != R.layout.decrypted_msg || PublicStaticVariables.decryptedMsg == null)
+        if (PublicStaticVariables.decryptedMsg == null)
             return;
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
