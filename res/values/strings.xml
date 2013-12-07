@@ -161,9 +161,9 @@
     <string-array name="menus">
         <item>Encrypt</item>
         <item>Decrypt</item>
-        <item>Me</item>
+        <item>My SPEC</item>
         <item>Contacts</item>
-        <item>Learn</item>
+        <item>About</item>
         <item>Manage</item>
     </string-array>
     <!--<item>SPEC Safe</item>-->
