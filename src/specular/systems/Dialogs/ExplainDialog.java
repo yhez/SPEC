@@ -52,11 +52,16 @@ public class ExplainDialog extends DialogFragment {
         tvContent.setText(details);
         final Button btDetails = (Button) v.findViewById(R.id.my_details);
         final Button btExplain = (Button) v.findViewById(R.id.general_explain);
+        final View[] vv = new View[2];
+        vv[0] = ((ViewGroup)v.findViewById(R.id.ll_titles)).getChildAt(0);
+        vv[1] = ((ViewGroup)v.findViewById(R.id.ll_titles)).getChildAt(1);
         btExplain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tvTitle.setText(title);
                 tvContent.setText(content);
+                vv[1].setVisibility(View.VISIBLE);
+                vv[0].setVisibility(View.INVISIBLE);
             }
         });
         btDetails.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +69,8 @@ public class ExplainDialog extends DialogFragment {
             public void onClick(View view) {
                 tvTitle.setText(title2);
                 tvContent.setText(details);
+                vv[0].setVisibility(View.VISIBLE);
+                vv[1].setVisibility(View.INVISIBLE);
             }
         });
         Visual.setAllFonts(getActivity(), (ViewGroup) v);
