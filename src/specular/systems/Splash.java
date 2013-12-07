@@ -80,17 +80,16 @@ public class Splash extends Activity {
         Intent thisIntent = getIntent();
         if(thisIntent!=null&&thisIntent.getType()!=null)
         Log.d("intent", thisIntent.getType());
-        if (thisIntent == null || thisIntent.getType() == null) {
+        if (thisIntent == null) {
             go();
-        } else {
-            if (thisIntent.getAction() != null && thisIntent.getAction().equals(Intent.ACTION_SEND)) {
+        } else if
+            (thisIntent.getAction() != null && thisIntent.getAction().equals(Intent.ACTION_SEND)) {
                 String s = thisIntent.getStringExtra(Intent.EXTRA_TEXT);
                 if (s != null) {
                     PublicStaticVariables.currentText = s;
                 }
                 go();
-            } else if ((!thisIntent.getType().equals("application/octet-stream")&&!thisIntent.getType().equals("application/spec"))
-                    || thisIntent.getData() == null) {
+            } else if (thisIntent.getData() == null) {
                 go();
             } else {
                 PublicContactCard qrp;
@@ -138,7 +137,6 @@ public class Splash extends Activity {
                         go();
                     }
                 }
-            }
         }
     }
 }

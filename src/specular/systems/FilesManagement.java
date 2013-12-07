@@ -164,11 +164,11 @@ public final class FilesManagement {
                     FILE_NAME_SEND), Context.MODE_WORLD_READABLE);
             fos.write(PublicStaticVariables.encryptedMsgToSend.getBytes());
             fos.close();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return true;
     }
 
     public static boolean createFilesToSend(Activity a, boolean qr) {

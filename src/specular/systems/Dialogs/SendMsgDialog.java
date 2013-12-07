@@ -216,7 +216,7 @@ public class SendMsgDialog extends DialogFragment {
             i.setAction(Intent.ACTION_SEND_MULTIPLE);
         switch (what) {
             case FILE:
-                i.setType("file/*");
+                i.setType("file/spec");
                 i.putExtra(Intent.EXTRA_STREAM, uris.get(0));
                 break;
             case IMAGE:
