@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="welcome">Start bringing privacy and security to your online life and presence.\n<b>Let the SPEC magic begin.</b>\nEnter email and swipe arrow to generate keys.</string>
+    <string name="welcome"><b>Let the SPEC magic begin.</b>\nStart bringing privacy and security to your online life and presence.\nEnter email and swipe arrow to generate keys.</string>
     <string name="company_text"><b>SPEC</b> ; HOLD THE KEY TO YOUR SECURITY</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
