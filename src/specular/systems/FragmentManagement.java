@@ -250,7 +250,7 @@ public class FragmentManagement extends Fragment {
                                     } else {
 
                                         CryptMethods.setDetails(myName, myEmail);
-                                        PublicStaticVariables.main.createKeysManager();
+                                        PublicStaticVariables.main.startCreateKeys();
                                     }
                                 }
                             }

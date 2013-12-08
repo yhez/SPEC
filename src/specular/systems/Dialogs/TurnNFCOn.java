@@ -32,14 +32,6 @@ public class TurnNFCOn extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         //...
                         dialog.cancel();
-                        while (Main.createKeys.isAlive())
-                            synchronized (this) {
-                                try {
-                                    wait(100);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
                         Main.saveKeys.start(getActivity());
                         while (Main.saveKeys.isAlive())
                             synchronized (this) {

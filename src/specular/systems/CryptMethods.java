@@ -26,6 +26,7 @@ import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
 public class CryptMethods {
+    public static boolean doneCreatingKeys=false;
     private static PrivateKey mPtK = null;
     private static String myName = null, myEmail = null, myPublicKey = null,
             myPrivateKey = null;
@@ -114,9 +115,11 @@ public class CryptMethods {
             }
             KeyPair keypair;
             keypair = kpg.generateKeyPair();
-            tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
-            tmpPrivateKey = Visual.bin2hex(keypair.getPrivate().getEncoded());
-            tmpPtK = formatPrivate(tmpPrivateKey);
+            if(!doneCreatingKeys){
+                tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
+                tmpPrivateKey = Visual.bin2hex(keypair.getPrivate().getEncoded());
+                tmpPtK = formatPrivate(tmpPrivateKey);
+            }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchProviderException e) {
@@ -184,12 +187,8 @@ public class CryptMethods {
         }
         return null;
     }
-//TODO
- /*   public static void signPublicQR() {
 
+    public static String getPublicTmp() {
+        return tmpPublicKey;
     }
-
-    public static boolean checkSignPublicQR() {
-        return false;
-    }*/
 }

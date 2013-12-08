@@ -41,9 +41,14 @@ import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,7 +73,8 @@ import specular.systems.Dialogs.TurnNFCOn;
 
 
 public class Main extends Activity {
-    private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3, CHANGE_HINT = 4;
+    private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2
+            , DECRYPT_SCREEN = 3, CHANGE_HINT = 4,DONE_CREATE_KEYS=53,PROGRESS=54;
     private static int currentKeys = 0;
     private final Handler hndl = new Handler() {
         @Override
@@ -108,6 +114,25 @@ public class Main extends Activity {
                 case CHANGE_HINT:
                     ((TextView) findViewById(R.id.message)).setHint(R.string.send_another_msg);
                     break;
+                case DONE_CREATE_KEYS:
+                    if(PublicStaticVariables.currentLayout==R.layout.recreating_keys){
+                        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(CryptMethods.getPublicTmp(), BarcodeFormat.QR_CODE.toString(), 512);
+                        try {
+                            ((ImageView)findViewById(R.id.image_public)).setImageBitmap(qrCodeEncoder.encodeAsBitmap());
+                        } catch (WriterException e) {
+                            e.printStackTrace();
+                        }
+                        avrg=System.currentTimeMillis()-startTime;
+                        new createKeys().start();
+                    }
+                    break;
+                case PROGRESS:
+                    if(PublicStaticVariables.currentLayout==R.layout.recreating_keys){
+                        long tt = System.currentTimeMillis()-startTime;
+                        int prcnt = avrg==0?(int)(tt/10):(int)(tt*100/avrg);
+                        ((ProgressBar)findViewById(R.id.progress_bar)).setProgress(prcnt);
+                    }
+                    break;
             }
         }
     };
@@ -129,17 +154,20 @@ public class Main extends Activity {
     private String fileName = "";
     private Contact contact;
     private boolean handleByOnNewIntent = false;
-
-    public void createKeysManager() {
-
-        createKeys.start();
+    private long startTime,avrg=0;
+    public void startCreateKeys(){
+        new createKeys().start();
+        selectItem(-1,R.layout.recreating_keys,"generator");
+    }
+    public void createKeysManager(View v) {
+        CryptMethods.doneCreatingKeys=true;
+        selectItem(-1, R.layout.wait_nfc_to_write,"Save");
         if (NfcAdapter.getDefaultAdapter(this) != null)
             if (!NfcAdapter.getDefaultAdapter(this).isEnabled()) {
                 TurnNFCOn tno = new TurnNFCOn();
                 tno.show(getFragmentManager(), "nfc");
             } else {
                 handleByOnNewIntent = true;
-                selectItem(-1, R.layout.wait_nfc_to_write,"Save");
                 PendingIntent pi = PendingIntent.getActivity(Main.this, 0,
                         new Intent(Main.this, getClass())
                                 .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -153,23 +181,8 @@ public class Main extends Activity {
         else {
             findViewById(R.id.drawer_layout).animate().setDuration(1000)
                     .alpha(0).start();
-            while (createKeys.isAlive())
-                synchronized (this) {
-                    try {
-                        wait(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
             saveKeys.start(this);
-            while (saveKeys.isAlive())
-                synchronized (this) {
-                    try {
-                        wait(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+            setUpViews();
         }
     }
 
@@ -396,15 +409,6 @@ public class Main extends Activity {
 
         NfcAdapter.getDefaultAdapter(getApplicationContext())
                 .disableForegroundDispatch(Main.this);
-        synchronized (this) {
-            while (createKeys.isAlive()) {
-                try {
-                    wait(150);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
         handleByOnNewIntent = false;
         saveKeys.start(this);
         synchronized (this) {
@@ -503,15 +507,6 @@ public class Main extends Activity {
         if (PublicStaticVariables.currentLayout == R.layout.wait_nfc_to_write) {
             Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if (tag != null) {
-                synchronized (this) {
-                    while (createKeys.isAlive()) {
-                        try {
-                            wait(150);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
                 int rslt = writeTag(tag, Visual.hex2bin(CryptMethods.getPrivateToSave()));
                 Toast.makeText(getBaseContext(), rslt, Toast.LENGTH_LONG).show();
                 if (rslt==R.string.tag_written) {
@@ -1174,24 +1169,37 @@ public class Main extends Activity {
                 break;
         }
     }
-
-    public static class createKeys {
-        static Thread t;
-
-        public static void start() {
-            if (t == null || !t.isAlive()) {
+    public class createKeys {
+        Thread t,p;
+        public void start() {
+            startTime=System.currentTimeMillis();
                 t = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         CryptMethods.createKeys();
+                        if(PublicStaticVariables.currentLayout!=R.layout.recreating_keys)
+                            CryptMethods.doneCreatingKeys=false;
+                        else
+                            hndl.sendEmptyMessage(DONE_CREATE_KEYS);
                     }
                 });
                 t.start();
-            }
-        }
-
-        public static boolean isAlive() {
-            return t != null && t.isAlive();
+            p=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (t.isAlive()){
+                        hndl.sendEmptyMessage(PROGRESS);
+                        synchronized (this){
+                        try {
+                            wait(10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    }
+                }
+            });
+            p.start();
         }
     }
 
