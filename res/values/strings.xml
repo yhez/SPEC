@@ -79,7 +79,7 @@
     <string name="tmp_files_deleted">Temp files successfully deleted</string>
     <string name="keys_deleted">Keys successfully deleted</string>
     <string name="contacts_deleted">Contacts successfully deleted</string>
-    <string name="add_contact_first">Add this contact to your CONTACTS first</string>
+    <string name="add_contact_first">Add this contact to your CONTACTS first (top right)</string>
     <string name="hash_explain">The main application of secure cryptographic hashes is verification of message integrity - determining whether any changes have been made to a message or a file. SPEC verifies that your messages are secure and complete. WE FIGHT DATA TAMPERING 24/7.</string>
     <string name="what_is_hash">What is a Crypto Hash?</string>
     <string name="what_is_session">What is a Session ID?</string>
@@ -126,31 +126,32 @@
     <string name="session_title">Session ID Info:</string>
     <string name="replay_title">Replay Attack Info:</string>
     <string name="too_short_name">Name should be at least 3 characters long</string>
-    <string name="contact_with_same_email_exist">A contact with the same email already exists,\ndo you want to update their Public Encryption Key?</string>
-    <string name="session_ok_explain">You both have the same session ID, so you\'re communicating with the same person as before.</string>
-    <string name="dont_trust_session_explain">You have a different session ID than your contact.
+    <string name="contact_with_same_email_exist">A contact with the same email already exists.\nDo you want to update their Public Encryption Key?</string>
+    <string name="session_ok_explain">You both have the same session, so you\'re communicating with the same person as before.</string>
+    <string name="dont_trust_session_explain">You have a different session than your contact.
         \nIt\'s possible that your contact is a fake, fraud.
         \nYour session is:\n</string>
-    <string name="new_session_trust_created">congratulations you both  shared the secret now no one will be able to interfering your messages.</string><string name="starting_session_explain">you have their session so it\'ll probably the same person hwo send you the message before, but he does not have your session\n</string>
-    <string name="unknown_session_explain">First time receiving a message from this contact, verify identity (email).\n</string>
+    <string name="new_session_trust_created">Your communications are secure.</string>
+    <string name="starting_session_explain">You have your contact\'s session, so it\'s probably the same person who sent you the previous message. With that, the contact doesn't have your session.\n</string>
+    <string name="unknown_session_explain">First time you\'re receiving a message from this contact, verify identity (email).\n</string>
     <string name="not_implmented_local_files">not implemented yet.\nthis is where you\'ll be able to explore your local encrypted files</string>
     <string name="quote">Quote previous message</string>
-    <string name="divide_msg">\n---------\n</string>
-    <string name="quote_msg">Quoted message</string>
+    <string name="divide_msg">\n- - - - - - -\n</string>
+    <string name="quote_msg">Quoted Message:</string>
     <string name="learn_title">Learn About SPEC</string>
     <string name="how_spec">How SPEC Works</string>
     <string name="faq">FAQs</string>
     <string name="blog">SPEC Blog</string>
     <string name="contact_spec">Contact specularX</string>
     <string name="replace_keys_title">Generate New Keys</string>
-    <string name="first_text">You will lose access to previous data that was encrypted with your Public Key if you generate new keys.\nPress next to continue.</string>
+    <string name="first_text">If you generate new keys, you will lose access to previous data that was encrypted with your Public Key.\nPress next to continue.</string>
     <string name="confirm_first">Next</string>
-    <string name="first_step">1<sup>st</sup> step</string>
-    <string name="sec_step">2<sup>nd</sup> step</string>
-    <string name="last_step">Final step</string>
-    <string name="second_text">Please verify that you understand the risk, before continuing.</string>
+    <string name="first_step">1<sup>st</sup></string>
+    <string name="sec_step">2<sup>nd</sup></string>
+    <string name="last_step">Final Step</string>
+    <string name="second_text">Please verify that you understand the risk, before continuing. You will not be able to decrypt and read previous data.</string>
     <string name="third_text">There is no going back if you change your keys (in current Beta version).</string>
-    <string name="got_it">Got it</string>
+    <string name="got_it">Got It (:</string>
     <string name="generate"><b>Generate New Keys!</b></string>
     <string name="share_my_contact_card">Share My Public Key\n(Contact Card)</string>
     <string-array name="links">
