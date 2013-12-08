@@ -116,7 +116,7 @@
     <string name="files_details">File Details:</string>
     <string name="technical_info">Security Audit Info</string>
     <string name="cant_connect_nfc_adapter">Something went wrong</string>
-    <string name="no_result_filter">No result</string>
+    <string name="no_result_filter">No result, please search again</string>
     <string name="not_implemented_title">Coming soon&#8230;</string>
     <string name="profile_my_name">my name:</string>
     <string name="profile_my_email">my email:</string>
