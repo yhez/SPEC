@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
@@ -284,10 +283,8 @@ public class SendMsgDialog extends DialogFragment {
                 break;
         }
         for (ResolveInfo aFile : a) {
-            LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            ImageButton b = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
             final ResolveInfo rs = aFile;
-            b.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
+            ImageButton b = Visual.glow(rs.loadIcon(getActivity().getPackageManager()),getActivity());
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

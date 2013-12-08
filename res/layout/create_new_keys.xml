@@ -45,28 +45,28 @@
 
 
         <EditText
-            android:background="@drawable/edit_text"
-            android:textCursorDrawable="@null"
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/edit_text"
             android:hint="@string/hint_enter_your_name"
             android:inputType="textPersonName"
             android:padding="@dimen/default_gap"
             android:textColor="@color/spec_black"
-            android:textColorHint="@color/spec_gray" />
+            android:textColorHint="@color/spec_gray"
+            android:textCursorDrawable="@null" />
 
         <EditText
-            android:background="@drawable/edit_text"
-            android:textCursorDrawable="@null"
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/edit_text"
             android:hint="@string/hint_enter_your_email"
             android:inputType="textEmailAddress"
             android:padding="@dimen/default_gap"
             android:textColor="@color/spec_black"
-            android:textColorHint="@color/spec_gray" />
+            android:textColorHint="@color/spec_gray"
+            android:textCursorDrawable="@null" />
 
         <ImageView
             android:id="@+id/gesture"

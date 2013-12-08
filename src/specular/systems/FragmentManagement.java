@@ -203,12 +203,33 @@ public class FragmentManagement extends Fragment {
                         ,etName1=(EditText) rootView.findViewById(R.id.name);
                 etEmail1.setFilters(Visual.filters());
                 etName1.setFilters(Visual.filters());
-                rootView.findViewById(R.id.gesture).setOnTouchListener(new View.OnTouchListener() {
+                final ImageView iv = (ImageView)rootView.findViewById(R.id.gesture);
+                final Animation animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.up_down);
+                animation1.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                iv.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
-                        if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN)
-                            startPointX = motionEvent.getX();
-                        else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP)
+                        if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN){
+                            startPointX = motionEvent.getRawX();
+                            iv.startAnimation(animation1);
+                        }
+                        else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP){
+                            iv.clearAnimation();
                             if (motionEvent.getX() < startPointX) {
                                 String myEmail = etEmail1.getText().toString();
                                 String myName = etName1.getText().toString();
@@ -233,6 +254,7 @@ public class FragmentManagement extends Fragment {
                                     }
                                 }
                             }
+                        }
                         return true;
                     }
                 });
@@ -657,17 +679,16 @@ public class FragmentManagement extends Fragment {
         for (final Account acc : list) {
             if (acc.name.contains("@")) {
                 if (acc.type.equalsIgnoreCase("com.google")) {
-                    LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    ImageButton ib = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
+                    ImageButton ib;
                     try {
-                        ib.setImageDrawable(PublicStaticVariables.main
+                        ib=Visual.glow(PublicStaticVariables.main
                                 .getPackageManager()
                                 .getApplicationInfo("com.google.android.gm", PackageManager.GET_META_DATA)
-                                .loadIcon(getActivity().getPackageManager()));
+                                .loadIcon(getActivity().getPackageManager()), getActivity());
                     } catch (PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
                         //todo another google symbol
-                        ib.setImageResource(R.drawable.unknown2);
+                        ib=Visual.glow(getResources().getDrawable(R.drawable.unknown2),getActivity());
                     }
                     ib.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -680,16 +701,15 @@ public class FragmentManagement extends Fragment {
 
                 } else if (acc.type.startsWith("com.google")) {
                     if (acc.type.contains("pop3")) {
-                        LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        ImageButton ib = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
+                        ImageButton ib;
                         try {
-                            ib.setImageDrawable(getActivity()
+                            ib=Visual.glow(getActivity()
                                     .getPackageManager()
                                     .getApplicationInfo("com.google.android.email", PackageManager.GET_META_DATA)
-                                    .loadIcon(getActivity().getPackageManager()));
+                                    .loadIcon(getActivity().getPackageManager()),getActivity());
                         } catch (PackageManager.NameNotFoundException e) {
                             e.printStackTrace();
-                            ib.setImageResource(R.drawable.unknown2);
+                            ib=Visual.glow(getResources().getDrawable(R.drawable.unknown2),getActivity());
                         }
                         ib.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -706,9 +726,7 @@ public class FragmentManagement extends Fragment {
                     String company = acc.type.split("\\.")[1];
                     for (ResolveInfo pi : rs) {
                         if (pi.activityInfo.packageName.contains(company)) {
-                            LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                            ImageButton ib = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
-                            ib.setImageDrawable(pi.activityInfo.loadIcon(getActivity().getPackageManager()));
+                            ImageButton ib = Visual.glow(pi.activityInfo.loadIcon(getActivity().getPackageManager()),getActivity());
                             ib.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -723,9 +741,7 @@ public class FragmentManagement extends Fragment {
                 }
             }
         }
-        LayoutInflater inf = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ImageButton ib = (ImageButton)inf.inflate(R.layout.borderlessbutton,null);
-        ib.setImageResource(R.drawable.clear);
+        ImageButton ib = Visual.glow(getResources().getDrawable(R.drawable.clear),getActivity());
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

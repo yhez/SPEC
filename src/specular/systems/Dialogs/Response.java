@@ -44,7 +44,7 @@ public class Response extends DialogFragment {
                 cb.setVisibility(View.VISIBLE);
                 cb.setChecked(true);
             }
-        } else {
+        } else if(PublicStaticVariables.currentLayout==R.layout.edit_contact){
             contact = PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(
                     ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));
         }
