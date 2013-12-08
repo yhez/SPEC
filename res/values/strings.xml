@@ -110,7 +110,6 @@
     <string name="my_details">My Details</string>
     <string name="share_image">share QR code via:</string>
     <string name="explain_button">Explain</string>
-    <string name="share_text">share raw key text</string>
     <string name="edit_contact_title_pbk">public key:</string>
     <string name="both_qr_file">send both file and QR code via:</string>
     <string name="files_details">File Details:</string>
@@ -132,7 +131,9 @@
         \nIt\'s possible that your contact is a fake, fraud.
         \nYour session is:\n</string>
     <string name="new_session_trust_created">Your communications are secure.</string>
-    <string name="starting_session_explain">You have your contact\'s session, so it\'s probably the same person who sent you the previous message. With that, the contact doesn't have your session.\n</string>
+    <string name="starting_session_explain">You have your contact\'s session,
+        so it\'s probably the same person who sent you the previous message.
+        With that, the contact doesn\'t have your session.\n</string>
     <string name="unknown_session_explain">First time you\'re receiving a message from this contact, verify identity (email).\n</string>
     <string name="not_implmented_local_files">not implemented yet.\nthis is where you\'ll be able to explore your local encrypted files</string>
     <string name="quote">Quote previous message</string>

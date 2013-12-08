@@ -1,1 +1,0 @@
-	.footer_bottom,	#lang_sel_footer	{		background-color:#ffffff;	}.footer_bottom, .footer_bottom p, .footer_bottom p a, #lang_sel_footer ul li a{	color:#030000;}
