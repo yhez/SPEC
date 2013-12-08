@@ -27,34 +27,50 @@ public class GenerateKeys extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View v = inflater.inflate(R.layout.replace_keys, null);
         builder.setView(v);
-        LinearLayout titles = (LinearLayout)v.findViewById(R.id.ll_titles);
+        LinearLayout titles = (LinearLayout) v.findViewById(R.id.ll_titles);
         final View[] line = new View[3];
         final TextView tv = (TextView) v.findViewById(R.id.text_content);
-        for(int a=0;a<3;a++)
-            line[a]=titles.getChildAt(a);
-        final Button bt = (Button)v.findViewById(R.id.next);
+        for (int a = 0; a < 3; a++)
+            line[a] = titles.getChildAt(a);
+        final Button bt = (Button) v.findViewById(R.id.next);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               if(line[0].getVisibility()==View.VISIBLE){
-                   line[0].setVisibility(View.INVISIBLE);
-                   line[1].setVisibility(View.VISIBLE);
-                   tv.setText(R.string.second_text);
-                   bt.setText(R.string.got_it);
-               }
-                else if(line[1].getVisibility()==View.VISIBLE){
-                   line[1].setVisibility(View.INVISIBLE);
-                   line[2].setVisibility(View.VISIBLE);
-                   tv.setText(R.string.third_text);
-                   bt.setText(R.string.generate);
-               }
-                else{
-                    PublicStaticVariables.currentLayout=R.layout.create_new_keys;
-                   final Fragment fragment = new FragmentManagement();
-                   final FragmentManager fragmentManager = getFragmentManager();
-                   fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                  GenerateKeys.this.getDialog().cancel();
-               }
+                if (line[0].getVisibility() == View.VISIBLE) {
+                    line[0].setVisibility(View.INVISIBLE);
+                    line[1].setVisibility(View.VISIBLE);
+                    tv.setText(R.string.second_text);
+                    bt.setText(R.string.got_it);
+                } else if (line[1].getVisibility() == View.VISIBLE) {
+                    line[1].setVisibility(View.INVISIBLE);
+                    line[2].setVisibility(View.VISIBLE);
+                    tv.setText(R.string.third_text);
+                    bt.setText(R.string.generate);
+                } else {
+                    PublicStaticVariables.currentLayout = R.layout.create_new_keys;
+                    final Fragment fragment = new FragmentManagement();
+                    final FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                    GenerateKeys.this.getDialog().cancel();
+                }
+            }
+        });
+        ((Button) v.findViewById(R.id.back)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (line[0].getVisibility() == View.VISIBLE)
+                    GenerateKeys.this.getDialog().cancel();
+                else if (line[1].getVisibility() == View.VISIBLE) {
+                    line[1].setVisibility(View.INVISIBLE);
+                    line[0].setVisibility(View.VISIBLE);
+                    tv.setText(R.string.first_text);
+                    bt.setText(R.string.confirm_first);
+                } else if (line[2].getVisibility() == View.VISIBLE) {
+                    line[2].setVisibility(View.INVISIBLE);
+                    line[1].setVisibility(View.VISIBLE);
+                    tv.setText(R.string.second_text);
+                    bt.setText(R.string.got_it);
+                }
             }
         });
         Visual.setAllFonts(getActivity(), (ViewGroup) v);

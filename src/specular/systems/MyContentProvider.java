@@ -52,7 +52,9 @@ public class MyContentProvider extends ContentProvider {
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
         return 0;
     }
+
     private UriMatcher uriMatcher;
+
     @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode)
             throws FileNotFoundException {
@@ -83,6 +85,7 @@ public class MyContentProvider extends ContentProvider {
                         + uri.toString());
         }
     }
+
     public static void createCachedFile(Context context, String fileName,
                                         String content) throws IOException {
 

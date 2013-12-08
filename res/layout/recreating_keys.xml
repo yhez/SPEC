@@ -2,25 +2,29 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:alpha="1"
+    android:alpha="0"
     android:background="@android:color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <ProgressBar
         android:id="@+id/progress_bar"
         style="@android:style/Widget.Holo.ProgressBar.Horizontal"
         android:padding="@dimen/default_gap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <ImageView
         android:id="@+id/image_public"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <View
         android:layout_gravity="center_horizontal"
         android:background="@color/spec_blue"
         android:layout_width="240dp"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp" />
+
     <Button
         android:textColor="@color/spec_black"
         android:onClick="createKeysManager"
@@ -30,9 +34,10 @@
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <View
         android:layout_gravity="center_horizontal"
         android:background="@color/spec_blue"
         android:layout_width="240dp"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp" />
 </LinearLayout>

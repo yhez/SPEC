@@ -42,24 +42,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_titles"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="1dp">
+
         <View
             android:visibility="visible"
             android:layout_weight="1"
             android:background="@color/spec_blue"
             android:layout_width="0dp"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp" />
+
         <View
             android:visibility="invisible"
             android:layout_weight="1"
             android:background="@color/spec_blue"
             android:layout_width="0dp"
-            android:layout_height="1dp"/>
-        </LinearLayout>
+            android:layout_height="1dp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/text_content"

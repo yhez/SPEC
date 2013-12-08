@@ -36,12 +36,12 @@ public class ShareContactDlg extends DialogFragment {
         View v = inflater.inflate(R.layout.share_contact_dialog, null);
 
         builder.setView(v);
-        ((TextView)v.findViewById(R.id.contact_to_share)).setText("Share:\t"+getTag());
+        ((TextView) v.findViewById(R.id.contact_to_share)).setText("Share:\t" + getTag());
         GridLayout glFile = (GridLayout) v.findViewById(R.id.gl_app_file);
         List<ResolveInfo> file = getApps("file/*");
         for (ResolveInfo aFile : file) {
             final ResolveInfo rs = aFile;
-            ImageButton b = Visual.glow(rs.loadIcon(getActivity().getPackageManager()),getActivity());
+            ImageButton b = Visual.glow(rs.loadIcon(getActivity().getPackageManager()), getActivity());
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -75,7 +75,7 @@ public class ShareContactDlg extends DialogFragment {
         file = getApps("image/png");
         for (ResolveInfo aFile : file) {
             final ResolveInfo rs = aFile;
-            ImageButton b = Visual.glow(rs.loadIcon(getActivity().getPackageManager()),getActivity());
+            ImageButton b = Visual.glow(rs.loadIcon(getActivity().getPackageManager()), getActivity());
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -115,8 +115,8 @@ public class ShareContactDlg extends DialogFragment {
         intent.setAction(Intent.ACTION_VIEW);
         List<ResolveInfo> view = getActivity().getPackageManager().queryIntentActivities(intent, 0);
         tmp.removeAll(view);
-        for(int a=0;a<tmp.size();a++)
-            if(tmp.get(a).activityInfo.packageName.equals(getActivity().getPackageName())){
+        for (int a = 0; a < tmp.size(); a++)
+            if (tmp.get(a).activityInfo.packageName.equals(getActivity().getPackageName())) {
                 tmp.remove(a);
                 break;
             }

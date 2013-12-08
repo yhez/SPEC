@@ -93,10 +93,12 @@ public final class FilesManagement {
         edt.remove("file_name");
         edt.remove("session");
         edt.commit();
-        if(PublicStaticVariables.file_name!=null)
-        try{
-            new File(Environment.getExternalStorageDirectory(), PublicStaticVariables.file_name).delete();
-        }catch (Exception e){e.printStackTrace();}
+        if (PublicStaticVariables.file_name != null)
+            try {
+                new File(Environment.getExternalStorageDirectory(), PublicStaticVariables.file_name).delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         PublicStaticVariables.flag_msg = false;
         PublicStaticVariables.session = null;
         PublicStaticVariables.file_name = null;
@@ -336,6 +338,7 @@ public final class FilesManagement {
             edt.commit();
         }
     }
+
     public static void edit(Activity a) {
         if (a != null) {
             myQRPublicKey = null;
@@ -360,7 +363,7 @@ public final class FilesManagement {
             try {
                 bitmap = qrCodeEncoder.encodeAsBitmap();
 
-            Bitmap crop = crop(bitmap);
+                Bitmap crop = crop(bitmap);
                 FileOutputStream fos2;
                 try {
                     fos2 = a.openFileOutput(a.getString(QR_NAME),

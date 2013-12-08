@@ -81,7 +81,7 @@ public class Splash extends Activity {
             Log.d("intent", thisIntent.getType());
         if (thisIntent == null) {
             go();
-        } else if(thisIntent.getAction() != null && thisIntent.getAction().equals(Intent.ACTION_SEND)) {
+        } else if (thisIntent.getAction() != null && thisIntent.getAction().equals(Intent.ACTION_SEND)) {
             String s = thisIntent.getStringExtra(Intent.EXTRA_TEXT);
             if (s != null) {
                 PublicStaticVariables.currentText = s;

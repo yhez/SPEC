@@ -1,20 +1,10 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Image display in background in select state -->
-    <item
-        android:state_pressed="true"
-        android:drawable="@drawable/apptheme_textfield_activated_holo_light">
-    </item>
+    <item android:state_pressed="true" android:drawable="@drawable/apptheme_textfield_activated_holo_light"></item>
 
     <!-- Image display in background in select state -->
-    <item
-        android:state_enabled="true"
-        android:state_focused="true"
-        android:drawable="@drawable/apptheme_textfield_activated_holo_light">
-    </item>
+    <item android:state_enabled="true" android:state_focused="true" android:drawable="@drawable/apptheme_textfield_activated_holo_light"></item>
 
     <!-- Default state -->
-    <item android:state_enabled="true"
-        android:drawable="@drawable/apptheme_textfield_default_holo_light">
-    </item>
+    <item android:state_enabled="true" android:drawable="@drawable/apptheme_textfield_default_holo_light"></item>
 </selector>

@@ -40,7 +40,7 @@ public class ShareCustomDialog extends DialogFragment {
         List<ResolveInfo> file = getApps("file/*");
         for (ResolveInfo aFile : file) {
             final ResolveInfo rs = aFile;
-            ImageButton b = Visual.glow(rs.loadIcon(getActivity().getPackageManager()),getActivity());
+            ImageButton b = Visual.glow(rs.loadIcon(getActivity().getPackageManager()), getActivity());
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -74,7 +74,7 @@ public class ShareCustomDialog extends DialogFragment {
         file = getApps("image/png");
         for (ResolveInfo aFile : file) {
             final ResolveInfo rs = aFile;
-            ImageButton b=Visual.glow(rs.loadIcon(getActivity().getPackageManager()),getActivity());
+            ImageButton b = Visual.glow(rs.loadIcon(getActivity().getPackageManager()), getActivity());
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -114,8 +114,8 @@ public class ShareCustomDialog extends DialogFragment {
         intent.setAction(Intent.ACTION_VIEW);
         List<ResolveInfo> view = getActivity().getPackageManager().queryIntentActivities(intent, 0);
         tmp.removeAll(view);
-        for(int a=0;a<tmp.size();a++)
-            if(tmp.get(a).activityInfo.packageName.equals(getActivity().getPackageName())){
+        for (int a = 0; a < tmp.size(); a++)
+            if (tmp.get(a).activityInfo.packageName.equals(getActivity().getPackageName())) {
                 tmp.remove(a);
                 break;
             }

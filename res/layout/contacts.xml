@@ -6,9 +6,9 @@
     android:alpha="0"
     android:orientation="vertical">
 
-<include
-    layout="@layout/search_view"
-    android:id="@+id/filter_ll"/>
+    <include
+        layout="@layout/search_view"
+        android:id="@+id/filter_ll" />
 
     <ListView
         android:id="@+id/list"

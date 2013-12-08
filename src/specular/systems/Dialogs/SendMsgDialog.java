@@ -227,11 +227,11 @@ public class SendMsgDialog extends DialogFragment {
                 i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
                 break;
         }
-        try{
+        try {
 
             startActivity(i);
-        }catch (Exception e){
-            Toast.makeText(getActivity(),e.toString(),Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -284,7 +284,7 @@ public class SendMsgDialog extends DialogFragment {
         }
         for (ResolveInfo aFile : a) {
             final ResolveInfo rs = aFile;
-            ImageButton b = Visual.glow(rs.loadIcon(getActivity().getPackageManager()),getActivity());
+            ImageButton b = Visual.glow(rs.loadIcon(getActivity().getPackageManager()), getActivity());
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

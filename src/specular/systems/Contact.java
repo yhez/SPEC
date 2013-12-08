@@ -19,31 +19,32 @@ public class Contact {
 
     // new contact from scratch
     public Contact(String contactName, String email,
-                   String publicKey,String session) {
+                   String publicKey, String session) {
         if (publicKey != null) {
             this.contactName = contactName;
             this.publicKey = publicKey;
             this.email = email;
-            this.session = new Session().toString()+(session!=null?"---"+session.split("---")[0].replace("my","their"):"");
-            this.sent=0;
-            this.received=session!=null?1:0;
-            this.sent=0;
-            this.last=session!=null?System.currentTimeMillis():0;
+            this.session = new Session().toString() + (session != null ? "---" + session.split("---")[0].replace("my", "their") : "");
+            this.sent = 0;
+            this.received = session != null ? 1 : 0;
+            this.sent = 0;
+            this.last = session != null ? System.currentTimeMillis() : 0;
             this.id = PublicStaticVariables.contactsDataSource.createContact(this);
         }
     }
+
     //create contact after pulling out from db
-    public Contact(long id, String contactName, String email,int added,int last,int sent,int received, String publicKey,
+    public Contact(long id, String contactName, String email, int added, int last, int sent, int received, String publicKey,
                    String session) {
         this.id = id;
         this.contactName = contactName;
         this.publicKey = publicKey;
         this.email = email;
         this.session = session;
-        this.added=added;
-        this.last= last;
-        this.received=received;
-        this.sent=sent;
+        this.added = added;
+        this.last = last;
+        this.received = received;
+        this.sent = sent;
     }
 
     public static Bitmap getPhoto(String publicKey) {
@@ -96,13 +97,22 @@ public class Contact {
         return session;
     }
 
-    public int getAdded(){return added;}
+    public int getAdded() {
+        return added;
+    }
 
-    public long getLast(){return last;}
+    public long getLast() {
+        return last;
+    }
 
-    public int getSent(){return sent;}
+    public int getSent() {
+        return sent;
+    }
 
-    public int getReceived(){return received;}
+    public int getReceived() {
+        return received;
+    }
+
     // Will be used by the ArrayAdapter in the ListView
     @Override
     public String toString() {
@@ -123,15 +133,17 @@ public class Contact {
             this.session = session;
         PublicStaticVariables.contactsDataSource.updateDB(id,
                 contactName, email, publicKey, session);
-        PublicStaticVariables.adapter.updateCont(this,index);
+        PublicStaticVariables.adapter.updateCont(this, index);
     }
-    public static final int SENT=0,RECEIVED=1;
-    public void update(int what){
-        this.last=System.currentTimeMillis();
-        if(what==SENT)
+
+    public static final int SENT = 0, RECEIVED = 1;
+
+    public void update(int what) {
+        this.last = System.currentTimeMillis();
+        if (what == SENT)
             sent++;
-        else if(what==RECEIVED)
+        else if (what == RECEIVED)
             received++;
-        PublicStaticVariables.contactsDataSource.updateDB(id,last,received,sent);
+        PublicStaticVariables.contactsDataSource.updateDB(id, last, received, sent);
     }
 }

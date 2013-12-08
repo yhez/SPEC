@@ -15,7 +15,7 @@ import specular.systems.Visual;
 
 
 public class ExplainDialog extends DialogFragment {
-    int title,title2, content;
+    int title, title2, content;
     final String details;
     public final static int HASH = 0, SESSION = 1, REPLAY = 2;
 
@@ -53,8 +53,8 @@ public class ExplainDialog extends DialogFragment {
         final Button btDetails = (Button) v.findViewById(R.id.my_details);
         final Button btExplain = (Button) v.findViewById(R.id.general_explain);
         final View[] vv = new View[2];
-        vv[0] = ((ViewGroup)v.findViewById(R.id.ll_titles)).getChildAt(0);
-        vv[1] = ((ViewGroup)v.findViewById(R.id.ll_titles)).getChildAt(1);
+        vv[0] = ((ViewGroup) v.findViewById(R.id.ll_titles)).getChildAt(0);
+        vv[1] = ((ViewGroup) v.findViewById(R.id.ll_titles)).getChildAt(1);
         btExplain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

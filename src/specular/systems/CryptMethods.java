@@ -26,7 +26,7 @@ import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
 public class CryptMethods {
-    public static boolean doneCreatingKeys=false;
+    public static boolean doneCreatingKeys = false;
     private static PrivateKey mPtK = null;
     private static String myName = null, myEmail = null, myPublicKey = null,
             myPrivateKey = null;
@@ -55,9 +55,9 @@ public class CryptMethods {
     }
 
     public static void setDetails(String name, String email) {
-        if(name!=null)
+        if (name != null)
             myName = name;
-        if(email!=null)
+        if (email != null)
             myEmail = email;
     }
 
@@ -115,7 +115,7 @@ public class CryptMethods {
             }
             KeyPair keypair;
             keypair = kpg.generateKeyPair();
-            if(!doneCreatingKeys){
+            if (!doneCreatingKeys) {
                 tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
                 tmpPrivateKey = Visual.bin2hex(keypair.getPrivate().getEncoded());
                 tmpPtK = formatPrivate(tmpPrivateKey);
@@ -128,8 +128,8 @@ public class CryptMethods {
     }
 
     public static void decrypt(String encryptedMessage) {
-        if(encryptedMessage==null){
-            Log.d("null","null message");
+        if (encryptedMessage == null) {
+            Log.d("null", "null message");
             return;
         }
         if (notInit) {

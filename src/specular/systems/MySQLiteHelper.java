@@ -5,10 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 class MySQLiteHelper extends SQLiteOpenHelper {
-    public static final String COLUMN_CONTACT_ADDED_DATE="date_added";
-    public static final String COLUMN_LAST_MSG="last_msg_date";
-    public static final String MSG_I_SEND="msgs_sent";
-    public static final String MSG_RECEIVED ="msgs_received";
+    public static final String COLUMN_CONTACT_ADDED_DATE = "date_added";
+    public static final String COLUMN_LAST_MSG = "last_msg_date";
+    public static final String MSG_I_SEND = "msgs_sent";
+    public static final String MSG_RECEIVED = "msgs_received";
     public static final String COLUMN_CONTACT_NAME = "contact";
     public static final String COLUMN_EMAIL = "email";
     public static final String COLUMN_ID = "_id";

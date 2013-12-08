@@ -83,6 +83,7 @@
             android:text="@string/contact_spec"
             android:textColor="@color/spec_black" />
     </LinearLayout>
+
     <TextView
         android:autoLink="email"
         android:textColor="@color/spec_black"

@@ -34,7 +34,7 @@ public class Visual {
 
     // return bin data from hexadecimal string
     public static byte[] hex2bin(String data) {
-        if (data==null||data.length() % 2 != 0)
+        if (data == null || data.length() % 2 != 0)
             return null;
         byte hexa[] = data.getBytes();
         byte bin[] = new byte[hexa.length / 2];
@@ -91,7 +91,8 @@ public class Visual {
             imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
         }
     }
-    public static InputFilter[] filters(){
+
+    public static InputFilter[] filters() {
         final char[] dang = "|\\?*<\":>+[]/'".toCharArray();
         InputFilter[] filter = new InputFilter[2];
         filter[0] = new InputFilter.LengthFilter(40);
@@ -109,7 +110,8 @@ public class Visual {
         };
         return filter;
     }
-    public static ImageButton glow(Drawable drawable,Activity a){
+
+    public static ImageButton glow(Drawable drawable, Activity a) {
         // An added margin to the initial image
         int margin = 24;
         int halfMargin = margin / 2;
@@ -122,7 +124,7 @@ public class Visual {
 
         // The original image to use
 
-        Bitmap src = ((BitmapDrawable)drawable).getBitmap();
+        Bitmap src = ((BitmapDrawable) drawable).getBitmap();
 
         // extract the alpha from the source image
         Bitmap alpha = src.extractAlpha();
@@ -144,7 +146,7 @@ public class Visual {
         // original icon
         canvas.drawBitmap(src, halfMargin, halfMargin, null);
         StateListDrawable states = new StateListDrawable();
-        states.addState(new int[] {android.R.attr.state_pressed},new BitmapDrawable(a.getResources(),bmp));
+        states.addState(new int[]{android.R.attr.state_pressed}, new BitmapDrawable(a.getResources(), bmp));
         states.addState(new int[]{}, drawable);
         ImageButton ib = new ImageButton(a);
         ib.setImageDrawable(states);

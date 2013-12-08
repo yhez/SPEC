@@ -86,7 +86,7 @@ public class FragmentManagement extends Fragment {
     });
     View rootView;
     //for touch response
-    private float startPointX, startPointY, width, height,x=0,y=0;
+    private float startPointX, startPointY, width, height, x = 0, y = 0;
 
     public FragmentManagement() {
         PublicStaticVariables.fragmentManagement = this;
@@ -137,9 +137,9 @@ public class FragmentManagement extends Fragment {
                 imageButton.setImageResource(R.drawable.text);
             else if (type.equals("application/vnd.android.package-archive"))
                 imageButton.setImageResource(R.drawable.apk);
-            else if(type.endsWith("pdf"))
+            else if (type.endsWith("pdf"))
                 imageButton.setImageResource(R.drawable.pdf);
-            else if(ext.equals("doc")||ext.equals("docx"))
+            else if (ext.equals("doc") || ext.equals("docx"))
                 imageButton.setImageResource(R.drawable.word);
             else {
                 Log.d("type", type);
@@ -199,11 +199,10 @@ public class FragmentManagement extends Fragment {
         switch (PublicStaticVariables.currentLayout) {
             case create_new_keys:
                 addSocialLogin();
-                final EditText etEmail1=(EditText) rootView.findViewById(R.id.email)
-                        ,etName1=(EditText) rootView.findViewById(R.id.name);
+                final EditText etEmail1 = (EditText) rootView.findViewById(R.id.email), etName1 = (EditText) rootView.findViewById(R.id.name);
                 etEmail1.setFilters(Visual.filters());
                 etName1.setFilters(Visual.filters());
-                final ImageView iv = (ImageView)rootView.findViewById(R.id.gesture);
+                final ImageView iv = (ImageView) rootView.findViewById(R.id.gesture);
                 final Animation animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.up_down);
                 animation1.setAnimationListener(new Animation.AnimationListener() {
                     @Override
@@ -224,11 +223,10 @@ public class FragmentManagement extends Fragment {
                 iv.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
-                        if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN){
+                        if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
                             startPointX = motionEvent.getRawX();
                             iv.startAnimation(animation1);
-                        }
-                        else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP){
+                        } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
                             iv.clearAnimation();
                             if (motionEvent.getX() < startPointX) {
                                 String myEmail = etEmail1.getText().toString();
@@ -332,7 +330,7 @@ public class FragmentManagement extends Fragment {
                 ((TextView) rootView.findViewById(R.id.orig_eamil))
                         .setText(currContact.getEmail());
                 ((TextView) rootView.findViewById(R.id.contact_session))
-                        .setText(currContact.getSession().replace("---","\n"));
+                        .setText(currContact.getSession().replace("---", "\n"));
                 ImageButton ibb = (ImageButton) rootView.findViewById(R.id.contact_picture);
                 QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(currContact.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 256);
                 Bitmap bitmap = null;
@@ -430,8 +428,8 @@ public class FragmentManagement extends Fragment {
                             startPointY = motionEvent.getRawY();
                             width = frameLayout.getWidth();
                             height = frameLayout.getHeight();
-                            x=frameLayout.getX();
-                            y=frameLayout.getY();
+                            x = frameLayout.getX();
+                            y = frameLayout.getY();
                         } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
                             if (frameLayout.getAlpha() < 0.2) {
                                 View curr, hidden;
@@ -579,7 +577,7 @@ public class FragmentManagement extends Fragment {
                     }
                 });
                 PublicStaticVariables.luc.showIfNeeded(rootView);
-                if(PublicStaticVariables.currentText!=null)
+                if (PublicStaticVariables.currentText != null)
                     et.setText(PublicStaticVariables.currentText);
                 break;
             case decrypt:
@@ -641,8 +639,8 @@ public class FragmentManagement extends Fragment {
                     public void onClick(View view) {
                         if (etMyEmail.getKeyListener() != null) {
                             String em = etMyEmail.getText().toString();
-                            if(!em.equals(CryptMethods.getEmail())){
-                                CryptMethods.setDetails(null,em);
+                            if (!em.equals(CryptMethods.getEmail())) {
+                                CryptMethods.setDetails(null, em);
                                 FilesManagement.edit(getActivity());
                             }
                         }
@@ -662,8 +660,8 @@ public class FragmentManagement extends Fragment {
                         Visual.edit(getActivity(), etMyName, ibMyName);
                     }
                 });
-                ((ImageView)rootView.findViewById(R.id.my_qr_public_key)).setImageBitmap(FilesManagement.getMyQRPublicKey(getActivity()));
-                ((TextView)rootView.findViewById(R.id.my_public_key)).setText(CryptMethods.getPublic());
+                ((ImageView) rootView.findViewById(R.id.my_qr_public_key)).setImageBitmap(FilesManagement.getMyQRPublicKey(getActivity()));
+                ((TextView) rootView.findViewById(R.id.my_public_key)).setText(CryptMethods.getPublic());
                 break;
         }
         Visual.setAllFonts(getActivity(), (ViewGroup) rootView);
@@ -681,14 +679,14 @@ public class FragmentManagement extends Fragment {
                 if (acc.type.equalsIgnoreCase("com.google")) {
                     ImageButton ib;
                     try {
-                        ib=Visual.glow(PublicStaticVariables.main
+                        ib = Visual.glow(PublicStaticVariables.main
                                 .getPackageManager()
                                 .getApplicationInfo("com.google.android.gm", PackageManager.GET_META_DATA)
                                 .loadIcon(getActivity().getPackageManager()), getActivity());
                     } catch (PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
                         //todo another google symbol
-                        ib=Visual.glow(getResources().getDrawable(R.drawable.unknown2),getActivity());
+                        ib = Visual.glow(getResources().getDrawable(R.drawable.unknown2), getActivity());
                     }
                     ib.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -703,13 +701,13 @@ public class FragmentManagement extends Fragment {
                     if (acc.type.contains("pop3")) {
                         ImageButton ib;
                         try {
-                            ib=Visual.glow(getActivity()
+                            ib = Visual.glow(getActivity()
                                     .getPackageManager()
                                     .getApplicationInfo("com.google.android.email", PackageManager.GET_META_DATA)
-                                    .loadIcon(getActivity().getPackageManager()),getActivity());
+                                    .loadIcon(getActivity().getPackageManager()), getActivity());
                         } catch (PackageManager.NameNotFoundException e) {
                             e.printStackTrace();
-                            ib=Visual.glow(getResources().getDrawable(R.drawable.unknown2),getActivity());
+                            ib = Visual.glow(getResources().getDrawable(R.drawable.unknown2), getActivity());
                         }
                         ib.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -726,7 +724,7 @@ public class FragmentManagement extends Fragment {
                     String company = acc.type.split("\\.")[1];
                     for (ResolveInfo pi : rs) {
                         if (pi.activityInfo.packageName.contains(company)) {
-                            ImageButton ib = Visual.glow(pi.activityInfo.loadIcon(getActivity().getPackageManager()),getActivity());
+                            ImageButton ib = Visual.glow(pi.activityInfo.loadIcon(getActivity().getPackageManager()), getActivity());
                             ib.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -741,7 +739,7 @@ public class FragmentManagement extends Fragment {
                 }
             }
         }
-        ImageButton ib = Visual.glow(getResources().getDrawable(R.drawable.clear),getActivity());
+        ImageButton ib = Visual.glow(getResources().getDrawable(R.drawable.clear), getActivity());
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

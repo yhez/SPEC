@@ -23,13 +23,15 @@ public class AddContactDlg extends DialogFragment {
     private PublicContactCard pcc;
     long id;
     private String session;
-    public AddContactDlg(PublicContactCard pcc,String session,long id){
+
+    public AddContactDlg(PublicContactCard pcc, String session, long id) {
         //todo need to check if he has a good copy before deleting
-        PublicStaticVariables.fileContactCard=null;
-        this.pcc=pcc;
-        this.id=id;
-        this.session=session;
+        PublicStaticVariables.fileContactCard = null;
+        this.pcc = pcc;
+        this.id = id;
+        this.session = session;
     }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         //pcc = PublicStaticVariables.fileContactCard;
@@ -40,7 +42,7 @@ public class AddContactDlg extends DialogFragment {
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         final View v = inflater.inflate(R.layout.add_contact_dlg, null);
-        if(!(id<0)){
+        if (!(id < 0)) {
             v.findViewById(R.id.check_box_update).setVisibility(View.VISIBLE);
         }
         builder.setView(v)
@@ -49,12 +51,11 @@ public class AddContactDlg extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Contact c;
-                        if(((CheckBox)v.findViewById(R.id.check_box_update)).isChecked()){
-                            c= PublicStaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
-                            c.update(-1,null,null,pcc.getPublicKey(),null);
-                        }
-                        else
-                            c = new Contact(pcc.getName(), pcc.getEmail(), pcc.getPublicKey(),session);
+                        if (((CheckBox) v.findViewById(R.id.check_box_update)).isChecked()) {
+                            c = PublicStaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
+                            c.update(-1, null, null, pcc.getPublicKey(), null);
+                        } else
+                            c = new Contact(pcc.getName(), pcc.getEmail(), pcc.getPublicKey(), session);
                         if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
                             ((TextView) getActivity().findViewById(R.id.flag_contact_exist)).setText(true + "");
                             getActivity().invalidateOptionsMenu();

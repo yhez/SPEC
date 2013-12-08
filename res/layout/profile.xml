@@ -3,25 +3,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:alpha="1"
+    android:alpha="0"
     android:background="@android:color/white"
     android:orientation="vertical"
     android:padding="@dimen/default_gap">
-<LinearLayout
-    android:id="@+id/top_pannel"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentRight="true"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <include
-        android:id="@+id/test"
-        layout="@layout/edit_text" />
-    <include
-        android:id="@+id/test1"
-        layout="@layout/edit_text" />
-</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/top_pannel"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/test"
+            layout="@layout/edit_text" />
+
+        <include
+            android:id="@+id/test1"
+            layout="@layout/edit_text" />
+    </LinearLayout>
+
     <LinearLayout
         android:gravity="center"
         android:layout_below="@+id/top_pannel"

@@ -73,8 +73,7 @@ import specular.systems.Dialogs.TurnNFCOn;
 
 
 public class Main extends Activity {
-    private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2
-            , DECRYPT_SCREEN = 3, CHANGE_HINT = 4,DONE_CREATE_KEYS=53,PROGRESS=54;
+    private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54;
     private static int currentKeys = 0;
     private final Handler hndl = new Handler() {
         @Override
@@ -97,7 +96,7 @@ public class Main extends Activity {
                     if (PublicStaticVariables.decryptedMsg != null && PublicStaticVariables.decryptedMsg.getFileContent() != null)
                         if (!FilesManagement.createFileToOpen(Main.this))
                             Toast.makeText(Main.this, R.string.failed_to_create_file_to_open, Toast.LENGTH_SHORT).show();
-                    selectItem(1, R.layout.decrypted_msg,null);
+                    selectItem(1, R.layout.decrypted_msg, null);
                     break;
                 case PublicStaticVariables.RESULT_ADD_FILE_TO_BIG:
                     Toast t = Toast.makeText(getBaseContext(), R.string.file_to_big, Toast.LENGTH_SHORT);
@@ -115,22 +114,22 @@ public class Main extends Activity {
                     ((TextView) findViewById(R.id.message)).setHint(R.string.send_another_msg);
                     break;
                 case DONE_CREATE_KEYS:
-                    if(PublicStaticVariables.currentLayout==R.layout.recreating_keys){
+                    if (PublicStaticVariables.currentLayout == R.layout.recreating_keys) {
                         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(CryptMethods.getPublicTmp(), BarcodeFormat.QR_CODE.toString(), 512);
                         try {
-                            ((ImageView)findViewById(R.id.image_public)).setImageBitmap(qrCodeEncoder.encodeAsBitmap());
+                            ((ImageView) findViewById(R.id.image_public)).setImageBitmap(qrCodeEncoder.encodeAsBitmap());
                         } catch (WriterException e) {
                             e.printStackTrace();
                         }
-                        avrg=System.currentTimeMillis()-startTime;
+                        avrg = System.currentTimeMillis() - startTime;
                         new createKeys().start();
                     }
                     break;
                 case PROGRESS:
-                    if(PublicStaticVariables.currentLayout==R.layout.recreating_keys){
-                        long tt = System.currentTimeMillis()-startTime;
-                        int prcnt = avrg==0?(int)(tt/10):(int)(tt*100/avrg);
-                        ((ProgressBar)findViewById(R.id.progress_bar)).setProgress(prcnt);
+                    if (PublicStaticVariables.currentLayout == R.layout.recreating_keys) {
+                        long tt = System.currentTimeMillis() - startTime;
+                        int prcnt = avrg == 0 ? (int) (tt / 10) : (int) (tt * 100 / avrg);
+                        ((ProgressBar) findViewById(R.id.progress_bar)).setProgress(prcnt);
                     }
                     break;
             }
@@ -154,14 +153,16 @@ public class Main extends Activity {
     private String fileName = "";
     private Contact contact;
     private boolean handleByOnNewIntent = false;
-    private long startTime,avrg=0;
-    public void startCreateKeys(){
+    private long startTime, avrg = 0;
+
+    public void startCreateKeys() {
         new createKeys().start();
-        selectItem(-1,R.layout.recreating_keys,"generator");
+        selectItem(-1, R.layout.recreating_keys, "generator");
     }
+
     public void createKeysManager(View v) {
-        CryptMethods.doneCreatingKeys=true;
-        selectItem(-1, R.layout.wait_nfc_to_write,"Save");
+        CryptMethods.doneCreatingKeys = true;
+        selectItem(-1, R.layout.wait_nfc_to_write, "Save");
         if (NfcAdapter.getDefaultAdapter(this) != null)
             if (!NfcAdapter.getDefaultAdapter(this).isEnabled()) {
                 TurnNFCOn tno = new TurnNFCOn();
@@ -214,14 +215,14 @@ public class Main extends Activity {
 
     private String getFileName(Uri contentURI) {
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null){
-            Log.d("getname",contentURI.getLastPathSegment());
+        if (cursor == null) {
+            Log.d("getname", contentURI.getLastPathSegment());
             return contentURI.getLastPathSegment();
         }
         cursor.moveToFirst();
         String rs = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME));
-        if(!rs.contains(".")){
-            rs+="."+MimeTypeMap.getSingleton().getExtensionFromMimeType(
+        if (!rs.contains(".")) {
+            rs += "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(
                     cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)));
         }
         cursor.close();
@@ -270,28 +271,28 @@ public class Main extends Activity {
                 break;
             case R.id.session:
                 String msg;
-                switch (PublicStaticVariables.flag_session){
+                switch (PublicStaticVariables.flag_session) {
                     case Session.TRUSTED:
-                        msg=PublicStaticVariables.session.replace("---","\n")+"\n"+getString(R.string.session_ok_explain);
+                        msg = PublicStaticVariables.session.replace("---", "\n") + "\n" + getString(R.string.session_ok_explain);
                         break;
                     case Session.DONT_TRUST:
                         msg = getString(R.string.dont_trust_session_explain)
-                                +PublicStaticVariables.session.replace("---", "\n")+"\n"+"their session is:\n"+PublicStaticVariables.session.replace("---","\n");
+                                + PublicStaticVariables.session.replace("---", "\n") + "\n" + "their session is:\n" + PublicStaticVariables.session.replace("---", "\n");
                         break;
                     case Session.NEW_TRUSTED:
                         msg = getString(R.string.new_session_trust_created)
-                                +PublicStaticVariables.session.replace("---","\n");
+                                + PublicStaticVariables.session.replace("---", "\n");
                         break;
                     case Session.STARTING:
-                        msg=getString(R.string.starting_session_explain)
-                                +PublicStaticVariables.session.replace("---","\n");
+                        msg = getString(R.string.starting_session_explain)
+                                + PublicStaticVariables.session.replace("---", "\n");
                         break;
                     case Session.UNKNOWN:
                         msg = getString(R.string.unknown_session_explain)
-                                +PublicStaticVariables.session.replace("---","\n");
+                                + PublicStaticVariables.session.replace("---", "\n");
                         break;
                     default:
-                        msg=PublicStaticVariables.session.replace("---","\n");
+                        msg = PublicStaticVariables.session.replace("---", "\n");
                 }
                 ExplainDialog edl = new ExplainDialog(ExplainDialog.SESSION, msg);
                 edl.show(getFragmentManager(), "session");
@@ -374,7 +375,7 @@ public class Main extends Activity {
                                     PublicStaticVariables.fragmentManagement.contactChosen(contact1.getId());
                                 } else {
                                     Contact c = PublicStaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
-                                    AddContactDlg acd = new AddContactDlg(pcc,null,c!=null?c.getId():-1);
+                                    AddContactDlg acd = new AddContactDlg(pcc, null, c != null ? c.getId() : -1);
                                     acd.show(getFragmentManager(), "acd2");
                                 }
                             } else
@@ -391,7 +392,7 @@ public class Main extends Activity {
                                     t.show();
                                 } else {
                                     Contact c = PublicStaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
-                                    AddContactDlg acd = new AddContactDlg(pcc,null,c!=null?c.getId():-1);
+                                    AddContactDlg acd = new AddContactDlg(pcc, null, c != null ? c.getId() : -1);
                                     acd.show(getFragmentManager(), "acd2");
                                 }
                             } else
@@ -509,7 +510,7 @@ public class Main extends Activity {
             if (tag != null) {
                 int rslt = writeTag(tag, Visual.hex2bin(CryptMethods.getPrivateToSave()));
                 Toast.makeText(getBaseContext(), rslt, Toast.LENGTH_LONG).show();
-                if (rslt==R.string.tag_written) {
+                if (rslt == R.string.tag_written) {
                     PublicStaticVariables.NFCMode = true;
                     saveKeys.start(this);
                     setUpViews();
@@ -577,17 +578,19 @@ public class Main extends Activity {
                     , PublicStaticVariables.decryptedMsg.getPublicKey()
                     , PublicStaticVariables.decryptedMsg.getEmail(), PublicStaticVariables.decryptedMsg.getName());
             Contact c = PublicStaticVariables.contactsDataSource.findContactByEmail(PublicStaticVariables.decryptedMsg.getEmail());
-            AddContactDlg acd = new AddContactDlg(pcc,PublicStaticVariables.decryptedMsg.getSession(),c!=null?c.getId():-1);
+            AddContactDlg acd = new AddContactDlg(pcc, PublicStaticVariables.decryptedMsg.getSession(), c != null ? c.getId() : -1);
             acd.show(getFragmentManager(), "acd3");
         } else if (PublicStaticVariables.currentLayout == R.layout.me) {
             share(null);
         }
         return super.onOptionsItemSelected(item);
     }
-    public void share(View v){
+
+    public void share(View v) {
         ShareCustomDialog scd = new ShareCustomDialog();
         scd.show(getFragmentManager(), "scd");
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (PublicStaticVariables.currentLayout == R.layout.contacts ||
@@ -660,7 +663,7 @@ public class Main extends Activity {
         mDrawerToggle.syncState();
     }
 
-    private void selectItem(int position, int layout_screen,String title) {
+    private void selectItem(int position, int layout_screen, String title) {
         // update the main content by replacing fragments
         int layout = layout_screen;
         int menu = position;
@@ -704,7 +707,7 @@ public class Main extends Activity {
         // update selected item and title, then close the main
         PublicStaticVariables.currentLayout = layout;
         mDrawerList.setItemChecked(menu, true);
-        setTitle(title!=null?title:menuTitles[menu]);
+        setTitle(title != null ? title : menuTitles[menu]);
         View v = findViewById(PublicStaticVariables.currentLayout);
         if (v != null) v.animate().setDuration(100).alpha(0).start();
         final Fragment fragment = new FragmentManagement();
@@ -809,18 +812,18 @@ public class Main extends Activity {
             case BOTH:
                 layouts = allLayouts;
                 if (!openByFile())
-                    selectItem(0, R.layout.encrypt,null);
+                    selectItem(0, R.layout.encrypt, null);
                 break;
             case PB:
                 layouts = new int[]{allLayouts[ENCRYPT], allLayouts[SHARE],
                         allLayouts[CONTACTS], allLayouts[LEARN], allLayouts[SETUP]};
                 final String msg = getIntent().getStringExtra("message");
                 if (PublicStaticVariables.message != null || msg != null)
-                    selectItem(0, R.layout.wait_nfc_decrypt,"Tab NFC");
-                else if(PublicStaticVariables.fileContactCard!=null)
-                    selectItem(2,R.layout.wait_nfc_decrypt,"Tab NFC");
+                    selectItem(0, R.layout.wait_nfc_decrypt, "Tab NFC");
+                else if (PublicStaticVariables.fileContactCard != null)
+                    selectItem(2, R.layout.wait_nfc_decrypt, "Tab NFC");
                 else
-                    selectItem(1,R.layout.me,null);
+                    selectItem(1, R.layout.me, null);
                 /*Toast t = Toast.makeText(this,"",Toast.LENGTH_LONG);
                 FrameLayout fl = new FrameLayout(this);
                 ImageView iv = new ImageView(this);
@@ -845,11 +848,11 @@ public class Main extends Activity {
                 layouts = new int[]{allLayouts[DECRYPT], allLayouts[CONTACTS],
                         allLayouts[LEARN], allLayouts[SETUP]};
                 if (!openByFile())
-                    selectItem(0, R.layout.decrypt,null);
+                    selectItem(0, R.layout.decrypt, null);
                 break;
             case NONE:
                 layouts = new int[]{allLayouts[LEARN], allLayouts[SETUP]};
-                selectItem(1, R.layout.create_new_keys,"Hello");
+                selectItem(1, R.layout.create_new_keys, "Hello");
                 break;
         }
     }
@@ -874,17 +877,17 @@ public class Main extends Activity {
             getIntent().setData(null);
             return true;
         } else if (PublicStaticVariables.fileContactCard != null) {
-            selectItem(-1, R.layout.contacts,null);
+            selectItem(-1, R.layout.contacts, null);
             //TODO search also in names and emails
             Contact c = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.fileContactCard.getPublicKey());
             if (c == null) {
                 Contact cc = PublicStaticVariables.contactsDataSource.findContactByEmail(PublicStaticVariables.fileContactCard.getEmail());
                 long id;
-                if(cc!=null)
-                    id=cc.getId();
+                if (cc != null)
+                    id = cc.getId();
                 else
-                    id=-1;
-                AddContactDlg acd = new AddContactDlg(PublicStaticVariables.fileContactCard,null,id);
+                    id = -1;
+                AddContactDlg acd = new AddContactDlg(PublicStaticVariables.fileContactCard, null, id);
                 acd.show(getFragmentManager(), "acd");
             } else {
                 //TODO what if some of the details are not exist
@@ -985,7 +988,7 @@ public class Main extends Activity {
                     setUpViews();
                     break;
                 case R.layout.me:
-                    if(CryptMethods.publicExist()&&!CryptMethods.privateExist())
+                    if (CryptMethods.publicExist() && !CryptMethods.privateExist())
                         new prepareToExit();
                     setUpViews();
                     break;
@@ -1008,10 +1011,10 @@ public class Main extends Activity {
                     setUpViews();
                     break;
                 case R.layout.edit_contact:
-                    selectItem(-1, R.layout.contacts,null);
+                    selectItem(-1, R.layout.contacts, null);
                     break;
                 case R.layout.profile:
-                    selectItem(-1, R.layout.me,null);
+                    selectItem(-1, R.layout.me, null);
                     break;
                 case R.layout.create_new_keys:
                     if (CryptMethods.publicExist())
@@ -1089,7 +1092,7 @@ public class Main extends Activity {
     }
 
     public void onClickShare(View v) {
-        selectItem(-1, R.layout.profile,null);
+        selectItem(-1, R.layout.profile, null);
     }
 
     @Override
@@ -1116,7 +1119,7 @@ public class Main extends Activity {
         switch (v.getId()) {
             case R.id.button1:
                 GenerateKeys gk = new GenerateKeys();
-                gk.show(getFragmentManager(),"gk");
+                gk.show(getFragmentManager(), "gk");
                 //selectItem(-1, R.layout.create_new_keys,null);
                 break;
             case R.id.button2:
@@ -1131,11 +1134,12 @@ public class Main extends Activity {
                 break;
         }
     }
-    public void onClickAbout(View v){
+
+    public void onClickAbout(View v) {
         String[] links = getResources().getStringArray(R.array.links);
         Intent i = new Intent();
         i.setAction(Intent.ACTION_VIEW);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.button1:
                 i.setData(Uri.parse(links[0]));
                 break;
@@ -1153,6 +1157,7 @@ public class Main extends Activity {
         }
         startActivity(i);
     }
+
     public void onClickEditContact(View v) {
         switch (v.getId()) {
             case R.id.delete:
@@ -1169,33 +1174,35 @@ public class Main extends Activity {
                 break;
         }
     }
+
     public class createKeys {
-        Thread t,p;
+        Thread t, p;
+
         public void start() {
-            startTime=System.currentTimeMillis();
-                t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        CryptMethods.createKeys();
-                        if(PublicStaticVariables.currentLayout!=R.layout.recreating_keys)
-                            CryptMethods.doneCreatingKeys=false;
-                        else
-                            hndl.sendEmptyMessage(DONE_CREATE_KEYS);
-                    }
-                });
-                t.start();
-            p=new Thread(new Runnable() {
+            startTime = System.currentTimeMillis();
+            t = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    while (t.isAlive()){
+                    CryptMethods.createKeys();
+                    if (PublicStaticVariables.currentLayout != R.layout.recreating_keys)
+                        CryptMethods.doneCreatingKeys = false;
+                    else
+                        hndl.sendEmptyMessage(DONE_CREATE_KEYS);
+                }
+            });
+            t.start();
+            p = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (t.isAlive()) {
                         hndl.sendEmptyMessage(PROGRESS);
-                        synchronized (this){
-                        try {
-                            wait(10);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                        synchronized (this) {
+                            try {
+                                wait(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
                     }
                 }
             });
@@ -1229,7 +1236,7 @@ public class Main extends Activity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-            selectItem(position, 0,null);
+            selectItem(position, 0, null);
         }
     }
 }
