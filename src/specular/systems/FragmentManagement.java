@@ -770,7 +770,7 @@ public class FragmentManagement extends Fragment {
         ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText(contactID + "");
         ((TextView) rootView.findViewById(R.id.chosen_name)).setText(cvc.getContactName());
         ((TextView) rootView.findViewById(R.id.chosen_email)).setText(cvc.getEmail());
-        ((ImageView) rootView.findViewById(R.id.chosen_icon)).setImageBitmap(Contact.getPhoto(cvc.getPublicKey()));
+        ((ImageView) rootView.findViewById(R.id.chosen_icon)).setImageBitmap(cvc.getPhoto());
         final View cont = rootView.findViewById(R.id.en_contact);
         cont.setVisibility(View.VISIBLE);
         cont.setAlpha(1);

@@ -130,7 +130,7 @@ public class LastUsedContacts {
         }
 
         public void setContent(Contact contact) {
-            ib.setImageBitmap(Contact.getPhoto(contact.getPublicKey()));
+            ib.setImageBitmap(contact.getPhoto());
             tv.setText(contact.getContactName());
             id.setText(contact.getId() + "");
         }

@@ -72,7 +72,7 @@ public class ChooseContact extends Activity {
                     RemoteViews views = new RemoteViews(ChooseContact.this.getPackageName(),
                             R.layout.widget_contact);
                     Contact c =PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(((TextView) view.findViewById(R.id.id_contact)).getText().toString()));
-                    QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(c.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 100);
+                    QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(c.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 200);
                     try {
                         Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
                         try {

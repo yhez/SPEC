@@ -11,11 +11,6 @@ public class PublicStaticVariables {
     public static MessageFormat decryptedMsg = null;
     public static String encryptedMsgToSend = null;
     public static boolean NFCMode = false;
-    //from contact
-    public final static int VERIFIED = 0, FAILED = 1, DONT_TRUST = 2;// ,
-    //from session
-    public static final int WE_STRANGERS = 0, I_KNOW_HIS_SESS = 1,
-            HE_KNOW_MY_SESS = 2, WE_FRIENDS = 3;
     //from splash
     public static Long time;
     public static PublicContactCard fileContactCard;

@@ -64,7 +64,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filter
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         TextView id = (TextView) rowView.findViewById(R.id.id_contact);
         id.setText("" + c.getId());
-        imageView.setImageBitmap(Contact.getPhoto(c.getPublicKey()));
+        imageView.setImageBitmap(c.getPhoto());
         email.setText(c.getEmail());
         email.setTypeface(FilesManagement.getOs(a));
         // session.setText(c.getSession());

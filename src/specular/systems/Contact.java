@@ -47,7 +47,7 @@ public class Contact {
         this.sent = sent;
     }
 
-    public static Bitmap getPhoto(String publicKey) {
+    public Bitmap getPhoto() {
 
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(publicKey, BarcodeFormat.QR_CODE.toString(), 128);
         Bitmap bitmap = null;

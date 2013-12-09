@@ -155,6 +155,7 @@
     <string name="got_it">Got It</string>
     <string name="generate"><b>Generate New Keys!</b></string>
     <string name="share_my_contact_card">Share My Public Key\n(Contact Card)</string>
+    <string name="widget_label">quick contact message</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>
