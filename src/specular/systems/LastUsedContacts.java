@@ -51,8 +51,10 @@ public class LastUsedContacts {
                 || lasts.length == 0 || lasts[0] == null) {
             if (v != null)
                 v.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
-            else
-                PublicStaticVariables.main.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
+            else{
+                View nv = PublicStaticVariables.main.findViewById(R.id.frame_grid_last);
+                if(nv!=null)nv.setVisibility(View.GONE);
+            }
             return;
         }
         final ViewGroup vg = (ViewGroup) PublicStaticVariables.main.findViewById(R.id.grid_lasts);

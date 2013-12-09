@@ -19,6 +19,15 @@
         android:label="@string/app_name"
         android:largeHeap="true">
 
+        <receiver android:name="specular.systems.WidgetContact" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_contact_info" />
+        </receiver>
 
         <activity
             android:name=".Splash"
@@ -64,5 +73,12 @@
             android:label="Menu"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".ChooseContact"
+            android:theme="@android:style/Theme.Holo.Light.Dialog">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

@@ -484,18 +484,20 @@ public class Main extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler = new Handler(Looper.getMainLooper());
-        PublicStaticVariables.contactsDataSource = new ContactsDataSource(this);
-        PublicStaticVariables.currentList = PublicStaticVariables.contactsDataSource.getAllContacts();
-        PublicStaticVariables.main = this;
-        Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
-            @Override
-            public int compare(Contact contact, Contact contact2) {
-                return contact.getEmail().compareTo(contact2.getEmail());
-            }
-        });
-        PublicStaticVariables.fullList = new ArrayList<Contact>();
-        PublicStaticVariables.fullList.addAll(PublicStaticVariables.currentList);
-        PublicStaticVariables.adapter = new MySimpleArrayAdapter(this, PublicStaticVariables.currentList);
+        if (PublicStaticVariables.adapter == null) {
+            PublicStaticVariables.contactsDataSource = new ContactsDataSource(this);
+            PublicStaticVariables.currentList = PublicStaticVariables.contactsDataSource.getAllContacts();
+            PublicStaticVariables.main = this;
+            Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
+                @Override
+                public int compare(Contact contact, Contact contact2) {
+                    return contact.getEmail().compareTo(contact2.getEmail());
+                }
+            });
+            PublicStaticVariables.fullList = new ArrayList<Contact>();
+            PublicStaticVariables.fullList.addAll(PublicStaticVariables.currentList);
+            PublicStaticVariables.adapter = new MySimpleArrayAdapter(this, PublicStaticVariables.currentList);
+        }
         setContentView(R.layout.main);
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
@@ -1175,6 +1177,26 @@ public class Main extends Activity {
         }
     }
 
+    public static class saveKeys {
+        static Thread t;
+
+        public static void start(final Activity a) {
+            if (t == null || !t.isAlive()) {
+                t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        FilesManagement.save(a);
+                    }
+                });
+                t.start();
+            }
+        }
+
+        public static boolean isAlive() {
+            return t != null && t.isAlive();
+        }
+    }
+
     public class createKeys {
         Thread t, p;
 
@@ -1207,26 +1229,6 @@ public class Main extends Activity {
                 }
             });
             p.start();
-        }
-    }
-
-    public static class saveKeys {
-        static Thread t;
-
-        public static void start(final Activity a) {
-            if (t == null || !t.isAlive()) {
-                t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        FilesManagement.save(a);
-                    }
-                });
-                t.start();
-            }
-        }
-
-        public static boolean isAlive() {
-            return t != null && t.isAlive();
         }
     }
 

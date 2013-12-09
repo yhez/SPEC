@@ -1,5 +1,6 @@
 package specular.systems;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactsDataSource {
-    final Main m;
     private final String[] allColumns = {MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_CONTACT_NAME, MySQLiteHelper.COLUMN_EMAIL,
             MySQLiteHelper.COLUMN_CONTACT_ADDED_DATE, MySQLiteHelper.COLUMN_LAST_MSG,
@@ -18,9 +18,8 @@ public class ContactsDataSource {
     // Database fields
     private SQLiteDatabase database;
 
-    public ContactsDataSource(Main m) {
-        this.m = m;
-        dbHelper = new MySQLiteHelper(m);
+    public ContactsDataSource(Activity a) {
+        dbHelper = new MySQLiteHelper(a);
         database = dbHelper.getReadableDatabase();
         dbHelper.close();
     }
