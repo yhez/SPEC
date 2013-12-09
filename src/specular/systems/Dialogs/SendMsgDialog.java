@@ -228,7 +228,7 @@ public class SendMsgDialog extends DialogFragment {
                 break;
         }
         try {
-
+            this.getDialog().cancel();
             startActivity(i);
         } catch (Exception e) {
             Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
