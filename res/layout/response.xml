@@ -83,6 +83,7 @@
     android:paddingLeft="@dimen/default_gap"
     android:background="@android:color/white">
     <CheckBox
+        android:visibility="gone"
         android:button="@drawable/check_box"
         android:id="@+id/quote"
         android:checked="false"

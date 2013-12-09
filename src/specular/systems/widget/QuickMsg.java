@@ -31,7 +31,6 @@ public class QuickMsg extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.response);
-        findViewById(R.id.quote).setVisibility(View.GONE);
         long id = getIntent().getLongExtra("contact_id", -1);
         if (id == -1){
             Toast.makeText(this, "wrong id", Toast.LENGTH_SHORT).show();
