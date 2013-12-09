@@ -156,8 +156,8 @@ public class Main extends Activity {
     private long startTime, avrg = 0;
 
     public void startCreateKeys() {
-        new createKeys().start();
         selectItem(-1, R.layout.recreating_keys, "generator");
+        new createKeys().start();
     }
 
     public void createKeysManager(View v) {
