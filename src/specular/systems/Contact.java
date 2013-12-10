@@ -1,5 +1,6 @@
 package specular.systems;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 
 import com.google.zxing.BarcodeFormat;
@@ -18,7 +19,7 @@ public class Contact {
     private int received;
 
     // new contact from scratch
-    public Contact(String contactName, String email,
+    public Contact(Activity a,String contactName, String email,
                    String publicKey, String session) {
         if (publicKey != null) {
             this.contactName = contactName;
@@ -29,7 +30,7 @@ public class Contact {
             this.received = session != null ? 1 : 0;
             this.sent = 0;
             this.last = session != null ? System.currentTimeMillis() : 0;
-            this.id = PublicStaticVariables.contactsDataSource.createContact(this);
+            this.id = PublicStaticVariables.contactsDataSource.createContact(a,this);
         }
     }
 
@@ -121,7 +122,7 @@ public class Contact {
                 + session;
     }
 
-    public void update(int index, String contactName, String email,
+    public void update(Activity a,int index, String contactName, String email,
                        String publicKey, String session) {
         if (contactName != null)
             this.contactName = contactName;
@@ -133,7 +134,7 @@ public class Contact {
             this.session = session;
         PublicStaticVariables.contactsDataSource.updateDB(id,
                 contactName, email, publicKey, session);
-        PublicStaticVariables.adapter.updateCont(this, index);
+        PublicStaticVariables.adapter.updateCont(a,this, index);
     }
 
     public static final int SENT = 0, RECEIVED = 1;

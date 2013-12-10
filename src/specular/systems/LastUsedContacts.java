@@ -1,5 +1,7 @@
 package specular.systems;
 
+import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -15,14 +17,14 @@ public class LastUsedContacts {
     final long[] ids;
     int[] num;
 
-    public LastUsedContacts() {
+    public LastUsedContacts(Activity a) {
         lasts = new Contact[NUM_LASTS];
         ids = new long[NUM_LASTS];
         num = new int[NUM_LASTS];
-        String m = FilesManagement.getlasts(PublicStaticVariables.main);
+        String m = FilesManagement.getlasts(a);
         if (m != null) {
             String[] t = m.split(",");
-            num = new int[t.length];
+            //num = new int[t.length];
             for (int c = 0; c < t.length; c++)
                 num[c] = Integer.parseInt(t[c].split("-")[1]);
             for (int c = 0; c < t.length && c < NUM_LASTS; c++) {
@@ -46,22 +48,23 @@ public class LastUsedContacts {
         return small;
     }
 
-    public void showIfNeeded(View v) {
+    public void showIfNeeded(Activity a,View v) {
         if (PublicStaticVariables.fullList.size() < PublicStaticVariables.minContactSize
                 || lasts.length == 0 || lasts[0] == null) {
+            Log.w("show if needed","length"+lasts.length+", "+(lasts[0]==null));
             if (v != null)
                 v.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
             else{
-                View nv = PublicStaticVariables.main.findViewById(R.id.frame_grid_last);
+                View nv = a.findViewById(R.id.frame_grid_last);
                 if(nv!=null)nv.setVisibility(View.GONE);
             }
             return;
         }
-        final ViewGroup vg = (ViewGroup) PublicStaticVariables.main.findViewById(R.id.grid_lasts);
-        PublicStaticVariables.main.findViewById(R.id.frame_grid_last).setVisibility(View.VISIBLE);
+        final ViewGroup vg = (ViewGroup) a.findViewById(R.id.grid_lasts);
+        a.findViewById(R.id.frame_grid_last).setVisibility(View.VISIBLE);
         vlc = new ViewLastContact[NUM_LASTS];
         for (int c = 0; c < NUM_LASTS; c++) {
-            vlc[c] = new ViewLastContact((LinearLayout) ((GridLayout) PublicStaticVariables.main.findViewById(R.id.grid_lasts)).getChildAt(c));
+            vlc[c] = new ViewLastContact((LinearLayout) ((GridLayout) a.findViewById(R.id.grid_lasts)).getChildAt(c));
         }
         for (int c = 0; c < NUM_LASTS; c++)
             if (lasts[c] != null)
@@ -80,7 +83,7 @@ public class LastUsedContacts {
         }
     }
 
-    public void change(Contact contact) {
+    public void change(Activity a,Contact contact) {
         int index;
         boolean isNew = true;
         int i;
@@ -107,7 +110,26 @@ public class LastUsedContacts {
         String raw = "";
         for (int n = 0; n < NUM_LASTS; n++)
             raw += ids[n] + "-" + num[n] + ",";
-        FilesManagement.updateLasts(PublicStaticVariables.main, raw);
+        FilesManagement.updateLasts(a, raw);
+    }
+
+    public void remove(Activity activity, Contact contact) {
+        int i=-1;
+        for(int a=0;a<ids.length;a++){
+            if(ids[a]==contact.getId()){
+                i=a;
+                break;
+            }
+        }
+        if(!(i<0)){
+            lasts[i]=null;
+            ids[i]=0;
+            num[i]=0;
+            String raw = "";
+            for (int n = 0; n < NUM_LASTS; n++)
+                raw += ids[n] + "-" + num[n] + ",";
+            FilesManagement.updateLasts(activity, raw);
+        }
     }
 
     class ViewLastContact {

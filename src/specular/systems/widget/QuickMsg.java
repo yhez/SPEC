@@ -16,12 +16,14 @@ import java.util.ArrayList;
 import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
 import specular.systems.CryptMethods;
+import specular.systems.CustomExceptionHandler;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.Dialogs.SendMsgDialog;
 import specular.systems.FilesManagement;
 import specular.systems.MessageFormat;
 import specular.systems.PublicStaticVariables;
 import specular.systems.R;
+import specular.systems.Visual;
 
 /**
  * Created by yehezkelk on 12/9/13.
@@ -30,6 +32,9 @@ public class QuickMsg extends Activity {
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
+        }
         setContentView(R.layout.response);
         long id = getIntent().getLongExtra("contact_id", -1);
         if (id == -1){

@@ -24,7 +24,7 @@ public class ContactsDataSource {
         dbHelper.close();
     }
 
-    public long createContact(Contact contact) {
+    public long createContact(Activity a,Contact contact) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_CONTACT_NAME, contact.getContactName());
         values.put(MySQLiteHelper.COLUMN_EMAIL, contact.getEmail());
@@ -39,11 +39,11 @@ public class ContactsDataSource {
         long l = database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
                 values);
         dbHelper.close();
-        PublicStaticVariables.adapter.addCont(contact);
+        PublicStaticVariables.adapter.addCont(a, contact);
         return l;
     }
 
-    public void deleteContact(Contact contact) {
+    public void deleteContact(Activity aa,Contact contact) {
         long id = contact.getId();
         int position = -1;
         for (int a = 0; a < PublicStaticVariables.fullList.size(); a++)
@@ -56,7 +56,7 @@ public class ContactsDataSource {
                 + " = " + id, null);
         dbHelper.close();
         if (!(position < 0)) {
-            PublicStaticVariables.adapter.removeCont(position);
+            PublicStaticVariables.adapter.removeCont(aa,position);
         }
     }
 

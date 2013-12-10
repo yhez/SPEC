@@ -1,4 +1,4 @@
-package specular.systems;
+package specular.systems.activitys;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +12,11 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+
+import specular.systems.CustomExceptionHandler;
+import specular.systems.FilesManagement;
+import specular.systems.R;
+import specular.systems.Visual;
 
 public class SendReport extends Activity {
     FilenameFilter filterreported = new FilenameFilter() {
@@ -33,6 +38,10 @@ public class SendReport extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FilesManagement.getKeysFromSDCard(this);
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
+        }
         setContentView(R.layout.fragment_send_report);
         File folder = new File(Environment.getExternalStorageDirectory()+"/spec reports");
         for(String f:folder.list(filterreported)){

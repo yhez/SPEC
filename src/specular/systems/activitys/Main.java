@@ -1,4 +1,4 @@
-package specular.systems;
+package specular.systems.activitys;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -53,12 +53,14 @@ import com.google.zxing.WriterException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
+import specular.systems.Contact;
+import specular.systems.ContactsDataSource;
+import specular.systems.CryptMethods;
+import specular.systems.CustomExceptionHandler;
 import specular.systems.Dialogs.AddContactDlg;
 import specular.systems.Dialogs.ContactQR;
 import specular.systems.Dialogs.DeleteContactDialog;
@@ -72,6 +74,17 @@ import specular.systems.Dialogs.SendMsgDialog;
 import specular.systems.Dialogs.ShareContactDlg;
 import specular.systems.Dialogs.ShareCustomDialog;
 import specular.systems.Dialogs.TurnNFCOn;
+import specular.systems.FilesManagement;
+import specular.systems.FragmentManagement;
+import specular.systems.LeftMenu;
+import specular.systems.MessageFormat;
+import specular.systems.MySimpleArrayAdapter;
+import specular.systems.PublicContactCard;
+import specular.systems.PublicStaticVariables;
+import specular.systems.QRCodeEncoder;
+import specular.systems.R;
+import specular.systems.Session;
+import specular.systems.Visual;
 
 
 public class Main extends Activity {
@@ -117,6 +130,9 @@ public class Main extends Activity {
                     break;
                 case DONE_CREATE_KEYS:
                     if (PublicStaticVariables.currentLayout == R.layout.recreating_keys) {
+                        if(CryptMethods.getPublicTmp()==null)
+                            new createKeys().start();
+                        else {
                         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(CryptMethods.getPublicTmp(), BarcodeFormat.QR_CODE.toString(), 512);
                         try {
                             ((ImageView) findViewById(R.id.image_public)).setImageBitmap(qrCodeEncoder.encodeAsBitmap());
@@ -125,6 +141,7 @@ public class Main extends Activity {
                         }
                         avrg = System.currentTimeMillis() - startTime;
                         new createKeys().start();
+                        }
                     }
                     break;
                 case PROGRESS:
@@ -159,14 +176,7 @@ public class Main extends Activity {
 
     public void startCreateKeys() {
         selectItem(-1, R.layout.recreating_keys, "generator");
-        synchronized (this){
-        try {
-            wait(300);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        }
-        new createKeys().start();
+        hndl.sendEmptyMessage(DONE_CREATE_KEYS);
     }
 
     public void createKeysManager(View v) {
@@ -198,7 +208,7 @@ public class Main extends Activity {
 
     void encryptManager() {
 
-        PublicStaticVariables.luc.change(contact);
+        PublicStaticVariables.luc.change(this,contact);
         final ProgressDlg prgd = new ProgressDlg(this, R.string.encrypting);
         prgd.setCancelable(false);
         prgd.show();
@@ -488,23 +498,19 @@ public class Main extends Activity {
         // Pass any configuration change to the main toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-    private String getNameReprt(){
-        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
-                .getInstance().getTime());
-        return timestamp+".stacktrace";
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PublicStaticVariables.main=this;
         FilesManagement.getKeysFromSDCard(this);
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
-            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getNameReprt()));
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
         }
         handler = new Handler(Looper.getMainLooper());
         if (PublicStaticVariables.adapter == null) {
             PublicStaticVariables.contactsDataSource = new ContactsDataSource(this);
             PublicStaticVariables.currentList = PublicStaticVariables.contactsDataSource.getAllContacts();
-            PublicStaticVariables.main = this;
             Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
                 @Override
                 public int compare(Contact contact, Contact contact2) {
@@ -519,7 +525,7 @@ public class Main extends Activity {
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
         File folder =new File(Environment.getExternalStorageDirectory()+"/spec reports");
-        if(folder.list().length>0){
+        if(folder.exists()&&folder.list().length>0){
             Intent i = new Intent(this,SendReport.class);
             startActivity(i);
         }
@@ -580,13 +586,13 @@ public class Main extends Activity {
                 if (b.getVisibility() == View.GONE) {
                     b.setVisibility(View.VISIBLE);
                     if (PublicStaticVariables.currentLayout == R.layout.encrypt)
-                        PublicStaticVariables.luc.showIfNeeded(null);
+                        PublicStaticVariables.luc.showIfNeeded(this,null);
                 } else {
-                    PublicStaticVariables.adapter.refreshList();
+                    PublicStaticVariables.adapter.refreshList(this);
                     ((EditText) findViewById(R.id.filter)).setText("");
                     b.setVisibility(View.GONE);
                     if (PublicStaticVariables.currentLayout == R.layout.encrypt)
-                        PublicStaticVariables.luc.showIfNeeded(null);
+                        PublicStaticVariables.luc.showIfNeeded(this,null);
                 }
             } else {
                 Intent i = new Intent(this, StartScan.class);
@@ -967,7 +973,7 @@ public class Main extends Activity {
                     if (filter.getVisibility() == View.VISIBLE) {
                         filter.setVisibility(View.GONE);
                         ((EditText) filter.findViewById(R.id.filter)).setText("");
-                        PublicStaticVariables.adapter.refreshList();
+                        PublicStaticVariables.adapter.refreshList(this);
                         clearedSomething = true;
                     }
                     if (etMessage.getText().length() > 0) {
@@ -980,7 +986,7 @@ public class Main extends Activity {
                         findViewById(R.id.en_contact).setVisibility(View.GONE);
                         contactChosen.setText("");
                         findViewById(R.id.list).setVisibility(View.VISIBLE);
-                        PublicStaticVariables.luc.showIfNeeded(null);
+                        PublicStaticVariables.luc.showIfNeeded(this,null);
                         invalidateOptionsMenu();
                     }
                     if (PublicStaticVariables.fileContent != null) {
@@ -1021,7 +1027,7 @@ public class Main extends Activity {
                     filter = findViewById(R.id.filter_ll);
                     if (filter.getVisibility() == View.VISIBLE) {
                         clearedSomething = true;
-                        PublicStaticVariables.adapter.refreshList();
+                        PublicStaticVariables.adapter.refreshList(this);
                         ((TextView) filter.findViewById(R.id.filter)).setText("");
                         filter.setVisibility(View.GONE);
                     }

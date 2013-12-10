@@ -4,6 +4,8 @@ import android.text.method.KeyListener;
 
 import java.util.List;
 
+import specular.systems.activitys.Main;
+
 public class PublicStaticVariables {
     //defines how long does the list have to be to show the last used contacts
     public static final int minContactSize = 10;

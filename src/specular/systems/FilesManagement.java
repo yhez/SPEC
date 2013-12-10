@@ -474,10 +474,7 @@ public final class FilesManagement {
 
     public static String getlasts(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a.getApplicationContext());
-        String t = srp.getString("lasts", null);
-        if (t == null)
-            return null;
-        return t;
+        return srp.getString("lasts", null);
     }
 
     public static void updateLasts(Activity a, String s) {

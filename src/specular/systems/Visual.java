@@ -18,6 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class Visual {
     private static final String HEXES = "0123456789ABCDEF";
 
@@ -152,5 +155,10 @@ public class Visual {
         ib.setImageDrawable(states);
         ib.setBackgroundColor(Color.TRANSPARENT);
         return ib;
+    }
+    public static String getNameReprt(){
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
+                .getInstance().getTime());
+        return timestamp+".stacktrace";
     }
 }

@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-class LeftMenu extends ArrayAdapter<String> {
+public class LeftMenu extends ArrayAdapter<String> {
     private final Activity context;
     private final String[] s;
     private final int[] drb;

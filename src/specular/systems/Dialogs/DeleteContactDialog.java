@@ -22,7 +22,8 @@ public class DeleteContactDialog extends DialogFragment {
                 Contact contact = PublicStaticVariables.contactsDataSource.findContact(Long
                         .valueOf(((TextView) getActivity().findViewById(R.id.contact_id))
                                 .getText().toString()));
-                PublicStaticVariables.contactsDataSource.deleteContact(contact);
+                PublicStaticVariables.contactsDataSource.deleteContact(getActivity(),contact);
+                PublicStaticVariables.luc.remove(getActivity(),contact);
                 getActivity().onBackPressed();
             }
         })

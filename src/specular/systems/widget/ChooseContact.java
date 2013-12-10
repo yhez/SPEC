@@ -27,10 +27,12 @@ import java.util.List;
 
 import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
+import specular.systems.CustomExceptionHandler;
 import specular.systems.MySimpleArrayAdapter;
 import specular.systems.PublicStaticVariables;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
+import specular.systems.Visual;
 
 /**
  * Created by yehezkelk on 12/9/13.
@@ -38,6 +40,9 @@ import specular.systems.R;
 public class ChooseContact extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
+        }
         setResult(RESULT_CANCELED);
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();

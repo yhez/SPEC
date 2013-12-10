@@ -1,4 +1,4 @@
-package specular.systems;
+package specular.systems.activitys;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -18,8 +18,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+
+import specular.systems.CryptMethods;
+import specular.systems.CustomExceptionHandler;
+import specular.systems.FilesManagement;
+import specular.systems.PublicContactCard;
+import specular.systems.PublicStaticVariables;
+import specular.systems.R;
+import specular.systems.Visual;
 
 public class Splash extends Activity {
     private final static int TIME_FOR_SPLASH = 3500;
@@ -74,16 +80,11 @@ public class Splash extends Activity {
             startActivity(intent);
         }
     }
-    private String getNameReprt(){
-        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
-                .getInstance().getTime());
-        return timestamp+".stacktrace";
-    }
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
-            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getNameReprt()));
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
         }
         Intent thisIntent = getIntent();
         if (thisIntent != null && thisIntent.getType() != null)

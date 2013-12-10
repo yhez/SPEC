@@ -1,9 +1,10 @@
-package specular.systems;
+package specular.systems.activitys;
 
 import android.widget.TextView;
 
 import com.google.zxing.Result;
 
+import specular.systems.R;
 import specular.systems.scanqr.CaptureActivity;
 
 public class StartScan extends CaptureActivity {

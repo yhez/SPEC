@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import specular.systems.FilesManagement;
 import specular.systems.R;
-import specular.systems.Splash;
+import specular.systems.activitys.Splash;
 
 public class DeleteDataDialog extends DialogFragment {
     private ArrayList mSelectedItems;

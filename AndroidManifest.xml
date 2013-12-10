@@ -31,7 +31,7 @@
         </receiver>
 
         <activity
-            android:name=".Splash"
+            android:name=".activitys.Splash"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="true"
@@ -64,13 +64,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Main"
+            android:name=".activitys.Main"
             android:icon="@drawable/menu"
             android:label="Menu"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".StartScan"
+            android:name=".activitys.StartScan"
             android:label="Menu"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
@@ -90,7 +90,7 @@
             android:theme="@android:style/Theme.Holo.Light.Dialog"/>
         <activity
             android:label="send report..."
-            android:name=".SendReport"
+            android:name=".activitys.SendReport"
             android:theme="@android:style/Theme.Holo.Light.Dialog"/>
     </application>
 </manifest>
