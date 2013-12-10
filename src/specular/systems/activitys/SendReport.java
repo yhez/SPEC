@@ -48,16 +48,16 @@ public class SendReport extends Activity {
             new File(folder,f).delete();
         }
         if(folder.list().length==0){
-            Toast.makeText(this,"clean up old reports",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,R.string.clean_up_reported_files,Toast.LENGTH_SHORT).show();
             finish();
         }
     }
     public void send(View v){
         Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);
         i.setType("*/*");
-        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"yhezkel88@gmail.com"});
-        i.putExtra(Intent.EXTRA_SUBJECT,"bug report");
-        i.putExtra(Intent.EXTRA_TEXT,"attached a file containing the stack trace causing the crash");
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.email_for_reports)});
+        i.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.send_report_subject));
+        i.putExtra(Intent.EXTRA_TEXT,getString(R.string.send_report_content));
         File folder = new File(Environment.getExternalStorageDirectory()+"/spec reports");
         ArrayList<Parcelable> uris = new ArrayList<Parcelable>();
         for(String s:folder.list(filterNotReported)){

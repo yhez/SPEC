@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_gravity="center"
@@ -7,7 +6,7 @@
     android:layout_height="match_parent">
     <TextView
         android:padding="@dimen/default_gap"
-        android:text="you just got an unexpected critical error, it's very important for me to get the details.\nwould you like to send a report?"
+        android:text="@string/send_report_message_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <LinearLayout
@@ -18,7 +17,7 @@
         android:layout_height="wrap_content">
         <Button
             android:onClick="send"
-            android:text="send"
+            android:text="@string/send_report_button"
             style="?android:attr/borderlessButtonStyle"
             android:layout_weight="1"
             android:layout_width="0dip"
@@ -29,7 +28,7 @@
             android:background="@color/spec_blue"/>
         <Button
             android:onClick="finish"
-            android:text="not now"
+            android:text="@string/dont_send_now"
             style="?android:attr/borderlessButtonStyle"
             android:layout_weight="1"
             android:layout_width="0dip"

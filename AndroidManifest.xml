@@ -10,6 +10,7 @@
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.ACCESS_ALL_DOWNLOADS"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -32,7 +33,6 @@
 
         <activity
             android:name=".activitys.Splash"
-            android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="true"
             android:screenOrientation="portrait"
@@ -71,10 +71,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activitys.StartScan"
-            android:label="Menu"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
         <activity
+            android:label="@string/choose_contact_for_widget"
             android:name=".widget.ChooseContact"
             android:theme="@android:style/Theme.Holo.Light.Dialog">
             <intent-filter>
@@ -82,6 +82,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:label="@string/quick_msg"
             android:taskAffinity=""
             android:noHistory="true"
             android:excludeFromRecents="true"
@@ -89,7 +90,7 @@
             android:name=".widget.QuickMsg"
             android:theme="@android:style/Theme.Holo.Light.Dialog"/>
         <activity
-            android:label="send report..."
+            android:label="@string/send_report_title"
             android:name=".activitys.SendReport"
             android:theme="@android:style/Theme.Holo.Light.Dialog"/>
     </application>
