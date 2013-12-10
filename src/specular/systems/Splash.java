@@ -18,6 +18,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Splash extends Activity {
     private final static int TIME_FOR_SPLASH = 3500;
@@ -72,10 +74,17 @@ public class Splash extends Activity {
             startActivity(intent);
         }
     }
-
+    private String getNameReprt(){
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
+                .getInstance().getTime());
+        return timestamp+".stacktrace";
+    }
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getNameReprt()));
+        }
         Intent thisIntent = getIntent();
         if (thisIntent != null && thisIntent.getType() != null)
             Log.d("intent", thisIntent.getType());

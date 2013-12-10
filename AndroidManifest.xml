@@ -88,5 +88,9 @@
             android:launchMode="singleInstance"
             android:name=".widget.QuickMsg"
             android:theme="@android:style/Theme.Holo.Light.Dialog"/>
+        <activity
+            android:label="send report..."
+            android:name=".SendReport"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"/>
     </application>
 </manifest>

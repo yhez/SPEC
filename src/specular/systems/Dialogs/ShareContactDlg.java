@@ -65,6 +65,7 @@ public class ShareContactDlg extends DialogFragment {
                     }
                     i.putExtra(Intent.EXTRA_SUBJECT,
                             getResources().getString(R.string.share_contact_subject));
+                    ShareContactDlg.this.getDialog().cancel();
                     startActivity(i);
                 }
             });

@@ -53,7 +53,9 @@ import com.google.zxing.WriterException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -157,6 +159,13 @@ public class Main extends Activity {
 
     public void startCreateKeys() {
         selectItem(-1, R.layout.recreating_keys, "generator");
+        synchronized (this){
+        try {
+            wait(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        }
         new createKeys().start();
     }
 
@@ -479,10 +488,18 @@ public class Main extends Activity {
         // Pass any configuration change to the main toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-
+    private String getNameReprt(){
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
+                .getInstance().getTime());
+        return timestamp+".stacktrace";
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FilesManagement.getKeysFromSDCard(this);
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(getNameReprt()));
+        }
         handler = new Handler(Looper.getMainLooper());
         if (PublicStaticVariables.adapter == null) {
             PublicStaticVariables.contactsDataSource = new ContactsDataSource(this);
@@ -501,6 +518,11 @@ public class Main extends Activity {
         setContentView(R.layout.main);
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
+        File folder =new File(Environment.getExternalStorageDirectory()+"/spec reports");
+        if(folder.list().length>0){
+            Intent i = new Intent(this,SendReport.class);
+            startActivity(i);
+        }
     }
 
     @Override

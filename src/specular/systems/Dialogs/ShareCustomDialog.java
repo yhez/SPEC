@@ -64,6 +64,7 @@ public class ShareCustomDialog extends DialogFragment {
                     }
                     i.putExtra(Intent.EXTRA_SUBJECT,
                             getResources().getString(R.string.subject_share));
+                    ShareCustomDialog.this.getDialog().cancel();
                     startActivity(i);
                 }
             });
