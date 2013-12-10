@@ -1,8 +1,10 @@
 package specular.systems;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +13,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -25,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+
+import specular.systems.widget.WidgetContact;
 
 import static android.graphics.Typeface.createFromAsset;
 
@@ -482,5 +487,22 @@ public final class FilesManagement {
         SharedPreferences.Editor edt = srp.edit();
         edt.putString("lasts", s);
         edt.commit();
+    }
+
+    public static void removeWidget(Activity a,long id) {
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
+        SharedPreferences.Editor edt = srp.edit();
+        //todo the id is not the contacts it's the widget
+        String widget = "widget-id-"+id;
+        Log.d("remove widget", widget);
+        edt.remove(widget);
+        edt.commit();
+        new File(a.getFilesDir()+"/"+widget).delete();
+        Intent i = new Intent(a, WidgetContact.class);
+        i.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+        AppWidgetManager apa = AppWidgetManager.getInstance(a);
+        int[] ids = apa.getAppWidgetIds(a.getComponentName());
+        i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+        a.sendBroadcast(i);
     }
 }

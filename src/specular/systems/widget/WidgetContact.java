@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import specular.systems.R;
@@ -53,7 +52,6 @@ public class WidgetContact extends AppWidgetProvider {
             views.setTextViewText(R.id.text_widget, name.split("-")[0]);
             Intent intent = new Intent(context, QuickMsg.class);
             intent.putExtra("contact_id",Long.parseLong(name.split("-")[1]));
-            Log.w("id",Long.parseLong(name.split("-")[1])+"");
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             views.setOnClickPendingIntent(R.id.widget_ll,pendingIntent);
             Bitmap b = BitmapFactory.decodeFile(context.getFilesDir() + "/" + widget);
@@ -61,6 +59,8 @@ public class WidgetContact extends AppWidgetProvider {
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
+        }else {
+            appWidgetManager.updateAppWidget(appWidgetId, new RemoteViews(context.getPackageName(),R.layout.widget_empty));
         }
     }
     @Override

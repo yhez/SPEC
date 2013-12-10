@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import specular.systems.Contact;
+import specular.systems.FilesManagement;
 import specular.systems.PublicStaticVariables;
 import specular.systems.R;
 
@@ -23,7 +24,8 @@ public class DeleteContactDialog extends DialogFragment {
                         .valueOf(((TextView) getActivity().findViewById(R.id.contact_id))
                                 .getText().toString()));
                 PublicStaticVariables.contactsDataSource.deleteContact(getActivity(),contact);
-                PublicStaticVariables.luc.remove(getActivity(),contact);
+                PublicStaticVariables.luc.remove(getActivity(), contact);
+                FilesManagement.removeWidget(getActivity(),contact.getId());
                 getActivity().onBackPressed();
             }
         })
