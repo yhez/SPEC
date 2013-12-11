@@ -2,7 +2,7 @@
     android:id="@+id/widget_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/spec_blue">
+    android:background="@drawable/borders_widget">
 
     <TextView
         android:gravity="center"

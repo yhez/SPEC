@@ -169,6 +169,8 @@
     <string name="move_key_to_nfc_and_such">private key manager</string>
     <string name="sync_keys_between_devices">sync account with your other devices</string>
     <string name="clean_private_data">clean private data from device</string>
+    <string name="scan_any_qr_widget">scan spec qr file</string>
+    <string name="widget_name_scanner">Scan SPEC QR</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>

@@ -97,6 +97,7 @@ public class ChooseContact extends Activity {
                     intent.putExtra("widget",WidgetContact.getSRPName(mAppWidgetId));
                     PendingIntent pendingIntent = PendingIntent.getActivity(ChooseContact.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     views.setOnClickPendingIntent(R.id.widget_ll,pendingIntent);
+
                     SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(ChooseContact.this);
                     SharedPreferences.Editor edt =srp.edit();
                     edt.putString(WidgetContact.getSRPName(mAppWidgetId),WidgetContact.saveDetails(c.getContactName(),c.getId()));
@@ -105,7 +106,8 @@ public class ChooseContact extends Activity {
                     Intent resultValue = new Intent();
                     resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
                     setResult(RESULT_OK, resultValue);
-                    //updateWidget(mAppWidgetId);
+                    //todo if i'm calling update why do i need all the above? seems that the above alone not enough??
+                    updateWidget(mAppWidgetId);
                     finish();
                 }
             });

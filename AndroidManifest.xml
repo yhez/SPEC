@@ -30,6 +30,16 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_contact_info" />
         </receiver>
+        <receiver android:name=".widget.WidgetScanner"
+            android:label="@string/widget_name_scanner">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_scanner_info" />
+        </receiver>
 
         <activity
             android:name=".activitys.Splash"
@@ -89,6 +99,14 @@
             android:launchMode="singleInstance"
             android:name=".widget.QuickMsg"
             android:theme="@android:style/Theme.Holo.Light.Dialog"/>
+        <activity
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
+            android:screenOrientation="landscape"
+            android:name=".widget.WidgetScanActivity"
+            android:taskAffinity=""
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"/>
         <activity
             android:label="@string/send_report_title"
             android:name=".activitys.SendReport"

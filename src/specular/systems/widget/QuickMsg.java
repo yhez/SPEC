@@ -40,7 +40,6 @@ public class QuickMsg extends Activity {
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
         }
-        setContentView(R.layout.response);
         String widget = getIntent().getStringExtra("widget");
         if (widget == null) {
             Toast.makeText(this, "something goes wrong code 0", Toast.LENGTH_SHORT).show();
@@ -69,6 +68,7 @@ public class QuickMsg extends Activity {
                         edt.commit();
                         updateWidget(WidgetContact.getWidgetId(widget));
                     }
+                    setContentView(R.layout.response);
                     final TextView tv = (TextView) findViewById(R.id.text_counter);
                     final ImageButton bt = (ImageButton) findViewById(R.id.send);
                     bt.setEnabled(false);
