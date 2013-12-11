@@ -70,8 +70,17 @@
                 <data android:pathPattern=".*\\.SPEC" />
                 <data android:mimeType="application/octet-stream" />
                 <data android:mimeType="application/SPEC" />
+                <data android:mimeType="application/spec" />
                 <data android:mimeType="file/spec" />
+                <data android:mimeType="file/SPEC" />
                 <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="file"/>
+                <data android:pathPattern=".*\\.SPEC"/>
+                <data android:pathPattern=".*\\.spec"/>
             </intent-filter>
         </activity>
         <activity
