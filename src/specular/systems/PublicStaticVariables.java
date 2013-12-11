@@ -37,7 +37,6 @@ public class PublicStaticVariables {
     public static boolean readyToSend = false;
     //from files management
     public final static int LIMIT_FILE_SIZE = 52428800;
-    public final static int RESULT_ADD_FILE_FAILED = 5, RESULT_ADD_FILE_TO_BIG = 10, RESULT_ADD_FILE_EMPTY = 20, RESULT_ADD_FILE_OK = 40;
     //restore decrypted msg after pause
     public static Boolean flag_hash, flag_replay;
     public static int flag_session;

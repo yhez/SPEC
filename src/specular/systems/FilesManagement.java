@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import static android.graphics.Typeface.createFromAsset;
 
 public final class FilesManagement {
+    public final static int RESULT_ADD_FILE_FAILED = 5, RESULT_ADD_FILE_TO_BIG = 10, RESULT_ADD_FILE_EMPTY = 20, RESULT_ADD_FILE_OK = 40;
     private final static int FRIEND_CONTACT_CARD = R.string.file_name_shared_contact_card;
     private final static int FRIENDS_SHARE_QR = R.string.file_name_friends_qr;
     private final static int FILE_NAME = R.string.file_name_my_public_key;
@@ -400,13 +401,13 @@ public final class FilesManagement {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return PublicStaticVariables.RESULT_ADD_FILE_FAILED;
+            return RESULT_ADD_FILE_FAILED;
         } catch (IOException e) {
             e.printStackTrace();
-            return PublicStaticVariables.RESULT_ADD_FILE_FAILED;
+            return RESULT_ADD_FILE_FAILED;
         }
         if (size > PublicStaticVariables.LIMIT_FILE_SIZE)
-            return PublicStaticVariables.RESULT_ADD_FILE_TO_BIG;
+            return RESULT_ADD_FILE_TO_BIG;
         byte[] result = new byte[size];
         try {
             InputStream input = null;
@@ -427,16 +428,16 @@ public final class FilesManagement {
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
-            return PublicStaticVariables.RESULT_ADD_FILE_FAILED;
+            return RESULT_ADD_FILE_FAILED;
         } catch (IOException ex) {
             ex.printStackTrace();
-            return PublicStaticVariables.RESULT_ADD_FILE_FAILED;
+            return RESULT_ADD_FILE_FAILED;
         }
         if (result.length > 0) {
             PublicStaticVariables.fileContent = result;
-            return PublicStaticVariables.RESULT_ADD_FILE_OK;
+            return RESULT_ADD_FILE_OK;
         }
-        return PublicStaticVariables.RESULT_ADD_FILE_EMPTY;
+        return RESULT_ADD_FILE_EMPTY;
     }
 
     private static Bitmap crop(Bitmap bitmap) {

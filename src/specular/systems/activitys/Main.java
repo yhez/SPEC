@@ -93,15 +93,17 @@ public class Main extends Activity {
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            if(PublicStaticVariables.currentLayout==R.layout.encrypt){
+                ImageButton imageButton = (ImageButton) findViewById(R.id.add_file);
+                imageButton.clearAnimation();
+                imageButton.setClickable(true);
+            }
             switch (msg.what) {
                 case FAILED:
                     break;
                 case REPLACE_PHOTO:
                     ((TextView) findViewById(R.id.file_content_length)).setText(PublicStaticVariables.fileContent.length + "");
-                    ImageButton imageButton = (ImageButton) findViewById(R.id.add_file);
-                    imageButton.clearAnimation();
-                    imageButton.setClickable(true);
-                    imageButton.setImageResource(R.drawable.after_attach);
+                    ((ImageButton) findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
                     break;
                 case CANT_DECRYPT:
                     String s = msg.obj != null ? (String) msg.obj : getString(R.string.cant_decrypt);
@@ -113,16 +115,16 @@ public class Main extends Activity {
                             Toast.makeText(Main.this, R.string.failed_to_create_file_to_open, Toast.LENGTH_SHORT).show();
                     selectItem(1, R.layout.decrypted_msg, null);
                     break;
-                case PublicStaticVariables.RESULT_ADD_FILE_TO_BIG:
+                case FilesManagement.RESULT_ADD_FILE_TO_BIG:
                     Toast t = Toast.makeText(getBaseContext(), R.string.file_to_big, Toast.LENGTH_SHORT);
                     t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     t.show();
                     break;
-                case PublicStaticVariables.RESULT_ADD_FILE_FAILED:
+                case FilesManagement.RESULT_ADD_FILE_FAILED:
                     Toast.makeText(getBaseContext(), R.string.failed,
                             Toast.LENGTH_LONG).show();
                     break;
-                case PublicStaticVariables.RESULT_ADD_FILE_EMPTY:
+                case FilesManagement.RESULT_ADD_FILE_EMPTY:
                     Toast.makeText(getBaseContext(), R.string.file_is_empty, Toast.LENGTH_SHORT).show();
                     break;
                 case CHANGE_HINT:
@@ -353,10 +355,10 @@ public class Main extends Activity {
                 @Override
                 public void run() {
                     int r = FilesManagement.addFile(Main.this, uri);
-                    if (r == PublicStaticVariables.RESULT_ADD_FILE_OK) {
+                    getIntent().setData(null);
+                    if (r == FilesManagement.RESULT_ADD_FILE_OK) {
                         fileName = getFileName(uri);
                         hndl.sendEmptyMessage(REPLACE_PHOTO);
-
                     } else {
                         hndl.sendEmptyMessage(r);
                     }
@@ -368,7 +370,6 @@ public class Main extends Activity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-
         FilesManagement.getKeysFromSDCard(this);
         PublicStaticVariables.handleByOnActivityResult = true;
         if (resultCode == RESULT_OK) {
