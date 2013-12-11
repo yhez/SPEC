@@ -12,7 +12,7 @@
     <string name="ok">OK</string>
     <string name="hint_enter_your_name">username (optional)&#8230;</string>
     <string name="hint_enter_your_email">email&#8230;</string>
-    <string name="wait_for_nfc_to_write">Tap NFC to securely store decryption key\n<b>(Enhanced Security Mode)</b></string>
+    <string name="wait_for_nfc_to_write">Tap NFC to securely store key\n(Provides additional security)</string>
     <string name="skip_save_to_phone">Skip and save key on device</string>
     <string name="explain_and_about">LEARN ABOUT SPEC</string>
     <string name="create_keys">Generate New Keys</string>
