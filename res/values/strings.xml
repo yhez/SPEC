@@ -165,6 +165,10 @@
     <string name="dont_send_now">not now</string>
     <string name="send_report_title">send report...</string>
     <string name="choose_contact_for_widget">choose contact</string>
+    <string name="import_export_manage">backup manager</string>
+    <string name="move_key_to_nfc_and_such">private key manager</string>
+    <string name="sync_keys_between_devices">sync account with your other devices</string>
+    <string name="clean_private_data">clean private data from device</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>
