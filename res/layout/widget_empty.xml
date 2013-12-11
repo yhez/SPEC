@@ -5,6 +5,7 @@
     android:background="@color/spec_blue">
 
     <TextView
+        android:gravity="center"
         android:textSize="20dp"
         android:text="contact deleted"
         android:paddingBottom="2dp"

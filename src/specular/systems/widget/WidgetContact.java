@@ -17,7 +17,21 @@ import specular.systems.R;
  * Implementation of App Widget functionality.
  */
 public class WidgetContact extends AppWidgetProvider {
-
+    public static long getId(String sharedPrfString){
+        return Long.parseLong(sharedPrfString.split("-")[1]);
+    }
+    public static int getWidgetId(String srp){
+        return Integer.parseInt(srp.split("-")[2]);
+    }
+    public static String getContactName(String sharedPrfString){
+        return sharedPrfString.split("-")[0];
+    }
+    public static String getSRPName(int id){
+        return "widget-id-"+id;
+    }
+    public static String saveDetails(String name, long id){
+        return name+"-"+id;
+    }
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
@@ -40,7 +54,7 @@ public class WidgetContact extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
             int appWidgetId) {
-        String widget = "widget-id-"+appWidgetId;
+        String widget = getSRPName(appWidgetId);
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(context);
         String name = srp.getString(widget, null);
 
@@ -49,9 +63,9 @@ public class WidgetContact extends AppWidgetProvider {
         if(name!=null){
             // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_contact);
-            views.setTextViewText(R.id.text_widget, name.split("-")[0]);
+            views.setTextViewText(R.id.text_widget, getContactName(name));
             Intent intent = new Intent(context, QuickMsg.class);
-            intent.putExtra("contact_id",Long.parseLong(name.split("-")[1]));
+            intent.putExtra("widget", widget);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             views.setOnClickPendingIntent(R.id.widget_ll,pendingIntent);
             Bitmap b = BitmapFactory.decodeFile(context.getFilesDir() + "/" + widget);
@@ -69,7 +83,7 @@ public class WidgetContact extends AppWidgetProvider {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor edt = srp.edit();
         for(int id:appWidgetIds){
-            String widget = "widget-id-"+id;
+            String widget = getSRPName(id);
             edt.remove(widget);
             context.deleteFile(widget);
         }

@@ -81,7 +81,7 @@ public class ChooseContact extends Activity {
                     try {
                         Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
                         try {
-                            FileOutputStream fos2 = openFileOutput("widget-id-" + mAppWidgetId,
+                            FileOutputStream fos2 = openFileOutput(WidgetContact.getSRPName(mAppWidgetId),
                                     Context.MODE_PRIVATE);
                             bitmap.compress(Bitmap.CompressFormat.PNG, 90,
                                     fos2);
@@ -94,17 +94,18 @@ public class ChooseContact extends Activity {
                     }
                     views.setTextViewText(R.id.text_widget, ((TextView) view.findViewById(R.id.first_line)).getText().toString());
                     Intent intent = new Intent(ChooseContact.this, QuickMsg.class);
-                    intent.putExtra("contact_id",c.getId());
+                    intent.putExtra("widget",WidgetContact.getSRPName(mAppWidgetId));
                     PendingIntent pendingIntent = PendingIntent.getActivity(ChooseContact.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     views.setOnClickPendingIntent(R.id.widget_ll,pendingIntent);
                     SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(ChooseContact.this);
                     SharedPreferences.Editor edt =srp.edit();
-                    edt.putString("widget-id-"+mAppWidgetId,c.getContactName()+"-"+c.getId());
+                    edt.putString(WidgetContact.getSRPName(mAppWidgetId),WidgetContact.saveDetails(c.getContactName(),c.getId()));
                     edt.commit();
                     appWidgetManager.updateAppWidget(mAppWidgetId, views);
                     Intent resultValue = new Intent();
                     resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
                     setResult(RESULT_OK, resultValue);
+                    //updateWidget(mAppWidgetId);
                     finish();
                 }
             });
@@ -112,5 +113,13 @@ public class ChooseContact extends Activity {
             Toast.makeText(this,"something is wrong",Toast.LENGTH_SHORT).show();
             finish();
         }
+    }
+
+    private void updateWidget(int widgetId) {
+        Intent intent = new Intent(this, WidgetContact.class);
+        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+        int[] ids = {widgetId};
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(intent);
     }
 }

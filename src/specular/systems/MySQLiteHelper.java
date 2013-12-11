@@ -44,7 +44,7 @@ class MySQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         /*
-         * Log.w(MySQLiteHelper.class.getName(),
+         * Log.w(MySQLiteHelper.class.getContactName(),
 		 * "Upgrading database from version " + oldVersion + " to " + newVersion
 		 * + ", which will destroy all old data");
 		 */

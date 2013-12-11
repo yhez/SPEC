@@ -25,7 +25,6 @@ public class DeleteContactDialog extends DialogFragment {
                                 .getText().toString()));
                 PublicStaticVariables.contactsDataSource.deleteContact(getActivity(),contact);
                 PublicStaticVariables.luc.remove(getActivity(), contact);
-                FilesManagement.removeWidget(getActivity(),contact.getId());
                 getActivity().onBackPressed();
             }
         })
