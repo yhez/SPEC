@@ -155,8 +155,8 @@
     <string name="got_it">Got It</string>
     <string name="generate"><b>Generate New Keys!</b></string>
     <string name="share_my_contact_card">Share My Public Key\n(Contact Card)</string>
-    <string name="widget_label">quick contact message</string>
-    <string name="send_report_subject">bug report</string>
+    <string name="widget_label">Secure Messaging</string>
+    <string name="send_report_subject">Bug Report</string>
     <string name="send_report_content">attached a file containing the stack trace causing the crash</string>
     <string name="email_for_reports">yhezkel88@gmail.com</string>
     <string name="clean_up_reported_files">clean up old reports</string>
@@ -164,13 +164,13 @@
     <string name="send_report_button">send</string>
     <string name="dont_send_now">not now</string>
     <string name="send_report_title">send report...</string>
-    <string name="choose_contact_for_widget">choose contact</string>
+    <string name="choose_contact_for_widget">Choose Contact:</string>
     <string name="import_export_manage">Backup Manager</string>
     <string name="move_key_to_nfc_and_such">Private Key Manager</string>
     <string name="sync_keys_between_devices">Device Sync</string>
     <string name="clean_private_data">Erase Data</string>
-    <string name="scan_any_qr_widget">scan spec qr file</string>
-    <string name="widget_name_scanner">Scan SPEC QR</string>
+    <string name="scan_any_qr_widget">Place QR code within box to scan</string>
+    <string name="widget_name_scanner">SPEC QR Scanner</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>
