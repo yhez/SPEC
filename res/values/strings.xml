@@ -35,7 +35,7 @@
     <string name="what_to_share">What to share:</string>
     <string name="no_qr">No QR</string>
     <string name="share_button">Share</string>
-    <string name="todo">SPEC Security</string>
+    <string name="todo"><b>SPEC Security</b></string>
     <string name="export">Export Keys</string>
     <string name="Import">Import Keys</string>
     <string name="clean">Delete App Data</string>
@@ -139,7 +139,7 @@
     <string name="quote">Quote previous message</string>
     <string name="divide_msg">\n- - - - - - -\n</string>
     <string name="quote_msg">Quoted Message:</string>
-    <string name="learn_title">The SPEC Magic</string>
+    <string name="learn_title"><b>The SPEC Magic</b></string>
     <string name="how_spec">How SPEC Works</string>
     <string name="faq">FAQs</string>
     <string name="blog">SPEC Blog</string>
