@@ -93,10 +93,9 @@ public class Main extends Activity {
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            ImageButton imageButton=null;
             if(PublicStaticVariables.currentLayout==R.layout.encrypt){
-                ImageButton imageButton = (ImageButton) findViewById(R.id.add_file);
-                imageButton.clearAnimation();
-                imageButton.setClickable(true);
+                 imageButton= (ImageButton) findViewById(R.id.add_file);
             }
             switch (msg.what) {
                 case FAILED:
@@ -118,14 +117,20 @@ public class Main extends Activity {
                     selectItem(1, R.layout.decrypted_msg, null);
                     break;
                 case FilesManagement.RESULT_ADD_FILE_TO_BIG:
+                    imageButton.clearAnimation();
+                    imageButton.setClickable(true);
                     t.setText(R.string.file_to_big);
                     t.show();
                     break;
                 case FilesManagement.RESULT_ADD_FILE_FAILED:
+                    imageButton.clearAnimation();
+                    imageButton.setClickable(true);
                     t.setText(R.string.failed);
                     t.show();
                     break;
                 case FilesManagement.RESULT_ADD_FILE_EMPTY:
+                    imageButton.clearAnimation();
+                    imageButton.setClickable(true);
                     t.setText(R.string.file_is_empty);
                     t.show();
                     break;
@@ -265,6 +270,7 @@ public class Main extends Activity {
                 break;
             case R.id.open_file:
                 String name = PublicStaticVariables.file_name;
+                //todo reported null bug from morgan
                 File f = new File(Environment.getExternalStorageDirectory(), name);
                 String ext = name.substring(name.lastIndexOf(".") + 1);
                 MimeTypeMap mtm = MimeTypeMap.getSingleton();

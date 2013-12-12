@@ -3,6 +3,7 @@ package specular.systems.Dialogs;
 
 //import android.annotation.SuppressLint;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -391,14 +392,10 @@ public class HoloCircularProgressBar extends View {
      * @param dx the dx the horizontal unfilled space
      * @param dy the dy the horizontal unfilled space
      */
-    //  @SuppressLint("NewApi")
+     // @SuppressLint("NewApi")
     private void computeInsets(final int dx, final int dy) {
         final int layoutDirection;
         int absoluteGravity = mGravity;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            layoutDirection = getLayoutDirection();
-            absoluteGravity = Gravity.getAbsoluteGravity(mGravity, layoutDirection);
-        }
 
         switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
             case Gravity.LEFT:
