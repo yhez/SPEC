@@ -63,7 +63,6 @@ import specular.systems.CustomExceptionHandler;
 import specular.systems.Dialogs.AddContactDlg;
 import specular.systems.Dialogs.ContactQR;
 import specular.systems.Dialogs.DeleteContactDialog;
-import specular.systems.Dialogs.DeleteDataDialog;
 import specular.systems.Dialogs.ExplainDialog;
 import specular.systems.Dialogs.GenerateKeys;
 import specular.systems.Dialogs.NotImplemented;
@@ -1168,17 +1167,6 @@ public class Main extends Activity {
             case R.id.button1:
                 GenerateKeys gk = new GenerateKeys();
                 gk.show(getFragmentManager(), "gk");
-                //selectItem(-1, R.layout.create_new_keys,null);
-                break;
-            case R.id.button2:
-                notImp(null);
-                break;
-            case R.id.button3:
-                notImp(null);
-                break;
-            case R.id.button4:
-                DeleteDataDialog ddd = new DeleteDataDialog();
-                ddd.show(getFragmentManager(), "ddd");
                 break;
         }
     }

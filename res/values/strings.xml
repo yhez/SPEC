@@ -73,7 +73,6 @@
     <string name="clean_up">Clean up:</string>
     <string name="clear">Delete</string>
     <string name="not_cosen_clean">Please choose what to delete/clean</string>
-    <string name="not_implement_msg">This hasn\'t been implemented yet :-(</string>
     <string name="turn_nfc_on_nfc_wait">NFC is OFF, go to settings and turn it ON</string>
     <string name="no_contacts">You don\'t have any contacts yet.\nTo add contacts,\nyou can scan their QR code or ask them to send a contact card.</string>
     <string name="tmp_files_deleted">Temp files successfully deleted</string>
@@ -116,7 +115,6 @@
     <string name="technical_info">Security Audit Info</string>
     <string name="cant_connect_nfc_adapter">Something went wrong</string>
     <string name="no_result_filter">No result, please search again</string>
-    <string name="not_implemented_title">Coming soon&#8230;</string>
     <string name="profile_my_name">my name:</string>
     <string name="profile_my_email">my email:</string>
     <string name="send_file">send file via:</string>
@@ -155,7 +153,7 @@
     <string name="got_it">Got It</string>
     <string name="generate"><b>Generate New Keys!</b></string>
     <string name="share_my_contact_card">Share My Public Key\n(Contact Card)</string>
-    <string name="widget_label">Send Secure Message via SPEC</string>
+    <string name="widget_label">Direct message</string>
     <string name="send_report_subject">Bug Report</string>
     <string name="send_report_content">attached a file containing the stack trace causing the crash</string>
     <string name="email_for_reports">yhezkel88@gmail.com</string>
@@ -180,6 +178,8 @@
     <string name="widget_add_contact_list_empty">-----\nyour contact list is empty,\nthis widget requred at lest one contact\n-----</string>
     <string name="check_box_confirm_recreate_keys">i\'ve read and i\'m ready</string>
     <string name="first_time_create_keys">hello</string>
+    <string name="not_imp_msg">this feature hasn\'t been integrate yet,\ndue to much work and not so much time.\n if you interesting to help in any way,\n you very welcome.</string>
+    <string name="not_implemented_title">Coming soon&#8230;</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>
@@ -195,10 +195,4 @@
         <item>Manage</item>
     </string-array>
     <!--<item>SPEC Safe</item>-->
-    <string-array name="data_to_delete">
-        <item>Temp Files</item>
-        <item>Keys</item>
-        <item>Contacts</item>
-        <item>Erase NFC</item>
-    </string-array>
 </resources>
