@@ -25,7 +25,8 @@ public class Contact {
             this.contactName = contactName;
             this.publicKey = publicKey;
             this.email = email;
-            this.session = new Session().toString() + (session != null ? "---" + session.split("---")[0].replace("my", "their") : "");
+            String tmp = new Session().toString();
+            this.session = session==null?tmp:Session.combineUs(tmp,Session.getHisFromHis(session));
             this.sent = 0;
             this.received = session != null ? 1 : 0;
             this.sent = 0;

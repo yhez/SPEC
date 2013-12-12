@@ -10,6 +10,7 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import specular.systems.Visual;
 
 public class Splash extends Activity {
     private final static int TIME_FOR_SPLASH = 3500;
+    private Toast t=null;
     private final static long TIME_FOR_CLEAR_TASK = 15;//in minute
     private final Thread waitForSplash = new Thread(new Runnable() {
         @Override
@@ -86,6 +88,8 @@ public class Splash extends Activity {
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
         }
+        t=Toast.makeText(this,"",Toast.LENGTH_SHORT);
+        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
         Intent thisIntent = getIntent();
         if (thisIntent != null && thisIntent.getType() != null)
             Log.d("intent", thisIntent.getType());
@@ -103,8 +107,7 @@ public class Splash extends Activity {
             PublicContactCard qrp;
             Uri uri = getIntent().getData();
             if (uri == null) {
-                Toast.makeText(getBaseContext(), R.string.failed,
-                        Toast.LENGTH_LONG).show();
+                t.setText(R.string.failed);t.show();
                 finish();
             } else {
                 String data = null;
@@ -132,8 +135,7 @@ public class Splash extends Activity {
                     e.printStackTrace();
                 }
                 if (data == null) {
-                    Toast.makeText(getBaseContext(), R.string.failed,
-                            Toast.LENGTH_LONG).show();
+                   t.setText(R.string.failed);t.show();
                     finish();
                 } else {
                     qrp = new PublicContactCard(this, data);

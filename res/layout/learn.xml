@@ -88,7 +88,7 @@
         android:autoLink="email"
         android:textColor="@color/spec_black"
         android:padding="32dp"
-        android:text="Feel free to send us suggestions and feedback at reachout@specularx.co"
+        android:text="@string/learn_screen_suggest_us"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

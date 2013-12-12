@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.view.View;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -22,17 +21,13 @@ public class SendReport extends Activity {
     FilenameFilter filterreported = new FilenameFilter() {
         @Override
         public boolean accept(File file, String s) {
-            if(s.endsWith(".stacktrace"))
-                return false;
-            return true;
+            return !s.endsWith(".stacktrace");
         }
     };
     FilenameFilter filterNotReported = new FilenameFilter() {
         @Override
         public boolean accept(File file, String s) {
-            if(s.endsWith(".stacktrace"))
-                return true;
-            return false;
+            return s.endsWith(".stacktrace");
         }
     };
     @Override
@@ -42,14 +37,14 @@ public class SendReport extends Activity {
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
         }
-        setContentView(R.layout.fragment_send_report);
         File folder = new File(Environment.getExternalStorageDirectory()+"/spec reports");
         for(String f:folder.list(filterreported)){
             new File(folder,f).delete();
         }
         if(folder.list().length==0){
-            Toast.makeText(this,R.string.clean_up_reported_files,Toast.LENGTH_SHORT).show();
             finish();
+        }else{
+            setContentView(R.layout.send_report);
         }
     }
     public void send(View v){

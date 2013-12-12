@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/response_title"
         android:textColor="@color/spec_black"
         android:padding="@dimen/default_gap"
         android:layout_width="match_parent"
@@ -17,6 +18,7 @@
         android:textSize="20sp" />
 
     <View
+        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/spec_blue" />

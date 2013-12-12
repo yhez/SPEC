@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -112,16 +113,19 @@ public class Response extends DialogFragment {
                         CryptMethods.encrypt(msg.getFormatedMsg(),
                                 contact.getPublicKey());
                         boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < PublicStaticVariables.MSG_LIMIT_FOR_QR);
+                        Toast t = Toast.makeText(getActivity(),"",Toast.LENGTH_SHORT);
+                        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
                         if (success) {
                             ArrayList<Uri> files = FilesManagement.getFilesToSend(getActivity());
-                            if (files == null)
-                                Toast.makeText(getActivity(), R.string.failed_attach_files, Toast.LENGTH_LONG).show();
+                            if (files == null){
+                                t.setText(R.string.failed_attach_files);t.show();
+                            }
                             else {
                                 SendMsgDialog sendMsgDialog = new SendMsgDialog(files, contact.getEmail());
                                 sendMsgDialog.show(getFragmentManager(), "smd");
                             }
                         } else {
-                            Toast.makeText(getActivity(), R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
+                            t.setText(R.string.failed_to_create_files_to_send);t.show();
                         }
                         prgd.cancel();
                         Response.this.getDialog().cancel();

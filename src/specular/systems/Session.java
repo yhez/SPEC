@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Session {
 
-    public final static String DIVIDE_SESSIONS = "---";
+    public final static String DIVIDE_SESSIONS = "---",MY="my",HIS="other's";
     public final static int UNKNOWN = 0, STARTING = 1, DONT_TRUST = 2, TRUSTED = 3, NEW_TRUSTED = 4;
 
     public static int checkAndUpdate(Activity a,Contact contact, String session) {
@@ -14,14 +14,14 @@ public class Session {
         String his[] = session.split(DIVIDE_SESSIONS);
         if (my.length == 1) {
             if (his.length == 1) {
-                contact.update(a,-1, null, null, null, contact.getSession() + DIVIDE_SESSIONS + session.replace("my", "their"));
+                contact.update(a,-1, null, null, null, contact.getSession() + DIVIDE_SESSIONS + session.replace(MY, HIS));
                 return UNKNOWN;
             } else {
                 String mMy[] = my[0].split(" ");
                 //String hHis[]=his[0].split(" ");
                 String hMy[] = his[1].split(" ");
                 if (hMy[3].equals(mMy[3]) && hMy[7].equals(mMy[7])) {
-                    contact.update(a,-1, null, null, null, contact.getSession() + DIVIDE_SESSIONS + his[0].replace("my", "their"));
+                    contact.update(a,-1, null, null, null, contact.getSession() + DIVIDE_SESSIONS + his[0].replace(MY, HIS));
                     return STARTING;
                 } else {
                     return DONT_TRUST;
@@ -62,7 +62,16 @@ public class Session {
                 + Character.toString(f[rnd.nextInt(f.length)]);
         mySymbol = Character.toString(s[rnd.nextInt(s.length)]);
     }
-
+    public static String combineUs(String my,String his){
+        return my+DIVIDE_SESSIONS+his;
+    }
+    public static String getHisFromHis(String hisSession){
+        String[] arr=hisSession.split(DIVIDE_SESSIONS);
+        return arr[0].replace(MY,HIS);
+    }
+    public static String toShow(String rawSession){
+        return rawSession.replace(DIVIDE_SESSIONS,"\n");
+    }
     @Override
     public String toString() {
         return "my session id: "

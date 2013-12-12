@@ -7,7 +7,7 @@
     <TextView
         android:gravity="center"
         android:textSize="20dp"
-        android:text="contact deleted"
+        android:text="@string/contact_deleted_widget"
         android:paddingBottom="2dp"
         android:layout_gravity="center"
         android:id="@+id/text_widget"

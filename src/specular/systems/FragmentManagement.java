@@ -2,6 +2,7 @@ package specular.systems;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -331,7 +332,7 @@ public class FragmentManagement extends Fragment {
                 ((TextView) rootView.findViewById(R.id.orig_eamil))
                         .setText(currContact.getEmail());
                 ((TextView) rootView.findViewById(R.id.contact_session))
-                        .setText(currContact.getSession().replace("---", "\n"));
+                        .setText(Session.toShow(currContact.getSession()));
                 ImageButton ibb = (ImageButton) rootView.findViewById(R.id.contact_picture);
                 QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(currContact.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 256);
                 Bitmap bitmap = null;
@@ -587,8 +588,11 @@ public class FragmentManagement extends Fragment {
             case wait_nfc_to_write:
                 break;
             case wait_nfc_decrypt:
-                if (NfcAdapter.getDefaultAdapter(getActivity()) == null)
-                    Toast.makeText(getActivity(), R.string.cant_connect_nfc_adapter, Toast.LENGTH_LONG).show();
+                if (NfcAdapter.getDefaultAdapter(getActivity()) == null){
+                    Toast t = Toast.makeText(getActivity(), R.string.cant_connect_nfc_adapter, Toast.LENGTH_LONG);
+                    t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+                    t.show();
+                }
                 else if (!NfcAdapter.getDefaultAdapter(getActivity()).isEnabled())
                     rootView.findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
                 break;
@@ -673,7 +677,7 @@ public class FragmentManagement extends Fragment {
 
     private void addSocialLogin() {
         final Account[] list = ((AccountManager) getActivity()
-                .getSystemService(getActivity().ACCOUNT_SERVICE)).getAccounts();
+                .getSystemService(Activity.ACCOUNT_SERVICE)).getAccounts();
         Intent intent = new Intent(Intent.ACTION_MAIN);
         final List<ResolveInfo> rs = getActivity().getPackageManager().queryIntentActivities(intent, 0);
         for (final Account acc : list) {

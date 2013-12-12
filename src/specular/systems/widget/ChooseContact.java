@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -40,13 +41,16 @@ import specular.systems.Visual;
 public class ChooseContact extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
-        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
         }
         setResult(RESULT_CANCELED);
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        if (extras != null) {
+        if (extras == null) {
+            Toast.makeText(this, "something is wrong", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
             final int mAppWidgetId = extras.getInt(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -69,51 +73,55 @@ public class ChooseContact extends Activity {
                 adapter = new MySimpleArrayAdapter(this, cfc);
             } else
                 adapter = PublicStaticVariables.adapter;
-            lv.setAdapter(adapter);
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(ChooseContact.this);
-                    RemoteViews views = new RemoteViews(ChooseContact.this.getPackageName(),
-                            R.layout.widget_contact);
-                    Contact c =PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(((TextView) view.findViewById(R.id.id_contact)).getText().toString()));
-                    QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(c.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 200);
-                    try {
-                        Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
+            if (adapter.isEmpty()) {
+                Toast t = Toast.makeText(this, R.string.widget_add_contact_list_empty, Toast.LENGTH_SHORT);
+                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                t.show();
+                finish();
+            } else {
+                lv.setAdapter(adapter);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(ChooseContact.this);
+                        RemoteViews views = new RemoteViews(ChooseContact.this.getPackageName(),
+                                R.layout.widget_contact);
+                        Contact c = PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(((TextView) view.findViewById(R.id.id_contact)).getText().toString()));
+                        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(c.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 200);
                         try {
-                            FileOutputStream fos2 = openFileOutput(WidgetContact.getSRPName(mAppWidgetId),
-                                    Context.MODE_PRIVATE);
-                            bitmap.compress(Bitmap.CompressFormat.PNG, 90,
-                                    fos2);
-                        } catch (FileNotFoundException e) {
+                            Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
+                            try {
+                                FileOutputStream fos2 = openFileOutput(WidgetContact.getSRPName(mAppWidgetId),
+                                        Context.MODE_PRIVATE);
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 90,
+                                        fos2);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                            views.setImageViewBitmap(R.id.image_widget, bitmap);
+                        } catch (WriterException e) {
                             e.printStackTrace();
                         }
-                        views.setImageViewBitmap(R.id.image_widget, bitmap);
-                    } catch (WriterException e) {
-                        e.printStackTrace();
-                    }
-                    views.setTextViewText(R.id.text_widget, ((TextView) view.findViewById(R.id.first_line)).getText().toString());
-                    Intent intent = new Intent(ChooseContact.this, QuickMsg.class);
-                    intent.putExtra("widget",WidgetContact.getSRPName(mAppWidgetId));
-                    PendingIntent pendingIntent = PendingIntent.getActivity(ChooseContact.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    views.setOnClickPendingIntent(R.id.widget_ll,pendingIntent);
+                        views.setTextViewText(R.id.text_widget, ((TextView) view.findViewById(R.id.first_line)).getText().toString());
+                        Intent intent = new Intent(ChooseContact.this, QuickMsg.class);
+                        intent.putExtra("widget", WidgetContact.getSRPName(mAppWidgetId));
+                        PendingIntent pendingIntent = PendingIntent.getActivity(ChooseContact.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        views.setOnClickPendingIntent(R.id.widget_ll, pendingIntent);
 
-                    SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(ChooseContact.this);
-                    SharedPreferences.Editor edt =srp.edit();
-                    edt.putString(WidgetContact.getSRPName(mAppWidgetId),WidgetContact.saveDetails(c.getContactName(),c.getId()));
-                    edt.commit();
-                    appWidgetManager.updateAppWidget(mAppWidgetId, views);
-                    Intent resultValue = new Intent();
-                    resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-                    setResult(RESULT_OK, resultValue);
-                    //todo if i'm calling update why do i need all the above? seems that the above alone not enough??
-                    updateWidget(mAppWidgetId);
-                    finish();
-                }
-            });
-        }else{
-            Toast.makeText(this,"something is wrong",Toast.LENGTH_SHORT).show();
-            finish();
+                        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(ChooseContact.this);
+                        SharedPreferences.Editor edt = srp.edit();
+                        edt.putString(WidgetContact.getSRPName(mAppWidgetId), WidgetContact.saveDetails(c.getContactName(), c.getId()));
+                        edt.commit();
+                        appWidgetManager.updateAppWidget(mAppWidgetId, views);
+                        Intent resultValue = new Intent();
+                        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+                        setResult(RESULT_OK, resultValue);
+                        //todo if i'm calling update why do i need all the above? seems that the above alone not enough??
+                        updateWidget(mAppWidgetId);
+                        finish();
+                    }
+                });
+            }
         }
     }
 

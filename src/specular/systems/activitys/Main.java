@@ -28,7 +28,6 @@ import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -90,6 +89,7 @@ import specular.systems.Visual;
 public class Main extends Activity {
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54;
     private static int currentKeys = 0;
+    private Toast t=null;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -111,21 +111,23 @@ public class Main extends Activity {
                     break;
                 case DECRYPT_SCREEN:
                     if (PublicStaticVariables.decryptedMsg != null && PublicStaticVariables.decryptedMsg.getFileContent() != null)
-                        if (!FilesManagement.createFileToOpen(Main.this))
-                            Toast.makeText(Main.this, R.string.failed_to_create_file_to_open, Toast.LENGTH_SHORT).show();
+                        if (!FilesManagement.createFileToOpen(Main.this)){
+                            t.setText(R.string.failed_to_create_file_to_open);
+                            t.show();
+                        }
                     selectItem(1, R.layout.decrypted_msg, null);
                     break;
                 case FilesManagement.RESULT_ADD_FILE_TO_BIG:
-                    Toast t = Toast.makeText(getBaseContext(), R.string.file_to_big, Toast.LENGTH_SHORT);
-                    t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    t.setText(R.string.file_to_big);
                     t.show();
                     break;
                 case FilesManagement.RESULT_ADD_FILE_FAILED:
-                    Toast.makeText(getBaseContext(), R.string.failed,
-                            Toast.LENGTH_LONG).show();
+                    t.setText(R.string.failed);
+                    t.show();
                     break;
                 case FilesManagement.RESULT_ADD_FILE_EMPTY:
-                    Toast.makeText(getBaseContext(), R.string.file_is_empty, Toast.LENGTH_SHORT).show();
+                    t.setText(R.string.file_is_empty);
+                    t.show();
                     break;
                 case CHANGE_HINT:
                     ((TextView) findViewById(R.id.message)).setHint(R.string.send_another_msg);
@@ -159,7 +161,6 @@ public class Main extends Activity {
     private final int ATTACH_FILE = 0, SCAN_QR = 1;
     public Handler handler;
     boolean exit = false;
-    Toast t;
     boolean msgSended = false;
     Thread addFile;
     private int layouts[];
@@ -177,13 +178,13 @@ public class Main extends Activity {
     private long startTime, avrg = 0;
 
     public void startCreateKeys() {
-        selectItem(-1, R.layout.recreating_keys, "generator");
+        selectItem(-1, R.layout.recreating_keys, getString(R.string.generator_menu_title));
         hndl.sendEmptyMessage(DONE_CREATE_KEYS);
     }
 
     public void createKeysManager(View v) {
         CryptMethods.doneCreatingKeys = true;
-        selectItem(-1, R.layout.wait_nfc_to_write, "Save");
+        selectItem(-1, R.layout.wait_nfc_to_write, getString(R.string.save_keys_menu_title));
         if (NfcAdapter.getDefaultAdapter(this) != null)
             if (!NfcAdapter.getDefaultAdapter(this).isEnabled()) {
                 TurnNFCOn tno = new TurnNFCOn();
@@ -237,7 +238,6 @@ public class Main extends Activity {
     private String getFileName(Uri contentURI) {
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
         if (cursor == null) {
-            Log.d("getname", contentURI.getLastPathSegment());
             return contentURI.getLastPathSegment();
         }
         cursor.moveToFirst();
@@ -275,12 +275,15 @@ public class Main extends Activity {
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(this, R.string.cant_find_an_app_to_open_file, Toast.LENGTH_SHORT).show();
+                    t.setText(R.string.cant_find_an_app_to_open_file);
+                    t.show();
                 }
                 break;
             case R.id.answer:
-                if (((TextView) findViewById(R.id.flag_contact_exist)).getText().toString().equals(false + ""))
-                    Toast.makeText(getBaseContext(), R.string.add_contact_first, Toast.LENGTH_LONG).show();
+                if (((TextView) findViewById(R.id.flag_contact_exist)).getText().toString().equals(false + "")){
+                    t.setText(R.string.add_contact_first);
+                    t.show();
+                }
                 else {
                     Response r = new Response();
                     r.show(getFragmentManager(), "r");
@@ -294,26 +297,28 @@ public class Main extends Activity {
                 String msg;
                 switch (PublicStaticVariables.flag_session) {
                     case Session.TRUSTED:
-                        msg = PublicStaticVariables.session.replace("---", "\n") + "\n" + getString(R.string.session_ok_explain);
+                        msg = Session.toShow(PublicStaticVariables.session) + "\n" + getString(R.string.session_ok_explain);
                         break;
                     case Session.DONT_TRUST:
                         msg = getString(R.string.dont_trust_session_explain)
-                                + PublicStaticVariables.session.replace("---", "\n") + "\n" + "their session is:\n" + PublicStaticVariables.session.replace("---", "\n");
+                                + Session.toShow(PublicStaticVariables.session) + "\n"
+                                + "other's session is:\n"
+                                + Session.toShow(PublicStaticVariables.session);
                         break;
                     case Session.NEW_TRUSTED:
                         msg = getString(R.string.new_session_trust_created)
-                                + PublicStaticVariables.session.replace("---", "\n");
+                                + Session.toShow(PublicStaticVariables.session);
                         break;
                     case Session.STARTING:
                         msg = getString(R.string.starting_session_explain)
-                                + PublicStaticVariables.session.replace("---", "\n");
+                                + Session.toShow(PublicStaticVariables.session);
                         break;
                     case Session.UNKNOWN:
                         msg = getString(R.string.unknown_session_explain)
-                                + PublicStaticVariables.session.replace("---", "\n");
+                                + Session.toShow(PublicStaticVariables.session);
                         break;
                     default:
-                        msg = PublicStaticVariables.session.replace("---", "\n");
+                        msg = Session.toShow(PublicStaticVariables.session);
                 }
                 ExplainDialog edl = new ExplainDialog(ExplainDialog.SESSION, msg);
                 edl.show(getFragmentManager(), "session");
@@ -388,9 +393,7 @@ public class Main extends Activity {
                             if (pcc.getPublicKey() != null) {
                                 Contact contact1 = PublicStaticVariables.contactsDataSource.findContactByKey(pcc.getPublicKey());
                                 if (contact1 != null) {
-                                    t = Toast.makeText(getBaseContext(), R.string.contact_exist,
-                                            Toast.LENGTH_LONG);
-                                    t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                    t.setText(R.string.contact_exist);
                                     t.show();
                                     PublicStaticVariables.fragmentManagement.contactChosen(contact1.getId());
                                 } else {
@@ -398,26 +401,26 @@ public class Main extends Activity {
                                     AddContactDlg acd = new AddContactDlg(pcc, null, c != null ? c.getId() : -1);
                                     acd.show(getFragmentManager(), "acd2");
                                 }
-                            } else
-                                Toast.makeText(getBaseContext(), R.string.bad_data,
-                                        Toast.LENGTH_LONG).show();
+                            } else{
+                                t.setText(R.string.bad_data);
+                                t.show();
+                            }
                             break;
                         case R.layout.contacts:
                             pcc = new PublicContactCard(this, result);
                             if (pcc.getPublicKey() != null) {
                                 if (PublicStaticVariables.contactsDataSource.findContactByKey(pcc.getPublicKey()) != null) {
-                                    t = Toast.makeText(getBaseContext(), R.string.contact_exist,
-                                            Toast.LENGTH_LONG);
-                                    t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                    t.setText(R.string.contact_exist);
                                     t.show();
                                 } else {
                                     Contact c = PublicStaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
                                     AddContactDlg acd = new AddContactDlg(pcc, null, c != null ? c.getId() : -1);
                                     acd.show(getFragmentManager(), "acd2");
                                 }
-                            } else
-                                Toast.makeText(getBaseContext(), R.string.bad_data,
-                                        Toast.LENGTH_LONG).show();
+                            } else{
+                                t.setText(R.string.bad_data);
+                                t.show();
+                            }
                             break;
                     }
                 }
@@ -465,8 +468,7 @@ public class Main extends Activity {
                     contact = PublicStaticVariables.contactsDataSource.findContact(id);
                     encryptManager();
                 } else {
-                    Toast t = Toast.makeText(this, R.string.send_orders, Toast.LENGTH_LONG);
-                    t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                    t.setText(R.string.send_orders);
                     t.show();
                 }
                 break;
@@ -508,6 +510,8 @@ public class Main extends Activity {
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
         }
+        t = Toast.makeText(this,"",Toast.LENGTH_SHORT);
+        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
         handler = new Handler(Looper.getMainLooper());
         if (PublicStaticVariables.adapter == null) {
             PublicStaticVariables.contactsDataSource = new ContactsDataSource(this);
@@ -540,7 +544,8 @@ public class Main extends Activity {
             Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if (tag != null) {
                 int rslt = writeTag(tag, Visual.hex2bin(CryptMethods.getPrivateToSave()));
-                Toast.makeText(getBaseContext(), rslt, Toast.LENGTH_LONG).show();
+                t.setText(rslt);
+                t.show();
                 if (rslt == R.string.tag_written) {
                     PublicStaticVariables.NFCMode = true;
                     saveKeys.start(this);
@@ -923,9 +928,7 @@ public class Main extends Activity {
             } else {
                 //TODO what if some of the details are not exist
                 PublicStaticVariables.fileContactCard = null;
-                t = Toast.makeText(getBaseContext(),
-                        R.string.contact_exist, Toast.LENGTH_LONG);
-                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                t.setText(R.string.contact_exist);
                 t.show();
             }
             return true;
@@ -952,8 +955,7 @@ public class Main extends Activity {
 
             public prepareToExit() {
                 exit = true;
-                t = Toast.makeText(getBaseContext(), R.string.exit_by_back_notify, Toast.LENGTH_SHORT);
-                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                t.setText(R.string.exit_by_back_notify);
                 t.show();
                 prepareExit.start();
             }
@@ -1009,7 +1011,7 @@ public class Main extends Activity {
                     break;
                 case R.layout.decrypted_msg:
                     if (PublicStaticVariables.flag_msg) {
-                        Toast.makeText(this, R.string.notify_msg_deleted, Toast.LENGTH_SHORT).show();
+                        t.setText(R.string.notify_msg_deleted);t.show();
                         PublicStaticVariables.decryptedMsg = null;
                         FilesManagement.deleteTempDecryptedMSG(this);
                     }
@@ -1070,14 +1072,16 @@ public class Main extends Activity {
                 PublicStaticVariables.MSG_LIMIT_FOR_QR);
         if (success) {
             ArrayList<Uri> files = FilesManagement.getFilesToSend(this);
-            if (files == null)
-                Toast.makeText(this, R.string.failed_attach_files, Toast.LENGTH_LONG).show();
+            if (files == null){
+                t.setText(R.string.failed_attach_files);
+                t.show();
+            }
             else {
                 SendMsgDialog smd = new SendMsgDialog(files, contact.getEmail());
                 smd.show(getFragmentManager(), "smd");
             }
         } else {
-            Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
+           t.setText(R.string.failed_to_create_files_to_send);t.show();
         }
     }
 

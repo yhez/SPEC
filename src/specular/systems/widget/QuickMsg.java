@@ -59,7 +59,6 @@ public class QuickMsg extends Activity {
                     edt.commit();
                     new File(getFilesDir() + "/", widget).delete();
                     updateWidget(WidgetContact.getWidgetId(widget));
-                    Toast.makeText(this, "cant find contact", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
                     if (!contact.getContactName().equals(WidgetContact.getContactName(widgetDetails))) {
@@ -69,6 +68,8 @@ public class QuickMsg extends Activity {
                         updateWidget(WidgetContact.getWidgetId(widget));
                     }
                     setContentView(R.layout.response);
+                    findViewById(R.id.response_title).setVisibility(View.GONE);
+                    findViewById(R.id.divider).setVisibility(View.GONE);
                     final TextView tv = (TextView) findViewById(R.id.text_counter);
                     final ImageButton bt = (ImageButton) findViewById(R.id.send);
                     bt.setEnabled(false);

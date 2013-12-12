@@ -55,7 +55,7 @@ public class GenerateKeys extends DialogFragment {
                 }
             }
         });
-        ((Button) v.findViewById(R.id.back)).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (line[0].getVisibility() == View.VISIBLE)

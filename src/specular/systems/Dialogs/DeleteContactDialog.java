@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import specular.systems.Contact;
-import specular.systems.FilesManagement;
 import specular.systems.PublicStaticVariables;
 import specular.systems.R;
 

@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ public class DeleteDataDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        final Toast t = Toast.makeText(getActivity(),"",Toast.LENGTH_SHORT);
+        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
         // Use the Builder class for convenient dialog construction
         mSelectedItems = new ArrayList();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -44,19 +47,19 @@ public class DeleteDataDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         if (mSelectedItems.size() == 0) {
-                            Toast.makeText(getActivity(), R.string.not_cosen_clean, Toast.LENGTH_SHORT).show();
+                            t.setText(R.string.not_cosen_clean);t.show();
                         } else {
                             if (mSelectedItems.contains(Integer.valueOf(0))) {
                                 FilesManagement.deleteTmp(getActivity());
-                                Toast.makeText(getActivity(), R.string.tmp_files_deleted, Toast.LENGTH_SHORT).show();
+                                t.setText(R.string.tmp_files_deleted);t.show();
                             }
                             if (mSelectedItems.contains(Integer.valueOf(1))) {
-                                Toast.makeText(getActivity(), R.string.keys_deleted, Toast.LENGTH_SHORT).show();
+                                t.setText(R.string.keys_deleted);t.show();
                                 FilesManagement.deleteKeys(getActivity());
                             }
                             if (mSelectedItems.contains(Integer.valueOf(2))) {
                                 FilesManagement.deleteContacts(getActivity());
-                                Toast.makeText(getActivity(), R.string.contacts_deleted, Toast.LENGTH_SHORT).show();
+                                t.setText(R.string.contacts_deleted);t.show();
                             }
                             if (mSelectedItems.contains(Integer.valueOf(3))) {
                                 NotImplemented ni = new NotImplemented();
