@@ -155,7 +155,7 @@
     <string name="got_it">Got It</string>
     <string name="generate"><b>Generate New Keys!</b></string>
     <string name="share_my_contact_card">Share My Public Key\n(Contact Card)</string>
-    <string name="widget_label">Secure Messaging</string>
+    <string name="widget_label">Send Secure Message via SPEC</string>
     <string name="send_report_subject">Bug Report</string>
     <string name="send_report_content">attached a file containing the stack trace causing the crash</string>
     <string name="email_for_reports">yhezkel88@gmail.com</string>
