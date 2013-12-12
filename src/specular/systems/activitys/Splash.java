@@ -30,7 +30,6 @@ import specular.systems.Visual;
 
 public class Splash extends Activity {
     private final static int TIME_FOR_SPLASH = 3500;
-    private Toast t=null;
     private final static long TIME_FOR_CLEAR_TASK = 15;//in minute
     private final Thread waitForSplash = new Thread(new Runnable() {
         @Override
@@ -46,6 +45,7 @@ public class Splash extends Activity {
             startActivity(intent);
         }
     });
+    private Toast t = null;
 
     @Override
     public void onBackPressed() {
@@ -77,19 +77,20 @@ public class Splash extends Activity {
                 FilesManagement.deleteTempDecryptedMSG(this);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
-            if (getIntent().getParcelableExtra(Intent.EXTRA_STREAM) != null)
-                intent.putExtra("attach", getIntent().getParcelableExtra(Intent.EXTRA_STREAM));
+            if (getIntent().getParcelableExtra(Intent.EXTRA_STREAM) != null && getIntent().getAction().equals(Intent.ACTION_SEND))
+                intent.putExtra("specattach", getIntent().getParcelableExtra(Intent.EXTRA_STREAM));
             startActivity(intent);
         }
     }
+
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
-        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
         }
-        t=Toast.makeText(this,"",Toast.LENGTH_SHORT);
-        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+        t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
+        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         Intent thisIntent = getIntent();
         if (thisIntent != null && thisIntent.getType() != null)
             Log.d("intent", thisIntent.getType());
@@ -107,7 +108,11 @@ public class Splash extends Activity {
             PublicContactCard qrp;
             Uri uri = getIntent().getData();
             if (uri == null) {
-                t.setText(R.string.failed);t.show();
+                uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+            }
+            if (uri == null) {
+                t.setText(R.string.failed);
+                t.show();
                 finish();
             } else {
                 String data = null;
@@ -135,7 +140,8 @@ public class Splash extends Activity {
                     e.printStackTrace();
                 }
                 if (data == null) {
-                   t.setText(R.string.failed);t.show();
+                    t.setText(R.string.failed);
+                    t.show();
                     finish();
                 } else {
                     qrp = new PublicContactCard(this, data);

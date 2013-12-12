@@ -28,6 +28,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -100,6 +101,8 @@ public class Main extends Activity {
                 case FAILED:
                     break;
                 case REPLACE_PHOTO:
+                    imageButton.clearAnimation();
+                    imageButton.setClickable(true);
                     ((TextView) findViewById(R.id.file_content_length)).setText(PublicStaticVariables.fileContent.length + "");
                     ((ImageButton) findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
                     break;
@@ -369,7 +372,6 @@ public class Main extends Activity {
                 @Override
                 public void run() {
                     int r = FilesManagement.addFile(Main.this, uri);
-                    getIntent().setData(null);
                     if (r == FilesManagement.RESULT_ADD_FILE_OK) {
                         fileName = getFileName(uri);
                         hndl.sendEmptyMessage(REPLACE_PHOTO);
@@ -389,6 +391,7 @@ public class Main extends Activity {
         if (resultCode == RESULT_OK) {
             if (requestCode == ATTACH_FILE) {
                 attachFile(intent.getData());
+                intent.setData(null);
             } else {
                 String result = intent.getStringExtra("barcode");
                 if (result != null) {
@@ -1155,7 +1158,11 @@ public class Main extends Activity {
         }
         //this is for when coming to the app from share
         if (PublicStaticVariables.currentLayout == R.layout.encrypt) {
-            attachFile((Uri) getIntent().getParcelableExtra("attach"));
+            Uri uri = getIntent().getParcelableExtra("specattach");
+            Log.w("drive",getIntent().getAction()+"-"+getIntent().getType()+"-\n"+getIntent().getExtras());
+            getIntent().setData(null);
+            if(uri!=null)
+                attachFile(uri);
         }
         if (PublicStaticVariables.flag_msg != null && PublicStaticVariables.flag_msg) {
             FilesManagement.getTempDecryptedMSG(this);
