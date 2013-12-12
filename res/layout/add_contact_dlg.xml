@@ -19,6 +19,7 @@
         android:background="@color/spec_dark_blue" />
 
     <RelativeLayout
+        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:drawable/alert_light_frame"
@@ -62,7 +63,7 @@
         android:id="@+id/check_box_update"
         android:visibility="gone"
         android:text="@string/contact_with_same_email_exist"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

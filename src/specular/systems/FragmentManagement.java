@@ -625,6 +625,10 @@ public class FragmentManagement extends Fragment {
                     updateDecryptedScreen();
                 }
                 break;
+            case R.layout.recreating_keys:
+                Animation anim = AnimationUtils.loadAnimation(getActivity(),R.anim.rotate);
+                rootView.findViewById(R.id.image_public).setAnimation(anim);
+                break;
             case R.layout.profile:
                 final ImageButton ibMyName = (ImageButton) rootView.findViewById(R.id.test).findViewById(R.id.image_button);
                 final ImageButton ibMyEmail = (ImageButton) rootView.findViewById(R.id.test1).findViewById(R.id.image_button);

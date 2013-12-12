@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,6 +32,7 @@ public class GenerateKeys extends DialogFragment {
         LinearLayout titles = (LinearLayout) v.findViewById(R.id.ll_titles);
         final View[] line = new View[3];
         final TextView tv = (TextView) v.findViewById(R.id.text_content);
+        final CheckBox cb  = (CheckBox)v.findViewById(R.id.check_verify);
         for (int a = 0; a < 3; a++)
             line[a] = titles.getChildAt(a);
         final Button bt = (Button) v.findViewById(R.id.next);
@@ -46,6 +49,14 @@ public class GenerateKeys extends DialogFragment {
                     line[2].setVisibility(View.VISIBLE);
                     tv.setText(R.string.third_text);
                     bt.setText(R.string.generate);
+                    bt.setClickable(false);
+                    cb.setVisibility(View.VISIBLE);
+                    cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                            bt.setClickable(b);
+                        }
+                    });
                 } else {
                     PublicStaticVariables.currentLayout = R.layout.create_new_keys;
                     final Fragment fragment = new FragmentManagement();
@@ -70,6 +81,8 @@ public class GenerateKeys extends DialogFragment {
                     line[1].setVisibility(View.VISIBLE);
                     tv.setText(R.string.second_text);
                     bt.setText(R.string.got_it);
+                    bt.setClickable(true);
+                    cb.setVisibility(View.GONE);
                 }
             }
         });

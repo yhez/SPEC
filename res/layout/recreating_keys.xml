@@ -28,6 +28,7 @@
 
     <ImageView
         android:id="@+id/image_public"
+        android:src="@drawable/splash2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -38,6 +39,8 @@
         android:layout_height="1dp" />
 
     <Button
+        android:id="@+id/button_save"
+        android:clickable="false"
         android:textColor="@color/spec_black"
         android:onClick="createKeysManager"
         android:padding="@dimen/default_gap"

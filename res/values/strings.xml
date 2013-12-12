@@ -178,6 +178,8 @@
     <string name="recreating_keys_title">We\'ll continue to recreate keys until you choose one</string>
     <string name="learn_screen_suggest_us">Feel free to send us suggestions and feedback at reachout@specularx.co</string>
     <string name="widget_add_contact_list_empty">-----\nyour contact list is empty,\nthis widget requred at lest one contact\n-----</string>
+    <string name="check_box_confirm_recreate_keys">i\'ve read and i\'m ready</string>
+    <string name="first_time_create_keys">hello</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>
