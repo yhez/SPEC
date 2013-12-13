@@ -128,7 +128,7 @@
     <string name="dont_trust_session_explain">You have a different session than your contact.
         \nIt\'s possible that your contact is a fake, fraud.
         \nYour session is:\n</string>
-    <string name="new_session_trust_created">Your communications are secure.</string>
+    <string name="new_session_trust_created">Your communications are secure, you\'ve seen this contact before.\n</string>
     <string name="starting_session_explain">You have your contact\'s session,
         so it\'s probably the same person who sent you the previous message.
         With that, the contact doesn\'t have your session.\n</string>
