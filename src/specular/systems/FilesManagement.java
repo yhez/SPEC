@@ -406,8 +406,9 @@ public final class FilesManagement {
             e.printStackTrace();
             return RESULT_ADD_FILE_FAILED;
         }
-        if (size > PublicStaticVariables.LIMIT_FILE_SIZE)
+        if (size > PublicStaticVariables.LIMIT_FILE_SIZE){
             return RESULT_ADD_FILE_TO_BIG;
+        }
         byte[] result = new byte[size];
         try {
             InputStream input = null;

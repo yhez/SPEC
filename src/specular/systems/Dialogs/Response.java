@@ -28,10 +28,12 @@ import specular.systems.R;
 
 public class Response extends DialogFragment {
     Contact contact;
-
+    Toast t;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        t = Toast.makeText(getActivity(),"",Toast.LENGTH_SHORT);
+        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
         // Inflate and set the layout for the dialog
@@ -113,8 +115,6 @@ public class Response extends DialogFragment {
                         CryptMethods.encrypt(msg.getFormatedMsg(),
                                 contact.getPublicKey());
                         boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < PublicStaticVariables.MSG_LIMIT_FOR_QR);
-                        Toast t = Toast.makeText(getActivity(),"",Toast.LENGTH_SHORT);
-                        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
                         if (success) {
                             ArrayList<Uri> files = FilesManagement.getFilesToSend(getActivity());
                             if (files == null){

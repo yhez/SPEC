@@ -546,6 +546,26 @@ public class Main extends Activity {
             Intent i = new Intent(this,SendReport.class);
             startActivity(i);
         }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                /*ActivityManager a = (ActivityManager)Main.this.getSystemService(Context.ACTIVITY_SERVICE);
+                //"available"+"-"+a.getLargeMemoryClass()+"\tnormal-"+a.getMemoryClass()
+                while(true){
+                    synchronized (this){
+                    try {
+                        wait(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    }
+                    long available = Runtime.getRuntime().freeMemory()/1024/1024;
+                    long max = Runtime.getRuntime().maxMemory()/1024/1024;
+                    long t = Runtime.getRuntime().totalMemory()/1024/1024;
+                    Log.d("memory available","available-"+available+" "+"max-"+max+" "+"total-"+t);
+                }*/
+            }
+        }).start();
     }
 
     @Override
