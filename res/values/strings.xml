@@ -175,10 +175,10 @@
     <string name="save_current_button">Press to save Keys</string>
     <string name="recreating_keys_title">We\'ll continue to generate keys until you press the button below and choose the one that you want (enables transparency).</string>
     <string name="learn_screen_suggest_us">Feel free to send us suggestions and feedback at reachout@specularx.co</string>
-    <string name="widget_add_contact_list_empty">-----\nyour contact list is empty,\nthis widget requred at lest one contact\n-----</string>
-    <string name="check_box_confirm_recreate_keys">i\'ve read and i\'m ready</string>
+    <string name="widget_add_contact_list_empty">-----\nYour contact list is empty.\nThis widget requires at least one contact.\n-----</string>
+    <string name="check_box_confirm_recreate_keys">I accept</string>
     <string name="first_time_create_keys">Welcome</string>
-    <string name="not_imp_msg">this feature hasn\'t been integrate yet,\ndue to much work and not so much time.\n if you interesting to help in any way,\n you very welcome.</string>
+    <string name="not_imp_msg">This feature hasn\'t been integrated yet.\nIf you would like to help, please contact us.\nreachout@specularx.co</string>
     <string name="not_implemented_title">Coming soon&#8230;</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
