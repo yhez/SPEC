@@ -137,7 +137,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     private void initCamera(SurfaceHolder surfaceHolder) {
         try {
             cameraManager.openDriver(surfaceHolder);
-            // Creating the handler starts the preview, which can also throw a RuntimeException.
+            // Creating the handler starts the preview_direct_msg, which can also throw a RuntimeException.
             if (handler == null) {
                 handler = new CaptureActivityHandler(this, decodeFormats, characterSet, cameraManager);
             }

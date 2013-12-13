@@ -4,10 +4,9 @@
     android:orientation="vertical"
     android:id="@+id/widget_ll"
     android:layout_width="match_parent"
-    android:background="@drawable/borders_widget"
     android:layout_height="match_parent">
     <ImageView
-        android:src="@drawable/add_qr"
+        android:src="@drawable/widget_scanner"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

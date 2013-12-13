@@ -30,8 +30,8 @@ import specular.systems.scanqr.PlanarYUVLuminanceSource;
 
 /**
  * This object wraps the Camera service object and expects to be the only one talking to it. The
- * implementation encapsulates the steps needed to take preview-sized images, which are used for
- * both preview and decoding.
+ * implementation encapsulates the steps needed to take preview_direct_msg-sized images, which are used for
+ * both preview_direct_msg and decoding.
  *
  * @author dswitkin@google.com (Daniel Switkin)
  */
@@ -74,7 +74,7 @@ public final class CameraManager {
     /**
      * Opens the camera driver and initializes the hardware parameters.
      *
-     * @param holder The surface object which the camera will draw preview frames into.
+     * @param holder The surface object which the camera will draw preview_direct_msg frames into.
      * @throws IOException Indicates the camera driver failed to open.
      */
     public void openDriver(SurfaceHolder holder) throws IOException {
@@ -115,7 +115,7 @@ public final class CameraManager {
     }
 
     /**
-     * Asks the camera hardware to begin drawing preview frames to the screen.
+     * Asks the camera hardware to begin drawing preview_direct_msg frames to the screen.
      */
     public void startPreview() {
         Camera theCamera = camera;
@@ -126,7 +126,7 @@ public final class CameraManager {
     }
 
     /**
-     * Tells the camera to stop drawing preview frames.
+     * Tells the camera to stop drawing preview_direct_msg frames.
      */
     public void stopPreview() {
         if (camera != null && previewing) {
@@ -138,7 +138,7 @@ public final class CameraManager {
     }
 
     /**
-     * A single preview frame will be returned to the handler supplied. The data will arrive as byte[]
+     * A single preview_direct_msg frame will be returned to the handler supplied. The data will arrive as byte[]
      * in the message.obj field, with width and height encoded as message.arg1 and message.arg2,
      * respectively.
      *
@@ -201,7 +201,7 @@ public final class CameraManager {
     }
 
     /**
-     * Like {@link #getFramingRect} but coordinates are in terms of the preview frame,
+     * Like {@link #getFramingRect} but coordinates are in terms of the preview_direct_msg frame,
      * not UI / screen.
      */
     public Rect getFramingRectInPreview() {
@@ -250,9 +250,9 @@ public final class CameraManager {
 
     /**
      * A factory method to build the appropriate LuminanceSource object based on the format
-     * of the preview buffers, as described by Camera.Parameters.
+     * of the preview_direct_msg buffers, as described by Camera.Parameters.
      *
-     * @param data   A preview frame.
+     * @param data   A preview_direct_msg frame.
      * @param width  The width of the image.
      * @param height The height of the image.
      * @return A PlanarYUVLuminanceSource instance.

@@ -5,7 +5,7 @@
     android:minResizeWidth="40dp"
     android:minHeight="110dp"
     android:updatePeriodMillis="0"
-    android:previewImage="@drawable/preview"
+    android:previewImage="@drawable/preview_direct_msg"
     android:initialLayout="@layout/widget_contact"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"

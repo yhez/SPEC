@@ -28,7 +28,6 @@ import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -947,7 +946,6 @@ public class Main extends Activity {
             return true;
         } else if (PublicStaticVariables.fileContactCard != null) {
             selectItem(-1, R.layout.contacts, null);
-            //TODO search also in names and emails
             Contact c = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.fileContactCard.getPublicKey());
             if (c == null) {
                 Contact cc = PublicStaticVariables.contactsDataSource.findContactByEmail(PublicStaticVariables.fileContactCard.getEmail());
@@ -959,7 +957,7 @@ public class Main extends Activity {
                 AddContactDlg acd = new AddContactDlg(PublicStaticVariables.fileContactCard, null, id);
                 acd.show(getFragmentManager(), "acd");
             } else {
-                //TODO what if some of the details are not exist
+                //TODO what if some of the details are not exist, give the useer the option to update
                 PublicStaticVariables.fileContactCard = null;
                 t.setText(R.string.contact_exist);
                 t.show();
@@ -1180,7 +1178,6 @@ public class Main extends Activity {
         //this is for when coming to the app from share
         if (PublicStaticVariables.currentLayout == R.layout.encrypt) {
             Uri uri = getIntent().getParcelableExtra("specattach");
-            Log.w("drive",getIntent().getAction()+"-"+getIntent().getType()+"-\n"+getIntent().getExtras());
             getIntent().setData(null);
             if(uri!=null)
                 attachFile(uri);
