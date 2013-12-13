@@ -8,11 +8,11 @@
     <string name="decrypt_explain">Decrypt message using barcode scanner, press button to scan:\n</string>
     <string name="encrypt_explain">Search contacts&#8230;</string>
     <string name="hint_msg">Enter message&#8230;</string>
-    <string name="explain">Attached is a SPEC public encryption key. You should verify that this public key belongs to the sender.</string>
+    <string name="explain">SPEC פublic encryption key. You should verify that this public key belongs to the sender.</string>
     <string name="ok">OK</string>
     <string name="hint_enter_your_name">username (optional)&#8230;</string>
     <string name="hint_enter_your_email">email&#8230;</string>
-    <string name="wait_for_nfc_to_write">Tap NFC to securely store key\n(Provides additional security)</string>
+    <string name="wait_for_nfc_to_write">Tap NFC to securely store key\n(provides additional security)</string>
     <string name="skip_save_to_phone">Skip and save key on device</string>
     <string name="explain_and_about">LEARN ABOUT SPEC</string>
     <string name="create_keys">Generate New Keys</string>
@@ -74,7 +74,7 @@
     <string name="clear">Delete</string>
     <string name="not_cosen_clean">Please choose what to delete/clean</string>
     <string name="turn_nfc_on_nfc_wait">NFC is OFF, go to settings and turn it ON</string>
-    <string name="no_contacts">You don\'t have any contacts yet.\nTo add contacts,\nyou can scan their QR code or ask them to send a contact card.</string>
+    <string name="no_contacts">You don\'t have any contacts yet.\nTo <b>add contacts</b>,\nyou can scan their QR code or ask them to send a contact card.</string>
     <string name="tmp_files_deleted">Temp files successfully deleted</string>
     <string name="keys_deleted">Keys successfully deleted</string>
     <string name="contacts_deleted">Contacts successfully deleted</string>
