@@ -148,7 +148,7 @@
     <string name="first_step">1<sup>st</sup></string>
     <string name="sec_step">2<sup>nd</sup></string>
     <string name="last_step">Final Step</string>
-    <string name="second_text">Please verify that you understand the risk, before continuing. You will not be able to decrypt and read previous data.</string>
+    <string name="second_text">Please verify that you understand the risk before continuing. You will not be able to decrypt and read previous data.</string>
     <string name="third_text">There is no going back if you change your keys (in current Beta version).</string>
     <string name="got_it">Got It</string>
     <string name="generate"><b>Generate New Keys!</b></string>
@@ -170,7 +170,7 @@
     <string name="scan_any_qr_widget">Place QR code within box to scan</string>
     <string name="widget_name_scanner">SPEC QR Scanner</string>
     <string name="generator_menu_title">Generating Keys...</string>
-    <string name="save_keys_menu_title">Save</string>
+    <string name="save_keys_menu_title">Save Keys</string>
     <string name="contact_deleted_widget">Contact deleted</string>
     <string name="save_current_button">Press to save KEYS</string>
     <string name="recreating_keys_title">We\'ll continue to generate keys until you press the button below</string>
