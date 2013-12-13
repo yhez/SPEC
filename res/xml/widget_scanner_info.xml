@@ -5,7 +5,7 @@
     android:minResizeWidth="40dp"
     android:minHeight="110dp"
     android:updatePeriodMillis="0"
-    android:previewImage="@drawable/widget_scanner"
+    android:previewImage="@drawable/preview_scanner"
     android:initialLayout="@layout/widget_scanner"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
