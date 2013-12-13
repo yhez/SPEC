@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:alpha="0"
+    android:alpha="1"
     android:background="@android:color/white"
     android:gravity="center"
     android:orientation="vertical">
@@ -83,12 +83,25 @@
             android:text="@string/contact_spec"
             android:textColor="@color/spec_black" />
     </LinearLayout>
-
+    <LinearLayout
+        android:padding="@dimen/default_gap"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TextView
-        android:autoLink="email"
         android:textColor="@color/spec_black"
-        android:padding="32dp"
+        android:padding="@dimen/default_gap"
         android:text="@string/learn_screen_suggest_us"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content" />
+     <ImageButton
+         android:onClick="addUs"
+         android:padding="@dimen/default_gap"
+         android:layout_gravity="center"
+         style="?android:attr/borderlessButtonStyle"
+         android:src="@drawable/specular_systems_contact_qr"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content" />
+    </LinearLayout>
 </LinearLayout>

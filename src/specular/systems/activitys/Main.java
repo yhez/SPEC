@@ -51,6 +51,7 @@ import com.google.zxing.WriterException;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -924,7 +925,18 @@ public class Main extends Activity {
                 break;
         }
     }
-
+    public void addUs(View v){
+        try {
+            InputStream is = getAssets().open("specular.systems-ContactCard.SPEC");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            PublicStaticVariables.fileContactCard=new ContactCard(this,new String(buffer));
+            is.close();
+            openByFile();
+        } catch (Exception e) {
+        }
+    }
     private boolean openByFile() {
         final String msg = getIntent().getStringExtra("message");
         if (PublicStaticVariables.message != null || msg != null) {
