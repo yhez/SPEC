@@ -174,11 +174,11 @@
     <string name="contact_deleted_widget">Contact deleted</string>
     <string name="save_current_button">Press to save Keys</string>
     <string name="recreating_keys_title">We\'ll continue to generate keys until you press the QR code below in order to choose the one that you want (enabling transparency)</string>
-    <string name="learn_screen_suggest_us">Feel free to send us suggestions and feedback.\nadd us to your contact book</string>
+    <string name="learn_screen_suggest_us">Feel free to send us suggestions and feedback. Add us to your contacts list by pressing the QR code.</string>
     <string name="widget_add_contact_list_empty">-----\nYour contact list is empty.\nThis widget requires at least one contact.\n-----</string>
     <string name="check_box_confirm_recreate_keys">I accept</string>
     <string name="first_time_create_keys">Welcome</string>
-    <string name="not_imp_msg">This feature hasn\'t been integrated yet.\nIf you would like to help, please contact us.\nreachout@specularx.co</string>
+    <string name="not_imp_msg">This feature hasn\'t been integrated yet.\nIf you would like to help, please contact us.</string>
     <string name="not_implemented_title">Coming soon&#8230;</string>
     <string name="back_bt_replace_keys_dlg">Back</string>
     <string-array name="links">
