@@ -153,7 +153,7 @@
     <string name="got_it">Got It</string>
     <string name="generate"><b>Generate New Keys!</b></string>
     <string name="share_my_contact_card">Share Public Key</string>
-    <string name="widget_label">Direct message</string>
+    <string name="widget_label">Direct Secure Message</string>
     <string name="send_report_subject">Bug Report</string>
     <string name="send_report_content">Attached is a file containing the stack-trace causing the error</string>
     <string name="email_for_reports">yhezkel88@gmail.com</string>
