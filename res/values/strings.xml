@@ -143,7 +143,7 @@
     <string name="blog">SPEC Blog</string>
     <string name="contact_spec">Contact specularX</string>
     <string name="replace_keys_title">Generate New Keys</string>
-    <string name="first_text">If you generate new keys, you will lose access to previous data that was encrypted with your Public Key.\nPress next to continue.</string>
+    <string name="first_text">If you generate new keys, you will lose access to previous data that was encrypted with your Public Key. Think about it before pressing Next.</string>
     <string name="confirm_first">Next</string>
     <string name="first_step">1<sup>st</sup></string>
     <string name="sec_step">2<sup>nd</sup></string>
@@ -180,7 +180,7 @@
     <string name="first_time_create_keys">Welcome</string>
     <string name="not_imp_msg">This feature hasn\'t been integrated yet.\nIf you would like to help, please contact us.\nreachout@specularx.co</string>
     <string name="not_implemented_title">Coming soon&#8230;</string>
-    <string name="back_bt_replace_keys_dlg">back</string>
+    <string name="back_bt_replace_keys_dlg">Back</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>
