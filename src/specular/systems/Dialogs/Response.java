@@ -41,16 +41,15 @@ public class Response extends DialogFragment {
         View v = inflater.inflate(R.layout.response, null);
         builder.setView(v);
         final CheckBox cb = (CheckBox) v.findViewById(R.id.quote);
-        if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg
-                &&PublicStaticVariables.msg_content!=null
-                &&PublicStaticVariables.msg_content.length()>0
-                &&PublicStaticVariables.friendsPublicKey != null) {
-            contact = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.friendsPublicKey);
-            cb.setVisibility(View.VISIBLE);
-            cb.setChecked(true);
-        } else if (PublicStaticVariables.currentLayout == R.layout.edit_contact) {
+        if (PublicStaticVariables.currentLayout == R.layout.edit_contact) {
             contact = PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(
                     ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));
+        }else if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg){
+            contact = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.friendsPublicKey);
+            if(PublicStaticVariables.msg_content!=null&&PublicStaticVariables.msg_content.length()>0){
+                cb.setVisibility(View.VISIBLE);
+                cb.setChecked(true);
+            }
         }
         final TextView tv = (TextView) v.findViewById(R.id.text_counter);
         final ImageButton bt = (ImageButton) v.findViewById(R.id.send);
@@ -96,13 +95,11 @@ public class Response extends DialogFragment {
                                 + PublicStaticVariables.msg_content
                                 .replace(getString(R.string.quote_msg)
                                         + getString(R.string.divide_msg), "");
-
                     else
                         msgContent = getString(R.string.divide_msg)
                                 + getString(R.string.quote_msg)
                                 + getString(R.string.divide_msg)
                                 + PublicStaticVariables.msg_content;
-
                 else
                     msgContent = "";
                 final MessageFormat msg = new MessageFormat(null, "", userInput + msgContent
