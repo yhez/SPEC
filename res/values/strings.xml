@@ -74,7 +74,7 @@
     <string name="clear">Delete</string>
     <string name="not_cosen_clean">Please choose what to delete/clean</string>
     <string name="turn_nfc_on_nfc_wait">NFC is OFF, go to settings and turn it ON</string>
-    <string name="no_contacts">You don\'t have any contacts yet.\nTo <b>add contacts</b>,\nyou can scan their QR code or ask them to send a contact card.</string>
+    <string name="no_contacts">"You don\'t have any contacts.\nTo <b>add contacts</b> share your Public Key under My SPEC, scan their QR code or ask them to send their Public Key (Contact Card).</string>
     <string name="tmp_files_deleted">Temp files successfully deleted</string>
     <string name="keys_deleted">Keys successfully deleted</string>
     <string name="contacts_deleted">Contacts successfully deleted</string>
