@@ -180,6 +180,7 @@
     <string name="first_time_create_keys">Welcome</string>
     <string name="not_imp_msg">This feature hasn\'t been integrated yet.\nIf you would like to help, please contact us.\nreachout@specularx.co</string>
     <string name="not_implemented_title">Coming soon&#8230;</string>
+    <string name="back_bt_replace_keys_dlg">back</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>

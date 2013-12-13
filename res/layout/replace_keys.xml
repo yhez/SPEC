@@ -82,7 +82,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:textSize="23sp"
+            android:textSize="21sp"
             android:id="@+id/text_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
 
             <Button
                 android:id="@+id/back"
-                android:text="back"
+                android:text="@string/back_bt_replace_keys_dlg"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_weight="1"
                 android:layout_width="0dp"
