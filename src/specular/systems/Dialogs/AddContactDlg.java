@@ -16,7 +16,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
 import specular.systems.Contact;
-import specular.systems.PublicContactCard;
+import specular.systems.ContactCard;
 import specular.systems.PublicStaticVariables;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
@@ -24,11 +24,11 @@ import specular.systems.Visual;
 
 
 public class AddContactDlg extends DialogFragment {
-    private PublicContactCard pcc;
+    private ContactCard pcc;
     long id;
     private String session;
 
-    public AddContactDlg(PublicContactCard pcc, String session, long id) {
+    public AddContactDlg(ContactCard pcc, String session, long id) {
         //todo need to check if he has a good copy before deleting
         PublicStaticVariables.fileContactCard = null;
         this.pcc = pcc;

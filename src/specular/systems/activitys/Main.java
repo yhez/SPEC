@@ -58,6 +58,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import specular.systems.Contact;
+import specular.systems.ContactCard;
 import specular.systems.ContactsDataSource;
 import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
@@ -78,7 +79,6 @@ import specular.systems.FragmentManagement;
 import specular.systems.LeftMenu;
 import specular.systems.MessageFormat;
 import specular.systems.MySimpleArrayAdapter;
-import specular.systems.PublicContactCard;
 import specular.systems.PublicStaticVariables;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
@@ -282,7 +282,8 @@ public class Main extends Activity {
                 MimeTypeMap mtm = MimeTypeMap.getSingleton();
                 String type = mtm.getMimeTypeFromExtension(ext);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.fromFile(f), type);
+                Uri uri = Uri.fromFile(f);
+                intent.setDataAndType(uri, type);
                 try {
                     startActivity(intent);
                 } catch (Exception e) {
@@ -401,7 +402,7 @@ public class Main extends Activity {
                             setUpViews();
                             break;
                         case R.layout.encrypt:
-                            PublicContactCard pcc = new PublicContactCard(this, result);
+                            ContactCard pcc = new ContactCard(this, result);
                             if (pcc.getPublicKey() != null) {
                                 Contact contact1 = PublicStaticVariables.contactsDataSource.findContactByKey(pcc.getPublicKey());
                                 if (contact1 != null) {
@@ -419,7 +420,7 @@ public class Main extends Activity {
                             }
                             break;
                         case R.layout.contacts:
-                            pcc = new PublicContactCard(this, result);
+                            pcc = new ContactCard(this, result);
                             if (pcc.getPublicKey() != null) {
                                 if (PublicStaticVariables.contactsDataSource.findContactByKey(pcc.getPublicKey()) != null) {
                                     t.setText(R.string.contact_exist);
@@ -642,7 +643,7 @@ public class Main extends Activity {
             sd.show(getFragmentManager(), ((EditText) findViewById(R.id.contact_name)
                     .findViewById(R.id.edit_text)).getText().toString());
         } else if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
-            PublicContactCard pcc = new PublicContactCard(this
+            ContactCard pcc = new ContactCard(this
                     , PublicStaticVariables.decryptedMsg.getPublicKey()
                     , PublicStaticVariables.decryptedMsg.getEmail(), PublicStaticVariables.decryptedMsg.getName());
             Contact c = PublicStaticVariables.contactsDataSource.findContactByEmail(PublicStaticVariables.decryptedMsg.getEmail());

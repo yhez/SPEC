@@ -41,12 +41,13 @@ public class Response extends DialogFragment {
         View v = inflater.inflate(R.layout.response, null);
         builder.setView(v);
         final CheckBox cb = (CheckBox) v.findViewById(R.id.quote);
-        if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
-            if (PublicStaticVariables.friendsPublicKey != null) {
-                contact = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.friendsPublicKey);
-                cb.setVisibility(View.VISIBLE);
-                cb.setChecked(true);
-            }
+        if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg
+                &&PublicStaticVariables.msg_content!=null
+                &&PublicStaticVariables.msg_content.length()>0
+                &&PublicStaticVariables.friendsPublicKey != null) {
+            contact = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.friendsPublicKey);
+            cb.setVisibility(View.VISIBLE);
+            cb.setChecked(true);
         } else if (PublicStaticVariables.currentLayout == R.layout.edit_contact) {
             contact = PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(
                     ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));

@@ -212,7 +212,7 @@ public final class FilesManagement {
         String name = ((EditText) a.findViewById(R.id.contact_name).findViewById(R.id.edit_text)).getText().toString();
         String email = ((EditText) a.findViewById(R.id.contact_email).findViewById(R.id.edit_text)).getText().toString();
         String publicKey = ((TextView) a.findViewById(R.id.contact_pb)).getText().toString();
-        PublicContactCard pcc = new PublicContactCard(a, publicKey, email, name);
+        ContactCard pcc = new ContactCard(a, publicKey, email, name);
         FileOutputStream fos = null;
         try {
             fos = a.openFileOutput(a.getString(FRIEND_CONTACT_CARD),
@@ -235,7 +235,7 @@ public final class FilesManagement {
         String name = ((EditText) a.findViewById(R.id.contact_name).findViewById(R.id.edit_text)).getText().toString();
         String email = ((EditText) a.findViewById(R.id.contact_email).findViewById(R.id.edit_text)).getText().toString();
         String publicKey = ((TextView) a.findViewById(R.id.contact_pb)).getText().toString();
-        PublicContactCard pcc = new PublicContactCard(a, publicKey, email, name);
+        ContactCard pcc = new ContactCard(a, publicKey, email, name);
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(pcc.getQRToPublish(), BarcodeFormat.QR_CODE.toString(), 512);
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
@@ -279,7 +279,7 @@ public final class FilesManagement {
             SharedPreferences srp = PreferenceManager
                     .getDefaultSharedPreferences(a.getApplicationContext());
             SharedPreferences.Editor edt = srp.edit();
-            PublicContactCard qrpk = new PublicContactCard(a);
+            ContactCard qrpk = new ContactCard(a);
             FileOutputStream fos = null;
             try {
                 fos = a.openFileOutput(a.getString(FILE_NAME),
@@ -346,7 +346,7 @@ public final class FilesManagement {
             SharedPreferences srp = PreferenceManager
                     .getDefaultSharedPreferences(a.getApplicationContext());
             SharedPreferences.Editor edt = srp.edit();
-            PublicContactCard qrpk = new PublicContactCard(a);
+            ContactCard qrpk = new ContactCard(a);
             FileOutputStream fos;
             try {
                 fos = a.openFileOutput(a.getString(FILE_NAME),

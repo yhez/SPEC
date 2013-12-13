@@ -2,11 +2,11 @@ package specular.systems;
 
 import android.app.Activity;
 
-public class PublicContactCard {
+public class ContactCard {
     private Activity a;
     private String publicKey = null, email = null, name = null;
 
-    public PublicContactCard(Activity a) {
+    public ContactCard(Activity a) {
         if (a != null) {
             publicKey = CryptMethods.getPublic();
             email = CryptMethods.getEmail();
@@ -15,14 +15,14 @@ public class PublicContactCard {
         }
     }
 
-    public PublicContactCard(Activity a, String publicKey, String email, String name) {
+    public ContactCard(Activity a, String publicKey, String email, String name) {
         this.publicKey = publicKey;
         this.email = email;
         this.name = name;
         this.a = a;
     }
 
-    public PublicContactCard(Activity a, String raw) {
+    public ContactCard(Activity a, String raw) {
         if (validate(raw)) {
             String data[] = raw.split("\n");
             publicKey = data[3];

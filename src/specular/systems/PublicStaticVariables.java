@@ -15,7 +15,7 @@ public class PublicStaticVariables {
     public static boolean NFCMode = false;
     //from splash
     public static Long time;
-    public static PublicContactCard fileContactCard;
+    public static ContactCard fileContactCard;
     public static String message;
     public final static int MSG_LIMIT_FOR_QR = 141;
     //form main
@@ -36,7 +36,7 @@ public class PublicStaticVariables {
     public static LastUsedContacts luc;
     public static boolean readyToSend = false;
     //from files management
-    public final static int LIMIT_FILE_SIZE = 52428800;
+    public final static int LIMIT_FILE_SIZE = 26214400;
     //restore decrypted msg after pause
     public static Boolean flag_hash, flag_replay;
     public static int flag_session;

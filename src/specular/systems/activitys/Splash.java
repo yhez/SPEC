@@ -20,10 +20,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import specular.systems.ContactCard;
 import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.FilesManagement;
-import specular.systems.PublicContactCard;
 import specular.systems.PublicStaticVariables;
 import specular.systems.R;
 import specular.systems.Visual;
@@ -105,7 +105,7 @@ public class Splash extends Activity {
         } else if (thisIntent.getData() == null) {
             go();
         } else {
-            PublicContactCard qrp;
+            ContactCard qrp;
             Uri uri = getIntent().getData();
             if (uri == null) {
                 uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
@@ -144,7 +144,7 @@ public class Splash extends Activity {
                     t.show();
                     finish();
                 } else {
-                    qrp = new PublicContactCard(this, data);
+                    qrp = new ContactCard(this, data);
                     if (qrp.getPublicKey() != null) {
                         PublicStaticVariables.fileContactCard = qrp;
                     } else {

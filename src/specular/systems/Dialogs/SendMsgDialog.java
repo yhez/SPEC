@@ -117,6 +117,11 @@ public class SendMsgDialog extends DialogFragment {
                 intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("file/*");
                 file = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+                for (a=0;a<file.size();a++)
+                    if (file.get(a).activityInfo.packageName.equals(getActivity().getPackageName())) {
+                        file.remove(a);
+                        break;
+                    }
                 return;
             case IMAGE:
                 if (image != null)
