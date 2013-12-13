@@ -173,11 +173,11 @@
     <string name="save_keys_menu_title">Save</string>
     <string name="contact_deleted_widget">Contact deleted</string>
     <string name="save_current_button">Press to save KEYS</string>
-    <string name="recreating_keys_title">We\'ll continue to recreate keys until you choose one</string>
+    <string name="recreating_keys_title">We\'ll continue to generate keys until you choose one</string>
     <string name="learn_screen_suggest_us">Feel free to send us suggestions and feedback at reachout@specularx.co</string>
     <string name="widget_add_contact_list_empty">-----\nyour contact list is empty,\nthis widget requred at lest one contact\n-----</string>
     <string name="check_box_confirm_recreate_keys">i\'ve read and i\'m ready</string>
-    <string name="first_time_create_keys">Hi there</string>
+    <string name="first_time_create_keys">Welcome</string>
     <string name="not_imp_msg">this feature hasn\'t been integrate yet,\ndue to much work and not so much time.\n if you interesting to help in any way,\n you very welcome.</string>
     <string name="not_implemented_title">Coming soon&#8230;</string>
     <string-array name="links">
