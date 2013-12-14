@@ -65,7 +65,7 @@
     <string name="cant_find_an_app_to_open_file">Can\'t find proper app</string>
     <string name="failed_to_create_file_to_open">Failed to create file</string>
     <string name="described_what_going_to_be">SPEC CONTACT CARD</string>
-    <string name="new_contact_to_add">Would you like to approve this contact?\nVerify that you know and trust the email below.\n</string>
+    <string name="new_contact_to_add">Would you like to approve this contact?\nVerify that you trust the <b>email</b> below.\nAfter approval you\'ll be able to send this contact secure content.</string>
     <string name="no">NO</string>
     <string name="yes">YES</string>
     <string name="save_changes_back_pressed">Would you like to save the changes?</string>
@@ -111,7 +111,7 @@
     <string name="explain_button">Explain</string>
     <string name="edit_contact_title_pbk">public key:</string>
     <string name="both_qr_file">send both file and QR code via:</string>
-    <string name="files_details">File Details:</string>
+    <string name="files_details">file details:</string>
     <string name="technical_info">Security Audit Info</string>
     <string name="cant_connect_nfc_adapter">Something went wrong</string>
     <string name="no_result_filter">No result, please search again</string>
@@ -178,8 +178,8 @@
     <string name="widget_add_contact_list_empty">-----\nYour contact list is empty.\nThis widget requires at least one contact.\n-----</string>
     <string name="check_box_confirm_recreate_keys">I accept</string>
     <string name="first_time_create_keys">Welcome</string>
-    <string name="not_imp_msg">This feature hasn\'t been integrated yet.\nIf you would like to help, please contact us.</string>
-    <string name="not_implemented_title">Coming soon&#8230;</string>
+    <string name="not_imp_msg">This feature hasn\'t been integrated or implemented yet.\nIf you would like to help, please contact us.</string>
+    <string name="not_implemented_title">New features soon&#8230;</string>
     <string name="back_bt_replace_keys_dlg">Back</string>
     <string name="length_name_of_file">name of file must be at least on character long</string>
     <string-array name="links">
