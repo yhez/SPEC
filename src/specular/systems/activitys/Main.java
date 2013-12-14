@@ -147,7 +147,7 @@ public class Main extends Activity {
                         else {
                             //todo needs to call only on the first key created
                             findViewById(R.id.image_public).clearAnimation();
-                            findViewById(R.id.button_save).setClickable(true);
+                            findViewById(R.id.image_public).setClickable(true);
                         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(CryptMethods.getPublicTmp(), BarcodeFormat.QR_CODE.toString(), 512);
                         try {
                             ((ImageView) findViewById(R.id.image_public)).setImageBitmap(qrCodeEncoder.encodeAsBitmap());
