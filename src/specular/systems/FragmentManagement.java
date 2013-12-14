@@ -586,6 +586,12 @@ public class FragmentManagement extends Fragment {
             case decrypt:
                 break;
             case wait_nfc_to_write:
+                QRCodeEncoder qr = new QRCodeEncoder(CryptMethods.getPublicTmp(),BarcodeFormat.QR_CODE.toString(),256);
+                try {
+                    ((ImageView)rootView.findViewById(R.id.image_public)).setImageBitmap(qr.encodeAsBitmap());
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
                 break;
             case wait_nfc_decrypt:
                 if (NfcAdapter.getDefaultAdapter(getActivity()) == null){

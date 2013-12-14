@@ -1133,7 +1133,8 @@ public class Main extends Activity {
                 case R.layout.wait_nfc_to_write:
                     if(CryptMethods.publicExist())
                         selectItem(-1,R.layout.create_new_keys,null);
-                    new prepareToExit();
+                    else
+                        new prepareToExit();
                     break;
             }
         }
