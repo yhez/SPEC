@@ -303,8 +303,10 @@ public class Main extends Activity {
                 }
                 break;
             case R.id.hash:
+                String hash="original message size:\t\t" + Visual.getSize(PublicStaticVariables.orig_msg_size)+"\n";
+                hash+="encrypted message size:\t\t" + Visual.getSize(PublicStaticVariables.encrypted_msg_size)+"\n";
                 String[] parts = getResources().getStringArray(R.array.message_parts);
-                String hash="message parts:\n";
+                hash+="message parts:\n";
                 int index = 1;
                 hash+= index+++". " +parts[0] +"\n"+ PublicStaticVariables.name+"\n";
                 hash+= index+++". " +parts[1] +"\n"+ PublicStaticVariables.email+"\n";

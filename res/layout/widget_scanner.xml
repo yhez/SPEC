@@ -2,7 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:id="@+id/widget_ll"
+    android:id="@+id/widget_ll_scanner"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView

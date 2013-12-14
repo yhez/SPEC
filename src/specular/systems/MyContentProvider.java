@@ -2,11 +2,9 @@ package specular.systems;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
-import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,7 +25,7 @@ public class MyContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        File f=new File(getContext().getFilesDir(), "test.pdf");
+        /*File f=new File(getContext().getFilesDir(), "test.pdf");
 
         if (!f.exists()) {
             AssetManager assets=getContext().getResources().getAssets();
@@ -41,7 +39,7 @@ public class MyContentProvider extends ContentProvider {
                 return(false);
             }
         }
-
+*/
         return(true);
     }
 

@@ -161,4 +161,26 @@ public class Visual {
                 .getInstance().getTime());
         return timestamp+".stacktrace";
     }
+    public static String getSize(long numBytes) {
+        double size=numBytes;
+        String unit = "byte";
+        if (size > 1023) {
+            size /= 1024;
+            unit = "KB";
+        }
+        if (size > 1023) {
+            size /= 1024;
+            unit = "MB";
+        }
+        if (size > 1023) {
+            size /= 1024;
+            unit = "GB";
+        }
+        String total = (size + "").split("\\.")[0];
+        if ((size + "").split("\\.").length > 1) {
+            int l = (size+"").split("\\.")[1].length();
+            total += "." + (size + "").split("\\.")[1].substring(0, Math.min(2,l));
+        }
+        return total + " " + unit;
+    }
 }

@@ -39,7 +39,7 @@ public class WidgetScanner extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_scanner);
             Intent intent = new Intent(context, WidgetScanActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            views.setOnClickPendingIntent(R.id.widget_ll,pendingIntent);
+            views.setOnClickPendingIntent(R.id.widget_ll_scanner,pendingIntent);
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);

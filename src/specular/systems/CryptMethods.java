@@ -144,6 +144,8 @@ public class CryptMethods {
             byte[] rawMsg = Visual.hex2bin(encryptedMessage);
             byte[] decryptedBytes = cipher.doFinal(rawMsg);
             PublicStaticVariables.decryptedMsg = new MessageFormat(decryptedBytes);
+            PublicStaticVariables.encrypted_msg_size=encryptedMessage.length();
+            PublicStaticVariables.orig_msg_size=decryptedBytes.length;
         } catch (Exception e) {
             PublicStaticVariables.decryptedMsg = null;
             e.printStackTrace();

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
-    android:versionCode="3"
-    android:versionName="1.0">
+    android:versionCode="5"
+    android:versionName="1.00">
 
     <uses-sdk
         android:maxSdkVersion="19"
@@ -111,6 +111,7 @@
         <activity
             android:label="@string/quick_msg"
             android:taskAffinity=""
+            android:exported="true"
             android:noHistory="true"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
@@ -121,6 +122,7 @@
             android:screenOrientation="landscape"
             android:name=".widget.WidgetScanActivity"
             android:taskAffinity=""
+            android:exported="true"
             android:noHistory="true"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"/>

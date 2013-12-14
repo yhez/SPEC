@@ -59,7 +59,7 @@ public class SendMsgDialog extends DialogFragment {
         builder.setView(v);
         updateViews();
         if (uris.get(0) != null) {
-            ((TextView) v.findViewById(R.id.file_size)).setText(getSize(uris.get(0)));
+            ((TextView) v.findViewById(R.id.file_size)).setText(Visual.getSize(new File(uris.get(0).getPath()).length()).replace(" ","\n"));
             ((ImageView) v.findViewById(R.id.file_icon)).setImageResource(R.drawable.logo);
             EditText etFile = (EditText) v.findViewById(R.id.name_file);
             etFile.setText(getName(FILE));
@@ -77,7 +77,7 @@ public class SendMsgDialog extends DialogFragment {
                 ((ImageView) v.findViewById(R.id.qr_icon)).setImageResource(R.drawable.logo);
                 e.printStackTrace();
             }
-            ((TextView) v.findViewById(R.id.qr_size)).setText(getSize(uris.get(1)));
+            ((TextView) v.findViewById(R.id.qr_size)).setText(Visual.getSize(new File(uris.get(1).getPath()).length()).replace(" ","\n"));
             EditText etImage = (EditText) v.findViewById(R.id.qr_name_file);
             etImage.setText(getName(IMAGE));
             etImage.setSelection(etImage.getText().length());
@@ -85,28 +85,6 @@ public class SendMsgDialog extends DialogFragment {
         }
         Visual.setAllFonts(getActivity(), (ViewGroup) v);
         return builder.create();
-    }
-
-    private String getSize(Uri uri) {
-        double size = new File(uri.getPath()).length();
-        String unit = "byte";
-        if (size > 1023) {
-            size /= 1024;
-            unit = "KB";
-        }
-        if (size > 1023) {
-            size /= 1024;
-            unit = "MB";
-        }
-        if (size > 1023) {
-            size /= 1024;
-            unit = "GB";
-        }
-        String total = (size + "").split("\\.")[0];
-        if ((size + "").split("\\.").length > 0) {
-            total += "." + (size + "").split("\\.")[1].substring(0, 2);
-        }
-        return total + "\n" + unit;
     }
 
     private void getApps(int a) {
