@@ -83,10 +83,11 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/default_gap"
+    android:gravity="left"
     android:background="@android:color/white">
     <CheckBox
         android:visibility="gone"
+        android:layout_marginLeft="32dp"
         android:button="@drawable/check_box"
         android:id="@+id/quote"
         android:checked="false"
