@@ -303,14 +303,38 @@ public class Main extends Activity {
                 }
                 break;
             case R.id.hash:
-                ExplainDialog edlg = new ExplainDialog(ExplainDialog.HASH, PublicStaticVariables.hash);
+                String[] parts = getResources().getStringArray(R.array.message_parts);
+                String hash="message parts:\n";
+                int index = 1;
+                hash+= index+++". " +parts[0] +"\n"+ PublicStaticVariables.name+"\n";
+                hash+= index+++". " +parts[1] +"\n"+ PublicStaticVariables.email+"\n";
+                hash+= index+++". " +parts[2] +"\n"+ PublicStaticVariables.friendsPublicKey+"\n";
+                String q = getString(R.string.divide_msg)+getString(R.string.quote_msg)+getString(R.string.divide_msg);
+                if(PublicStaticVariables.msg_content!=null&&PublicStaticVariables.msg_content.length()>0){
+                    hash+= index+++". " +parts[3] +"\n"+ PublicStaticVariables.msg_content.split(q)[0]+"\n";
+                    if(PublicStaticVariables.msg_content.split(q).length>1)
+                        hash+= index+++". " +parts[4] +"\n"+ PublicStaticVariables.msg_content.split(q)[1]+"\n";
+                }
+                if(PublicStaticVariables.fileContent!=null){
+                    int length = PublicStaticVariables.fileContent.length>100?100:PublicStaticVariables.fileContent.length;
+                    hash+= index+++". " +parts[5] +"\n"+ new String(PublicStaticVariables.fileContent,0,length);
+                    if(PublicStaticVariables.fileContent.length>100)
+                        hash+="...";
+                    hash+="\n";
+                    hash+= index+++". " +parts[6] +"\n"+ PublicStaticVariables.file_name+"\n";
+                }
+                hash+= index+++". " +parts[7] +"\n"+ PublicStaticVariables.timeStamp+"\n";
+                hash+= index+++". " +parts[8] +"\n"+ Session.toShow(PublicStaticVariables.session)+"\n";
+                hash+= index+". " +parts[9] +"\n"+ PublicStaticVariables.hash;
+                ExplainDialog edlg = new ExplainDialog(ExplainDialog.HASH, hash);
                 edlg.show(getFragmentManager(), "hash");
                 break;
             case R.id.session:
                 String msg;
                 switch (PublicStaticVariables.flag_session) {
                     case Session.TRUSTED:
-                        msg = Session.toShow(PublicStaticVariables.session) + "\n" + getString(R.string.session_ok_explain);
+                        msg = getString(R.string.session_ok_explain)
+                                + "\n" +Session.toShow(PublicStaticVariables.session);
                         break;
                     case Session.DONT_TRUST:
                         msg = getString(R.string.dont_trust_session_explain)
@@ -1107,6 +1131,8 @@ public class Main extends Activity {
                     new prepareToExit();
                     break;
                 case R.layout.wait_nfc_to_write:
+                    if(CryptMethods.publicExist())
+                        selectItem(-1,R.layout.create_new_keys,null);
                     new prepareToExit();
                     break;
             }

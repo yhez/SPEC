@@ -147,7 +147,7 @@
     <string name="confirm_first"><b>Next</b></string>
     <string name="first_step"><b>1<sup>st</sup></b></string>
     <string name="sec_step"><b>2<sup>nd</sup></b></string>
-    <string name="last_step"><b></b>Final Step</b></string>
+    <string name="last_step"><b>Final Step</b></string>
     <string name="second_text">Please verify that you understand the risk before continuing. You will not be able to decrypt and read previous data.</string>
     <string name="third_text">There is no going back if you change your keys (in current Beta version).</string>
     <string name="got_it"><b>Got It</b></string>
@@ -197,4 +197,17 @@
         <item>Manage</item>
     </string-array>
     <!--<item>SPEC Safe</item>-->
+
+    <string-array name="message_parts">
+        <item>name</item>
+        <item>email</item>
+        <item>public key</item>
+        <item>message content</item>
+        <item>quited messages</item>
+        <item>attached file</item>
+        <item>file name</item>
+        <item>time stamp</item>
+        <item>sessions</item>
+        <item>hash</item>
+    </string-array>
 </resources>

@@ -181,7 +181,7 @@ public class SendMsgDialog extends DialogFragment {
                 etImage=(EditText)v.findViewById(R.id.qr_name_file);
         if((etFile.getText().length()==0&&(what==BOTH||what==FILE))
                 ||(etImage.getText().length()==0&&(what==IMAGE||what==BOTH))){
-            Toast t = Toast.makeText(getActivity(),.getString(R.string.length_name_of_file),Toast.LENGTH_SHORT);
+            Toast t = Toast.makeText(getActivity(),R.string.length_name_of_file,Toast.LENGTH_SHORT);
             t.setGravity(Gravity.CENTER_VERTICAL,0,0);
             t.show();
             return;
