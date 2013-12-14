@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,6 +177,15 @@ public class SendMsgDialog extends DialogFragment {
     }
 
     private void startOnClick(int what, ResolveInfo rs) {
+        EditText etFile=(EditText)v.findViewById(R.id.name_file),
+                etImage=(EditText)v.findViewById(R.id.qr_name_file);
+        if((etFile.getText().length()==0&&(what==BOTH||what==FILE))
+                ||(etImage.getText().length()==0&&(what==IMAGE||what==BOTH))){
+            Toast t = Toast.makeText(getActivity(),.getString(R.string.length_name_of_file),Toast.LENGTH_SHORT);
+            t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+            t.show();
+            return;
+        }
         ComponentName cn;
         cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
         Intent i = new Intent();
@@ -196,7 +206,7 @@ public class SendMsgDialog extends DialogFragment {
         }
         if (what == IMAGE || what == BOTH) {
             File f = new File(uris.get(1).getPath());
-            File newPath = new File(getActivity().getFilesDir(), ((EditText) v.findViewById(R.id.qr_name_file)).getText() + ".png");
+            File newPath = new File(getActivity().getFilesDir(), etImage.getText() + ".png");
             if (!f.equals(newPath)) {
                 if (newPath.exists())
                     newPath.delete();
@@ -206,7 +216,7 @@ public class SendMsgDialog extends DialogFragment {
         }
         if (what == FILE || what == BOTH) {
             File f = new File(uris.get(0).getPath());
-            File newPath = new File(getActivity().getFilesDir(), ((EditText) v.findViewById(R.id.name_file)).getText() + ".SPEC");
+            File newPath = new File(getActivity().getFilesDir(), etFile.getText() + ".SPEC");
             if (!f.equals(newPath)) {
                 if (newPath.exists())
                     newPath.delete();

@@ -526,7 +526,7 @@ public class Main extends Activity {
         t = Toast.makeText(this,"",Toast.LENGTH_SHORT);
         t.setGravity(Gravity.CENTER_VERTICAL,0,0);
         handler = new Handler(Looper.getMainLooper());
-        if (PublicStaticVariables.adapter == null) {
+        if(PublicStaticVariables.currentList==null){
             PublicStaticVariables.contactsDataSource = new ContactsDataSource(this);
             PublicStaticVariables.currentList = PublicStaticVariables.contactsDataSource.getAllContacts();
             Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
@@ -537,6 +537,8 @@ public class Main extends Activity {
             });
             PublicStaticVariables.fullList = new ArrayList<Contact>();
             PublicStaticVariables.fullList.addAll(PublicStaticVariables.currentList);
+        }
+        if (PublicStaticVariables.adapter == null) {
             PublicStaticVariables.adapter = new MySimpleArrayAdapter(this, PublicStaticVariables.currentList);
         }
         setContentView(R.layout.main);
@@ -1196,6 +1198,21 @@ public class Main extends Activity {
         }
         if (PublicStaticVariables.flag_msg != null && PublicStaticVariables.flag_msg) {
             FilesManagement.getTempDecryptedMSG(this);
+        }
+        if(PublicStaticVariables.currentList==null){
+            PublicStaticVariables.contactsDataSource = new ContactsDataSource(this);
+            PublicStaticVariables.currentList = PublicStaticVariables.contactsDataSource.getAllContacts();
+            Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
+                @Override
+                public int compare(Contact contact, Contact contact2) {
+                    return contact.getEmail().compareTo(contact2.getEmail());
+                }
+            });
+            PublicStaticVariables.fullList = new ArrayList<Contact>();
+            PublicStaticVariables.fullList.addAll(PublicStaticVariables.currentList);
+        }
+        if (PublicStaticVariables.adapter == null) {
+            PublicStaticVariables.adapter = new MySimpleArrayAdapter(this, PublicStaticVariables.currentList);
         }
     }
 
