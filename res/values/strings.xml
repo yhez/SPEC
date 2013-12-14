@@ -134,9 +134,9 @@
         With that, the contact doesn\'t have your session.\n</string>
     <string name="unknown_session_explain">First time you\'re receiving a message from this contact, verify identity (email).\n</string>
     <string name="not_implmented_local_files">not implemented yet.\nthis is where you\'ll be able to explore your local encrypted files</string>
-    <string name="quote">Quote previous message</string>
+    <string name="quote">Quote coversation</string>
     <string name="divide_msg">\n- - - - - - -\n</string>
-    <string name="quote_msg">Quoted Message:</string>
+    <string name="quote_msg">Conversation:</string>
     <string name="learn_title">The SPEC Magic</string>
     <string name="how_spec">How SPEC Works</string>
     <string name="faq">FAQs</string>
