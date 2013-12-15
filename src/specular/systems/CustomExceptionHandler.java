@@ -1,6 +1,9 @@
 package specular.systems;
 
 
+import android.app.Activity;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Environment;
 
 import java.io.File;
@@ -14,22 +17,30 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     private Thread.UncaughtExceptionHandler defaultUEH;
     String filename;
+    Activity a;
     /* 
      * if any of the parameters is null, the respective functionality 
      * will not be used 
      */
-    public CustomExceptionHandler(String filename) {
+    public CustomExceptionHandler(String filename,Activity a) {
         this.defaultUEH = Thread.getDefaultUncaughtExceptionHandler();
         this.filename=filename;
+        this.a=a;
     }
-
+    @Override
     public void uncaughtException(Thread t, Throwable e) {
         final Writer result = new StringWriter();
         final PrintWriter printWriter = new PrintWriter(result);
         e.printStackTrace(printWriter);
         String stacktrace = result.toString();
         printWriter.close();
-        writeToFile(stacktrace);
+        String version="";
+        try {
+            PackageInfo pInfo = a.getPackageManager().getPackageInfo(a.getPackageName(), 0);
+            version = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e1) {
+        }
+        writeToFile("spec version: "+version+"\n"+stacktrace);
         android.os.Process.killProcess(android.os.Process.myPid());
         defaultUEH.uncaughtException(t, e);
     }

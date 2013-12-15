@@ -363,9 +363,25 @@ public class Main extends Activity {
                 edl.show(getFragmentManager(), "session");
                 break;
             case R.id.replay:
-                //if(!PublicStaticVariables.flag_replay)
-
-                ExplainDialog ed = new ExplainDialog(ExplainDialog.REPLAY, PublicStaticVariables.timeStamp);
+                String replay = getString(R.string.time_created)+PublicStaticVariables.timeStamp+"\n";
+                switch (PublicStaticVariables.flag_replay){
+                    case MessageFormat.NOT_RELEVANT:
+                        replay+=getString(R.string.replay_not_relevant);
+                        break;
+                    case MessageFormat.OK:
+                        replay+=getString(R.string.replay_ok);
+                        break;
+                    case MessageFormat.FAILED:
+                        replay+=getString(R.string.replay_check_failed);
+                        break;
+                    case MessageFormat.OLD:
+                        replay+=getString(R.string.replay_old);
+                        break;
+                    case MessageFormat.NOT_LATEST:
+                        replay+=getString(R.string.replay_older_then_latest);
+                        break;
+                }
+                ExplainDialog ed = new ExplainDialog(ExplainDialog.REPLAY, replay);
                 ed.show(getFragmentManager(), "replay");
                 break;
         }
@@ -547,7 +563,7 @@ public class Main extends Activity {
         PublicStaticVariables.main=this;
         FilesManagement.getKeysFromSDCard(this);
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
-            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(),this));
         }
         t = Toast.makeText(this,"",Toast.LENGTH_SHORT);
         t.setGravity(Gravity.CENTER_VERTICAL,0,0);

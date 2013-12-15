@@ -38,7 +38,8 @@ public class PublicStaticVariables {
     //from files management
     public final static int LIMIT_FILE_SIZE = 26214400;
     //restore decrypted msg after pause
-    public static Boolean flag_hash, flag_replay;
+    public static Boolean flag_hash;
+    public static int flag_replay;
     public static int flag_session;
     public static String hash, timeStamp, friendsPublicKey, name, email;
     public static Boolean flag_msg;

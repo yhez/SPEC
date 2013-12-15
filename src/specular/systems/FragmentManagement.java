@@ -105,6 +105,7 @@ public class FragmentManagement extends Fragment {
         ImageView rp = (ImageView) rootView.findViewById(R.id.replay_check);
         ImageButton imageButtonh = (ImageButton) rootView.findViewById(R.id.hash);
         Contact c = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.friendsPublicKey);
+        PublicStaticVariables.flag_replay = PublicStaticVariables.decryptedMsg.checkReplay(c);
         if (c != null) {
             contactExist.setText(true + "");
             sender.setText("From:\t" + c.getContactName() + " , " + c.getEmail());
@@ -183,7 +184,12 @@ public class FragmentManagement extends Fragment {
         ss.setImageResource(PublicStaticVariables.flag_session == Session.DONT_TRUST ? notOk :
                 (PublicStaticVariables.flag_session == Session.TRUSTED ? ok :
                         (PublicStaticVariables.flag_session == Session.UNKNOWN ? unknown : starting)));
-        rp.setImageResource(PublicStaticVariables.flag_replay ? ok : notOk);
+        if(PublicStaticVariables.flag_replay==MessageFormat.NOT_RELEVANT)
+            rp.setVisibility(View.GONE);
+        else if(PublicStaticVariables.flag_replay==MessageFormat.OK)
+            rp.setImageResource(ok);
+        else
+            rp.setImageResource(notOk);
     }
 
     @Override
@@ -609,7 +615,6 @@ public class FragmentManagement extends Fragment {
             case decrypted_msg:
                 if (PublicStaticVariables.decryptedMsg != null) {
                     checkHash.start();
-                    PublicStaticVariables.flag_replay = PublicStaticVariables.decryptedMsg.checkReplay();
                     PublicStaticVariables.friendsPublicKey = PublicStaticVariables.decryptedMsg.getPublicKey();
                     PublicStaticVariables.hash = PublicStaticVariables.decryptedMsg.getHash();
                     PublicStaticVariables.timeStamp = PublicStaticVariables.decryptedMsg.getSentTime();

@@ -35,7 +35,7 @@ public class SendReport extends Activity {
         super.onCreate(savedInstanceState);
         FilesManagement.getKeysFromSDCard(this);
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
-            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(),this));
         }
         File folder = new File(Environment.getExternalStorageDirectory()+"/spec reports");
         for(String f:folder.list(filterreported)){

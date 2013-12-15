@@ -42,7 +42,7 @@ public class ChooseContact extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
-            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt()));
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(),this));
         }
         setResult(RESULT_CANCELED);
         Intent intent = getIntent();

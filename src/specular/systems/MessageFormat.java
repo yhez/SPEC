@@ -2,8 +2,10 @@ package specular.systems;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class MessageFormat {
     private String name, email, publicKey, msgContent, session, hash, sentTime, fileName;
@@ -52,7 +54,7 @@ public class MessageFormat {
         email = CryptMethods.getEmail();
         this.msgContent = msgContent;
         publicKey = CryptMethods.getPublic();
-        sentTime = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
+        sentTime = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar
                 .getInstance().getTime());
         this.session = session;
         this.fileName = fileName;
@@ -80,11 +82,26 @@ public class MessageFormat {
         return checkHash(hash, name + email + publicKey + msgContent + (fileContent != null ? new String(fileContent) : "") + session
                 + sentTime);
     }
-
-    public boolean checkReplay() {
-        String now = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar
-                .getInstance().getTime());
-        return now.substring(4, 6).equals(sentTime.substring(4, 6));
+    public static final int NOT_RELEVANT=0,OK=1,NOT_LATEST=2,OLD=3,FAILED=4;
+    public int checkReplay(Contact c) {
+        if(c==null)
+            return NOT_RELEVANT;
+        SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        parser.setTimeZone(TimeZone.getTimeZone("GMT"));
+        try {
+            long timeCreated  = parser.parse(sentTime).getTime();
+            if(timeCreated<c.getLast())
+                return NOT_LATEST;
+            long now = System.currentTimeMillis();
+            long gap = now-timeCreated;
+            //60 hours is the limit for old messages
+            if(gap/1000/60/60/60>0)
+                return OLD;
+            return OK;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return FAILED;
+        }
     }
 
     private boolean checkHash(String hash, String msg) {
