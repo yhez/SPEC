@@ -82,6 +82,9 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filter
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 List<Contact> lc = (List<Contact>) results.values;
+                //todo
+                //todo
+                //todo i dont need to copy it to another array just work with it until you done and then go to original list
                 if (lc.size() > 0) {
                     for (Contact aLc : lc)
                         if (!PublicStaticVariables.currentList.contains(aLc))
@@ -123,22 +126,29 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filter
 
     public void refreshList(Activity a) {
         ArrayList<Contact> tmp = new ArrayList<Contact>();
+        boolean changed=false;
         for (Contact c : PublicStaticVariables.currentList)
             if (!PublicStaticVariables.fullList.contains(c))
                 tmp.add(c);
-        PublicStaticVariables.currentList.removeAll(tmp);
+        if(tmp.size()>0){
+            PublicStaticVariables.currentList.removeAll(tmp);
+            changed=true;
+        }
         for (Contact c : PublicStaticVariables.fullList)
-            if (!PublicStaticVariables.currentList.contains(c))
+            if (!PublicStaticVariables.currentList.contains(c)){
                 PublicStaticVariables.currentList.add(c);
-        //if (PublicStaticVariables.currentLayout == R.layout.encrypt)
-        //    PublicStaticVariables.luc.showIfNeeded();
-        Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
-            @Override
-            public int compare(Contact contact, Contact contact2) {
-                return contact.getEmail().compareTo(contact2.getEmail());
+                changed=true;
             }
-        });
-        PublicStaticVariables.adapter.notifyDataSetChanged();
+
+        if(changed){
+            Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
+                @Override
+                public int compare(Contact contact, Contact contact2) {
+                    return contact.getEmail().compareTo(contact2.getEmail());
+                }
+            });
+            PublicStaticVariables.adapter.notifyDataSetChanged();
+        }
         View v = a.findViewById(R.id.list);
         if (v != null)
             if (v.getVisibility() == View.GONE) {

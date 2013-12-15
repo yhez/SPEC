@@ -36,7 +36,7 @@ public class Contact {
     }
 
     //create contact after pulling out from db
-    public Contact(long id, String contactName, String email, int added, int last, int sent, int received, String publicKey,
+    public Contact(long id, String contactName, String email, int added, long last, int sent, int received, String publicKey,
                    String session) {
         this.id = id;
         this.contactName = contactName;

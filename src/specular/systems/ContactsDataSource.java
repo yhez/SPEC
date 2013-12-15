@@ -100,7 +100,7 @@ public class ContactsDataSource {
         if (cursor.getCount() > 0) {
             Contact c = new Contact(cursor.getLong(0), cursor.getString(1)
                     , cursor.getString(2), cursor.getInt(3)
-                    , cursor.getInt(4), cursor.getInt(5)
+                    , cursor.getLong(4), cursor.getInt(5)
                     , cursor.getInt(6), cursor.getString(7),
                     cursor.getString(8));
             dbHelper.close();
@@ -119,7 +119,7 @@ public class ContactsDataSource {
         if (cursor.getCount() > 0) {
             Contact c = new Contact(cursor.getLong(0), cursor.getString(1)
                     , cursor.getString(2), cursor.getInt(3)
-                    , cursor.getInt(4), cursor.getInt(5)
+                    , cursor.getLong(4), cursor.getInt(5)
                     , cursor.getInt(6), cursor.getString(7),
                     cursor.getString(8));
             dbHelper.close();
@@ -138,7 +138,7 @@ public class ContactsDataSource {
         if (cursor.getCount() > 0) {
             Contact c = new Contact(cursor.getLong(0), cursor.getString(1)
                     , cursor.getString(2), cursor.getInt(3)
-                    , cursor.getInt(4), cursor.getInt(5)
+                    , cursor.getLong(4), cursor.getInt(5)
                     , cursor.getInt(6), cursor.getString(7),
                     cursor.getString(8));
             dbHelper.close();
@@ -157,7 +157,7 @@ public class ContactsDataSource {
         while (!cursor.isAfterLast()) {
             Contact contact = new Contact(cursor.getLong(0), cursor.getString(1)
                     , cursor.getString(2), cursor.getInt(3)
-                    , cursor.getInt(4), cursor.getInt(5)
+                    , cursor.getLong(4), cursor.getInt(5)
                     , cursor.getInt(6), cursor.getString(7),
                     cursor.getString(8));
             contacts.add(contact);

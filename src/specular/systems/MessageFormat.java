@@ -97,6 +97,7 @@ public class MessageFormat {
             //60 hours is the limit for old messages
             if(gap/1000/60/60/60>0)
                 return OLD;
+            c.update(Contact.RECEIVED,timeCreated);
             return OK;
         } catch (ParseException e) {
             e.printStackTrace();
