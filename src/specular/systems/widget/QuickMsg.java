@@ -102,8 +102,6 @@ public class QuickMsg extends Activity {
                     bt.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg)
-                                findViewById(R.id.answer).setVisibility(View.GONE);
                             final String userInput = et.getText().toString();
                             final MessageFormat msg = new MessageFormat(null, "", userInput
                                     , contact.getSession());

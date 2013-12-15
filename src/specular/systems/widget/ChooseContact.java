@@ -61,7 +61,7 @@ public class ChooseContact extends Activity {
             //findViewById(R.id.filter_ll).setVisibility(View.VISIBLE);
             ListView lv = (ListView) findViewById(R.id.list);
             MySimpleArrayAdapter adapter;
-            if (PublicStaticVariables.adapter == null) {
+            if (PublicStaticVariables.adapter == null||PublicStaticVariables.currentList==null) {
                 ContactsDataSource cdc = new ContactsDataSource(this);
                 final List<Contact> cfc = cdc.getAllContacts();
                 Collections.sort(cfc, new Comparator<Contact>() {
