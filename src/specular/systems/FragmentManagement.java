@@ -105,7 +105,6 @@ public class FragmentManagement extends Fragment {
         ImageView rp = (ImageView) rootView.findViewById(R.id.replay_check);
         ImageButton imageButtonh = (ImageButton) rootView.findViewById(R.id.hash);
         Contact c = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.friendsPublicKey);
-        PublicStaticVariables.flag_replay = PublicStaticVariables.decryptedMsg.checkReplay(c);
         if (c != null) {
             contactExist.setText(true + "");
             sender.setText("From:\t" + c.getContactName() + " , " + c.getEmail());
@@ -117,6 +116,7 @@ public class FragmentManagement extends Fragment {
                     + " , " + PublicStaticVariables.email);
             contactExist.setText(false + "");
         }
+        PublicStaticVariables.flag_replay = PublicStaticVariables.decryptedMsg.checkReplay(c);
         getActivity().invalidateOptionsMenu();
         if (PublicStaticVariables.file_name == null || PublicStaticVariables.file_name.length() == 0) {
             fileAttach.setVisibility(View.GONE);

@@ -140,12 +140,13 @@ public class Contact {
 
     public static final int SENT = 0, RECEIVED = 1;
 
-    public void update(int what) {
-        this.last = System.currentTimeMillis();
+    public void update(int what,long time) {
         if (what == SENT)
             sent++;
-        else if (what == RECEIVED)
+        else if (what == RECEIVED){
             received++;
+            this.last = time;
+        }
         PublicStaticVariables.contactsDataSource.updateDB(id, last, received, sent);
     }
 }

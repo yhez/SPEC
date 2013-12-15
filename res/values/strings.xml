@@ -181,13 +181,13 @@
     <string name="not_imp_msg">This feature hasn\'t been integrated or implemented yet.\nIf you would like to help, please contact us.</string>
     <string name="not_implemented_title">New features soon&#8230;</string>
     <string name="back_bt_replace_keys_dlg">Back</string>
-    <string name="length_name_of_file">name of file must be at least on character long</string><string name="time_created">time message created:
-</string>
-    <string name="replay_not_relevant">you don\'t need to worried about replay attack you just started the conversation</string>
+    <string name="length_name_of_file">name of file must be at least on character long</string>
+    <string name="time_created">time message has created:\n</string>
+    <string name="replay_not_relevant">you don\'t need to worried about replay attack.\n you just started the conversation</string>
     <string name="replay_ok">everything seems to be in order</string>
-    <string name="replay_check_failed">time stamp is broken do not trust this message</string>
-    <string name="replay_old">this message has been send for long ago you should be careful</string>
-    <string name="replay_older_then_latest">you already got a newer message from this friend</string>
+    <string name="replay_check_failed">time stamp is broken.\ndo not trust this message</string>
+    <string name="replay_old">this message has been send long time ago\n(more then 60 hours)\nyou should be careful</string>
+    <string name="replay_older_then_latest">you already got a newer message from this contact</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>
