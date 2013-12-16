@@ -130,8 +130,7 @@
         \nYour session is:\n</string>
     <string name="new_session_trust_created">Your communications are secure, you\'ve seen this contact before.\n</string>
     <string name="starting_session_explain">You have your contact\'s session,
-        so it\'s probably the same person who sent you the previous message.
-        With that, the contact doesn\'t have your session.\n</string>
+        so it\'s probably the same person who sent you the previous message.</string>
     <string name="unknown_session_explain">First time you\'re receiving a message from this contact, verify identity (email).\n</string>
     <string name="not_implmented_local_files">not implemented yet.\nthis is where you\'ll be able to explore your local encrypted files</string>
     <string name="quote">Quote conversation</string>
@@ -155,7 +154,7 @@
     <string name="share_my_contact_card">Share Public Key</string>
     <string name="widget_label">Direct Secure Message</string>
     <string name="send_report_subject">Bug Report</string>
-    <string name="send_report_content">Attached is a file containing the stack-trace causing the error</string>
+    <string name="send_report_content">Attached is a file containing the stack-trace causing the error.</string>
     <string name="email_for_reports">yhezkel88@gmail.com</string>
     <string name="clean_up_reported_files">Cleaning up old reports</string>
     <string name="send_report_message_dialog">Unexpected error. Would you like to send an error report to SPEC?\nThank you</string>
@@ -167,11 +166,11 @@
     <string name="move_key_to_nfc_and_such">Private Key Manager</string>
     <string name="sync_keys_between_devices">Device Sync</string>
     <string name="clean_private_data">Erase Data</string>
-    <string name="scan_any_qr_widget">Place QR code within box to scan (messages and contacts)</string>
+    <string name="scan_any_qr_widget">Place QR code within box to scan (messages and contacts).</string>
     <string name="widget_name_scanner">SPEC QR Scanner</string>
     <string name="generator_menu_title">Generating Keys...</string>
     <string name="save_keys_menu_title">Save Keys</string>
-    <string name="contact_deleted_widget">Contact deleted</string>
+    <string name="contact_deleted_widget">Contact deleted.</string>
     <string name="save_current_button">Press to save Keys</string>
     <string name="recreating_keys_title">We\'ll continue to generate keys until you press the QR code below in order to choose the one that you want (enabling transparency)</string>
     <string name="learn_screen_suggest_us">Feel free to send us suggestions and feedback. Add us to your contacts list by pressing the QR code.</string>
@@ -181,7 +180,7 @@
     <string name="not_imp_msg">This feature hasn\'t been integrated or implemented yet.\nIf you would like to help, please contact us.</string>
     <string name="not_implemented_title">New features soon&#8230;</string>
     <string name="back_bt_replace_keys_dlg">Back</string>
-    <string name="length_name_of_file">File name must be at least 1 character long</string>
+    <string name="length_name_of_file">File name must be at least 1 character long.</string>
     <string name="time_created">Message time-stamp:\n</string>
     <string name="replay_not_relevant">No need to be worried about Replay Attacks.\nConversation just started.</string>
     <string name="replay_ok">Everything seems to be OK.</string>
