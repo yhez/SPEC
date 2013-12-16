@@ -8,7 +8,7 @@
     <string name="decrypt_explain">Decrypt message using barcode scanner, press button to scan:\n</string>
     <string name="encrypt_explain">Search contacts&#8230;</string>
     <string name="hint_msg">Enter message&#8230;</string>
-    <string name="explain">SPEC public encryption key. You should verify that this public key belongs to the sender.</string>
+    <string name="explain">SPEC Public Encryption Key. You should verify that this public key belongs to the sender.</string>
     <string name="ok">OK</string>
     <string name="hint_enter_your_name">name (optional)&#8230;</string>
     <string name="hint_enter_your_email">email&#8230;</string>
@@ -25,11 +25,11 @@
     <string name="bad_data">Please scan again</string>
     <string name="share_dialog">Share your Public Key&#8230;</string>
     <string name="send_dialog">Send encrypted message via&#8230;</string>
-    <string name="cant_decrypt">This message hasn\'t been encrypted for you</string>
-    <string name="subject_encrypt">An encrypted message just for you - SPEC APP</string>
+    <string name="cant_decrypt">This message hasn\'t been encrypted for you.</string>
+    <string name="subject_encrypt">An encrypted message just for you - SPEC MOBILE APP</string>
     <string name="share_public_descripton">My Public Key:</string>
     <string name="fill_all">Please enter a valid email.\nThis email will enable other users to contact you.</string>
-    <string name="subject_share">My Public Key - SPEC APP</string>
+    <string name="subject_share">My Public Key - SPEC MOBILE APP</string>
     <string name="contact_exist">Contact already exists</string>
     <string name="wait_for_nfc_to_read">Waiting for NFC&#8230;</string>
     <string name="what_to_share">What to share:</string>
@@ -55,7 +55,7 @@
     <string name="content_scan_error_msg">Please scan again</string>
     <string name="scan_contact_explain">Place QR code within box to add contact</string>
     <string name="decrypt_qr_message_explain">Place QR code within box to read message</string>
-    <string name="title_turn_nfc_on">Activate NFC? If not, keys will be saved on device (LESS SECURE)</string>
+    <string name="title_turn_nfc_on">Activate NFC? If not, keys will be saved on device (LESS SECURE).</string>
     <string name="exit_by_back_notify">Press back again to exit</string>
     <string name="edit_email">email: </string>
     <string name="edit_name">name: </string>
@@ -72,13 +72,13 @@
     <string name="verify_delete_msg">Are you sure you want to delete this contact?</string>
     <string name="clean_up">Clean up:</string>
     <string name="clear">Delete</string>
-    <string name="not_cosen_clean">Please choose what to delete/clean</string>
-    <string name="turn_nfc_on_nfc_wait">NFC is OFF, go to settings and turn it ON</string>
+    <string name="not_cosen_clean">Please choose what to delete/clean.</string>
+    <string name="turn_nfc_on_nfc_wait">NFC is OFF, go to settings and turn it ON.</string>
     <string name="no_contacts">"You don\'t have any contacts.\nTo <b>add contacts</b> share your Public Key under My SPEC, scan their QR code or ask them to send their Public Key (Contact Card).</string>
     <string name="tmp_files_deleted">Temp files successfully deleted</string>
     <string name="keys_deleted">Keys successfully deleted</string>
     <string name="contacts_deleted">Contacts successfully deleted</string>
-    <string name="add_contact_first">Add this contact to your CONTACTS first (top right)</string>
+    <string name="add_contact_first">Add this contact to your CONTACTS LIST first (top right)</string>
     <string name="hash_explain">The main application of secure cryptographic hashes is verification of message integrity - determining whether any changes have been made to a message or a file. SPEC verifies that your messages are secure and complete. WE FIGHT DATA TAMPERING 24/7.</string>
     <string name="what_is_hash">What is a Crypto Hash?</string>
     <string name="what_is_session">What is a Session ID?</string>
@@ -90,7 +90,7 @@
         maliciously or fraudulently repeated or delayed (after it has been possibly tampered with). This is mostly carried out by an adversary
         whom intercepts the data and retransmits it, possibly as part of a Man in the Middle Attack. SPEC verifies that this type of attack and similar ones aren\'t carried out.</string>
     <string name="no_result">Can\'t find contact</string>
-    <string name="share_contact_subject">Shared Contact Card, Recommendation - SPEC APP</string>
+    <string name="share_contact_subject">Shared Contact Card, Recommendation - SPEC MOBILE APP</string>
     <string name="quick_msg">Quick Text Message:</string>
     <string name="file_name_shared_contact_card">SharedContactCard.SPEC</string>
     <string name="file_name_friends_qr">SharedQR.SPEC.png</string>
@@ -181,13 +181,13 @@
     <string name="not_imp_msg">This feature hasn\'t been integrated or implemented yet.\nIf you would like to help, please contact us.</string>
     <string name="not_implemented_title">New features soon&#8230;</string>
     <string name="back_bt_replace_keys_dlg">Back</string>
-    <string name="length_name_of_file">name of file must be at least on character long</string>
-    <string name="time_created">time message has created:\n</string>
-    <string name="replay_not_relevant">you don\'t need to worried about replay attack.\n you just started the conversation</string>
-    <string name="replay_ok">everything seems to be in order</string>
-    <string name="replay_check_failed">time stamp is broken.\ndo not trust this message</string>
-    <string name="replay_old">this message has been send long time ago\n(more then 60 hours)\nyou should be careful</string>
-    <string name="replay_older_then_latest">you already got a newer message from this contact</string>
+    <string name="length_name_of_file">File name must be at least 1 character long</string>
+    <string name="time_created">Message time-stamp:\n</string>
+    <string name="replay_not_relevant">No need to be worried about Replay Attacks.\nConversation just started.</string>
+    <string name="replay_ok">Everything seems to be OK.</string>
+    <string name="replay_check_failed">Time-stamp is broken.\nDo not trust this message.</string>
+    <string name="replay_old">This message has been sent more than 60 hours ago.\nYou should be careful.</string>
+    <string name="replay_older_then_latest">You\'ve already received a newer message from this contact.</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>
