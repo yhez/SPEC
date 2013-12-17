@@ -157,7 +157,7 @@ public class Visual {
         return ib;
     }
     public static String getNameReprt(){
-        String timestamp = new SimpleDateFormat("MM/dd HH-mm-ss").format(Calendar
+        String timestamp = new SimpleDateFormat("MM-dd HH-mm-ss").format(Calendar
                 .getInstance().getTime());
         return timestamp+".stacktrace";
     }

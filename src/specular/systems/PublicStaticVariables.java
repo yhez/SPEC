@@ -46,4 +46,5 @@ public class PublicStaticVariables {
     //should be delete when goes to background
     public static String msg_content = null, file_name = null, session = null;
     public static long orig_msg_size,encrypted_msg_size;
+    public static Boolean flag_lightMsg=false;
 }

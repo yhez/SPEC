@@ -8,43 +8,41 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 public class MessageFormat {
+    public static final int NOT_RELEVANT = 0, OK = 1, NOT_LATEST = 2, OLD = 3, FAILED = 4;
     private String name, email, publicKey, msgContent, session, hash, sentTime, fileName;
     private byte[] fileContent = null;
 
     public MessageFormat(byte[] raw) {
-        if (raw.length > 6) {
-            int loc = 0;
-            while (true) {
-                if (raw[loc] == 'f' && raw[loc + 1] == 'i' && raw[loc + 2] == 'l' && raw[loc + 3] == 'e' && raw[loc + 4] == '/' && raw[loc + 5] == '/') {
-                    break;
-                }
-                loc++;
-            }
-            //String data[] = new String(raw, 0, loc).split("\n");
-            byte[] b = new byte[loc];
-            System.arraycopy(raw, 0, b, 0, b.length);
-            String data[] = new String[0];
-            try {
-                data = new String(b, "UTF-8").split("\n");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            if (!(data.length < 6)) {
-                name = data[0];
-                email = data[1];
-                publicKey = data[2];
-                hash = data[3];
-                session = data[4];
-                sentTime = data[5];
-                fileName = data[6];
-                msgContent = "";
-                for (int a = 7; a < data.length; a++)
-                    msgContent += data[a] + (a + 1 == data.length ? "" : "\n");
-                if (raw.length > loc + 6) {
-                    fileContent = new byte[raw.length - (loc + 6)];
-                    for (int c = loc + 6, d = 0; c < raw.length; c++, d++) {
-                        fileContent[d] = raw[c];
-                    }
+        int loc = 0;
+        while (loc < raw.length - 6) {
+            if (raw[loc] == 'f' && raw[loc + 1] == 'i' && raw[loc + 2] == 'l' && raw[loc + 3] == 'e' && raw[loc + 4] == '/' && raw[loc + 5] == '/')
+                break;
+            loc++;
+        }
+        //String data[] = new String(raw, 0, loc).split("\n");
+        byte[] b = new byte[loc];
+        System.arraycopy(raw, 0, b, 0, b.length);
+        String data[] = new String[0];
+        try {
+            data = new String(b, "UTF-8").split("\n");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if (!(data.length < 6)) {
+            name = data[0];
+            email = data[1];
+            publicKey = data[2];
+            hash = data[3];
+            session = data[4];
+            sentTime = data[5];
+            fileName = data[6];
+            msgContent = "";
+            for (int a = 7; a < data.length; a++)
+                msgContent += data[a] + (a + 1 == data.length ? "" : "\n");
+            if (raw.length > loc + 6) {
+                fileContent = new byte[raw.length - (loc + 6)];
+                for (int c = loc + 6, d = 0; c < raw.length; c++, d++) {
+                    fileContent[d] = raw[c];
                 }
             }
         }
@@ -82,22 +80,22 @@ public class MessageFormat {
         return checkHash(hash, name + email + publicKey + msgContent + (fileContent != null ? new String(fileContent) : "") + session
                 + sentTime);
     }
-    public static final int NOT_RELEVANT=0,OK=1,NOT_LATEST=2,OLD=3,FAILED=4;
+
     public int checkReplay(Contact c) {
-        if(c==null)
+        if (c == null)
             return NOT_RELEVANT;
         SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         parser.setTimeZone(TimeZone.getTimeZone("GMT"));
         try {
-            long timeCreated  = parser.parse(sentTime).getTime();
-            if(timeCreated<c.getLast())
+            long timeCreated = parser.parse(sentTime).getTime();
+            if (timeCreated < c.getLast())
                 return NOT_LATEST;
             long now = System.currentTimeMillis();
-            long gap = now-timeCreated;
+            long gap = now - timeCreated;
             //60 hours is the limit for old messages
-            if(gap/1000/60/60/60>0)
+            if (gap / 1000 / 60 / 60 / 60 > 0)
                 return OLD;
-            c.update(Contact.RECEIVED,timeCreated);
+            c.update(Contact.RECEIVED, timeCreated);
             return OK;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -198,6 +196,7 @@ public class MessageFormat {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             return Visual.bin2hex(md.digest(msg.getBytes()));
         } catch (Exception ignore) {
+            ignore.printStackTrace();
         }
         return null;
     }

@@ -43,7 +43,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        cameraManager.onF(event.getActionMasked() == MotionEvent.ACTION_DOWN || event.getActionMasked() != MotionEvent.ACTION_UP);
+        cameraManager.onF(event.getActionMasked() != MotionEvent.ACTION_UP);
         return true;
     }
 
@@ -79,7 +79,6 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         } else {
             // Install the callback and wait for surfaceCreated() to init the camera.
             surfaceHolder.addCallback(this);
-            surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
         inactivityTimer.onResume();
         Intent intent = getIntent();
