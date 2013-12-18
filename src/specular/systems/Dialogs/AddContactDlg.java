@@ -17,7 +17,7 @@ import com.google.zxing.WriterException;
 
 import specular.systems.Contact;
 import specular.systems.ContactCard;
-import specular.systems.PublicStaticVariables;
+import specular.systems.StaticVariables;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.Visual;
@@ -30,7 +30,7 @@ public class AddContactDlg extends DialogFragment {
 
     public AddContactDlg(ContactCard pcc, String session, long id) {
         //todo need to check if he has a good copy before deleting
-        PublicStaticVariables.fileContactCard = null;
+        StaticVariables.fileContactCard = null;
         this.pcc = pcc;
         this.id = id;
         this.session = session;
@@ -38,8 +38,8 @@ public class AddContactDlg extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        //pcc = PublicStaticVariables.fileContactCard;
-        //PublicStaticVariables.fileContactCard = null;
+        //pcc = StaticVariables.fileContactCard;
+        //StaticVariables.fileContactCard = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -56,16 +56,16 @@ public class AddContactDlg extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         Contact c;
                         if (((CheckBox) v.findViewById(R.id.check_box_update)).isChecked()) {
-                            c = PublicStaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
+                            c = StaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
                             c.update(getActivity(),-1, null, null, pcc.getPublicKey(), null);
                         } else
                             c = new Contact(getActivity(),pcc.getName(), pcc.getEmail(), pcc.getPublicKey(), session);
-                        if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg) {
+                        if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
                             ((TextView) getActivity().findViewById(R.id.flag_contact_exist)).setText(true + "");
                             getActivity().invalidateOptionsMenu();
                         }
-                        if (PublicStaticVariables.currentLayout == R.layout.encrypt) {
-                            PublicStaticVariables.fragmentManagement.contactChosen(c.getId());
+                        if (StaticVariables.currentLayout == R.layout.encrypt) {
+                            StaticVariables.fragmentManagement.contactChosen(c.getId());
                         }
 
                     }

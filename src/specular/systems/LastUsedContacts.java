@@ -29,9 +29,9 @@ public class LastUsedContacts {
                 num[c] = Integer.parseInt(t[c].split("-")[1]);
             for (int c = 0; c < t.length && c < NUM_LASTS; c++) {
                 long lg = Long.parseLong(t[c].split("-")[0]);
-                for (int b = 0; b < PublicStaticVariables.fullList.size(); b++) {
-                    if (PublicStaticVariables.fullList.get(b).getId() == lg) {
-                        lasts[c] = PublicStaticVariables.fullList.get(b);
+                for (int b = 0; b < StaticVariables.fullList.size(); b++) {
+                    if (StaticVariables.fullList.get(b).getId() == lg) {
+                        lasts[c] = StaticVariables.fullList.get(b);
                         ids[c] = lg;
                         break;
                     }
@@ -49,7 +49,7 @@ public class LastUsedContacts {
     }
 
     public void showIfNeeded(Activity a,View v) {
-        if (PublicStaticVariables.fullList.size() < PublicStaticVariables.minContactSize
+        if (StaticVariables.fullList.size() < StaticVariables.minContactSize
                 || lasts.length == 0 || lasts[0] == null) {
             Log.w("show if needed","length"+lasts.length+", "+(lasts[0]==null));
             if (v != null)
@@ -76,7 +76,7 @@ public class LastUsedContacts {
             vg2.getChildAt(0).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    PublicStaticVariables.fragmentManagement.contactChosen(
+                    StaticVariables.fragmentManagement.contactChosen(
                             Long.parseLong(((TextView) vg2.getChildAt(2)).getText().toString()));
                 }
             });

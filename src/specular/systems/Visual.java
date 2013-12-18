@@ -79,7 +79,7 @@ public class Visual {
         if (et.getKeyListener() == null) {
             ib.setImageResource(R.drawable.save);
             et.setSelection(et.getText().length());
-            et.setKeyListener(PublicStaticVariables.edit);
+            et.setKeyListener(StaticVariables.edit);
             et.setFocusable(true);
             et.setFocusableInTouchMode(true);
             et.requestFocus();

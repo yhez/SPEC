@@ -29,7 +29,7 @@ import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.MySimpleArrayAdapter;
-import specular.systems.PublicStaticVariables;
+import specular.systems.StaticVariables;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.Visual;
@@ -59,31 +59,31 @@ public class ChooseContact extends Activity {
             //todo add filter
             //findViewById(R.id.filter_ll).setVisibility(View.VISIBLE);
             ListView lv = (ListView) findViewById(R.id.list);
-            if (PublicStaticVariables.adapter == null||PublicStaticVariables.currentList==null) {
-                PublicStaticVariables.contactsDataSource = new ContactsDataSource(this);
-                PublicStaticVariables.currentList = PublicStaticVariables.contactsDataSource.getAllContacts();
-                Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
+            if (StaticVariables.adapter == null|| StaticVariables.currentList==null) {
+                StaticVariables.contactsDataSource = new ContactsDataSource(this);
+                StaticVariables.currentList = StaticVariables.contactsDataSource.getAllContacts();
+                Collections.sort(StaticVariables.currentList, new Comparator<Contact>() {
                     @Override
                     public int compare(Contact contact, Contact contact2) {
                         return contact.getEmail().compareTo(contact2.getEmail());
                     }
                 });
-                PublicStaticVariables.adapter = new MySimpleArrayAdapter(this, PublicStaticVariables.currentList);
+                StaticVariables.adapter = new MySimpleArrayAdapter(this, StaticVariables.currentList);
             }
-            if (PublicStaticVariables.adapter.isEmpty()) {
+            if (StaticVariables.adapter.isEmpty()) {
                 Toast t = Toast.makeText(this, R.string.widget_add_contact_list_empty, Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                 t.show();
                 finish();
             } else {
-                lv.setAdapter(PublicStaticVariables.adapter);
+                lv.setAdapter(StaticVariables.adapter);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(ChooseContact.this);
                         RemoteViews views = new RemoteViews(ChooseContact.this.getPackageName(),
                                 R.layout.widget_contact);
-                        Contact c = PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(((TextView) view.findViewById(R.id.id_contact)).getText().toString()));
+                        Contact c = StaticVariables.contactsDataSource.findContact(Long.parseLong(((TextView) view.findViewById(R.id.id_contact)).getText().toString()));
                         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(c.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 200);
                         try {
                             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();

@@ -56,13 +56,13 @@ public final class FilesManagement {
     }
 
     public static boolean createFileToOpen(Activity a) {
-        if (PublicStaticVariables.decryptedMsg.getFileContent() == null)
+        if (StaticVariables.decryptedMsg.getFileContent() == null)
             return false;
         try {
             File path = Environment.getExternalStorageDirectory();
-            File file = new File(path, PublicStaticVariables.decryptedMsg.getFileName());
+            File file = new File(path, StaticVariables.decryptedMsg.getFileName());
             OutputStream os = new FileOutputStream(file);
-            os.write(PublicStaticVariables.decryptedMsg.getFileContent());
+            os.write(StaticVariables.decryptedMsg.getFileContent());
             os.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,17 +72,17 @@ public final class FilesManagement {
     }
 
     public static void saveTempDecryptedMSG(Activity a) {
-        if (PublicStaticVariables.decryptedMsg == null)
+        if (StaticVariables.decryptedMsg == null)
             return;
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         SharedPreferences.Editor edt = srp.edit();
-        edt.putString("msg", PublicStaticVariables.decryptedMsg.getMsgContent());
-        edt.putString("file_name", PublicStaticVariables.decryptedMsg.getFileName());
-        edt.putString("session", PublicStaticVariables.decryptedMsg.getSession());
-        PublicStaticVariables.session = null;
-        PublicStaticVariables.file_name = null;
-        PublicStaticVariables.msg_content = null;
+        edt.putString("msg", StaticVariables.decryptedMsg.getMsgContent());
+        edt.putString("file_name", StaticVariables.decryptedMsg.getFileName());
+        edt.putString("session", StaticVariables.decryptedMsg.getSession());
+        StaticVariables.session = null;
+        StaticVariables.file_name = null;
+        StaticVariables.msg_content = null;
         edt.commit();
     }
 
@@ -94,24 +94,24 @@ public final class FilesManagement {
         edt.remove("file_name");
         edt.remove("session");
         edt.commit();
-        if (PublicStaticVariables.file_name != null)
+        if (StaticVariables.file_name != null)
             try {
-                new File(Environment.getExternalStorageDirectory(), PublicStaticVariables.file_name).delete();
+                new File(Environment.getExternalStorageDirectory(), StaticVariables.file_name).delete();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        PublicStaticVariables.flag_msg = false;
-        PublicStaticVariables.session = null;
-        PublicStaticVariables.file_name = null;
-        PublicStaticVariables.msg_content = null;
+        StaticVariables.flag_msg = false;
+        StaticVariables.session = null;
+        StaticVariables.file_name = null;
+        StaticVariables.msg_content = null;
     }
 
     public static void getTempDecryptedMSG(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
-        PublicStaticVariables.msg_content = srp.getString("msg", null);
-        PublicStaticVariables.session = srp.getString("session", null);
-        PublicStaticVariables.file_name = srp.getString("file_name", null);
+        StaticVariables.msg_content = srp.getString("msg", null);
+        StaticVariables.session = srp.getString("session", null);
+        StaticVariables.file_name = srp.getString("file_name", null);
     }
 
     public static Typeface getOld(Activity a) {
@@ -133,7 +133,7 @@ public final class FilesManagement {
     private static boolean saveQRToSend(Activity a) {
         int qrCodeDimention = 500;
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(
-                PublicStaticVariables.encryptedMsgToSend, BarcodeFormat.QR_CODE
+                StaticVariables.encryptedLight, BarcodeFormat.QR_CODE
                 .toString(), qrCodeDimention);
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
@@ -165,7 +165,7 @@ public final class FilesManagement {
         try {
             FileOutputStream fos = a.openFileOutput(a.getString(
                     FILE_NAME_SEND), Context.MODE_WORLD_READABLE);
-            fos.write(PublicStaticVariables.encryptedMsgToSend.getBytes());
+            fos.write(StaticVariables.encryptedMsgToSend.getBytes());
             fos.close();
             return true;
         } catch (Exception e) {
@@ -332,7 +332,7 @@ public final class FilesManagement {
             edt.putString(PUBLIC_KEY, qrpk.getPublicKey());
             edt.putString(EMAIL, qrpk.getEmail());
             edt.putString(NAME, qrpk.getName());
-            if (!PublicStaticVariables.NFCMode)
+            if (!StaticVariables.NFCMode)
                 edt.putString(PRIVATE_KEY, CryptMethods.getPrivateToSave());
             else
                 edt.remove(PRIVATE_KEY);
@@ -406,7 +406,7 @@ public final class FilesManagement {
             e.printStackTrace();
             return RESULT_ADD_FILE_FAILED;
         }
-        if (size > PublicStaticVariables.LIMIT_FILE_SIZE){
+        if (size > StaticVariables.LIMIT_FILE_SIZE){
             return RESULT_ADD_FILE_TO_BIG;
         }
         byte[] result = new byte[size];
@@ -435,7 +435,7 @@ public final class FilesManagement {
             return RESULT_ADD_FILE_FAILED;
         }
         if (result.length > 0) {
-            PublicStaticVariables.fileContent = result;
+            StaticVariables.fileContent = result;
             return RESULT_ADD_FILE_OK;
         }
         return RESULT_ADD_FILE_EMPTY;

@@ -29,7 +29,7 @@ import java.util.List;
 
 import specular.systems.Contact;
 import specular.systems.FilesManagement;
-import specular.systems.PublicStaticVariables;
+import specular.systems.StaticVariables;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.Visual;
@@ -46,7 +46,7 @@ public class SendMsg extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         uris = FilesManagement.getFilesToSend(this);
-        contact=PublicStaticVariables.contactsDataSource.findContact(getIntent().getLongExtra("contactId", -1));
+        contact= StaticVariables.contactsDataSource.findContact(getIntent().getLongExtra("contactId", -1));
         if (contact.getDefaultApp() != null) {
             Intent i = new Intent();
             i.setComponent(contact.getDefaultApp());
@@ -103,7 +103,7 @@ public class SendMsg extends Activity {
             etFile.setFilters(Visual.filters());
         }
         if (uris.get(1) != null) {
-            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(PublicStaticVariables.encryptedMsgToSend,
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(StaticVariables.encryptedMsgToSend,
                     BarcodeFormat.QR_CODE.toString(), 76);
             Bitmap bitmap;
             try {

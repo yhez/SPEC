@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import specular.systems.Contact;
-import specular.systems.PublicStaticVariables;
+import specular.systems.StaticVariables;
 import specular.systems.R;
 
 
@@ -19,11 +19,11 @@ public class DeleteContactDialog extends DialogFragment {
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                Contact contact = PublicStaticVariables.contactsDataSource.findContact(Long
+                Contact contact = StaticVariables.contactsDataSource.findContact(Long
                         .valueOf(((TextView) getActivity().findViewById(R.id.contact_id))
                                 .getText().toString()));
-                PublicStaticVariables.contactsDataSource.deleteContact(getActivity(),contact);
-                PublicStaticVariables.luc.remove(getActivity(), contact);
+                StaticVariables.contactsDataSource.deleteContact(getActivity(),contact);
+                StaticVariables.luc.remove(getActivity(), contact);
                 getActivity().onBackPressed();
             }
         })

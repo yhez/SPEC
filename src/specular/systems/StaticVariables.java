@@ -6,11 +6,12 @@ import java.util.List;
 
 import specular.systems.activitys.Main;
 
-public class PublicStaticVariables {
+public class StaticVariables {
     //defines how long does the list have to be to show the last used contacts
     public static final int minContactSize = 10;
     //from CryptoMethods
     public static MessageFormat decryptedMsg = null;
+    public static LightMessage decryptedLightMsg=null;
     public static String encryptedMsgToSend = null;
     public static boolean NFCMode = false;
     //from splash
@@ -43,8 +44,9 @@ public class PublicStaticVariables {
     public static int flag_session;
     public static String hash, timeStamp, friendsPublicKey, name, email;
     public static Boolean flag_msg;
+    public static Boolean flag_light_msg;
     //should be delete when goes to background
     public static String msg_content = null, file_name = null, session = null;
     public static long orig_msg_size,encrypted_msg_size;
-    public static Boolean flag_lightMsg=false;
+    public static String encryptedLight;
 }

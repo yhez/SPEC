@@ -9,16 +9,15 @@ import java.util.Calendar;
  */
 public class LightMessage {
 
-    private String msgContent, session, sentTime;
+    private String msgContent, sentTime;
     private String hash;
     public LightMessage(byte[] raw){
         try {
             String[] data = new String(raw, "UTF-8").split("\n");
-            session=data[0];
-            sentTime=data[1];
-            hash=data[2];
+            sentTime=data[0];
+            hash=data[1];
             msgContent = "";
-            for (int a = 3; a < data.length; a++)
+            for (int a = 2; a < data.length; a++)
                 msgContent += data[a] + (a + 1 == data.length ? "" : "\n");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -27,15 +26,11 @@ public class LightMessage {
     public boolean checkHash(){
         return hash.equals(myHash(getFormatedMsg()));
     }
-    public LightMessage(String msgContent, String session){
+    public LightMessage(String msgContent){
         this.msgContent=msgContent;
-        this.session=session;
         sentTime=new SimpleDateFormat("dd/MM/yyyy HH:mm").format(Calendar
                 .getInstance().getTime());
         hash=myHash(getFormatedMsg());
-    }
-    public String getSession(){
-        return session;
     }
     public String getMsgContent(){
         return msgContent;
@@ -47,16 +42,9 @@ public class LightMessage {
         return hash;
     }
     public byte[] getFormatedMsg(){
-        //light message contains short session + short time stamp + msg + short hash
-        String[] tmp=session.split(Session.DIVIDE_SESSIONS);
-        String session="m:"+tmp[0].split(" ")[3]+" "+tmp[0].split(" ")[7];
-        if(tmp.length>1)
-            session+="---h:"+tmp[1].split(" ")[3]+" "+tmp[1].split(" ")[7];
-        byte[] fm = new byte[session.length() + sentTime.length() + msgContent.length()+2+(hash!=null?(hash.length()+1):0)];
+        //light message contains short time stamp + msg + short hash
+        byte[] fm = new byte[sentTime.length() + msgContent.length()+2+(hash!=null?(hash.length()+1):0)];
         int index=0;
-        for(int a= 0; a<session.length();a++)
-            fm[index++]=(byte)session.charAt(a);
-        fm[index++]='\n';
         for(int a=0;a<sentTime.length();a++)
             fm[index++]=(byte)sentTime.charAt(a);
         if(hash!=null){

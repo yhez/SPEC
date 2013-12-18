@@ -24,7 +24,7 @@ import specular.systems.ContactCard;
 import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.FilesManagement;
-import specular.systems.PublicStaticVariables;
+import specular.systems.StaticVariables;
 import specular.systems.R;
 import specular.systems.Visual;
 
@@ -73,7 +73,7 @@ public class Splash extends Activity {
             }
 
             Intent intent = new Intent(Splash.this, Main.class);
-            if (PublicStaticVariables.time == null || (System.currentTimeMillis() - PublicStaticVariables.time) > (1000 * 60 * TIME_FOR_CLEAR_TASK)) {
+            if (StaticVariables.time == null || (System.currentTimeMillis() - StaticVariables.time) > (1000 * 60 * TIME_FOR_CLEAR_TASK)) {
                 FilesManagement.deleteTempDecryptedMSG(this);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
@@ -99,7 +99,7 @@ public class Splash extends Activity {
         } else if (thisIntent.getAction() != null && thisIntent.getAction().equals(Intent.ACTION_SEND)) {
             String s = thisIntent.getStringExtra(Intent.EXTRA_TEXT);
             if (s != null) {
-                PublicStaticVariables.currentText = s;
+                StaticVariables.currentText = s;
             }
             go();
         } else if (thisIntent.getData() == null) {
@@ -146,9 +146,9 @@ public class Splash extends Activity {
                 } else {
                     qrp = new ContactCard(this, data);
                     if (qrp.getPublicKey() != null) {
-                        PublicStaticVariables.fileContactCard = qrp;
+                        StaticVariables.fileContactCard = qrp;
                     } else {
-                        PublicStaticVariables.message = data;
+                        StaticVariables.message = data;
                     }
                     go();
                 }

@@ -33,7 +33,7 @@ public class Contact {
             this.received = session != null ? 1 : 0;
             this.sent = 0;
             this.last = session != null ? System.currentTimeMillis() : 0;
-            this.id = PublicStaticVariables.contactsDataSource.createContact(a,this);
+            this.id = StaticVariables.contactsDataSource.createContact(a,this);
         }
     }
 
@@ -141,9 +141,9 @@ public class Contact {
             this.email = email;
         if (session != null)
             this.session = session;
-        PublicStaticVariables.contactsDataSource.updateDB(id,
+        StaticVariables.contactsDataSource.updateDB(id,
                 contactName, email, publicKey, session);
-        PublicStaticVariables.adapter.updateCont(a,this, index,true);
+        StaticVariables.adapter.updateCont(a,this, index,true);
     }
 
     public static final int SENT = 0, RECEIVED = 1;
@@ -155,19 +155,19 @@ public class Contact {
             received++;
             this.last = time;
         }
-        PublicStaticVariables.contactsDataSource.updateDB(id, last, received, sent);
-        PublicStaticVariables.adapter.updateCont(a,this,-1,false);
+        StaticVariables.contactsDataSource.updateDB(id, last, received, sent);
+        StaticVariables.adapter.updateCont(a,this,-1,false);
     }
 
     public void update(String defaultApp,Activity a) {
         if(defaultApp!=null){
             cn=new ComponentName(defaultApp.split("\n")[0],defaultApp.split("\n")[1]);
-            PublicStaticVariables.contactsDataSource.updateDB(id,defaultApp);
-            PublicStaticVariables.adapter.updateCont(a,this,-1,true);
+            StaticVariables.contactsDataSource.updateDB(id,defaultApp);
+            StaticVariables.adapter.updateCont(a,this,-1,true);
         }else{
             cn=null;
-            PublicStaticVariables.contactsDataSource.updateDB(id,"");
-            PublicStaticVariables.adapter.updateCont(a,this, -1,true);
+            StaticVariables.contactsDataSource.updateDB(id,"");
+            StaticVariables.adapter.updateCont(a,this, -1,true);
         }
     }
 }

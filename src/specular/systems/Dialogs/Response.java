@@ -20,7 +20,7 @@ import specular.systems.Contact;
 import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
 import specular.systems.MessageFormat;
-import specular.systems.PublicStaticVariables;
+import specular.systems.StaticVariables;
 import specular.systems.R;
 import specular.systems.activitys.SendMsg;
 
@@ -40,12 +40,12 @@ public class Response extends DialogFragment {
         View v = inflater.inflate(R.layout.response, null);
         builder.setView(v);
         final CheckBox cb = (CheckBox) v.findViewById(R.id.quote);
-        if (PublicStaticVariables.currentLayout == R.layout.edit_contact) {
-            contact = PublicStaticVariables.contactsDataSource.findContact(Long.parseLong(
+        if (StaticVariables.currentLayout == R.layout.edit_contact) {
+            contact = StaticVariables.contactsDataSource.findContact(Long.parseLong(
                     ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));
-        }else if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg){
-            contact = PublicStaticVariables.contactsDataSource.findContactByKey(PublicStaticVariables.friendsPublicKey);
-            if(PublicStaticVariables.msg_content!=null&&PublicStaticVariables.msg_content.length()>0){
+        }else if (StaticVariables.currentLayout == R.layout.decrypted_msg){
+            contact = StaticVariables.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
+            if(StaticVariables.msg_content!=null&& StaticVariables.msg_content.length()>0){
                 cb.setVisibility(View.VISIBLE);
                 cb.setChecked(true);
             }
@@ -75,30 +75,30 @@ public class Response extends DialogFragment {
                     bt.setEnabled(true);
                     bt.setImageResource(R.drawable.ic_send_holo_light);
                     tv.setVisibility(View.VISIBLE);
-                    tv.setText(PublicStaticVariables.MSG_LIMIT_FOR_QR - editable.length() > 0 ? PublicStaticVariables.MSG_LIMIT_FOR_QR - editable.length() + "" : getString(R.string.no_qr));
+                    tv.setText(StaticVariables.MSG_LIMIT_FOR_QR - editable.length() > 0 ? StaticVariables.MSG_LIMIT_FOR_QR - editable.length() + "" : getString(R.string.no_qr));
                 }
             }
         });
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (PublicStaticVariables.currentLayout == R.layout.decrypted_msg)
+                if (StaticVariables.currentLayout == R.layout.decrypted_msg)
                     getActivity().findViewById(R.id.answer).setVisibility(View.GONE);
                 final String userInput = et.getText().toString();
                 String msgContent;
                 if (cb.isChecked())
-                    if (PublicStaticVariables.msg_content.contains(getString(R.string.quote_msg)))
+                    if (StaticVariables.msg_content.contains(getString(R.string.quote_msg)))
                         msgContent = getString(R.string.divide_msg)
                                 + getString(R.string.quote_msg)
                                 + getString(R.string.divide_msg)
-                                + PublicStaticVariables.msg_content
+                                + StaticVariables.msg_content
                                 .replace(getString(R.string.quote_msg)
                                         + getString(R.string.divide_msg), "");
                     else
                         msgContent = getString(R.string.divide_msg)
                                 + getString(R.string.quote_msg)
                                 + getString(R.string.divide_msg)
-                                + PublicStaticVariables.msg_content;
+                                + StaticVariables.msg_content;
                 else
                     msgContent = "";
                 final MessageFormat msg = new MessageFormat(null, "", userInput + msgContent
@@ -111,7 +111,7 @@ public class Response extends DialogFragment {
                     public void run() {
                         CryptMethods.encrypt(msg.getFormatedMsg(),
                                 contact.getPublicKey());
-                        boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < PublicStaticVariables.MSG_LIMIT_FOR_QR);
+                        boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR);
                         if (success) {
                             prgd.cancel();
                             Intent intent = new Intent(getActivity(),SendMsg.class);

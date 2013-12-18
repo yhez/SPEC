@@ -26,29 +26,29 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filter
 
     public void updateCont(Activity aa,Contact c, int index,boolean needRefresh) {
         if (!(index < 0)) {
-            PublicStaticVariables.fullList.remove(
-                    PublicStaticVariables.currentList.get(index));
-            PublicStaticVariables.currentList.remove(index);
+            StaticVariables.fullList.remove(
+                    StaticVariables.currentList.get(index));
+            StaticVariables.currentList.remove(index);
         } else
-            for (int a = 0; a < PublicStaticVariables.fullList.size(); a++)
-                if (PublicStaticVariables.fullList.get(a).getId() == c.getId()) {
-                    PublicStaticVariables.currentList.remove(PublicStaticVariables.fullList.get(a));
-                    PublicStaticVariables.fullList.remove(a);
+            for (int a = 0; a < StaticVariables.fullList.size(); a++)
+                if (StaticVariables.fullList.get(a).getId() == c.getId()) {
+                    StaticVariables.currentList.remove(StaticVariables.fullList.get(a));
+                    StaticVariables.fullList.remove(a);
                     break;
                 }
-        PublicStaticVariables.currentList.add(c);
-        PublicStaticVariables.fullList.add(c);
+        StaticVariables.currentList.add(c);
+        StaticVariables.fullList.add(c);
         if(needRefresh)
             refreshList(aa);
     }
 
     public void removeCont(Activity a,int index) {
-        PublicStaticVariables.fullList.remove(index);
+        StaticVariables.fullList.remove(index);
         refreshList(a);
     }
 
     public void addCont(Activity a,Contact c) {
-        PublicStaticVariables.fullList.add(c);
+        StaticVariables.fullList.add(c);
         refreshList(a);
     }
 
@@ -57,7 +57,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filter
         LayoutInflater inflater = (LayoutInflater) a
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_row, parent, false);
-        Contact c = PublicStaticVariables.currentList.get(position);
+        Contact c = StaticVariables.currentList.get(position);
         TextView name = (TextView) rowView.findViewById(R.id.first_line);
         TextView email = (TextView) rowView.findViewById(R.id.sec_line);
         // TextView session = (TextView) rowView.findViewById(R.id.thirdLine);
@@ -88,12 +88,12 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filter
                 //todo i dont need to copy it to another array just work with it until you done and then go to original list
                 if (lc.size() > 0) {
                     for (Contact aLc : lc)
-                        if (!PublicStaticVariables.currentList.contains(aLc))
-                            PublicStaticVariables.currentList.add(aLc);
-                    for (int a = 0; a < PublicStaticVariables.currentList.size(); a++)
-                        if (!lc.contains(PublicStaticVariables.currentList.get(a)))
-                            PublicStaticVariables.currentList.remove(PublicStaticVariables.currentList.get(a));
-                    Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
+                        if (!StaticVariables.currentList.contains(aLc))
+                            StaticVariables.currentList.add(aLc);
+                    for (int a = 0; a < StaticVariables.currentList.size(); a++)
+                        if (!lc.contains(StaticVariables.currentList.get(a)))
+                            StaticVariables.currentList.remove(StaticVariables.currentList.get(a));
+                    Collections.sort(StaticVariables.currentList, new Comparator<Contact>() {
                         @Override
                         public int compare(Contact contact, Contact contact2) {
                             return contact.getEmail().compareTo(contact2.getEmail());
@@ -102,7 +102,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filter
                     notifyDataSetChanged();
                 }
                 else{
-                    PublicStaticVariables.currentList.removeAll(PublicStaticVariables.currentList);
+                    StaticVariables.currentList.removeAll(StaticVariables.currentList);
                     notifyDataSetChanged();
                 }
             }
@@ -112,10 +112,10 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filter
                 FilterResults results = new FilterResults();
                 ArrayList<Contact> FilteredArrayNames = new ArrayList<Contact>();
                 constraint = constraint.toString().toLowerCase();
-                for (int i = 0; i < PublicStaticVariables.fullList.size(); i++) {
-                    String dataNames = PublicStaticVariables.fullList.get(i).getEmail() + PublicStaticVariables.fullList.get(i).getContactName();
+                for (int i = 0; i < StaticVariables.fullList.size(); i++) {
+                    String dataNames = StaticVariables.fullList.get(i).getEmail() + StaticVariables.fullList.get(i).getContactName();
                     if (dataNames.toLowerCase().contains(constraint.toString())) {
-                        FilteredArrayNames.add(PublicStaticVariables.fullList.get(i));
+                        FilteredArrayNames.add(StaticVariables.fullList.get(i));
                     }
                 }
                 results.values = FilteredArrayNames;
@@ -128,27 +128,27 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filter
     public void refreshList(Activity a) {
         ArrayList<Contact> tmp = new ArrayList<Contact>();
         boolean changed=false;
-        for (Contact c : PublicStaticVariables.currentList)
-            if (!PublicStaticVariables.fullList.contains(c))
+        for (Contact c : StaticVariables.currentList)
+            if (!StaticVariables.fullList.contains(c))
                 tmp.add(c);
         if(tmp.size()>0){
-            PublicStaticVariables.currentList.removeAll(tmp);
+            StaticVariables.currentList.removeAll(tmp);
             changed=true;
         }
-        for (Contact c : PublicStaticVariables.fullList)
-            if (!PublicStaticVariables.currentList.contains(c)){
-                PublicStaticVariables.currentList.add(c);
+        for (Contact c : StaticVariables.fullList)
+            if (!StaticVariables.currentList.contains(c)){
+                StaticVariables.currentList.add(c);
                 changed=true;
             }
 
         if(changed){
-            Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
+            Collections.sort(StaticVariables.currentList, new Comparator<Contact>() {
                 @Override
                 public int compare(Contact contact, Contact contact2) {
                     return contact.getEmail().compareTo(contact2.getEmail());
                 }
             });
-            PublicStaticVariables.adapter.notifyDataSetChanged();
+            StaticVariables.adapter.notifyDataSetChanged();
         }
         View v = a.findViewById(R.id.list);
         if (v != null)
@@ -156,7 +156,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filter
                 v.setVisibility(View.VISIBLE);
                 a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
             } else {
-                if (PublicStaticVariables.fullList.size() == 0) {
+                if (StaticVariables.fullList.size() == 0) {
                     v.setVisibility(View.GONE);
                     a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
                 }

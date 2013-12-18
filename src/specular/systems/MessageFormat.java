@@ -64,13 +64,13 @@ public class MessageFormat {
     }
 
     public MessageFormat() {
-        email = PublicStaticVariables.decryptedMsg.getEmail();
-        publicKey = PublicStaticVariables.decryptedMsg.getPublicKey();
-        sentTime = PublicStaticVariables.decryptedMsg.getSentTime();
-        session = PublicStaticVariables.decryptedMsg.getSession();
-        fileName = PublicStaticVariables.decryptedMsg.getFileName();
-        name = PublicStaticVariables.decryptedMsg.getName();
-        msgContent = PublicStaticVariables.decryptedMsg.msgContent;
+        email = StaticVariables.decryptedMsg.getEmail();
+        publicKey = StaticVariables.decryptedMsg.getPublicKey();
+        sentTime = StaticVariables.decryptedMsg.getSentTime();
+        session = StaticVariables.decryptedMsg.getSession();
+        fileName = StaticVariables.decryptedMsg.getFileName();
+        name = StaticVariables.decryptedMsg.getName();
+        msgContent = StaticVariables.decryptedMsg.msgContent;
         hash = "";
     }
 

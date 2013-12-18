@@ -23,7 +23,7 @@ import specular.systems.CustomExceptionHandler;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.FilesManagement;
 import specular.systems.MessageFormat;
-import specular.systems.PublicStaticVariables;
+import specular.systems.StaticVariables;
 import specular.systems.R;
 import specular.systems.Visual;
 import specular.systems.activitys.SendMsg;
@@ -93,7 +93,7 @@ public class QuickMsg extends Activity {
                                 bt.setEnabled(true);
                                 bt.setImageResource(R.drawable.ic_send_holo_light);
                                 tv.setVisibility(View.VISIBLE);
-                                tv.setText(PublicStaticVariables.MSG_LIMIT_FOR_QR - editable.length() > 0 ? PublicStaticVariables.MSG_LIMIT_FOR_QR - editable.length() + "" : getString(R.string.no_qr));
+                                tv.setText(StaticVariables.MSG_LIMIT_FOR_QR - editable.length() > 0 ? StaticVariables.MSG_LIMIT_FOR_QR - editable.length() + "" : getString(R.string.no_qr));
                             }
                         }
                     });
@@ -111,7 +111,7 @@ public class QuickMsg extends Activity {
                                 public void run() {
                                     CryptMethods.encrypt(msg.getFormatedMsg(),
                                             contact.getPublicKey());
-                                    boolean success = FilesManagement.createFilesToSend(QuickMsg.this, userInput.length() < PublicStaticVariables.MSG_LIMIT_FOR_QR);
+                                    boolean success = FilesManagement.createFilesToSend(QuickMsg.this, userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR);
                                     if (success) {
                                         prgd.cancel();
                                         Intent intent = new Intent(QuickMsg.this,SendMsg.class);
