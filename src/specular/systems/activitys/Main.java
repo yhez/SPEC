@@ -28,6 +28,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -1183,8 +1184,36 @@ public class Main extends Activity {
                 t.show();
             }
             else {
-                SendMsgDialog smd = new SendMsgDialog(files, contact.getEmail());
-                smd.show(getFragmentManager(), "smd");
+                if(contact.getDefaultApp()!=null){
+                    Intent i = new Intent();
+                    i.setComponent(contact.getDefaultApp());
+                    i.setAction(Intent.ACTION_SEND_MULTIPLE);
+                    i.setType("*/*");
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
+                    i.putParcelableArrayListExtra(Intent.EXTRA_STREAM,files);
+                    i.putExtra(Intent.EXTRA_SUBJECT,
+                            getResources().getString(R.string.subject_encrypt));
+                    try {
+                        InputStream is = getAssets().open("spec_tmp_msg.html");
+                        int size = is.available();
+                        byte[] buffer = new byte[size];
+                        is.read(buffer);
+                        is.close();
+                        i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+                    } catch (Exception e) {
+                        Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    try{
+                        startActivity(i);
+                    }catch (Exception e){
+                        SendMsgDialog smd = new SendMsgDialog(files, contact);
+                        smd.show(getFragmentManager(), "smd");
+                    }
+                }else{
+                    SendMsgDialog smd = new SendMsgDialog(files, contact);
+                    smd.show(getFragmentManager(), "smd");
+                }
             }
         } else {
            t.setText(R.string.failed_to_create_files_to_send);t.show();

@@ -322,6 +322,21 @@ public class FragmentManagement extends Fragment {
                 ((TextView) rootView.findViewById(R.id.contact_email).
                         findViewById(R.id.text_view)).setText(getString(R.string.edit_email) + "\t");
                 final Contact currContact = PublicStaticVariables.currentList.get(index);
+                if(currContact.getDefaultApp()!=null){
+                    Intent i = new Intent();
+                    i.setComponent(currContact.getDefaultApp());
+                    ResolveInfo rs = getActivity().getPackageManager().resolveActivity(i,0);
+                    final ImageButton ibbb = (ImageButton)rootView.findViewById(R.id.default_app_send);
+                    ibbb.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
+                    ibbb.setVisibility(View.VISIBLE);
+                    ibbb.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            currContact.update(null);
+                            ibbb.setVisibility(View.GONE);
+                        }
+                    });
+                }
                 final EditText etName = (EditText) rootView.findViewById(R.id.contact_name).findViewById(R.id.edit_text);
                 if (PublicStaticVariables.edit == null)
                     PublicStaticVariables.edit = etName.getKeyListener();

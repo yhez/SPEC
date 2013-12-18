@@ -13,7 +13,8 @@ public class ContactsDataSource {
             MySQLiteHelper.COLUMN_CONTACT_NAME, MySQLiteHelper.COLUMN_EMAIL,
             MySQLiteHelper.COLUMN_CONTACT_ADDED_DATE, MySQLiteHelper.COLUMN_LAST_MSG,
             MySQLiteHelper.MSG_I_SEND, MySQLiteHelper.MSG_RECEIVED,
-            MySQLiteHelper.COLUMN_PUBLIC_KEY, MySQLiteHelper.COLUMN_SESSION};
+            MySQLiteHelper.COLUMN_PUBLIC_KEY, MySQLiteHelper.COLUMN_SESSION,
+            MySQLiteHelper.COLUMN_DEFAULT_APP};
     private final MySQLiteHelper dbHelper;
     // Database fields
     private SQLiteDatabase database;
@@ -34,6 +35,7 @@ public class ContactsDataSource {
         values.put(MySQLiteHelper.MSG_RECEIVED, contact.getReceived());
         values.put(MySQLiteHelper.COLUMN_PUBLIC_KEY, contact.getPublicKey());
         values.put(MySQLiteHelper.COLUMN_SESSION, contact.getSession());
+        values.put(MySQLiteHelper.COLUMN_DEFAULT_APP, "");
 
         database = dbHelper.getWritableDatabase();
         long l = database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
@@ -102,7 +104,7 @@ public class ContactsDataSource {
                     , cursor.getString(2), cursor.getInt(3)
                     , cursor.getLong(4), cursor.getInt(5)
                     , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8));
+                    cursor.getString(8),cursor.getString(9));
             dbHelper.close();
             return c;
         }
@@ -121,7 +123,7 @@ public class ContactsDataSource {
                     , cursor.getString(2), cursor.getInt(3)
                     , cursor.getLong(4), cursor.getInt(5)
                     , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8));
+                    cursor.getString(8),cursor.getString(9));
             dbHelper.close();
             return c;
         }
@@ -140,7 +142,7 @@ public class ContactsDataSource {
                     , cursor.getString(2), cursor.getInt(3)
                     , cursor.getLong(4), cursor.getInt(5)
                     , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8));
+                    cursor.getString(8),cursor.getString(9));
             dbHelper.close();
             return c;
         }
@@ -159,7 +161,7 @@ public class ContactsDataSource {
                     , cursor.getString(2), cursor.getInt(3)
                     , cursor.getLong(4), cursor.getInt(5)
                     , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8));
+                    cursor.getString(8),cursor.getString(9));
             contacts.add(contact);
             cursor.moveToNext();
         }
@@ -167,5 +169,13 @@ public class ContactsDataSource {
         cursor.close();
         dbHelper.close();
         return contacts;
+    }
+
+    public void updateDB(long id,String defaultApp) {
+        ContentValues cv = new ContentValues();
+        cv.put(MySQLiteHelper.COLUMN_DEFAULT_APP,defaultApp);
+        database = dbHelper.getWritableDatabase();
+        database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
+        database.close();
     }
 }

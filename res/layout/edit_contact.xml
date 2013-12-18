@@ -1,7 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:alpha="0"
+    android:alpha="1"
     android:background="@android:color/white"
     android:orientation="vertical">
 
@@ -81,7 +81,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:baselineAligned="false"
             android:orientation="horizontal">
 
@@ -91,7 +91,13 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="center">
-
+                <ImageButton
+                    android:visibility="gone"
+                    android:padding="@dimen/default_gap"
+                    android:id="@+id/default_app_send"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
                 <ImageButton
                     android:id="@+id/contact_picture"
                     style="?android:attr/borderlessButtonStyle"
@@ -128,7 +134,15 @@
                     android:src="@drawable/delete" />
             </LinearLayout>
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            </LinearLayout>
 
         <TextView
             android:id="@+id/contact_id"

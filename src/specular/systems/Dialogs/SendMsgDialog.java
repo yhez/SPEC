@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -29,6 +30,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import specular.systems.Contact;
 import specular.systems.PublicStaticVariables;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
@@ -40,11 +42,13 @@ public class SendMsgDialog extends DialogFragment {
     private static List<ResolveInfo> file, image, both;
     ArrayList<Uri> uris;
     View v;
+    Contact contact;
     String email;
 
-    public SendMsgDialog(ArrayList<Uri> uris, String email) {
+    public SendMsgDialog(ArrayList<Uri> uris,Contact contact) {
         this.uris = uris;
-        this.email = email;
+        this.email = contact.getEmail();
+        this.contact=contact;
     }
 
     @Override
@@ -155,6 +159,9 @@ public class SendMsgDialog extends DialogFragment {
     }
 
     private void startOnClick(int what, ResolveInfo rs) {
+        if(((CheckBox)v.findViewById(R.id.check_default)).isChecked()){
+            contact.update(rs.activityInfo.packageName+"\n"+ rs.activityInfo.name);
+        }
         EditText etFile=(EditText)v.findViewById(R.id.name_file),
                 etImage=(EditText)v.findViewById(R.id.qr_name_file);
         if((etFile.getText().length()==0&&(what==BOTH||what==FILE))

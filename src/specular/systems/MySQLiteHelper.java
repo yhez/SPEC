@@ -14,6 +14,7 @@ class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_PUBLIC_KEY = "public_key";
     public static final String COLUMN_SESSION = "session";
+    public static final String COLUMN_DEFAULT_APP = "default_app";
     public static final String DATABASE_NAME = "contacts.db";
     private static final int DATABASE_VERSION = 1;
     public static final String TABLE_CONTACTS = "contacts";
@@ -29,7 +30,8 @@ class MySQLiteHelper extends SQLiteOpenHelper {
             + MSG_I_SEND + " integer not null, "
             + MSG_RECEIVED + " integer not null, "
             + COLUMN_PUBLIC_KEY + " text not null, "
-            + COLUMN_SESSION + " text not null);";
+            + COLUMN_SESSION + " text not null, "
+            + COLUMN_DEFAULT_APP + " text not null);";
 
 
     public MySQLiteHelper(Context context) {

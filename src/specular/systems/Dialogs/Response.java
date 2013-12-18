@@ -119,7 +119,7 @@ public class Response extends DialogFragment {
                                 t.setText(R.string.failed_attach_files);t.show();
                             }
                             else {
-                                SendMsgDialog sendMsgDialog = new SendMsgDialog(files, contact.getEmail());
+                                SendMsgDialog sendMsgDialog = new SendMsgDialog(files, contact);
                                 sendMsgDialog.show(getFragmentManager(), "smd");
                             }
                         } else {

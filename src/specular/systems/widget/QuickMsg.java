@@ -120,7 +120,7 @@ public class QuickMsg extends Activity {
                                             Toast.makeText(QuickMsg.this, R.string.failed_attach_files, Toast.LENGTH_LONG).show();
                                         else {
                                             prgd.cancel();
-                                            SendMsgDialog sendMsgDialog = new SendMsgDialog(files, contact.getEmail());
+                                            SendMsgDialog sendMsgDialog = new SendMsgDialog(files, contact);
                                             sendMsgDialog.show(getFragmentManager(), "widget");
                                         }
                                     } else {

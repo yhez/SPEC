@@ -1,6 +1,7 @@
 package specular.systems;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.graphics.Bitmap;
 
 import com.google.zxing.BarcodeFormat;
@@ -17,6 +18,7 @@ public class Contact {
     private long last;
     private int sent;
     private int received;
+    private ComponentName cn;
 
     // new contact from scratch
     public Contact(Activity a,String contactName, String email,
@@ -37,7 +39,7 @@ public class Contact {
 
     //create contact after pulling out from db
     public Contact(long id, String contactName, String email, int added, long last, int sent, int received, String publicKey,
-                   String session) {
+                   String session,String app) {
         this.id = id;
         this.contactName = contactName;
         this.publicKey = publicKey;
@@ -47,6 +49,8 @@ public class Contact {
         this.last = last;
         this.received = received;
         this.sent = sent;
+        if(app!=null&&app.length()>0)
+            cn=new ComponentName(app.split("\n")[0],app.split("\n")[1]);
     }
 
     public Bitmap getPhoto() {
@@ -115,6 +119,10 @@ public class Contact {
         return received;
     }
 
+    public ComponentName getDefaultApp(){
+        return cn;
+    }
+
     // Will be used by the ArrayAdapter in the ListView
     @Override
     public String toString() {
@@ -148,5 +156,15 @@ public class Contact {
             this.last = time;
         }
         PublicStaticVariables.contactsDataSource.updateDB(id, last, received, sent);
+    }
+
+    public void update(String defaultApp) {
+        if(defaultApp!=null){
+            cn=new ComponentName(defaultApp.split("\n")[0],defaultApp.split("\n")[1]);
+            PublicStaticVariables.contactsDataSource.updateDB(id,defaultApp);
+        }else{
+            cn=null;
+            PublicStaticVariables.contactsDataSource.updateDB(id,"");
+        }
     }
 }
