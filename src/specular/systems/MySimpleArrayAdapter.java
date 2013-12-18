@@ -24,7 +24,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filter
         this.a = a;
     }
 
-    public void updateCont(Activity aa,Contact c, int index) {
+    public void updateCont(Activity aa,Contact c, int index,boolean needRefresh) {
         if (!(index < 0)) {
             PublicStaticVariables.fullList.remove(
                     PublicStaticVariables.currentList.get(index));
@@ -38,7 +38,8 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> implements Filter
                 }
         PublicStaticVariables.currentList.add(c);
         PublicStaticVariables.fullList.add(c);
-        refreshList(aa);
+        if(needRefresh)
+            refreshList(aa);
     }
 
     public void removeCont(Activity a,int index) {

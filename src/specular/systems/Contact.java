@@ -143,12 +143,12 @@ public class Contact {
             this.session = session;
         PublicStaticVariables.contactsDataSource.updateDB(id,
                 contactName, email, publicKey, session);
-        PublicStaticVariables.adapter.updateCont(a,this, index);
+        PublicStaticVariables.adapter.updateCont(a,this, index,true);
     }
 
     public static final int SENT = 0, RECEIVED = 1;
 
-    public void update(int what,long time) {
+    public void update(int what,long time,Activity a) {
         if (what == SENT)
             sent++;
         else if (what == RECEIVED){
@@ -156,15 +156,18 @@ public class Contact {
             this.last = time;
         }
         PublicStaticVariables.contactsDataSource.updateDB(id, last, received, sent);
+        PublicStaticVariables.adapter.updateCont(a,this,-1,false);
     }
 
-    public void update(String defaultApp) {
+    public void update(String defaultApp,Activity a) {
         if(defaultApp!=null){
             cn=new ComponentName(defaultApp.split("\n")[0],defaultApp.split("\n")[1]);
             PublicStaticVariables.contactsDataSource.updateDB(id,defaultApp);
+            PublicStaticVariables.adapter.updateCont(a,this,-1,true);
         }else{
             cn=null;
             PublicStaticVariables.contactsDataSource.updateDB(id,"");
+            PublicStaticVariables.adapter.updateCont(a,this, -1,true);
         }
     }
 }

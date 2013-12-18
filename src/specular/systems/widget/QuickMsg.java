@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -16,19 +15,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
 import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.Dialogs.ProgressDlg;
-import specular.systems.Dialogs.SendMsgDialog;
 import specular.systems.FilesManagement;
 import specular.systems.MessageFormat;
 import specular.systems.PublicStaticVariables;
 import specular.systems.R;
 import specular.systems.Visual;
+import specular.systems.activitys.SendMsg;
 
 /**
  * Created by yehezkelk on 12/9/13.
@@ -115,14 +113,10 @@ public class QuickMsg extends Activity {
                                             contact.getPublicKey());
                                     boolean success = FilesManagement.createFilesToSend(QuickMsg.this, userInput.length() < PublicStaticVariables.MSG_LIMIT_FOR_QR);
                                     if (success) {
-                                        ArrayList<Uri> files = FilesManagement.getFilesToSend(QuickMsg.this);
-                                        if (files == null)
-                                            Toast.makeText(QuickMsg.this, R.string.failed_attach_files, Toast.LENGTH_LONG).show();
-                                        else {
-                                            prgd.cancel();
-                                            SendMsgDialog sendMsgDialog = new SendMsgDialog(files, contact);
-                                            sendMsgDialog.show(getFragmentManager(), "widget");
-                                        }
+                                        prgd.cancel();
+                                        Intent intent = new Intent(QuickMsg.this,SendMsg.class);
+                                        intent.putExtra("contactId",contact.getId());
+                                        startActivity(intent);
                                     } else {
                                         Toast.makeText(QuickMsg.this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
                                     }

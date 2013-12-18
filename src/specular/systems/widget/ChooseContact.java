@@ -24,7 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
@@ -60,26 +59,24 @@ public class ChooseContact extends Activity {
             //todo add filter
             //findViewById(R.id.filter_ll).setVisibility(View.VISIBLE);
             ListView lv = (ListView) findViewById(R.id.list);
-            MySimpleArrayAdapter adapter;
             if (PublicStaticVariables.adapter == null||PublicStaticVariables.currentList==null) {
-                ContactsDataSource cdc = new ContactsDataSource(this);
-                final List<Contact> cfc = cdc.getAllContacts();
-                Collections.sort(cfc, new Comparator<Contact>() {
+                PublicStaticVariables.contactsDataSource = new ContactsDataSource(this);
+                PublicStaticVariables.currentList = PublicStaticVariables.contactsDataSource.getAllContacts();
+                Collections.sort(PublicStaticVariables.currentList, new Comparator<Contact>() {
                     @Override
                     public int compare(Contact contact, Contact contact2) {
                         return contact.getEmail().compareTo(contact2.getEmail());
                     }
                 });
-                adapter = new MySimpleArrayAdapter(this, cfc);
-            } else
-                adapter = PublicStaticVariables.adapter;
-            if (adapter.isEmpty()) {
+                PublicStaticVariables.adapter = new MySimpleArrayAdapter(this, PublicStaticVariables.currentList);
+            }
+            if (PublicStaticVariables.adapter.isEmpty()) {
                 Toast t = Toast.makeText(this, R.string.widget_add_contact_list_empty, Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                 t.show();
                 finish();
             } else {
-                lv.setAdapter(adapter);
+                lv.setAdapter(PublicStaticVariables.adapter);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

@@ -115,7 +115,7 @@ public class FragmentManagement extends Fragment {
                     + " , " + PublicStaticVariables.email);
             contactExist.setText(false + "");
         }
-        PublicStaticVariables.flag_replay = PublicStaticVariables.decryptedMsg.checkReplay(c);
+        PublicStaticVariables.flag_replay = PublicStaticVariables.decryptedMsg.checkReplay(c,getActivity());
         getActivity().invalidateOptionsMenu();
         if (PublicStaticVariables.file_name == null || PublicStaticVariables.file_name.length() == 0) {
             fileAttach.setVisibility(View.GONE);
@@ -328,12 +328,12 @@ public class FragmentManagement extends Fragment {
                     ResolveInfo rs = getActivity().getPackageManager().resolveActivity(i,0);
                     final ImageButton ibbb = (ImageButton)rootView.findViewById(R.id.default_app_send);
                     ibbb.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
-                    ibbb.setVisibility(View.VISIBLE);
+                    rootView.findViewById(R.id.default_app_send_ll).setVisibility(View.VISIBLE);
                     ibbb.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            currContact.update(null);
-                            ibbb.setVisibility(View.GONE);
+                            currContact.update(null,getActivity());
+                            rootView.findViewById(R.id.default_app_send_ll).setVisibility(View.GONE);
                         }
                     });
                 }

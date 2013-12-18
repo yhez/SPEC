@@ -1,5 +1,7 @@
 package specular.systems;
 
+import android.app.Activity;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.text.ParseException;
@@ -81,7 +83,7 @@ public class MessageFormat {
                 + sentTime);
     }
 
-    public int checkReplay(Contact c) {
+    public int checkReplay(Contact c,Activity a) {
         if (c == null)
             return NOT_RELEVANT;
         SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -95,7 +97,7 @@ public class MessageFormat {
             //60 hours is the limit for old messages
             if (gap / 1000 / 60 / 60 / 60 > 0)
                 return OLD;
-            c.update(Contact.RECEIVED, timeCreated);
+            c.update(Contact.RECEIVED, timeCreated,a);
             return OK;
         } catch (ParseException e) {
             e.printStackTrace();

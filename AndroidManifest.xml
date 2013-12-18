@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
-    android:versionCode="9"
-    android:versionName="1.04">
+    android:versionCode="10"
+    android:versionName="1.05">
 
     <uses-sdk
         android:maxSdkVersion="19"
@@ -127,8 +127,16 @@
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"/>
         <activity
+            android:noHistory="true"
+            android:excludeFromRecents="true"
             android:label="@string/send_report_title"
             android:name=".activitys.SendReport"
             android:theme="@android:style/Theme.Holo.Light.Dialog"/>
+
+        <activity
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:name=".activitys.SendMsg"
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth"/>
     </application>
 </manifest>

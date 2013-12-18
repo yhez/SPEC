@@ -3,7 +3,7 @@ package specular.systems.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,14 +16,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import specular.systems.Contact;
 import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
 import specular.systems.MessageFormat;
 import specular.systems.PublicStaticVariables;
 import specular.systems.R;
+import specular.systems.activitys.SendMsg;
 
 
 public class Response extends DialogFragment {
@@ -114,14 +113,10 @@ public class Response extends DialogFragment {
                                 contact.getPublicKey());
                         boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < PublicStaticVariables.MSG_LIMIT_FOR_QR);
                         if (success) {
-                            ArrayList<Uri> files = FilesManagement.getFilesToSend(getActivity());
-                            if (files == null){
-                                t.setText(R.string.failed_attach_files);t.show();
-                            }
-                            else {
-                                SendMsgDialog sendMsgDialog = new SendMsgDialog(files, contact);
-                                sendMsgDialog.show(getFragmentManager(), "smd");
-                            }
+                            prgd.cancel();
+                            Intent intent = new Intent(getActivity(),SendMsg.class);
+                            intent.putExtra("contactId",contact.getId());
+                            startActivity(intent);
                         } else {
                             t.setText(R.string.failed_to_create_files_to_send);t.show();
                         }
