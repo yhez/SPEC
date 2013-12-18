@@ -43,6 +43,7 @@ public class CryptMethods {
         myPrivateKey = null;
         mPtK = null;
         StaticVariables.decryptedMsg = null;
+        StaticVariables.decryptedLightMsg=null;
     }
 
     public static boolean setPrivate(String p) {

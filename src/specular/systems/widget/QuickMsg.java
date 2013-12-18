@@ -22,6 +22,7 @@ import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.FilesManagement;
+import specular.systems.LightMessage;
 import specular.systems.MessageFormat;
 import specular.systems.StaticVariables;
 import specular.systems.R;
@@ -103,6 +104,7 @@ public class QuickMsg extends Activity {
                             final String userInput = et.getText().toString();
                             final MessageFormat msg = new MessageFormat(null, "", userInput
                                     , contact.getSession());
+                            final LightMessage lightMessage = new LightMessage(userInput);
                             final ProgressDlg prgd = new ProgressDlg(QuickMsg.this, R.string.encrypting);
                             prgd.setCancelable(false);
                             prgd.show();
@@ -111,6 +113,7 @@ public class QuickMsg extends Activity {
                                 public void run() {
                                     CryptMethods.encrypt(msg.getFormatedMsg(),
                                             contact.getPublicKey());
+                                    CryptMethods.encryptQR(lightMessage.getFormatedMsg(),contact.getPublicKey());
                                     boolean success = FilesManagement.createFilesToSend(QuickMsg.this, userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR);
                                     if (success) {
                                         prgd.cancel();

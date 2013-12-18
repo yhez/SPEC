@@ -19,6 +19,7 @@ import android.widget.Toast;
 import specular.systems.Contact;
 import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
+import specular.systems.LightMessage;
 import specular.systems.MessageFormat;
 import specular.systems.StaticVariables;
 import specular.systems.R;
@@ -86,23 +87,28 @@ public class Response extends DialogFragment {
                     getActivity().findViewById(R.id.answer).setVisibility(View.GONE);
                 final String userInput = et.getText().toString();
                 String msgContent;
+                String shortMsgContent;
                 if (cb.isChecked())
-                    if (StaticVariables.msg_content.contains(getString(R.string.quote_msg)))
+                    if (StaticVariables.msg_content.contains(getString(R.string.quote_msg))){
                         msgContent = getString(R.string.divide_msg)
                                 + getString(R.string.quote_msg)
                                 + getString(R.string.divide_msg)
                                 + StaticVariables.msg_content
                                 .replace(getString(R.string.quote_msg)
                                         + getString(R.string.divide_msg), "");
-                    else
+                    }
+                    else{
                         msgContent = getString(R.string.divide_msg)
                                 + getString(R.string.quote_msg)
                                 + getString(R.string.divide_msg)
                                 + StaticVariables.msg_content;
-                else
+                    }
+                else{
                     msgContent = "";
+                }
                 final MessageFormat msg = new MessageFormat(null, "", userInput + msgContent
                         , contact.getSession());
+                final LightMessage lightMessage = new LightMessage(userInput+msgContent);
                 final ProgressDlg prgd = new ProgressDlg(getActivity(), R.string.encrypting);
                 prgd.setCancelable(false);
                 prgd.show();
@@ -111,6 +117,7 @@ public class Response extends DialogFragment {
                     public void run() {
                         CryptMethods.encrypt(msg.getFormatedMsg(),
                                 contact.getPublicKey());
+                        CryptMethods.encryptQR(lightMessage.getFormatedMsg(),contact.getPublicKey());
                         boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR);
                         if (success) {
                             prgd.cancel();
