@@ -3,6 +3,7 @@ package specular.systems;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +12,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -59,7 +61,9 @@ public final class FilesManagement {
         if (StaticVariables.decryptedMsg.getFileContent() == null)
             return false;
         try {
-            File path = Environment.getExternalStorageDirectory();
+            File path = new File(Environment.getExternalStorageDirectory()+"/SPEC/attachments");
+            if(!path.exists())
+                path.mkdirs();
             File file = new File(path, StaticVariables.decryptedMsg.getFileName());
             OutputStream os = new FileOutputStream(file);
             os.write(StaticVariables.decryptedMsg.getFileContent());
@@ -71,6 +75,17 @@ public final class FilesManagement {
         return true;
     }
 
+    public static Intent openFile(String fileName){
+        File path = new File(Environment.getExternalStorageDirectory()+"/SPEC/attachments");
+        File f = new File(path, fileName);
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+        MimeTypeMap mtm = MimeTypeMap.getSingleton();
+        String type = mtm.getMimeTypeFromExtension(ext);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri.fromFile(f);
+        intent.setDataAndType(uri, type);
+        return intent;
+    }
     public static void saveTempDecryptedMSG(Activity a) {
         if (StaticVariables.decryptedMsg == null)
             return;

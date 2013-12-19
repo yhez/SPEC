@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.support.v4.print.PrintHelper;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -101,6 +103,23 @@ public class ShareCustomDialog extends DialogFragment {
                             getResources().getString(R.string.subject_share));
                     ShareCustomDialog.this.getDialog().cancel();
                     startActivity(i);
+                }
+            });
+            glFile.addView(b);
+
+        }
+        final PrintHelper photoPrinter = new PrintHelper(getActivity());
+        if(photoPrinter.systemSupportsPrint()){
+            ImageButton b = Visual.glow(getActivity().getResources().getDrawable(R.drawable.printer), getActivity());
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+                    try {
+                        photoPrinter.printBitmap(getString(R.string.subject_share), FilesManagement.getQRToShare(getActivity()));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             glFile.addView(b);

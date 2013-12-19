@@ -148,11 +148,13 @@ public class CryptMethods {
             if(StaticVariables.decryptedMsg.getPublicKey()==null){
                 StaticVariables.decryptedMsg=null;
                 StaticVariables.decryptedLightMsg=new LightMessage(decryptedBytes);
-            }
+            }else
+                StaticVariables.decryptedLightMsg=null;
             StaticVariables.encrypted_msg_size=encryptedMessage.length();
             StaticVariables.orig_msg_size=decryptedBytes.length;
         } catch (Exception e) {
             StaticVariables.decryptedMsg = null;
+            StaticVariables.decryptedLightMsg=null;
             e.printStackTrace();
         }
     }

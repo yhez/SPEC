@@ -7,6 +7,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.print.PrintHelper;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
@@ -23,21 +24,22 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import specular.systems.Contact;
+import specular.systems.CustomExceptionHandler;
 import specular.systems.FilesManagement;
-import specular.systems.StaticVariables;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
+import specular.systems.StaticVariables;
 import specular.systems.Visual;
 
-
 public class SendMsg extends Activity {
-    private static boolean done=false;
     private static final int FILE = 0, IMAGE = 1, BOTH = 2;
+    private static boolean done = false;
     private static List<ResolveInfo> file, image, both;
     ArrayList<Uri> uris;
     Contact contact;
@@ -45,26 +47,30 @@ public class SendMsg extends Activity {
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
+
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(),this));
+        }
         uris = FilesManagement.getFilesToSend(this);
-        contact= StaticVariables.contactsDataSource.findContact(getIntent().getLongExtra("contactId", -1));
-        if (contact.getDefaultApp() != null) {
+        contact = StaticVariables.contactsDataSource.findContact(getIntent().getLongExtra("contactId", -1));
+        if (contact.getDefaultApp() == null) {
+            show();
+        } else {
             Intent i = new Intent();
             i.setComponent(contact.getDefaultApp());
-            if(uris.get(0)==null||uris.get(1)==null)
+            if (uris.get(0) == null || uris.get(1) == null)
                 i.setAction(Intent.ACTION_SEND);
             else
                 i.setAction(Intent.ACTION_SEND_MULTIPLE);
-            if(uris.get(0)!=null&&uris.get(1)!=null){
+            if (uris.get(0) != null && uris.get(1) != null) {
                 i.setType("*/*");
                 i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-            }
-            else if(uris.get(0)!=null){
+            } else if (uris.get(0) != null) {
                 i.setType("file/spec");
-                i.putExtra(Intent.EXTRA_STREAM,uris.get(0));
-            }
-            else{
+                i.putExtra(Intent.EXTRA_STREAM, uris.get(0));
+            } else {
                 i.setType("image/png");
-                i.putExtra(Intent.EXTRA_STREAM,uris.get(1));
+                i.putExtra(Intent.EXTRA_STREAM, uris.get(1));
             }
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
             i.putExtra(Intent.EXTRA_SUBJECT,
@@ -82,12 +88,10 @@ public class SendMsg extends Activity {
             }
             try {
                 startActivity(i);
-                done=true;
+                done = true;
             } catch (Exception e) {
                 show();
             }
-        } else {
-            show();
         }
     }
 
@@ -119,7 +123,7 @@ public class SendMsg extends Activity {
             etImage.setSelection(etImage.getText().length());
             etImage.setFilters(Visual.filters());
         }
-        Visual.setAllFonts(this, (ViewGroup)findViewById(android.R.id.content) );
+        Visual.setAllFonts(this, (ViewGroup) findViewById(android.R.id.content));
     }
 
     private void getApps(int a) {
@@ -191,7 +195,7 @@ public class SendMsg extends Activity {
 
     private void startOnClick(int what, ResolveInfo rs) {
         if (((CheckBox) findViewById(R.id.check_default)).isChecked()) {
-            contact.update(rs.activityInfo.packageName + "\n" + rs.activityInfo.name,this);
+            contact.update(rs.activityInfo.packageName + "\n" + rs.activityInfo.name, this);
         }
         EditText etFile = (EditText) findViewById(R.id.name_file),
                 etImage = (EditText) findViewById(R.id.qr_name_file);
@@ -259,7 +263,7 @@ public class SendMsg extends Activity {
                 break;
         }
         try {
-            done=true;
+            done = true;
             startActivity(i);
         } catch (Exception e) {
             //todo
@@ -276,7 +280,7 @@ public class SendMsg extends Activity {
                 findViewById(R.id.gl_app_image).setVisibility(View.GONE);
                 findViewById(R.id.divider3).setVisibility(View.GONE);
                 findViewById(R.id.title_image).setVisibility(View.GONE);
-               findViewById(R.id.qr_details).setVisibility(View.GONE);
+                findViewById(R.id.qr_details).setVisibility(View.GONE);
             } else if (uris.get(1) != null) {
                 loadIcons(IMAGE);
                 findViewById(R.id.gl_app_file).setVisibility(View.GONE);
@@ -324,6 +328,24 @@ public class SendMsg extends Activity {
             });
             gl.addView(b);
         }
+        if(what==BOTH||what==IMAGE){
+            final PrintHelper photoPrinter = new PrintHelper(this);
+            if(photoPrinter.systemSupportsPrint()){
+                ImageButton b = Visual.glow(getResources().getDrawable(R.drawable.printer), this);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+                        try {
+                            photoPrinter.printBitmap(getString(R.string.subject_encrypt), FilesManagement.getQRToShare(SendMsg.this));
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                gl.addView(b);
+            }
+        }
     }
 
     private String getName(int who) {
@@ -338,12 +360,13 @@ public class SendMsg extends Activity {
             for (int t = 0; t < tmp.length - 1; t++)
                 name += tmp[t];
         return name;
-    } 
+    }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        if(done){
-            done=false;
+        if (done) {
+            done = false;
             onBackPressed();
         }
     }

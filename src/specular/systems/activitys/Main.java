@@ -232,7 +232,6 @@ public class Main extends Activity {
                 MessageFormat msg = new MessageFormat(StaticVariables.fileContent, fileName, userInput,
                         contact.getSession());
                 LightMessage lMsg=new LightMessage(userInput);
-                //LightMessage msg = new LightMessage(userInput,contact.getSession());
                 CryptMethods.encrypt(msg.getFormatedMsg(),
                         contact.getPublicKey());
                 if(StaticVariables.fileContent==null)
@@ -280,17 +279,9 @@ public class Main extends Activity {
                 encryptManager();
                 break;
             case R.id.open_file:
-                String name = StaticVariables.file_name;
-                //todo reported null bug from morgan
-                File f = new File(Environment.getExternalStorageDirectory(), name);
-                String ext = name.substring(name.lastIndexOf(".") + 1);
-                MimeTypeMap mtm = MimeTypeMap.getSingleton();
-                String type = mtm.getMimeTypeFromExtension(ext);
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri.fromFile(f);
-                intent.setDataAndType(uri, type);
+                Intent oi=FilesManagement.openFile(StaticVariables.file_name);
                 try {
-                    startActivity(intent);
+                    startActivity(oi);
                 } catch (Exception e) {
                     e.printStackTrace();
                     t.setText(R.string.cant_find_an_app_to_open_file);
@@ -590,31 +581,15 @@ public class Main extends Activity {
         setContentView(R.layout.main);
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
-        File folder = new File(Environment.getExternalStorageDirectory() + "/spec reports");
+        File folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports");
         if (folder.exists() && folder.list().length > 0) {
             Intent i = new Intent(this, SendReport.class);
             startActivity(i);
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                /*ActivityManager a = (ActivityManager)Main.this.getSystemService(Context.ACTIVITY_SERVICE);
-                //"available"+"-"+a.getLargeMemoryClass()+"\tnormal-"+a.getMemoryClass()
-                while(true){
-                    synchronized (this){
-                    try {
-                        wait(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    }
-                    long available = Runtime.getRuntime().freeMemory()/1024/1024;
-                    long max = Runtime.getRuntime().maxMemory()/1024/1024;
-                    long t = Runtime.getRuntime().totalMemory()/1024/1024;
-                    Log.d("memory available","available-"+available+" "+"max-"+max+" "+"total-"+t);
-                }*/
-            }
-        }).start();
+        folder = new File(Environment.getExternalStorageDirectory()+"/SPEC/attachments");
+        if(folder.exists()&&folder.list().length>0)
+            for(String s:folder.list())
+                new File(folder,s).delete();
     }
 
     @Override

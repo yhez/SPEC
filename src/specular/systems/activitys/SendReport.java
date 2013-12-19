@@ -37,7 +37,7 @@ public class SendReport extends Activity {
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(),this));
         }
-        File folder = new File(Environment.getExternalStorageDirectory()+"/spec reports");
+        File folder = new File(Environment.getExternalStorageDirectory()+"/SPEC/reports");
         for(String f:folder.list(filterreported)){
             new File(folder,f).delete();
         }
@@ -53,11 +53,11 @@ public class SendReport extends Activity {
         i.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.email_for_reports)});
         i.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.send_report_subject));
         i.putExtra(Intent.EXTRA_TEXT,getString(R.string.send_report_content));
-        File folder = new File(Environment.getExternalStorageDirectory()+"/spec reports");
+        File folder = new File(Environment.getExternalStorageDirectory()+"/SPEC/reports");
         ArrayList<Parcelable> uris = new ArrayList<Parcelable>();
         for(String s:folder.list(filterNotReported)){
-            File oldname = new File(Environment.getExternalStorageDirectory()+"/spec reports",s);
-            File newNmae = new File(Environment.getExternalStorageDirectory()+"/spec reports",s.split("\\.")[0]+".txt");
+            File oldname = new File(Environment.getExternalStorageDirectory()+"/SPEC/reports",s);
+            File newNmae = new File(Environment.getExternalStorageDirectory()+"/SPEC/reports",s.split("\\.")[0]+".txt");
             oldname.renameTo(newNmae);
             uris.add(Uri.fromFile(newNmae));
         }

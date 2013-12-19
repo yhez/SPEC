@@ -119,15 +119,14 @@ public class Response extends DialogFragment {
                                 contact.getPublicKey());
                         CryptMethods.encryptQR(lightMessage.getFormatedMsg(),contact.getPublicKey());
                         boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR);
+                        prgd.cancel();
                         if (success) {
-                            prgd.cancel();
                             Intent intent = new Intent(getActivity(),SendMsg.class);
                             intent.putExtra("contactId",contact.getId());
                             startActivity(intent);
                         } else {
                             t.setText(R.string.failed_to_create_files_to_send);t.show();
                         }
-                        prgd.cancel();
                         Response.this.getDialog().cancel();
                     }
                 }).start();

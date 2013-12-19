@@ -83,18 +83,17 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="left"
+    android:gravity="center"
     android:background="@android:color/white">
     <CheckBox
-        android:visibility="gone"
-        android:layout_marginLeft="32dp"
+        android:gravity="right|center_vertical"
         android:button="@drawable/check_box"
         android:id="@+id/quote"
         android:checked="false"
         android:background="@android:color/white"
         android:text="@string/quote"
         android:textColor="@color/spec_black"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>
 </LinearLayout>
