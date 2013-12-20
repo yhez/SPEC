@@ -68,6 +68,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/specular.systems" />
             </intent-filter>
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:pathPattern="*SPEC*" />
+                <data android:mimeType="image/png"/>
+            </intent-filter>-->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
