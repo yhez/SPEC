@@ -220,7 +220,6 @@ public class Main extends Activity {
     }
 
     void encryptManager() {
-
         StaticVariables.luc.change(this, contact);
         final ProgressDlg prgd = new ProgressDlg(this, R.string.encrypting);
         prgd.setCancelable(false);
@@ -233,7 +232,7 @@ public class Main extends Activity {
                     lMsg = new LightMessage(userInput);
                 MessageFormat msg = new MessageFormat(StaticVariables.fileContent,CryptMethods.getMyDetails(Main.this), fileName, userInput,
                         contact.getSession());
-                CryptMethods.encrypt(msg.getFormatedMsg(), lMsg.getFormatedMsg(),
+                CryptMethods.encrypt(msg.getFormatedMsg(), lMsg==null?null:lMsg.getFormatedMsg(),
                         contact.getPublicKey());
                 contact.update(Contact.SENT, 0, Main.this);
                 sendMessage();
