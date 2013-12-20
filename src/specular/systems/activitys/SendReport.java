@@ -13,7 +13,6 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 import specular.systems.CustomExceptionHandler;
-import specular.systems.FilesManagement;
 import specular.systems.R;
 import specular.systems.Visual;
 
@@ -33,7 +32,6 @@ public class SendReport extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FilesManagement.getKeysFromSDCard(this);
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(),this));
         }

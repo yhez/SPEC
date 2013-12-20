@@ -106,7 +106,7 @@ public class Response extends DialogFragment {
                 else{
                     msgContent = "";
                 }
-                final MessageFormat msg = new MessageFormat(null, "", userInput + msgContent
+                final MessageFormat msg = new MessageFormat(null,CryptMethods.getMyDetails(getActivity()), "", userInput + msgContent
                         , contact.getSession());
                 final LightMessage lightMessage = new LightMessage(userInput+msgContent);
                 final ProgressDlg prgd = new ProgressDlg(getActivity(), R.string.encrypting);

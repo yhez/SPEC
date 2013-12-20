@@ -1,6 +1,7 @@
 package specular.systems;
 
 
+import android.app.Activity;
 import android.util.Log;
 
 import java.security.InvalidAlgorithmParameterException;
@@ -71,8 +72,10 @@ public class CryptMethods {
         tmpPrivateKey = null;
     }
 
-    public static String getName() {
-        return myName;
+    public static String[] getMyDetails(Activity a) {
+        if(myName==null||myEmail==null||myPublicKey==null)
+            FilesManagement.getMyDetails(a);
+        return new String[]{myName,myEmail,myPublicKey};
     }
 
     public static String getPublic() {
@@ -81,10 +84,6 @@ public class CryptMethods {
 
     public static void setPublic(String p) {
         myPublicKey = p;
-    }
-
-    public static String getEmail() {
-        return myEmail;
     }
 
     public static boolean privateExist() {

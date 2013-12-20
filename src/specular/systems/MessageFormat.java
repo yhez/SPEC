@@ -50,16 +50,16 @@ public class MessageFormat {
         }
     }
 
-    public MessageFormat(byte[] fileContent, String fileName, String msgContent, String session) {
-        email = CryptMethods.getEmail();
+    public MessageFormat(byte[] fileContent,String[] myDetails, String fileName, String msgContent, String session) {
+        email = myDetails[1];
         this.msgContent = msgContent;
-        publicKey = CryptMethods.getPublic();
+        publicKey = myDetails[2];
         sentTime = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar
                 .getInstance().getTime());
         this.session = session;
         this.fileName = fileName;
         this.fileContent = fileContent;
-        name = CryptMethods.getName();
+        name = myDetails[0];
         hash = hashing(name + email + publicKey + msgContent + (fileContent != null ? new String(fileContent) : "") + session + sentTime);
     }
 

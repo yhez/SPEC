@@ -500,4 +500,10 @@ public final class FilesManagement {
         edt.putString("lasts", s);
         edt.commit();
     }
+
+    public static void getMyDetails(Activity a) {
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
+        CryptMethods.setDetails(srp.getString(NAME, null), srp.getString(EMAIL, null));
+        CryptMethods.setPublic(srp.getString(PUBLIC_KEY,null));
+    }
 }

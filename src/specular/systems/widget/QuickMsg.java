@@ -51,7 +51,9 @@ public class QuickMsg extends Activity {
                 finish();
             } else {
                 long id = WidgetContact.getId(widgetDetails);
-                final Contact contact = new ContactsDataSource(this).findContact(id);
+                if(StaticVariables.contactsDataSource==null)
+                    StaticVariables.contactsDataSource= new ContactsDataSource(this);
+                final Contact contact = StaticVariables.contactsDataSource.findContact(id);
                 if (contact == null) {
                     SharedPreferences.Editor edt = srp.edit();
                     edt.remove(widget);
@@ -100,7 +102,7 @@ public class QuickMsg extends Activity {
                         @Override
                         public void onClick(View view) {
                             final String userInput = et.getText().toString();
-                            final MessageFormat msg = new MessageFormat(null, "", userInput
+                            final MessageFormat msg = new MessageFormat(null,CryptMethods.getMyDetails(QuickMsg.this), "", userInput
                                     , contact.getSession());
                             final LightMessage lightMessage = new LightMessage(userInput);
                             final ProgressDlg prgd = new ProgressDlg(QuickMsg.this, R.string.encrypting);

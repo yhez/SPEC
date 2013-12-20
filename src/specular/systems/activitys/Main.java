@@ -231,7 +231,7 @@ public class Main extends Activity {
                 LightMessage lMsg = null;
                 if (StaticVariables.fileContent == null)
                     lMsg = new LightMessage(userInput);
-                MessageFormat msg = new MessageFormat(StaticVariables.fileContent, fileName, userInput,
+                MessageFormat msg = new MessageFormat(StaticVariables.fileContent,CryptMethods.getMyDetails(Main.this), fileName, userInput,
                         contact.getSession());
                 CryptMethods.encrypt(msg.getFormatedMsg(), lMsg.getFormatedMsg(),
                         contact.getPublicKey());

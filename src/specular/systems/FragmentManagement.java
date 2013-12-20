@@ -669,20 +669,21 @@ public class FragmentManagement extends Fragment {
                 final EditText etMyEmail = (EditText) rootView.findViewById(R.id.test1).findViewById(R.id.edit_text);
                 final TextView tvMyName = (TextView) rootView.findViewById(R.id.test).findViewById(R.id.text_view);
                 final TextView tvMyEmail = (TextView) rootView.findViewById(R.id.test1).findViewById(R.id.text_view);
+                final String[] myDetails = CryptMethods.getMyDetails(getActivity());
                 tvMyName.setText(R.string.profile_my_name);
                 tvMyEmail.setText(R.string.profile_my_email);
-                etMyName.setText(CryptMethods.getName());
+                etMyName.setText(myDetails[0]);
                 if (StaticVariables.edit == null)
                     StaticVariables.edit = etMyName.getKeyListener();
                 etMyEmail.setKeyListener(null);
                 etMyName.setKeyListener(null);
-                etMyEmail.setText(CryptMethods.getEmail());
+                etMyEmail.setText(myDetails[1]);
                 ibMyEmail.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (etMyEmail.getKeyListener() != null) {
                             String em = etMyEmail.getText().toString();
-                            if (!em.equals(CryptMethods.getEmail())) {
+                            if (!em.equals(myDetails[1])) {
                                 CryptMethods.setDetails(null, em);
                                 FilesManagement.edit(getActivity());
                             }
@@ -695,7 +696,7 @@ public class FragmentManagement extends Fragment {
                     public void onClick(View view) {
                         if (etMyName.getKeyListener() != null) {
                             String en = etMyName.getText().toString();
-                            if (!en.equals(CryptMethods.getName())) {
+                            if (!en.equals(myDetails[0])) {
                                 CryptMethods.setDetails(en, null);
                                 FilesManagement.edit(getActivity());
                             }
@@ -704,7 +705,7 @@ public class FragmentManagement extends Fragment {
                     }
                 });
                 ((ImageView) rootView.findViewById(R.id.my_qr_public_key)).setImageBitmap(FilesManagement.getMyQRPublicKey(getActivity()));
-                ((TextView) rootView.findViewById(R.id.my_public_key)).setText(CryptMethods.getPublic());
+                ((TextView) rootView.findViewById(R.id.my_public_key)).setText(myDetails[2]);
                 break;
         }
         Visual.setAllFonts(getActivity(), (ViewGroup) rootView);
