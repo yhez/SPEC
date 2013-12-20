@@ -16,12 +16,16 @@ public class MessageFormat {
 
     public MessageFormat(byte[] raw) {
         int loc = 0;
+        boolean found=false;
         while (loc < raw.length - 6) {
-            if (raw[loc] == 'f' && raw[loc + 1] == 'i' && raw[loc + 2] == 'l' && raw[loc + 3] == 'e' && raw[loc + 4] == '/' && raw[loc + 5] == '/')
+            if (raw[loc] == 'f' && raw[loc + 1] == 'i' && raw[loc + 2] == 'l' && raw[loc + 3] == 'e' && raw[loc + 4] == '/' && raw[loc + 5] == '/'){
+                found=true;
                 break;
+            }
             loc++;
         }
-        //String data[] = new String(raw, 0, loc).split("\n");
+        if(!found)
+            return;
         byte[] b = new byte[loc];
         System.arraycopy(raw, 0, b, 0, b.length);
         String data[] = new String[0];
