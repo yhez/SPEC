@@ -26,8 +26,6 @@ public class StaticVariables {
     public static KeyListener edit;
     public static String currentText = "";
     public static int currentLayout;
-    //the list that the user see
-    public static List<Contact> currentList;
     //the complete list
     public static List<Contact> fullList;
     public static byte[] fileContent;

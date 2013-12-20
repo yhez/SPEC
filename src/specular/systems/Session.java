@@ -14,14 +14,14 @@ public class Session {
         String his[] = session.split(DIVIDE_SESSIONS);
         if (my.length == 1) {
             if (his.length == 1) {
-                contact.update(a,-1, null, null, null, contact.getSession() + DIVIDE_SESSIONS + session.replace(MY, HIS));
+                contact.update(a, null, null, null, contact.getSession() + DIVIDE_SESSIONS + session.replace(MY, HIS));
                 return UNKNOWN;
             } else {
                 String mMy[] = my[0].split(" ");
                 //String hHis[]=his[0].split(" ");
                 String hMy[] = his[1].split(" ");
                 if (hMy[3].equals(mMy[3]) && hMy[7].equals(mMy[7])) {
-                    contact.update(a,-1, null, null, null, contact.getSession() + DIVIDE_SESSIONS + his[0].replace(MY, HIS));
+                    contact.update(a, null, null, null, contact.getSession() + DIVIDE_SESSIONS + his[0].replace(MY, HIS));
                     return STARTING;
                 } else {
                     return DONT_TRUST;

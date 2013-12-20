@@ -302,13 +302,11 @@ public class FragmentManagement extends Fragment {
                 filterCOnt.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
                     }
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
                         StaticVariables.adapter.getFilter().filter(charSequence.toString());
-                        updateContactList();
                     }
 
                     @Override
@@ -318,17 +316,14 @@ public class FragmentManagement extends Fragment {
                 });
                 break;
             case edit_contact:
-                //todo change to index for performance
                 Long id = getArguments().getLong("contactId");
-                final int index = getArguments().getInt("index");
                 ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
                         + id);
-                ((TextView) rootView.findViewById(R.id.contact_index)).setText("" + index);
                 ((TextView) rootView.findViewById(R.id.contact_name).
                         findViewById(R.id.text_view)).setText(getString(R.string.edit_name) + "\t");
                 ((TextView) rootView.findViewById(R.id.contact_email).
                         findViewById(R.id.text_view)).setText(getString(R.string.edit_email) + "\t");
-                final Contact currContact = StaticVariables.currentList.get(index);
+                final Contact currContact = StaticVariables.contactsDataSource.findContact(id);
                 if(currContact.getDefaultApp()!=null){
                     Intent i = new Intent();
                     i.setComponent(currContact.getDefaultApp());
@@ -390,7 +385,7 @@ public class FragmentManagement extends Fragment {
                                             .toString();
                                     if (!email.equals(origEmail))
                                         if (email.length() > 2) {
-                                            currContact.update(getActivity(),index, null, email, null, null);
+                                            currContact.update(getActivity(), null, email, null, null);
                                             ((TextView) rootView.findViewById(R.id.orig_eamil)).setText(email);
                                         } else {
                                             etEmail.setText(origEmail);
@@ -421,7 +416,7 @@ public class FragmentManagement extends Fragment {
                                     String name = etName.getText().toString();
                                     if (!name.equals(origName))
                                         if (name.length() > 2) {
-                                            currContact.update(getActivity(),index, name, null, null, null);
+                                            currContact.update(getActivity(), name, null, null, null);
                                             ((TextView) rootView.findViewById(R.id.orig_name)).setText(name);
                                         } else {
                                             etName.setText(origName);
@@ -500,7 +495,7 @@ public class FragmentManagement extends Fragment {
                                 .toString()));
                     }
                 });
-                if (StaticVariables.currentList.size() > 0) {
+                if (StaticVariables.fullList.size() > 0) {
                     rootView.findViewById(R.id.no_contacts).setVisibility(View.GONE);
                     lv.setVisibility(View.VISIBLE);
                 } else {
@@ -511,13 +506,11 @@ public class FragmentManagement extends Fragment {
                 ((EditText) rootView.findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
                     }
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
                         StaticVariables.adapter.getFilter().filter(charSequence.toString());
-                        updateContactList();
                     }
 
                     @Override
@@ -850,15 +843,5 @@ public class FragmentManagement extends Fragment {
                 return true;
             }
         });
-    }
-    private void updateContactList(){
-        if(StaticVariables.currentList.size()==0){
-        getActivity().findViewById(R.id.list).setVisibility(View.GONE);
-        ((TextView) getActivity().findViewById(R.id.no_contacts)).setText(R.string.no_result_filter);
-        getActivity().findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
-        }else{
-            getActivity().findViewById(R.id.no_contacts).setVisibility(View.GONE);
-            getActivity().findViewById(R.id.list).setVisibility(View.VISIBLE);
-        }
     }
 }

@@ -57,7 +57,7 @@ public class AddContactDlg extends DialogFragment {
                         Contact c;
                         if (((CheckBox) v.findViewById(R.id.check_box_update)).isChecked()) {
                             c = StaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
-                            c.update(getActivity(),-1, null, null, pcc.getPublicKey(), null);
+                            c.update(getActivity(), null, null, pcc.getPublicKey(), null);
                         } else
                             c = new Contact(getActivity(),pcc.getName(), pcc.getEmail(), pcc.getPublicKey(), session);
                         if (StaticVariables.currentLayout == R.layout.decrypted_msg) {

@@ -59,16 +59,17 @@ public class ChooseContact extends Activity {
             //todo add filter
             //findViewById(R.id.filter_ll).setVisibility(View.VISIBLE);
             ListView lv = (ListView) findViewById(R.id.list);
-            if (StaticVariables.adapter == null|| StaticVariables.currentList==null) {
+            if (StaticVariables.adapter == null|| StaticVariables.fullList==null) {
                 StaticVariables.contactsDataSource = new ContactsDataSource(this);
-                StaticVariables.currentList = StaticVariables.contactsDataSource.getAllContacts();
-                Collections.sort(StaticVariables.currentList, new Comparator<Contact>() {
+                StaticVariables.fullList = StaticVariables.contactsDataSource.getAllContacts();
+                Collections.sort(StaticVariables.fullList, new Comparator<Contact>() {
                     @Override
                     public int compare(Contact contact, Contact contact2) {
                         return contact.getEmail().compareTo(contact2.getEmail());
                     }
                 });
-                StaticVariables.adapter = new MySimpleArrayAdapter(this, StaticVariables.currentList);
+                MySimpleArrayAdapter.setList(StaticVariables.fullList);
+                StaticVariables.adapter = new MySimpleArrayAdapter(this);
             }
             if (StaticVariables.adapter.isEmpty()) {
                 Toast t = Toast.makeText(this, R.string.widget_add_contact_list_empty, Toast.LENGTH_SHORT);

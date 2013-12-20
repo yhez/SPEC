@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:orientation="horizontal"
+        android:paddingBottom="@dimen/default_gap"
         android:paddingLeft="@dimen/default_gap"
         android:paddingTop="@dimen/default_gap">
 

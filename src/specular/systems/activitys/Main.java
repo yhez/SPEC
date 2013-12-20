@@ -53,7 +53,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -562,24 +561,20 @@ public class Main extends Activity {
         t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
         t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         handler = new Handler(Looper.getMainLooper());
-        if (StaticVariables.currentList == null) {
+        if (StaticVariables.fullList == null) {
             StaticVariables.contactsDataSource = new ContactsDataSource(this);
-            StaticVariables.currentList = StaticVariables.contactsDataSource.getAllContacts();
-            Collections.sort(StaticVariables.currentList, new Comparator<Contact>() {
+            StaticVariables.fullList = StaticVariables.contactsDataSource.getAllContacts();
+            Collections.sort(StaticVariables.fullList, new Comparator<Contact>() {
                 @Override
                 public int compare(Contact contact, Contact contact2) {
                     return contact.getEmail().compareTo(contact2.getEmail());
                 }
             });
-            StaticVariables.fullList = new ArrayList<Contact>();
-            StaticVariables.fullList.addAll(StaticVariables.currentList);
         }
         if (StaticVariables.adapter == null) {
-            StaticVariables.adapter = new MySimpleArrayAdapter(this, StaticVariables.currentList);
+            MySimpleArrayAdapter.setList(StaticVariables.fullList);
+            StaticVariables.adapter = new MySimpleArrayAdapter(this);
         }
-        setContentView(R.layout.main);
-        findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
-        setUpViews();
         File folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports");
         if (folder.exists() && folder.list().length > 0) {
             Intent i = new Intent(this, SendReport.class);
@@ -589,6 +584,9 @@ public class Main extends Activity {
         if (folder.exists() && folder.list().length > 0)
             for (String s : folder.list())
                 new File(folder, s).delete();
+        setContentView(R.layout.main);
+        findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
+        setUpViews();
     }
 
     @Override
@@ -1218,20 +1216,19 @@ public class Main extends Activity {
         if (StaticVariables.flag_msg != null && StaticVariables.flag_msg) {
             FilesManagement.getTempDecryptedMSG(this);
         }
-        if (StaticVariables.currentList == null) {
+        if (StaticVariables.fullList == null) {
             StaticVariables.contactsDataSource = new ContactsDataSource(this);
-            StaticVariables.currentList = StaticVariables.contactsDataSource.getAllContacts();
-            Collections.sort(StaticVariables.currentList, new Comparator<Contact>() {
+            StaticVariables.fullList = StaticVariables.contactsDataSource.getAllContacts();
+            Collections.sort(StaticVariables.fullList, new Comparator<Contact>() {
                 @Override
                 public int compare(Contact contact, Contact contact2) {
                     return contact.getEmail().compareTo(contact2.getEmail());
                 }
             });
-            StaticVariables.fullList = new ArrayList<Contact>();
-            StaticVariables.fullList.addAll(StaticVariables.currentList);
         }
         if (StaticVariables.adapter == null) {
-            StaticVariables.adapter = new MySimpleArrayAdapter(this, StaticVariables.currentList);
+            MySimpleArrayAdapter.setList(StaticVariables.fullList);
+            StaticVariables.adapter = new MySimpleArrayAdapter(this);
         }
     }
 
