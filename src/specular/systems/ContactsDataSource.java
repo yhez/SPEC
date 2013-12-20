@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ContactsDataSource {
@@ -168,6 +170,12 @@ public class ContactsDataSource {
         // Make sure to close the cursor
         cursor.close();
         dbHelper.close();
+        Collections.sort(contacts, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact contact, Contact contact2) {
+                return contact.getContactName().compareTo(contact2.getContactName());
+            }
+        });
         return contacts;
     }
 

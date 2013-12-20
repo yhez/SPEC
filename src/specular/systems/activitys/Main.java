@@ -53,8 +53,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.Comparator;
 
 import specular.systems.Contact;
 import specular.systems.ContactCard;
@@ -563,12 +561,6 @@ public class Main extends Activity {
         if (StaticVariables.fullList == null) {
             StaticVariables.contactsDataSource = new ContactsDataSource(this);
             StaticVariables.fullList = StaticVariables.contactsDataSource.getAllContacts();
-            Collections.sort(StaticVariables.fullList, new Comparator<Contact>() {
-                @Override
-                public int compare(Contact contact, Contact contact2) {
-                    return contact.getEmail().compareTo(contact2.getEmail());
-                }
-            });
         }
         if (StaticVariables.adapter == null) {
             MySimpleArrayAdapter.setList(StaticVariables.fullList);
@@ -1218,12 +1210,6 @@ public class Main extends Activity {
         if (StaticVariables.fullList == null) {
             StaticVariables.contactsDataSource = new ContactsDataSource(this);
             StaticVariables.fullList = StaticVariables.contactsDataSource.getAllContacts();
-            Collections.sort(StaticVariables.fullList, new Comparator<Contact>() {
-                @Override
-                public int compare(Contact contact, Contact contact2) {
-                    return contact.getEmail().compareTo(contact2.getEmail());
-                }
-            });
         }
         if (StaticVariables.adapter == null) {
             MySimpleArrayAdapter.setList(StaticVariables.fullList);

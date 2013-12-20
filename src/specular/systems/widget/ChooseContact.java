@@ -22,16 +22,14 @@ import com.google.zxing.WriterException;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.Collections;
-import java.util.Comparator;
 
 import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.MySimpleArrayAdapter;
-import specular.systems.StaticVariables;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
+import specular.systems.StaticVariables;
 import specular.systems.Visual;
 
 /**
@@ -62,12 +60,6 @@ public class ChooseContact extends Activity {
             if (StaticVariables.adapter == null|| StaticVariables.fullList==null) {
                 StaticVariables.contactsDataSource = new ContactsDataSource(this);
                 StaticVariables.fullList = StaticVariables.contactsDataSource.getAllContacts();
-                Collections.sort(StaticVariables.fullList, new Comparator<Contact>() {
-                    @Override
-                    public int compare(Contact contact, Contact contact2) {
-                        return contact.getEmail().compareTo(contact2.getEmail());
-                    }
-                });
                 MySimpleArrayAdapter.setList(StaticVariables.fullList);
                 StaticVariables.adapter = new MySimpleArrayAdapter(this);
             }
