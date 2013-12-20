@@ -109,9 +109,8 @@ public class QuickMsg extends Activity {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    CryptMethods.encrypt(msg.getFormatedMsg(),
+                                    CryptMethods.encrypt(msg.getFormatedMsg(),lightMessage.getFormatedMsg(),
                                             contact.getPublicKey());
-                                    CryptMethods.encryptQR(lightMessage.getFormatedMsg(),contact.getPublicKey());
                                     boolean success = FilesManagement.createFilesToSend(QuickMsg.this, userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR);
                                     if (success) {
                                         prgd.cancel();

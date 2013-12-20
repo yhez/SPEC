@@ -159,7 +159,7 @@ public class CryptMethods {
         }
     }
 
-    public static void encrypt(final byte[] msg, final String friendPublicKey) {
+    public static void encrypt(final byte[] msg,final byte[] light, final String friendPublicKey) {
         if (notInit) {
             addProviders();
             notInit = false;
@@ -171,28 +171,14 @@ public class CryptMethods {
             IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",
                     "HmacSHA1", null, null);
             cipher.init(Cipher.ENCRYPT_MODE, frndPbK, iesParams);
+            if(light!=null)
+                StaticVariables.encryptedLight = Visual.bin2hex(cipher.doFinal(light));
             StaticVariables.encryptedMsgToSend = Visual.bin2hex(cipher.doFinal(msg));
         } catch (Exception ignore) {
             ignore.printStackTrace();
         }
     }
-    public static void encryptQR(final byte[] msg, final String friendPublicKey) {
-        if (notInit) {
-            addProviders();
-            notInit = false;
-        }
-        try {
-            PublicKey frndPbK = KeyFactory.getInstance("ECIES", "FlexiEC")
-                    .generatePublic(new X509EncodedKeySpec(Visual.hex2bin(friendPublicKey)));
-            Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
-            IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",
-                    "HmacSHA1", null, null);
-            cipher.init(Cipher.ENCRYPT_MODE, frndPbK, iesParams);
-            StaticVariables.encryptedLight = Visual.bin2hex(cipher.doFinal(msg));
-        } catch (Exception ignore) {
-            ignore.printStackTrace();
-        }
-    }
+
     private static PrivateKey formatPrivate(String p) {
         if (notInit) {
             addProviders();

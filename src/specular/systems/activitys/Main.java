@@ -229,14 +229,13 @@ public class Main extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                LightMessage lMsg = null;
+                if (StaticVariables.fileContent == null)
+                    lMsg = new LightMessage(userInput);
                 MessageFormat msg = new MessageFormat(StaticVariables.fileContent, fileName, userInput,
                         contact.getSession());
-                LightMessage lMsg = new LightMessage(userInput);
-                CryptMethods.encrypt(msg.getFormatedMsg(),
+                CryptMethods.encrypt(msg.getFormatedMsg(), lMsg.getFormatedMsg(),
                         contact.getPublicKey());
-                if (StaticVariables.fileContent == null)
-                    CryptMethods.encryptQR(lMsg.getFormatedMsg(),
-                            contact.getPublicKey());
                 contact.update(Contact.SENT, 0, Main.this);
                 sendMessage();
                 prgd.cancel();
@@ -621,16 +620,6 @@ public class Main extends Activity {
             }
         } else
             setUpViews();
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        // TODO Auto-generated method stub
-        super.onWindowFocusChanged(hasFocus);
-        //Here you can get the size!
-        //View fd = findViewById(R.id.contact_picture);
-        //if(fd!=null)
-        //  new CustomToast(this,fd,"");
     }
 
     @Override
