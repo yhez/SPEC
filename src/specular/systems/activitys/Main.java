@@ -263,7 +263,6 @@ public class Main extends Activity {
     }
 
     public void decryptedMsgClick(View v) {
-
         switch (v.getId()) {
             case R.id.send:
                 findViewById(R.id.answer).setVisibility(View.GONE);
@@ -331,8 +330,9 @@ public class Main extends Activity {
                                 + "\n" + Session.toShow(StaticVariables.session);
                         break;
                     case Session.DONT_TRUST:
+                        contact = StaticVariables.contactsDataSource.findContactByKey(StaticVariables.decryptedMsg.getPublicKey());
                         msg = getString(R.string.dont_trust_session_explain)
-                                + Session.toShow(StaticVariables.session) + "\n"
+                                + Session.toShow(contact.getSession()) + "\n"
                                 + "other's session is:\n"
                                 + Session.toShow(StaticVariables.session);
                         break;
