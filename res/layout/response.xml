@@ -29,7 +29,6 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/default_gap"
         android:paddingLeft="@dimen/default_gap"
         android:paddingTop="@dimen/default_gap">
 
@@ -86,6 +85,7 @@
     android:gravity="center"
     android:background="@android:color/white">
     <CheckBox
+        android:visibility="gone"
         android:gravity="right|center_vertical"
         android:button="@drawable/check_box"
         android:id="@+id/quote"

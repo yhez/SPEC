@@ -109,14 +109,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:label="@string/quick_msg"
             android:taskAffinity=""
             android:exported="true"
             android:noHistory="true"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:name=".widget.QuickMsg"
-            android:theme="@android:style/Theme.Holo.Light.Dialog"/>
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth"/>
         <activity
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             android:screenOrientation="landscape"

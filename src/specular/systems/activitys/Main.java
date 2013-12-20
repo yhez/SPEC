@@ -79,10 +79,10 @@ import specular.systems.LeftMenu;
 import specular.systems.LightMessage;
 import specular.systems.MessageFormat;
 import specular.systems.MySimpleArrayAdapter;
-import specular.systems.StaticVariables;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.Session;
+import specular.systems.StaticVariables;
 import specular.systems.Visual;
 
 
@@ -231,13 +231,13 @@ public class Main extends Activity {
             public void run() {
                 MessageFormat msg = new MessageFormat(StaticVariables.fileContent, fileName, userInput,
                         contact.getSession());
-                LightMessage lMsg=new LightMessage(userInput);
+                LightMessage lMsg = new LightMessage(userInput);
                 CryptMethods.encrypt(msg.getFormatedMsg(),
                         contact.getPublicKey());
-                if(StaticVariables.fileContent==null)
-                CryptMethods.encryptQR(lMsg.getFormatedMsg(),
-                        contact.getPublicKey());
-                contact.update(Contact.SENT, 0,Main.this);
+                if (StaticVariables.fileContent == null)
+                    CryptMethods.encryptQR(lMsg.getFormatedMsg(),
+                            contact.getPublicKey());
+                contact.update(Contact.SENT, 0, Main.this);
                 sendMessage();
                 prgd.cancel();
                 msgSended = true;
@@ -279,7 +279,7 @@ public class Main extends Activity {
                 encryptManager();
                 break;
             case R.id.open_file:
-                Intent oi=FilesManagement.openFile(StaticVariables.file_name);
+                Intent oi = FilesManagement.openFile(StaticVariables.file_name);
                 try {
                     startActivity(oi);
                 } catch (Exception e) {
@@ -586,10 +586,10 @@ public class Main extends Activity {
             Intent i = new Intent(this, SendReport.class);
             startActivity(i);
         }
-        folder = new File(Environment.getExternalStorageDirectory()+"/SPEC/attachments");
-        if(folder.exists()&&folder.list().length>0)
-            for(String s:folder.list())
-                new File(folder,s).delete();
+        folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
+        if (folder.exists() && folder.list().length > 0)
+            for (String s : folder.list())
+                new File(folder, s).delete();
     }
 
     @Override
@@ -1069,7 +1069,7 @@ public class Main extends Activity {
                     }
                     if (!clearedSomething && StaticVariables.currentLayout == defaultScreen)
                         new prepareToExit();
-                    else if(!clearedSomething)
+                    else if (!clearedSomething)
                         setUpViews();
                     break;
                 case R.layout.decrypted_msg:

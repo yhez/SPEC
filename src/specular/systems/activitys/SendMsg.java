@@ -47,7 +47,7 @@ public class SendMsg extends Activity {
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
-
+        done=false;
         if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(),this));
         }
@@ -87,8 +87,8 @@ public class SendMsg extends Activity {
                         .show();
             }
             try {
-                startActivity(i);
                 done = true;
+                startActivity(i);
             } catch (Exception e) {
                 show();
             }
@@ -328,7 +328,7 @@ public class SendMsg extends Activity {
             });
             gl.addView(b);
         }
-        if(what==BOTH||what==IMAGE){
+        if(what==IMAGE){
             final PrintHelper photoPrinter = new PrintHelper(this);
             if(photoPrinter.systemSupportsPrint()){
                 ImageButton b = Visual.glow(getResources().getDrawable(R.drawable.printer), this);
