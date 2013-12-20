@@ -42,8 +42,14 @@ public class LightMessage {
         return hash;
     }
     public byte[] getFormatedMsg(){
+        byte[] msgContent = null;
+        try {
+            msgContent = this.msgContent.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         //light message contains short time stamp + msg + short hash
-        byte[] fm = new byte[sentTime.length() + msgContent.length()+2+(hash!=null?(hash.length()+1):0)];
+        byte[] fm = new byte[sentTime.length() + msgContent.length+2+(hash!=null?(hash.length()+1):0)];
         int index=0;
         for(int a=0;a<sentTime.length();a++)
             fm[index++]=(byte)sentTime.charAt(a);
@@ -53,8 +59,8 @@ public class LightMessage {
                 fm[index++]=(byte)hash.charAt(a);
         }
         fm[index++]='\n';
-        for(int a=0;a<msgContent.length();a++)
-            fm[index++]=(byte)msgContent.charAt(a);
+        for(int a=0;a<msgContent.length;a++)
+            fm[index++]=msgContent[a];
         return fm;
     }
     private String myHash(byte[] fm){
