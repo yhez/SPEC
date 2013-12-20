@@ -211,7 +211,7 @@
         <item>conversation</item>
         <item>attached file</item>
         <item>file name</item>
-        <item>time stamp</item>
+        <item>time-stamp</item>
         <item>sessions</item>
         <item>crypto hash</item>
     </string-array>
