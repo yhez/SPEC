@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -23,7 +22,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
-import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -36,7 +34,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -245,21 +242,6 @@ public class Main extends Activity {
         ni3.show(getFragmentManager(), "aaaa");
     }
 
-    private String getFileName(Uri contentURI) {
-        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {
-            return contentURI.getLastPathSegment();
-        }
-        cursor.moveToFirst();
-        String rs = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME));
-        if (!rs.contains(".")) {
-            rs += "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(
-                    cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)));
-        }
-        cursor.close();
-        return rs;
-    }
-
     public void decryptedMsgClick(View v) {
         switch (v.getId()) {
             case R.id.send:
@@ -406,7 +388,7 @@ public class Main extends Activity {
                 public void run() {
                     int r = FilesManagement.addFile(Main.this, uri);
                     if (r == FilesManagement.RESULT_ADD_FILE_OK) {
-                        fileName = getFileName(uri);
+                        fileName = Visual.getFileName(Main.this,uri);
                         hndl.sendEmptyMessage(REPLACE_PHOTO);
                     } else {
                         hndl.sendEmptyMessage(r);

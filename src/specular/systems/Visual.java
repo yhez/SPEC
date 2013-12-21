@@ -2,6 +2,7 @@ package specular.systems;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
@@ -10,10 +11,13 @@ import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -182,5 +186,19 @@ public class Visual {
             total += "." + (size + "").split("\\.")[1].substring(0, Math.min(2,l));
         }
         return total + " " + unit;
+    }
+    public static String getFileName(Activity a,Uri contentURI) {
+        Cursor cursor = a.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            return contentURI.getLastPathSegment();
+        }
+        cursor.moveToFirst();
+        String rs = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME));
+        if (!rs.contains(".")) {
+            rs += "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(
+                    cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)));
+        }
+        cursor.close();
+        return rs;
     }
 }

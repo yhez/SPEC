@@ -9,8 +9,8 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Gravity;
+import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,8 +24,8 @@ import specular.systems.ContactCard;
 import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.FilesManagement;
-import specular.systems.StaticVariables;
 import specular.systems.R;
+import specular.systems.StaticVariables;
 import specular.systems.Visual;
 
 public class Splash extends Activity {
@@ -49,7 +49,7 @@ public class Splash extends Activity {
 
     @Override
     public void onBackPressed() {
-
+        //do not response to back pressed
     }
 
     void go() {
@@ -87,13 +87,11 @@ public class Splash extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
-            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(),this));
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
         t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
         t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         Intent thisIntent = getIntent();
-        if (thisIntent != null && thisIntent.getType() != null)
-            Log.d("intent", thisIntent.getType());
         if (thisIntent == null) {
             go();
         } else if (thisIntent.getAction() != null && thisIntent.getAction().equals(Intent.ACTION_SEND)) {
@@ -106,6 +104,7 @@ public class Splash extends Activity {
             go();
         } else {
             ContactCard qrp;
+            //todo how is it possible? but some how it works for big google drive files
             Uri uri = getIntent().getData();
             if (uri == null) {
                 uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
@@ -114,45 +113,60 @@ public class Splash extends Activity {
                 t.setText(R.string.failed);
                 t.show();
                 finish();
-            } else {
-                String data = null;
+                return;
+            }
+            String fileName = Visual.getFileName(this, uri);
+            String ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+            if (!ext.toLowerCase().equals("spec")) {
+                MimeTypeMap mtm = MimeTypeMap.getSingleton();
+                String type = mtm.getMimeTypeFromExtension(ext);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                if (type != null)
+                    intent.setType(type);
+                else
+                    intent.setType("*/*");
+                startActivity(intent);
+                finish();
+                return;
+            }
+            String data = null;
+            try {
+                ContentResolver cr = getBaseContext().getContentResolver();
+                InputStream is;
+                is = cr.openInputStream(uri);
+                StringBuilder buf = new StringBuilder();
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(is));
+                String str;
                 try {
-                    ContentResolver cr = getBaseContext().getContentResolver();
-                    InputStream is;
-                    is = cr.openInputStream(uri);
-                    StringBuilder buf = new StringBuilder();
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(is));
-                    String str;
-                    try {
-                        while ((str = reader.readLine()) != null) {
-                            buf.append(str).append("\n");
-                        }
-
-                        is.close();
-                        reader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    while ((str = reader.readLine()) != null) {
+                        buf.append(str).append("\n");
                     }
-                    buf.deleteCharAt(buf.length() - 1);
-                    data = buf.toString();
-                } catch (FileNotFoundException e) {
+
+                    is.close();
+                    reader.close();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if (data == null) {
-                    t.setText(R.string.failed);
-                    t.show();
-                    finish();
-                } else {
-                    qrp = new ContactCard(this, data);
-                    if (qrp.getPublicKey() != null) {
-                        StaticVariables.fileContactCard = qrp;
-                    } else {
-                        StaticVariables.message = data;
-                    }
-                    go();
-                }
+                buf.deleteCharAt(buf.length() - 1);
+                data = buf.toString();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
+            if (data == null) {
+                t.setText(R.string.failed);
+                t.show();
+                finish();
+            } else {
+                qrp = new ContactCard(this, data);
+                if (qrp.getPublicKey() != null) {
+                    StaticVariables.fileContactCard = qrp;
+                } else {
+                    StaticVariables.message = data;
+                }
+                go();
+            }
+
         }
     }
 }

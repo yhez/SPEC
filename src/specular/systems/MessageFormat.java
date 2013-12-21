@@ -17,7 +17,7 @@ public class MessageFormat {
     public MessageFormat(byte[] raw) {
         int loc = 0;
         boolean found=false;
-        while (loc < raw.length - 6) {
+        while (loc < raw.length - 5) {
             if (raw[loc] == 'f' && raw[loc + 1] == 'i' && raw[loc + 2] == 'l' && raw[loc + 3] == 'e' && raw[loc + 4] == '/' && raw[loc + 5] == '/'){
                 found=true;
                 break;
