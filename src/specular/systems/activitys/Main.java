@@ -31,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -274,21 +275,24 @@ public class Main extends Activity {
                 }
                 break;
             case R.id.hash:
+                boolean lightMsg = ((ViewGroup)findViewById(R.id.top_pannel)).getChildAt(2).getVisibility()==View.VISIBLE;
                 String hash = "original message size:\t\t" + Visual.getSize(StaticVariables.orig_msg_size) + "\n";
                 hash += "encrypted message size:\t\t" + Visual.getSize(StaticVariables.encrypted_msg_size) + "\n";
                 String[] parts = getResources().getStringArray(R.array.message_parts);
                 hash += "message parts:\n";
                 int index = 1;
+                if(lightMsg){
                 hash += index++ + ". " + parts[0] + "\n" + StaticVariables.name + "\n";
                 hash += index++ + ". " + parts[1] + "\n" + StaticVariables.email + "\n";
                 hash += index++ + ". " + parts[2] + "\n" + StaticVariables.friendsPublicKey + "\n";
+                }
                 String q = getString(R.string.divide_msg) + getString(R.string.quote_msg) + getString(R.string.divide_msg);
                 if (StaticVariables.msg_content != null && StaticVariables.msg_content.length() > 0) {
                     hash += index++ + ". " + parts[3] + "\n" + StaticVariables.msg_content.split(q)[0] + "\n";
                     if (StaticVariables.msg_content.split(q).length > 1)
                         hash += index++ + ". " + parts[4] + "\n" + StaticVariables.msg_content.split(q)[1] + "\n";
                 }
-                if (StaticVariables.fileContent != null) {
+                if (StaticVariables.file_name != null) {
                     int length = StaticVariables.fileContent.length > 100 ? 100 : StaticVariables.fileContent.length;
                     hash += index++ + ". " + parts[5] + "\n" + new String(StaticVariables.fileContent, 0, length);
                     if (StaticVariables.fileContent.length > 100)
@@ -297,7 +301,8 @@ public class Main extends Activity {
                     hash += index++ + ". " + parts[6] + "\n" + StaticVariables.file_name + "\n";
                 }
                 hash += index++ + ". " + parts[7] + "\n" + StaticVariables.timeStamp + "\n";
-                hash += index++ + ". " + parts[8] + "\n" + Session.toShow(StaticVariables.session) + "\n";
+                if(lightMsg)
+                    hash += index++ + ". " + parts[8] + "\n" + Session.toShow(StaticVariables.session) + "\n";
                 hash += index + ". " + parts[9] + "\n" + StaticVariables.hash;
                 ExplainDialog edlg = new ExplainDialog(ExplainDialog.HASH, hash);
                 edlg.show(getFragmentManager(), "hash");
@@ -335,7 +340,9 @@ public class Main extends Activity {
                 edl.show(getFragmentManager(), "session");
                 break;
             case R.id.replay:
+                lightMsg = ((ViewGroup)findViewById(R.id.top_pannel)).getChildAt(2).getVisibility()==View.VISIBLE;
                 String replay = getString(R.string.time_created) + StaticVariables.timeStamp + "\n";
+                if(lightMsg)
                 switch (StaticVariables.flag_replay) {
                     case MessageFormat.NOT_RELEVANT:
                         replay += getString(R.string.replay_not_relevant);
@@ -351,6 +358,20 @@ public class Main extends Activity {
                         break;
                     case MessageFormat.NOT_LATEST:
                         replay += getString(R.string.replay_older_then_latest);
+                        break;
+                }else
+                    switch (StaticVariables.flag_replay) {
+                    case LightMessage.NEW:
+                        replay += getString(R.string.light_msg_day);
+                        break;
+                    case LightMessage.WEEK:
+                        replay += getString(R.string.light_msg_week);
+                        break;
+                    case LightMessage.TWO_WEEKS:
+                        replay += getString(R.string.light_msg_two_weeks);
+                        break;
+                    case LightMessage.MONTH:
+                        replay += getString(R.string.light_msg_old);
                         break;
                 }
                 ExplainDialog ed = new ExplainDialog(ExplainDialog.REPLAY, replay);

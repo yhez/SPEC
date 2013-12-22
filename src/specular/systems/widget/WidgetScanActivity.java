@@ -24,7 +24,7 @@ public class WidgetScanActivity extends CaptureActivity {
         if (rawResult != null) {
             try {
                 File path = getFilesDir();
-                File file = new File(path, "temp_open_by_widget");
+                File file = new File(path, "temp_open_by_widget.spec");
                 OutputStream os = new FileOutputStream(file);
                 os.write(rawResult.getText().getBytes());
                 os.close();

@@ -67,17 +67,6 @@ public class MessageFormat {
         hash = hashing(name + email + publicKey + msgContent + (fileContent != null ? new String(fileContent) : "") + session + sentTime);
     }
 
-    public MessageFormat() {
-        email = StaticVariables.decryptedMsg.getEmail();
-        publicKey = StaticVariables.decryptedMsg.getPublicKey();
-        sentTime = StaticVariables.decryptedMsg.getSentTime();
-        session = StaticVariables.decryptedMsg.getSession();
-        fileName = StaticVariables.decryptedMsg.getFileName();
-        name = StaticVariables.decryptedMsg.getName();
-        msgContent = StaticVariables.decryptedMsg.msgContent;
-        hash = "";
-    }
-
     public String getFileName() {
         return fileName;
     }

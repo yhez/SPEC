@@ -1,8 +1,12 @@
 package specular.systems;
 
+import android.util.Log;
+
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Created by yehezkelk on 12/17/13.
@@ -24,7 +28,12 @@ public class LightMessage {
         }
     }
     public boolean checkHash(){
-        return hash.equals(myHash(getFormatedMsg()));
+        String tmp = hash;
+        hash=null;
+        hash = myHash(getFormatedMsg());
+        Log.w("orig",tmp);
+        Log.w("new",hash);
+        return hash.equals(tmp);
     }
     public LightMessage(String msgContent){
         this.msgContent=msgContent;
@@ -71,5 +80,29 @@ public class LightMessage {
                     | ((fm[a*4+2] & 0xFF) << 8) | (fm[a*4+3] & 0xFF);
         }
         return value+"";
+    }
+    public static final int NEW=0,WEEK=1,TWO_WEEKS=2,MONTH=3;
+    public static int checkReplay(String time){
+        SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        parser.setTimeZone(TimeZone.getTimeZone("GMT"));
+        try {
+            long timeCreated = parser.parse(time).getTime();
+            long now = System.currentTimeMillis();
+            long gap = now - timeCreated;
+            long day = 1000*60*60*24;
+            long week = day*7;
+            long two_weeks=week*2;
+            long month=two_weeks*2;
+            if(gap<day)
+                return NEW;
+            if(gap<week)
+                return WEEK;
+            if(gap<two_weeks)
+                return TWO_WEEKS;
+            return MONTH;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return MONTH;
+        }
     }
 }

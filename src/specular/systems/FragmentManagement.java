@@ -93,9 +93,29 @@ public class FragmentManagement extends Fragment {
         StaticVariables.fragmentManagement = this;
     }
     public void updateDecryptedLight(){
-        rootView.findViewById(R.id.top_pannel).setVisibility(View.GONE);
+        ViewGroup gl = (ViewGroup)rootView.findViewById(R.id.top_pannel);
+        gl.getChildAt(2).setVisibility(View.GONE);
+        ImageView hs = (ImageView) rootView.findViewById(R.id.hash_check);
+        ImageView rp = (ImageView) rootView.findViewById(R.id.replay_check);
         rootView.findViewById(R.id.open_file_rlt).setVisibility(View.GONE);
-        rootView.findViewById(R.id.from).setVisibility(View.GONE);
+        int ok = R.drawable.ic_ok, notOk = R.drawable.ic_bad,
+                unknown = R.drawable.ic_unknown, starting = R.drawable.ic_what;
+        hs.setImageResource(StaticVariables.flag_hash ? ok : notOk);
+        switch (StaticVariables.flag_replay){
+            case LightMessage.NEW:
+                rp.setImageResource(ok);
+                break;
+            case LightMessage.WEEK:
+                rp.setImageResource(unknown);
+                break;
+            case LightMessage.TWO_WEEKS:
+                rp.setImageResource(starting);
+                break;
+            default:
+                rp.setImageResource(notOk);
+        }
+        rootView.findViewById(R.id.answer).setVisibility(View.GONE);
+        ((TextView)rootView.findViewById(R.id.general_details)).setText("message composed at "+StaticVariables.timeStamp);
         ((TextView) rootView.findViewById(R.id.flag_contact_exist)).setText(true + "");
         ((TextView) rootView.findViewById(R.id.decrypted_msg)).setText(StaticVariables.msg_content);
         getActivity().invalidateOptionsMenu();
@@ -644,6 +664,7 @@ public class FragmentManagement extends Fragment {
                     StaticVariables.msg_content= StaticVariables.decryptedLightMsg.getMsgContent();
                     StaticVariables.timeStamp= StaticVariables.decryptedLightMsg.getSentTime();
                     StaticVariables.flag_hash= StaticVariables.decryptedLightMsg.checkHash();
+                    StaticVariables.flag_replay= LightMessage.checkReplay(StaticVariables.timeStamp);
                     StaticVariables.flag_light_msg=true;
                     updateDecryptedLight();
                 }
