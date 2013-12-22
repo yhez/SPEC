@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="CoDec-build17-jdk13">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/CoDec-build17-jdk13.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
