@@ -187,10 +187,10 @@
     <string name="replay_check_failed">Time-stamp is broken.\nDo not trust this message.</string>
     <string name="replay_old">This message has been sent more than 60 hours ago.\nYou should be careful.</string>
     <string name="replay_older_then_latest">You\'ve already received a newer message from this contact.</string>
-    <string name="light_msg_day">the message was created within this day</string>
-    <string name="light_msg_week">the message was created within this week</string>
-    <string name="light_msg_two_weeks">the message was created within the last two weeks</string>
-    <string name="light_msg_old">the message is old and may not be relevant</string>
+    <string name="light_msg_day">Message created within the last 24 hours</string>
+    <string name="light_msg_week">Message created within the last week</string>
+    <string name="light_msg_two_weeks">Message created within the last two weeks</string>
+    <string name="light_msg_old">Message is over due and may not be relevant</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>
