@@ -18,10 +18,10 @@ public class ProgressDlg extends ProgressDialog {
     HoloCircularProgressBar hcpb;
     TextView textViewSec, textViewDec, textView;
     long startTimeMillis;
-    int title;
-    Activity activity;
+    final int title;
+    final Activity activity;
     private ObjectAnimator mProgressBarAnimator;
-    private Handler hndl = new Handler() {
+    private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             int dec = (int) ((System.currentTimeMillis() - startTimeMillis) / 100);

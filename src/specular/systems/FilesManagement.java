@@ -61,8 +61,8 @@ public final class FilesManagement {
         if (StaticVariables.decryptedMsg.getFileContent() == null)
             return false;
         try {
-            File path = new File(Environment.getExternalStorageDirectory()+"/SPEC/attachments");
-            if(!path.exists())
+            File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
+            if (!path.exists())
                 path.mkdirs();
             File file = new File(path, StaticVariables.decryptedMsg.getFileName());
             OutputStream os = new FileOutputStream(file);
@@ -75,8 +75,8 @@ public final class FilesManagement {
         return true;
     }
 
-    public static Intent openFile(String fileName){
-        File path = new File(Environment.getExternalStorageDirectory()+"/SPEC/attachments");
+    public static Intent openFile(String fileName) {
+        File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
         File f = new File(path, fileName);
         String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
         MimeTypeMap mtm = MimeTypeMap.getSingleton();
@@ -86,6 +86,7 @@ public final class FilesManagement {
         intent.setDataAndType(uri, type);
         return intent;
     }
+
     public static void saveTempDecryptedMSG(Activity a) {
         if (StaticVariables.decryptedMsg == null)
             return;
@@ -377,10 +378,8 @@ public final class FilesManagement {
                 e.printStackTrace();
             }
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrpk.getQRToPublish(), BarcodeFormat.QR_CODE.toString(), 512);
-
-            Bitmap bitmap = null;
             try {
-                bitmap = qrCodeEncoder.encodeAsBitmap();
+                Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
 
                 Bitmap crop = crop(bitmap);
                 FileOutputStream fos2;
@@ -424,7 +423,7 @@ public final class FilesManagement {
             e.printStackTrace();
             return RESULT_ADD_FILE_FAILED;
         }
-        if (size > StaticVariables.LIMIT_FILE_SIZE){
+        if (size > StaticVariables.LIMIT_FILE_SIZE) {
             return RESULT_ADD_FILE_TO_BIG;
         }
         byte[] result = new byte[size];
@@ -482,16 +481,6 @@ public final class FilesManagement {
         a.deleteDatabase(MySQLiteHelper.DATABASE_NAME);
     }
 
-    public static void deleteTmp(Activity a) {
-        a.deleteFile(a.getString(QR_NAME));
-        a.deleteFile(a.getString(QR_NAME_SEND));
-        a.deleteFile(QR_NAME_T);
-        a.deleteFile(a.getString(FILE_NAME));
-        a.deleteFile(a.getString(FILE_NAME_SEND));
-        a.deleteFile(a.getString(FRIENDS_SHARE_QR));
-        a.deleteFile(a.getString(FRIEND_CONTACT_CARD));
-    }
-
     public static String getlasts(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a.getApplicationContext());
         return srp.getString("lasts", null);
@@ -507,6 +496,6 @@ public final class FilesManagement {
     public static void getMyDetails(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
         CryptMethods.setDetails(srp.getString(NAME, null), srp.getString(EMAIL, null));
-        CryptMethods.setPublic(srp.getString(PUBLIC_KEY,null));
+        CryptMethods.setPublic(srp.getString(PUBLIC_KEY, null));
     }
 }

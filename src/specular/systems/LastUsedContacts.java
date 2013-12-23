@@ -14,7 +14,7 @@ public class LastUsedContacts {
     final Contact[] lasts;
     ViewLastContact[] vlc;
     final long[] ids;
-    int[] num;
+    final int[] num;
 
     public LastUsedContacts(Activity a) {
         lasts = new Contact[NUM_LASTS];
@@ -47,14 +47,14 @@ public class LastUsedContacts {
         return small;
     }
 
-    public void showIfNeeded(Activity a,View v) {
+    public void showIfNeeded(Activity a, View v) {
         if (StaticVariables.fullList.size() < StaticVariables.minContactSize
                 || lasts.length == 0 || lasts[0] == null) {
             if (v != null)
                 v.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
-            else{
+            else {
                 View nv = a.findViewById(R.id.frame_grid_last);
-                if(nv!=null)nv.setVisibility(View.GONE);
+                if (nv != null) nv.setVisibility(View.GONE);
             }
             return;
         }
@@ -81,7 +81,7 @@ public class LastUsedContacts {
         }
     }
 
-    public void change(Activity a,Contact contact) {
+    public void change(Activity a, Contact contact) {
         int index;
         boolean isNew = true;
         int i;
@@ -112,17 +112,17 @@ public class LastUsedContacts {
     }
 
     public void remove(Activity activity, Contact contact) {
-        int i=-1;
-        for(int a=0;a<ids.length;a++){
-            if(ids[a]==contact.getId()){
-                i=a;
+        int i = -1;
+        for (int a = 0; a < ids.length; a++) {
+            if (ids[a] == contact.getId()) {
+                i = a;
                 break;
             }
         }
-        if(!(i<0)){
-            lasts[i]=null;
-            ids[i]=0;
-            num[i]=0;
+        if (!(i < 0)) {
+            lasts[i] = null;
+            ids[i] = 0;
+            num[i] = 0;
             String raw = "";
             for (int n = 0; n < NUM_LASTS; n++)
                 raw += ids[n] + "-" + num[n] + ",";

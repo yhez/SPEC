@@ -17,25 +17,29 @@ import specular.systems.R;
  * Implementation of App Widget functionality.
  */
 public class WidgetContact extends AppWidgetProvider {
-    public static long getId(String sharedPrfString){
+    public static long getId(String sharedPrfString) {
         return Long.parseLong(sharedPrfString.split("-")[1]);
     }
-    public static int getWidgetId(String srp){
+
+    public static int getWidgetId(String srp) {
         return Integer.parseInt(srp.split("-")[2]);
     }
-    public static String getContactName(String sharedPrfString){
+
+    public static String getContactName(String sharedPrfString) {
         return sharedPrfString.split("-")[0];
     }
-    public static String getSRPName(int id){
-        return "widget-id-"+id;
+
+    public static String getSRPName(int id) {
+        return "widget-id-" + id;
     }
-    public static String saveDetails(String name, long id){
-        return name+"-"+id;
+
+    public static String saveDetails(String name, long id) {
+        return name + "-" + id;
     }
+
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        final int N = appWidgetIds.length;
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -53,36 +57,37 @@ public class WidgetContact extends AppWidgetProvider {
     }
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-            int appWidgetId) {
+                                int appWidgetId) {
         String widget = getSRPName(appWidgetId);
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(context);
         String name = srp.getString(widget, null);
 
         //it all has to be inside the 'if' because it's possible that a widget is on the list,
         //and he's not actually on the screen
-        if(name!=null){
+        if (name != null) {
             // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_contact);
             views.setTextViewText(R.id.text_widget, getContactName(name));
             Intent intent = new Intent(context, QuickMsg.class);
             intent.putExtra("widget", widget);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            views.setOnClickPendingIntent(R.id.widget_ll,pendingIntent);
+            views.setOnClickPendingIntent(R.id.widget_ll, pendingIntent);
             Bitmap b = BitmapFactory.decodeFile(context.getFilesDir() + "/" + widget);
-            views.setImageViewBitmap(R.id.image_widget,b);
+            views.setImageViewBitmap(R.id.image_widget, b);
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
-        }else {
-            appWidgetManager.updateAppWidget(appWidgetId, new RemoteViews(context.getPackageName(),R.layout.widget_empty));
+        } else {
+            appWidgetManager.updateAppWidget(appWidgetId, new RemoteViews(context.getPackageName(), R.layout.widget_empty));
         }
     }
+
     @Override
-    public void onDeleted(Context context,int[] appWidgetIds){
-        super.onDeleted(context,appWidgetIds);
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        super.onDeleted(context, appWidgetIds);
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor edt = srp.edit();
-        for(int id:appWidgetIds){
+        for (int id : appWidgetIds) {
             String widget = getSRPName(id);
             edt.remove(widget);
             context.deleteFile(widget);

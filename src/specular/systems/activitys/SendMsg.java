@@ -47,9 +47,9 @@ public class SendMsg extends Activity {
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
-        done=false;
-        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
-            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(),this));
+        done = false;
+        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
         uris = FilesManagement.getFilesToSend(this);
         contact = StaticVariables.contactsDataSource.findContact(getIntent().getLongExtra("contactId", -1));
@@ -328,9 +328,9 @@ public class SendMsg extends Activity {
             });
             gl.addView(b);
         }
-        if(what==IMAGE){
+        if (what == IMAGE) {
             final PrintHelper photoPrinter = new PrintHelper(this);
-            if(photoPrinter.systemSupportsPrint()){
+            if (PrintHelper.systemSupportsPrint()) {
                 ImageButton b = Visual.glow(getResources().getDrawable(R.drawable.printer), this);
                 b.setOnClickListener(new View.OnClickListener() {
                     @Override

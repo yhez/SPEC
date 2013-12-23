@@ -16,44 +16,49 @@ import java.util.List;
 
 public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filterable {
     private final Activity a;
-    private static List<Contact>list;
-    public static void setList(List<Contact> list){
-        MySimpleArrayAdapter.list=list;
+    private static List<Contact> list;
+
+    public static void setList(List<Contact> list) {
+        MySimpleArrayAdapter.list = list;
     }
 
     public MySimpleArrayAdapter(Activity a) {
         super(a, R.layout.list_row, list);
         this.a = a;
     }
+
     @Override
-    public int getCount(){
+    public int getCount() {
         return list.size();
     }
+
     @Override
-    public Contact getItem(int position){
+    public Contact getItem(int position) {
         return list.get(position);
     }
+
     @Override
-    public long getItemId(int position){
+    public long getItemId(int position) {
         return position;
     }
-    public void updateCont(Activity aa,Contact c,boolean needRefresh) {
-            for (int a = 0; a < StaticVariables.fullList.size(); a++)
-                if (StaticVariables.fullList.get(a).getId() == c.getId()) {
-                    StaticVariables.fullList.remove(a);
-                    break;
-                }
+
+    public void updateCont(Activity aa, Contact c, boolean needRefresh) {
+        for (int a = 0; a < StaticVariables.fullList.size(); a++)
+            if (StaticVariables.fullList.get(a).getId() == c.getId()) {
+                StaticVariables.fullList.remove(a);
+                break;
+            }
         StaticVariables.fullList.add(c);
-        if(needRefresh)
+        if (needRefresh)
             refreshList(aa);
     }
 
-    public void removeCont(Activity a,int index) {
+    public void removeCont(Activity a, int index) {
         StaticVariables.fullList.remove(index);
         refreshList(a);
     }
 
-    public void addCont(Activity a,Contact c) {
+    public void addCont(Activity a, Contact c) {
         StaticVariables.fullList.add(c);
         refreshList(a);
     }
@@ -79,7 +84,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
 
     @Override
     public Filter getFilter() {
-        Filter filter = new Filter() {
+        return new Filter() {
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
@@ -102,11 +107,10 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                 return results;
             }
         };
-        return filter;
     }
 
     public void refreshList(Activity a) {
-        list=StaticVariables.fullList;
+        list = StaticVariables.fullList;
         notifyDataSetChanged();
         View v = a.findViewById(R.id.list);
         if (v != null)

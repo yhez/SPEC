@@ -21,19 +21,20 @@ import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
 import specular.systems.LightMessage;
 import specular.systems.MessageFormat;
-import specular.systems.StaticVariables;
 import specular.systems.R;
+import specular.systems.StaticVariables;
 import specular.systems.activitys.SendMsg;
 
 
 public class Response extends DialogFragment {
     Contact contact;
     Toast t;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        t = Toast.makeText(getActivity(),"",Toast.LENGTH_SHORT);
-        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+        t = Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
+        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
         // Inflate and set the layout for the dialog
@@ -44,9 +45,9 @@ public class Response extends DialogFragment {
         if (StaticVariables.currentLayout == R.layout.edit_contact) {
             contact = StaticVariables.contactsDataSource.findContact(Long.parseLong(
                     ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));
-        }else if (StaticVariables.currentLayout == R.layout.decrypted_msg){
+        } else if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
             contact = StaticVariables.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
-            if(StaticVariables.msg_content!=null&& StaticVariables.msg_content.length()>0){
+            if (StaticVariables.msg_content != null && StaticVariables.msg_content.length() > 0) {
                 cb.setVisibility(View.VISIBLE);
                 cb.setChecked(true);
             }
@@ -87,44 +88,43 @@ public class Response extends DialogFragment {
                     getActivity().findViewById(R.id.answer).setVisibility(View.GONE);
                 final String userInput = et.getText().toString();
                 String msgContent;
-                String shortMsgContent;
                 if (cb.isChecked())
-                    if (StaticVariables.msg_content.contains(getString(R.string.quote_msg))){
+                    if (StaticVariables.msg_content.contains(getString(R.string.quote_msg))) {
                         msgContent = getString(R.string.divide_msg)
                                 + getString(R.string.quote_msg)
                                 + getString(R.string.divide_msg)
                                 + StaticVariables.msg_content
                                 .replace(getString(R.string.quote_msg)
                                         + getString(R.string.divide_msg), "");
-                    }
-                    else{
+                    } else {
                         msgContent = getString(R.string.divide_msg)
                                 + getString(R.string.quote_msg)
                                 + getString(R.string.divide_msg)
                                 + StaticVariables.msg_content;
                     }
-                else{
+                else {
                     msgContent = "";
                 }
-                final MessageFormat msg = new MessageFormat(null,CryptMethods.getMyDetails(getActivity()), "", userInput + msgContent
+                final MessageFormat msg = new MessageFormat(null, CryptMethods.getMyDetails(getActivity()), "", userInput + msgContent
                         , contact.getSession());
-                final LightMessage lightMessage = new LightMessage(userInput+msgContent);
+                final LightMessage lightMessage = new LightMessage(userInput + msgContent);
                 final ProgressDlg prgd = new ProgressDlg(getActivity(), R.string.encrypting);
                 prgd.setCancelable(false);
                 prgd.show();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        CryptMethods.encrypt(msg.getFormatedMsg(),lightMessage.getFormatedMsg(),
+                        CryptMethods.encrypt(msg.getFormatedMsg(), lightMessage.getFormatedMsg(),
                                 contact.getPublicKey());
                         boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR);
                         prgd.cancel();
                         if (success) {
-                            Intent intent = new Intent(getActivity(),SendMsg.class);
-                            intent.putExtra("contactId",contact.getId());
+                            Intent intent = new Intent(getActivity(), SendMsg.class);
+                            intent.putExtra("contactId", contact.getId());
                             startActivity(intent);
                         } else {
-                            t.setText(R.string.failed_to_create_files_to_send);t.show();
+                            t.setText(R.string.failed_to_create_files_to_send);
+                            t.show();
                         }
                         Response.this.getDialog().cancel();
                     }

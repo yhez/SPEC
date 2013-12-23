@@ -109,7 +109,7 @@ public class ShareCustomDialog extends DialogFragment {
 
         }
         final PrintHelper photoPrinter = new PrintHelper(getActivity());
-        if(photoPrinter.systemSupportsPrint()){
+        if (PrintHelper.systemSupportsPrint()) {
             ImageButton b = Visual.glow(getActivity().getResources().getDrawable(R.drawable.printer), getActivity());
             b.setOnClickListener(new View.OnClickListener() {
                 @Override

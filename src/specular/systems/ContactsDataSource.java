@@ -27,7 +27,7 @@ public class ContactsDataSource {
         dbHelper.close();
     }
 
-    public long createContact(Activity a,Contact contact) {
+    public long createContact(Activity a, Contact contact) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_CONTACT_NAME, contact.getContactName());
         values.put(MySQLiteHelper.COLUMN_EMAIL, contact.getEmail());
@@ -47,7 +47,7 @@ public class ContactsDataSource {
         return l;
     }
 
-    public void deleteContact(Activity aa,Contact contact) {
+    public void deleteContact(Activity aa, Contact contact) {
         long id = contact.getId();
         int position = -1;
         for (int a = 0; a < StaticVariables.fullList.size(); a++)
@@ -60,12 +60,12 @@ public class ContactsDataSource {
                 + " = " + id, null);
         dbHelper.close();
         if (!(position < 0)) {
-            StaticVariables.adapter.removeCont(aa,position);
+            StaticVariables.adapter.removeCont(aa, position);
         }
     }
 
-    public Contact updateDB(long id, String contactName, String email,
-                            String publicKey, String session) {
+    public void updateDB(long id, String contactName, String email,
+                         String publicKey, String session) {
         ContentValues cv = new ContentValues();
         if (contactName != null)
             cv.put(MySQLiteHelper.COLUMN_CONTACT_NAME, contactName);
@@ -78,10 +78,9 @@ public class ContactsDataSource {
         database = dbHelper.getWritableDatabase();
         database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
         database.close();
-        return findContact(id);
     }
 
-    public Contact updateDB(long id, long last, int received, int sent) {
+    public void updateDB(long id, long last, int received, int sent) {
         ContentValues cv = new ContentValues();
         if (last > 0)
             cv.put(MySQLiteHelper.COLUMN_LAST_MSG, last);
@@ -92,7 +91,6 @@ public class ContactsDataSource {
         database = dbHelper.getWritableDatabase();
         database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
         database.close();
-        return findContact(id);
     }
 
     public Contact findContact(long id) {
@@ -106,7 +104,7 @@ public class ContactsDataSource {
                     , cursor.getString(2), cursor.getInt(3)
                     , cursor.getLong(4), cursor.getInt(5)
                     , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8),cursor.getString(9));
+                    cursor.getString(8), cursor.getString(9));
             dbHelper.close();
             return c;
         }
@@ -125,7 +123,7 @@ public class ContactsDataSource {
                     , cursor.getString(2), cursor.getInt(3)
                     , cursor.getLong(4), cursor.getInt(5)
                     , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8),cursor.getString(9));
+                    cursor.getString(8), cursor.getString(9));
             dbHelper.close();
             return c;
         }
@@ -144,7 +142,7 @@ public class ContactsDataSource {
                     , cursor.getString(2), cursor.getInt(3)
                     , cursor.getLong(4), cursor.getInt(5)
                     , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8),cursor.getString(9));
+                    cursor.getString(8), cursor.getString(9));
             dbHelper.close();
             return c;
         }
@@ -163,7 +161,7 @@ public class ContactsDataSource {
                     , cursor.getString(2), cursor.getInt(3)
                     , cursor.getLong(4), cursor.getInt(5)
                     , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8),cursor.getString(9));
+                    cursor.getString(8), cursor.getString(9));
             contacts.add(contact);
             cursor.moveToNext();
         }
@@ -179,9 +177,9 @@ public class ContactsDataSource {
         return contacts;
     }
 
-    public void updateDB(long id,String defaultApp) {
+    public void updateDB(long id, String defaultApp) {
         ContentValues cv = new ContentValues();
-        cv.put(MySQLiteHelper.COLUMN_DEFAULT_APP,defaultApp);
+        cv.put(MySQLiteHelper.COLUMN_DEFAULT_APP, defaultApp);
         database = dbHelper.getWritableDatabase();
         database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
         database.close();

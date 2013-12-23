@@ -77,7 +77,7 @@ public class FragmentManagement extends Fragment {
             }
         }
     };
-    Thread checkHash = new Thread(new Runnable() {
+    final Thread checkHash = new Thread(new Runnable() {
         @Override
         public void run() {
             StaticVariables.flag_hash = StaticVariables.decryptedMsg.checkHash();
@@ -92,8 +92,9 @@ public class FragmentManagement extends Fragment {
     public FragmentManagement() {
         StaticVariables.fragmentManagement = this;
     }
-    public void updateDecryptedLight(){
-        ViewGroup gl = (ViewGroup)rootView.findViewById(R.id.top_pannel);
+
+    public void updateDecryptedLight() {
+        ViewGroup gl = (ViewGroup) rootView.findViewById(R.id.top_pannel);
         gl.getChildAt(2).setVisibility(View.GONE);
         ImageView hs = (ImageView) rootView.findViewById(R.id.hash_check);
         ImageView rp = (ImageView) rootView.findViewById(R.id.replay_check);
@@ -101,7 +102,7 @@ public class FragmentManagement extends Fragment {
         int ok = R.drawable.ic_ok, notOk = R.drawable.ic_bad,
                 unknown = R.drawable.ic_unknown, starting = R.drawable.ic_what;
         hs.setImageResource(StaticVariables.flag_hash ? ok : notOk);
-        switch (StaticVariables.flag_replay){
+        switch (StaticVariables.flag_replay) {
             case LightMessage.NEW:
                 rp.setImageResource(ok);
                 break;
@@ -115,11 +116,12 @@ public class FragmentManagement extends Fragment {
                 rp.setImageResource(notOk);
         }
         rootView.findViewById(R.id.answer).setVisibility(View.GONE);
-        ((TextView)rootView.findViewById(R.id.general_details)).setText(getString(R.string.light_msg_message_created_at)+StaticVariables.timeStamp);
+        ((TextView) rootView.findViewById(R.id.general_details)).setText(getString(R.string.light_msg_message_created_at) + StaticVariables.timeStamp);
         ((TextView) rootView.findViewById(R.id.flag_contact_exist)).setText(true + "");
         ((TextView) rootView.findViewById(R.id.decrypted_msg)).setText(StaticVariables.msg_content);
         getActivity().invalidateOptionsMenu();
     }
+
     public void updateDecryptedScreen() {
         TextView tv = (TextView) rootView.findViewById(R.id.decrypted_msg);
         TextView contactExist = (TextView) rootView.findViewById(R.id.flag_contact_exist);
@@ -135,14 +137,14 @@ public class FragmentManagement extends Fragment {
         if (c != null) {
             contactExist.setText(true + "");
             sender.setText("From:\t" + c.getContactName() + " , " + c.getEmail());
-            StaticVariables.flag_session = Session.checkAndUpdate(getActivity(),c, StaticVariables.session);
+            StaticVariables.flag_session = Session.checkAndUpdate(getActivity(), c, StaticVariables.session);
         } else {
             sender.setText("From:\t"
                     + StaticVariables.name
                     + " , " + StaticVariables.email);
             contactExist.setText(false + "");
         }
-        StaticVariables.flag_replay = StaticVariables.decryptedMsg.checkReplay(c,getActivity());
+        StaticVariables.flag_replay = StaticVariables.decryptedMsg.checkReplay(c, getActivity());
         getActivity().invalidateOptionsMenu();
         if (StaticVariables.file_name == null || StaticVariables.file_name.length() == 0) {
             fileAttach.setVisibility(View.GONE);
@@ -210,9 +212,9 @@ public class FragmentManagement extends Fragment {
         ss.setImageResource(StaticVariables.flag_session == Session.DONT_TRUST ? notOk :
                 (StaticVariables.flag_session == Session.TRUSTED ? ok :
                         (StaticVariables.flag_session == Session.UNKNOWN ? unknown : starting)));
-        if(StaticVariables.flag_replay==MessageFormat.NOT_RELEVANT)
+        if (StaticVariables.flag_replay == MessageFormat.NOT_RELEVANT)
             rp.setVisibility(View.GONE);
-        else if(StaticVariables.flag_replay==MessageFormat.OK)
+        else if (StaticVariables.flag_replay == MessageFormat.OK)
             rp.setImageResource(ok);
         else
             rp.setImageResource(notOk);
@@ -345,17 +347,17 @@ public class FragmentManagement extends Fragment {
                 ((TextView) rootView.findViewById(R.id.contact_email).
                         findViewById(R.id.text_view)).setText(getString(R.string.edit_email) + "\t");
                 final Contact currContact = StaticVariables.contactsDataSource.findContact(id);
-                if(currContact.getDefaultApp()!=null){
+                if (currContact.getDefaultApp() != null) {
                     Intent i = new Intent();
                     i.setComponent(currContact.getDefaultApp());
-                    ResolveInfo rs = getActivity().getPackageManager().resolveActivity(i,0);
-                    final ImageButton ibbb = (ImageButton)rootView.findViewById(R.id.default_app_send);
+                    ResolveInfo rs = getActivity().getPackageManager().resolveActivity(i, 0);
+                    final ImageButton ibbb = (ImageButton) rootView.findViewById(R.id.default_app_send);
                     ibbb.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
                     rootView.findViewById(R.id.default_app_send_ll).setVisibility(View.VISIBLE);
                     ibbb.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            currContact.update(null,getActivity());
+                            currContact.update(null, getActivity());
                             rootView.findViewById(R.id.default_app_send_ll).setVisibility(View.GONE);
                         }
                     });
@@ -621,27 +623,26 @@ public class FragmentManagement extends Fragment {
                         hndl.sendMessage(msg);
                     }
                 });
-                StaticVariables.luc.showIfNeeded(getActivity(),rootView);
+                StaticVariables.luc.showIfNeeded(getActivity(), rootView);
                 if (StaticVariables.currentText != null)
                     et.setText(StaticVariables.currentText);
                 break;
             case decrypt:
                 break;
             case wait_nfc_to_write:
-                QRCodeEncoder qr = new QRCodeEncoder(CryptMethods.getPublicTmp(),BarcodeFormat.QR_CODE.toString(),256);
+                QRCodeEncoder qr = new QRCodeEncoder(CryptMethods.getPublicTmp(), BarcodeFormat.QR_CODE.toString(), 256);
                 try {
-                    ((ImageView)rootView.findViewById(R.id.image_public)).setImageBitmap(qr.encodeAsBitmap());
+                    ((ImageView) rootView.findViewById(R.id.image_public)).setImageBitmap(qr.encodeAsBitmap());
                 } catch (WriterException e) {
                     e.printStackTrace();
                 }
                 break;
             case wait_nfc_decrypt:
-                if (NfcAdapter.getDefaultAdapter(getActivity()) == null){
+                if (NfcAdapter.getDefaultAdapter(getActivity()) == null) {
                     Toast t = Toast.makeText(getActivity(), R.string.cant_connect_nfc_adapter, Toast.LENGTH_LONG);
-                    t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+                    t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     t.show();
-                }
-                else if (!NfcAdapter.getDefaultAdapter(getActivity()).isEnabled())
+                } else if (!NfcAdapter.getDefaultAdapter(getActivity()).isEnabled())
                     rootView.findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
                 break;
             case setup:
@@ -661,16 +662,15 @@ public class FragmentManagement extends Fragment {
                     StaticVariables.file_name = StaticVariables.decryptedMsg.getFileName();
                     StaticVariables.session = StaticVariables.decryptedMsg.getSession();
                     updateDecryptedScreen();
-                } else if(StaticVariables.decryptedLightMsg!=null){
-                    StaticVariables.hash= StaticVariables.decryptedLightMsg.getHash();
-                    StaticVariables.msg_content= StaticVariables.decryptedLightMsg.getMsgContent();
-                    StaticVariables.timeStamp= StaticVariables.decryptedLightMsg.getSentTime();
-                    StaticVariables.flag_hash= StaticVariables.decryptedLightMsg.checkHash();
-                    StaticVariables.flag_replay= LightMessage.checkReplay(StaticVariables.timeStamp);
-                    StaticVariables.flag_light_msg=true;
+                } else if (StaticVariables.decryptedLightMsg != null) {
+                    StaticVariables.hash = StaticVariables.decryptedLightMsg.getHash();
+                    StaticVariables.msg_content = StaticVariables.decryptedLightMsg.getMsgContent();
+                    StaticVariables.timeStamp = StaticVariables.decryptedLightMsg.getSentTime();
+                    StaticVariables.flag_hash = StaticVariables.decryptedLightMsg.checkHash();
+                    StaticVariables.flag_replay = LightMessage.checkReplay(StaticVariables.timeStamp);
+                    StaticVariables.flag_light_msg = true;
                     updateDecryptedLight();
-                }
-                else if (StaticVariables.flag_msg == null || !StaticVariables.flag_msg) {
+                } else if (StaticVariables.flag_msg == null || !StaticVariables.flag_msg) {
                     rootView.findViewById(R.id.top_pannel).setVisibility(View.GONE);
                     rootView.findViewById(R.id.open_file_rlt).setVisibility(View.GONE);
                     rootView.findViewById(R.id.from).setVisibility(View.GONE);
@@ -682,7 +682,7 @@ public class FragmentManagement extends Fragment {
                 }
                 break;
             case R.layout.recreating_keys:
-                Animation anim = AnimationUtils.loadAnimation(getActivity(),R.anim.rotate);
+                Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
                 rootView.findViewById(R.id.image_public).setAnimation(anim);
                 break;
             case R.layout.profile:
@@ -832,7 +832,7 @@ public class FragmentManagement extends Fragment {
         imm.hideSoftInputFromWindow(rootView.findViewById(R.id.filter).getWindowToken(), 0);
         rootView.findViewById(R.id.filter_ll).setVisibility(View.GONE);
         rootView.findViewById(R.id.list).setVisibility(View.GONE);
-        StaticVariables.luc.showIfNeeded(getActivity(),null);
+        StaticVariables.luc.showIfNeeded(getActivity(), null);
         Contact cvc = StaticVariables.contactsDataSource.findContact(contactID);
         ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText(contactID + "");
         ((TextView) rootView.findViewById(R.id.chosen_name)).setText(cvc.getContactName());
@@ -853,7 +853,7 @@ public class FragmentManagement extends Fragment {
                         cont.setVisibility(View.GONE);
                         ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText("");
                         rootView.findViewById(R.id.list).setVisibility(View.VISIBLE);
-                        StaticVariables.luc.showIfNeeded(getActivity(),null);
+                        StaticVariables.luc.showIfNeeded(getActivity(), null);
                         getActivity().invalidateOptionsMenu();
                     } else {
                         cont.setAlpha(1);
@@ -868,12 +868,13 @@ public class FragmentManagement extends Fragment {
             }
         });
     }
-     private void updateContactList(View a){
-        if(StaticVariables.adapter.isEmpty()){
+
+    private void updateContactList(View a) {
+        if (StaticVariables.adapter.isEmpty()) {
             a.findViewById(R.id.list).setVisibility(View.GONE);
             ((TextView) a.findViewById(R.id.no_contacts)).setText(R.string.no_result_filter);
             a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
-        }else{
+        } else {
             a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
             a.findViewById(R.id.list).setVisibility(View.VISIBLE);
         }

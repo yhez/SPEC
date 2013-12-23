@@ -17,16 +17,16 @@ import com.google.zxing.WriterException;
 
 import specular.systems.Contact;
 import specular.systems.ContactCard;
-import specular.systems.StaticVariables;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
+import specular.systems.StaticVariables;
 import specular.systems.Visual;
 
 
 public class AddContactDlg extends DialogFragment {
-    private ContactCard pcc;
-    long id;
-    private String session;
+    private final ContactCard pcc;
+    final long id;
+    private final String session;
 
     public AddContactDlg(ContactCard pcc, String session, long id) {
         //todo need to check if he has a good copy before deleting
@@ -59,7 +59,7 @@ public class AddContactDlg extends DialogFragment {
                             c = StaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
                             c.update(getActivity(), null, null, pcc.getPublicKey(), null);
                         } else
-                            c = new Contact(getActivity(),pcc.getName(), pcc.getEmail(), pcc.getPublicKey(), session);
+                            c = new Contact(getActivity(), pcc.getName(), pcc.getEmail(), pcc.getPublicKey(), session);
                         if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
                             ((TextView) getActivity().findViewById(R.id.flag_contact_exist)).setText(true + "");
                             getActivity().invalidateOptionsMenu();
