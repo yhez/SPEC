@@ -22,3 +22,4 @@ classes/
 local.properties
 settings.gradle
 app/build/
+app/app.iml
