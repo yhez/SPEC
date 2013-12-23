@@ -16,3 +16,7 @@ SPEC.iml
 proguard.cfg
 gradlew.bat
 gradlew
+out/
+gen/
+classes/
+local.properties

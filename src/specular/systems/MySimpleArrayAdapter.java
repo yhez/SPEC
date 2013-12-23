@@ -85,7 +85,6 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 list = (List<Contact>) results.values;
                 notifyDataSetChanged();
-                updateContactList();
             }
 
             @Override
@@ -118,15 +117,5 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                 v.setVisibility(View.GONE);
                 a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
             }
-    }
-    private void updateContactList(){
-        if(StaticVariables.adapter.isEmpty()){
-            a.findViewById(R.id.list).setVisibility(View.GONE);
-            ((TextView) a.findViewById(R.id.no_contacts)).setText(R.string.no_result_filter);
-            a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
-        }else{
-            a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
-            a.findViewById(R.id.list).setVisibility(View.VISIBLE);
-        }
     }
 }

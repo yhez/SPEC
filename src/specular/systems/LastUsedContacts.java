@@ -1,7 +1,6 @@
 package specular.systems;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -51,7 +50,6 @@ public class LastUsedContacts {
     public void showIfNeeded(Activity a,View v) {
         if (StaticVariables.fullList.size() < StaticVariables.minContactSize
                 || lasts.length == 0 || lasts[0] == null) {
-            Log.w("show if needed","length"+lasts.length+", "+(lasts[0]==null));
             if (v != null)
                 v.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
             else{

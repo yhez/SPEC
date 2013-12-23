@@ -292,7 +292,8 @@ public class Main extends Activity {
                     if (StaticVariables.msg_content.split(q).length > 1)
                         hash += index++ + ". " + parts[4] + "\n" + StaticVariables.msg_content.split(q)[1] + "\n";
                 }
-                if (StaticVariables.file_name != null) {
+                //todo if coming back from pause the file is no longer in memory
+                if (StaticVariables.fileContent != null) {
                     int length = StaticVariables.fileContent.length > 100 ? 100 : StaticVariables.fileContent.length;
                     hash += index++ + ". " + parts[5] + "\n" + new String(StaticVariables.fileContent, 0, length);
                     if (StaticVariables.fileContent.length > 100)
