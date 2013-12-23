@@ -20,3 +20,5 @@ out/
 gen/
 classes/
 local.properties
+settings.gradle
+app/build/
