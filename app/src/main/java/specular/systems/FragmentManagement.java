@@ -684,6 +684,7 @@ public class FragmentManagement extends Fragment {
             case R.layout.recreating_keys:
                 Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
                 rootView.findViewById(R.id.image_public).setAnimation(anim);
+                rootView.findViewById(R.id.image_public).setClickable(false);
                 break;
             case R.layout.profile:
                 final ImageButton ibMyName = (ImageButton) rootView.findViewById(R.id.test).findViewById(R.id.image_button);
