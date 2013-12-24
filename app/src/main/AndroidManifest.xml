@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
-    android:versionCode="18"
-    android:versionName="1.13">
+    android:versionCode="19"
+    android:versionName="1.14">
 
     <uses-sdk
         android:maxSdkVersion="19"
@@ -10,23 +10,21 @@
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.NFC" />
-    <uses-permission android:name="android.permission.ACCESS_ALL_DOWNLOADS"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:debuggable="false"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:largeHeap="true">
 
 
-        <provider
+        <!--<provider
             android:name=".MyContentProvider"
             android:authorities="specular.systems.MyContentProvider"
             android:multiprocess="true"
-            android:grantUriPermissions="true"/>
+            android:grantUriPermissions="true"/>-->
         <receiver android:name=".widget.WidgetContact"
             android:label="@string/widget_label">
             <intent-filter>

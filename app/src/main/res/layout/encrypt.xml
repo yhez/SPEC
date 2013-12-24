@@ -6,7 +6,6 @@
     android:orientation="vertical">
 
     <TextView
-        android:inputType="none"
         android:id="@+id/file_content_length"
         android:layout_width="0dp"
         android:layout_height="0dp"

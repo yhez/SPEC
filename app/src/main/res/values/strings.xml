@@ -166,7 +166,7 @@
     <string name="move_key_to_nfc_and_such">Private Key Manager</string>
     <string name="sync_keys_between_devices">Device Sync</string>
     <string name="clean_private_data">Erase Data</string>
-    <string name="scan_any_qr_widget">Place QR code within box to scan (messages and contacts).</string>
+    <string name="scan_any_qr_widget">Place QR code within box to scan (message or contact).</string>
     <string name="widget_name_scanner">SPEC QR Scanner</string>
     <string name="generator_menu_title">Generating Keys...</string>
     <string name="save_keys_menu_title">Save Keys</string>

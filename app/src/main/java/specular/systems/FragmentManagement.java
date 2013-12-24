@@ -328,8 +328,8 @@ public class FragmentManagement extends Fragment {
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        StaticVariables.adapter.updateViewAfterFilter(getActivity());
                         StaticVariables.adapter.getFilter().filter(charSequence.toString());
-                        updateContactList(rootView);
                     }
 
                     @Override
@@ -533,8 +533,8 @@ public class FragmentManagement extends Fragment {
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        StaticVariables.adapter.updateViewAfterFilter(getActivity());
                         StaticVariables.adapter.getFilter().filter(charSequence.toString());
-                        updateContactList(rootView);
                     }
 
                     @Override
@@ -867,16 +867,5 @@ public class FragmentManagement extends Fragment {
                 return true;
             }
         });
-    }
-
-    private void updateContactList(View a) {
-        if (StaticVariables.adapter.isEmpty()) {
-            a.findViewById(R.id.list).setVisibility(View.GONE);
-            ((TextView) a.findViewById(R.id.no_contacts)).setText(R.string.no_result_filter);
-            a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
-        } else {
-            a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
-            a.findViewById(R.id.list).setVisibility(View.VISIBLE);
-        }
     }
 }

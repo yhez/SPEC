@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -21,6 +22,21 @@ import specular.systems.R;
 import specular.systems.scanqr.camera.CameraManager;
 
 public class CaptureActivity extends Activity implements SurfaceHolder.Callback {
+    private final Handler hndl = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0) {
+                // Creating the handler starts the preview_direct_msg, which can also throw a RuntimeException.
+                try {
+                    if (handler == null) {
+                        handler = new CaptureActivityHandler(CaptureActivity.this, decodeFormats, characterSet, cameraManager);
+                    }
+                } catch (RuntimeException r) {
+                    displayFrameworkBugMessageAndExit();
+                }
+            } else displayFrameworkBugMessageAndExit();
+        }
+    };
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
@@ -66,7 +82,6 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         // first launch. That led to bugs where the scanning rectangle was the wrong size and partially
         // off screen.
         cameraManager = new CameraManager(getApplication());
-
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
         viewfinderView.setCameraManager(cameraManager);
         handler = null;
@@ -133,20 +148,18 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     public void handleDecode(Result rawResult) {
     }
 
-    private void initCamera(SurfaceHolder surfaceHolder) {
-        try {
-            cameraManager.openDriver(surfaceHolder);
-            // Creating the handler starts the preview_direct_msg, which can also throw a RuntimeException.
-            if (handler == null) {
-                handler = new CaptureActivityHandler(this, decodeFormats, characterSet, cameraManager);
+    private void initCamera(final SurfaceHolder surfaceHolder) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    cameraManager.openDriver(surfaceHolder);
+                    hndl.sendEmptyMessage(0);
+                } catch (IOException e) {
+                    hndl.sendEmptyMessage(1);
+                }
             }
-        } catch (IOException ioe) {
-            displayFrameworkBugMessageAndExit();
-        } catch (RuntimeException e) {
-            // Barcode Scanner has seen crashes in the wild of this variety:
-            // java.?lang.?RuntimeException: Fail to connect to camera service
-            displayFrameworkBugMessageAndExit();
-        }
+        }).start();
     }
 
     private void displayFrameworkBugMessageAndExit() {
@@ -157,7 +170,6 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         builder.setOnCancelListener(new FinishListener(this));
         builder.show();
     }
-
 
     public void drawViewfinder() {
         viewfinderView.drawViewfinder();

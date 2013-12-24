@@ -23,3 +23,5 @@ local.properties
 settings.gradle
 app/build/
 app/app.iml
+key.jks
+debug.keystore
