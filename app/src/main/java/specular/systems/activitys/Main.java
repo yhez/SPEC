@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -27,6 +28,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -226,9 +228,9 @@ public class Main extends Activity {
                 LightMessage lMsg = null;
                 if (StaticVariables.fileContent == null)
                     lMsg = new LightMessage(userInput);
-                MessageFormat msg = new MessageFormat(StaticVariables.fileContent,CryptMethods.getMyDetails(Main.this), fileName, userInput,
+                MessageFormat msg = new MessageFormat(StaticVariables.fileContent, CryptMethods.getMyDetails(Main.this), fileName, userInput,
                         contact.getSession());
-                CryptMethods.encrypt(msg.getFormatedMsg(), lMsg==null?null:lMsg.getFormatedMsg(),
+                CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
                         contact.getPublicKey());
                 contact.update(Contact.SENT, 0, Main.this);
                 sendMessage();
@@ -275,16 +277,16 @@ public class Main extends Activity {
                 }
                 break;
             case R.id.hash:
-                boolean lightMsg = ((ViewGroup)findViewById(R.id.top_pannel)).getChildAt(2).getVisibility()==View.VISIBLE;
+                boolean lightMsg = ((ViewGroup) findViewById(R.id.top_pannel)).getChildAt(2).getVisibility() == View.VISIBLE;
                 String hash = "original message size:\t\t" + Visual.getSize(StaticVariables.orig_msg_size) + "\n";
                 hash += "encrypted message size:\t\t" + Visual.getSize(StaticVariables.encrypted_msg_size) + "\n";
                 String[] parts = getResources().getStringArray(R.array.message_parts);
                 hash += "message parts:\n";
                 int index = 1;
-                if(lightMsg){
-                hash += index++ + ". " + parts[0] + "\n" + StaticVariables.name + "\n";
-                hash += index++ + ". " + parts[1] + "\n" + StaticVariables.email + "\n";
-                hash += index++ + ". " + parts[2] + "\n" + StaticVariables.friendsPublicKey + "\n";
+                if (lightMsg) {
+                    hash += index++ + ". " + parts[0] + "\n" + StaticVariables.name + "\n";
+                    hash += index++ + ". " + parts[1] + "\n" + StaticVariables.email + "\n";
+                    hash += index++ + ". " + parts[2] + "\n" + StaticVariables.friendsPublicKey + "\n";
                 }
                 String q = getString(R.string.divide_msg) + getString(R.string.quote_msg) + getString(R.string.divide_msg);
                 if (StaticVariables.msg_content != null && StaticVariables.msg_content.length() > 0) {
@@ -302,7 +304,7 @@ public class Main extends Activity {
                     hash += index++ + ". " + parts[6] + "\n" + StaticVariables.file_name + "\n";
                 }
                 hash += index++ + ". " + parts[7] + "\n" + StaticVariables.timeStamp + "\n";
-                if(lightMsg)
+                if (lightMsg)
                     hash += index++ + ". " + parts[8] + "\n" + Session.toShow(StaticVariables.session) + "\n";
                 hash += index + ". " + parts[9] + "\n" + StaticVariables.hash;
                 ExplainDialog edlg = new ExplainDialog(ExplainDialog.HASH, hash);
@@ -341,40 +343,41 @@ public class Main extends Activity {
                 edl.show(getFragmentManager(), "session");
                 break;
             case R.id.replay:
-                lightMsg = ((ViewGroup)findViewById(R.id.top_pannel)).getChildAt(2).getVisibility()==View.VISIBLE;
+                lightMsg = ((ViewGroup) findViewById(R.id.top_pannel)).getChildAt(2).getVisibility() == View.VISIBLE;
                 String replay = getString(R.string.time_created) + StaticVariables.timeStamp + "\n";
-                if(lightMsg)
-                switch (StaticVariables.flag_replay) {
-                    case MessageFormat.NOT_RELEVANT:
-                        replay += getString(R.string.replay_not_relevant);
-                        break;
-                    case MessageFormat.OK:
-                        replay += getString(R.string.replay_ok);
-                        break;
-                    case MessageFormat.FAILED:
-                        replay += getString(R.string.replay_check_failed);
-                        break;
-                    case MessageFormat.OLD:
-                        replay += getString(R.string.replay_old);
-                        break;
-                    case MessageFormat.NOT_LATEST:
-                        replay += getString(R.string.replay_older_then_latest);
-                        break;
-                }else
+                if (lightMsg)
                     switch (StaticVariables.flag_replay) {
-                    case LightMessage.NEW:
-                        replay += getString(R.string.light_msg_day);
-                        break;
-                    case LightMessage.WEEK:
-                        replay += getString(R.string.light_msg_week);
-                        break;
-                    case LightMessage.TWO_WEEKS:
-                        replay += getString(R.string.light_msg_two_weeks);
-                        break;
-                    case LightMessage.MONTH:
-                        replay += getString(R.string.light_msg_old);
-                        break;
-                }
+                        case MessageFormat.NOT_RELEVANT:
+                            replay += getString(R.string.replay_not_relevant);
+                            break;
+                        case MessageFormat.OK:
+                            replay += getString(R.string.replay_ok);
+                            break;
+                        case MessageFormat.FAILED:
+                            replay += getString(R.string.replay_check_failed);
+                            break;
+                        case MessageFormat.OLD:
+                            replay += getString(R.string.replay_old);
+                            break;
+                        case MessageFormat.NOT_LATEST:
+                            replay += getString(R.string.replay_older_then_latest);
+                            break;
+                    }
+                else
+                    switch (StaticVariables.flag_replay) {
+                        case LightMessage.NEW:
+                            replay += getString(R.string.light_msg_day);
+                            break;
+                        case LightMessage.WEEK:
+                            replay += getString(R.string.light_msg_week);
+                            break;
+                        case LightMessage.TWO_WEEKS:
+                            replay += getString(R.string.light_msg_two_weeks);
+                            break;
+                        case LightMessage.MONTH:
+                            replay += getString(R.string.light_msg_old);
+                            break;
+                    }
                 ExplainDialog ed = new ExplainDialog(ExplainDialog.REPLAY, replay);
                 ed.show(getFragmentManager(), "replay");
                 break;
@@ -410,7 +413,7 @@ public class Main extends Activity {
                 public void run() {
                     int r = FilesManagement.addFile(Main.this, uri);
                     if (r == FilesManagement.RESULT_ADD_FILE_OK) {
-                        fileName = Visual.getFileName(Main.this,uri);
+                        fileName = Visual.getFileName(Main.this, uri);
                         hndl.sendEmptyMessage(REPLACE_PHOTO);
                     } else {
                         hndl.sendEmptyMessage(r);
@@ -1182,12 +1185,34 @@ public class Main extends Activity {
             ndef.writeNdefMessage(message);
             return R.string.tag_written;
         } catch (Exception e) {
-            return R.string.failed_to_write;
+            NdefFormatable format = NdefFormatable.get(tag);
+            if (format != null) {
+                try {
+                    format.connect();
+                    format.format(message);
+                    return R.string.tag_needs_format;
+                } catch (IOException ew) {
+                    return R.string.cant_format;
+                } catch (FormatException e1) {
+                    return R.string.cant_format;
+                }
+            } else {
+                return R.string.tag_not_supported;
+            }
         }
     }
 
     public void onClickShare(View v) {
         selectItem(-1, R.layout.profile, null);
+    }
+
+    @Override
+    public boolean onKeyDown(int key, KeyEvent event) {
+        if (key == KeyEvent.KEYCODE_SETTINGS)
+            if (mDrawerLayout.isDrawerOpen(mDrawerLayout))
+                mDrawerLayout.closeDrawer(mDrawerLayout);
+            else mDrawerLayout.openDrawer(mDrawerLayout);
+        return super.onKeyDown(key, event);
     }
 
     @Override

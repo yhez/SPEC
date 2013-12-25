@@ -171,7 +171,7 @@ public class ContactsDataSource {
         Collections.sort(contacts, new Comparator<Contact>() {
             @Override
             public int compare(Contact contact, Contact contact2) {
-                return contact.getContactName().compareTo(contact2.getContactName());
+                return contact.getContactName().toLowerCase().compareTo(contact2.getContactName().toLowerCase());
             }
         });
         return contacts;
