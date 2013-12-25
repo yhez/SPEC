@@ -54,6 +54,14 @@ import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 public class FragmentManagement extends Fragment {
+    final Thread checkHash = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            StaticVariables.flag_hash = StaticVariables.decryptedMsg.checkHash();
+            //Message msg = hndl.obtainMessage(CHECK_HASH_ENDED);
+            hndl.sendEmptyMessage(CHECK_HASH_ENDED);
+        }
+    });
     private final int TURN_TEXT_TRIGGER = 0, CHECK_HASH_ENDED = 1;
     private final Handler hndl = new Handler() {
         @Override
@@ -77,14 +85,6 @@ public class FragmentManagement extends Fragment {
             }
         }
     };
-    final Thread checkHash = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            StaticVariables.flag_hash = StaticVariables.decryptedMsg.checkHash();
-            //Message msg = hndl.obtainMessage(CHECK_HASH_ENDED);
-            hndl.sendEmptyMessage(CHECK_HASH_ENDED);
-        }
-    });
     View rootView;
     //for touch response
     private float startPointX, startPointY, width, height, x = 0, y = 0;
@@ -320,23 +320,6 @@ public class FragmentManagement extends Fragment {
                     rootView.findViewById(R.id.no_contacts).setVisibility(View.GONE);
                     lv.setVisibility(View.VISIBLE);
                 }
-                EditText filterCOnt = (EditText) rootView.findViewById(R.id.filter);
-                filterCOnt.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                        StaticVariables.adapter.updateViewAfterFilter(getActivity());
-                        StaticVariables.adapter.getFilter().filter(charSequence.toString());
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-
-                    }
-                });
                 break;
             case edit_contact:
                 Long id = getArguments().getLong("contactId");
@@ -526,22 +509,6 @@ public class FragmentManagement extends Fragment {
                     lv.setVisibility(View.GONE);
                 }
                 StaticVariables.readyToSend = false;
-                ((EditText) rootView.findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                        StaticVariables.adapter.updateViewAfterFilter(getActivity());
-                        StaticVariables.adapter.getFilter().filter(charSequence.toString());
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-
-                    }
-                });
                 final EditText et = (EditText) rootView.findViewById(R.id.message);
                 et.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -830,8 +797,7 @@ public class FragmentManagement extends Fragment {
     public void contactChosen(long contactID) {
         getActivity().invalidateOptionsMenu();
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(rootView.findViewById(R.id.filter).getWindowToken(), 0);
-        rootView.findViewById(R.id.filter_ll).setVisibility(View.GONE);
+        imm.hideSoftInputFromWindow(rootView.findViewById(R.id.message).getWindowToken(), 0);
         rootView.findViewById(R.id.list).setVisibility(View.GONE);
         StaticVariables.luc.showIfNeeded(getActivity(), null);
         Contact cvc = StaticVariables.contactsDataSource.findContact(contactID);

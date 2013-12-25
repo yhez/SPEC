@@ -22,6 +22,7 @@ final public class QRCodeEncoder {
 
     public QRCodeEncoder(String data, String format, int dimension) {
         this.dimension = dimension;
+        //todo prevent too light colors
         BLACK = 0xFF000000 + Integer.parseInt(data.substring(data.length() - 6), 16);
         encoded = encodeContents(data, format);
     }

@@ -109,6 +109,7 @@ public class CryptMethods {
             kpg = KeyPairGenerator.getInstance("ECIES", "FlexiEC");
             CurveParams ecParams = new CurveRegistry.BrainpoolP512r1();
             try {
+                //todo add random data from camera
                 kpg.initialize(ecParams, new SecureRandom());
             } catch (InvalidAlgorithmParameterException e) {
                 e.printStackTrace();

@@ -30,7 +30,7 @@
         android:onClick="createKeysManager"
         style="?android:attr/borderlessButtonStyle"
         android:id="@+id/image_public"
-        android:src="@drawable/splash2"
+        android:src="@drawable/spin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -30,7 +30,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +42,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -628,24 +628,10 @@ public class Main extends Activity {
 
         // Handle action buttons
         if (StaticVariables.currentLayout == R.layout.encrypt || StaticVariables.currentLayout == R.layout.contacts) {
-            View b = findViewById(R.id.filter_ll);
-            if (StaticVariables.fullList != null && StaticVariables.fullList.size() > 0) {
-                if (b.getVisibility() == View.GONE) {
-                    b.setVisibility(View.VISIBLE);
-                    if (StaticVariables.currentLayout == R.layout.encrypt)
-                        StaticVariables.luc.showIfNeeded(this, null);
-                } else {
-                    StaticVariables.adapter.refreshList(this);
-                    ((EditText) findViewById(R.id.filter)).setText("");
-                    b.setVisibility(View.GONE);
-                    if (StaticVariables.currentLayout == R.layout.encrypt)
-                        StaticVariables.luc.showIfNeeded(this, null);
-                }
-            } else {
+            if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0) {
                 Intent i = new Intent(this, StartScan.class);
                 startActivityForResult(i, SCAN_QR);
             }
-
         } else if (StaticVariables.currentLayout == R.layout.edit_contact) {
             ShareContactDlg sd = new ShareContactDlg();
             sd.show(getFragmentManager(), ((EditText) findViewById(R.id.contact_name)
@@ -657,7 +643,8 @@ public class Main extends Activity {
             Contact c = StaticVariables.contactsDataSource.findContactByEmail(StaticVariables.decryptedMsg.getEmail());
             AddContactDlg acd = new AddContactDlg(pcc, StaticVariables.decryptedMsg.getSession(), c != null ? c.getId() : -1);
             acd.show(getFragmentManager(), "acd3");
-        } else if (StaticVariables.currentLayout == R.layout.me) {
+        } else if (StaticVariables.currentLayout == R.layout.me
+                || StaticVariables.currentLayout == R.layout.profile) {
             share(null);
         }
         return super.onOptionsItemSelected(item);
@@ -670,51 +657,77 @@ public class Main extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (StaticVariables.currentLayout == R.layout.contacts ||
-                StaticVariables.currentLayout == R.layout.encrypt ||
-                StaticVariables.currentLayout == R.layout.edit_contact ||
-                StaticVariables.currentLayout == R.layout.decrypted_msg ||
-                StaticVariables.currentLayout == R.layout.me) {
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.main, menu);
+        if (((StaticVariables.currentLayout == R.layout.encrypt
+                || StaticVariables.currentLayout == R.layout.contacts))
+                && StaticVariables.fullList != null
+                && StaticVariables.fullList.size() > 0) {
+            final SearchView sv = new SearchView(getActionBar().getThemedContext());
+            sv.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    onClickFilter(view);
+                    return true;
+                }
+            });
+            sv.setQueryHint("Search");
+            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(
+                            Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(sv.getWindowToken(), 0);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    StaticVariables.adapter.updateViewAfterFilter(Main.this);
+                    StaticVariables.adapter.getFilter().filter(s);
+                    return false;
+                }
+            });
+            menu.add(Menu.NONE, Menu.NONE, 1, "Search")
+                    .setIcon(R.drawable.search)
+                    .setActionView(sv)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            return super.onCreateOptionsMenu(menu);
+        }
+        if (StaticVariables.currentLayout == R.layout.me
+                || StaticVariables.currentLayout == R.layout.profile
+                || StaticVariables.currentLayout == R.layout.edit_contact) {
+            menu.add(Menu.NONE, Menu.NONE, 1, "Share")
+                    .setIcon(android.R.drawable.ic_menu_share).setTitle("Share").setTitleCondensed("Share")
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+            return super.onCreateOptionsMenu(menu);
+        }
+        if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
+            TextView tv = (TextView) findViewById(R.id.flag_contact_exist);
+            if (tv == null || tv.getText().toString().equals(true + ""))
+                return false;
+            menu.add(Menu.NONE, Menu.NONE, 1, "add")
+                    .setIcon(android.R.drawable.ic_menu_add)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
             return super.onCreateOptionsMenu(menu);
         }
         return false;
     }
 
-    /* Called whenever we call invalidateOptionsMenu() */
+    /* Called whenever we call invalidateOptionsMenu()*/
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav main is open, hide action items related to the content
-        // view
-
-        MenuItem mi = menu.findItem(R.id.action_search);
+        MenuItem mi = menu.getItem(0);
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        if (StaticVariables.currentLayout == R.layout.contacts || StaticVariables.currentLayout == R.layout.encrypt) {
+        mi.setVisible(!drawerOpen);
+        if (StaticVariables.currentLayout == R.layout.contacts
+                || StaticVariables.currentLayout == R.layout.encrypt) {
             if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0)
                 mi.setIcon(R.drawable.sun);
-            else
-                mi.setIcon(R.drawable.search);
-            TextView textView = (TextView) findViewById(R.id.contact_id_to_send);
-            if (textView != null && textView.getText().toString().length() > 0)
-                mi.setVisible(false);
-            else
-                mi.setVisible(!drawerOpen);
-            return super.onPrepareOptionsMenu(menu);
-        } else if (StaticVariables.currentLayout == R.layout.edit_contact || StaticVariables.currentLayout == R.layout.me) {
-            mi.setVisible(!drawerOpen);
-            mi.setIcon(android.R.drawable.ic_menu_share);
-            return super.onPrepareOptionsMenu(menu);
         } else if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
-            TextView tv = (TextView) findViewById(R.id.flag_contact_exist);
-            if (tv == null || tv.getText().toString().equals(true + ""))
-                return false;
-            mi.setVisible(!drawerOpen);
-            mi.setIcon(android.R.drawable.ic_menu_add);
-            return super.onPrepareOptionsMenu(menu);
+            String flag = ((TextView) findViewById(R.id.flag_contact_exist)).getText().toString();
+            if (flag.equals(true + ""))
+                mi.setVisible(false);
         }
-
-        return false;
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -1015,16 +1028,9 @@ public class Main extends Activity {
             switch (StaticVariables.currentLayout) {
                 case R.layout.encrypt:
                     TextView contactChosen = (TextView) findViewById(R.id.contact_id_to_send);
-                    View filter = findViewById(R.id.filter_ll);
                     EditText etMessage = (EditText) findViewById(R.id.message);
                     ImageButton ibFile = (ImageButton) findViewById(R.id.add_file);
                     boolean clearedSomething = false;
-                    if (filter.getVisibility() == View.VISIBLE) {
-                        filter.setVisibility(View.GONE);
-                        ((EditText) filter.findViewById(R.id.filter)).setText("");
-                        StaticVariables.adapter.refreshList(this);
-                        clearedSomething = true;
-                    }
                     if (etMessage.getText().length() > 0) {
                         clearedSomething = true;
                         etMessage.setText("");
@@ -1079,20 +1085,10 @@ public class Main extends Activity {
                         setUpViews();
                     break;
                 case R.layout.contacts:
-                    clearedSomething = false;
-                    filter = findViewById(R.id.filter_ll);
-                    if (filter.getVisibility() == View.VISIBLE) {
-                        clearedSomething = true;
-                        StaticVariables.adapter.refreshList(this);
-                        ((TextView) filter.findViewById(R.id.filter)).setText("");
-                        filter.setVisibility(View.GONE);
-                    }
-                    if (!clearedSomething) {
-                        if (StaticVariables.currentLayout != defaultScreen)
-                            setUpViews();
-                        else
-                            new prepareToExit();
-                    }
+                    if (StaticVariables.currentLayout != defaultScreen)
+                        setUpViews();
+                    else
+                        new prepareToExit();
                     break;
                 case R.layout.learn:
                     if (StaticVariables.currentLayout == defaultScreen)
@@ -1208,10 +1204,10 @@ public class Main extends Activity {
 
     @Override
     public boolean onKeyDown(int key, KeyEvent event) {
-        if (key == KeyEvent.KEYCODE_SETTINGS)
-            if (mDrawerLayout.isDrawerOpen(mDrawerLayout))
-                mDrawerLayout.closeDrawer(mDrawerLayout);
-            else mDrawerLayout.openDrawer(mDrawerLayout);
+        if (key == KeyEvent.KEYCODE_MENU)
+            if (mDrawerLayout.isDrawerOpen(mDrawerList))
+                mDrawerLayout.closeDrawer(mDrawerList);
+            else mDrawerLayout.openDrawer(mDrawerList);
         return super.onKeyDown(key, event);
     }
 

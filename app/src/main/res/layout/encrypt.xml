@@ -19,10 +19,6 @@
         android:text=""
         android:visibility="gone" />
 
-    <include
-        layout="@layout/search_view"
-        android:id="@+id/filter_ll" />
-
     <LinearLayout
         android:id="@+id/bottom_panel"
         android:layout_width="match_parent"
@@ -95,7 +91,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/divider"
-        android:layout_below="@id/filter_ll"
+        android:layout_alignParentTop="true"
         android:orientation="vertical">
 
         <FrameLayout
