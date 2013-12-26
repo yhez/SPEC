@@ -662,13 +662,6 @@ public class Main extends Activity {
                 && StaticVariables.fullList != null
                 && StaticVariables.fullList.size() > 0) {
             final SearchView sv = new SearchView(getActionBar().getThemedContext());
-            sv.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    onClickFilter(view);
-                    return true;
-                }
-            });
             sv.setQueryHint("Search");
             sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
@@ -722,6 +715,8 @@ public class Main extends Activity {
                 || StaticVariables.currentLayout == R.layout.encrypt) {
             if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0)
                 mi.setIcon(R.drawable.sun);
+            else if(StaticVariables.currentLayout == R.layout.encrypt)
+                mi.setVisible(((TextView)findViewById(R.id.contact_id_to_send)).getText().toString().length()==0);
         } else if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
             String flag = ((TextView) findViewById(R.id.flag_contact_exist)).getText().toString();
             if (flag.equals(true + ""))
@@ -962,6 +957,7 @@ public class Main extends Activity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    StaticVariables.currentLayout=0;
                     CryptMethods.decrypt(msg != null ? msg : StaticVariables.message);
                     getIntent().removeExtra("message");
                     FilesManagement.deleteTempDecryptedMSG(Main.this);
