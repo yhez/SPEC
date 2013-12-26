@@ -27,6 +27,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -485,7 +486,6 @@ public class Main extends Activity {
     }
 
     public void onClickSkipNFC(View v) {
-
         NfcAdapter.getDefaultAdapter(getApplicationContext())
                 .disableForegroundDispatch(Main.this);
         handleByOnNewIntent = false;
@@ -592,11 +592,12 @@ public class Main extends Activity {
 
     @Override
     public void onNewIntent(Intent i) {
+        super.onNewIntent(i);
         //TODO find a better solution to deleting keys while on new intent
-        handleByOnNewIntent = false;
         if (StaticVariables.currentLayout == R.layout.wait_nfc_to_write) {
             Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if (tag != null) {
+                CryptMethods.moveKeysFromTmp();
                 byte[] bin = Visual.hex2bin(CryptMethods.getPrivateToSave());
                 // record to launch Play Store if app is not installed
                 NdefRecord appRecord = NdefRecord
@@ -657,18 +658,20 @@ public class Main extends Activity {
                 }
                 t.show();
             }
-        } else if (StaticVariables.currentLayout == R.layout.wait_nfc_decrypt) {
-            Parcelable raw[] = getIntent().getParcelableArrayExtra(
+        } else {
+            Parcelable raw[] = i.getParcelableArrayExtra(
                     NfcAdapter.EXTRA_NDEF_MESSAGES);
             if (raw != null) {
                 NdefMessage msg = (NdefMessage) raw[0];
                 NdefRecord pvk = msg.getRecords()[0];
                 CryptMethods.setPrivate(Visual.bin2hex(pvk
                         .getPayload()));
+                Log.w("pvt",Visual.bin2hex(pvk
+                        .getPayload()));
                 setUpViews();
-            }
-        } else
-            setUpViews();
+            }else
+                Log.e("null",(raw==null)+"");
+        }
     }
 
     @Override
@@ -797,6 +800,7 @@ public class Main extends Activity {
             //todo delete view content
             CryptMethods.deleteKeys();
         }
+        if(NfcAdapter.getDefaultAdapter(this) != null) NfcAdapter.getDefaultAdapter(this).disableForegroundDispatch(this);
         super.onPause();
     }
 
@@ -973,13 +977,12 @@ public class Main extends Activity {
             case PB:
                 layouts = new int[]{allLayouts[ENCRYPT], allLayouts[SHARE],
                         allLayouts[CONTACTS], allLayouts[LEARN], allLayouts[SETUP]};
+                defaultScreen = R.layout.encrypt;
                 final String msg = getIntent().getStringExtra("message");
                 if (StaticVariables.message != null || msg != null
                         || StaticVariables.fileContactCard != null) {
                     selectItem(0, R.layout.wait_nfc_decrypt, "Tab NFC");
-                    defaultScreen = R.layout.wait_nfc_decrypt;
                 } else {
-                    defaultScreen = R.layout.me;
                     selectItem(1, R.layout.me, null);
                 }
                 break;
@@ -1221,7 +1224,10 @@ public class Main extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        FilesManagement.getKeysFromSDCard(this);
+        if(!handleByOnNewIntent){
+            FilesManagement.getKeysFromSDCard(this);
+            handleByOnNewIntent=false;
+        }
         int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         if (newkeys != currentKeys) {
             setUpViews();
@@ -1235,6 +1241,18 @@ public class Main extends Activity {
             getIntent().setData(null);
             if (uri != null)
                 attachFile(uri);
+        }
+        if(currentKeys==1){
+            handleByOnNewIntent=true;
+            PendingIntent pi = PendingIntent.getActivity(this, 0,
+                    new Intent(this, getClass())
+                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+            IntentFilter tagDetected = new IntentFilter(
+                    NfcAdapter.ACTION_TAG_DISCOVERED);
+            IntentFilter[] filters = new IntentFilter[]{tagDetected};
+            NfcAdapter
+                    .getDefaultAdapter(this)
+                    .enableForegroundDispatch(this, pi, filters, null);
         }
         if (StaticVariables.flag_msg != null && StaticVariables.flag_msg) {
             FilesManagement.getTempDecryptedMSG(this);

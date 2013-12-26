@@ -294,7 +294,8 @@ public final class FilesManagement {
     public static void save(Activity a) {
         if (a != null) {
             myQRPublicKey = null;
-            CryptMethods.moveKeysFromTmp();
+            if(!StaticVariables.NFCMode)
+                CryptMethods.moveKeysFromTmp();
             SharedPreferences srp = PreferenceManager
                     .getDefaultSharedPreferences(a.getApplicationContext());
             SharedPreferences.Editor edt = srp.edit();

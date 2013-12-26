@@ -133,6 +133,10 @@ public class CryptMethods {
             Log.d("null", "null message");
             return;
         }
+        if(!privateExist()){
+            Log.e("no private", "message");
+            return;
+        }
         if (notInit) {
             addProviders();
             notInit = false;
