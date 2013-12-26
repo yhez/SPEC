@@ -84,7 +84,7 @@ import specular.systems.Visual;
 
 
 public class Main extends Activity {
-    private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54;
+    private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_FOCUS = 76;
     private static int currentKeys = 0;
     private final Handler hndl = new Handler() {
         @Override
@@ -160,6 +160,9 @@ public class Main extends Activity {
                         int prcnt = avrg == 0 ? (int) (tt / 10) : (int) (tt * 100 / avrg);
                         ((ProgressBar) findViewById(R.id.progress_bar)).setProgress(prcnt);
                     }
+                    break;
+                case CLEAR_FOCUS:
+                    findViewById(R.id.message).clearFocus();
                     break;
             }
         }
@@ -594,15 +597,65 @@ public class Main extends Activity {
         if (StaticVariables.currentLayout == R.layout.wait_nfc_to_write) {
             Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if (tag != null) {
-                int rslt = writeTag(tag, Visual.hex2bin(CryptMethods.getPrivateToSave()));
-                t.setText(rslt);
+                byte[] bin = Visual.hex2bin(CryptMethods.getPrivateToSave());
+                // record to launch Play Store if app is not installed
+                NdefRecord appRecord = NdefRecord
+                        .createApplicationRecord(this.getPackageName());
+                byte[] mimeBytes = ("application/" + this.getPackageName())
+                        .getBytes(Charset.forName("US-ASCII"));
+                NdefRecord cardRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
+                        mimeBytes, new byte[0], bin);
+                NdefMessage message = new NdefMessage(new NdefRecord[]{cardRecord,
+                        appRecord});
+                try {
+                    // see if tag is already NDEF formatted
+                    Ndef ndef = Ndef.get(tag);
+                    ndef.connect();
+                    if (!ndef.isWritable()) {
+                        t.setText(R.string.failed_read_only);
+                    } else {
+                        // work out how much space we need for the data
+                        int size = message.toByteArray().length;
+                        if (ndef == null || ndef.getMaxSize() < size) {
+                            // attempt to format tag
+                            NdefFormatable format = NdefFormatable.get(tag);
+                            if (format != null) {
+                                try {
+                                    format.connect();
+                                    format.format(message);
+                                    t.setText(R.string.tag_formatted);
+                                    handleByOnNewIntent = true;
+                                } catch (IOException e) {
+                                    t.setText(R.string.cant_format);
+                                }
+                            } else {
+                                t.setText(R.string.tag_not_supported);
+                            }
+                        }
+                        ndef.writeNdefMessage(message);
+                        t.setText(R.string.tag_written);
+                        StaticVariables.NFCMode = true;
+                        saveKeys.start(this);
+                        setUpViews();
+                    }
+                } catch (Exception e) {
+                    NdefFormatable format = NdefFormatable.get(tag);
+                    if (format != null) {
+                        try {
+                            format.connect();
+                            format.format(message);
+                            t.setText(R.string.tag_formatted);
+                            handleByOnNewIntent = true;
+                        } catch (IOException ew) {
+                            t.setText(getString(R.string.io_exception_format));
+                        } catch (FormatException e1) {
+                            t.setText(R.string.cant_format);
+                        }
+                    } else {
+                        t.setText(R.string.tag_not_supported);
+                    }
+                }
                 t.show();
-                if (rslt == R.string.tag_written) {
-                    StaticVariables.NFCMode = true;
-                    saveKeys.start(this);
-                    setUpViews();
-                } else
-                    handleByOnNewIntent = true;
             }
         } else if (StaticVariables.currentLayout == R.layout.wait_nfc_decrypt) {
             Parcelable raw[] = getIntent().getParcelableArrayExtra(
@@ -627,8 +680,9 @@ public class Main extends Activity {
         }
 
         // Handle action buttons
-        if (StaticVariables.currentLayout == R.layout.encrypt || StaticVariables.currentLayout == R.layout.contacts) {
-            if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0) {
+        if (StaticVariables.currentLayout == R.layout.encrypt
+                || StaticVariables.currentLayout == R.layout.contacts) {
+            if (item.getTitle().equals("Scan")) {
                 Intent i = new Intent(this, StartScan.class);
                 startActivityForResult(i, SCAN_QR);
             }
@@ -663,6 +717,8 @@ public class Main extends Activity {
                 && StaticVariables.fullList.size() > 0) {
             final SearchView sv = new SearchView(getActionBar().getThemedContext());
             sv.setQueryHint("Search");
+            sv.setIconified(false);
+            sv.clearFocus();
             sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String s) {
@@ -683,6 +739,10 @@ public class Main extends Activity {
                     .setIcon(R.drawable.search)
                     .setActionView(sv)
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+
+            menu.add(Menu.NONE, Menu.NONE, 1, "Scan")
+                    .setIcon(R.drawable.sun)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             return super.onCreateOptionsMenu(menu);
         }
         if (StaticVariables.currentLayout == R.layout.me
@@ -713,10 +773,14 @@ public class Main extends Activity {
         mi.setVisible(!drawerOpen);
         if (StaticVariables.currentLayout == R.layout.contacts
                 || StaticVariables.currentLayout == R.layout.encrypt) {
+            menu.getItem(1).setVisible(!drawerOpen);
             if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0)
                 mi.setIcon(R.drawable.sun);
-            else if(StaticVariables.currentLayout == R.layout.encrypt)
-                mi.setVisible(((TextView)findViewById(R.id.contact_id_to_send)).getText().toString().length()==0);
+            else if (StaticVariables.currentLayout == R.layout.encrypt){
+                boolean vis = mi.isVisible() && ((TextView) findViewById(R.id.contact_id_to_send)).getText().toString().length() == 0;
+                mi.setVisible(vis);
+                menu.getItem(1).setVisible(vis);
+            }
         } else if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
             String flag = ((TextView) findViewById(R.id.flag_contact_exist)).getText().toString();
             if (flag.equals(true + ""))
@@ -957,7 +1021,7 @@ public class Main extends Activity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    StaticVariables.currentLayout=0;
+                    StaticVariables.currentLayout = 0;
                     CryptMethods.decrypt(msg != null ? msg : StaticVariables.message);
                     getIntent().removeExtra("message");
                     FilesManagement.deleteTempDecryptedMSG(Main.this);
@@ -1132,65 +1196,12 @@ public class Main extends Activity {
                         StaticVariables.fileContent.length : 0)) <
                 StaticVariables.MSG_LIMIT_FOR_QR);
         if (success) {
+            hndl.sendEmptyMessage(CLEAR_FOCUS);
             Intent intent = new Intent(this, SendMsg.class);
             intent.putExtra("contactId", contact.getId());
             startActivity(intent);
         } else {
             Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    int writeTag(Tag tag, byte[] binText) {
-        // record to launch Play Store if app is not installed
-        NdefRecord appRecord = NdefRecord
-                .createApplicationRecord(this.getPackageName());
-        byte[] mimeBytes = ("application/" + this.getPackageName())
-                .getBytes(Charset.forName("US-ASCII"));
-        NdefRecord cardRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-                mimeBytes, new byte[0], binText);
-        NdefMessage message = new NdefMessage(new NdefRecord[]{cardRecord,
-                appRecord});
-        try {
-            // see if tag is already NDEF formatted
-            Ndef ndef = Ndef.get(tag);
-            ndef.connect();
-            //todo move this checkAndUpdate to the right place
-            if (!ndef.isWritable()) {
-                return R.string.failed_read_only;
-            }
-            // work out how much space we need for the data
-            int size = message.toByteArray().length;
-            if (ndef == null || ndef.getMaxSize() < size) {
-                // attempt to format tag
-                NdefFormatable format = NdefFormatable.get(tag);
-                if (format != null) {
-                    try {
-                        format.connect();
-                        format.format(message);
-                    } catch (IOException e) {
-                        return R.string.cant_format;
-                    }
-                } else {
-                    return R.string.tag_not_supported;
-                }
-            }
-            ndef.writeNdefMessage(message);
-            return R.string.tag_written;
-        } catch (Exception e) {
-            NdefFormatable format = NdefFormatable.get(tag);
-            if (format != null) {
-                try {
-                    format.connect();
-                    format.format(message);
-                    return R.string.tag_needs_format;
-                } catch (IOException ew) {
-                    return R.string.cant_format;
-                } catch (FormatException e1) {
-                    return R.string.cant_format;
-                }
-            } else {
-                return R.string.tag_not_supported;
-            }
         }
     }
 

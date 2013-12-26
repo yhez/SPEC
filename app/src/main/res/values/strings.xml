@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--strings related to writing private key to the nfc tag-->
+    <string name="failed_read_only">Read-only tag.\ntry another tag.</string>
+    <string name="tag_formatted">Tag has been formatted.\ntab again to save.</string>
+    <string name="cant_format">Unable to format tag to NDEF.\nTry another tag.</string>
+    <string name="tag_not_supported">Tag doesn\'t appear to support NDEF format.\ntry another tag.</string>
+    <string name="tag_written">Tag written successfully.</string>
+    <string name="io_exception_format">trouble formatting before saving the keys. try again</string>
+
     <string name="welcome"><b>Let the SPEC magic begin.</b>\nStart bringing privacy and security to your online life and presence.\nEnter email and swipe arrow to generate keys.</string>
     <string name="company_text"><b>SPEC</b> ; HOLD THE KEY TO YOUR SECURITY.</string>
     <string name="drawer_open">Open navigation drawer.</string>
@@ -42,11 +50,6 @@
     <string name="choose_file_to_attach">Choose file to attach.</string>
     <string name="failed_attach_files">Could not retrieve files.</string>
     <string name="failed_to_create_files_to_send">Could not create files.</string>
-    <string name="tag_written">Tag written successfully.</string>
-    <string name="tag_needs_format">Tag doesn\'t have enough free space.</string>
-    <string name="failed_read_only">Read-only tag.</string>
-    <string name="cant_format">Unable to format tag to NDEF.</string>
-    <string name="tag_not_supported">Tag doesn\'t appear to support NDEF format.</string>
     <string name="failed_to_write">Failed to write NFC tag.</string>
     <string name="qr_scan_explain">Place QR code within box to activate magic.</string>
     <string name="decrypting">Decrypting&#8230;</string>
@@ -168,7 +171,7 @@
     <string name="clean_private_data">Erase Data</string>
     <string name="scan_any_qr_widget">Place QR code within box to scan (message or contact).</string>
     <string name="widget_name_scanner">SPEC QR Scanner</string>
-    <string name="generator_menu_title">Generating Keys...</string>
+    <string name="generator_menu_title">Generating Keys&#8230;</string>
     <string name="save_keys_menu_title">Save Keys</string>
     <string name="contact_deleted_widget">Contact deleted.</string>
     <string name="save_current_button">Press to save Keys</string>

@@ -302,10 +302,6 @@ public class FragmentManagement extends Fragment {
                         Fragment fragment = new FragmentManagement();
                         Bundle args = new Bundle();
                         StaticVariables.currentLayout = edit_contact;
-                        //todo change to index for performance
-                        args.putLong("contactId", Long.parseLong(((TextView) p2
-                                .findViewById(R.id.id_contact)).getText()
-                                .toString()));
                         args.putInt("index", p3);
                         fragment.setArguments(args);
                         FragmentManager fragmentManager = getFragmentManager();
@@ -322,14 +318,14 @@ public class FragmentManagement extends Fragment {
                 }
                 break;
             case edit_contact:
-                Long id = getArguments().getLong("contactId");
+                int index = getArguments().getInt("index");
+                final Contact currContact = StaticVariables.adapter.getItem(index);
                 ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
-                        + id);
+                        + currContact.getId());
                 ((TextView) rootView.findViewById(R.id.contact_name).
                         findViewById(R.id.text_view)).setText(getString(R.string.edit_name) + "\t");
                 ((TextView) rootView.findViewById(R.id.contact_email).
                         findViewById(R.id.text_view)).setText(getString(R.string.edit_email) + "\t");
-                final Contact currContact = StaticVariables.contactsDataSource.findContact(id);
                 if (currContact.getDefaultApp() != null) {
                     Intent i = new Intent();
                     i.setComponent(currContact.getDefaultApp());
@@ -499,6 +495,20 @@ public class FragmentManagement extends Fragment {
                         contactChosen(Long.parseLong(((TextView) p2
                                 .findViewById(R.id.id_contact)).getText()
                                 .toString()));
+                    }
+                });
+                lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Fragment fragment = new FragmentManagement();
+                        Bundle args = new Bundle();
+                        StaticVariables.currentLayout = edit_contact;
+                        args.putInt("index", i);
+                        fragment.setArguments(args);
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.content_frame, fragment).commit();
+                        return false;
                     }
                 });
                 if (StaticVariables.fullList.size() > 0) {
