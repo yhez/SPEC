@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
-    android:versionCode="24"
-    android:versionName="1.19">
+    android:versionCode="25"
+    android:versionName="1.20">
 
     <uses-sdk
         android:maxSdkVersion="19"
@@ -98,7 +98,6 @@
         <activity
             android:name=".activitys.Main"
             android:icon="@drawable/menu"
-            android:label="Menu"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity

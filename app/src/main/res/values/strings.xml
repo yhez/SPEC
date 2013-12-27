@@ -195,6 +195,7 @@
     <string name="light_msg_two_weeks">Message created within the last two weeks</string>
     <string name="light_msg_old">Message is over due and may not be relevant</string>
     <string name="light_msg_message_created_at">message composed at </string>
+    <string name="tab_nfc_title">Tab NFC</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>
