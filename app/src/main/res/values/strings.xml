@@ -2,7 +2,7 @@
 <resources>
     <!--strings related to writing private key to the nfc tag-->
     <string name="failed_read_only">Read-only tag.\ntry another tag.</string>
-    <string name="tag_formatted">Tag has been formatted.\ntab again to save.</string>
+    <string name="tag_formatted">Tag has been formatted.\nTap again to save.</string>
     <string name="cant_format">Unable to format tag to NDEF.\nTry another tag.</string>
     <string name="tag_not_supported">Tag doesn\'t appear to support NDEF format.\ntry another tag.</string>
     <string name="tag_written">Tag written successfully.</string>
