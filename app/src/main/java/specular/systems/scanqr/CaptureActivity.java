@@ -24,12 +24,12 @@ import specular.systems.R;
 import specular.systems.scanqr.camera.CameraManager;
 
 public class CaptureActivity extends Activity implements SurfaceHolder.Callback {
+    final private int FADE = 0, GONE = 1, ERROR = 2, LENGTH = 700;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == 0) {
-                findViewById(R.id.connecting_to_camera).clearAnimation();
-                findViewById(R.id.connecting_to_camera).setVisibility(View.GONE);
+            if (msg.what == FADE) {
+                connecting.animate().alpha(0).setDuration(LENGTH).start();
                 // Creating the handler starts the preview_direct_msg, which can also throw a RuntimeException.
                 try {
                     if (handler == null) {
@@ -38,7 +38,10 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
                 } catch (RuntimeException r) {
                     displayFrameworkBugMessageAndExit();
                 }
-            } else displayFrameworkBugMessageAndExit();
+            } else if (msg.what == GONE) {
+                connecting.clearAnimation();
+                connecting.setVisibility(View.GONE);
+            } else if (msg.what == ERROR) displayFrameworkBugMessageAndExit();
         }
     };
     private CameraManager cameraManager;
@@ -48,6 +51,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     private Collection<BarcodeFormat> decodeFormats;
     private String characterSet;
     private InactivityTimer inactivityTimer;
+    private View connecting;
 
     ViewfinderView getViewfinderView() {
         return viewfinderView;
@@ -73,7 +77,8 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.capture);
-        findViewById(R.id.connecting_to_camera).startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate));
+        connecting = findViewById(R.id.connecting_to_camera);
+        connecting.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate));
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
     }
@@ -159,9 +164,17 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
             public void run() {
                 try {
                     cameraManager.openDriver(surfaceHolder);
-                    hndl.sendEmptyMessage(0);
+                    hndl.sendEmptyMessage(FADE);
+                    synchronized (this) {
+                        try {
+                            wait(LENGTH);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    hndl.sendEmptyMessage(GONE);
                 } catch (IOException e) {
-                    hndl.sendEmptyMessage(1);
+                    hndl.sendEmptyMessage(ERROR);
                 }
             }
         }).start();
