@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--strings related to writing private key to the nfc tag-->
-    <string name="failed_read_only">Read-only tag.\ntry another tag.</string>
+    <string name="failed_read_only">Read-only tag.\nUse another tag.</string>
     <string name="tag_formatted">Tag has been formatted.\nTap again to save.</string>
     <string name="cant_format">Unable to format tag to NDEF.\nTry another tag.</string>
-    <string name="tag_not_supported">Tag doesn\'t appear to support NDEF format.\ntry another tag.</string>
+    <string name="tag_not_supported">Tag doesn\'t appear to support NDEF format.\nTry another tag.</string>
     <string name="tag_written">Tag written successfully.</string>
-    <string name="io_exception_format">trouble formatting before saving the keys. try again</string>
+    <string name="io_exception_format">Trouble formatting before saving key.\nTry again</string>
 
     <string name="welcome"><b>Let the SPEC magic begin.</b>\nStart bringing privacy and security to your online life and presence.\nEnter email and swipe arrow to generate keys.</string>
     <string name="company_text"><b>SPEC</b> ; HOLD THE KEY TO YOUR SECURITY.</string>
@@ -195,7 +195,7 @@
     <string name="light_msg_two_weeks">Message created within the last two weeks</string>
     <string name="light_msg_old">Message is over due and may not be relevant</string>
     <string name="light_msg_message_created_at">message composed at </string>
-    <string name="tab_nfc_title">Tab NFC</string>
+    <string name="tab_nfc_title">Tap NFC</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>
