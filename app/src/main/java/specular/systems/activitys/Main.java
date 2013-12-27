@@ -85,7 +85,6 @@ import specular.systems.Visual;
 
 public class Main extends Activity {
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_FOCUS = 76;
-    private static int currentKeys = 0;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -214,7 +213,7 @@ public class Main extends Activity {
         else {
             findViewById(R.id.drawer_layout).animate().setDuration(1000)
                     .alpha(0).start();
-            saveKeys.start(this);
+            onClickSkipNFC(null);
             setUpViews();
         }
     }
@@ -535,6 +534,7 @@ public class Main extends Activity {
                 startActivity(i);
                 break;
             case R.layout.decrypt:
+                StaticVariables.scanner=true;
                 Intent intent = new Intent(Main.this, StartScan.class);
                 intent.putExtra("decrypt", true);
                 startActivityForResult(intent, SCAN_QR);
@@ -543,6 +543,7 @@ public class Main extends Activity {
     }
 
     public void onClickFilter(View v) {
+        StaticVariables.scanner=true;
         Intent intt = new Intent(this, StartScan.class);
         startActivityForResult(intt, SCAN_QR);
     }
@@ -633,7 +634,8 @@ public class Main extends Activity {
                         ndef.writeNdefMessage(message);
                         t.setText(R.string.tag_written);
                         StaticVariables.NFCMode = true;
-                        saveKeys.start(this);
+
+                        onClickSkipNFC(null);
                         setUpViews();
                     }
                 } catch (Exception e) {
@@ -686,6 +688,7 @@ public class Main extends Activity {
         if (StaticVariables.currentLayout == R.layout.encrypt
                 || StaticVariables.currentLayout == R.layout.contacts) {
             if (item.getTitle().equals("Scan")) {
+                StaticVariables.scanner=true;
                 Intent i = new Intent(this, StartScan.class);
                 startActivityForResult(i, SCAN_QR);
             }
@@ -792,10 +795,11 @@ public class Main extends Activity {
 
     @Override
     public void onPause() {
-        currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
+        StaticVariables.currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         FilesManagement.saveTempDecryptedMSG(this);
         //todo delete view content
-        CryptMethods.deleteKeys();
+        if(!StaticVariables.scanner)
+            CryptMethods.deleteKeys();
         if (NfcAdapter.getDefaultAdapter(this) != null)
             NfcAdapter.getDefaultAdapter(this).disableForegroundDispatch(this);
         super.onPause();
@@ -1226,12 +1230,17 @@ public class Main extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!handleByOnNewIntent) {
-            FilesManagement.getKeysFromSDCard(this);
+        if (handleByOnNewIntent) {
             handleByOnNewIntent = false;
+            return;
         }
+        if(StaticVariables.scanner){
+            StaticVariables.scanner=false;
+            return;
+        }
+        FilesManagement.getKeysFromSDCard(this);
         int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
-        if (newkeys != currentKeys) {
+        if (newkeys != StaticVariables.currentKeys) {
             setUpViews();
         } else if (msgSended) {
             onBackPressed();
@@ -1244,7 +1253,7 @@ public class Main extends Activity {
             if (uri != null)
                 attachFile(uri);
         }
-        if (currentKeys == 1) {
+        if (StaticVariables.currentKeys == 1) {
             PendingIntent pi = PendingIntent.getActivity(this, 0,
                     new Intent(this, getClass())
                             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
