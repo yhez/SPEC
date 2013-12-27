@@ -175,7 +175,7 @@
     <string name="save_keys_menu_title">Save Keys</string>
     <string name="contact_deleted_widget">Contact deleted.</string>
     <string name="save_current_button">Press to save Keys</string>
-    <string name="recreating_keys_title">We\'ll continue to generate keys until you press the QR code below in order to choose the one that you want (enabling transparency)</string>
+    <string name="recreating_keys_title">We\'ll continue to generate keys until you choose the one that you want, by pressing the QR code below.</string>
     <string name="learn_screen_suggest_us">Feel free to send us suggestions and feedback. Add us to your contacts list by pressing the QR code.</string>
     <string name="widget_add_contact_list_empty">-----\nYour contact list is empty.\nThis widget requires at least one contact.\n-----</string>
     <string name="check_box_confirm_recreate_keys">I accept</string>
