@@ -391,22 +391,6 @@ public class Main extends Activity {
             ImageButton aniView = (ImageButton) findViewById(R.id.add_file);
             aniView.setImageResource(R.drawable.ic_attachment_universal_small);
             Animation animation1 = AnimationUtils.loadAnimation(this, R.anim.rotate);
-            animation1.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
             aniView.startAnimation(animation1);
             aniView.setClickable(false);
             addFile = new Thread(new Runnable() {

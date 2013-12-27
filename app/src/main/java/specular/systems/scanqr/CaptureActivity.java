@@ -9,8 +9,10 @@ import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
@@ -26,6 +28,8 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
+                findViewById(R.id.connecting_to_camera).clearAnimation();
+                findViewById(R.id.connecting_to_camera).setVisibility(View.GONE);
                 // Creating the handler starts the preview_direct_msg, which can also throw a RuntimeException.
                 try {
                     if (handler == null) {
@@ -69,6 +73,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.capture);
+        findViewById(R.id.connecting_to_camera).startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate));
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
     }
