@@ -6,7 +6,7 @@
     <string name="cant_format">Unable to format tag to NDEF.\nTry another tag.</string>
     <string name="tag_not_supported">Tag doesn\'t appear to support NDEF format.\nTry another tag.</string>
     <string name="tag_written">Tag written successfully.</string>
-    <string name="io_exception_format">Trouble formatting before saving key.\nTry again</string>
+    <string name="io_exception_format">Trouble formatting before saving key.\nTry again.</string>
 
     <string name="welcome"><b>Let the SPEC magic begin.</b>\nStart bringing privacy and security to your online life and presence.\nEnter email and swipe arrow to generate keys.</string>
     <string name="company_text"><b>SPEC</b> ; HOLD THE KEY TO YOUR SECURITY.</string>
@@ -125,7 +125,7 @@
     <string name="hash_title">Crypto Hash Info:</string>
     <string name="session_title">Session ID Info:</string>
     <string name="replay_title">Replay Attack Info:</string>
-    <string name="too_short_name">Name should be at least 3 characters long</string>
+    <string name="too_short_name">Name should be at least 3 characters long.</string>
     <string name="contact_with_same_email_exist">A contact with the same email already exists.\nDo you want to update their Public Encryption Key?</string>
     <string name="session_ok_explain">You both have the same session, so you\'re communicating with the same person as before.</string>
     <string name="dont_trust_session_explain">You have a different session than your contact.
@@ -159,7 +159,7 @@
     <string name="send_report_subject">Bug Report</string>
     <string name="send_report_content">Attached is a file containing the stack-trace causing the error.</string>
     <string name="email_for_reports">yhezkel88@gmail.com</string>
-    <string name="clean_up_reported_files">Cleaning up old reports</string>
+    <string name="clean_up_reported_files">Cleaning up old reports.</string>
     <string name="send_report_message_dialog">Unexpected error. Would you like to send an error report to SPEC?\nThank you</string>
     <string name="send_report_button">Send</string>
     <string name="dont_send_now">Not now</string>
@@ -179,9 +179,9 @@
     <string name="learn_screen_suggest_us">Feel free to send us suggestions and feedback. Add us to your contacts list by pressing the QR code.</string>
     <string name="widget_add_contact_list_empty">-----\nYour contact list is empty.\nThis widget requires at least one contact.\n-----</string>
     <string name="check_box_confirm_recreate_keys">I accept</string>
-    <string name="first_time_create_keys">Welcome</string>
+    <string name="first_time_create_keys">Welcome to SPEC</string>
     <string name="not_imp_msg">This feature hasn\'t been integrated or implemented yet.\nIf you would like to help, please contact us.</string>
-    <string name="not_implemented_title">New features soon&#8230;</string>
+    <string name="not_implemented_title">NEW FEATURES SOON&#8230;</string>
     <string name="back_bt_replace_keys_dlg">Back</string>
     <string name="length_name_of_file">File name must be at least 1 character long.</string>
     <string name="time_created">Message time-stamp:\n</string>
@@ -190,11 +190,11 @@
     <string name="replay_check_failed">Time-stamp is broken.\nDo not trust this message.</string>
     <string name="replay_old">This message has been sent more than 60 hours ago.\nYou should be careful.</string>
     <string name="replay_older_then_latest">You\'ve already received a newer message from this contact.</string>
-    <string name="light_msg_day">Message created within the last 24 hours</string>
-    <string name="light_msg_week">Message created within the last week</string>
-    <string name="light_msg_two_weeks">Message created within the last two weeks</string>
-    <string name="light_msg_old">Message is over due and may not be relevant</string>
-    <string name="light_msg_message_created_at">message composed at </string>
+    <string name="light_msg_day">Message created within the last 24 hours.</string>
+    <string name="light_msg_week">Message created within the last week.</string>
+    <string name="light_msg_two_weeks">Message created within the last two weeks.</string>
+    <string name="light_msg_old">Message is over due and may not be relevant.</string>
+    <string name="light_msg_message_created_at">Message created:</string>
     <string name="tab_nfc_title">Tap NFC</string>
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
