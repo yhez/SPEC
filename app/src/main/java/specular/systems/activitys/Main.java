@@ -682,10 +682,10 @@ public class Main extends Activity {
                     .findViewById(R.id.edit_text)).getText().toString());
         } else if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
             ContactCard pcc = new ContactCard(this
-                    , StaticVariables.decryptedMsg.getPublicKey()
-                    , StaticVariables.decryptedMsg.getEmail(), StaticVariables.decryptedMsg.getName());
-            Contact c = StaticVariables.contactsDataSource.findContactByEmail(StaticVariables.decryptedMsg.getEmail());
-            AddContactDlg acd = new AddContactDlg(pcc, StaticVariables.decryptedMsg.getSession(), c != null ? c.getId() : -1);
+                    , StaticVariables.friendsPublicKey
+                    , StaticVariables.email, StaticVariables.name);
+            Contact c = StaticVariables.contactsDataSource.findContactByEmail(StaticVariables.email);
+            AddContactDlg acd = new AddContactDlg(pcc, StaticVariables.session, c != null ? c.getId() : -1);
             acd.show(getFragmentManager(), "acd3");
         } else if (StaticVariables.currentLayout == R.layout.me
                 || StaticVariables.currentLayout == R.layout.profile) {
