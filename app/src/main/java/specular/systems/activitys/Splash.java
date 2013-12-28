@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -118,9 +119,13 @@ public class Splash extends Activity {
             String fileName = Visual.getFileName(this, uri);
             String ext = fileName.substring(fileName.lastIndexOf('.') + 1);
             if (!ext.toLowerCase().equals("spec")) {
+                //File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
+                File f = new File(uri.getPath(), fileName);
                 MimeTypeMap mtm = MimeTypeMap.getSingleton();
                 String type = mtm.getMimeTypeFromExtension(ext);
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                uri = Uri.fromFile(f);
+                intent.setData(uri);
                 if (type != null)
                     intent.setType(type);
                 else

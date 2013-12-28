@@ -138,6 +138,7 @@ public class FragmentManagement extends Fragment {
             contactExist.setText(true + "");
             sender.setText("From:\t" + c.getContactName() + " , " + c.getEmail());
             StaticVariables.flag_session = Session.checkAndUpdate(getActivity(), c, StaticVariables.session);
+            StaticVariables.flag_replay = MessageFormat.checkReplay(c,getActivity(),StaticVariables.timeStamp);
         } else {
             sender.setText("From:\t"
                     + StaticVariables.name
@@ -206,7 +207,6 @@ public class FragmentManagement extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getActivity().invalidateOptionsMenu();
         rootView = inflater.inflate(StaticVariables.currentLayout,
                 container, false);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
@@ -401,9 +401,6 @@ public class FragmentManagement extends Fragment {
                 );
                 break;
             case me:
-
-                //todo move it after last line
-                //((TextView) rootView.findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
                 if (FilesManagement.getMyQRPublicKey(getActivity()) != null)
                     ((ImageView) rootView.findViewById(R.id.qr_image))
                             .setImageBitmap(FilesManagement.getMyQRPublicKey(getActivity()));
@@ -677,7 +674,10 @@ public class FragmentManagement extends Fragment {
                 break;
         }
         Visual.setAllFonts(getActivity(), (ViewGroup) rootView);
+        if(StaticVariables.currentLayout==me)
+            ((TextView)rootView.findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
         rootView.animate().setDuration(1000).alpha(1).start();
+        getActivity().invalidateOptionsMenu();
         return rootView;
     }
 

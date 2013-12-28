@@ -765,7 +765,8 @@ public class Main extends Activity {
             if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0)
                 mi.setVisible(false);
             else if (StaticVariables.currentLayout == R.layout.encrypt) {
-                boolean vis = mi.isVisible() && ((TextView) findViewById(R.id.contact_id_to_send)).getText().toString().length() == 0;
+                TextView tv = ((TextView) findViewById(R.id.contact_id_to_send));
+                boolean vis = mi.isVisible() && (tv==null||tv.getText().toString().length() == 0);
                 mi.setVisible(vis);
                 mi2.setVisible(vis);
             }

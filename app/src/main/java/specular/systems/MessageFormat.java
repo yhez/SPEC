@@ -76,7 +76,7 @@ public class MessageFormat {
                 + sentTime);
     }
 
-    public int checkReplay(Contact c,Activity a) {
+    public static int checkReplay(Contact c,Activity a,String sentTime) {
         if (c == null)
             return NOT_RELEVANT;
         SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
