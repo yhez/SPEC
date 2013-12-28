@@ -24,7 +24,7 @@ import specular.systems.R;
 import specular.systems.scanqr.camera.CameraManager;
 
 public class CaptureActivity extends Activity implements SurfaceHolder.Callback {
-    final private int FADE = 0, GONE = 1, ERROR = 2, LENGTH = 700;
+    final private int FADE = 0, GONE = 1, ERROR = 2, LENGTH = 300;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -67,6 +67,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if(connecting!=null&&connecting.getVisibility()==View.GONE)
         cameraManager.onF(event.getActionMasked() != MotionEvent.ACTION_UP);
         return true;
     }

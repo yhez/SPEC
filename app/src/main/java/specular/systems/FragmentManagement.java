@@ -144,7 +144,6 @@ public class FragmentManagement extends Fragment {
                     + " , " + StaticVariables.email);
             contactExist.setText(false + "");
         }
-        StaticVariables.flag_replay = StaticVariables.decryptedMsg.checkReplay(c, getActivity());
         getActivity().invalidateOptionsMenu();
         if (StaticVariables.file_name == null || StaticVariables.file_name.length() == 0) {
             fileAttach.setVisibility(View.GONE);
@@ -188,22 +187,6 @@ public class FragmentManagement extends Fragment {
                 unknown = R.drawable.ic_unknown, starting = R.drawable.ic_what;
         if (checkHash.isAlive()) {
             Animation animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
-            animation1.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
             hs.setVisibility(View.INVISIBLE);
             imageButtonh.startAnimation(animation1);
             imageButtonh.setClickable(false);
@@ -239,22 +222,6 @@ public class FragmentManagement extends Fragment {
                 etName1.setFilters(Visual.filters());
                 final ImageView iv = (ImageView) rootView.findViewById(R.id.gesture);
                 final Animation animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.up_down);
-                animation1.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
                 iv.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
