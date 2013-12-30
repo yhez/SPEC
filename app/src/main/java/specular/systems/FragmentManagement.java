@@ -119,7 +119,6 @@ public class FragmentManagement extends Fragment {
         ((TextView) rootView.findViewById(R.id.general_details)).setText(getString(R.string.light_msg_message_created_at) + StaticVariables.timeStamp);
         ((TextView) rootView.findViewById(R.id.flag_contact_exist)).setText(true + "");
         ((TextView) rootView.findViewById(R.id.decrypted_msg)).setText(StaticVariables.msg_content);
-        getActivity().invalidateOptionsMenu();
     }
 
     public void updateDecryptedScreen() {
@@ -145,7 +144,6 @@ public class FragmentManagement extends Fragment {
                     + " , " + StaticVariables.email);
             contactExist.setText(false + "");
         }
-        getActivity().invalidateOptionsMenu();
         if (StaticVariables.file_name == null || StaticVariables.file_name.length() == 0) {
             fileAttach.setVisibility(View.GONE);
         } else {
@@ -261,7 +259,7 @@ public class FragmentManagement extends Fragment {
                 break;
             case contacts:
                 ListView lv = (ListView) rootView.findViewById(R.id.list);
-                StaticVariables.adapter.refreshList(getActivity());
+                StaticVariables.adapter.showOriginal();
                 lv.setAdapter(StaticVariables.adapter);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> p1, View p2, int p3,
@@ -449,7 +447,7 @@ public class FragmentManagement extends Fragment {
                 });
                 break;
             case encrypt:
-                StaticVariables.adapter.refreshList(getActivity());
+                StaticVariables.adapter.showOriginal();
                 lv = (ListView) rootView.findViewById(R.id.list);
                 lv.setAdapter(StaticVariables.adapter);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -617,7 +615,6 @@ public class FragmentManagement extends Fragment {
                     rootView.findViewById(R.id.from).setVisibility(View.GONE);
                     ((TextView) rootView.findViewById(R.id.flag_contact_exist)).setText(true + "");
                     ((TextView) rootView.findViewById(R.id.decrypted_msg)).setText(R.string.cant_decrypt);
-                    getActivity().invalidateOptionsMenu();
                 } else {
                     updateDecryptedScreen();
                 }
@@ -674,10 +671,11 @@ public class FragmentManagement extends Fragment {
                 break;
         }
         Visual.setAllFonts(getActivity(), (ViewGroup) rootView);
-        if(StaticVariables.currentLayout==me)
-            ((TextView)rootView.findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
+        //todo for some reason this font doesn't act properly in android 4.4
+        //if(StaticVariables.currentLayout==me)
+        //    ((TextView)rootView.findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
         rootView.animate().setDuration(1000).alpha(1).start();
-        getActivity().invalidateOptionsMenu();
+        StaticVariables.main.invalidateOptionsMenu();
         return rootView;
     }
 

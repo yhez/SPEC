@@ -119,7 +119,6 @@ public class Splash extends Activity {
             String fileName = Visual.getFileName(this, uri);
             String ext = fileName.substring(fileName.lastIndexOf('.') + 1);
             if (!ext.toLowerCase().equals("spec")) {
-                //File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
                 File f = new File(uri.getPath(), fileName);
                 MimeTypeMap mtm = MimeTypeMap.getSingleton();
                 String type = mtm.getMimeTypeFromExtension(ext);
@@ -130,8 +129,8 @@ public class Splash extends Activity {
                     intent.setType(type);
                 else
                     intent.setType("*/*");
-                startActivity(intent);
                 finish();
+                startActivity(intent);
                 return;
             }
             String data = null;

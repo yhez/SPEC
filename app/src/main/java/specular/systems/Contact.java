@@ -143,7 +143,7 @@ public class Contact {
             this.session = session;
         StaticVariables.contactsDataSource.updateDB(id,
                 contactName, email, publicKey, session);
-        StaticVariables.adapter.updateCont(a,this,true);
+        StaticVariables.adapter.updateCont(a,this);
     }
 
     public static final int SENT = 0, RECEIVED = 1;
@@ -156,18 +156,18 @@ public class Contact {
             this.last = time;
         }
         StaticVariables.contactsDataSource.updateDB(id, last, received, sent);
-        StaticVariables.adapter.updateCont(a,this,false);
+        StaticVariables.adapter.updateCont(a,this);
     }
 
     public void update(String defaultApp,Activity a) {
         if(defaultApp!=null){
             cn=new ComponentName(defaultApp.split("\n")[0],defaultApp.split("\n")[1]);
             StaticVariables.contactsDataSource.updateDB(id,defaultApp);
-            StaticVariables.adapter.updateCont(a,this,true);
+            StaticVariables.adapter.updateCont(a,this);
         }else{
             cn=null;
             StaticVariables.contactsDataSource.updateDB(id,"");
-            StaticVariables.adapter.updateCont(a,this,true);
+            StaticVariables.adapter.updateCont(a,this);
         }
     }
 }

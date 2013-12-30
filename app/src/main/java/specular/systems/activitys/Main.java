@@ -511,7 +511,6 @@ public class Main extends Activity {
     }
 
     public void onClick(final View v) {
-
         switch (StaticVariables.currentLayout) {
             case R.layout.wait_nfc_decrypt:
                 Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
@@ -742,9 +741,6 @@ public class Main extends Activity {
             return super.onCreateOptionsMenu(menu);
         }
         if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
-            TextView tv = (TextView) findViewById(R.id.flag_contact_exist);
-            if (tv == null || tv.getText().toString().equals(true + ""))
-                return false;
             menu.add(Menu.NONE, Menu.NONE, 1, "add")
                     .setIcon(android.R.drawable.ic_menu_add)
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);

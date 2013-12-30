@@ -42,15 +42,14 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
         return position;
     }
 
-    public void updateCont(Activity aa, Contact c, boolean needRefresh) {
+    public void updateCont(Activity aa, Contact c) {
         for (int a = 0; a < StaticVariables.fullList.size(); a++)
             if (StaticVariables.fullList.get(a).getId() == c.getId()) {
                 StaticVariables.fullList.remove(a);
                 break;
             }
         StaticVariables.fullList.add(c);
-        if (needRefresh)
-            refreshList(aa);
+        refreshList(aa);
     }
 
     public void removeCont(Activity a, int index) {
@@ -112,9 +111,10 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
         };
     }
 
-    public void refreshList(Activity a) {
+    private void refreshList(Activity a) {
         list = StaticVariables.fullList;
-        notifyDataSetChanged();
+        if(StaticVariables.currentLayout==R.layout.contacts
+                ||StaticVariables.currentLayout==R.layout.encrypt){
         View v = a.findViewById(R.id.list);
         if (v != null)
             if (StaticVariables.fullList.size() > 0) {
@@ -124,6 +124,14 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                 v.setVisibility(View.GONE);
                 a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
             }
+            notifyDataSetChanged();
+        }
+    }
+    public void showOriginal(){
+        if(list!=StaticVariables.fullList){
+            list = StaticVariables.fullList;
+            notifyDataSetChanged();
+        }
     }
     private void updateContactList() {
         if (isEmpty()) {
