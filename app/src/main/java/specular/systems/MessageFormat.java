@@ -106,20 +106,24 @@ public class MessageFormat {
     }
 
     public byte[] getFormatedMsg() {
-        byte[] msgContent = null;
-        byte[] fileName = null;
+        byte[] msgContent;
+        byte[] fileName;
+        byte[] name;
         try {
             fileName = this.fileName.getBytes("UTF-8");
             msgContent = this.msgContent.getBytes("UTF-8");
+            name = this.name.getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            fileName = this.fileName.getBytes();
+            msgContent = this.msgContent.getBytes();
+            name = this.name.getBytes();
         }
-        byte[] fm = new byte[name.length() + email.length() + publicKey.length()
+        byte[] fm = new byte[name.length + email.length() + publicKey.length()
                 + hash.length() + session.length() + sentTime.length() + fileName.length
                 + msgContent.length + (fileContent != null ? fileContent.length : 0) + 13];
         int b = 0;
-        for (int a = 0; a < name.length(); b++, a++)
-            fm[b] = (byte) name.charAt(a);
+        for (int a = 0; a < name.length; b++, a++)
+            fm[b] = name[a];
         fm[b] = '\n';
         b++;
         for (int a = 0; a < email.length(); b++, a++)

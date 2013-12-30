@@ -1226,6 +1226,17 @@ public class Main extends Activity {
             onBackPressed();
             msgSended = false;
         }
+        if(newkeys==1){
+            PendingIntent pi = PendingIntent.getActivity(this, 0,
+                    new Intent(this, getClass())
+                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+            IntentFilter tagDetected = new IntentFilter(
+                    NfcAdapter.ACTION_TAG_DISCOVERED);
+            IntentFilter[] filters = new IntentFilter[]{tagDetected};
+            NfcAdapter
+                    .getDefaultAdapter(this)
+                    .enableForegroundDispatch(this, pi, filters, null);
+        }
         //this is for when coming to the app from share
         if (StaticVariables.currentLayout == R.layout.encrypt) {
             Uri uri = getIntent().getParcelableExtra("specattach");
