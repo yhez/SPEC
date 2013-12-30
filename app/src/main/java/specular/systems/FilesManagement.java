@@ -236,16 +236,12 @@ public final class FilesManagement {
         try {
             fos = a.openFileOutput(a.getString(FRIEND_CONTACT_CARD),
                     Context.MODE_WORLD_READABLE);
+            fos.write(pcc.getQRToPublish().getBytes("UTF-8"));
+            fos.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-        if (fos != null) {
-            try {
-                fos.write(pcc.getQRToPublish().getBytes());
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return Uri.parse(FILE + new File(a.getFilesDir(), a.getString(FRIEND_CONTACT_CARD)));
     }
@@ -309,7 +305,7 @@ public final class FilesManagement {
             }
             if (fos != null) {
                 try {
-                    fos.write(qrpk.getQRToPublish().getBytes());
+                    fos.write(qrpk.getQRToPublish().getBytes("UTF-8"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -371,7 +367,7 @@ public final class FilesManagement {
             try {
                 fos = a.openFileOutput(a.getString(FILE_NAME),
                         Context.MODE_WORLD_READABLE);
-                fos.write(qrpk.getQRToPublish().getBytes());
+                fos.write(qrpk.getQRToPublish().getBytes("UTF-8"));
                 fos.close();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

@@ -51,7 +51,6 @@ import com.google.zxing.WriterException;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import specular.systems.Contact;
@@ -517,7 +516,7 @@ public class Main extends Activity {
                 startActivity(i);
                 break;
             case R.layout.decrypt:
-                StaticVariables.scanner=true;
+                StaticVariables.scanner = true;
                 Intent intent = new Intent(Main.this, StartScan.class);
                 intent.putExtra("decrypt", true);
                 startActivityForResult(intent, SCAN_QR);
@@ -526,7 +525,7 @@ public class Main extends Activity {
     }
 
     public void onClickFilter(View v) {
-        StaticVariables.scanner=true;
+        StaticVariables.scanner = true;
         Intent intt = new Intent(this, StartScan.class);
         startActivityForResult(intt, SCAN_QR);
     }
@@ -574,7 +573,7 @@ public class Main extends Activity {
     @Override
     public void onNewIntent(Intent i) {
         super.onNewIntent(i);
-        handleByOnNewIntent=true;
+        handleByOnNewIntent = true;
         //TODO find a better solution to deleting keys while on new intent
         if (StaticVariables.currentLayout == R.layout.wait_nfc_to_write) {
             Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
@@ -645,14 +644,14 @@ public class Main extends Activity {
             if (raw != null) {
                 NdefMessage msg = (NdefMessage) raw[0];
                 NdefRecord pvk = msg.getRecords()[0];
-                if(CryptMethods.setPrivate(Visual.bin2hex(pvk
+                if (CryptMethods.setPrivate(Visual.bin2hex(pvk
                         .getPayload())))
-                setUpViews();
-                else{
+                    setUpViews();
+                else {
                     t.setText(R.string.cant_find_private_key);
                     t.show();
                 }
-            } else{
+            } else {
                 t.setText(R.string.cant_find_data);
                 t.show();
             }
@@ -671,7 +670,7 @@ public class Main extends Activity {
         if (StaticVariables.currentLayout == R.layout.encrypt
                 || StaticVariables.currentLayout == R.layout.contacts) {
             if (item.getTitle().equals("Scan")) {
-                StaticVariables.scanner=true;
+                StaticVariables.scanner = true;
                 Intent i = new Intent(this, StartScan.class);
                 startActivityForResult(i, SCAN_QR);
             }
@@ -755,20 +754,20 @@ public class Main extends Activity {
         MenuItem mi = menu.getItem(0);
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         mi.setVisible(!drawerOpen);
-        if(menu.size()==2) {
+        if (menu.size() == 2) {
             MenuItem mi2 = menu.getItem(1);
             mi2.setVisible(!drawerOpen);
             if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0)
                 mi.setVisible(false);
             else if (StaticVariables.currentLayout == R.layout.encrypt) {
                 TextView tv = ((TextView) findViewById(R.id.contact_id_to_send));
-                boolean vis = mi.isVisible() && (tv==null||tv.getText().toString().length() == 0);
+                boolean vis = mi.isVisible() && (tv == null || tv.getText().toString().length() == 0);
                 mi.setVisible(vis);
                 mi2.setVisible(vis);
             }
         } else if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
-            TextView flag_contact =(TextView) findViewById(R.id.flag_contact_exist);
-            if (flag_contact!=null&&flag_contact.getText().toString().equals(true + ""))
+            TextView flag_contact = (TextView) findViewById(R.id.flag_contact_exist);
+            if (flag_contact != null && flag_contact.getText().toString().equals(true + ""))
                 mi.setVisible(false);
         }
         return super.onPrepareOptionsMenu(menu);
@@ -779,7 +778,7 @@ public class Main extends Activity {
         StaticVariables.currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         FilesManagement.saveTempDecryptedMSG(this);
         //todo delete view content
-        if(!StaticVariables.scanner)
+        if (!StaticVariables.scanner)
             CryptMethods.deleteKeys();
         if (NfcAdapter.getDefaultAdapter(this) != null)
             NfcAdapter.getDefaultAdapter(this).disableForegroundDispatch(this);
@@ -990,16 +989,8 @@ public class Main extends Activity {
     }
 
     public void addUs(View v) {
-        try {
-            InputStream is = getAssets().open("specular.systems-ContactCard.SPEC");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            StaticVariables.fileContactCard = new ContactCard(this, new String(buffer));
-            is.close();
-            openByFile();
-        } catch (Exception e) {
-        }
+        StaticVariables.fileContactCard = new ContactCard(this, getString(R.string.spec_contact_card));
+        openByFile();
     }
 
     private boolean openByFile() {
@@ -1215,8 +1206,8 @@ public class Main extends Activity {
             handleByOnNewIntent = false;
             return;
         }
-        if(StaticVariables.scanner){
-            StaticVariables.scanner=false;
+        if (StaticVariables.scanner) {
+            StaticVariables.scanner = false;
             return;
         }
         FilesManagement.getKeysFromSDCard(this);

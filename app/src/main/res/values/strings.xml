@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="spec_contact_card">SPEC public encryption key.\nSPEC\nreachout@specularx.co\n30819B301406072A8648CE3D020106092B240303020801010D038182000475A87B1946ACB3F3647F6461F860E5517D010B1589F4720E927B6686A71057C9268E320B32BD40182C94B394CBB316FA5EF66FA2723A11ADEBB4DEC0A5B274C76CE2FF7F2A78BE19F8B2FD3317BE1E99F39828532309AA15A5F32A801986E5986AF28C7A2E464390D4C40B85924A0E63E85813F552E27F9527C2E97DFB1D81E1</string>
     <!--strings related to writing/reading private key to/from the nfc tag-->
     <string name="failed_read_only">Read-only tag.\nUse another tag.</string>
     <string name="tag_formatted">Tag has been formatted.\nTap again to save.</string>
