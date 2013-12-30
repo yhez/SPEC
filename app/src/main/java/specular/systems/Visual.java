@@ -15,12 +15,14 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -80,22 +82,28 @@ public class Visual {
     }
 
     public static void edit(Activity a, EditText et, ImageButton ib) {
-        if (et.getKeyListener() == null) {
-            ib.setImageResource(R.drawable.save);
-            et.setSelection(et.getText().length());
-            et.setKeyListener(StaticVariables.edit);
-            et.setFocusable(true);
-            et.setFocusableInTouchMode(true);
-            et.requestFocus();
-            et.setFilters(filters());
-            InputMethodManager imm = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(et, 0);
-        } else {
-            ib.setImageResource(R.drawable.edit);
-            et.setKeyListener(null);
-            et.setFocusable(false);
-            InputMethodManager imm = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+        if (CryptMethods.privateExist())
+            if (et.getKeyListener() == null) {
+                ib.setImageResource(R.drawable.save);
+                et.setSelection(et.getText().length());
+                et.setKeyListener(StaticVariables.edit);
+                et.setFocusable(true);
+                et.setFocusableInTouchMode(true);
+                et.requestFocus();
+                et.setFilters(filters());
+                InputMethodManager imm = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(et, 0);
+            } else {
+                ib.setImageResource(R.drawable.edit);
+                et.setKeyListener(null);
+                et.setFocusable(false);
+                InputMethodManager imm = (InputMethodManager) a.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+            }
+        else {
+            Toast t = Toast.makeText(a, R.string.reject_changes, Toast.LENGTH_SHORT);
+            t.setGravity(Gravity.CENTER, 0, 0);
+            t.show();
         }
     }
 
@@ -160,13 +168,15 @@ public class Visual {
         ib.setBackgroundColor(Color.TRANSPARENT);
         return ib;
     }
-    public static String getNameReprt(){
+
+    public static String getNameReprt() {
         String timestamp = new SimpleDateFormat("MM-dd HH-mm-ss").format(Calendar
                 .getInstance().getTime());
-        return timestamp+".stacktrace";
+        return timestamp + ".stacktrace";
     }
+
     public static String getSize(long numBytes) {
-        double size=numBytes;
+        double size = numBytes;
         String unit = "byte";
         if (size > 1023) {
             size /= 1024;
@@ -182,12 +192,13 @@ public class Visual {
         }
         String total = (size + "").split("\\.")[0];
         if ((size + "").split("\\.").length > 1) {
-            int l = (size+"").split("\\.")[1].length();
-            total += "." + (size + "").split("\\.")[1].substring(0, Math.min(2,l));
+            int l = (size + "").split("\\.")[1].length();
+            total += "." + (size + "").split("\\.")[1].substring(0, Math.min(2, l));
         }
         return total + " " + unit;
     }
-    public static String getFileName(Activity a,Uri contentURI) {
+
+    public static String getFileName(Activity a, Uri contentURI) {
         Cursor cursor = a.getContentResolver().query(contentURI, null, null, null, null);
         if (cursor == null) {
             return contentURI.getLastPathSegment();

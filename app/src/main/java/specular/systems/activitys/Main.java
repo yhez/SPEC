@@ -649,11 +649,11 @@ public class Main extends Activity {
                         .getPayload())))
                 setUpViews();
                 else{
-                    t.setText("can't find a valid private key on the nfc tag.\ntry another one.");
+                    t.setText(R.string.cant_find_private_key);
                     t.show();
                 }
             } else{
-                t.setText("the tag is empty.\ntry another one");
+                t.setText(R.string.cant_find_data);
                 t.show();
             }
         }

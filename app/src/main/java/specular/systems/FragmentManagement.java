@@ -137,7 +137,7 @@ public class FragmentManagement extends Fragment {
             contactExist.setText(true + "");
             sender.setText("From:\t" + c.getContactName() + " , " + c.getEmail());
             StaticVariables.flag_session = Session.checkAndUpdate(getActivity(), c, StaticVariables.session);
-            StaticVariables.flag_replay = MessageFormat.checkReplay(c,getActivity(),StaticVariables.timeStamp);
+            StaticVariables.flag_replay = MessageFormat.checkReplay(c, getActivity(), StaticVariables.timeStamp);
         } else {
             sender.setText("From:\t"
                     + StaticVariables.name
@@ -320,8 +320,13 @@ public class FragmentManagement extends Fragment {
                 etEmail.setFocusable(false);
                 ((TextView) rootView.findViewById(R.id.orig_eamil))
                         .setText(currContact.getEmail());
+                String sessions;
+                if (CryptMethods.privateExist())
+                    sessions = Session.toShow(currContact.getSession());
+                else
+                    sessions = Session.toHide();
                 ((TextView) rootView.findViewById(R.id.contact_session))
-                        .setText(Session.toShow(currContact.getSession()));
+                            .setText(sessions);
                 ImageButton ibb = (ImageButton) rootView.findViewById(R.id.contact_picture);
                 QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(currContact.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 256);
                 Bitmap bitmap = null;

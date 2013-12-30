@@ -79,4 +79,11 @@ public class Session {
                 + "   my secret sign: "
                 + mySymbol;
     }
+
+    public static String toHide() {
+        return "my session id: "
+                + "-xxx-"
+                + "   my secret sign: "
+                + "-x-";
+    }
 }
