@@ -466,8 +466,6 @@ public class Main extends Activity {
     }
 
     public void onClickSkipNFC(View v) {
-        NfcAdapter.getDefaultAdapter(getApplicationContext())
-                .disableForegroundDispatch(Main.this);
         saveKeys.start(this);
         synchronized (this) {
             while (saveKeys.isAlive()) {
@@ -598,7 +596,7 @@ public class Main extends Activity {
                     } else {
                         // work out how much space we need for the data
                         int size = message.toByteArray().length;
-                        if (ndef == null || ndef.getMaxSize() < size) {
+                        if (ndef.getMaxSize() < size) {
                             // attempt to format tag
                             NdefFormatable format = NdefFormatable.get(tag);
                             if (format != null) {
@@ -612,15 +610,16 @@ public class Main extends Activity {
                             } else {
                                 t.setText(R.string.tag_not_supported);
                             }
+                        }else{
+                            ndef.writeNdefMessage(message);
+                            t.setText(R.string.tag_written);
+                            StaticVariables.NFCMode = true;
+                            onClickSkipNFC(null);
+                            setUpViews();
                         }
-                        ndef.writeNdefMessage(message);
-                        t.setText(R.string.tag_written);
-                        StaticVariables.NFCMode = true;
-
-                        onClickSkipNFC(null);
-                        setUpViews();
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     NdefFormatable format = NdefFormatable.get(tag);
                     if (format != null) {
                         try {
@@ -1204,6 +1203,15 @@ public class Main extends Activity {
         super.onResume();
         if (handleByOnNewIntent) {
             handleByOnNewIntent = false;
+            PendingIntent pi = PendingIntent.getActivity(this, 0,
+                    new Intent(this, getClass())
+                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+            IntentFilter tagDetected = new IntentFilter(
+                    NfcAdapter.ACTION_TAG_DISCOVERED);
+            IntentFilter[] filters = new IntentFilter[]{tagDetected};
+            NfcAdapter
+                    .getDefaultAdapter(this)
+                    .enableForegroundDispatch(this, pi, filters, null);
             return;
         }
         if (StaticVariables.scanner) {
@@ -1224,17 +1232,6 @@ public class Main extends Activity {
             getIntent().setData(null);
             if (uri != null)
                 attachFile(uri);
-        }
-        if (StaticVariables.currentKeys == 1) {
-            PendingIntent pi = PendingIntent.getActivity(this, 0,
-                    new Intent(this, getClass())
-                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-            IntentFilter tagDetected = new IntentFilter(
-                    NfcAdapter.ACTION_TAG_DISCOVERED);
-            IntentFilter[] filters = new IntentFilter[]{tagDetected};
-            NfcAdapter
-                    .getDefaultAdapter(this)
-                    .enableForegroundDispatch(this, pi, filters, null);
         }
         if (StaticVariables.flag_msg != null && StaticVariables.flag_msg) {
             FilesManagement.getTempDecryptedMSG(this);

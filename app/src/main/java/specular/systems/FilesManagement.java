@@ -130,12 +130,6 @@ public final class FilesManagement {
         StaticVariables.file_name = srp.getString("file_name", null);
     }
 
-    public static Typeface getOld(Activity a) {
-        if (tfold == null)
-            tfold = createFromAsset(a.getAssets(), "cour.ttf");
-        return tfold;
-    }
-
     public static boolean isItNewUser(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
