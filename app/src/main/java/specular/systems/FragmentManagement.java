@@ -137,7 +137,7 @@ public class FragmentManagement extends Fragment {
             contactExist.setText(true + "");
             sender.setText("From:\t" + c.getContactName() + " , " + c.getEmail());
             StaticVariables.flag_session = Session.checkAndUpdate(getActivity(), c, StaticVariables.session);
-            StaticVariables.flag_replay = MessageFormat.checkReplay(c, getActivity(), StaticVariables.timeStamp);
+            StaticVariables.flag_replay = MessageFormat.checkReplay(c, StaticVariables.timeStamp);
         } else {
             sender.setText("From:\t"
                     + StaticVariables.name

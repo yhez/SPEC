@@ -233,7 +233,7 @@ public class Main extends Activity {
                         contact.getSession());
                 CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
                         contact.getPublicKey());
-                contact.update(Contact.SENT, 0, Main.this);
+                contact.update(Contact.SENT, 0);
                 sendMessage();
                 prgd.cancel();
                 msgSended = true;
@@ -767,8 +767,8 @@ public class Main extends Activity {
                 mi2.setVisible(vis);
             }
         } else if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
-            String flag = ((TextView) findViewById(R.id.flag_contact_exist)).getText().toString();
-            if (flag.equals(true + ""))
+            TextView flag_contact =(TextView) findViewById(R.id.flag_contact_exist);
+            if (flag_contact!=null&&flag_contact.getText().toString().equals(true + ""))
                 mi.setVisible(false);
         }
         return super.onPrepareOptionsMenu(menu);

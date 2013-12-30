@@ -148,15 +148,15 @@ public class Contact {
 
     public static final int SENT = 0, RECEIVED = 1;
 
-    public void update(int what,long time,Activity a) {
+    public void update(int what,long time) {
         if (what == SENT)
             sent++;
         else if (what == RECEIVED){
             received++;
             this.last = time;
         }
+        //todo the contact doesn't get updated in the list may cause small sync issue
         StaticVariables.contactsDataSource.updateDB(id, last, received, sent);
-        StaticVariables.adapter.updateCont(a,this);
     }
 
     public void update(String defaultApp,Activity a) {
