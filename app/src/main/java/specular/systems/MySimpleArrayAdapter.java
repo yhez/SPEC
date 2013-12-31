@@ -122,8 +122,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                         .compareTo((contact2.getContactName().toLowerCase()+contact2.getEmail().toLowerCase()));
             }
         });
-        if(StaticVariables.currentLayout==R.layout.contacts
-                ||StaticVariables.currentLayout==R.layout.encrypt){
+        if(StaticVariables.currentLayout==R.layout.encrypt){
         View v = a.findViewById(R.id.list);
         if (v != null)
             if (StaticVariables.fullList.size() > 0) {

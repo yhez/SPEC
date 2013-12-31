@@ -51,12 +51,9 @@ public class ChooseContact extends Activity {
             final int mAppWidgetId = extras.getInt(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
-
-            setContentView(R.layout.contacts);
-            findViewById(R.id.contacts).setAlpha(1);
+            ListView lv = new ListView(this);
             //todo add filter
             //findViewById(R.id.filter_ll).setVisibility(View.VISIBLE);
-            ListView lv = (ListView) findViewById(R.id.list);
             if (StaticVariables.adapter == null|| StaticVariables.fullList==null) {
                 StaticVariables.contactsDataSource = new ContactsDataSource(this);
                 StaticVariables.fullList = StaticVariables.contactsDataSource.getAllContacts();
@@ -111,6 +108,7 @@ public class ChooseContact extends Activity {
                         finish();
                     }
                 });
+                setContentView(lv);
             }
         }
     }

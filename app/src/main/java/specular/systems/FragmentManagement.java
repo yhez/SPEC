@@ -42,7 +42,6 @@ import com.google.zxing.WriterException;
 
 import java.util.List;
 
-import static specular.systems.R.layout.contacts;
 import static specular.systems.R.layout.create_new_keys;
 import static specular.systems.R.layout.decrypt;
 import static specular.systems.R.layout.decrypted_msg;
@@ -257,31 +256,6 @@ public class FragmentManagement extends Fragment {
                     }
                 });
                 break;
-            case contacts:
-                ListView lv = (ListView) rootView.findViewById(R.id.list);
-                StaticVariables.adapter.showOriginal();
-                lv.setAdapter(StaticVariables.adapter);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> p1, View p2, int p3,
-                                            long p4) {
-                        Fragment fragment = new FragmentManagement();
-                        Bundle args = new Bundle();
-                        StaticVariables.currentLayout = edit_contact;
-                        args.putInt("index", p3);
-                        fragment.setArguments(args);
-                        FragmentManager fragmentManager = getFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.content_frame, fragment).commit();
-                    }
-                });
-                if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0) {
-                    rootView.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
-                    lv.setVisibility(View.GONE);
-                } else {
-                    rootView.findViewById(R.id.no_contacts).setVisibility(View.GONE);
-                    lv.setVisibility(View.VISIBLE);
-                }
-                break;
             case edit_contact:
                 int index = getArguments().getInt("index");
                 final Contact currContact = StaticVariables.adapter.getItem(index);
@@ -453,7 +427,7 @@ public class FragmentManagement extends Fragment {
                 break;
             case encrypt:
                 StaticVariables.adapter.showOriginal();
-                lv = (ListView) rootView.findViewById(R.id.list);
+                ListView lv = (ListView) rootView.findViewById(R.id.list);
                 lv.setAdapter(StaticVariables.adapter);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

@@ -421,8 +421,7 @@ public class Main extends Activity {
                     if (StaticVariables.currentLayout == R.layout.decrypt) {
                         getIntent().putExtra("message", result);
                         setUpViews();
-                    } else if (StaticVariables.currentLayout == R.layout.encrypt
-                            ||StaticVariables.currentLayout == R.layout.contacts) {
+                    } else if (StaticVariables.currentLayout == R.layout.encrypt) {
                         StaticVariables.fileContactCard = new ContactCard(this, result);
                         if (StaticVariables.fileContactCard.getPublicKey() != null) {
                             setUpViews();
@@ -636,8 +635,7 @@ public class Main extends Activity {
         }
 
         // Handle action buttons
-        if (StaticVariables.currentLayout == R.layout.encrypt
-                || StaticVariables.currentLayout == R.layout.contacts) {
+        if (StaticVariables.currentLayout == R.layout.encrypt) {
             if (item.getTitle().equals("Scan")) {
                 StaticVariables.scanner = true;
                 Intent i = new Intent(this, StartScan.class);
@@ -668,8 +666,7 @@ public class Main extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (StaticVariables.currentLayout == R.layout.encrypt
-                || StaticVariables.currentLayout == R.layout.contacts) {
+        if (StaticVariables.currentLayout == R.layout.encrypt) {
             final SearchView sv = new SearchView(getActionBar().getThemedContext());
             sv.setQueryHint("Search");
             sv.setIconified(false);
@@ -837,9 +834,9 @@ public class Main extends Activity {
     }
 
     private void setUpViews() {
-        final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, CONTACTS = 3, LEARN = 4, SETUP = 5;
+        final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, LEARN = 3, SETUP = 4;
         final String[] allMenus = getResources().getStringArray(R.array.menus);
-        final int[] allDrb = {R.drawable.encrypt, R.drawable.decrypt, R.drawable.contacts, R.drawable.share
+        final int[] allDrb = {R.drawable.encrypt, R.drawable.decrypt, R.drawable.share
                 , R.drawable.learn, R.drawable.manage/*,R.drawable.local*/};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.privateExist() ? 1 : CryptMethods.publicExist() ? 2 : 3;
@@ -859,15 +856,15 @@ public class Main extends Activity {
                 break;
             case PB:
                 menuTitles = new String[]{allMenus[ENCRYPT], allMenus[SHARE],
-                        allMenus[CONTACTS], allMenus[LEARN], allMenus[SETUP]};
+                         allMenus[LEARN], allMenus[SETUP]};
                 menuDrawables = new int[]{allDrb[ENCRYPT], allDrb[SHARE],
-                        allDrb[CONTACTS], allDrb[LEARN], allDrb[SETUP]};
+                         allDrb[LEARN], allDrb[SETUP]};
                 break;
             case PV:
-                menuTitles = new String[]{allMenus[DECRYPT], allMenus[CONTACTS],
+                menuTitles = new String[]{allMenus[DECRYPT],
                         allMenus[LEARN], allMenus[SETUP]};
                 menuDrawables = new int[]{allDrb[DECRYPT],
-                        allDrb[CONTACTS], allDrb[LEARN], allDrb[SETUP]};
+                         allDrb[LEARN], allDrb[SETUP]};
                 break;
             case NONE:
                 menuTitles = new String[]{allMenus[LEARN], allMenus[SETUP]};
@@ -909,7 +906,7 @@ public class Main extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
-                R.layout.me, R.layout.contacts, R.layout.learn,
+                R.layout.me, R.layout.learn,
                 R.layout.setup/*,R.layout.local*/};
         switch (status) {
             case BOTH:
@@ -924,7 +921,7 @@ public class Main extends Activity {
                 break;
             case PB:
                 layouts = new int[]{allLayouts[ENCRYPT], allLayouts[SHARE],
-                        allLayouts[CONTACTS], allLayouts[LEARN], allLayouts[SETUP]};
+                         allLayouts[LEARN], allLayouts[SETUP]};
                 final String msg = getIntent().getStringExtra("message");
                 if (StaticVariables.message != null || msg != null
                         || StaticVariables.fileContactCard != null) {
@@ -940,7 +937,7 @@ public class Main extends Activity {
                 }
                 break;
             case PV:
-                layouts = new int[]{allLayouts[DECRYPT], allLayouts[CONTACTS],
+                layouts = new int[]{allLayouts[DECRYPT],
                         allLayouts[LEARN], allLayouts[SETUP]};
                 if (!openByFile()) {
                     selectItem(0, R.layout.decrypt, null);
@@ -981,7 +978,7 @@ public class Main extends Activity {
             getIntent().setData(null);
             return true;
         } else if (StaticVariables.fileContactCard != null) {
-            selectItem(-1, R.layout.contacts, null);
+            selectItem(0, R.layout.encrypt, null);
             Contact c = StaticVariables.contactsDataSource.findContactByKey(StaticVariables.fileContactCard.getPublicKey());
             if (c == null) {
                 Contact cc = StaticVariables.contactsDataSource.findContactByEmail(StaticVariables.fileContactCard.getEmail());
@@ -1092,12 +1089,6 @@ public class Main extends Activity {
                     else
                         setUpViews();
                     break;
-                case R.layout.contacts:
-                    if (StaticVariables.currentLayout != defaultScreen)
-                        setUpViews();
-                    else
-                        new prepareToExit();
-                    break;
                 case R.layout.learn:
                     if (StaticVariables.currentLayout == defaultScreen)
                         new prepareToExit();
@@ -1111,7 +1102,7 @@ public class Main extends Activity {
                         setUpViews();
                     break;
                 case R.layout.edit_contact:
-                    selectItem(-1, R.layout.contacts, null);
+                    selectItem(-1, R.layout.encrypt, null);
                     break;
                 case R.layout.profile:
                     selectItem(-1, R.layout.me, null);
