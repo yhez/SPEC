@@ -34,16 +34,6 @@
         android:paddingLeft="@dimen/default_gap"
         android:paddingTop="@dimen/default_gap">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="@dimen/default_gap"
-            android:text="@string/welcome"
-            android:textColor="@color/spec_black"
-            android:textSize="19sp" />
-
-
         <EditText
             android:id="@+id/name"
             android:layout_width="match_parent"
@@ -68,6 +58,14 @@
             android:textColorHint="@color/spec_gray"
             android:textCursorDrawable="@null" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="@dimen/default_gap"
+            android:text="@string/welcome"
+            android:textColor="@color/spec_black"
+            android:textSize="19sp" />
         <ImageView
             android:id="@+id/gesture"
             android:layout_width="match_parent"

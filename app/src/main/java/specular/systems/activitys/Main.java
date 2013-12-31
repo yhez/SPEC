@@ -213,7 +213,6 @@ public class Main extends Activity {
             findViewById(R.id.drawer_layout).animate().setDuration(1000)
                     .alpha(0).start();
             onClickSkipNFC(null);
-            setUpViews();
         }
     }
 
@@ -419,50 +418,22 @@ public class Main extends Activity {
             } else {
                 String result = intent.getStringExtra("barcode");
                 if (result != null) {
-                    switch (StaticVariables.currentLayout) {
-                        case R.layout.decrypt:
-                            getIntent().putExtra("message", result);
+                    if (StaticVariables.currentLayout == R.layout.decrypt) {
+                        getIntent().putExtra("message", result);
+                        setUpViews();
+                    } else if (StaticVariables.currentLayout == R.layout.encrypt
+                            ||StaticVariables.currentLayout == R.layout.contacts) {
+                        StaticVariables.fileContactCard = new ContactCard(this, result);
+                        if (StaticVariables.fileContactCard.getPublicKey() != null) {
                             setUpViews();
-                            break;
-                        case R.layout.encrypt:
-                            ContactCard pcc = new ContactCard(this, result);
-                            if (pcc.getPublicKey() != null) {
-                                Contact contact1 = StaticVariables.contactsDataSource.findContactByKey(pcc.getPublicKey());
-                                if (contact1 != null) {
-                                    t.setText(R.string.contact_exist);
-                                    t.show();
-                                    StaticVariables.fragmentManagement.contactChosen(contact1.getId());
-                                } else {
-                                    Contact c = StaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
-                                    AddContactDlg acd = new AddContactDlg(pcc, null, c != null ? c.getId() : -1);
-                                    acd.show(getFragmentManager(), "acd2");
-                                }
-                            } else {
-                                t.setText(R.string.bad_data);
-                                t.show();
-                            }
-                            break;
-                        case R.layout.contacts:
-                            pcc = new ContactCard(this, result);
-                            if (pcc.getPublicKey() != null) {
-                                if (StaticVariables.contactsDataSource.findContactByKey(pcc.getPublicKey()) != null) {
-                                    t.setText(R.string.contact_exist);
-                                    t.show();
-                                } else {
-                                    Contact c = StaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
-                                    AddContactDlg acd = new AddContactDlg(pcc, null, c != null ? c.getId() : -1);
-                                    acd.show(getFragmentManager(), "acd2");
-                                }
-                            } else {
-                                t.setText(R.string.bad_data);
-                                t.show();
-                            }
-                            break;
+                        } else {
+                            t.setText(R.string.bad_data);
+                            t.show();
+                        }
                     }
                 }
             }
         }
-
     }
 
     public void onClickSkipNFC(View v) {
@@ -576,8 +547,7 @@ public class Main extends Activity {
         if (StaticVariables.currentLayout == R.layout.wait_nfc_to_write) {
             Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if (tag != null) {
-                CryptMethods.moveKeysFromTmp();
-                byte[] bin = Visual.hex2bin(CryptMethods.getPrivateToSave());
+                byte[] bin = Visual.hex2bin(CryptMethods.getPrivateTmp());
                 // record to launch Play Store if app is not installed
                 NdefRecord appRecord = NdefRecord
                         .createApplicationRecord(this.getPackageName());
@@ -614,8 +584,8 @@ public class Main extends Activity {
                             ndef.writeNdefMessage(message);
                             t.setText(R.string.tag_written);
                             StaticVariables.NFCMode = true;
+                            CryptMethods.moveKeysFromTmp();
                             onClickSkipNFC(null);
-                            setUpViews();
                         }
                     }
                 } catch (Exception e) {
@@ -944,14 +914,12 @@ public class Main extends Activity {
         switch (status) {
             case BOTH:
                 layouts = allLayouts;
+                if (StaticVariables.fullList.size() > 3)
+                    defaultScreen = R.layout.encrypt;
+                else
+                    defaultScreen = R.layout.me;
                 if (!openByFile()) {
-                    if (StaticVariables.fullList.size() > 3) {
-                        defaultScreen = R.layout.encrypt;
-                        selectItem(0, defaultScreen, null);
-                    } else {
-                        defaultScreen = R.layout.me;
-                        selectItem(2, defaultScreen, null);
-                    }
+                    selectItem(-1, defaultScreen, null);
                 }
                 break;
             case PB:
@@ -1025,7 +993,7 @@ public class Main extends Activity {
                 AddContactDlg acd = new AddContactDlg(StaticVariables.fileContactCard, null, id);
                 acd.show(getFragmentManager(), "acd");
             } else {
-                //TODO what if some of the details are not exist, give the useer the option to update
+                //todo if we removed contacts screen and contact already exist call contactChosen()
                 StaticVariables.fileContactCard = null;
                 t.setText(R.string.contact_exist);
                 t.show();
@@ -1214,7 +1182,7 @@ public class Main extends Activity {
                     .enableForegroundDispatch(this, pi, filters, null);
             return;
         }
-        if (StaticVariables.scanner) {
+        if (StaticVariables.scanner&&CryptMethods.privateExist()) {
             StaticVariables.scanner = false;
             return;
         }

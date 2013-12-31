@@ -206,4 +206,7 @@ public class CryptMethods {
     public static String getPublicTmp() {
         return tmpPublicKey;
     }
+    public static String getPrivateTmp() {
+        return tmpPrivateKey;
+    }
 }

@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filterable {
@@ -113,6 +115,13 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
 
     private void refreshList(Activity a) {
         list = StaticVariables.fullList;
+        Collections.sort(list, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact contact, Contact contact2) {
+                return (contact.getContactName().toLowerCase()+contact.getEmail().toLowerCase())
+                        .compareTo((contact2.getContactName().toLowerCase()+contact2.getEmail().toLowerCase()));
+            }
+        });
         if(StaticVariables.currentLayout==R.layout.contacts
                 ||StaticVariables.currentLayout==R.layout.encrypt){
         View v = a.findViewById(R.id.list);
