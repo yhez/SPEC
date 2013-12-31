@@ -27,7 +27,7 @@ import specular.systems.MessageFormat;
 import specular.systems.StaticVariables;
 import specular.systems.R;
 import specular.systems.Visual;
-import specular.systems.activitys.SendMsg;
+import specular.systems.activities.SendMsg;
 
 /**
  * Created by yehezkelk on 12/9/13.

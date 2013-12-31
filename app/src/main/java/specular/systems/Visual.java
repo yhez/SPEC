@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
@@ -211,5 +212,27 @@ public class Visual {
         }
         cursor.close();
         return rs;
+    }
+    public static void hideAllChildes(Activity act, ViewGroup v){
+        for (int a = 0; a < v.getChildCount(); a++)
+            try {
+                hideAllChildes(act, (ViewGroup) v.getChildAt(a));
+            } catch (Exception e) {
+                try {
+                    v.getChildAt(a).setVisibility(View.GONE);
+                } catch (Exception ignore) {
+                }
+            }
+    }
+    public static void showAllChildes(Activity act, ViewGroup v){
+        for (int a = 0; a < v.getChildCount(); a++)
+            try {
+                showAllChildes(act, (ViewGroup) v.getChildAt(a));
+            } catch (Exception e) {
+                try {
+                    v.getChildAt(a).setVisibility(View.VISIBLE);
+                } catch (Exception ignore) {
+                }
+            }
     }
 }

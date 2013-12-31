@@ -23,7 +23,7 @@ import specular.systems.LightMessage;
 import specular.systems.MessageFormat;
 import specular.systems.R;
 import specular.systems.StaticVariables;
-import specular.systems.activitys.SendMsg;
+import specular.systems.activities.SendMsg;
 
 
 public class Response extends DialogFragment {

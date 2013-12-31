@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <Button
+        android:onClick="onClick"
+        android:textSize="25sp"
+        android:id="@+id/p_button1"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/default_gap"
+        android:text="Move Private-Key to nfc"
+        android:textColor="@color/spec_black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/spec_blue" />
+
+    <Button
+        android:onClick="onClick"
+        android:textSize="25sp"
+        android:id="@+id/p_button2"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/default_gap"
+        android:text="Get form nfc to device"
+        android:textColor="@color/spec_black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/spec_blue" />
+
+    <Button
+        android:onClick="onClick"
+        android:textSize="25sp"
+        android:id="@+id/button3"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Get from QR to device"
+        android:textColor="@color/spec_gray" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/spec_blue" />
+
+    <Button
+        android:onClick="onClick"
+        android:textSize="25sp"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Print QR backup"
+        android:textColor="@color/spec_gray" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/spec_blue" />
+
+    <Button
+        android:onClick="onClick"
+        android:textSize="25sp"
+        android:id="@+id/p_button5"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/default_gap"
+        android:text="Erase NFC tag"
+        android:textColor="@color/spec_gray" />
+
+    <View
+        android:id="@+id/text_view_divide"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/spec_blue"
+        android:visibility="gone" />
+
+    <TextView
+        android:padding="32dp"
+        android:id="@+id/p_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="tab nfc to execute action"
+        android:textColor="@color/spec_black"
+        android:textSize="30sp"
+        android:visibility="gone" />
+</LinearLayout>

@@ -11,7 +11,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import specular.systems.R;
-import specular.systems.activitys.Splash;
+import specular.systems.activities.Splash;
 import specular.systems.scanqr.CaptureActivity;
 
 /**

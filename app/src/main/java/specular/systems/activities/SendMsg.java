@@ -1,4 +1,4 @@
-package specular.systems.activitys;
+package specular.systems.activities;
 
 import android.app.Activity;
 import android.content.ComponentName;

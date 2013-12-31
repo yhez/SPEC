@@ -1,4 +1,4 @@
-package specular.systems.activitys;
+package specular.systems.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -1230,6 +1230,11 @@ public class Main extends Activity {
             case R.id.button1:
                 GenerateKeys gk = new GenerateKeys();
                 gk.show(getFragmentManager(), "gk");
+                break;
+            case R.id.button3:
+                Intent intent = new Intent(this,PrivateKeyManager.class);
+                StaticVariables.scanner=true;
+                startActivity(intent);
                 break;
         }
     }

@@ -4,7 +4,7 @@ import android.text.method.KeyListener;
 
 import java.util.List;
 
-import specular.systems.activitys.Main;
+import specular.systems.activities.Main;
 
 public class StaticVariables {
     //defines how long does the list have to be to show the last used contacts

@@ -56,7 +56,18 @@ public final class FilesManagement {
             tfos = createFromAsset(a.getAssets(), "OpenSans-Light.ttf");
         return tfos;
     }
-
+    public static void savePrivate(Activity a){
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
+        SharedPreferences.Editor edt = srp.edit();
+        edt.putString(PRIVATE_KEY,CryptMethods.getPrivateToSave());
+        edt.commit();
+    }
+    public static void removePrivate(Activity a){
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
+        SharedPreferences.Editor edt = srp.edit();
+        edt.remove(PRIVATE_KEY);
+        edt.commit();
+    }
     public static boolean createFileToOpen(Activity a) {
         if (StaticVariables.decryptedMsg.getFileContent() == null)
             return false;

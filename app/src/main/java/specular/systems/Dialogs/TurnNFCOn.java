@@ -8,9 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 
-import specular.systems.activitys.Main;
+import specular.systems.activities.Main;
 import specular.systems.R;
-import specular.systems.activitys.Splash;
+import specular.systems.activities.Splash;
 
 public class TurnNFCOn extends DialogFragment {
     @Override

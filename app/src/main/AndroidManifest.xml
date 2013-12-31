@@ -47,7 +47,7 @@
         </receiver>
 
         <activity
-            android:name=".activitys.Splash"
+            android:name=".activities.Splash"
             android:launchMode="singleTask"
             android:noHistory="true"
             android:screenOrientation="portrait"
@@ -96,12 +96,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activitys.Main"
+            android:name=".activities.Main"
             android:icon="@drawable/menu"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activitys.StartScan"
+            android:name=".activities.StartScan"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
         <activity
@@ -133,13 +133,20 @@
             android:noHistory="true"
             android:excludeFromRecents="true"
             android:label="@string/send_report_title"
-            android:name=".activitys.SendReport"
+            android:name=".activities.SendReport"
             android:theme="@android:style/Theme.Holo.Light.Dialog"/>
 
         <activity
             android:noHistory="true"
             android:excludeFromRecents="true"
-            android:name=".activitys.SendMsg"
+            android:name=".activities.SendMsg"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth"/>
+
+        <activity
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:name=".activities.PrivateKeyManager"
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth"/>
+
     </application>
 </manifest>

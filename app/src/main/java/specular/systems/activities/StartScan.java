@@ -1,4 +1,4 @@
-package specular.systems.activitys;
+package specular.systems.activities;
 
 import android.widget.TextView;
 
