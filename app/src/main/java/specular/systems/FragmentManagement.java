@@ -785,6 +785,10 @@ public class FragmentManagement extends Fragment {
         ((TextView) rootView.findViewById(R.id.chosen_name)).setText(cvc.getContactName());
         ((TextView) rootView.findViewById(R.id.chosen_email)).setText(cvc.getEmail());
         ((ImageView) rootView.findViewById(R.id.chosen_icon)).setImageBitmap(cvc.getPhoto());
+        EditText myEditText = (EditText)rootView.findViewById(R.id.message);
+        myEditText.requestFocus();
+        ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
+                .showSoftInput(myEditText, InputMethodManager.SHOW_FORCED);
         final View cont = rootView.findViewById(R.id.en_contact);
         cont.setVisibility(View.VISIBLE);
         cont.setAlpha(1);
@@ -799,6 +803,10 @@ public class FragmentManagement extends Fragment {
                     if (cont.getAlpha() < 0.2) {
                         cont.setVisibility(View.GONE);
                         ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText("");
+                        EditText myEditText =(EditText)rootView.findViewById(R.id.message);
+                        rootView.findViewById(R.id.message).clearFocus();
+                        ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
+                                .hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
                         rootView.findViewById(R.id.list).setVisibility(View.VISIBLE);
                         StaticVariables.luc.showIfNeeded(getActivity(), null);
                         getActivity().invalidateOptionsMenu();
