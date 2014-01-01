@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="@dimen/default_gap"
-        android:text="Move Private-Key to nfc"
+        android:text="@string/move_private_to_nfc"
         android:textColor="@color/spec_black" />
 
     <View
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="@dimen/default_gap"
-        android:text="Get form nfc to device"
+        android:text="@string/get_private_from_nfc"
         android:textColor="@color/spec_black" />
 
     <View
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Get from QR to device"
+        android:text="@string/get_private_from_qr"
         android:textColor="@color/spec_gray" />
 
     <View
@@ -63,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Print QR backup"
+        android:text="@string/print_private_to_qr"
         android:textColor="@color/spec_gray" />
 
     <View
@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="@dimen/default_gap"
-        android:text="Erase NFC tag"
+        android:text="@string/erase_nfc_tag"
         android:textColor="@color/spec_gray" />
 
     <View
@@ -96,7 +96,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="tab nfc to execute action"
         android:textColor="@color/spec_black"
         android:textSize="30sp"
         android:visibility="gone" />
