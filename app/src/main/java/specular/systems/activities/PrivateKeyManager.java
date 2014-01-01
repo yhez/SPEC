@@ -159,8 +159,15 @@ public class PrivateKeyManager extends Activity {
 
     @Override
     public void onBackPressed(){
-        super.onBackPressed();
-        deleteKeys=false;
+        if(status==NO_CHOICE){
+            super.onBackPressed();
+            deleteKeys=false;
+        }else{
+            Visual.showAllChildes(this, (ViewGroup) findViewById(android.R.id.content));
+            findViewById(R.id.text_view_divide).setVisibility(View.GONE);
+            findViewById(R.id.p_text).setVisibility(View.GONE);
+            status = NO_CHOICE;
+        }
     }
 
     @Override
@@ -198,7 +205,7 @@ public class PrivateKeyManager extends Activity {
                     Visual.hideAllChildes(PrivateKeyManager.this, (ViewGroup) findViewById(android.R.id.content));
                     tv.setVisibility(View.VISIBLE);
                     divider.setVisibility(View.VISIBLE);
-                    tv.setText("Tab nfc tag to the phone to save your private key on him and delete it from your device");
+                    tv.setText(R.string.tab_nfc_move_to_nfc);
                     v.setVisibility(View.VISIBLE);
                     break;
                 case R.id.p_button2:
@@ -206,7 +213,7 @@ public class PrivateKeyManager extends Activity {
                     Visual.hideAllChildes(this, (ViewGroup) findViewById(android.R.id.content));
                     tv.setVisibility(View.VISIBLE);
                     divider.setVisibility(View.VISIBLE);
-                    tv.setText("Tab nfc tag to the device to get your private key from him and save it locally on your device");
+                    tv.setText(R.string.tab_nfc_get_from_nfc);
                     v.setVisibility(View.VISIBLE);
                     break;
                 case R.id.p_button5:

@@ -6,11 +6,32 @@ import java.util.Random;
 
 public class Session {
 
-    public final static String DIVIDE_SESSIONS = "---",MY="my",HIS="other's";
-    public final static int UNKNOWN = 0, STARTING = 1, DONT_TRUST = 2, TRUSTED = 3, NEW_TRUSTED = 4;
+    public static final String FLAG_SESSION_VERIFIED = "!!";
+
+    //new guy sent me a message (we both have different sessions and there is no flag session verified)
+    //I'll send him my + his.
+    //for now he's a stranger
+    public final static int UNKNOWN = 0;
+
+    //known guy sent me a message (his session is the same that i have
+    //no need to change session
+    //session is trusted
+    public final static int KNOWN = 1;
+
+    //just verified that he owned the public key (the other guy sent double session with my in it)
+    //from now on we'll use the other guy session
+    //session is trusted and add flag session verified
+    public final static int JUST_KNOWN = 2;
+
+    //can't create session (the other guy sent double session with my not in it,
+    //  or if we have different session and flag session verified is marked)
+    //trying to send my session again
+    //session suspicious
+    public final static int DONT_TRUST = 3;
 
     public static int checkAndUpdate(Activity a,Contact contact, String session) {
-        String my[] = contact.getSession().split(DIVIDE_SESSIONS);
+        String[] sessions = contact.getSession().split(" ");
+        String[] words = new String[]{sessions[2],sessions[3],sessions[6]};
         String his[] = session.split(DIVIDE_SESSIONS);
         if (my.length == 1) {
             if (his.length == 1) {
@@ -48,42 +69,35 @@ public class Session {
         }
     }
 
-    private String mySession = "";
-    private String mySymbol = "";
+    private String words = "";
+    private String sign = "";
 
-    // to create a new session from nothing
+    //creates new session from nothing
     public Session() {
         Random rnd = new Random();
         char f[] = "bcdfghjklmnpqrstwvxz".toCharArray();
         char o[] = "aeiouy".toCharArray();
         char s[] = "~`!12@3#4$5%6^7&8*9(0){[}]|\'.?/,".toCharArray();
-        mySession = Character.toString(f[rnd.nextInt(f.length)]).toUpperCase()
+        words = Character.toString(f[rnd.nextInt(f.length)]).toUpperCase()
+                + Character.toString(o[rnd.nextInt(o.length)])
+                + Character.toString(f[rnd.nextInt(f.length)])
+                +" "+Character.toString(f[rnd.nextInt(f.length)])
                 + Character.toString(o[rnd.nextInt(o.length)])
                 + Character.toString(f[rnd.nextInt(f.length)]);
-        mySymbol = Character.toString(s[rnd.nextInt(s.length)]);
-    }
-    public static String combineUs(String my,String his){
-        return my+DIVIDE_SESSIONS+his;
-    }
-    public static String getHisFromHis(String hisSession){
-        String[] arr=hisSession.split(DIVIDE_SESSIONS);
-        return arr[0].replace(MY,HIS);
-    }
-    public static String toShow(String rawSession){
-        return rawSession.replace(DIVIDE_SESSIONS,"\n");
+        sign = Character.toString(s[rnd.nextInt(s.length)]);
     }
     @Override
     public String toString() {
-        return "my session id: "
-                + mySession
-                + "   my secret sign: "
-                + mySymbol;
+        return "session words: "
+                + words
+                + "  secret sign: "
+                + sign;
     }
 
     public static String toHide() {
-        return "my session id: "
-                + "-xxx-"
-                + "   my secret sign: "
+        return "session words: "
+                + "-xxx xxx-"
+                + "  secret sign: "
                 + "-x-";
     }
 }
