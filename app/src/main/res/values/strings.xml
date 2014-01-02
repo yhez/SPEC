@@ -200,7 +200,7 @@
     <string name="light_msg_message_created_at">Message created: </string>
     <string name="tab_nfc_title">Tap NFC</string>
     <string name="reject_changes">You must have a private key in order to make changes.</string>
-    <string name="tab_nfc_move_to_nfc">Tab nfc tag to the phone to save your private key on him and delete it from your device</string>
+    <string name="tab_nfc_move_to_nfc">Tap NFC tag to save your private key and delete it from your device.</string>
     <string name="tab_nfc_get_from_nfc">Tab nfc tag to the device to get your private key from him and save it locally on your device</string>
     <string name="move_private_to_nfc">Move Private-Key to nfc</string>
     <string name="get_private_from_nfc">Get form nfc to device</string>
