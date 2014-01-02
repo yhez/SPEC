@@ -7,70 +7,47 @@ import java.util.Random;
 public class Session {
 
     public static final String FLAG_SESSION_VERIFIED = "!!";
-
-    //new guy sent me a message (we both have different sessions and there is no flag session verified)
+    public static final String FLAG_SESSION_MY_SECRET_SENT = "??";
+    public static final String FLAG_SESSION_JUST_ADDED = "--";
+    public static final String DIVIDER = "||";
+    //new guy sent me a message (we both have different sessions and there is no flag session just added)
     //I'll send him my + his.
     //for now he's a stranger
     public final static int UNKNOWN = 0;
-
     //known guy sent me a message (his session is the same that i have
     //no need to change session
     //session is trusted
     public final static int KNOWN = 1;
-
     //just verified that he owned the public key (the other guy sent double session with my in it)
     //from now on we'll use the other guy session
     //session is trusted and add flag session verified
     public final static int JUST_KNOWN = 2;
-
     //can't create session (the other guy sent double session with my not in it,
     //  or if we have different session and flag session verified is marked)
     //trying to send my session again
     //session suspicious
     public final static int DONT_TRUST = 3;
-
-    public static int checkAndUpdate(Activity a,Contact contact, String session) {
-        String[] sessions = contact.getSession().split(" ");
-        String[] words = new String[]{sessions[2],sessions[3],sessions[6]};
-        String his[] = session.split(DIVIDE_SESSIONS);
-        if (my.length == 1) {
-            if (his.length == 1) {
-                contact.update(a, null, null, null, contact.getSession() + DIVIDE_SESSIONS + session.replace(MY, HIS));
-                return UNKNOWN;
-            } else {
-                String mMy[] = my[0].split(" ");
-                //String hHis[]=his[0].split(" ");
-                String hMy[] = his[1].split(" ");
-                if (hMy[3].equals(mMy[3]) && hMy[7].equals(mMy[7])) {
-                    contact.update(a, null, null, null, contact.getSession() + DIVIDE_SESSIONS + his[0].replace(MY, HIS));
-                    return STARTING;
-                } else {
-                    return DONT_TRUST;
-                }
-            }
-        } else {
-            String mHis[] = my[1].split(" ");
-            String hHis[] = his[0].split(" ");
-            if (!mHis[3].equals(hHis[3]) || !mHis[7].equals(hHis[7])) {
-                return DONT_TRUST;
-            } else {
-                if (his.length == 2) {
-                    String mMy[] = my[0].split(" ");
-                    String hMy[] = his[1].split(" ");
-                    if (!mMy[3].equals(hMy[3]) || !mMy[7].equals(hMy[7])) {
-                        return DONT_TRUST;
-                    } else {
-                        return TRUSTED;
-                    }
-                } else {
-                    return NEW_TRUSTED;
-                }
-            }
-        }
-    }
-
-    private String words = "";
+    //session has just updated
+    public final static int UPDATED = 4;
+    //trying again send my session
+    //still not verified your session
+    // not trusted
+    // try sending him another message
+    public final static int AGAIN = 5;
+    //something strange going an
+    // it's possible that some one trying to fake his identity
+    public final static int RESET_SESSION = 6;
+    private String word1 = "";
+    private String word2 = "";
     private String sign = "";
+    private String flagSession = "";
+
+    private Session(String word1, String word2, String sign) {
+        this.word1 = word1;
+        this.word2 = word2;
+        this.sign = sign;
+        this.flagSession = FLAG_SESSION_JUST_ADDED;
+    }
 
     //creates new session from nothing
     public Session() {
@@ -78,20 +55,103 @@ public class Session {
         char f[] = "bcdfghjklmnpqrstwvxz".toCharArray();
         char o[] = "aeiouy".toCharArray();
         char s[] = "~`!12@3#4$5%6^7&8*9(0){[}]|\'.?/,".toCharArray();
-        words = Character.toString(f[rnd.nextInt(f.length)]).toUpperCase()
+        word1 = Character.toString(f[rnd.nextInt(f.length)]).toUpperCase()
                 + Character.toString(o[rnd.nextInt(o.length)])
-                + Character.toString(f[rnd.nextInt(f.length)])
-                +" "+Character.toString(f[rnd.nextInt(f.length)])
+                + Character.toString(f[rnd.nextInt(f.length)]);
+        word2 = Character.toString(f[rnd.nextInt(f.length)])
                 + Character.toString(o[rnd.nextInt(o.length)])
                 + Character.toString(f[rnd.nextInt(f.length)]);
         sign = Character.toString(s[rnd.nextInt(s.length)]);
     }
-    @Override
-    public String toString() {
-        return "session words: "
-                + words
-                + "  secret sign: "
-                + sign;
+
+    public Session(String session) {
+        String s = new Session().toString();
+        String r[] = parseSession(s);
+        String t[] = parseSession(session);
+        Session ss = attachBoth(r, t);
+        word1 = ss.word1;
+        word2 = ss.word2;
+        sign = ss.sign;
+        flagSession = FLAG_SESSION_JUST_ADDED;
+    }
+
+    public static int checkAndUpdate(Activity a, Contact contact, String session) {
+        //todo checking for not well formatted sessions
+        String[] mySavedSession = parseSession(contact.getSession());
+        String[] receivedSession = parseSession(session);
+        if (mySavedSession[3].equals(FLAG_SESSION_VERIFIED)) {
+            if (equals(mySavedSession, receivedSession)) {
+                return KNOWN;
+            }
+            //he lost my session and i sent him a message
+            //so he's verified to me, but he needs to verify me
+            if (contains(receivedSession, mySavedSession)) {
+                contact.update(a, null, null, null, getHisSession(mySavedSession, receivedSession).toString());
+                return UPDATED;
+            }
+
+            //prevent an attack by some one who send many sessions (brute force)
+            if (isItOne(receivedSession)) {
+                //he may have lost my session may not
+                //let's try create session again
+                String newSession = attachBoth(mySavedSession, receivedSession).toString();
+                contact.update(a, null, null, null, newSession);
+            }
+            return DONT_TRUST;
+        }
+        if (mySavedSession[3].equals(FLAG_SESSION_MY_SECRET_SENT)) {
+            if (equals(mySavedSession, receivedSession)) {
+                contact.update(a, null, null, null, contact.getSession().replace(FLAG_SESSION_MY_SECRET_SENT, FLAG_SESSION_VERIFIED));
+                return JUST_KNOWN;
+            }
+            if (contains(receivedSession, mySavedSession)) {
+                contact.update(a, null, null, null, getHisSession(mySavedSession, receivedSession).toString());
+                return JUST_KNOWN;
+            }
+            //may be he doesn't got my message
+            if (isItOne(receivedSession)) {
+                return AGAIN;
+            }
+            return AGAIN;
+        }
+        if (mySavedSession[3].equals(FLAG_SESSION_JUST_ADDED)) {
+            if (isItOne(receivedSession) && isItOne(mySavedSession)) {
+                contact.update(a, null, null, null, attachBoth(mySavedSession, receivedSession).toString());
+                return UNKNOWN;
+            }
+            contact.update(a, null, null, null, new Session().toString());
+            return RESET_SESSION;
+        }
+        return -1;
+    }
+
+    private static Session getHisSession(String[] my, String[] his) {
+        return new Session(
+                his[0].replace(my[0], "")
+                , his[1].replace(my[1], "")
+                , his[2].replace(my[2], "")
+                + " " + FLAG_SESSION_VERIFIED);
+    }
+
+    private static String[] parseSession(String session) {
+        String[] sessions = session.split(" ");
+        return new String[]{sessions[2], sessions[3], sessions[6], sessions.length > 3 ? sessions[3] : null};
+    }
+
+    private static boolean contains(String[] a, String[] b) {
+        return a[0].contains(b[0]) && a[1].contains(b[1]) && a[2].contains(b[2]);
+    }
+
+    private static boolean equals(String[] a, String[] b) {
+        return a[0].equals(b[0]) && a[1].equals(b[1]) && a[2].equals(b[2]);
+    }
+
+    private static boolean isItOne(String[] session) {
+        return session[0].length() == 3 && session[1].length() == 3 && session[2].length() == 1;
+    }
+
+    private static Session attachBoth(String[] a, String[] b) {
+        return new Session(a[0] + DIVIDER + b[0], a[1] + DIVIDER + b[1], a[2] + DIVIDER + b[2]);
     }
 
     public static String toHide() {
@@ -99,5 +159,15 @@ public class Session {
                 + "-xxx xxx-"
                 + "  secret sign: "
                 + "-x-";
+    }
+
+    public static String toShow(String session) {
+        String[] ses = session.split(" ");
+        return "session words: " + ses[0] + " " + ses[1] + "  secret sign: " + ses[2];
+    }
+
+    @Override
+    public String toString() {
+        return word1 + " " + word2 + " " + sign + " " + flagSession;
     }
 }

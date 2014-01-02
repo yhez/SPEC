@@ -312,7 +312,7 @@ public class Main extends Activity {
             case R.id.session:
                 String msg;
                 switch (StaticVariables.flag_session) {
-                    case Session.TRUSTED:
+                    case Session.KNOWN:
                         msg = getString(R.string.session_ok_explain)
                                 + "\n" + Session.toShow(StaticVariables.session);
                         break;
@@ -323,16 +323,25 @@ public class Main extends Activity {
                                 + "other's session is:\n"
                                 + Session.toShow(StaticVariables.session);
                         break;
-                    case Session.NEW_TRUSTED:
+                    case Session.JUST_KNOWN:
                         msg = getString(R.string.new_session_trust_created)
                                 + Session.toShow(StaticVariables.session);
                         break;
-                    case Session.STARTING:
-                        msg = getString(R.string.starting_session_explain)
+                    case Session.AGAIN:
+                        msg = getString(R.string.session_try_again)
+                                + Session.toShow(StaticVariables.session);
+                        break;
+                    case Session.RESET_SESSION:
+                        msg = getString(R.string.session_reset)
                                 + Session.toShow(StaticVariables.session);
                         break;
                     case Session.UNKNOWN:
                         msg = getString(R.string.unknown_session_explain)
+                                + Session.toShow(StaticVariables.session);
+                        break;
+
+                    case Session.UPDATED:
+                        msg = getString(R.string.session_updated)
                                 + Session.toShow(StaticVariables.session);
                         break;
                     default:
@@ -1256,8 +1265,13 @@ public class Main extends Activity {
     public void onClickEditContact(View v) {
         switch (v.getId()) {
             case R.id.delete:
-                DeleteContactDialog dlg = new DeleteContactDialog();
-                dlg.show(getFragmentManager(), "delete");
+                if(CryptMethods.privateExist()){
+                    DeleteContactDialog dlg = new DeleteContactDialog();
+                    dlg.show(getFragmentManager(), "delete");
+                }else{
+                    t.setText(R.string.reject_changes);
+                    t.show();
+                }
                 break;
             case R.id.answer:
                 Response r = new Response();

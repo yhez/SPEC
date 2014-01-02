@@ -190,9 +190,17 @@ public class FragmentManagement extends Fragment {
             imageButtonh.setClickable(false);
         } else
             hs.setImageResource(StaticVariables.flag_hash ? ok : notOk);
-        ss.setImageResource(StaticVariables.flag_session == Session.DONT_TRUST ? notOk :
-                (StaticVariables.flag_session == Session.TRUSTED ? ok :
-                        (StaticVariables.flag_session == Session.UNKNOWN ? unknown : starting)));
+        int status;
+        if(StaticVariables.flag_session==Session.KNOWN
+                ||StaticVariables.flag_session==Session.JUST_KNOWN)
+        ss.setImageResource(ok);
+        else if(StaticVariables.flag_session==Session.DONT_TRUST)
+            ss.setImageResource(notOk);
+        else if(StaticVariables.flag_session==Session.UNKNOWN)
+            ss.setVisibility(View.GONE);
+        else if(StaticVariables.flag_session==Session.RESET_SESSION
+                ||StaticVariables.flag_session==Session.AGAIN)
+            ss.setImageResource(starting);
         if (StaticVariables.flag_replay == MessageFormat.NOT_RELEVANT)
             rp.setVisibility(View.GONE);
         else if (StaticVariables.flag_replay == MessageFormat.OK)

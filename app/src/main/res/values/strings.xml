@@ -207,6 +207,9 @@
     <string name="get_private_from_qr">Get from QR to device</string>
     <string name="print_private_to_qr">Print QR backup</string>
     <string name="erase_nfc_tag">Erase NFC tag</string>
+    <string name="session_try_again">try sending a message again, the other guy has not sent you your secret session</string>
+    <string name="session_reset">session has reset because of a possible attack on you</string>
+    <string name="session_updated">session has updated but everything is ok</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
