@@ -21,7 +21,7 @@ public class Contact {
     private ComponentName cn;
 
     // new contact from scratch
-    public Contact(Activity a,String contactName, String email,
+    public Contact(Activity a, String contactName, String email,
                    String publicKey, String session) {
         if (publicKey != null) {
             this.contactName = contactName;
@@ -32,13 +32,13 @@ public class Contact {
             this.received = session != null ? 1 : 0;
             this.sent = 0;
             this.last = session != null ? System.currentTimeMillis() : 0;
-            this.id = StaticVariables.contactsDataSource.createContact(a,this);
+            this.id = StaticVariables.contactsDataSource.createContact(a, this);
         }
     }
 
     //create contact after pulling out from db
     public Contact(long id, String contactName, String email, int added, long last, int sent, int received, String publicKey,
-                   String session,String app) {
+                   String session, String app) {
         this.id = id;
         this.contactName = contactName;
         this.publicKey = publicKey;
@@ -48,8 +48,8 @@ public class Contact {
         this.last = last;
         this.received = received;
         this.sent = sent;
-        if(app!=null&&app.length()>0)
-            cn=new ComponentName(app.split("\n")[0],app.split("\n")[1]);
+        if (app != null && app.length() > 0)
+            cn = new ComponentName(app.split("\n")[0], app.split("\n")[1]);
     }
 
     public Bitmap getPhoto() {
@@ -118,7 +118,7 @@ public class Contact {
         return received;
     }
 
-    public ComponentName getDefaultApp(){
+    public ComponentName getDefaultApp() {
         return cn;
     }
 
@@ -142,31 +142,31 @@ public class Contact {
             this.session = session;
         StaticVariables.contactsDataSource.updateDB(id,
                 contactName, email, publicKey, session);
-        StaticVariables.adapter.updateCont(a,this);
+        StaticVariables.adapter.updateCont(a, this);
+    }
+    //message sent
+    public void update(Activity a) {
+        sent++;
+        Session.updateFlag(a, this);
+        StaticVariables.contactsDataSource.updateDB(id,sent);
+        StaticVariables.adapter.updateCont(a, this);
+    }
+    //message received
+    public void update(long time) {
+        received++;
+        this.last = time;
+        StaticVariables.contactsDataSource.updateDB(id, last, received);
     }
 
-    public static final int SENT = 0, RECEIVED = 1;
-
-    public void update(int what,long time) {
-        if (what == SENT)
-            sent++;
-        else if (what == RECEIVED){
-            received++;
-            this.last = time;
-        }
-        //todo the contact doesn't get updated in the list may cause small sync issue
-        StaticVariables.contactsDataSource.updateDB(id, last, received, sent);
-    }
-
-    public void update(String defaultApp,Activity a) {
-        if(defaultApp!=null){
-            cn=new ComponentName(defaultApp.split("\n")[0],defaultApp.split("\n")[1]);
-            StaticVariables.contactsDataSource.updateDB(id,defaultApp);
-            StaticVariables.adapter.updateCont(a,this);
-        }else{
-            cn=null;
-            StaticVariables.contactsDataSource.updateDB(id,"");
-            StaticVariables.adapter.updateCont(a,this);
+    public void update(String defaultApp, Activity a) {
+        if (defaultApp != null) {
+            cn = new ComponentName(defaultApp.split("\n")[0], defaultApp.split("\n")[1]);
+            StaticVariables.contactsDataSource.updateDB(id, defaultApp);
+            StaticVariables.adapter.updateCont(a, this);
+        } else {
+            cn = null;
+            StaticVariables.contactsDataSource.updateDB(id, "");
+            StaticVariables.adapter.updateCont(a, this);
         }
     }
 }

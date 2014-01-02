@@ -80,14 +80,19 @@ public class ContactsDataSource {
         database.close();
     }
 
-    public void updateDB(long id, long last, int received, int sent) {
+    public void updateDB(long id, long last, int received) {
         ContentValues cv = new ContentValues();
         if (last > 0)
             cv.put(MySQLiteHelper.COLUMN_LAST_MSG, last);
         if (received > 0)
             cv.put(MySQLiteHelper.MSG_RECEIVED, received);
-        if (sent > 0)
-            cv.put(MySQLiteHelper.MSG_I_SEND, sent);
+        database = dbHelper.getWritableDatabase();
+        database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
+        database.close();
+    }
+    public void updateDB(long id,int sent) {
+        ContentValues cv = new ContentValues();
+        cv.put(MySQLiteHelper.MSG_I_SEND, sent);
         database = dbHelper.getWritableDatabase();
         database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
         database.close();

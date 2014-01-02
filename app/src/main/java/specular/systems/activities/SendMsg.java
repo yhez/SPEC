@@ -89,6 +89,7 @@ public class SendMsg extends Activity {
             try {
                 done = true;
                 startActivity(i);
+                contact.update(this);
             } catch (Exception e) {
                 show();
             }
@@ -265,6 +266,7 @@ public class SendMsg extends Activity {
         try {
             done = true;
             startActivity(i);
+            contact.update(this);
         } catch (Exception e) {
             //todo
         }

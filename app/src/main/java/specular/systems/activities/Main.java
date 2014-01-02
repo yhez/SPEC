@@ -231,7 +231,6 @@ public class Main extends Activity {
                         contact.getSession());
                 CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
                         contact.getPublicKey());
-                contact.update(Contact.SENT, 0);
                 sendMessage();
                 prgd.cancel();
                 msgSended = true;

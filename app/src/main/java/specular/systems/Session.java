@@ -170,4 +170,10 @@ public class Session {
     public String toString() {
         return word1 + " " + word2 + " " + sign + " " + flagSession;
     }
+
+    public static void updateFlag(Activity a,Contact contact) {
+        if(contact.getSession().endsWith(FLAG_SESSION_JUST_ADDED)){
+            contact.update(a,null,null,null,contact.getSession().replace(FLAG_SESSION_JUST_ADDED,FLAG_SESSION_MY_SECRET_SENT));
+        }
+    }
 }
