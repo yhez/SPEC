@@ -135,7 +135,7 @@ public class Session {
 
     private static String[] parseSession(String session) {
         String[] sessions = session.split(" ");
-        return new String[]{sessions[2], sessions[3], sessions[6], sessions.length > 3 ? sessions[3] : null};
+        return new String[]{sessions[0], sessions[1], sessions[2], sessions.length > 3 ? sessions[3] : null};
     }
 
     private static boolean contains(String[] a, String[] b) {
