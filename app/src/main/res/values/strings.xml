@@ -18,14 +18,14 @@
     <string name="cant_find_private_key">Can\'t find a valid private key on the NFC tag.\nTry another one.</string>
     <string name="cant_find_data">The tag is empty.\nTry another one.</string>
     <string name="wait_for_nfc_to_read">Waiting for NFC&#8230;</string>
-    <string name="title_turn_nfc_on">Activate NFC? If not, keys will be saved on device (LESS SECURE).</string>
+    <string name="title_turn_nfc_on">Activate NFC? If not, keys will be saved on device.</string>
     <string name="failed_to_write">Failed to write NFC tag.</string>
     <string name="tab_nfc_move_to_nfc">Tap NFC tag to save your Private Key and delete it from your device.</string>
     <string name="tab_nfc_get_from_nfc">Tap NFC tag to save your Private Key on your device.</string>
-    <string name="move_private_to_nfc">Move Private Key to NFC</string>
-    <string name="get_private_from_nfc">Move Private Key to device</string>
-    <string name="erase_nfc_tag">Erase NFC tag</string>
-    <string name="keys_moved_to_nfc">Keys has been successfully saved on your device</string>
+    <string name="move_private_to_nfc">Move Private Key to NFC.</string>
+    <string name="get_private_from_nfc">Move Private Key to device.</string>
+    <string name="erase_nfc_tag">Erase NFC tag.</string>
+    <string name="keys_moved_to_nfc">Keys have been successfully saved on your device.</string>
 
     <!--strings related qr code scanner-->
     <string name="bad_data">Please scan again.</string>
