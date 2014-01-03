@@ -73,7 +73,7 @@
     <string name="light_msg_week">Message created within the last week.</string>
     <string name="light_msg_two_weeks">Message created within the last two weeks.</string>
     <string name="light_msg_old">Message is over due and may not be relevant.</string>
-    <string name="light_msg_message_created_at">Message created: </string>
+    <string name="light_msg_message_created_at">Message created:&nbsp;</string>
     <!--hash check-->
     <string name="hash_title">Crypto Hash Info:</string>
     <string name="hash_explain">The main application of secure cryptographic hashes is verification of message integrity - determining whether any changes have been made to a message or a file. SPEC verifies that your messages are secure and complete. WE FIGHT DATA TAMPERING 24/7.</string>
