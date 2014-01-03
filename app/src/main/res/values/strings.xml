@@ -22,15 +22,15 @@
     <string name="failed_to_write">Failed to write NFC tag.</string>
     <string name="tab_nfc_move_to_nfc">Tap NFC tag to save your Private Key and delete it from your device.</string>
     <string name="tab_nfc_get_from_nfc">Tap NFC tag to save your Private Key on your device.</string>
-    <string name="move_private_to_nfc">Move Private Key to NFC.</string>
-    <string name="get_private_from_nfc">Move Private Key to device.</string>
-    <string name="erase_nfc_tag">Erase NFC tag.</string>
+    <string name="move_private_to_nfc">Private Key -> NFC</string>
+    <string name="get_private_from_nfc">Private Key -> Device</string>
+    <string name="erase_nfc_tag">Erase NFC Tag</string>
     <string name="keys_moved_to_nfc">Keys have been successfully saved on your device.</string>
 
     <!--strings related qr code scanner-->
     <string name="bad_data">Please scan again.</string>
-    <string name="get_private_from_qr">Get from QR to device</string>
-    <string name="print_private_to_qr">Print QR backup</string>
+    <string name="get_private_from_qr">QR -> Device</string>
+    <string name="print_private_to_qr">Print QR Backup</string>
     <string name="scan_any_qr_widget">Place QR code within box to scan (message or contact).</string>
     <string name="qr_scan_explain">Place QR code within box to activate magic.</string>
     <string name="title_scan_error_msg">Please scan again.</string>
