@@ -99,6 +99,11 @@ public class ContactsDataSource {
     }
 
     public Contact findContact(long id) {
+        //trying find on lost before going to db
+        if(StaticVariables.fullList!=null)
+            for(Contact c:StaticVariables.fullList)
+                if(c.getId()==id)
+                    return c;
         database = dbHelper.getReadableDatabase();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
                 allColumns, MySQLiteHelper.COLUMN_ID + " = " + id, null, null,

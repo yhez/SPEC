@@ -13,6 +13,7 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 import specular.systems.CustomExceptionHandler;
+import specular.systems.KeysDeleter;
 import specular.systems.R;
 import specular.systems.Visual;
 
@@ -68,5 +69,15 @@ public class SendReport extends Activity {
 
     public void finish(View v) {
         finish();
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        new KeysDeleter();
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        KeysDeleter.stop();
     }
 }

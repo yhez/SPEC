@@ -21,6 +21,7 @@ import com.google.zxing.WriterException;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -43,7 +44,6 @@ public final class FilesManagement {
     private static final String FILE = "file://";
     private static Bitmap myQRPublicKey;
     private static Typeface tfos = null;
-    private static Typeface tfold = null;
 
     public static Bitmap getMyQRPublicKey(Activity a) {
         if (myQRPublicKey == null)
@@ -55,18 +55,6 @@ public final class FilesManagement {
         if (tfos == null)
             tfos = createFromAsset(a.getAssets(), "OpenSans-Light.ttf");
         return tfos;
-    }
-    public static void savePrivate(Activity a){
-        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
-        SharedPreferences.Editor edt = srp.edit();
-        edt.putString(PRIVATE_KEY,CryptMethods.getPrivateToSave());
-        edt.commit();
-    }
-    public static void removePrivate(Activity a){
-        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
-        SharedPreferences.Editor edt = srp.edit();
-        edt.remove(PRIVATE_KEY);
-        edt.commit();
     }
     public static boolean createFileToOpen(Activity a) {
         if (StaticVariables.decryptedMsg.getFileContent() == null)
@@ -287,11 +275,38 @@ public final class FilesManagement {
     public static void getKeysFromSDCard(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
-        CryptMethods.setPrivate(srp.getString(PRIVATE_KEY, null));
+        CryptMethods.setPrivate(getPrivate(a));
         CryptMethods.setPublic(srp.getString(PUBLIC_KEY, null));
         CryptMethods.setDetails(srp.getString(NAME, null), srp.getString(EMAIL, null));
     }
-
+    private static byte[] getPrivate(Activity a){
+        try {
+            FileInputStream is = a.openFileInput(PRIVATE_KEY);
+            byte[] b = new byte[(int)new File(a.getFilesDir(),PRIVATE_KEY).length()];
+            is.read(b);
+            return b;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static void savePrivate(Activity a){
+        try {
+            FileOutputStream fos = a.openFileOutput(PRIVATE_KEY,Context.MODE_PRIVATE);
+            fos.write(CryptMethods.getPrivateToSave());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void removePrivate(Activity a){
+        new File(a.getFilesDir(),PRIVATE_KEY).delete();
+    }
     public static void save(Activity a) {
         if (a != null) {
             myQRPublicKey = null;
@@ -354,9 +369,9 @@ public final class FilesManagement {
             edt.putString(EMAIL, qrpk.getEmail());
             edt.putString(NAME, qrpk.getName());
             if (!StaticVariables.NFCMode)
-                edt.putString(PRIVATE_KEY, CryptMethods.getPrivateToSave());
+                savePrivate(a);
             else
-                edt.remove(PRIVATE_KEY);
+                removePrivate(a);
             edt.commit();
         }
     }

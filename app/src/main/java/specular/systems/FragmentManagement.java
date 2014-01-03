@@ -4,7 +4,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,7 +26,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
@@ -57,7 +55,6 @@ public class FragmentManagement extends Fragment {
         @Override
         public void run() {
             StaticVariables.flag_hash = StaticVariables.decryptedMsg.checkHash();
-            //Message msg = hndl.obtainMessage(CHECK_HASH_ENDED);
             hndl.sendEmptyMessage(CHECK_HASH_ENDED);
         }
     });
@@ -437,29 +434,6 @@ public class FragmentManagement extends Fragment {
                 StaticVariables.adapter.showOriginal();
                 ListView lv = (ListView) rootView.findViewById(R.id.list);
                 lv.setAdapter(StaticVariables.adapter);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> p1, View p2, int p3,
-                                            long p4) {
-                        contactChosen(Long.parseLong(((TextView) p2
-                                .findViewById(R.id.id_contact)).getText()
-                                .toString()));
-                    }
-                });
-                lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Fragment fragment = new FragmentManagement();
-                        Bundle args = new Bundle();
-                        StaticVariables.currentLayout = edit_contact;
-                        args.putInt("index", i);
-                        fragment.setArguments(args);
-                        FragmentManager fragmentManager = getFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.content_frame, fragment).commit();
-                        return false;
-                    }
-                });
                 if (StaticVariables.fullList.size() > 0) {
                     rootView.findViewById(R.id.no_contacts).setVisibility(View.GONE);
                     lv.setVisibility(View.VISIBLE);

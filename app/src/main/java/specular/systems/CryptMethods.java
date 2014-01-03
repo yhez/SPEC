@@ -29,27 +29,23 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
 public class CryptMethods {
     public static boolean doneCreatingKeys = false;
     private static PrivateKey mPtK = null;
-    private static String myName = null, myEmail = null, myPublicKey = null,
-            myPrivateKey = null;
+    private static String myName = null, myEmail = null, myPublicKey = null;
     private static PrivateKey tmpPtK = null;
-    private static String tmpPublicKey = null,
-            tmpPrivateKey = null;
+    private static String tmpPublicKey = null;
     private static boolean notInit = true;
 
-    public static String getPrivateToSave() {
-        return myPrivateKey;
+    public static byte[] getPrivateToSave() {
+        return mPtK.getEncoded();
     }
 
-    public static void deleteKeys() {
-        myPrivateKey = null;
+    static void deleteKeys() {
         mPtK = null;
         StaticVariables.decryptedMsg = null;
         StaticVariables.decryptedLightMsg=null;
     }
 
-    public static boolean setPrivate(String p) {
+    public static boolean setPrivate(byte[] p) {
         if (p != null) {
-            myPrivateKey = p;
             mPtK = formatPrivate(p);
             return mPtK != null;
         }
@@ -68,8 +64,6 @@ public class CryptMethods {
         tmpPublicKey = null;
         mPtK = tmpPtK;
         tmpPtK = null;
-        myPrivateKey = tmpPrivateKey;
-        tmpPrivateKey = null;
     }
 
     public static String[] getMyDetails(Activity a) {
@@ -87,7 +81,7 @@ public class CryptMethods {
     }
 
     public static boolean privateExist() {
-        return myPrivateKey != null;
+        return mPtK != null;
     }
 
     public static boolean publicExist() {
@@ -118,8 +112,7 @@ public class CryptMethods {
             keypair = kpg.generateKeyPair();
             if (!doneCreatingKeys) {
                 tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
-                tmpPrivateKey = Visual.bin2hex(keypair.getPrivate().getEncoded());
-                tmpPtK = formatPrivate(tmpPrivateKey);
+                tmpPtK = formatPrivate(keypair.getPrivate().getEncoded());
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -183,15 +176,14 @@ public class CryptMethods {
         }
     }
 
-    private static PrivateKey formatPrivate(String p) {
+    private static PrivateKey formatPrivate(byte[] p) {
         if (notInit) {
             addProviders();
             notInit = false;
         }
         try {
             return KeyFactory.getInstance("ECIES", "FlexiEC").generatePrivate(
-                    new PKCS8EncodedKeySpec(Visual
-                            .hex2bin(p)));
+                    new PKCS8EncodedKeySpec(p));
 
         } catch (InvalidKeySpecException e) {
             e.printStackTrace();
@@ -207,6 +199,6 @@ public class CryptMethods {
         return tmpPublicKey;
     }
     public static String getPrivateTmp() {
-        return tmpPrivateKey;
+        return Visual.bin2hex(tmpPtK.getEncoded());
     }
 }

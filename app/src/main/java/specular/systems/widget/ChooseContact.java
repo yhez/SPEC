@@ -26,7 +26,6 @@ import java.io.FileOutputStream;
 import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
 import specular.systems.CustomExceptionHandler;
-import specular.systems.MySimpleArrayAdapter;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.StaticVariables;
@@ -52,21 +51,19 @@ public class ChooseContact extends Activity {
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
             ListView lv = new ListView(this);
+            SimpleList sl = new SimpleList(this);
             //todo add filter
-            //findViewById(R.id.filter_ll).setVisibility(View.VISIBLE);
-            if (StaticVariables.adapter == null|| StaticVariables.fullList==null) {
+            if (StaticVariables.fullList==null) {
                 StaticVariables.contactsDataSource = new ContactsDataSource(this);
                 StaticVariables.fullList = StaticVariables.contactsDataSource.getAllContacts();
-                MySimpleArrayAdapter.setList(StaticVariables.fullList);
-                StaticVariables.adapter = new MySimpleArrayAdapter(this);
             }
-            if (StaticVariables.adapter.isEmpty()) {
+            if (StaticVariables.fullList.isEmpty()) {
                 Toast t = Toast.makeText(this, R.string.widget_add_contact_list_empty, Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                 t.show();
                 finish();
             } else {
-                lv.setAdapter(StaticVariables.adapter);
+                lv.setAdapter(sl);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

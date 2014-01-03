@@ -14,7 +14,6 @@ import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -26,6 +25,7 @@ import java.nio.charset.Charset;
 import specular.systems.CryptMethods;
 import specular.systems.Dialogs.NotImplemented;
 import specular.systems.FilesManagement;
+import specular.systems.KeysDeleter;
 import specular.systems.R;
 import specular.systems.Visual;
 
@@ -55,9 +55,12 @@ public class PrivateKeyManager extends Activity {
                 if (raw != null) {
                     NdefMessage msg = (NdefMessage) raw[0];
                     NdefRecord pvk = msg.getRecords()[0];
-                    if (CryptMethods.setPrivate(Visual.bin2hex(pvk
-                            .getPayload()))) {
+                    if (CryptMethods.setPrivate(pvk
+                            .getPayload())) {
                         FilesManagement.savePrivate(this);
+                        t.setText(R.string.keys_moved_to_nfc);
+                        t.show();
+                        finish();
                     } else {
                         t.setText(R.string.cant_find_private_key);
                         t.show();
@@ -70,7 +73,7 @@ public class PrivateKeyManager extends Activity {
             case MOVE_TO_NFC:
                 Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
                 if (tag != null) {
-                    byte[] bin = Visual.hex2bin(CryptMethods.getPrivateToSave());
+                    byte[] bin = CryptMethods.getPrivateToSave();
                     // record to launch Play Store if app is not installed
                     NdefRecord appRecord = NdefRecord
                             .createApplicationRecord(this.getPackageName());
@@ -107,6 +110,7 @@ public class PrivateKeyManager extends Activity {
                                 ndef.writeNdefMessage(message);
                                 t.setText(R.string.tag_written);
                                 FilesManagement.removePrivate(this);
+                                finish();
                             }
                         }
                     } catch (Exception e) {
@@ -135,8 +139,8 @@ public class PrivateKeyManager extends Activity {
                 if (raw != null) {
                     NdefMessage msg = (NdefMessage) raw[0];
                     NdefRecord pvk = msg.getRecords()[0];
-                    if (CryptMethods.setPrivate(Visual.bin2hex(pvk
-                            .getPayload()))) {
+                    if (CryptMethods.setPrivate(pvk
+                            .getPayload())) {
                         //todo enable disabled menu options
                     } else {
                         t.setText(R.string.cant_find_private_key);
@@ -149,19 +153,16 @@ public class PrivateKeyManager extends Activity {
                 break;
         }
     }
-    private boolean deleteKeys = true;
     @Override
     public void onPause() {
         super.onPause();
-        if(deleteKeys)
-            CryptMethods.deleteKeys();
+        new KeysDeleter();
     }
 
     @Override
     public void onBackPressed(){
         if(status==NO_CHOICE){
             super.onBackPressed();
-            deleteKeys=false;
         }else{
             Visual.showAllChildes(this, (ViewGroup) findViewById(android.R.id.content));
             findViewById(R.id.text_view_divide).setVisibility(View.GONE);
@@ -171,14 +172,9 @@ public class PrivateKeyManager extends Activity {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent m){
-        deleteKeys=false;
-        return super.onTouchEvent(m);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
+        KeysDeleter.stop();
         PendingIntent pi = PendingIntent.getActivity(this, 0,
                 new Intent(this, getClass())
                         .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);

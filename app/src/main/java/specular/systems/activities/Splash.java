@@ -25,6 +25,7 @@ import specular.systems.ContactCard;
 import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.FilesManagement;
+import specular.systems.KeysDeleter;
 import specular.systems.R;
 import specular.systems.StaticVariables;
 import specular.systems.Visual;
@@ -68,8 +69,8 @@ public class Splash extends Activity {
                 if (raw != null) {
                     NdefMessage msg = (NdefMessage) raw[0];
                     NdefRecord pvk = msg.getRecords()[0];
-                    CryptMethods.setPrivate(Visual.bin2hex(pvk
-                            .getPayload()));
+                    CryptMethods.setPrivate(pvk
+                            .getPayload());
                 }
             }
 
@@ -172,5 +173,16 @@ public class Splash extends Activity {
             }
 
         }
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        new KeysDeleter();
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        KeysDeleter.stop();
     }
 }

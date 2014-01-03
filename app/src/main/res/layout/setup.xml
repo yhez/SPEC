@@ -69,7 +69,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/spec_blue" />
-<!--if they both has nfc by tabing them together otherwise by using the scanner-->
         <Button
             android:onClick="notImp"
             style="?android:attr/buttonBarButtonStyle"
@@ -78,35 +77,6 @@
             android:layout_gravity="center"
             android:text="@string/sync_keys_between_devices"
             android:textColor="@color/spec_gray" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/spec_blue" />
-
-        <Button
-            android:onClick="notImp"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="@dimen/default_gap"
-            android:text="@string/clean_private_data"
-            android:textColor="@color/spec_gray" />
-        <!--      <View
-                 android:layout_width="match_parent"
-                 android:layout_height="1dp"
-                 android:background="@color/spec_blue" />
-
-            <Button
-                 android:onClick="onClickManage"
-                 android:id="@+id/button4"
-                 style="?android:attr/buttonBarButtonStyle"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_gravity="center"
-                 android:padding="@dimen/default_gap"
-                 android:text="@string/clean"
-                 android:textColor="@color/spec_black" />-->
     </LinearLayout>
 
 </LinearLayout>

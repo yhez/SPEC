@@ -25,6 +25,7 @@
     <string name="move_private_to_nfc">Move Private Key to NFC</string>
     <string name="get_private_from_nfc">Move Private Key to device</string>
     <string name="erase_nfc_tag">Erase NFC tag</string>
+    <string name="keys_moved_to_nfc">Keys has been successfully saved on your device</string>
 
     <!--strings related qr code scanner-->
     <string name="bad_data">Please scan again.</string>

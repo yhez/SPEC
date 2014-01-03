@@ -1,7 +1,10 @@
 package specular.systems;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +19,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import specular.systems.activities.Main;
+
+import static specular.systems.R.layout.edit_contact;
+
 public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filterable {
     private Activity a;
     private static List<Contact> list;
 
-    public static void setList(List<Contact> list) {
-        MySimpleArrayAdapter.list = list;
-    }
-
     public MySimpleArrayAdapter(Activity a) {
         super(a, R.layout.list_row, list);
+        list=StaticVariables.fullList;
         this.a = a;
     }
 
@@ -65,16 +69,36 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) a
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_row, parent, false);
-        Contact c = list.get(position);
+        final Contact c = list.get(position);
         TextView name = (TextView) rowView.findViewById(R.id.first_line);
         TextView email = (TextView) rowView.findViewById(R.id.sec_line);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         TextView id = (TextView) rowView.findViewById(R.id.id_contact);
         id.setText("" + c.getId());
+        rowView.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Main.exit=false;
+                Fragment fragment = new FragmentManagement();
+                Bundle args = new Bundle();
+                StaticVariables.currentLayout = edit_contact;
+                args.putInt("index", position);
+                fragment.setArguments(args);
+                FragmentManager fragmentManager = StaticVariables.main.getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, fragment).commit();
+            }
+        });
+        rowView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StaticVariables.fragmentManagement.contactChosen(c.getId());
+            }
+        });
         imageView.setImageBitmap(c.getPhoto());
         email.setText(c.getEmail());
         email.setTypeface(FilesManagement.getOs(a));

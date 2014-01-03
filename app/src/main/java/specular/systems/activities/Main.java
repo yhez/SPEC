@@ -71,6 +71,7 @@ import specular.systems.Dialogs.ShareCustomDialog;
 import specular.systems.Dialogs.TurnNFCOn;
 import specular.systems.FilesManagement;
 import specular.systems.FragmentManagement;
+import specular.systems.KeysDeleter;
 import specular.systems.LeftMenu;
 import specular.systems.LightMessage;
 import specular.systems.MessageFormat;
@@ -167,7 +168,7 @@ public class Main extends Activity {
     };
     private final int ATTACH_FILE = 0, SCAN_QR = 1;
     public Handler handler;
-    boolean exit = false;
+    public static boolean exit = false;
     boolean msgSended = false;
     Thread addFile;
     private Toast t = null;
@@ -484,7 +485,6 @@ public class Main extends Activity {
                 break;
         }
     }
-
     public void onClick(final View v) {
         switch (StaticVariables.currentLayout) {
             case R.layout.wait_nfc_decrypt:
@@ -492,7 +492,6 @@ public class Main extends Activity {
                 startActivity(i);
                 break;
             case R.layout.decrypt:
-                StaticVariables.scanner = true;
                 Intent intent = new Intent(Main.this, StartScan.class);
                 intent.putExtra("decrypt", true);
                 startActivityForResult(intent, SCAN_QR);
@@ -501,7 +500,6 @@ public class Main extends Activity {
     }
 
     public void onClickFilter(View v) {
-        StaticVariables.scanner = true;
         Intent intt = new Intent(this, StartScan.class);
         startActivityForResult(intt, SCAN_QR);
     }
@@ -529,7 +527,6 @@ public class Main extends Activity {
             StaticVariables.fullList = StaticVariables.contactsDataSource.getAllContacts();
         }
         if (StaticVariables.adapter == null) {
-            MySimpleArrayAdapter.setList(StaticVariables.fullList);
             StaticVariables.adapter = new MySimpleArrayAdapter(this);
         }
         File folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports");
@@ -620,8 +617,8 @@ public class Main extends Activity {
             if (raw != null) {
                 NdefMessage msg = (NdefMessage) raw[0];
                 NdefRecord pvk = msg.getRecords()[0];
-                if (CryptMethods.setPrivate(Visual.bin2hex(pvk
-                        .getPayload())))
+                if (CryptMethods.setPrivate(pvk
+                        .getPayload()))
                     setUpViews();
                 else {
                     t.setText(R.string.cant_find_private_key);
@@ -645,7 +642,6 @@ public class Main extends Activity {
         // Handle action buttons
         if (StaticVariables.currentLayout == R.layout.encrypt) {
             if (item.getTitle().equals("Scan")) {
-                StaticVariables.scanner = true;
                 Intent i = new Intent(this, StartScan.class);
                 startActivityForResult(i, SCAN_QR);
             }
@@ -749,13 +745,9 @@ public class Main extends Activity {
 
     @Override
     public void onPause() {
-        StaticVariables.currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
+        new KeysDeleter();
         FilesManagement.saveTempDecryptedMSG(this);
         //todo delete view content
-        if (!StaticVariables.scanner)
-            CryptMethods.deleteKeys();
-        if (NfcAdapter.getDefaultAdapter(this) != null)
-            NfcAdapter.getDefaultAdapter(this).disableForegroundDispatch(this);
         super.onPause();
     }
 
@@ -832,6 +824,7 @@ public class Main extends Activity {
         } else
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame, fragment).commit();
+        exit=false;
     }
 
     @Override
@@ -845,7 +838,7 @@ public class Main extends Activity {
         final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, LEARN = 3, SETUP = 4;
         final String[] allMenus = getResources().getStringArray(R.array.menus);
         final int[] allDrb = {R.drawable.encrypt, R.drawable.decrypt, R.drawable.share
-                , R.drawable.learn, R.drawable.manage/*,R.drawable.local*/};
+                , R.drawable.learn, R.drawable.manage};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.privateExist() ? 1 : CryptMethods.publicExist() ? 2 : 3;
         mTitle = mDrawerTitle = getTitle();
@@ -1034,7 +1027,7 @@ public class Main extends Activity {
         }
         if (exit) {
             FilesManagement.deleteTempDecryptedMSG(this);
-            CryptMethods.deleteKeys();
+            KeysDeleter.delete();
             t.cancel();
             finish();
         } else {
@@ -1168,6 +1161,7 @@ public class Main extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        KeysDeleter.stop();
         if (handleByOnNewIntent) {
             handleByOnNewIntent = false;
             PendingIntent pi = PendingIntent.getActivity(this, 0,
@@ -1181,10 +1175,7 @@ public class Main extends Activity {
                     .enableForegroundDispatch(this, pi, filters, null);
             return;
         }
-        if (StaticVariables.scanner && CryptMethods.privateExist()) {
-            StaticVariables.scanner = false;
-            return;
-        }
+        //[]
         FilesManagement.getKeysFromSDCard(this);
         int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         if (newkeys != StaticVariables.currentKeys) {
@@ -1219,7 +1210,6 @@ public class Main extends Activity {
             StaticVariables.fullList = StaticVariables.contactsDataSource.getAllContacts();
         }
         if (StaticVariables.adapter == null) {
-            MySimpleArrayAdapter.setList(StaticVariables.fullList);
             StaticVariables.adapter = new MySimpleArrayAdapter(this);
         }
     }
@@ -1232,7 +1222,6 @@ public class Main extends Activity {
                 break;
             case R.id.button3:
                 Intent intent = new Intent(this, PrivateKeyManager.class);
-                StaticVariables.scanner = true;
                 startActivity(intent);
                 break;
         }

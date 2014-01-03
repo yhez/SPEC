@@ -32,6 +32,7 @@ import java.util.List;
 import specular.systems.Contact;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.FilesManagement;
+import specular.systems.KeysDeleter;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.StaticVariables;
@@ -271,7 +272,11 @@ public class SendMsg extends Activity {
             //todo
         }
     }
-
+    @Override
+    public void onPause(){
+        super.onPause();
+        new KeysDeleter();
+    }
     private void updateViews() {
         if (uris.get(0) == null || uris.get(1) == null) {
             findViewById(R.id.gl_both).setVisibility(View.GONE);
@@ -370,6 +375,7 @@ public class SendMsg extends Activity {
         if (done) {
             done = false;
             onBackPressed();
-        }
+        }else
+            KeysDeleter.stop();
     }
 }
