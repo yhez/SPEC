@@ -42,11 +42,11 @@ public class Session {
     private String sign = "";
     private String flagSession = "";
 
-    private Session(String word1, String word2, String sign) {
+    private Session(String word1, String word2, String sign, String flag) {
         this.word1 = word1;
         this.word2 = word2;
         this.sign = sign;
-        this.flagSession = FLAG_SESSION_JUST_ADDED;
+        this.flagSession = flag;
     }
 
     //creates new session from nothing
@@ -62,13 +62,14 @@ public class Session {
                 + Character.toString(o[rnd.nextInt(o.length)])
                 + Character.toString(f[rnd.nextInt(f.length)]);
         sign = Character.toString(s[rnd.nextInt(s.length)]);
+        flagSession = FLAG_SESSION_JUST_ADDED;
     }
 
     public Session(String session) {
         String s = new Session().toString();
         String r[] = parseSession(s);
         String t[] = parseSession(session);
-        Session ss = attachBoth(r, t);
+        Session ss = attachBoth(r, t, "");
         word1 = ss.word1;
         word2 = ss.word2;
         sign = ss.sign;
@@ -94,7 +95,7 @@ public class Session {
             if (isItOne(receivedSession)) {
                 //he may have lost my session may not
                 //let's try create session again
-                String newSession = attachBoth(mySavedSession, receivedSession).toString();
+                String newSession = attachBoth(mySavedSession, receivedSession, FLAG_SESSION_VERIFIED).toString();
                 contact.update(a, null, null, null, newSession);
             }
             return DONT_TRUST;
@@ -109,14 +110,14 @@ public class Session {
                 return JUST_KNOWN;
             }
             //may be he doesn't got my message
-            if (isItOne(receivedSession)) {
-                return AGAIN;
-            }
+            //if (isItOne(receivedSession)) {
+            //    return AGAIN;
+            //}
             return AGAIN;
         }
         if (mySavedSession[3].equals(FLAG_SESSION_JUST_ADDED)) {
             if (isItOne(receivedSession) && isItOne(mySavedSession)) {
-                contact.update(a, null, null, null, attachBoth(mySavedSession, receivedSession).toString());
+                contact.update(a, null, null, null, attachBoth(mySavedSession, receivedSession, FLAG_SESSION_JUST_ADDED).toString());
                 return UNKNOWN;
             }
             contact.update(a, null, null, null, new Session().toString());
@@ -126,16 +127,18 @@ public class Session {
     }
 
     private static Session getHisSession(String[] my, String[] his) {
-        return new Session(
-                his[0].replace(my[0], "")
-                , his[1].replace(my[1], "")
-                , his[2].replace(my[2], "")
-                + " " + FLAG_SESSION_VERIFIED);
+        String word1 = his[0].replace(my[0], "");
+        word1 = word1.replace(DIVIDER, "");
+        String word2 = his[1].replace(my[1], "");
+        word2 = word2.replace(DIVIDER, "");
+        String sign = his[2].replace(my[2], "");
+        sign = sign.replace(DIVIDER, "");
+        return new Session(word1, word2, sign, FLAG_SESSION_VERIFIED);
     }
 
     private static String[] parseSession(String session) {
         String[] sessions = session.split(" ");
-        return new String[]{sessions[0], sessions[1], sessions[2], sessions.length > 3 ? sessions[3] : null};
+        return new String[]{sessions[0], sessions[1], sessions[2], sessions.length > 3 ? sessions[3] : ""};
     }
 
     private static boolean contains(String[] a, String[] b) {
@@ -150,8 +153,8 @@ public class Session {
         return session[0].length() == 3 && session[1].length() == 3 && session[2].length() == 1;
     }
 
-    private static Session attachBoth(String[] a, String[] b) {
-        return new Session(a[0] + DIVIDER + b[0], a[1] + DIVIDER + b[1], a[2] + DIVIDER + b[2]);
+    private static Session attachBoth(String[] a, String[] b, String flag) {
+        return new Session(a[0] + DIVIDER + b[0], a[1] + DIVIDER + b[1], a[2] + DIVIDER + b[2], flag);
     }
 
     public static String toHide() {
@@ -163,17 +166,17 @@ public class Session {
 
     public static String toShow(String session) {
         String[] ses = session.split(" ");
-        return "session words: " + ses[0] + " " + ses[1] + "  secret sign: " + ses[2];
+        return "session words: " + ses[0].replace(DIVIDER, "-") + " " + ses[1].replace(DIVIDER, "-") + "  secret sign: " + ses[2].replace(DIVIDER, "-");
+    }
+
+    public static void updateFlag(Activity a, Contact contact) {
+        if (contact.getSession().endsWith(FLAG_SESSION_JUST_ADDED)) {
+            contact.update(a, null, null, null, contact.getSession().replace(FLAG_SESSION_JUST_ADDED, FLAG_SESSION_MY_SECRET_SENT));
+        }
     }
 
     @Override
     public String toString() {
         return word1 + " " + word2 + " " + sign + " " + flagSession;
-    }
-
-    public static void updateFlag(Activity a,Contact contact) {
-        if(contact.getSession().endsWith(FLAG_SESSION_JUST_ADDED)){
-            contact.update(a,null,null,null,contact.getSession().replace(FLAG_SESSION_JUST_ADDED,FLAG_SESSION_MY_SECRET_SENT));
-        }
     }
 }

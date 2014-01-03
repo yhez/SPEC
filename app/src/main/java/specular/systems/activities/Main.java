@@ -313,12 +313,12 @@ public class Main extends Activity {
                 switch (StaticVariables.flag_session) {
                     case Session.KNOWN:
                         msg = getString(R.string.session_ok_explain)
-                                + "\n" + Session.toShow(StaticVariables.session);
+                                + Session.toShow(StaticVariables.session);
                         break;
                     case Session.DONT_TRUST:
                         contact = StaticVariables.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
                         msg = getString(R.string.dont_trust_session_explain)
-                                + Session.toShow(contact.getSession()) + "\n"
+                                + "\n" + Session.toShow(contact.getSession()) + "\n"
                                 + "other's session is:\n"
                                 + Session.toShow(StaticVariables.session);
                         break;
@@ -587,7 +587,7 @@ public class Main extends Activity {
                             } else {
                                 t.setText(R.string.tag_not_supported);
                             }
-                        }else{
+                        } else {
                             ndef.writeNdefMessage(message);
                             t.setText(R.string.tag_written);
                             StaticVariables.NFCMode = true;
@@ -864,15 +864,15 @@ public class Main extends Activity {
                 break;
             case PB:
                 menuTitles = new String[]{allMenus[ENCRYPT], allMenus[SHARE],
-                         allMenus[LEARN], allMenus[SETUP]};
+                        allMenus[LEARN], allMenus[SETUP]};
                 menuDrawables = new int[]{allDrb[ENCRYPT], allDrb[SHARE],
-                         allDrb[LEARN], allDrb[SETUP]};
+                        allDrb[LEARN], allDrb[SETUP]};
                 break;
             case PV:
                 menuTitles = new String[]{allMenus[DECRYPT],
                         allMenus[LEARN], allMenus[SETUP]};
                 menuDrawables = new int[]{allDrb[DECRYPT],
-                         allDrb[LEARN], allDrb[SETUP]};
+                        allDrb[LEARN], allDrb[SETUP]};
                 break;
             case NONE:
                 menuTitles = new String[]{allMenus[LEARN], allMenus[SETUP]};
@@ -929,7 +929,7 @@ public class Main extends Activity {
                 break;
             case PB:
                 layouts = new int[]{allLayouts[ENCRYPT], allLayouts[SHARE],
-                         allLayouts[LEARN], allLayouts[SETUP]};
+                        allLayouts[LEARN], allLayouts[SETUP]};
                 final String msg = getIntent().getStringExtra("message");
                 if (StaticVariables.message != null || msg != null
                         || StaticVariables.fileContactCard != null) {
@@ -1181,7 +1181,7 @@ public class Main extends Activity {
                     .enableForegroundDispatch(this, pi, filters, null);
             return;
         }
-        if (StaticVariables.scanner&&CryptMethods.privateExist()) {
+        if (StaticVariables.scanner && CryptMethods.privateExist()) {
             StaticVariables.scanner = false;
             return;
         }
@@ -1193,7 +1193,7 @@ public class Main extends Activity {
             onBackPressed();
             msgSended = false;
         }
-        if(newkeys==1){
+        if (newkeys == 1) {
             PendingIntent pi = PendingIntent.getActivity(this, 0,
                     new Intent(this, getClass())
                             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -1231,8 +1231,8 @@ public class Main extends Activity {
                 gk.show(getFragmentManager(), "gk");
                 break;
             case R.id.button3:
-                Intent intent = new Intent(this,PrivateKeyManager.class);
-                StaticVariables.scanner=true;
+                Intent intent = new Intent(this, PrivateKeyManager.class);
+                StaticVariables.scanner = true;
                 startActivity(intent);
                 break;
         }
@@ -1264,10 +1264,10 @@ public class Main extends Activity {
     public void onClickEditContact(View v) {
         switch (v.getId()) {
             case R.id.delete:
-                if(CryptMethods.privateExist()){
+                if (CryptMethods.privateExist()) {
                     DeleteContactDialog dlg = new DeleteContactDialog();
                     dlg.show(getFragmentManager(), "delete");
-                }else{
+                } else {
                     t.setText(R.string.reject_changes);
                     t.show();
                 }
