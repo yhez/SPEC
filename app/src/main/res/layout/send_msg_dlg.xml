@@ -51,10 +51,10 @@
 
                 <EditText
                     android:id="@+id/name_file"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
+                    android:minWidth="100dp"
                     android:background="@drawable/edit_text"
                     android:inputType="textNoSuggestions"
                     android:textColor="@color/spec_gray"
@@ -84,10 +84,10 @@
 
                 <EditText
                     android:id="@+id/qr_name_file"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minWidth="100dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
                     android:background="@drawable/edit_text"
                     android:inputType="textNoSuggestions"
                     android:textColor="@color/spec_gray"
@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/check_box"
-            android:text="make it default?"
+            android:text="@string/make_it_default"
             android:textColor="@color/spec_black" />
 
         <TextView
@@ -123,7 +123,7 @@
             android:id="@+id/gl_both"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="4"></GridLayout>
+            android:columnCount="4"/>
 
         <TextView
             android:id="@+id/title_file"
@@ -143,7 +143,7 @@
             android:id="@+id/gl_app_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="4"></GridLayout>
+            android:columnCount="4"/>
 
         <TextView
             android:id="@+id/title_image"
@@ -163,7 +163,7 @@
             android:id="@+id/gl_app_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="4"></GridLayout>
+            android:columnCount="4"/>
 
     </LinearLayout>
 </ScrollView>
