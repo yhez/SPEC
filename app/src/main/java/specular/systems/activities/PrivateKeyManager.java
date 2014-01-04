@@ -38,6 +38,8 @@ public class PrivateKeyManager extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.private_key_manager);
+        if(!CryptMethods.privateExist())
+            findViewById(R.id.p_button1).setEnabled(false);
         Visual.setAllFonts(this, (ViewGroup) findViewById(android.R.id.content));
     }
 

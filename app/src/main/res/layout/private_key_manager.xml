@@ -67,23 +67,6 @@
         android:textColor="@color/spec_gray" />
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/spec_blue" />
-
-    <Button
-        android:onClick="onClick"
-        android:textSize="22sp"
-        android:id="@+id/p_button5"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="@dimen/default_gap"
-        android:text="@string/erase_nfc_tag"
-        android:textColor="@color/spec_gray" />
-
-    <View
         android:id="@+id/text_view_divide"
         android:layout_width="match_parent"
         android:layout_height="1dp"
