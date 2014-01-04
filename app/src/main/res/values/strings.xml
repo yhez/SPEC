@@ -22,9 +22,8 @@
     <string name="failed_to_write">Failed to write NFC tag.</string>
     <string name="tab_nfc_move_to_nfc">Tap NFC tag to save your Private Key and delete it from your device.</string>
     <string name="tab_nfc_get_from_nfc">Tap NFC tag to save your Private Key on your device.</string>
-    <string name="move_private_to_nfc">Private Key -> NFC</string>
-    <string name="get_private_from_nfc">Private Key -> Device</string>
-    <string name="erase_nfc_tag">Erase NFC Tag</string>
+    <string name="move_private_to_nfc">NFC &#8592; Device</string>
+    <string name="get_private_from_nfc">NFC &#8594; Device</string>
     <string name="keys_moved_to_nfc">Keys have been successfully saved on your device.</string>
 
     <!--strings related qr code scanner-->

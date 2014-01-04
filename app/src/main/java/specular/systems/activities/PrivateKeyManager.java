@@ -16,6 +16,7 @@ import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,13 +34,16 @@ import specular.systems.Visual;
 public class PrivateKeyManager extends Activity {
     final int NO_CHOICE = 0, ERASE = 1, MOVE_TO_NFC = 2, GET_FROM_NFC = 3;
     int status = 0;
-
+    Button bt;
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.private_key_manager);
-        if(!CryptMethods.privateExist())
-            findViewById(R.id.p_button1).setEnabled(false);
+        bt = (Button)findViewById(R.id.p_button1);
+        if(!CryptMethods.privateExist()){
+            bt.setEnabled(false);
+            bt.setTextColor(getResources().getColor(R.color.spec_gray));
+        }
         Visual.setAllFonts(this, (ViewGroup) findViewById(android.R.id.content));
     }
 
@@ -143,7 +147,8 @@ public class PrivateKeyManager extends Activity {
                     NdefRecord pvk = msg.getRecords()[0];
                     if (CryptMethods.setPrivate(pvk
                             .getPayload())) {
-                        findViewById(R.id.p_button1).setEnabled(true);
+                        bt.setEnabled(true);
+                        bt.setTextColor(getResources().getColor(R.color.spec_black));
                     } else {
                         t.setText(R.string.cant_find_private_key);
                         t.show();
