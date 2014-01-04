@@ -306,7 +306,7 @@ public class Main extends Activity {
                 if (lightMsg)
                     hash += index++ + ". " + parts[8] + "\n" + Session.toShow(StaticVariables.session) + "\n";
                 hash += index + ". " + parts[9] + "\n" + StaticVariables.hash;
-                ExplainDialog edlg = new ExplainDialog(lightMsg?ExplainDialog.HASH:ExplainDialog.HASH_QR, hash);
+                ExplainDialog edlg = new ExplainDialog(this,lightMsg?ExplainDialog.HASH:ExplainDialog.HASH_QR, hash);
                 edlg.show(getFragmentManager(), "hash");
                 break;
             case R.id.session:
@@ -347,7 +347,7 @@ public class Main extends Activity {
                     default:
                         msg = Session.toShow(StaticVariables.session);
                 }
-                ExplainDialog edl = new ExplainDialog(ExplainDialog.SESSION, msg);
+                ExplainDialog edl = new ExplainDialog(this,ExplainDialog.SESSION, msg);
                 edl.show(getFragmentManager(), "session");
                 break;
             case R.id.replay:
@@ -386,7 +386,7 @@ public class Main extends Activity {
                             replay += getString(R.string.light_msg_old);
                             break;
                     }
-                ExplainDialog ed = new ExplainDialog(lightMsg?ExplainDialog.REPLAY:ExplainDialog.REPLAY_QR, replay);
+                ExplainDialog ed = new ExplainDialog(this,lightMsg?ExplainDialog.REPLAY:ExplainDialog.REPLAY_QR, replay);
                 ed.show(getFragmentManager(), "replay");
                 break;
         }
@@ -882,6 +882,7 @@ public class Main extends Activity {
         if (ab != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
             getActionBar().setHomeButtonEnabled(true);
+            getActionBar().setBackgroundDrawable(getResources().getDrawable(android.R.color.black));
         }
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding main and the action bar app icon

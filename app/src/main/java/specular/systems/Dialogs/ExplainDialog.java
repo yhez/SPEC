@@ -1,5 +1,6 @@
 package specular.systems.Dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -19,32 +20,32 @@ public class ExplainDialog extends DialogFragment {
     final String details;
     public final static int HASH = 0, SESSION = 1, REPLAY = 2,HASH_QR=3,REPLAY_QR=4;
 
-    public ExplainDialog(int type, String details) {
+    public ExplainDialog(Activity aaa,int type, String details) {
         switch (type) {
             case HASH:
-                content = getString(R.string.hash_explain);
-                title = getString(R.string.what_is_hash)+getString(R.string.hash_what_we_did);
-                title2 = getString(R.string.hash_title);
+                content =  aaa.getString(R.string.hash_explain);
+                title =  aaa.getString(R.string.what_is_hash)+ aaa.getString(R.string.hash_what_we_did);
+                title2 = aaa.getString(R.string.hash_title);
                 break;
             case SESSION:
-                content = getString(R.string.session_explain);
-                title = getString(R.string.what_is_session)+getString(R.string.session_what_we_did);
-                title2 = getString(R.string.session_title);
+                content =  aaa.getString(R.string.session_explain);
+                title =  aaa.getString(R.string.what_is_session)+ aaa.getString(R.string.session_what_we_did);
+                title2 =  aaa.getString(R.string.session_title);
                 break;
             case REPLAY:
-                content = getString(R.string.replay_explain);
-                title = getString(R.string.what_is_replay)+getString(R.string.replay_what_we_did);
-                title2 = getString(R.string.replay_title);
+                content =  aaa.getString(R.string.replay_explain);
+                title =  aaa.getString(R.string.what_is_replay)+ aaa.getString(R.string.replay_what_we_did);
+                title2 =  aaa.getString(R.string.replay_title);
                 break;
             case HASH_QR:
-                content = getString(R.string.hash_explain);
-                title = getString(R.string.what_is_hash)+getString(R.string.hash_qr_what_we_did);
-                title2 = getString(R.string.hash_title);
+                content =  aaa.getString(R.string.hash_explain);
+                title =  aaa.getString(R.string.what_is_hash)+ aaa.getString(R.string.hash_qr_what_we_did);
+                title2 =  aaa.getString(R.string.hash_title);
                 break;
             case REPLAY_QR:
-                content = getString(R.string.replay_explain);
-                title = getString(R.string.what_is_replay)+getString(R.string.replay_qr_what_we_did);
-                title2 = getString(R.string.replay_title);
+                content =  aaa.getString(R.string.replay_explain);
+                title =  aaa.getString(R.string.what_is_replay)+ aaa.getString(R.string.replay_qr_what_we_did);
+                title2 =  aaa.getString(R.string.replay_title);
                 break;
         }
         this.details = details;
