@@ -3,7 +3,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:drawable/alert_light_frame"
+    android:padding="@dimen/default_gap"
     android:orientation="vertical">
 
     <LinearLayout
@@ -28,7 +28,7 @@
             android:id="@+id/gl_app_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="4"></GridLayout>
+            android:columnCount="4"/>
 
         <TextView
             android:textColor="@color/spec_black"
@@ -46,6 +46,6 @@
             android:id="@+id/gl_app_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="4"></GridLayout>
+            android:columnCount="4"/>
     </LinearLayout>
 </ScrollView>

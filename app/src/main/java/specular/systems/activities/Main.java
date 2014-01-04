@@ -306,7 +306,7 @@ public class Main extends Activity {
                 if (lightMsg)
                     hash += index++ + ". " + parts[8] + "\n" + Session.toShow(StaticVariables.session) + "\n";
                 hash += index + ". " + parts[9] + "\n" + StaticVariables.hash;
-                ExplainDialog edlg = new ExplainDialog(ExplainDialog.HASH, hash);
+                ExplainDialog edlg = new ExplainDialog(lightMsg?ExplainDialog.HASH:ExplainDialog.HASH_QR, hash);
                 edlg.show(getFragmentManager(), "hash");
                 break;
             case R.id.session:
@@ -386,7 +386,7 @@ public class Main extends Activity {
                             replay += getString(R.string.light_msg_old);
                             break;
                     }
-                ExplainDialog ed = new ExplainDialog(ExplainDialog.REPLAY, replay);
+                ExplainDialog ed = new ExplainDialog(lightMsg?ExplainDialog.REPLAY:ExplainDialog.REPLAY_QR, replay);
                 ed.show(getFragmentManager(), "replay");
                 break;
         }
@@ -1162,38 +1162,28 @@ public class Main extends Activity {
     protected void onResume() {
         super.onResume();
         KeysDeleter.stop();
+        handleByOnNewIntent = false;
+        PendingIntent pi = PendingIntent.getActivity(this, 0,
+                new Intent(this, getClass())
+                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        IntentFilter tagDetected = new IntentFilter(
+                NfcAdapter.ACTION_TAG_DISCOVERED);
+        IntentFilter[] filters = new IntentFilter[]{tagDetected};
+        NfcAdapter
+                .getDefaultAdapter(this)
+                .enableForegroundDispatch(this, pi, filters, null);
         if (handleByOnNewIntent) {
-            handleByOnNewIntent = false;
-            PendingIntent pi = PendingIntent.getActivity(this, 0,
-                    new Intent(this, getClass())
-                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-            IntentFilter tagDetected = new IntentFilter(
-                    NfcAdapter.ACTION_TAG_DISCOVERED);
-            IntentFilter[] filters = new IntentFilter[]{tagDetected};
-            NfcAdapter
-                    .getDefaultAdapter(this)
-                    .enableForegroundDispatch(this, pi, filters, null);
             return;
         }
-        //[]
-        FilesManagement.getKeysFromSDCard(this);
         int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
+        if(StaticVariables.currentKeys==-1||StaticVariables.currentKeys!=newkeys)
+            FilesManagement.getKeysFromSDCard(this);
+        newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         if (newkeys != StaticVariables.currentKeys) {
             setUpViews();
         } else if (msgSended) {
             onBackPressed();
             msgSended = false;
-        }
-        if (newkeys == 1) {
-            PendingIntent pi = PendingIntent.getActivity(this, 0,
-                    new Intent(this, getClass())
-                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-            IntentFilter tagDetected = new IntentFilter(
-                    NfcAdapter.ACTION_TAG_DISCOVERED);
-            IntentFilter[] filters = new IntentFilter[]{tagDetected};
-            NfcAdapter
-                    .getDefaultAdapter(this)
-                    .enableForegroundDispatch(this, pi, filters, null);
         }
         //this is for when coming to the app from share
         if (StaticVariables.currentLayout == R.layout.encrypt) {
@@ -1217,8 +1207,13 @@ public class Main extends Activity {
     public void onClickManage(View v) {
         switch (v.getId()) {
             case R.id.button1:
+                if(CryptMethods.privateExist()){
                 GenerateKeys gk = new GenerateKeys();
                 gk.show(getFragmentManager(), "gk");
+                }else{
+                    t.setText(R.string.reject_changes);
+                    t.show();
+                }
                 break;
             case R.id.button3:
                 Intent intent = new Intent(this, PrivateKeyManager.class);

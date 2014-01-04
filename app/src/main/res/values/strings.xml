@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">SPEC</string>
 
-    <!--spec contact card-->
+    <!--spec contact card do not change!!!-->
     <string name="spec_contact_card">Public Encryption Key.\nSPEC\nreachout@specularx.co\n30819B301406072A8648CE3D020106092B240303020801010D038182000475A87B1946ACB3F3647F6461F860E5517D010B1589F4720E927B6686A71057C9268E320B32BD40182C94B394CBB316FA5EF66FA2723A11ADEBB4DEC0A5B274C76CE2FF7F2A78BE19F8B2FD3317BE1E99F39828532309AA15A5F32A801986E5986AF28C7A2E464390D4C40B85924A0E63E85813F552E27F9527C2E97DFB1D81E1</string>
 
     <!--strings related to writing/reading private key to/from the nfc tag-->
@@ -50,6 +50,7 @@
     <string name="session_explain">A session identifier or session token is a piece
         of data that is used in network communications to identify a session, a series of related
         message exchanges. In SPEC, we want you to be sure that you\'re in touch with the correct contact and not a malicous impersonator. Therefore it is vital to keep track of the current state of the conversation and a session ID is one way to achieve that goal.</string>
+    <string name="session_what_we_did">we creating a secret that the other side must decrypt and send it back every time</string>
     <string name="session_ok_explain">You both have the same session, so you\'re communicating with the same person as before.\n</string>
     <string name="dont_trust_session_explain">You have a different session than your contact.
         \nIt\'s possible that your contact is a fake, fraud.
@@ -73,19 +74,25 @@
     <string name="light_msg_week">Message created within the last week.</string>
     <string name="light_msg_two_weeks">Message created within the last two weeks.</string>
     <string name="light_msg_old">Message is over due and may not be relevant.</string>
-    <string name="light_msg_message_created_at">Message created:&nbsp;</string>
+    <string name="light_msg_message_created_at">Message created:\t</string>
+    <string name="replay_what_we_did">we checking the time of the last message you received from this contact, and the day that the message was created</string>
+    <string name="replay_qr_what_we_did">messages came from QR may be taking longer to get to you.\nwe decide to give three parameters: now int this week in last two weeks, and old</string>
+
     <!--hash check-->
     <string name="hash_title">Crypto Hash Info:</string>
     <string name="hash_explain">The main application of secure cryptographic hashes is verification of message integrity - determining whether any changes have been made to a message or a file. SPEC verifies that your messages are secure and complete. WE FIGHT DATA TAMPERING 24/7.</string>
     <string name="what_is_hash">What is a Crypto Hash?</string>
+    <string name="hash_what_we_did">we using high standards of hashing by using SHA-256 algorithm</string>
+    <string name="hash_qr_what_we_did">to make the hash small we used xor of the entire bytes(divided for 4 bytes packets) that create an integer.\nby encrypting this integer inside the message we making it secure</string>
 
+    <string name="reject_changes">You must have a Private Key in order to make changes.</string>
     <!--attach file strings-->
     <string name="choose_file_to_attach">Choose file to attach.</string>
     <string name="failed_attach_files">Could not retrieve files.</string>
     <string name="file_to_big">Sorry.\nCan\'t attach file.\nCurrent limit is 50 MB.</string>
     <string name="file_is_empty">File is empty</string>
 
-    <!--default files names-->
+    <!--default files names do not change!!!-->
     <string name="file_name_shared_contact_card">SharedContactCard.SPEC</string>
     <string name="file_name_friends_qr">SharedQR.SPEC.png</string>
     <string name="file_name_my_public_key">ContactCard.SPEC</string>
@@ -222,7 +229,7 @@
     <string name="back_bt_replace_keys_dlg">Back</string>
     <string name="length_name_of_file">File name must be at least 1 character long.</string>
     <string name="time_created">Message time-stamp:\n</string>
-    <string name="reject_changes">You must have a Private Key in order to make changes.</string>
+    <string name="not_valid_change">change not valid discarded</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>

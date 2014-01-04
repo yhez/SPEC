@@ -317,8 +317,6 @@ public class FragmentManagement extends Fragment {
                 ibb.setImageBitmap(bitmap);
                 TextView tvt = (TextView) rootView.findViewById(R.id.contact_pb);
                 tvt.setText(currContact.getPublicKey());
-                //todo move it after last line
-                //tvt.setTypeface(FilesManagement.getOld(getActivity()));
                 final ImageButton ib = (ImageButton) rootView.findViewById(R.id.contact_email)
                         .findViewById(R.id.image_button);
                 rootView.findViewById(R.id.contact_email)
@@ -340,7 +338,7 @@ public class FragmentManagement extends Fragment {
                                             ((TextView) rootView.findViewById(R.id.orig_eamil)).setText(email);
                                         } else {
                                             etEmail.setText(origEmail);
-                                            Toast t = Toast.makeText(getActivity(), "change not valid discarded", Toast.LENGTH_LONG);
+                                            Toast t = Toast.makeText(getActivity(), R.string.not_valid_change, Toast.LENGTH_LONG);
                                             t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                             t.show();
                                         }
@@ -371,7 +369,7 @@ public class FragmentManagement extends Fragment {
                                             ((TextView) rootView.findViewById(R.id.orig_name)).setText(name);
                                         } else {
                                             etName.setText(origName);
-                                            Toast t = Toast.makeText(getActivity(), "change not valid discarded",
+                                            Toast t = Toast.makeText(getActivity(), R.string.not_valid_change,
                                                     Toast.LENGTH_LONG);
                                             t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                             t.show();

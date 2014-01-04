@@ -29,15 +29,13 @@ public class ShareCustomDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.dialogTransparent);
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         View v = inflater.inflate(R.layout.share_dialog, null);
-
         builder.setView(v);
-
         GridLayout glFile = (GridLayout) v.findViewById(R.id.gl_app_file);
         List<ResolveInfo> file = getApps("file/*");
         for (ResolveInfo aFile : file) {

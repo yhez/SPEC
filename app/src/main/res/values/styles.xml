@@ -25,4 +25,9 @@
         <item name="marker_visible">true</item>
         <item name="thumb_visible">true</item>
     </style>
+    <style name="dialogTransparent" parent="android:Theme.Holo.Light.Dialog.MinWidth">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>
