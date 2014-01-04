@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import specular.systems.Contact;
+import specular.systems.ContactsDataSource;
 import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
 import specular.systems.LightMessage;
@@ -43,10 +44,10 @@ public class Response extends DialogFragment {
         builder.setView(v);
         final CheckBox cb = (CheckBox) v.findViewById(R.id.quote);
         if (StaticVariables.currentLayout == R.layout.edit_contact) {
-            contact = StaticVariables.contactsDataSource.findContact(Long.parseLong(
+            contact = ContactsDataSource.contactsDataSource.findContact(Long.parseLong(
                     ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));
         } else if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
-            contact = StaticVariables.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
+            contact = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
             if (StaticVariables.msg_content != null && StaticVariables.msg_content.length() > 0) {
                 cb.setVisibility(View.VISIBLE);
                 cb.setChecked(true);

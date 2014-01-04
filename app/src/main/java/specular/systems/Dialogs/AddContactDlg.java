@@ -17,6 +17,7 @@ import com.google.zxing.WriterException;
 
 import specular.systems.Contact;
 import specular.systems.ContactCard;
+import specular.systems.ContactsDataSource;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.StaticVariables;
@@ -56,7 +57,7 @@ public class AddContactDlg extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         Contact c;
                         if (((CheckBox) v.findViewById(R.id.check_box_update)).isChecked()) {
-                            c = StaticVariables.contactsDataSource.findContactByEmail(pcc.getEmail());
+                            c = ContactsDataSource.contactsDataSource.findContactByEmail(pcc.getEmail());
                             c.update(getActivity(), null, null, pcc.getPublicKey(), null);
                         } else
                             c = new Contact(getActivity(), pcc.getName(), pcc.getEmail(), pcc.getPublicKey(), session);

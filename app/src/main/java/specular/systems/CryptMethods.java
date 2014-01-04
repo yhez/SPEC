@@ -28,6 +28,7 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
 
 public class CryptMethods {
     public static boolean doneCreatingKeys = false;
+    public static String encryptedMsgToSend = null;
     private static PrivateKey mPtK = null;
     private static String myName = null, myEmail = null, myPublicKey = null;
     private static PrivateKey tmpPtK = null;
@@ -40,8 +41,8 @@ public class CryptMethods {
 
     static void deleteKeys() {
         mPtK = null;
-        StaticVariables.decryptedMsg = null;
-        StaticVariables.decryptedLightMsg=null;
+        MessageFormat.decryptedMsg = null;
+        LightMessage.decryptedLightMsg=null;
     }
 
     public static boolean setPrivate(byte[] p) {
@@ -141,17 +142,17 @@ public class CryptMethods {
             cipher.init(Cipher.DECRYPT_MODE, mPtK, iesParams);
             byte[] rawMsg = Visual.hex2bin(encryptedMessage);
             byte[] decryptedBytes = cipher.doFinal(rawMsg);
-            StaticVariables.decryptedMsg = new MessageFormat(decryptedBytes);
-            if(StaticVariables.decryptedMsg.getPublicKey()==null){
-                StaticVariables.decryptedMsg=null;
-                StaticVariables.decryptedLightMsg=new LightMessage(decryptedBytes);
+            MessageFormat.decryptedMsg = new MessageFormat(decryptedBytes);
+            if(MessageFormat.decryptedMsg.getPublicKey()==null){
+                MessageFormat.decryptedMsg=null;
+                LightMessage.decryptedLightMsg=new LightMessage(decryptedBytes);
             }else
-                StaticVariables.decryptedLightMsg=null;
+                LightMessage.decryptedLightMsg=null;
             StaticVariables.encrypted_msg_size=encryptedMessage.length();
             StaticVariables.orig_msg_size=decryptedBytes.length;
         } catch (Exception e) {
-            StaticVariables.decryptedMsg = null;
-            StaticVariables.decryptedLightMsg=null;
+            MessageFormat.decryptedMsg = null;
+            LightMessage.decryptedLightMsg=null;
             e.printStackTrace();
         }
     }
@@ -170,7 +171,7 @@ public class CryptMethods {
             cipher.init(Cipher.ENCRYPT_MODE, frndPbK, iesParams);
             if(light!=null)
                 StaticVariables.encryptedLight = Visual.bin2hex(cipher.doFinal(light));
-            StaticVariables.encryptedMsgToSend = Visual.bin2hex(cipher.doFinal(msg));
+            encryptedMsgToSend = Visual.bin2hex(cipher.doFinal(msg));
         } catch (Exception ignore) {
             ignore.printStackTrace();
         }

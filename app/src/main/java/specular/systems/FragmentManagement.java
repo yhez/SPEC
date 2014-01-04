@@ -40,6 +40,8 @@ import com.google.zxing.WriterException;
 
 import java.util.List;
 
+import specular.systems.activities.Main;
+
 import static specular.systems.R.layout.create_new_keys;
 import static specular.systems.R.layout.decrypt;
 import static specular.systems.R.layout.decrypted_msg;
@@ -54,7 +56,7 @@ public class FragmentManagement extends Fragment {
     final Thread checkHash = new Thread(new Runnable() {
         @Override
         public void run() {
-            StaticVariables.flag_hash = StaticVariables.decryptedMsg.checkHash();
+            StaticVariables.flag_hash = MessageFormat.decryptedMsg.checkHash();
             hndl.sendEmptyMessage(CHECK_HASH_ENDED);
         }
     });
@@ -128,7 +130,7 @@ public class FragmentManagement extends Fragment {
         ImageView ss = (ImageView) rootView.findViewById(R.id.session_check);
         ImageView rp = (ImageView) rootView.findViewById(R.id.replay_check);
         ImageButton imageButtonh = (ImageButton) rootView.findViewById(R.id.hash);
-        Contact c = StaticVariables.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
+        Contact c = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
         if (c != null) {
             contactExist.setText(true + "");
             sender.setText("From:\t" + c.getContactName() + " , " + c.getEmail());
@@ -252,7 +254,7 @@ public class FragmentManagement extends Fragment {
                                     } else {
 
                                         CryptMethods.setDetails(myName, myEmail);
-                                        StaticVariables.main.startCreateKeys();
+                                        Main.main.startCreateKeys();
                                     }
                                 }
                             }
@@ -263,7 +265,7 @@ public class FragmentManagement extends Fragment {
                 break;
             case edit_contact:
                 int index = getArguments().getInt("index");
-                final Contact currContact = StaticVariables.adapter.getItem(index);
+                final Contact currContact = MySimpleArrayAdapter.adapter.getItem(index);
                 ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
                         + currContact.getId());
                 ((TextView) rootView.findViewById(R.id.contact_name).
@@ -429,9 +431,9 @@ public class FragmentManagement extends Fragment {
                 });
                 break;
             case encrypt:
-                StaticVariables.adapter.showOriginal();
+                MySimpleArrayAdapter.adapter.showOriginal();
                 ListView lv = (ListView) rootView.findViewById(R.id.list);
-                lv.setAdapter(StaticVariables.adapter);
+                lv.setAdapter(MySimpleArrayAdapter.adapter);
                 if (StaticVariables.fullList.size() > 0) {
                     rootView.findViewById(R.id.no_contacts).setVisibility(View.GONE);
                     lv.setVisibility(View.VISIBLE);
@@ -548,23 +550,23 @@ public class FragmentManagement extends Fragment {
             case R.layout.learn:
                 break;
             case decrypted_msg:
-                if (StaticVariables.decryptedMsg != null) {
+                if (MessageFormat.decryptedMsg != null) {
                     checkHash.start();
-                    StaticVariables.friendsPublicKey = StaticVariables.decryptedMsg.getPublicKey();
-                    StaticVariables.hash = StaticVariables.decryptedMsg.getHash();
-                    StaticVariables.timeStamp = StaticVariables.decryptedMsg.getSentTime();
-                    StaticVariables.name = StaticVariables.decryptedMsg.getName();
-                    StaticVariables.email = StaticVariables.decryptedMsg.getEmail();
+                    StaticVariables.friendsPublicKey = MessageFormat.decryptedMsg.getPublicKey();
+                    StaticVariables.hash = MessageFormat.decryptedMsg.getHash();
+                    StaticVariables.timeStamp = MessageFormat.decryptedMsg.getSentTime();
+                    StaticVariables.name = MessageFormat.decryptedMsg.getName();
+                    StaticVariables.email = MessageFormat.decryptedMsg.getEmail();
                     StaticVariables.flag_msg = true;
-                    StaticVariables.msg_content = StaticVariables.decryptedMsg.getMsgContent();
-                    StaticVariables.file_name = StaticVariables.decryptedMsg.getFileName();
-                    StaticVariables.session = StaticVariables.decryptedMsg.getSession();
+                    StaticVariables.msg_content = MessageFormat.decryptedMsg.getMsgContent();
+                    StaticVariables.file_name = MessageFormat.decryptedMsg.getFileName();
+                    StaticVariables.session = MessageFormat.decryptedMsg.getSession();
                     updateDecryptedScreen();
-                } else if (StaticVariables.decryptedLightMsg != null) {
-                    StaticVariables.hash = StaticVariables.decryptedLightMsg.getHash();
-                    StaticVariables.msg_content = StaticVariables.decryptedLightMsg.getMsgContent();
-                    StaticVariables.timeStamp = StaticVariables.decryptedLightMsg.getSentTime();
-                    StaticVariables.flag_hash = StaticVariables.decryptedLightMsg.checkHash();
+                } else if (LightMessage.decryptedLightMsg != null) {
+                    StaticVariables.hash = LightMessage.decryptedLightMsg.getHash();
+                    StaticVariables.msg_content = LightMessage.decryptedLightMsg.getMsgContent();
+                    StaticVariables.timeStamp = LightMessage.decryptedLightMsg.getSentTime();
+                    StaticVariables.flag_hash = LightMessage.decryptedLightMsg.checkHash();
                     StaticVariables.flag_replay = LightMessage.checkReplay(StaticVariables.timeStamp);
                     StaticVariables.flag_light_msg = true;
                     updateDecryptedLight();
@@ -634,7 +636,7 @@ public class FragmentManagement extends Fragment {
         //if(StaticVariables.currentLayout==me)
         //    ((TextView)rootView.findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
         rootView.animate().setDuration(1000).alpha(1).start();
-        StaticVariables.main.invalidateOptionsMenu();
+        Main.main.invalidateOptionsMenu();
         return rootView;
     }
 
@@ -734,7 +736,7 @@ public class FragmentManagement extends Fragment {
         imm.hideSoftInputFromWindow(rootView.findViewById(R.id.message).getWindowToken(), 0);
         rootView.findViewById(R.id.list).setVisibility(View.GONE);
         StaticVariables.luc.showIfNeeded(getActivity(), null);
-        Contact cvc = StaticVariables.contactsDataSource.findContact(contactID);
+        Contact cvc = ContactsDataSource.contactsDataSource.findContact(contactID);
         ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText(contactID + "");
         ((TextView) rootView.findViewById(R.id.chosen_name)).setText(cvc.getContactName());
         ((TextView) rootView.findViewById(R.id.chosen_email)).setText(cvc.getEmail());

@@ -11,6 +11,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ContactsDataSource {
+    //form main
+    public static ContactsDataSource contactsDataSource;
     private final String[] allColumns = {MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_CONTACT_NAME, MySQLiteHelper.COLUMN_EMAIL,
             MySQLiteHelper.COLUMN_CONTACT_ADDED_DATE, MySQLiteHelper.COLUMN_LAST_MSG,
@@ -43,7 +45,7 @@ public class ContactsDataSource {
         long l = database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
                 values);
         dbHelper.close();
-        StaticVariables.adapter.addCont(a, contact);
+        MySimpleArrayAdapter.adapter.addCont(a, contact);
         return l;
     }
 
@@ -60,7 +62,7 @@ public class ContactsDataSource {
                 + " = " + id, null);
         dbHelper.close();
         if (!(position < 0)) {
-            StaticVariables.adapter.removeCont(aa, position);
+            MySimpleArrayAdapter.adapter.removeCont(aa, position);
         }
     }
 

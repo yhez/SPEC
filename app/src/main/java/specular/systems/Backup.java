@@ -11,7 +11,7 @@ import java.util.List;
 public class Backup {
     public static final String DIVIDE_FIELDS ="\n";
     public static void backup(Activity a){
-        List<Contact> contactList = StaticVariables.contactsDataSource.getAllContacts();
+        List<Contact> contactList = ContactsDataSource.contactsDataSource.getAllContacts();
         String[] myDetails = CryptMethods.getMyDetails(a);
         String details = myDetails[0]+ DIVIDE_FIELDS+myDetails[1]+DIVIDE_FIELDS+myDetails[2]+DIVIDE_FIELDS;
         byte[] my_details;

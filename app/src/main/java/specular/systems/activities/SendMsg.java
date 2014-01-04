@@ -30,12 +30,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import specular.systems.Contact;
+import specular.systems.ContactsDataSource;
+import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
-import specular.systems.StaticVariables;
 import specular.systems.Visual;
 
 public class SendMsg extends Activity {
@@ -53,7 +54,7 @@ public class SendMsg extends Activity {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
         uris = FilesManagement.getFilesToSend(this);
-        contact = StaticVariables.contactsDataSource.findContact(getIntent().getLongExtra("contactId", -1));
+        contact = ContactsDataSource.contactsDataSource.findContact(getIntent().getLongExtra("contactId", -1));
         if (contact.getDefaultApp() == null) {
             show();
         } else {
@@ -109,7 +110,7 @@ public class SendMsg extends Activity {
             etFile.setFilters(Visual.filters());
         }
         if (uris.get(1) != null) {
-            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(StaticVariables.encryptedMsgToSend,
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(CryptMethods.encryptedMsgToSend,
                     BarcodeFormat.QR_CODE.toString(), 76);
             Bitmap bitmap;
             try {

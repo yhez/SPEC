@@ -84,6 +84,7 @@ import specular.systems.Visual;
 
 
 public class Main extends Activity {
+    public static Main main;
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_FOCUS = 76;
     private final Handler hndl = new Handler() {
         @Override
@@ -106,7 +107,7 @@ public class Main extends Activity {
                     ((TextView) findViewById(R.id.decrypted_msg)).setText(s);
                     break;
                 case DECRYPT_SCREEN:
-                    if (StaticVariables.decryptedMsg != null && StaticVariables.decryptedMsg.getFileContent() != null)
+                    if (MessageFormat.decryptedMsg != null && MessageFormat.decryptedMsg.getFileContent() != null)
                         if (!FilesManagement.createFileToOpen(Main.this)) {
                             t.setText(R.string.failed_to_create_file_to_open);
                             t.show();
@@ -252,7 +253,7 @@ public class Main extends Activity {
                 // hides the keyboard when the user starts the encryption process
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-                contact = StaticVariables.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
+                contact = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
                 encryptManager();
                 break;
             case R.id.open_file:
@@ -316,7 +317,7 @@ public class Main extends Activity {
                                 + Session.toShow(StaticVariables.session);
                         break;
                     case Session.DONT_TRUST:
-                        contact = StaticVariables.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
+                        contact = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
                         msg = getString(R.string.dont_trust_session_explain)
                                 + "\n" + Session.toShow(contact.getSession()) + "\n"
                                 + "other's session is:\n"
@@ -417,8 +418,8 @@ public class Main extends Activity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        FilesManagement.getKeysFromSDCard(this);
-        StaticVariables.handleByOnActivityResult = true;
+        if (requestCode == ATTACH_FILE)
+            FilesManagement.getKeysFromSDCard(this);
         if (resultCode == RESULT_OK) {
             if (requestCode == ATTACH_FILE) {
                 attachFile(intent.getData());
@@ -475,7 +476,7 @@ public class Main extends Activity {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
                     long id = Long.parseLong(((TextView) findViewById(R.id.contact_id_to_send)).getText().toString());
-                    contact = StaticVariables.contactsDataSource.findContact(id);
+                    contact = ContactsDataSource.contactsDataSource.findContact(id);
                     encryptManager();
                 } else {
                     t.setText(R.string.send_orders);
@@ -513,7 +514,7 @@ public class Main extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StaticVariables.main = this;
+        main = this;
         FilesManagement.getKeysFromSDCard(this);
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
@@ -522,11 +523,11 @@ public class Main extends Activity {
         t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         handler = new Handler(Looper.getMainLooper());
         if (StaticVariables.fullList == null) {
-            StaticVariables.contactsDataSource = new ContactsDataSource(this);
-            StaticVariables.fullList = StaticVariables.contactsDataSource.getAllContacts();
+            ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
+            StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
         }
-        if (StaticVariables.adapter == null) {
-            StaticVariables.adapter = new MySimpleArrayAdapter(this);
+        if (MySimpleArrayAdapter.adapter == null) {
+            MySimpleArrayAdapter.adapter = new MySimpleArrayAdapter(this);
         }
         File folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports");
         if (folder.exists() && folder.list().length > 0) {
@@ -650,7 +651,7 @@ public class Main extends Activity {
             ContactCard pcc = new ContactCard(this
                     , StaticVariables.friendsPublicKey
                     , StaticVariables.email, StaticVariables.name);
-            Contact c = StaticVariables.contactsDataSource.findContactByEmail(StaticVariables.email);
+            Contact c = ContactsDataSource.contactsDataSource.findContactByEmail(StaticVariables.email);
             AddContactDlg acd = new AddContactDlg(pcc, StaticVariables.session, c != null ? c.getId() : -1);
             acd.show(getFragmentManager(), "acd3");
         } else if (StaticVariables.currentLayout == R.layout.me
@@ -683,8 +684,8 @@ public class Main extends Activity {
 
                 @Override
                 public boolean onQueryTextChange(String s) {
-                    StaticVariables.adapter.updateViewAfterFilter(Main.this);
-                    StaticVariables.adapter.getFilter().filter(s);
+                    MySimpleArrayAdapter.adapter.updateViewAfterFilter(Main.this);
+                    MySimpleArrayAdapter.adapter.getFilter().filter(s);
                     return false;
                 }
             });
@@ -978,9 +979,9 @@ public class Main extends Activity {
             return true;
         } else if (StaticVariables.fileContactCard != null) {
             selectItem(0, R.layout.encrypt, null);
-            Contact c = StaticVariables.contactsDataSource.findContactByKey(StaticVariables.fileContactCard.getPublicKey());
+            Contact c = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.fileContactCard.getPublicKey());
             if (c == null) {
-                Contact cc = StaticVariables.contactsDataSource.findContactByEmail(StaticVariables.fileContactCard.getEmail());
+                Contact cc = ContactsDataSource.contactsDataSource.findContactByEmail(StaticVariables.fileContactCard.getEmail());
                 long id;
                 if (cc != null)
                     id = cc.getId();
@@ -1071,7 +1072,7 @@ public class Main extends Activity {
                     if (StaticVariables.flag_msg) {
                         t.setText(R.string.notify_msg_deleted);
                         t.show();
-                        StaticVariables.decryptedMsg = null;
+                        MessageFormat.decryptedMsg = null;
                         FilesManagement.deleteTempDecryptedMSG(this);
                     }
                     setUpViews();
@@ -1193,11 +1194,11 @@ public class Main extends Activity {
             FilesManagement.getTempDecryptedMSG(this);
         }
         if (StaticVariables.fullList == null) {
-            StaticVariables.contactsDataSource = new ContactsDataSource(this);
-            StaticVariables.fullList = StaticVariables.contactsDataSource.getAllContacts();
+            ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
+            StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
         }
-        if (StaticVariables.adapter == null) {
-            StaticVariables.adapter = new MySimpleArrayAdapter(this);
+        if (MySimpleArrayAdapter.adapter == null) {
+            MySimpleArrayAdapter.adapter = new MySimpleArrayAdapter(this);
         }
     }
 

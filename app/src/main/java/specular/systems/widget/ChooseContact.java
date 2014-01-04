@@ -54,8 +54,8 @@ public class ChooseContact extends Activity {
             SimpleList sl = new SimpleList(this);
             //todo add filter
             if (StaticVariables.fullList==null) {
-                StaticVariables.contactsDataSource = new ContactsDataSource(this);
-                StaticVariables.fullList = StaticVariables.contactsDataSource.getAllContacts();
+                ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
+                StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
             }
             if (StaticVariables.fullList.isEmpty()) {
                 Toast t = Toast.makeText(this, R.string.widget_add_contact_list_empty, Toast.LENGTH_SHORT);
@@ -70,7 +70,7 @@ public class ChooseContact extends Activity {
                         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(ChooseContact.this);
                         RemoteViews views = new RemoteViews(ChooseContact.this.getPackageName(),
                                 R.layout.widget_contact);
-                        Contact c = StaticVariables.contactsDataSource.findContact(Long.parseLong(((TextView) view.findViewById(R.id.id_contact)).getText().toString()));
+                        Contact c = ContactsDataSource.contactsDataSource.findContact(Long.parseLong(((TextView) view.findViewById(R.id.id_contact)).getText().toString()));
                         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(c.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 200);
                         try {
                             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();

@@ -9,6 +9,8 @@ import java.util.TimeZone;
 
 public class MessageFormat {
     public static final int NOT_RELEVANT = 0, OK = 1, NOT_LATEST = 2, OLD = 3, FAILED = 4;
+    //from CryptoMethods
+    public static MessageFormat decryptedMsg = null;
     private String name, email, publicKey, msgContent, session, hash, sentTime, fileName;
     private byte[] fileContent = null;
 

@@ -58,15 +58,15 @@ public final class FilesManagement {
     }
 
     public static boolean createFileToOpen(Activity a) {
-        if (StaticVariables.decryptedMsg.getFileContent() == null)
+        if (MessageFormat.decryptedMsg.getFileContent() == null)
             return false;
         try {
             File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
             if (!path.exists())
                 path.mkdirs();
-            File file = new File(path, StaticVariables.decryptedMsg.getFileName());
+            File file = new File(path, MessageFormat.decryptedMsg.getFileName());
             OutputStream os = new FileOutputStream(file);
-            os.write(StaticVariables.decryptedMsg.getFileContent());
+            os.write(MessageFormat.decryptedMsg.getFileContent());
             os.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,14 +88,14 @@ public final class FilesManagement {
     }
 
     public static void saveTempDecryptedMSG(Activity a) {
-        if (StaticVariables.decryptedMsg == null)
+        if (MessageFormat.decryptedMsg == null)
             return;
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         SharedPreferences.Editor edt = srp.edit();
-        edt.putString("msg", StaticVariables.decryptedMsg.getMsgContent());
-        edt.putString("file_name", StaticVariables.decryptedMsg.getFileName());
-        edt.putString("session", StaticVariables.decryptedMsg.getSession());
+        edt.putString("msg", MessageFormat.decryptedMsg.getMsgContent());
+        edt.putString("file_name", MessageFormat.decryptedMsg.getFileName());
+        edt.putString("session", MessageFormat.decryptedMsg.getSession());
         StaticVariables.session = null;
         StaticVariables.file_name = null;
         StaticVariables.msg_content = null;
@@ -178,7 +178,7 @@ public final class FilesManagement {
         try {
             FileOutputStream fos = a.openFileOutput(a.getString(
                     FILE_NAME_SEND), Context.MODE_WORLD_READABLE);
-            fos.write(StaticVariables.encryptedMsgToSend.getBytes());
+            fos.write(CryptMethods.encryptedMsgToSend.getBytes());
             fos.close();
             return true;
         } catch (Exception e) {

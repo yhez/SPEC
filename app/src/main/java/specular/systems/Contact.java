@@ -32,7 +32,7 @@ public class Contact {
             this.received = session != null ? 1 : 0;
             this.sent = 0;
             this.last = session != null ? System.currentTimeMillis() : 0;
-            this.id = StaticVariables.contactsDataSource.createContact(a, this);
+            this.id = ContactsDataSource.contactsDataSource.createContact(a, this);
         }
     }
 
@@ -140,33 +140,33 @@ public class Contact {
             this.email = email;
         if (session != null)
             this.session = session;
-        StaticVariables.contactsDataSource.updateDB(id,
+        ContactsDataSource.contactsDataSource.updateDB(id,
                 contactName, email, publicKey, session);
-        StaticVariables.adapter.updateCont(a, this);
+        MySimpleArrayAdapter.adapter.updateCont(a, this);
     }
     //message sent
     public void update(Activity a) {
         sent++;
         Session.updateFlag(a, this);
-        StaticVariables.contactsDataSource.updateDB(id,sent);
-        StaticVariables.adapter.updateCont(a, this);
+        ContactsDataSource.contactsDataSource.updateDB(id,sent);
+        MySimpleArrayAdapter.adapter.updateCont(a, this);
     }
     //message received
     public void update(long time) {
         received++;
         this.last = time;
-        StaticVariables.contactsDataSource.updateDB(id, last, received);
+        ContactsDataSource.contactsDataSource.updateDB(id, last, received);
     }
 
     public void update(String defaultApp, Activity a) {
         if (defaultApp != null) {
             cn = new ComponentName(defaultApp.split("\n")[0], defaultApp.split("\n")[1]);
-            StaticVariables.contactsDataSource.updateDB(id, defaultApp);
-            StaticVariables.adapter.updateCont(a, this);
+            ContactsDataSource.contactsDataSource.updateDB(id, defaultApp);
+            MySimpleArrayAdapter.adapter.updateCont(a, this);
         } else {
             cn = null;
-            StaticVariables.contactsDataSource.updateDB(id, "");
-            StaticVariables.adapter.updateCont(a, this);
+            ContactsDataSource.contactsDataSource.updateDB(id, "");
+            MySimpleArrayAdapter.adapter.updateCont(a, this);
         }
     }
 }

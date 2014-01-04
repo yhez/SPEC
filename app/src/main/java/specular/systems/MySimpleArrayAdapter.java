@@ -24,6 +24,7 @@ import specular.systems.activities.Main;
 import static specular.systems.R.layout.edit_contact;
 
 public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filterable {
+    public static MySimpleArrayAdapter adapter;
     private Activity a;
     private static List<Contact> list;
 
@@ -88,7 +89,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                 StaticVariables.currentLayout = edit_contact;
                 args.putInt("index", position);
                 fragment.setArguments(args);
-                FragmentManager fragmentManager = StaticVariables.main.getFragmentManager();
+                FragmentManager fragmentManager = Main.main.getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame, fragment).commit();
             }

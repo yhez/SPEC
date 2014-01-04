@@ -51,9 +51,9 @@ public class QuickMsg extends Activity {
                 finish();
             } else {
                 long id = WidgetContact.getId(widgetDetails);
-                if(StaticVariables.contactsDataSource==null)
-                    StaticVariables.contactsDataSource= new ContactsDataSource(this);
-                final Contact contact = StaticVariables.contactsDataSource.findContact(id);
+                if(ContactsDataSource.contactsDataSource==null)
+                    ContactsDataSource.contactsDataSource= new ContactsDataSource(this);
+                final Contact contact = ContactsDataSource.contactsDataSource.findContact(id);
                 if (contact == null) {
                     SharedPreferences.Editor edt = srp.edit();
                     edt.remove(widget);
