@@ -1,9 +1,9 @@
 package specular.systems;
 
 
-import android.util.Log;
-
 public class KeysDeleter {
+    public static boolean keysDeleted = true;
+    public static int oldStatus;
     private static Thread t;
 
     public KeysDeleter() {
@@ -18,9 +18,9 @@ public class KeysDeleter {
                     synchronized (this) {
                         try {
                             wait(15000);
-                            StaticVariables.currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
+                            oldStatus = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
                             CryptMethods.deleteKeys();
-                            Log.e("keys have been deleted", "time for deleting 15 seconds");
+                            keysDeleted = true;
                         } catch (InterruptedException e) {
                         }
                     }
@@ -36,7 +36,7 @@ public class KeysDeleter {
     }
 
     public static void delete() {
-        StaticVariables.currentKeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
+        oldStatus = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         CryptMethods.deleteKeys();
     }
 }

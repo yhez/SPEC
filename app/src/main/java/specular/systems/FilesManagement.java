@@ -56,6 +56,7 @@ public final class FilesManagement {
             tfos = createFromAsset(a.getAssets(), "OpenSans-Light.ttf");
         return tfos;
     }
+
     public static boolean createFileToOpen(Activity a) {
         if (StaticVariables.decryptedMsg.getFileContent() == null)
             return false;
@@ -279,23 +280,29 @@ public final class FilesManagement {
         CryptMethods.setPublic(srp.getString(PUBLIC_KEY, null));
         CryptMethods.setDetails(srp.getString(NAME, null), srp.getString(EMAIL, null));
     }
-    private static byte[] getPrivate(Activity a){
-        try {
-            FileInputStream is = a.openFileInput(PRIVATE_KEY);
-            byte[] b = new byte[(int)new File(a.getFilesDir(),PRIVATE_KEY).length()];
-            is.read(b);
-            return b;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+
+    private static byte[] getPrivate(Activity a) {
+
+        File f = new File(a.getFilesDir(), PRIVATE_KEY);
+        if (f.exists()) {
+            try {
+                FileInputStream is = a.openFileInput(PRIVATE_KEY);
+                byte[] b = new byte[(int) new File(a.getFilesDir(), PRIVATE_KEY).length()];
+                is.read(b);
+                return b;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else return null;
     }
-    public static void savePrivate(Activity a){
+
+    public static void savePrivate(Activity a) {
         try {
-            FileOutputStream fos = a.openFileOutput(PRIVATE_KEY,Context.MODE_PRIVATE);
+            FileOutputStream fos = a.openFileOutput(PRIVATE_KEY, Context.MODE_PRIVATE);
             fos.write(CryptMethods.getPrivateToSave());
             fos.close();
         } catch (FileNotFoundException e) {
@@ -304,13 +311,15 @@ public final class FilesManagement {
             e.printStackTrace();
         }
     }
-    public static void removePrivate(Activity a){
-        new File(a.getFilesDir(),PRIVATE_KEY).delete();
+
+    public static void removePrivate(Activity a) {
+        new File(a.getFilesDir(), PRIVATE_KEY).delete();
     }
+
     public static void save(Activity a) {
         if (a != null) {
             myQRPublicKey = null;
-            if(!StaticVariables.NFCMode)
+            if (!StaticVariables.NFCMode)
                 CryptMethods.moveKeysFromTmp();
             SharedPreferences srp = PreferenceManager
                     .getDefaultSharedPreferences(a.getApplicationContext());

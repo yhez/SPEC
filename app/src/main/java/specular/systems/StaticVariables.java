@@ -47,5 +47,4 @@ public class StaticVariables {
     public static String msg_content = null, file_name = null, session = null;
     public static long orig_msg_size,encrypted_msg_size;
     public static String encryptedLight;
-    public static int currentKeys=-1;
 }

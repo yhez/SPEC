@@ -3,7 +3,7 @@
     android:id="@+id/drawer_layout"
     android:alpha="0"
     android:background="#ddd"
-    android:keepScreenOn="true"
+    android:keepScreenOn="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!-- As the main content view, the view below consumes the entire

@@ -184,7 +184,6 @@ public class Main extends Activity {
     private String userInput;
     private String fileName = "";
     private Contact contact;
-    private boolean handleByOnNewIntent = false;
     private long startTime, avrg = 0;
 
     public void startCreateKeys() {
@@ -546,8 +545,6 @@ public class Main extends Activity {
     @Override
     public void onNewIntent(Intent i) {
         super.onNewIntent(i);
-        handleByOnNewIntent = true;
-        //TODO find a better solution to deleting keys while on new intent
         if (StaticVariables.currentLayout == R.layout.wait_nfc_to_write) {
             Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if (tag != null) {
@@ -1162,8 +1159,6 @@ public class Main extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        KeysDeleter.stop();
-        handleByOnNewIntent = false;
         PendingIntent pi = PendingIntent.getActivity(this, 0,
                 new Intent(this, getClass())
                         .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -1173,14 +1168,15 @@ public class Main extends Activity {
         NfcAdapter
                 .getDefaultAdapter(this)
                 .enableForegroundDispatch(this, pi, filters, null);
-        if (handleByOnNewIntent) {
+        if(KeysDeleter.keysDeleted){
+            FilesManagement.getKeysFromSDCard(this);
+            KeysDeleter.keysDeleted=false;
+        }else{
+            KeysDeleter.stop();
             return;
         }
         int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
-        if(StaticVariables.currentKeys==-1||StaticVariables.currentKeys!=newkeys)
-            FilesManagement.getKeysFromSDCard(this);
-        newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
-        if (newkeys != StaticVariables.currentKeys) {
+        if (newkeys != KeysDeleter.oldStatus) {
             setUpViews();
         } else if (msgSended) {
             onBackPressed();

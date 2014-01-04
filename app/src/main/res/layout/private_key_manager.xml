@@ -8,7 +8,7 @@
 
     <Button
         android:onClick="onClick"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:id="@+id/p_button1"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
 
     <Button
         android:onClick="onClick"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:id="@+id/p_button2"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
 
     <Button
         android:onClick="onClick"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:id="@+id/button3"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
@@ -58,7 +58,7 @@
 
     <Button
         android:onClick="onClick"
-        android:textSize="25sp"
+        android:textSize="22sp"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
 
     <Button
         android:onClick="onClick"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:id="@+id/p_button5"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
