@@ -143,7 +143,7 @@ public class PrivateKeyManager extends Activity {
                     NdefRecord pvk = msg.getRecords()[0];
                     if (CryptMethods.setPrivate(pvk
                             .getPayload())) {
-                        //todo enable disabled menu options
+                        findViewById(R.id.p_button1).setEnabled(true);
                     } else {
                         t.setText(R.string.cant_find_private_key);
                         t.show();
@@ -214,18 +214,8 @@ public class PrivateKeyManager extends Activity {
                     tv.setText(R.string.tab_nfc_get_from_nfc);
                     v.setVisibility(View.VISIBLE);
                     break;
-                case R.id.p_button5:
-                    //status = ERASE;
-                    NotImplemented nimp = new NotImplemented();
-                    nimp.show(getFragmentManager(), "nimp");
-                    //Visual.hideAllChildes(PrivateKeyManager.this, (ViewGroup) findViewById(android.R.id.content));
-                    //tv.setVisibility(View.VISIBLE);
-                    //divider.setVisibility(View.VISIBLE);
-                    //tv.setText("Tab nfc tag to completely erase your private key from it");
-                    //v.setVisibility(View.VISIBLE);
-                    break;
                 default:
-                    nimp = new NotImplemented();
+                    NotImplemented nimp = new NotImplemented();
                     nimp.show(getFragmentManager(), "nimp");
             }
         }
