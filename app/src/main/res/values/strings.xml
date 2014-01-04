@@ -229,7 +229,7 @@
     <string name="back_bt_replace_keys_dlg">Back</string>
     <string name="length_name_of_file">File name must be at least 1 character long.</string>
     <string name="time_created">Message time-stamp:\n</string>
-    <string name="not_valid_change">change not valid discarded</string>
+    <string name="not_valid_change">Change not valid (length, format).</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
