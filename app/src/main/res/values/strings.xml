@@ -138,6 +138,7 @@
     <string name="failed_to_create_files_to_send">Could not create files.</string>
     <string name="decrypting">Decrypting&#8230;</string>
     <string name="encrypting">Encrypting&#8230;</string>
+    <string name="backup">Backup&#8230;</string>
     <string name="exit_by_back_notify">Press back again to exit.</string>
     <string name="edit_email">email: </string>
     <string name="edit_name">name: </string>
@@ -162,6 +163,7 @@
     <string name="add_contact_first">Add this contact to your CONTACTS LIST first (press addition button).</string>
     <string name="no_result">Can\'t find contact</string>
     <string name="share_contact_subject">Shared Contact Card, Recommendation - SPEC MOBILE APP</string>
+    <string name="upload_account_backup">Upload Account Backup File to Private Location</string>
     <string name="quick_msg">Quick Text Message:</string>
     <string name="notify_msg_deleted">Message has been deleted</string>
     <string name="send_another_msg">Send another message</string>

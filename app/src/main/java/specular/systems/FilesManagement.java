@@ -40,6 +40,7 @@ public final class FilesManagement {
     private final static int FILE_NAME_SEND = R.string.file_name_secure_msg;
     private final static int QR_NAME_SEND = R.string.file_name_qr_msg;
     private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
+    private final static int FILE_NAME_BACKUP = R.string.file_name_Backup_msg;
     private final static String PUBLIC_KEY = "public_key", PRIVATE_KEY = "private_key", NAME = "name", EMAIL = "email";
     private static final String FILE = "file://";
     private static Bitmap myQRPublicKey;
