@@ -37,7 +37,6 @@ public final class FilesManagement {
     private final static int FRIENDS_SHARE_QR = R.string.file_name_friends_qr;
     private final static int FILE_NAME = R.string.file_name_my_public_key;
     private final static int QR_NAME = R.string.file_name_my_qr_key;
-    private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
     private final static int FILE_NAME_SEND = R.string.file_name_secure_msg;
     private final static int QR_NAME_SEND = R.string.file_name_qr_msg;
     private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
@@ -212,7 +211,7 @@ public final class FilesManagement {
             qrSuccess = saveQRToSend(a);
         else
             new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
-        fileSuccess = saveFileToSend(a, a.getString(FILE_NAME_SEND), StaticVariables.encryptedMsgToSend.getBytes());
+        fileSuccess = saveFileToSend(a, a.getString(FILE_NAME_SEND), CryptMethods.encryptedMsgToSend.getBytes());
         return qrSuccess || fileSuccess;
     }
 
