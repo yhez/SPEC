@@ -1210,6 +1210,20 @@ public class Main extends Activity {
                     t.show();
                 }
                 break;
+            case R.id.button2:
+                // TODO : ORI added separate the intent logic
+                boolean success = Backup.backup(this);
+                if (success) {
+                    hndl.sendEmptyMessage(CLEAR_FOCUS);
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.upload_account_backup));
+                    intent.putExtra(Intent.EXTRA_STREAM, FilesManagement.getBackupFileToShare(this));
+                    intent.setType("image/jpeg");
+                    startActivity(Intent.createChooser(intent,getResources().getString(R.string.backup_profile)));
+                } else {
+                    Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
+                }
+                break;
             case R.id.button3:
                 Intent intent = new Intent(this, PrivateKeyManager.class);
                 startActivity(intent);
