@@ -53,6 +53,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import specular.systems.Backup;
 import specular.systems.Contact;
 import specular.systems.ContactCard;
 import specular.systems.ContactsDataSource;

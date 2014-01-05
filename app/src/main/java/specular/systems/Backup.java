@@ -11,7 +11,7 @@ import java.util.List;
 public class Backup {
     public static final String Delimiter ="\n";
     public static boolean backup(Activity a){
-        List<Contact> contactList = StaticVariables.contactsDataSource.getAllContacts();
+        List<Contact> contactList = ContactsDataSource.contactsDataSource.getAllContacts();
         String[] myDetails = CryptMethods.getMyDetails(a);
         String details = myDetails[0]+ Delimiter+myDetails[1]+Delimiter+myDetails[2]+Delimiter;
         byte[] my_details;
