@@ -42,7 +42,8 @@
             android:background="@color/spec_blue" />
 
         <Button
-            android:onClick="notImp"
+            android:id="@+id/button2"
+            android:onClick="onClickManage"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
