@@ -33,19 +33,15 @@ public class GroupDataSource {
         ContentValues values = new ContentValues();
         values.put(GroupDB.COLUMN_GROUP_NAME, group.getGroupName());
         values.put(GroupDB.COLUMN_ADDRESS, group.getEmail());
-        values.put(GroupDB.COLUMN_GROUP_ADDED_DATE, group.getAdded());
-        values.put(GroupDB.COLUMN_LAST_MSG, group.getLast());
-        values.put(GroupDB.MSG_I_SEND, group.getSent());
-        values.put(GroupDB.MSG_RECEIVED, group.getReceived());
         values.put(GroupDB.COLUMN_PUBLIC_KEY, group.getPublicKey());
-        values.put(GroupDB.COLUMN_SESSION, group.getSession());
+        values.put(GroupDB.COLUMN_SESSION, group.getMentor());
         values.put(GroupDB.COLUMN_DEFAULT_APP, "");
 
         database = dbHelper.getWritableDatabase();
         long l = database.insert(GroupDB.TABLE_GROUP, null,
                 values);
         dbHelper.close();
-        MySimpleArrayAdapter.adapter.addCont(a, group);
+        //todo update user list
         return l;
     }
 
@@ -103,32 +99,13 @@ public class GroupDataSource {
     public Group findGroup(long id) {
         //trying find on lost before going to db
         if(StaticVariables.fullList!=null)
-            for(Group c:StaticVariables.fullList)
+            for(Group c:Group.list)
                 if(c.getId()==id)
                     return c;
         database = dbHelper.getReadableDatabase();
         Cursor cursor = database.query(GroupDB.TABLE_GROUP,
                 allColumns, GroupDB.COLUMN_ID + " = " + id, null, null,
                 null, null);
-        cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-            Group c = new Group(cursor.getLong(0), cursor.getString(1)
-                    , cursor.getString(2), cursor.getInt(3)
-                    , cursor.getLong(4), cursor.getInt(5)
-                    , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8), cursor.getString(9));
-            dbHelper.close();
-            return c;
-        }
-        dbHelper.close();
-        return null;
-    }
-
-    public Group findGroupByEmail(String email) {
-        database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query(GroupDB.TABLE_GROUP,
-                allColumns, GroupDB.COLUMN_ADDRESS + " = '" + email
-                + "' ", null, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             Group c = new Group(cursor.getLong(0), cursor.getString(1)
