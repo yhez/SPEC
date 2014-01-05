@@ -999,7 +999,7 @@ public class Main extends Activity {
                 public void run() {
                     synchronized (this) {
                         try {
-                            wait(Toast.LENGTH_SHORT);
+                            wait(2000);
                             exit = false;
                         } catch (InterruptedException e) {
                             e.printStackTrace();
