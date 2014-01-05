@@ -97,6 +97,7 @@
     <string name="file_name_my_public_key">ContactCard.SPEC</string>
     <string name="file_name_my_qr_key">ContactCardQR.SPEC.png</string>
     <string name="file_name_secure_msg">SecureMessage.SPEC</string>
+    <string name="file_name_Backup_msg">SecureBackup.SPEC</string>
     <string name="file_name_qr_msg">SecureQRMessage.SPEC.png</string>
 
     <!--general-->
