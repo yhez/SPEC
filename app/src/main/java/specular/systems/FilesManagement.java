@@ -40,6 +40,7 @@ public final class FilesManagement {
     private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
     private final static int FILE_NAME_SEND = R.string.file_name_secure_msg;
     private final static int QR_NAME_SEND = R.string.file_name_qr_msg;
+    private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
     private final static String PUBLIC_KEY = "public_key", PRIVATE_KEY = "private_key", NAME = "name", EMAIL = "email";
     private static final String FILE = "file://";
     private static Bitmap myQRPublicKey;
@@ -187,13 +188,31 @@ public final class FilesManagement {
         }
     }
 
+    private static boolean saveFileToSend(Activity a, String fileName, byte[] fileData) {
+        try {
+            FileOutputStream fos = a.openFileOutput(fileName, Context.MODE_WORLD_READABLE);
+            fos.write(fileData);
+            fos.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ORI : added new function to reuse old code
+    public static boolean createBackupFileToSend(Activity a, byte[] fileData) {
+        return saveFileToSend(a, a.getString(FILE_NAME_BACKUP), fileData);
+    }
+
+    // ORI : took out the createfiletosend logic to savefiletosend function
     public static boolean createFilesToSend(Activity a, boolean qr) {
         boolean qrSuccess = true, fileSuccess;
         if (qr)
             qrSuccess = saveQRToSend(a);
         else
             new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
-        fileSuccess = saveFileToSend(a);
+        fileSuccess = saveFileToSend(a, a.getString(FILE_NAME_SEND), StaticVariables.encryptedMsgToSend.getBytes());
         return qrSuccess || fileSuccess;
     }
 
@@ -216,6 +235,15 @@ public final class FilesManagement {
     public static Uri getFileToShare(Activity a) {
         try {
             return Uri.parse(FILE + new File(a.getFilesDir(), a.getString(FILE_NAME)));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // TODO : ORI merge getFileToShare and getFileToShare
+    public static Uri getBackupFileToShare(Activity a) {
+        try {
+            return Uri.parse(FILE + new File(a.getFilesDir(), a.getString(FILE_NAME_BACKUP)));
         } catch (Exception e) {
             return null;
         }
