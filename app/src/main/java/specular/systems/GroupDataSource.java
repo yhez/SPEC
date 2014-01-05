@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GroupDataSource {
     //form main
-    public static GroupDataSource GroupDataSource;
+    public static GroupDataSource groupDataSource;
     private final String[] allColumns = {GroupDB.COLUMN_ID,
             GroupDB.COLUMN_GROUP_NAME, GroupDB.COLUMN_ADDRESS,
             GroupDB.COLUMN_GROUP_ADDED_DATE, GroupDB.COLUMN_LAST_MSG,
@@ -96,48 +96,7 @@ public class GroupDataSource {
         database.close();
     }
 
-    public Group findGroup(long id) {
-        //trying find on lost before going to db
-        if(StaticVariables.fullList!=null)
-            for(Group c:Group.list)
-                if(c.getId()==id)
-                    return c;
-        database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query(GroupDB.TABLE_GROUP,
-                allColumns, GroupDB.COLUMN_ID + " = " + id, null, null,
-                null, null);
-        cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-            Group c = new Group(cursor.getLong(0), cursor.getString(1)
-                    , cursor.getString(2), cursor.getInt(3)
-                    , cursor.getLong(4), cursor.getInt(5)
-                    , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8), cursor.getString(9));
-            dbHelper.close();
-            return c;
-        }
-        dbHelper.close();
-        return null;
-    }
 
-    public Group findGroupByKey(String pbk) {
-        database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query(GroupDB.TABLE_GROUP,
-                allColumns, GroupDB.COLUMN_PUBLIC_KEY + " = '" + pbk
-                + "' ", null, null, null, null);
-        cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-            Group c = new Group(cursor.getLong(0), cursor.getString(1)
-                    , cursor.getString(2), cursor.getInt(3)
-                    , cursor.getLong(4), cursor.getInt(5)
-                    , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8), cursor.getString(9));
-            dbHelper.close();
-            return c;
-        }
-        dbHelper.close();
-        return null;
-    }
 
     public List<Group> getAllGroups() {
         database = dbHelper.getReadableDatabase();
@@ -145,7 +104,7 @@ public class GroupDataSource {
         Cursor cursor = database.query(GroupDB.TABLE_GROUP,
                 allColumns, null, null, null, null, null);
         cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
+       /* while (!cursor.isAfterLast()) {
             Group group = new Group(cursor.getLong(0), cursor.getString(1)
                     , cursor.getString(2), cursor.getInt(3)
                     , cursor.getLong(4), cursor.getInt(5)
@@ -153,7 +112,7 @@ public class GroupDataSource {
                     cursor.getString(8), cursor.getString(9));
             groups.add(group);
             cursor.moveToNext();
-        }
+        }*/
         // Make sure to close the cursor
         cursor.close();
         dbHelper.close();

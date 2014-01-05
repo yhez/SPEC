@@ -1,38 +1,59 @@
 package specular.systems;
 
 
-import java.util.ArrayList;
+import android.app.Activity;
+
 import java.util.List;
 
 public class Group {
-    int id;
+    long id;
     public static List<Group> list;
     byte[] encryptedGroup;
+    String ownerName;
+    String ownerEmail;
+    String ownerPublicKey;
     boolean noPrivateOnDevice;
     String name;
     String locationForMessages;
     String session;
     String publicKey;
-    String encryptedFileNameForGroup;
+    boolean dontAllowNewMembers;
+    String encryptedPrivateFileNameForGroup;
     byte[] privateKey;
-    ArrayList<Contact> knownMembers;
-    public Group(ArrayList<Contact> knownMembers,String name,String locationForMessages,String groupMentor,String publicKey,byte[] privateKey,boolean noPrivateOnDevice){
+    //creates new from nothing
+    public Group(Activity a,String name,String locationForMessages,String groupMentor,String publicKey,
+                 byte[] privateKey,boolean noPrivateOnDevice,boolean dontAllowNewMembers){
         this.noPrivateOnDevice=noPrivateOnDevice;
         this.name=name;
         this.locationForMessages=locationForMessages;
         this.session=groupMentor;
         this.privateKey=privateKey;
         this.publicKey=publicKey;
-        this.knownMembers=knownMembers;
+        this.dontAllowNewMembers=dontAllowNewMembers;
+        String[] details = CryptMethods.getMyDetails(a);
+        ownerName=details[0];
+        ownerEmail=details[1];
+        ownerPublicKey=details[2];
+        this.id = GroupDataSource.groupDataSource.createGroup(a, this);
     }
-    public Group(long id,String name,String locationForMessages,String groupMentor,String publicKey,boolean noPrivateOnDevice){
+    //getting a group from db
+    public Group(long id,String name,String locationForMessages,String groupMentor,String publicKey,
+                 boolean noPrivateOnDevice,boolean dontAllowNewMembers,
+                 String ownerName,String ownerEmail,String ownerPublicKey){
         this.noPrivateOnDevice=noPrivateOnDevice;
+        this.dontAllowNewMembers=dontAllowNewMembers;
         this.name=name;
         this.locationForMessages=locationForMessages;
         this.session=groupMentor;
-        this.privateKey=privateKey;
         this.publicKey=publicKey;
-        this.knownMembers=knownMembers;
+        this.ownerName=ownerName;
+        this.ownerEmail=ownerEmail;
+        this.ownerPublicKey=ownerPublicKey;
+        this.id=id;
+    }
+    //getting a group from an encrypted file
+    public Group(String rawData){
+
     }
     public void encrypt(){
 
@@ -46,10 +67,17 @@ public class Group {
     public String getEmail(){
         return locationForMessages;
     }
-    public int getId(){
+    public long getId(){
         return id;
     }
     public String getMentor(){
         return session;
+    }
+    public Contact getOwnerContact(){
+        Contact c =ContactsDataSource.contactsDataSource.findContactByKey(ownerPublicKey);
+            return c;
+    }
+    public String[] getOwnerDetails(){
+        return new String[]{ownerName,ownerEmail,ownerPublicKey};
     }
 }
