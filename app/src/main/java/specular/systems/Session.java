@@ -106,13 +106,9 @@ public class Session {
                 return JUST_KNOWN;
             }
             if (contains(receivedSession, mySavedSession)) {
-                contact.update(a, null, null, null, getHisSession(mySavedSession, receivedSession).toString());
+                contact.update(a, null, null, null, getHisSession(mySavedSession, receivedSession).toString().replace(FLAG_SESSION_MY_SECRET_SENT, FLAG_SESSION_VERIFIED));
                 return JUST_KNOWN;
             }
-            //may be he doesn't got my message
-            //if (isItOne(receivedSession)) {
-            //    return AGAIN;
-            //}
             return AGAIN;
         }
         if (mySavedSession[3].equals(FLAG_SESSION_JUST_ADDED)) {

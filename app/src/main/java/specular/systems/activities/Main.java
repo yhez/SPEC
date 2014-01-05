@@ -177,7 +177,6 @@ public class Main extends Activity {
     private int layouts[];
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-    private CharSequence mDrawerTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private String[] menuTitles;
     private int[] menuDrawables;
@@ -200,15 +199,7 @@ public class Main extends Activity {
                 TurnNFCOn tno = new TurnNFCOn();
                 tno.show(getFragmentManager(), "nfc");
             } else {
-                PendingIntent pi = PendingIntent.getActivity(Main.this, 0,
-                        new Intent(Main.this, getClass())
-                                .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-                IntentFilter tagDetected = new IntentFilter(
-                        NfcAdapter.ACTION_TAG_DISCOVERED);
-                IntentFilter[] filters = new IntentFilter[]{tagDetected};
-                NfcAdapter
-                        .getDefaultAdapter(Main.this)
-                        .enableForegroundDispatch(Main.this, pi, filters, null);
+                //todo already started at on resume
             }
         else {
             findViewById(R.id.drawer_layout).animate().setDuration(1000)
@@ -304,7 +295,7 @@ public class Main extends Activity {
                 }
                 hash += index++ + ". " + parts[7] + "\n" + StaticVariables.timeStamp + "\n";
                 if (lightMsg)
-                    hash += index++ + ". " + parts[8] + "\n" + Session.toShow(StaticVariables.session) + "\n";
+                    hash += index++ + ". " + parts[8] + "\n" +StaticVariables.session + "\n";
                 hash += index + ". " + parts[9] + "\n" + StaticVariables.hash;
                 ExplainDialog edlg = new ExplainDialog(this,lightMsg?ExplainDialog.HASH:ExplainDialog.HASH_QR, hash);
                 edlg.show(getFragmentManager(), "hash");
@@ -839,7 +830,7 @@ public class Main extends Activity {
                 , R.drawable.learn, R.drawable.manage};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.privateExist() ? 1 : CryptMethods.publicExist() ? 2 : 3;
-        mTitle = mDrawerTitle = getTitle();
+        mTitle  = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 

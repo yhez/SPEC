@@ -189,9 +189,9 @@ public class FragmentManagement extends Fragment {
             imageButtonh.setClickable(false);
         } else
             hs.setImageResource(StaticVariables.flag_hash ? ok : notOk);
-        int status;
         if(StaticVariables.flag_session==Session.KNOWN
-                ||StaticVariables.flag_session==Session.JUST_KNOWN)
+                ||StaticVariables.flag_session==Session.JUST_KNOWN
+                ||StaticVariables.flag_session==Session.UPDATED)
         ss.setImageResource(ok);
         else if(StaticVariables.flag_session==Session.DONT_TRUST)
             ss.setImageResource(notOk);
