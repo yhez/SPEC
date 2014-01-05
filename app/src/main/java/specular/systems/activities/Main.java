@@ -63,6 +63,7 @@ import specular.systems.Dialogs.ContactQR;
 import specular.systems.Dialogs.DeleteContactDialog;
 import specular.systems.Dialogs.ExplainDialog;
 import specular.systems.Dialogs.GenerateKeys;
+import specular.systems.Dialogs.GroupCreate;
 import specular.systems.Dialogs.NotImplemented;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.Dialogs.Response;
@@ -607,8 +608,10 @@ public class Main extends Activity {
                 NdefMessage msg = (NdefMessage) raw[0];
                 NdefRecord pvk = msg.getRecords()[0];
                 if (CryptMethods.setPrivate(pvk
-                        .getPayload()))
+                        .getPayload())){
                     setUpViews();
+                    mDrawerLayout.openDrawer(mDrawerList);
+                }
                 else {
                     t.setText(R.string.cant_find_private_key);
                     t.show();
@@ -824,10 +827,10 @@ public class Main extends Activity {
     }
 
     private void setUpViews() {
-        final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, LEARN = 3, SETUP = 4;
+        final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, LEARN = 3, SETUP = 4,GROUP=5;
         final String[] allMenus = getResources().getStringArray(R.array.menus);
         final int[] allDrb = {R.drawable.encrypt, R.drawable.decrypt, R.drawable.share
-                , R.drawable.learn, R.drawable.manage};
+                , R.drawable.learn, R.drawable.manage,R.drawable.group};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.privateExist() ? 1 : CryptMethods.publicExist() ? 2 : 3;
         mTitle  = getTitle();
@@ -898,7 +901,7 @@ public class Main extends Activity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
                 R.layout.me, R.layout.learn,
-                R.layout.setup/*,R.layout.local*/};
+                R.layout.setup,R.layout.group};
         switch (status) {
             case BOTH:
                 layouts = allLayouts;
@@ -1192,7 +1195,10 @@ public class Main extends Activity {
             MySimpleArrayAdapter.adapter = new MySimpleArrayAdapter(this);
         }
     }
-
+    public void createGroup(View v){
+        GroupCreate gc = new GroupCreate();
+        gc.show(getFragmentManager(),"gc");
+    }
     public void onClickManage(View v) {
         switch (v.getId()) {
             case R.id.button1:

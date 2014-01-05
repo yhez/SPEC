@@ -2,8 +2,10 @@ package specular.systems;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Group {
+    public static List<Group> list;
     byte[] encryptedGroup;
     boolean noPrivateOnDevice;
     String name;
