@@ -246,7 +246,7 @@
         <item>My SPEC</item>
         <item>About</item>
         <item>Manage</item>
-        <item>Safe</item>
+        <item>SPEC Safe</item>
     </string-array>
 
     <string-array name="message_parts">
