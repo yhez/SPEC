@@ -28,7 +28,7 @@
 
     <!--strings related qr code scanner-->
     <string name="bad_data">Please scan again.</string>
-    <string name="get_private_from_qr">QR -> Device</string>
+    <string name="get_private_from_qr">QR &#8592; Device</string>
     <string name="print_private_to_qr">Print QR Backup</string>
     <string name="scan_any_qr_widget">Place QR code within box to scan (message or contact).</string>
     <string name="qr_scan_explain">Place QR code within box to activate magic.</string>
@@ -139,7 +139,7 @@
     <string name="failed_to_create_files_to_send">Could not create files.</string>
     <string name="decrypting">Decrypting&#8230;</string>
     <string name="encrypting">Encrypting&#8230;</string>
-    <string name="backup">Backup&#8230;</string>
+    <string name="backup">Backup ops&#8230;</string>
     <string name="exit_by_back_notify">Press back again to exit.</string>
     <string name="edit_email">email: </string>
     <string name="edit_name">name: </string>
@@ -232,7 +232,7 @@
     <string name="length_name_of_file">File name must be at least 1 character long.</string>
     <string name="time_created">Message time-stamp:\n</string>
     <string name="not_valid_change">Change not valid (length, format).</string>
-    <string name="make_it_default">make it default?</string>
+    <string name="make_it_default">Make default?</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
