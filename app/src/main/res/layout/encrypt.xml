@@ -86,195 +86,21 @@
         android:layout_height="1dp"
         android:layout_above="@id/bottom_panel"
         android:background="@color/spec_blue" />
-
-    <LinearLayout
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_above="@id/divider"
         android:layout_alignParentTop="true"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:id="@+id/frame_grid_last"
+        android:layout_height="match_parent">
+        <android.support.v4.view.PagerTitleStrip
+            android:id="@+id/pager_title_strip"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <GridLayout
-                android:id="@+id/grid_lasts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:columnCount="4"
-                android:rowCount="1">
-
-                <LinearLayout
-                    android:layout_column="0"
-                    android:layout_row="0"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_column="1"
-                    android:layout_row="0"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_column="2"
-                    android:layout_row="0"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_column="3"
-                    android:layout_row="0"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone" />
-                </LinearLayout>
-            </GridLayout>
-
-            <View
-                android:layout_gravity="bottom"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/spec_blue" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ListView
-                android:id="@+id/list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:padding="@dimen/default_gap"
-                android:id="@+id/no_contacts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|center_horizontal"
-                android:text="@string/no_contacts"
-                android:textColor="@color/spec_black"
-                android:textSize="22sp"
-                android:visibility="gone" />
-
-            <ImageButton
-                android:id="@+id/add_file"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:drawablePadding="0dip"
-                android:onClick="onClickEncrypt"
-                android:src="@drawable/ic_attachment_universal_small" />
-
-            <RelativeLayout
-                android:id="@+id/en_contact"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/alert_light_frame"
-                android:isScrollContainer="true"
-                android:padding="@dimen/default_gap"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/chosen_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:padding="@dimen/default_gap" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_toRightOf="@id/chosen_icon"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:padding="@dimen/default_gap">
-
-                    <TextView
-                        android:id="@+id/chosen_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/spec_black"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/chosen_email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/spec_blue"
-                        android:textSize="17sp" />
-                </LinearLayout>
-            </RelativeLayout>
-        </FrameLayout>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textColor="@color/spec_black"
+            android:layout_gravity="top"
+            android:background="@color/spec_blue"
+            />
+    </android.support.v4.view.ViewPager>
 </RelativeLayout>

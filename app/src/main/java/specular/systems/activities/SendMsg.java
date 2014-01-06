@@ -54,8 +54,12 @@ public class SendMsg extends Activity {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
         uris = FilesManagement.getFilesToSend(this);
-        contact = ContactsDataSource.contactsDataSource.findContact(getIntent().getLongExtra("contactId", -1));
-        if (contact.getDefaultApp() == null) {
+        long id = getIntent().getLongExtra("contactId", -1);
+        if(id!=-1)
+        contact = ContactsDataSource.contactsDataSource.findContact(id);
+        else
+        contact=null;
+        if (contact==null||contact.getDefaultApp() == null) {
             show();
         } else {
             Intent i = new Intent();
@@ -74,6 +78,7 @@ public class SendMsg extends Activity {
                 i.setType("image/png");
                 i.putExtra(Intent.EXTRA_STREAM, uris.get(1));
             }
+            if(contact!=null){
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
             i.putExtra(Intent.EXTRA_SUBJECT,
                     getResources().getString(R.string.subject_encrypt));
@@ -87,10 +92,11 @@ public class SendMsg extends Activity {
             } catch (Exception e) {
                 Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
                         .show();
-            }
+            }}
             try {
                 done = true;
                 startActivity(i);
+                if(contact!=null)
                 contact.update(this);
             } catch (Exception e) {
                 show();
@@ -197,6 +203,7 @@ public class SendMsg extends Activity {
     }
 
     private void startOnClick(int what, ResolveInfo rs) {
+        if(contact!=null)
         if (((CheckBox) findViewById(R.id.check_default)).isChecked()) {
             contact.update(rs.activityInfo.packageName + "\n" + rs.activityInfo.name, this);
         }
@@ -212,8 +219,8 @@ public class SendMsg extends Activity {
         ComponentName cn;
         cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
         Intent i = new Intent();
+        if(contact!=null){
         i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
-        i.setComponent(cn);
         i.putExtra(Intent.EXTRA_SUBJECT,
                 getResources().getString(R.string.subject_encrypt));
         try {
@@ -226,7 +233,8 @@ public class SendMsg extends Activity {
         } catch (Exception e) {
             Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
                     .show();
-        }
+        }}
+        i.setComponent(cn);
         if (what == IMAGE || what == BOTH) {
             File f = new File(uris.get(1).getPath());
             File newPath = new File(getFilesDir(), etImage.getText() + ".png");
@@ -268,6 +276,7 @@ public class SendMsg extends Activity {
         try {
             done = true;
             startActivity(i);
+            if(contact!=null)
             contact.update(this);
         } catch (Exception e) {
             //todo

@@ -28,8 +28,8 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
 
 public class CryptMethods {
     public static boolean doneCreatingKeys = false;
-    public static String encryptedMsgToSend = null;
     private static PrivateKey mPtK = null;
+    public static String encryptedMsgToSend;
     private static String myName = null, myEmail = null, myPublicKey = null;
     private static PrivateKey tmpPtK = null;
     private static String tmpPublicKey = null;
@@ -157,7 +157,7 @@ public class CryptMethods {
         }
     }
 
-    public static void encrypt(final byte[] msg,final byte[] light, final String friendPublicKey) {
+    public static String encrypt(final byte[] msg,final byte[] light, final String friendPublicKey) {
         if (notInit) {
             addProviders();
             notInit = false;
@@ -172,8 +172,10 @@ public class CryptMethods {
             if(light!=null)
                 StaticVariables.encryptedLight = Visual.bin2hex(cipher.doFinal(light));
             encryptedMsgToSend = Visual.bin2hex(cipher.doFinal(msg));
+            return encryptedMsgToSend;
         } catch (Exception ignore) {
             ignore.printStackTrace();
+            return null;
         }
     }
 

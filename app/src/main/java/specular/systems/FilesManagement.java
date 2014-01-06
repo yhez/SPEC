@@ -175,11 +175,11 @@ public final class FilesManagement {
         return true;
     }
 
-    private static boolean saveFileToSend(Activity a) {
+    private static boolean saveFileToSend(Activity a,byte[] data) {
         try {
             FileOutputStream fos = a.openFileOutput(a.getString(
                     FILE_NAME_SEND), Context.MODE_WORLD_READABLE);
-            fos.write(CryptMethods.encryptedMsgToSend.getBytes());
+            fos.write(data);
             fos.close();
             return true;
         } catch (Exception e) {
@@ -206,13 +206,13 @@ public final class FilesManagement {
     }
 
     // ORI : took out the createfiletosend logic to savefiletosend function
-    public static boolean createFilesToSend(Activity a, boolean qr) {
+    public static boolean createFilesToSend(Activity a, boolean qr,byte[] data) {
         boolean qrSuccess = true, fileSuccess;
         if (qr)
             qrSuccess = saveQRToSend(a);
         else
             new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
-        fileSuccess = saveFileToSend(a, a.getString(FILE_NAME_SEND), CryptMethods.encryptedMsgToSend.getBytes());
+        fileSuccess = saveFileToSend(a, a.getString(FILE_NAME_SEND), data);
         return qrSuccess || fileSuccess;
     }
 

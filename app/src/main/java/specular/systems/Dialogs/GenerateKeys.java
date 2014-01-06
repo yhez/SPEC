@@ -3,9 +3,9 @@ package specular.systems.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import specular.systems.FragmentManagement;
-import specular.systems.StaticVariables;
 import specular.systems.R;
+import specular.systems.StaticVariables;
 import specular.systems.Visual;
+import specular.systems.activities.Main;
 
 
 public class GenerateKeys extends DialogFragment {
@@ -60,7 +61,7 @@ public class GenerateKeys extends DialogFragment {
                 } else {
                     StaticVariables.currentLayout = R.layout.create_new_keys;
                     final Fragment fragment = new FragmentManagement();
-                    final FragmentManager fragmentManager = getFragmentManager();
+                    final FragmentManager fragmentManager = Main.main.getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                     GenerateKeys.this.getDialog().cancel();
                 }

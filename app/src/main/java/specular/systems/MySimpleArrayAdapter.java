@@ -1,10 +1,10 @@
 package specular.systems;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +89,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                 StaticVariables.currentLayout = edit_contact;
                 args.putInt("index", position);
                 fragment.setArguments(args);
-                FragmentManager fragmentManager = Main.main.getFragmentManager();
+                FragmentManager fragmentManager = Main.main.getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame, fragment).commit();
             }

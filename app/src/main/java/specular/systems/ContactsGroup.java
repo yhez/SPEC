@@ -8,8 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
-import specular.systems.widget.SimpleList;
+import android.widget.TextView;
 
 
 public class ContactsGroup extends FragmentStatePagerAdapter {
@@ -19,7 +18,7 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
     }
     @Override
     public Fragment getItem(int i) {
-        Fragment fragment = new PageList();
+        Fragment fragment = new PageList(i);
         return fragment;
     }
 
@@ -32,13 +31,34 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
         return (p==0?"contacts":"groups");
     }
     public static class PageList extends Fragment{
+        int index;
+        public PageList(int i){
+            super();
+            index=i;
+        }
         @Override
         public View onCreateView(LayoutInflater layoutInflater,ViewGroup container,Bundle b){
-            int i = b.getInt("i");
-            ListView lv = new ListView(getActivity());
-            SimpleList sl = new SimpleList(getActivity());
-            lv.setAdapter(sl);
-            return lv;
+            View rootView = layoutInflater.inflate(R.layout.list,container,false);
+            StaticVariables.luc.showIfNeeded(getActivity(), rootView);
+            TextView tv = (TextView)rootView.findViewById(R.id.no_contacts);
+            ListView lv = (ListView)rootView.findViewById(R.id.list);
+            if(index==0){
+                if (StaticVariables.fullList.size() == 0) {
+                    tv.setVisibility(View.VISIBLE);
+                    lv.setVisibility(View.GONE);
+                }else{
+                    lv.setAdapter(MySimpleArrayAdapter.adapter);
+                    MySimpleArrayAdapter.adapter.showOriginal();
+                    lv.setVisibility(View.VISIBLE);
+                    tv.setVisibility(View.GONE);
+                }
+
+            }else{
+                tv.setText("no groups yet");
+                tv.setVisibility(View.VISIBLE);
+                lv.setVisibility(View.GONE);
+            }
+            return rootView;
         }
     }
 }

@@ -115,9 +115,9 @@ public class Response extends DialogFragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        CryptMethods.encrypt(msg.getFormatedMsg(), lightMessage.getFormatedMsg(),
-                                contact.getPublicKey());
-                        boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR);
+                        byte[] data = CryptMethods.encrypt(msg.getFormatedMsg(), lightMessage.getFormatedMsg(),
+                                contact.getPublicKey()).getBytes();
+                        boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR,data);
                         prgd.cancel();
                         if (success) {
                             Intent intent = new Intent(getActivity(), SendMsg.class);

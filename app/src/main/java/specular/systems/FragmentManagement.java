@@ -3,7 +3,6 @@ package specular.systems;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +12,8 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -31,7 +32,6 @@ import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -431,16 +431,9 @@ public class FragmentManagement extends Fragment {
                 });
                 break;
             case encrypt:
-                MySimpleArrayAdapter.adapter.showOriginal();
-                ListView lv = (ListView) rootView.findViewById(R.id.list);
-                lv.setAdapter(MySimpleArrayAdapter.adapter);
-                if (StaticVariables.fullList.size() > 0) {
-                    rootView.findViewById(R.id.no_contacts).setVisibility(View.GONE);
-                    lv.setVisibility(View.VISIBLE);
-                } else {
-                    rootView.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
-                    lv.setVisibility(View.GONE);
-                }
+                ViewPager vp = (ViewPager)rootView.findViewById(R.id.pager);
+                ContactsGroup cg = new ContactsGroup(Main.main.getSupportFragmentManager());
+                vp.setAdapter(cg);
                 StaticVariables.readyToSend = false;
                 final EditText et = (EditText) rootView.findViewById(R.id.message);
                 et.addTextChangedListener(new TextWatcher() {
@@ -523,7 +516,6 @@ public class FragmentManagement extends Fragment {
                         hndl.sendMessage(msg);
                     }
                 });
-                StaticVariables.luc.showIfNeeded(getActivity(), rootView);
                 if (StaticVariables.currentText != null)
                     et.setText(StaticVariables.currentText);
                 break;

@@ -50,7 +50,7 @@
             android:layout_gravity="center"
             android:padding="@dimen/default_gap"
             android:text="@string/import_export_manage"
-            android:textColor="@color/spec_gray" />
+            android:textColor="@color/spec_black" />
 
         <View
             android:layout_width="match_parent"

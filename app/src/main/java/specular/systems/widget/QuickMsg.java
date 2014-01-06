@@ -111,9 +111,9 @@ public class QuickMsg extends Activity {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    CryptMethods.encrypt(msg.getFormatedMsg(),lightMessage.getFormatedMsg(),
-                                            contact.getPublicKey());
-                                    boolean success = FilesManagement.createFilesToSend(QuickMsg.this, userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR);
+                                    byte[] data = CryptMethods.encrypt(msg.getFormatedMsg(),lightMessage.getFormatedMsg(),
+                                            contact.getPublicKey()).getBytes();
+                                    boolean success = FilesManagement.createFilesToSend(QuickMsg.this, userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR,data);
                                     if (success) {
                                         prgd.cancel();
                                         Intent intent = new Intent(QuickMsg.this,SendMsg.class);

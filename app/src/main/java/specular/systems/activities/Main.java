@@ -2,8 +2,6 @@ package specular.systems.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +23,9 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
@@ -85,9 +86,11 @@ import specular.systems.StaticVariables;
 import specular.systems.Visual;
 
 
-public class Main extends Activity {
+public class Main extends FragmentActivity {
+    private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2,
+            DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_FOCUS = 76;
     public static Main main;
-    private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2, DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_FOCUS = 76;
+    public static boolean exit = false;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -166,12 +169,14 @@ public class Main extends Activity {
                 case CLEAR_FOCUS:
                     findViewById(R.id.message).clearFocus();
                     break;
+                case 77:
+                    Toast.makeText(Main.this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
+                    break;
             }
         }
     };
     private final int ATTACH_FILE = 0, SCAN_QR = 1;
     public Handler handler;
-    public static boolean exit = false;
     boolean msgSended = false;
     Thread addFile;
     private Toast t = null;
@@ -223,9 +228,9 @@ public class Main extends Activity {
                     lMsg = new LightMessage(userInput);
                 MessageFormat msg = new MessageFormat(StaticVariables.fileContent, CryptMethods.getMyDetails(Main.this), fileName, userInput,
                         contact.getSession());
-                CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
-                        contact.getPublicKey());
-                sendMessage();
+                byte[] data =CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
+                        contact.getPublicKey()).getBytes();
+                sendMessage(data);
                 prgd.cancel();
                 msgSended = true;
             }
@@ -297,9 +302,9 @@ public class Main extends Activity {
                 }
                 hash += index++ + ". " + parts[7] + "\n" + StaticVariables.timeStamp + "\n";
                 if (lightMsg)
-                    hash += index++ + ". " + parts[8] + "\n" +StaticVariables.session + "\n";
+                    hash += index++ + ". " + parts[8] + "\n" + StaticVariables.session + "\n";
                 hash += index + ". " + parts[9] + "\n" + StaticVariables.hash;
-                ExplainDialog edlg = new ExplainDialog(this,lightMsg?ExplainDialog.HASH:ExplainDialog.HASH_QR, hash);
+                ExplainDialog edlg = new ExplainDialog(this, lightMsg ? ExplainDialog.HASH : ExplainDialog.HASH_QR, hash);
                 edlg.show(getFragmentManager(), "hash");
                 break;
             case R.id.session:
@@ -340,7 +345,7 @@ public class Main extends Activity {
                     default:
                         msg = Session.toShow(StaticVariables.session);
                 }
-                ExplainDialog edl = new ExplainDialog(this,ExplainDialog.SESSION, msg);
+                ExplainDialog edl = new ExplainDialog(this, ExplainDialog.SESSION, msg);
                 edl.show(getFragmentManager(), "session");
                 break;
             case R.id.replay:
@@ -379,7 +384,7 @@ public class Main extends Activity {
                             replay += getString(R.string.light_msg_old);
                             break;
                     }
-                ExplainDialog ed = new ExplainDialog(this,lightMsg?ExplainDialog.REPLAY:ExplainDialog.REPLAY_QR, replay);
+                ExplainDialog ed = new ExplainDialog(this, lightMsg ? ExplainDialog.REPLAY : ExplainDialog.REPLAY_QR, replay);
                 ed.show(getFragmentManager(), "replay");
                 break;
         }
@@ -478,6 +483,7 @@ public class Main extends Activity {
                 break;
         }
     }
+
     public void onClick(final View v) {
         switch (StaticVariables.currentLayout) {
             case R.layout.wait_nfc_decrypt:
@@ -609,11 +615,10 @@ public class Main extends Activity {
                 NdefMessage msg = (NdefMessage) raw[0];
                 NdefRecord pvk = msg.getRecords()[0];
                 if (CryptMethods.setPrivate(pvk
-                        .getPayload())){
+                        .getPayload())) {
                     setUpViews();
                     mDrawerLayout.openDrawer(mDrawerList);
-                }
-                else {
+                } else {
                     t.setText(R.string.cant_find_private_key);
                     t.show();
                 }
@@ -804,7 +809,7 @@ public class Main extends Activity {
         View v = findViewById(StaticVariables.currentLayout);
         if (v != null) v.animate().setDuration(100).alpha(0).start();
         final Fragment fragment = new FragmentManagement();
-        final FragmentManager fragmentManager = getFragmentManager();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
         if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
             mDrawerLayout.closeDrawer(mDrawerList);
             handler.postDelayed(new Runnable() {
@@ -817,7 +822,7 @@ public class Main extends Activity {
         } else
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame, fragment).commit();
-        exit=false;
+        exit = false;
     }
 
     @Override
@@ -828,13 +833,13 @@ public class Main extends Activity {
     }
 
     private void setUpViews() {
-        final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, LEARN = 3, SETUP = 4,GROUP=5;
+        final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, LEARN = 3, SETUP = 4, EXPLORER = 5;
         final String[] allMenus = getResources().getStringArray(R.array.menus);
         final int[] allDrb = {R.drawable.encrypt, R.drawable.decrypt, R.drawable.share
-                , R.drawable.learn, R.drawable.manage,R.drawable.group};
+                , R.drawable.learn, R.drawable.manage, R.drawable.explore};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.privateExist() ? 1 : CryptMethods.publicExist() ? 2 : 3;
-        mTitle  = getTitle();
+        mTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -902,7 +907,7 @@ public class Main extends Activity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
                 R.layout.me, R.layout.learn,
-                R.layout.setup,R.layout.group};
+                R.layout.setup, R.layout.explorer};
         switch (status) {
             case BOTH:
                 layouts = allLayouts;
@@ -1124,11 +1129,11 @@ public class Main extends Activity {
         }
     }
 
-    void sendMessage() {
+    void sendMessage(byte[] data) {
         boolean success = FilesManagement.createFilesToSend(this, (userInput.length() +
                 (StaticVariables.fileContent != null ?
                         StaticVariables.fileContent.length : 0)) <
-                StaticVariables.MSG_LIMIT_FOR_QR);
+                StaticVariables.MSG_LIMIT_FOR_QR,data);
         if (success) {
             hndl.sendEmptyMessage(CLEAR_FOCUS);
             Intent intent = new Intent(this, SendMsg.class);
@@ -1138,7 +1143,15 @@ public class Main extends Activity {
             Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
         }
     }
-
+    void sendBackup(byte[] data) {
+        boolean success = FilesManagement.createBackupFileToSend(this, data);
+        if (success) {
+            Intent intent = new Intent(this, SendMsg.class);
+            startActivity(intent);
+        } else {
+            hndl.sendEmptyMessage(77);
+        }
+    }
     public void onClickShare(View v) {
         selectItem(-1, R.layout.profile, null);
     }
@@ -1164,10 +1177,10 @@ public class Main extends Activity {
         NfcAdapter
                 .getDefaultAdapter(this)
                 .enableForegroundDispatch(this, pi, filters, null);
-        if(KeysDeleter.keysDeleted){
+        if (KeysDeleter.keysDeleted) {
             FilesManagement.getKeysFromSDCard(this);
-            KeysDeleter.keysDeleted=false;
-        }else{
+            KeysDeleter.keysDeleted = false;
+        } else {
             KeysDeleter.stop();
             return;
         }
@@ -1196,34 +1209,36 @@ public class Main extends Activity {
             MySimpleArrayAdapter.adapter = new MySimpleArrayAdapter(this);
         }
     }
-    public void createGroup(View v){
+
+    public void createGroup(View v) {
         GroupCreate gc = new GroupCreate();
-        gc.show(getFragmentManager(),"gc");
+        gc.show(getFragmentManager(), "gc");
     }
+
     public void onClickManage(View v) {
         switch (v.getId()) {
             case R.id.button1:
-                if(CryptMethods.privateExist()){
-                GenerateKeys gk = new GenerateKeys();
-                gk.show(getFragmentManager(), "gk");
-                }else{
+                if (CryptMethods.privateExist()) {
+                    GenerateKeys gk = new GenerateKeys();
+                    gk.show(getFragmentManager(), "gk");
+                } else {
                     t.setText(R.string.reject_changes);
                     t.show();
                 }
                 break;
             case R.id.button2:
-                // TODO : ORI added separate the intent logic
-                boolean success = Backup.backup(this);
-                if (success) {
-                    hndl.sendEmptyMessage(CLEAR_FOCUS);
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.upload_account_backup));
-                    intent.putExtra(Intent.EXTRA_STREAM, FilesManagement.getBackupFileToShare(this));
-                    intent.setType("image/jpeg");
-                    startActivity(Intent.createChooser(intent,getResources().getString(R.string.backup_profile)));
-                } else {
-                    Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
-                }
+                final ProgressDlg prgd = new ProgressDlg(this, R.string.encrypting);
+                prgd.setCancelable(false);
+                prgd.show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        byte[] data =CryptMethods.encrypt(Backup.backup(Main.this), null, CryptMethods.getPublic()).getBytes();
+                        sendBackup(data);
+                        prgd.cancel();
+                        msgSended = true;
+                    }
+                }).start();
                 break;
             case R.id.button3:
                 Intent intent = new Intent(this, PrivateKeyManager.class);
