@@ -214,7 +214,7 @@
     <string name="dont_send_now">Not now</string>
     <string name="send_report_title">Send Error Report</string>
     <string name="choose_contact_for_widget">Choose Contact:</string>
-    <string name="import_export_manage">Backup Manager</string>
+    <string name="import_export_manage">Backup My SPEC</string>
     <string name="move_key_to_nfc_and_such">Private Key Manager</string>
     <string name="sync_keys_between_devices">Device Sync</string>
     <string name="generator_menu_title">Generating Keys&#8230;</string>
