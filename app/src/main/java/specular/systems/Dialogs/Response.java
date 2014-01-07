@@ -20,6 +20,7 @@ import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
 import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
+import specular.systems.FragmentManagement;
 import specular.systems.LightMessage;
 import specular.systems.MessageFormat;
 import specular.systems.R;
@@ -43,10 +44,10 @@ public class Response extends DialogFragment {
         View v = inflater.inflate(R.layout.response, null);
         builder.setView(v);
         final CheckBox cb = (CheckBox) v.findViewById(R.id.quote);
-        if (StaticVariables.currentLayout == R.layout.edit_contact) {
+        if (FragmentManagement.currentLayout == R.layout.edit_contact) {
             contact = ContactsDataSource.contactsDataSource.findContact(Long.parseLong(
                     ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));
-        } else if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
+        } else if (FragmentManagement.currentLayout == R.layout.decrypted_msg) {
             contact = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
             if (StaticVariables.msg_content != null && StaticVariables.msg_content.length() > 0) {
                 cb.setVisibility(View.VISIBLE);
@@ -85,7 +86,7 @@ public class Response extends DialogFragment {
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (StaticVariables.currentLayout == R.layout.decrypted_msg)
+                if (FragmentManagement.currentLayout == R.layout.decrypted_msg)
                     getActivity().findViewById(R.id.answer).setVisibility(View.GONE);
                 final String userInput = et.getText().toString();
                 String msgContent;

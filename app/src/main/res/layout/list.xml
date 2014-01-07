@@ -144,47 +144,57 @@
             android:onClick="onClickEncrypt"
             android:src="@drawable/ic_attachment_universal_small" />
 
-        <RelativeLayout
+        <FrameLayout
             android:id="@+id/en_contact"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:visibility="gone"
             android:background="@android:drawable/alert_light_frame"
-            android:isScrollContainer="true"
-            android:padding="@dimen/default_gap"
-            android:visibility="gone">
-
-            <ImageView
-                android:id="@+id/chosen_icon"
+            android:layout_height="wrap_content">
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:padding="@dimen/default_gap" />
+                android:isScrollContainer="true">
 
-            <LinearLayout
+                <ImageView
+                    android:id="@+id/chosen_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:padding="@dimen/default_gap" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="@dimen/default_gap">
+
+                    <TextView
+                        android:id="@+id/chosen_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/spec_black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/chosen_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/spec_blue"
+                        android:textSize="17sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/x"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@id/chosen_icon"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:padding="@dimen/default_gap">
-
-                <TextView
-                    android:id="@+id/chosen_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/spec_black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/chosen_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/spec_blue"
-                    android:textSize="17sp" />
-            </LinearLayout>
-        </RelativeLayout>
+                android:layout_gravity="right|top"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
+        </FrameLayout>
     </FrameLayout>
 </LinearLayout>

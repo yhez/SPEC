@@ -18,6 +18,7 @@ import com.google.zxing.WriterException;
 import specular.systems.Contact;
 import specular.systems.ContactCard;
 import specular.systems.ContactsDataSource;
+import specular.systems.FragmentManagement;
 import specular.systems.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.StaticVariables;
@@ -61,11 +62,11 @@ public class AddContactDlg extends DialogFragment {
                             c.update(getActivity(), null, null, pcc.getPublicKey(), null);
                         } else
                             c = new Contact(getActivity(), pcc.getName(), pcc.getEmail(), pcc.getPublicKey(), session);
-                        if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
+                        if (FragmentManagement.currentLayout == R.layout.decrypted_msg) {
                             ((TextView) getActivity().findViewById(R.id.flag_contact_exist)).setText(true + "");
                             getActivity().invalidateOptionsMenu();
                         }
-                        if (StaticVariables.currentLayout == R.layout.encrypt) {
+                        if (FragmentManagement.currentLayout == R.layout.encrypt) {
                             StaticVariables.fragmentManagement.contactChosen(c.getId());
                         }
 

@@ -86,7 +86,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                 Main.exit=false;
                 Fragment fragment = new FragmentManagement();
                 Bundle args = new Bundle();
-                StaticVariables.currentLayout = edit_contact;
+                FragmentManagement.currentLayout = edit_contact;
                 args.putInt("index", position);
                 fragment.setArguments(args);
                 FragmentManager fragmentManager = Main.main.getSupportFragmentManager();
@@ -147,7 +147,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                         .compareTo((contact2.getContactName().toLowerCase()+contact2.getEmail().toLowerCase()));
             }
         });
-        if(StaticVariables.currentLayout==R.layout.encrypt){
+        if(FragmentManagement.currentLayout==R.layout.encrypt){
         View v = a.findViewById(R.id.list);
         if (v != null)
             if (StaticVariables.fullList.size() > 0) {

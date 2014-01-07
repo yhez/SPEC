@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import specular.systems.FragmentManagement;
 import specular.systems.R;
-import specular.systems.StaticVariables;
 import specular.systems.Visual;
 import specular.systems.activities.Main;
 
@@ -59,7 +58,7 @@ public class GenerateKeys extends DialogFragment {
                         }
                     });
                 } else {
-                    StaticVariables.currentLayout = R.layout.create_new_keys;
+                    FragmentManagement.currentLayout = R.layout.create_new_keys;
                     final Fragment fragment = new FragmentManagement();
                     final FragmentManager fragmentManager = Main.main.getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();

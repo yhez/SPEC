@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -27,17 +29,22 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import specular.systems.activities.Main;
@@ -53,6 +60,7 @@ import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 public class FragmentManagement extends Fragment {
+    public static int currentLayout;
     final Thread checkHash = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -189,16 +197,16 @@ public class FragmentManagement extends Fragment {
             imageButtonh.setClickable(false);
         } else
             hs.setImageResource(StaticVariables.flag_hash ? ok : notOk);
-        if(StaticVariables.flag_session==Session.KNOWN
-                ||StaticVariables.flag_session==Session.JUST_KNOWN
-                ||StaticVariables.flag_session==Session.UPDATED)
-        ss.setImageResource(ok);
-        else if(StaticVariables.flag_session==Session.DONT_TRUST)
+        if (StaticVariables.flag_session == Session.KNOWN
+                || StaticVariables.flag_session == Session.JUST_KNOWN
+                || StaticVariables.flag_session == Session.UPDATED)
+            ss.setImageResource(ok);
+        else if (StaticVariables.flag_session == Session.DONT_TRUST)
             ss.setImageResource(notOk);
-        else if(StaticVariables.flag_session==Session.UNKNOWN)
+        else if (StaticVariables.flag_session == Session.UNKNOWN)
             ss.setVisibility(View.GONE);
-        else if(StaticVariables.flag_session==Session.RESET_SESSION
-                ||StaticVariables.flag_session==Session.AGAIN)
+        else if (StaticVariables.flag_session == Session.RESET_SESSION
+                || StaticVariables.flag_session == Session.AGAIN)
             ss.setImageResource(starting);
         if (StaticVariables.flag_replay == MessageFormat.NOT_RELEVANT)
             rp.setVisibility(View.GONE);
@@ -211,14 +219,14 @@ public class FragmentManagement extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(StaticVariables.currentLayout,
+        rootView = inflater.inflate(currentLayout,
                 container, false);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
         if (StaticVariables.luc == null)
             StaticVariables.luc = new LastUsedContacts(getActivity());
-        switch (StaticVariables.currentLayout) {
+        switch (currentLayout) {
             case create_new_keys:
                 addSocialLogin();
                 final EditText etEmail1 = (EditText) rootView.findViewById(R.id.email), etName1 = (EditText) rootView.findViewById(R.id.name);
@@ -307,7 +315,7 @@ public class FragmentManagement extends Fragment {
                 else
                     sessions = Session.toHide();
                 ((TextView) rootView.findViewById(R.id.contact_session))
-                            .setText(sessions);
+                        .setText(sessions);
                 ImageButton ibb = (ImageButton) rootView.findViewById(R.id.contact_picture);
                 QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(currContact.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 256);
                 Bitmap bitmap = null;
@@ -431,9 +439,25 @@ public class FragmentManagement extends Fragment {
                 });
                 break;
             case encrypt:
-                ViewPager vp = (ViewPager)rootView.findViewById(R.id.pager);
+                ViewPager vp = (ViewPager) rootView.findViewById(R.id.pager);
                 ContactsGroup cg = new ContactsGroup(Main.main.getSupportFragmentManager());
                 vp.setAdapter(cg);
+                vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int i, float v, int i2) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int i) {
+                        getActivity().invalidateOptionsMenu();
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int i) {
+
+                    }
+                });
                 StaticVariables.readyToSend = false;
                 final EditText et = (EditText) rootView.findViewById(R.id.message);
                 et.addTextChangedListener(new TextWatcher() {
@@ -576,6 +600,48 @@ public class FragmentManagement extends Fragment {
                 Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
                 rootView.findViewById(R.id.image_public).setAnimation(anim);
                 rootView.findViewById(R.id.image_public).setClickable(false);
+                break;
+            case R.layout.explorer:
+                ListView lv = (ListView) rootView.findViewById(R.id.list);
+                File folder;
+                if (StaticVariables.path==null)
+                    StaticVariables.path = Environment.getExternalStorageDirectory();
+                final ArrayList<String> files = new ArrayList<String>();
+                for (String s : StaticVariables.path.list())
+                    files.add(s);
+                final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, files);
+                lv.setAdapter(adapter);
+                //adapter.notifyDataSetChanged();
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        String fname = ((TextView) view).getText().toString();
+                        File f = new File(StaticVariables.path, fname);
+                        if (f.isFile()) {
+                            String ext = fname.substring(fname.lastIndexOf('.') + 1);
+                            MimeTypeMap mtm = MimeTypeMap.getSingleton();
+                            String type = mtm.getMimeTypeFromExtension(ext);
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            Uri uri = Uri.fromFile(f);
+                            if (type == null)
+                                if (ext.toLowerCase().equals("spec")) {
+                                    type = "application/SPEC";
+                                } else {
+                                    type = "*/*";
+                                }
+                            intent.setDataAndType(uri, type);
+                            startActivity(intent);
+                        } else if (f.isDirectory()) {
+                            files.clear();
+                            for (String s : f.list()) {
+                                files.add(s);
+                            }
+                            StaticVariables.path=new File(StaticVariables.path,fname);
+                            adapter.notifyDataSetChanged();
+                        }
+
+                    }
+                });
                 break;
             case R.layout.profile:
                 final ImageButton ibMyName = (ImageButton) rootView.findViewById(R.id.test).findViewById(R.id.image_button);
@@ -733,41 +799,25 @@ public class FragmentManagement extends Fragment {
         ((TextView) rootView.findViewById(R.id.chosen_name)).setText(cvc.getContactName());
         ((TextView) rootView.findViewById(R.id.chosen_email)).setText(cvc.getEmail());
         ((ImageView) rootView.findViewById(R.id.chosen_icon)).setImageBitmap(cvc.getPhoto());
-        EditText myEditText = (EditText)rootView.findViewById(R.id.message);
+        EditText myEditText = (EditText) rootView.findViewById(R.id.message);
         myEditText.requestFocus();
-        ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
+        ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
                 .showSoftInput(myEditText, InputMethodManager.SHOW_FORCED);
         final View cont = rootView.findViewById(R.id.en_contact);
         cont.setVisibility(View.VISIBLE);
         cont.setAlpha(1);
-        cont.setX(0);
-        cont.setOnTouchListener(new View.OnTouchListener() {
+        rootView.findViewById(R.id.x).setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    startPointX = motionEvent.getRawX();
-                    width = cont.getWidth();
-                } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_UP) {
-                    if (cont.getAlpha() < 0.2) {
-                        cont.setVisibility(View.GONE);
-                        ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText("");
-                        EditText myEditText =(EditText)rootView.findViewById(R.id.message);
-                        rootView.findViewById(R.id.message).clearFocus();
-                        ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
-                                .hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
-                        rootView.findViewById(R.id.list).setVisibility(View.VISIBLE);
-                        StaticVariables.luc.showIfNeeded(getActivity(), null);
-                        getActivity().invalidateOptionsMenu();
-                    } else {
-                        cont.setAlpha(1);
-                        cont.setX(0);
-                    }
-                } else if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
-                    cont.setX(motionEvent.getRawX() - startPointX);
-                    float f = Math.abs(motionEvent.getRawX() - startPointX) * 2 / width;
-                    cont.setAlpha(1 - f);
-                }
-                return true;
+            public void onClick(View view) {
+                cont.setVisibility(View.GONE);
+                ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText("");
+                EditText myEditText = (EditText) rootView.findViewById(R.id.message);
+                rootView.findViewById(R.id.message).clearFocus();
+                ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
+                rootView.findViewById(R.id.list).setVisibility(View.VISIBLE);
+                StaticVariables.luc.showIfNeeded(getActivity(), null);
+                getActivity().invalidateOptionsMenu();
             }
         });
     }

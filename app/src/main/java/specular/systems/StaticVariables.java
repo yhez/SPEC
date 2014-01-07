@@ -2,6 +2,7 @@ package specular.systems;
 
 import android.text.method.KeyListener;
 
+import java.io.File;
 import java.util.List;
 
 public class StaticVariables {
@@ -15,7 +16,6 @@ public class StaticVariables {
     public final static int MSG_LIMIT_FOR_QR = 141;
     public static KeyListener edit;
     public static String currentText = "";
-    public static int currentLayout;
     //the complete list
     public static List<Contact> fullList;
     public static byte[] fileContent;
@@ -36,4 +36,5 @@ public class StaticVariables {
     public static String msg_content = null, file_name = null, session = null;
     public static long orig_msg_size,encrypted_msg_size;
     public static String encryptedLight;
+    public static File path;
 }

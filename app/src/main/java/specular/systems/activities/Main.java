@@ -27,6 +27,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -58,6 +59,7 @@ import specular.systems.Backup;
 import specular.systems.Contact;
 import specular.systems.ContactCard;
 import specular.systems.ContactsDataSource;
+import specular.systems.ContactsGroup;
 import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.Dialogs.AddContactDlg;
@@ -95,7 +97,7 @@ public class Main extends FragmentActivity {
         @Override
         public void handleMessage(Message msg) {
             ImageButton imageButton = null;
-            if (StaticVariables.currentLayout == R.layout.encrypt) {
+            if (FragmentManagement.currentLayout == R.layout.encrypt) {
                 imageButton = (ImageButton) findViewById(R.id.add_file);
             }
             switch (msg.what) {
@@ -141,7 +143,7 @@ public class Main extends FragmentActivity {
                     ((TextView) findViewById(R.id.message)).setHint(R.string.send_another_msg);
                     break;
                 case DONE_CREATE_KEYS:
-                    if (StaticVariables.currentLayout == R.layout.recreating_keys) {
+                    if (FragmentManagement.currentLayout == R.layout.recreating_keys) {
                         if (CryptMethods.getPublicTmp() == null) {
                             new createKeys().start();
                         } else {
@@ -160,7 +162,7 @@ public class Main extends FragmentActivity {
                     }
                     break;
                 case PROGRESS:
-                    if (StaticVariables.currentLayout == R.layout.recreating_keys) {
+                    if (FragmentManagement.currentLayout == R.layout.recreating_keys) {
                         long tt = System.currentTimeMillis() - startTime;
                         int prcnt = avrg == 0 ? (int) (tt / 10) : (int) (tt * 100 / avrg);
                         ((ProgressBar) findViewById(R.id.progress_bar)).setProgress(prcnt);
@@ -228,7 +230,7 @@ public class Main extends FragmentActivity {
                     lMsg = new LightMessage(userInput);
                 MessageFormat msg = new MessageFormat(StaticVariables.fileContent, CryptMethods.getMyDetails(Main.this), fileName, userInput,
                         contact.getSession());
-                byte[] data =CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
+                byte[] data = CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
                         contact.getPublicKey()).getBytes();
                 sendMessage(data);
                 prgd.cancel();
@@ -425,10 +427,10 @@ public class Main extends FragmentActivity {
             } else {
                 String result = intent.getStringExtra("barcode");
                 if (result != null) {
-                    if (StaticVariables.currentLayout == R.layout.decrypt) {
+                    if (FragmentManagement.currentLayout == R.layout.decrypt) {
                         getIntent().putExtra("message", result);
                         setUpViews();
-                    } else if (StaticVariables.currentLayout == R.layout.encrypt) {
+                    } else if (FragmentManagement.currentLayout == R.layout.encrypt) {
                         StaticVariables.fileContactCard = new ContactCard(this, result);
                         if (StaticVariables.fileContactCard.getPublicKey() != null) {
                             setUpViews();
@@ -485,7 +487,7 @@ public class Main extends FragmentActivity {
     }
 
     public void onClick(final View v) {
-        switch (StaticVariables.currentLayout) {
+        switch (FragmentManagement.currentLayout) {
             case R.layout.wait_nfc_decrypt:
                 Intent i = new Intent(Settings.ACTION_NFC_SETTINGS);
                 startActivity(i);
@@ -545,7 +547,7 @@ public class Main extends FragmentActivity {
     @Override
     public void onNewIntent(Intent i) {
         super.onNewIntent(i);
-        if (StaticVariables.currentLayout == R.layout.wait_nfc_to_write) {
+        if (FragmentManagement.currentLayout == R.layout.wait_nfc_to_write) {
             Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if (tag != null) {
                 byte[] bin = Visual.hex2bin(CryptMethods.getPrivateTmp());
@@ -638,24 +640,27 @@ public class Main extends FragmentActivity {
         }
 
         // Handle action buttons
-        if (StaticVariables.currentLayout == R.layout.encrypt) {
+        if (FragmentManagement.currentLayout == R.layout.encrypt) {
             if (item.getTitle().equals("Scan")) {
                 Intent i = new Intent(this, StartScan.class);
                 startActivityForResult(i, SCAN_QR);
+            } else if (item.getTitle().equals("Add")) {
+                GroupCreate gc = new GroupCreate();
+                gc.show(getFragmentManager(), "gc");
             }
-        } else if (StaticVariables.currentLayout == R.layout.edit_contact) {
+        } else if (FragmentManagement.currentLayout == R.layout.edit_contact) {
             ShareContactDlg sd = new ShareContactDlg();
             sd.show(getFragmentManager(), ((EditText) findViewById(R.id.contact_name)
                     .findViewById(R.id.edit_text)).getText().toString());
-        } else if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
+        } else if (FragmentManagement.currentLayout == R.layout.decrypted_msg) {
             ContactCard pcc = new ContactCard(this
                     , StaticVariables.friendsPublicKey
                     , StaticVariables.email, StaticVariables.name);
             Contact c = ContactsDataSource.contactsDataSource.findContactByEmail(StaticVariables.email);
             AddContactDlg acd = new AddContactDlg(pcc, StaticVariables.session, c != null ? c.getId() : -1);
             acd.show(getFragmentManager(), "acd3");
-        } else if (StaticVariables.currentLayout == R.layout.me
-                || StaticVariables.currentLayout == R.layout.profile) {
+        } else if (FragmentManagement.currentLayout == R.layout.me
+                || FragmentManagement.currentLayout == R.layout.profile) {
             share(null);
         }
         return super.onOptionsItemSelected(item);
@@ -668,7 +673,7 @@ public class Main extends FragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (StaticVariables.currentLayout == R.layout.encrypt) {
+        if (FragmentManagement.currentLayout == R.layout.encrypt) {
             final SearchView sv = new SearchView(getActionBar().getThemedContext());
             sv.setQueryHint("Search");
             sv.setIconified(false);
@@ -693,21 +698,23 @@ public class Main extends FragmentActivity {
                     .setIcon(R.drawable.search)
                     .setActionView(sv)
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-
             menu.add(Menu.NONE, Menu.NONE, 1, "Scan")
                     .setIcon(R.drawable.sun)
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            menu.add(Menu.NONE, Menu.NONE, 1, "Add")
+                    .setIcon(android.R.drawable.ic_menu_add)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             return super.onCreateOptionsMenu(menu);
         }
-        if (StaticVariables.currentLayout == R.layout.me
-                || StaticVariables.currentLayout == R.layout.profile
-                || StaticVariables.currentLayout == R.layout.edit_contact) {
+        if (FragmentManagement.currentLayout == R.layout.me
+                || FragmentManagement.currentLayout == R.layout.profile
+                || FragmentManagement.currentLayout == R.layout.edit_contact) {
             menu.add(Menu.NONE, Menu.NONE, 1, "Share")
                     .setIcon(android.R.drawable.ic_menu_share).setTitle("Share").setTitleCondensed("Share")
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
             return super.onCreateOptionsMenu(menu);
         }
-        if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
+        if (FragmentManagement.currentLayout == R.layout.decrypted_msg) {
             menu.add(Menu.NONE, Menu.NONE, 1, "add")
                     .setIcon(android.R.drawable.ic_menu_add)
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
@@ -722,18 +729,25 @@ public class Main extends FragmentActivity {
         MenuItem mi = menu.getItem(0);
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         mi.setVisible(!drawerOpen);
-        if (menu.size() == 2) {
+        if (menu.size() > 1) {
             MenuItem mi2 = menu.getItem(1);
             mi2.setVisible(!drawerOpen);
-            if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0)
-                mi.setVisible(false);
-            else if (StaticVariables.currentLayout == R.layout.encrypt) {
-                TextView tv = ((TextView) findViewById(R.id.contact_id_to_send));
-                boolean vis = mi.isVisible() && (tv == null || tv.getText().toString().length() == 0);
-                mi.setVisible(vis);
-                mi2.setVisible(vis);
-            }
-        } else if (StaticVariables.currentLayout == R.layout.decrypted_msg) {
+            if (FragmentManagement.currentLayout == R.layout.encrypt)
+                if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0)
+                    mi.setVisible(false);
+                else {
+                    TextView tv = ((TextView) findViewById(R.id.contact_id_to_send));
+                    boolean vis = mi.isVisible() && (tv == null || tv.getText().toString().length() == 0);
+                    mi.setVisible(vis);
+                    mi2.setVisible(vis);
+                    ViewPager vp = (ViewPager) findViewById(R.id.pager);
+                    if (vp.getCurrentItem() == ContactsGroup.GROUPS) {
+                        menu.getItem(2).setVisible(vis);
+                    } else {
+                        menu.getItem(2).setVisible(false);
+                    }
+                }
+        } else if (FragmentManagement.currentLayout == R.layout.decrypted_msg) {
             TextView flag_contact = (TextView) findViewById(R.id.flag_contact_exist);
             if (flag_contact != null && flag_contact.getText().toString().equals(true + ""))
                 mi.setVisible(false);
@@ -803,10 +817,10 @@ public class Main extends FragmentActivity {
             }
         }
         // update selected item and title, then close the main
-        StaticVariables.currentLayout = layout;
+        FragmentManagement.currentLayout = layout;
         mDrawerList.setItemChecked(menu, true);
         setTitle(title != null ? title : menuTitles[menu]);
-        View v = findViewById(StaticVariables.currentLayout);
+        View v = findViewById(FragmentManagement.currentLayout);
         if (v != null) v.animate().setDuration(100).alpha(0).start();
         final Fragment fragment = new FragmentManagement();
         final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -966,7 +980,7 @@ public class Main extends FragmentActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    StaticVariables.currentLayout = 0;
+                    FragmentManagement.currentLayout = 0;
                     CryptMethods.decrypt(msg != null ? msg : StaticVariables.message);
                     getIntent().removeExtra("message");
                     FilesManagement.deleteTempDecryptedMSG(Main.this);
@@ -1030,7 +1044,7 @@ public class Main extends FragmentActivity {
             t.cancel();
             finish();
         } else {
-            switch (StaticVariables.currentLayout) {
+            switch (FragmentManagement.currentLayout) {
                 case R.layout.encrypt:
                     TextView contactChosen = (TextView) findViewById(R.id.contact_id_to_send);
                     EditText etMessage = (EditText) findViewById(R.id.message);
@@ -1063,7 +1077,7 @@ public class Main extends FragmentActivity {
                         StaticVariables.fileContent = null;
                         ibFile.clearAnimation();
                     }
-                    if (!clearedSomething && StaticVariables.currentLayout == defaultScreen)
+                    if (!clearedSomething && FragmentManagement.currentLayout == defaultScreen)
                         new prepareToExit();
                     else if (!clearedSomething)
                         setUpViews();
@@ -1078,25 +1092,25 @@ public class Main extends FragmentActivity {
                     setUpViews();
                     break;
                 case R.layout.decrypt:
-                    if (StaticVariables.currentLayout == defaultScreen)
+                    if (FragmentManagement.currentLayout == defaultScreen)
                         new prepareToExit();
                     else
                         setUpViews();
                     break;
                 case R.layout.me:
-                    if (StaticVariables.currentLayout == defaultScreen)
+                    if (FragmentManagement.currentLayout == defaultScreen)
                         new prepareToExit();
                     else
                         setUpViews();
                     break;
                 case R.layout.learn:
-                    if (StaticVariables.currentLayout == defaultScreen)
+                    if (FragmentManagement.currentLayout == defaultScreen)
                         new prepareToExit();
                     else
                         setUpViews();
                     break;
                 case R.layout.setup:
-                    if (StaticVariables.currentLayout == defaultScreen)
+                    if (FragmentManagement.currentLayout == defaultScreen)
                         new prepareToExit();
                     else
                         setUpViews();
@@ -1111,7 +1125,7 @@ public class Main extends FragmentActivity {
                     selectItem(-1, R.layout.create_new_keys, CryptMethods.publicExist() ? null : getString(R.string.first_time_create_keys));
                     break;
                 case R.layout.create_new_keys:
-                    if (StaticVariables.currentLayout != defaultScreen)
+                    if (FragmentManagement.currentLayout != defaultScreen)
                         selectItem(-1, R.layout.setup, null);
                     else
                         new prepareToExit();
@@ -1125,6 +1139,19 @@ public class Main extends FragmentActivity {
                     else
                         new prepareToExit();
                     break;
+                case R.layout.explorer:
+                    if (StaticVariables.path == null) {
+                        setUpViews();
+                    } else {
+                        String root = Environment.getExternalStorageDirectory().getPath();
+                        if (StaticVariables.path.getPath().equals(root)) {
+                            setUpViews();
+                        } else {
+                            StaticVariables.path = StaticVariables.path.getParentFile();
+                            selectItem(-1, FragmentManagement.currentLayout, null);
+                        }
+                    }
+                    break;
             }
         }
     }
@@ -1133,7 +1160,7 @@ public class Main extends FragmentActivity {
         boolean success = FilesManagement.createFilesToSend(this, (userInput.length() +
                 (StaticVariables.fileContent != null ?
                         StaticVariables.fileContent.length : 0)) <
-                StaticVariables.MSG_LIMIT_FOR_QR,data);
+                StaticVariables.MSG_LIMIT_FOR_QR, data);
         if (success) {
             hndl.sendEmptyMessage(CLEAR_FOCUS);
             Intent intent = new Intent(this, SendMsg.class);
@@ -1143,6 +1170,7 @@ public class Main extends FragmentActivity {
             Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
         }
     }
+
     void sendBackup(byte[] data) {
         boolean success = FilesManagement.createBackupFileToSend(this, data);
         if (success) {
@@ -1152,6 +1180,7 @@ public class Main extends FragmentActivity {
             hndl.sendEmptyMessage(77);
         }
     }
+
     public void onClickShare(View v) {
         selectItem(-1, R.layout.profile, null);
     }
@@ -1192,7 +1221,7 @@ public class Main extends FragmentActivity {
             msgSended = false;
         }
         //this is for when coming to the app from share
-        if (StaticVariables.currentLayout == R.layout.encrypt) {
+        if (FragmentManagement.currentLayout == R.layout.encrypt) {
             Uri uri = getIntent().getParcelableExtra("specattach");
             getIntent().setData(null);
             if (uri != null)
@@ -1208,11 +1237,6 @@ public class Main extends FragmentActivity {
         if (MySimpleArrayAdapter.adapter == null) {
             MySimpleArrayAdapter.adapter = new MySimpleArrayAdapter(this);
         }
-    }
-
-    public void createGroup(View v) {
-        GroupCreate gc = new GroupCreate();
-        gc.show(getFragmentManager(), "gc");
     }
 
     public void onClickManage(View v) {
@@ -1233,7 +1257,7 @@ public class Main extends FragmentActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        byte[] data =CryptMethods.encrypt(Backup.backup(Main.this), null, CryptMethods.getPublic()).getBytes();
+                        byte[] data = CryptMethods.encrypt(Backup.backup(Main.this), null, CryptMethods.getPublic()).getBytes();
                         sendBackup(data);
                         prgd.cancel();
                         msgSended = true;
@@ -1321,7 +1345,7 @@ public class Main extends FragmentActivity {
                 @Override
                 public void run() {
                     CryptMethods.createKeys();
-                    if (StaticVariables.currentLayout != R.layout.recreating_keys)
+                    if (FragmentManagement.currentLayout != R.layout.recreating_keys)
                         CryptMethods.doneCreatingKeys = false;
                     else
                         hndl.sendEmptyMessage(DONE_CREATE_KEYS);

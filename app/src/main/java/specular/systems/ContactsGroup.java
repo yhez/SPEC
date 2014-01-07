@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 
 public class ContactsGroup extends FragmentStatePagerAdapter {
+    public static final int CONTACTS=0,GROUPS=1;
 
     public ContactsGroup(FragmentManager fm){
         super(fm);
@@ -28,13 +29,13 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
     }
     @Override
     public CharSequence getPageTitle(int p){
-        return (p==0?"contacts":"groups");
+        return (p==CONTACTS?"Contacts":"Groups");
     }
     public static class PageList extends Fragment{
-        int index;
-        public PageList(int i){
+        private int currentLayout;
+        public PageList(int currentLayout){
             super();
-            index=i;
+            this.currentLayout=currentLayout;
         }
         @Override
         public View onCreateView(LayoutInflater layoutInflater,ViewGroup container,Bundle b){
@@ -42,7 +43,7 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
             StaticVariables.luc.showIfNeeded(getActivity(), rootView);
             TextView tv = (TextView)rootView.findViewById(R.id.no_contacts);
             ListView lv = (ListView)rootView.findViewById(R.id.list);
-            if(index==0){
+            if(currentLayout==CONTACTS){
                 if (StaticVariables.fullList.size() == 0) {
                     tv.setVisibility(View.VISIBLE);
                     lv.setVisibility(View.GONE);
@@ -52,12 +53,12 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
                     lv.setVisibility(View.VISIBLE);
                     tv.setVisibility(View.GONE);
                 }
-
-            }else{
-                tv.setText("no groups yet");
+            }else if(currentLayout== GROUPS){
+                tv.setText(R.string.there_is_no_groups);
                 tv.setVisibility(View.VISIBLE);
                 lv.setVisibility(View.GONE);
             }
+            Visual.setAllFonts(getActivity(),(ViewGroup)rootView);
             return rootView;
         }
     }

@@ -233,6 +233,7 @@
     <string name="time_created">Message time-stamp:\n</string>
     <string name="not_valid_change">Change not valid (length, format).</string>
     <string name="make_it_default">Make default?</string>
+    <string name="there_is_no_groups">no groups yet</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
