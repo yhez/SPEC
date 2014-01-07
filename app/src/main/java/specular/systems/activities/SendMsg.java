@@ -55,11 +55,11 @@ public class SendMsg extends Activity {
         }
         uris = FilesManagement.getFilesToSend(this);
         long id = getIntent().getLongExtra("contactId", -1);
-        if(id!=-1)
-        contact = ContactsDataSource.contactsDataSource.findContact(id);
+        if (id != -1)
+            contact = ContactsDataSource.contactsDataSource.findContact(id);
         else
-        contact=null;
-        if (contact==null||contact.getDefaultApp() == null) {
+            contact = null;
+        if (contact == null || contact.getDefaultApp() == null) {
             show();
         } else {
             Intent i = new Intent();
@@ -78,26 +78,27 @@ public class SendMsg extends Activity {
                 i.setType("image/png");
                 i.putExtra(Intent.EXTRA_STREAM, uris.get(1));
             }
-            if(contact!=null){
-            i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
-            i.putExtra(Intent.EXTRA_SUBJECT,
-                    getResources().getString(R.string.subject_encrypt));
-            try {
-                InputStream is = getAssets().open("spec_tmp_msg.html");
-                int size = is.available();
-                byte[] buffer = new byte[size];
-                is.read(buffer);
-                is.close();
-                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
-            } catch (Exception e) {
-                Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
-                        .show();
-            }}
+            if (contact != null) {
+                i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
+                i.putExtra(Intent.EXTRA_SUBJECT,
+                        getResources().getString(R.string.subject_encrypt));
+                try {
+                    InputStream is = getAssets().open("spec_tmp_msg.html");
+                    int size = is.available();
+                    byte[] buffer = new byte[size];
+                    is.read(buffer);
+                    is.close();
+                    i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+                } catch (Exception e) {
+                    Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
+                            .show();
+                }
+            }
             try {
                 done = true;
                 startActivity(i);
-                if(contact!=null)
-                contact.update(this);
+                if (contact != null)
+                    contact.update(this);
             } catch (Exception e) {
                 show();
             }
@@ -203,10 +204,10 @@ public class SendMsg extends Activity {
     }
 
     private void startOnClick(int what, ResolveInfo rs) {
-        if(contact!=null)
-        if (((CheckBox) findViewById(R.id.check_default)).isChecked()) {
-            contact.update(rs.activityInfo.packageName + "\n" + rs.activityInfo.name, this);
-        }
+        if (contact != null)
+            if (((CheckBox) findViewById(R.id.check_default)).isChecked()) {
+                contact.update(rs.activityInfo.packageName + "\n" + rs.activityInfo.name, this);
+            }
         EditText etFile = (EditText) findViewById(R.id.name_file),
                 etImage = (EditText) findViewById(R.id.qr_name_file);
         if ((etFile.getText().length() == 0 && (what == BOTH || what == FILE))
@@ -219,21 +220,22 @@ public class SendMsg extends Activity {
         ComponentName cn;
         cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
         Intent i = new Intent();
-        if(contact!=null){
-        i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
-        i.putExtra(Intent.EXTRA_SUBJECT,
-                getResources().getString(R.string.subject_encrypt));
-        try {
-            InputStream is = getAssets().open("spec_tmp_msg.html");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
-                    .show();
-        }}
+        if (contact != null) {
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
+            i.putExtra(Intent.EXTRA_SUBJECT,
+                    getResources().getString(R.string.subject_encrypt));
+            try {
+                InputStream is = getAssets().open("spec_tmp_msg.html");
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+            } catch (Exception e) {
+                Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
+                        .show();
+            }
+        }
         i.setComponent(cn);
         if (what == IMAGE || what == BOTH) {
             File f = new File(uris.get(1).getPath());
@@ -276,17 +278,19 @@ public class SendMsg extends Activity {
         try {
             done = true;
             startActivity(i);
-            if(contact!=null)
-            contact.update(this);
+            if (contact != null)
+                contact.update(this);
         } catch (Exception e) {
             //todo
         }
     }
+
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         new KeysDeleter();
     }
+
     private void updateViews() {
         if (uris.get(0) == null || uris.get(1) == null) {
             findViewById(R.id.gl_both).setVisibility(View.GONE);
@@ -385,7 +389,7 @@ public class SendMsg extends Activity {
         if (done) {
             done = false;
             onBackPressed();
-        }else
+        } else
             KeysDeleter.stop();
     }
 }

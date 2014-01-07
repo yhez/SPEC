@@ -494,7 +494,7 @@ public class Main extends FragmentActivity {
                 break;
             case R.layout.decrypt:
                 Intent intent = new Intent(Main.this, StartScan.class);
-                intent.putExtra("decrypt", true);
+                intent.putExtra("type", StartScan.MESSAGE);
                 startActivityForResult(intent, SCAN_QR);
                 break;
         }
@@ -731,10 +731,13 @@ public class Main extends FragmentActivity {
         mi.setVisible(!drawerOpen);
         if (menu.size() > 1) {
             MenuItem mi2 = menu.getItem(1);
+            MenuItem mi3 = menu.getItem(2);
             mi2.setVisible(!drawerOpen);
             if (FragmentManagement.currentLayout == R.layout.encrypt)
-                if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0)
+                if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0){
                     mi.setVisible(false);
+                    mi3.setVisible(false);
+                }
                 else {
                     TextView tv = ((TextView) findViewById(R.id.contact_id_to_send));
                     boolean vis = mi.isVisible() && (tv == null || tv.getText().toString().length() == 0);
@@ -742,9 +745,9 @@ public class Main extends FragmentActivity {
                     mi2.setVisible(vis);
                     ViewPager vp = (ViewPager) findViewById(R.id.pager);
                     if (vp.getCurrentItem() == ContactsGroup.GROUPS) {
-                        menu.getItem(2).setVisible(vis);
+                        mi3.setVisible(vis);
                     } else {
-                        menu.getItem(2).setVisible(false);
+                        mi3.setVisible(false);
                     }
                 }
         } else if (FragmentManagement.currentLayout == R.layout.decrypted_msg) {
@@ -1260,7 +1263,6 @@ public class Main extends FragmentActivity {
                         byte[] data = CryptMethods.encrypt(Backup.backup(Main.this), null, CryptMethods.getPublic()).getBytes();
                         sendBackup(data);
                         prgd.cancel();
-                        msgSended = true;
                     }
                 }).start();
                 break;

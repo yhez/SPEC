@@ -4,6 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:padding="32dp"
     android:orientation="vertical">
 
     <Button
@@ -43,13 +44,13 @@
     <Button
         android:onClick="onClick"
         android:textSize="22sp"
-        android:id="@+id/button3"
+        android:id="@+id/p_button3"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/get_private_from_qr"
-        android:textColor="@color/spec_gray" />
+        android:textColor="@color/spec_black" />
 
     <View
         android:layout_width="match_parent"
@@ -58,13 +59,14 @@
 
     <Button
         android:onClick="onClick"
+        android:id="@+id/p_button4"
         android:textSize="22sp"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/print_private_to_qr"
-        android:textColor="@color/spec_gray" />
+        android:textColor="@color/spec_black" />
 
     <View
         android:id="@+id/text_view_divide"

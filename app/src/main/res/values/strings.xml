@@ -28,7 +28,7 @@
 
     <!--strings related qr code scanner-->
     <string name="bad_data">Please scan again.</string>
-    <string name="get_private_from_qr">QR &#8592; Device</string>
+    <string name="get_private_from_qr">QR &#8594; Device</string>
     <string name="print_private_to_qr">Print QR Backup</string>
     <string name="scan_any_qr_widget">Place QR code within box to scan (message or contact).</string>
     <string name="qr_scan_explain">Place QR code within box to activate magic.</string>
@@ -234,6 +234,9 @@
     <string name="not_valid_change">Change not valid (length, format).</string>
     <string name="make_it_default">Make default?</string>
     <string name="there_is_no_groups">no groups yet</string>
+    <string name="no_support_print">Your device does not support direct printing</string>
+    <string name="private_scan_explain">place your secret private QR key inside the box</string>
+    <string name="private_key_loaded_from_qr">Key has loaded successfully</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>

@@ -9,7 +9,7 @@ import specular.systems.R;
 import specular.systems.scanqr.CaptureActivity;
 
 public class StartScan extends CaptureActivity {
-
+    final static int MESSAGE=0,CONTACT=1,PRIVATE=2;
     @Override
     public void handleDecode(Result rawResult) {
         getIntent().putExtra("barcode", rawResult.getText());
@@ -26,8 +26,12 @@ public class StartScan extends CaptureActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if (getIntent().getBooleanExtra("decrypt", false))
-            ((TextView) findViewById(R.id.status_view)).setText(getString(R.string.decrypt_qr_message_explain));
+        int type = getIntent().getIntExtra("type", CONTACT);
+        if (type==MESSAGE)
+            ((TextView) findViewById(R.id.status_view)).setText(R.string.decrypt_qr_message_explain);
+        else if(type==PRIVATE){
+            ((TextView) findViewById(R.id.status_view)).setText(R.string.private_scan_explain);
+        }
     }
 
     @Override

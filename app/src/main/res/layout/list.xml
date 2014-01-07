@@ -146,7 +146,7 @@
 
         <FrameLayout
             android:id="@+id/en_contact"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:visibility="gone"
             android:background="@android:drawable/alert_light_frame"
             android:layout_height="wrap_content">
@@ -168,6 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@id/chosen_icon"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
                     android:padding="@dimen/default_gap">
@@ -193,6 +194,7 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
                 android:layout_gravity="right|top"
                 android:src="@android:drawable/ic_menu_close_clear_cancel" />
         </FrameLayout>
