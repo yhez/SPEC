@@ -20,8 +20,8 @@
     <string name="wait_for_nfc_to_read">Waiting for NFC&#8230;</string>
     <string name="title_turn_nfc_on">Activate NFC? If not, keys will be saved on device.</string>
     <string name="failed_to_write">Failed to write NFC tag.</string>
-    <string name="tab_nfc_move_to_nfc">Tap NFC tag to save your Private Key and delete it from your device.</string>
-    <string name="tab_nfc_get_from_nfc">Tap NFC tag to save your Private Key on your device.</string>
+    <string name="tab_nfc_move_to_nfc">Tap NFC tag to save Private Key and delete it from your device.</string>
+    <string name="tab_nfc_get_from_nfc">Tap NFC tag to save Private Key on your device.</string>
     <string name="move_private_to_nfc">NFC &#8592; Device</string>
     <string name="get_private_from_nfc">NFC &#8594; Device</string>
     <string name="keys_moved_to_nfc">Keys have been successfully saved on your device.</string>
@@ -235,7 +235,7 @@
     <string name="make_it_default">Make default?</string>
     <string name="there_is_no_groups">no groups yet</string>
     <string name="no_support_print">Your device does not support direct printing</string>
-    <string name="private_scan_explain">place your secret private QR key inside the box</string>
+    <string name="private_scan_explain">Place Private QR Key within the box to scan.</string>
     <string name="private_key_loaded_from_qr">Key has loaded successfully</string>
 
     <string-array name="links">
@@ -250,7 +250,7 @@
         <item>My SPEC</item>
         <item>About</item>
         <item>Manage</item>
-        <item>SPEC Safe</item>
+        <item>SafeX</item>
     </string-array>
 
     <string-array name="message_parts">
