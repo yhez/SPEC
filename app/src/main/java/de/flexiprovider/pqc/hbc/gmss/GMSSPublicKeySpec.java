@@ -4,9 +4,8 @@ import de.flexiprovider.api.keys.KeySpec;
 
 /**
  * This class provides a specification for a GMSS public key.
- * 
+ *
  * @author Sebastian Blume
- * 
  * @see GMSSPublicKey
  */
 public class GMSSPublicKeySpec implements KeySpec {
@@ -23,33 +22,31 @@ public class GMSSPublicKeySpec implements KeySpec {
 
     /**
      * The constructor.
-     * 
-     * @param key
-     *                a raw GMSS public key
-     * @param gmssParameterset
-     *                an instance of GMSSParameterset
+     *
+     * @param key              a raw GMSS public key
+     * @param gmssParameterset an instance of GMSSParameterset
      */
     public GMSSPublicKeySpec(byte[] key, GMSSParameterset gmssParameterset) {
-	this.gmssPublicKey = key;
-	this.gmssParameterset = gmssParameterset;
+        this.gmssPublicKey = key;
+        this.gmssParameterset = gmssParameterset;
     }
 
     /**
      * Returns the GMSS public key
-     * 
+     *
      * @return The GMSS public key
      */
     public byte[] getPublicKey() {
-	return gmssPublicKey;
+        return gmssPublicKey;
     }
 
     /**
      * Returns the GMSS parameterset
-     * 
+     *
      * @return The GMSS parameterset
      */
     public GMSSParameterset getGMSSParameterset() {
-	return gmssParameterset;
+        return gmssParameterset;
     }
 
 }

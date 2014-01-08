@@ -15,7 +15,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
  * {@link de.flexiprovider.core.shacal.ShacalKeyGenerator}. The parameters consist of the key size in bits.
  * Values for the key are 128, 192, 256, 320, 384, and 448 bits, with the
  * default being 128 bits.
- * 
+ *
  * @author Paul Nguentcheu
  * @author Martin D�ring
  */
@@ -34,30 +34,29 @@ public class ShacalKeyGenParameterSpec implements AlgorithmParameterSpec {
      * {@link #DEFAULT_KEY_SIZE}.
      */
     public ShacalKeyGenParameterSpec() {
-	keySize = DEFAULT_KEY_SIZE;
+        keySize = DEFAULT_KEY_SIZE;
     }
 
     /**
      * Construct new parameters from the given key size. If the key size is
      * invalid, the {@link #DEFAULT_KEY_SIZE default key size} is chosen.
-     * 
-     * @param keySize
-     *                the key size (128, 192, 256, 320, 384, or 448 bits)
+     *
+     * @param keySize the key size (128, 192, 256, 320, 384, or 448 bits)
      */
     public ShacalKeyGenParameterSpec(int keySize) {
-	if ((keySize != 128) && (keySize != 192) && (keySize != 256)
-		&& (keySize != 320) && (keySize != 384) && (keySize != 448)) {
-	    this.keySize = DEFAULT_KEY_SIZE;
-	} else {
-	    this.keySize = keySize;
-	}
+        if ((keySize != 128) && (keySize != 192) && (keySize != 256)
+                && (keySize != 320) && (keySize != 384) && (keySize != 448)) {
+            this.keySize = DEFAULT_KEY_SIZE;
+        } else {
+            this.keySize = keySize;
+        }
     }
 
     /**
      * @return the key size in bits
      */
     public int getKeySize() {
-	return keySize;
+        return keySize;
     }
 
 }

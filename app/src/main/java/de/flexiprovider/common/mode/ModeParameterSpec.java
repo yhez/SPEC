@@ -8,7 +8,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
  * interface.
  */
 public class ModeParameterSpec extends javax.crypto.spec.IvParameterSpec
-	implements AlgorithmParameterSpec {
+        implements AlgorithmParameterSpec {
 
     // ****************************************************
     // JCA adapter methods
@@ -16,12 +16,11 @@ public class ModeParameterSpec extends javax.crypto.spec.IvParameterSpec
 
     /**
      * Converts a JCA IvParameterSpec in a Flexi IvParameterSpec.
-     * 
-     * @param params
-     *                the JCA IvParameterSpec.
+     *
+     * @param params the JCA IvParameterSpec.
      */
     public ModeParameterSpec(javax.crypto.spec.IvParameterSpec params) {
-	super(params.getIV());
+        super(params.getIV());
     }
 
     // ****************************************************
@@ -31,26 +30,22 @@ public class ModeParameterSpec extends javax.crypto.spec.IvParameterSpec
     /**
      * Constructor. Set the initialization vector (IV). The IV may be
      * <tt>null</tt>.
-     * 
-     * @param iv
-     *                the IV
+     *
+     * @param iv the IV
      */
     public ModeParameterSpec(byte[] iv) {
-	super(iv);
+        super(iv);
     }
 
     /**
      * Constructor. Set the initialization vector (IV). The IV must not be null.
-     * 
-     * @param iv
-     *                the byte array containing the IV
-     * @param offset
-     *                the offset where the IV starts
-     * @param length
-     *                the length of the IV
+     *
+     * @param iv     the byte array containing the IV
+     * @param offset the offset where the IV starts
+     * @param length the length of the IV
      */
     public ModeParameterSpec(byte[] iv, int offset, int length) {
-	super(iv, offset, length);
+        super(iv, offset, length);
     }
 
 }

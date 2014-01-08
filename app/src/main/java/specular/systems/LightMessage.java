@@ -13,7 +13,7 @@ import java.util.TimeZone;
  */
 public class LightMessage {
 
-    public static LightMessage decryptedLightMsg=null;
+    public static LightMessage decryptedLightMsg = null;
     private String msgContent, sentTime;
     private String hash;
 

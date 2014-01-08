@@ -10,8 +10,8 @@ public class ContactCard {
         if (a != null) {
             String[] details = CryptMethods.getMyDetails(a);
             name = details[0];
-            email=details[1];
-            publicKey=details[2];
+            email = details[1];
+            publicKey = details[2];
             this.a = a;
         }
     }

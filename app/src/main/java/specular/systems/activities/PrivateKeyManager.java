@@ -45,35 +45,44 @@ public class PrivateKeyManager extends Activity {
     Button bt2;
     Button bt3;
     Button bt4;
+
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
         setContentView(R.layout.private_key_manager);
-        bt1 = (Button)findViewById(R.id.p_button1);
-        bt2 = (Button)findViewById(R.id.p_button2);
-        bt3 = (Button)findViewById(R.id.p_button3);
-        bt4 = (Button)findViewById(R.id.p_button4);
+        bt1 = (Button) findViewById(R.id.p_button1);
+        bt2 = (Button) findViewById(R.id.p_button2);
+        bt3 = (Button) findViewById(R.id.p_button3);
+        bt4 = (Button) findViewById(R.id.p_button4);
         updateViews();
         Visual.setAllFonts(this, (ViewGroup) findViewById(android.R.id.content));
     }
-    private void updateViews(){
-        if(status==NO_CHOICE)
-        if(!CryptMethods.privateExist()){
-            disableButton(bt1,R.string.cant_find_private_key);
-            disableButton(bt4,R.string.cant_find_private_key);
-        }
-        if(NfcAdapter.getDefaultAdapter(this)==null){
-            disableButton(bt1,R.string.cant_connect_nfc_adapter);
-            disableButton(bt2,R.string.cant_connect_nfc_adapter);
-        }else if(!NfcAdapter.getDefaultAdapter(this).isEnabled()){
+
+    @Override
+    public void onDestroy() {
+        CryptMethods.deleteKeys();
+        super.onDestroy();
+    }
+
+    private void updateViews() {
+        if (status == NO_CHOICE)
+            if (!CryptMethods.privateExist()) {
+                disableButton(bt1, R.string.cant_find_private_key);
+                disableButton(bt4, R.string.cant_find_private_key);
+            }
+        if (NfcAdapter.getDefaultAdapter(this) == null) {
+            disableButton(bt1, R.string.cant_connect_nfc_adapter);
+            disableButton(bt2, R.string.cant_connect_nfc_adapter);
+        } else if (!NfcAdapter.getDefaultAdapter(this).isEnabled()) {
             disabledNFC(bt1);
             disabledNFC(bt2);
         }
-        if(!PrintHelper.systemSupportsPrint()){
-            disableButton(bt4,R.string.no_support_print);
+        if (!PrintHelper.systemSupportsPrint()) {
+            disableButton(bt4, R.string.no_support_print);
         }
     }
-    private void disabledNFC(Button b){
+
+    private void disabledNFC(Button b) {
         b.setTextColor(getResources().getColor(R.color.spec_gray));
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,13 +92,14 @@ public class PrivateKeyManager extends Activity {
             }
         });
     }
-    private void disableButton(Button b,final int msg){
+
+    private void disableButton(Button b, final int msg) {
         b.setTextColor(getResources().getColor(R.color.spec_gray));
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast t = Toast.makeText(PrivateKeyManager.this,msg,Toast.LENGTH_SHORT);
-                t.setGravity(Gravity.CENTER,0,0);
+                Toast t = Toast.makeText(PrivateKeyManager.this, msg, Toast.LENGTH_SHORT);
+                t.setGravity(Gravity.CENTER, 0, 0);
                 t.show();
             }
         });
@@ -207,6 +217,7 @@ public class PrivateKeyManager extends Activity {
                 break;
         }
     }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -214,10 +225,10 @@ public class PrivateKeyManager extends Activity {
     }
 
     @Override
-    public void onBackPressed(){
-        if(status==NO_CHOICE){
+    public void onBackPressed() {
+        if (status == NO_CHOICE) {
             super.onBackPressed();
-        }else{
+        } else {
             Visual.showAllChildes(this, (ViewGroup) findViewById(android.R.id.content));
             findViewById(R.id.text_view_divide).setVisibility(View.GONE);
             findViewById(R.id.p_text).setVisibility(View.GONE);
@@ -268,21 +279,21 @@ public class PrivateKeyManager extends Activity {
                     v.setVisibility(View.VISIBLE);
                     break;
                 case R.id.p_button3:
-                    Intent i = new Intent(this,StartScan.class);
-                    i.putExtra("type",StartScan.PRIVATE);
+                    Intent i = new Intent(this, StartScan.class);
+                    i.putExtra("type", StartScan.PRIVATE);
                     startActivityForResult(i, 0);
                     break;
                 case R.id.p_button4:
                     try {
                         byte[] p = CryptMethods.getPrivateToSave();
                         String key = Visual.bin2hex(p);
-                        QRCodeEncoder qr = new QRCodeEncoder(key, BarcodeFormat.QR_CODE.toString(),512);
+                        QRCodeEncoder qr = new QRCodeEncoder(key, BarcodeFormat.QR_CODE.toString(), 512);
                         Bitmap b = qr.encodeAsBitmap();
                         final PrintHelper photoPrinter = new PrintHelper(this);
                         photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
                         photoPrinter.setColorMode(PrintHelper.COLOR_MODE_MONOCHROME);
                         photoPrinter.printBitmap("My Private Key", b);
-                    }catch (WriterException e) {
+                    } catch (WriterException e) {
                         e.printStackTrace();
                     }
                     break;
@@ -292,15 +303,16 @@ public class PrivateKeyManager extends Activity {
             }
         }
     }
+
     @Override
-    public void onActivityResult(int req,int res,Intent i){
-        super.onActivityResult(req,res,i);
-        if(res==RESULT_OK){
+    public void onActivityResult(int req, int res, Intent i) {
+        super.onActivityResult(req, res, i);
+        if (res == RESULT_OK) {
             byte[] p = Visual.hex2bin(i.getStringExtra("barcode"));
-            if(CryptMethods.setPrivate(p)){
+            if (CryptMethods.setPrivate(p)) {
                 FilesManagement.savePrivate(this);
-                Toast t = Toast.makeText(this,R.string.private_key_loaded_from_qr,Toast.LENGTH_SHORT);
-                t.setGravity(Gravity.CENTER,0,0);
+                Toast t = Toast.makeText(this, R.string.private_key_loaded_from_qr, Toast.LENGTH_SHORT);
+                t.setGravity(Gravity.CENTER, 0, 0);
                 t.show();
             }
         }

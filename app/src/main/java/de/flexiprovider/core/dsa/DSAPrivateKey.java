@@ -19,11 +19,11 @@ import de.flexiprovider.core.dsa.interfaces.DSAParams;
 
 /**
  * This class implements the DSAPrivateKey interface.
- * 
+ *
  * @author Thomas Wahrenbruch
  */
 public class DSAPrivateKey extends
-	de.flexiprovider.core.dsa.interfaces.DSAPrivateKey {
+        de.flexiprovider.core.dsa.interfaces.DSAPrivateKey {
 
     /**
      * The secret exponent x
@@ -38,122 +38,119 @@ public class DSAPrivateKey extends
     /**
      * Construct a DSA private key with the specified parameters (used by the
      * {@link DSAKeyPairGenerator}).
-     * 
-     * @param x
-     *                the secret exponent.
-     * @param params
-     *                the DSA parameters.
+     *
+     * @param x      the secret exponent.
+     * @param params the DSA parameters.
      */
     protected DSAPrivateKey(FlexiBigInt x, DSAParams params) {
-	this.x = x;
-	this.params = params;
+        this.x = x;
+        this.params = params;
     }
 
     /**
      * Construct a DSA private key from the given key specification (used by the
      * {@link de.flexiprovider.core.dsa.DSAKeyFactory}).
-     * 
-     * @param keySpec
-     *                the key specification
+     *
+     * @param keySpec the key specification
      */
     protected DSAPrivateKey(DSAPrivateKeySpec keySpec) {
-	this(keySpec.getValueX(), new DSAParameterSpec(keySpec.getPrimeP(),
-		keySpec.getPrimeQ(), keySpec.getBaseG()));
+        this(keySpec.getValueX(), new DSAParameterSpec(keySpec.getPrimeP(),
+                keySpec.getPrimeQ(), keySpec.getBaseG()));
 
     }
 
     /**
      * This function returns the name of the corresponding algorithm "DSA".
-     * 
+     *
      * @return "DSA".
      */
     public String getAlgorithm() {
-	return "DSA";
+        return "DSA";
     }
 
     /**
      * This function returns the DSA parameters.
-     * 
+     *
      * @return the DSA parameters.
      */
     public DSAParams getParameters() {
-	return params;
+        return params;
     }
 
     /**
      * This function returns the secret exponent x.
-     * 
+     *
      * @return the secret exponent x.
      */
     public FlexiBigInt getValueX() {
-	return x;
+        return x;
     }
 
     /**
      * Returns a human readable form of the key.
-     * 
+     *
      * @return a human readable form of the key.
      */
     public String toString() {
 
-	String out = "private x: 0x" + x.toString(16) + "\n" + "p:         0x"
-		+ params.getPrimeP().toString(16) + "\n" + "q:         0x"
-		+ params.getPrimeQ().toString(16) + "\n" + "g:         0x"
-		+ params.getBaseG().toString(16) + "\n";
+        String out = "private x: 0x" + x.toString(16) + "\n" + "p:         0x"
+                + params.getPrimeP().toString(16) + "\n" + "q:         0x"
+                + params.getPrimeQ().toString(16) + "\n" + "g:         0x"
+                + params.getBaseG().toString(16) + "\n";
 
-	return out;
+        return out;
     }
 
     public boolean equals(Object obj) {
-	if (obj == null || !(obj instanceof DSAPrivateKey)) {
-	    return false;
-	}
+        if (obj == null || !(obj instanceof DSAPrivateKey)) {
+            return false;
+        }
 
-	DSAPrivateKey otherKey = (DSAPrivateKey) obj;
+        DSAPrivateKey otherKey = (DSAPrivateKey) obj;
 
-	boolean value = x.equals(otherKey.x);
-	value &= params.getBaseG().equals(otherKey.params.getBaseG());
-	value &= params.getPrimeP().equals(otherKey.params.getPrimeP());
-	value &= params.getPrimeQ().equals(otherKey.params.getPrimeQ());
+        boolean value = x.equals(otherKey.x);
+        value &= params.getBaseG().equals(otherKey.params.getBaseG());
+        value &= params.getPrimeP().equals(otherKey.params.getPrimeP());
+        value &= params.getPrimeQ().equals(otherKey.params.getPrimeQ());
 
-	return value;
+        return value;
     }
 
     public int hashCode() {
-	return x.hashCode() + params.getBaseG().hashCode()
-		+ params.getPrimeP().hashCode() + params.getPrimeQ().hashCode();
+        return x.hashCode() + params.getBaseG().hashCode()
+                + params.getPrimeP().hashCode() + params.getPrimeQ().hashCode();
     }
 
     /**
      * @return the OID to encode in the SubjectPublicKeyInfo structure
      */
     protected ASN1ObjectIdentifier getOID() {
-	return new ASN1ObjectIdentifier(DSAKeyFactory.OID);
+        return new ASN1ObjectIdentifier(DSAKeyFactory.OID);
     }
 
     /**
      * @return the algorithm parameters to encode in the SubjectPublicKeyInfo
-     *         structure
+     * structure
      */
     protected ASN1Type getAlgParams() {
-	DSAParameters dsaParams = new DSAParameters();
-	DSAParameterSpec dsaParamSpec = new DSAParameterSpec(
-		params.getPrimeP(), params.getPrimeQ(), params.getBaseG());
-	try {
-	    dsaParams.init(dsaParamSpec);
-	} catch (InvalidParameterSpecException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
-	return dsaParams.getASN1Parameters();
+        DSAParameters dsaParams = new DSAParameters();
+        DSAParameterSpec dsaParamSpec = new DSAParameterSpec(
+                params.getPrimeP(), params.getPrimeQ(), params.getBaseG());
+        try {
+            dsaParams.init(dsaParamSpec);
+        } catch (InvalidParameterSpecException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
+        return dsaParams.getASN1Parameters();
     }
 
     /**
      * @return the keyData to encode in the SubjectPublicKeyInfo structure
      */
     protected byte[] getKeyData() {
-	ASN1Integer keyData = new ASN1Integer(x.toByteArray());
-	return ASN1Tools.derEncode(keyData);
+        ASN1Integer keyData = new ASN1Integer(x.toByteArray());
+        return ASN1Tools.derEncode(keyData);
     }
 
 }

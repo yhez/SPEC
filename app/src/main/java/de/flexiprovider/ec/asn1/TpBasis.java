@@ -15,11 +15,11 @@ import de.flexiprovider.common.util.ASN1Tools;
 /**
  * This class represents a <tt>prime-field</tt> as defined in ANS X9.62 -
  * 1998. The ASN.1 definition of this structure is
- * 
+ * <p/>
  * <pre>
  *   tpBasis ::= INTEGER;
  * </pre>
- * 
+ *
  * @author Michele Boivin
  * @author Martin Dring
  */
@@ -29,25 +29,24 @@ public class TpBasis extends ASN1Integer {
      * Constructor used for decoding.
      */
     public TpBasis() {
-	// do not delete this constructor !!!
-	super();
+        // do not delete this constructor !!!
+        super();
     }
 
     /**
      * Constructor used for encoding.
-     * 
-     * @param tc
-     *                the trinomial coefficient
+     *
+     * @param tc the trinomial coefficient
      */
     public TpBasis(int tc) {
-	super(tc);
+        super(tc);
     }
 
     /**
      * @return the trinomial coefficient
      */
     public int getTC() {
-	return ASN1Tools.getFlexiBigInt(this).intValue();
+        return ASN1Tools.getFlexiBigInt(this).intValue();
     }
 
 }

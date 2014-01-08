@@ -8,10 +8,10 @@ import de.flexiprovider.common.math.linearalgebra.Permutation;
 
 /**
  * This class provides a specification for a McEliece CCA2 private key.
- * 
- * @see de.flexiprovider.pqc.ecc.mceliece.McElieceCCA2PrivateKey
+ *
  * @author Elena Klintsevich
  * @author Martin D�ring
+ * @see de.flexiprovider.pqc.ecc.mceliece.McElieceCCA2PrivateKey
  */
 public class McElieceCCA2PrivateKeySpec implements KeySpec {
 
@@ -38,116 +38,102 @@ public class McElieceCCA2PrivateKeySpec implements KeySpec {
 
     /**
      * Constructor.
-     * 
-     * @param n
-     *                the length of the code
-     * @param k
-     *                the dimension of the code
-     * @param field
-     *                the finite field <tt>GF(2<sup>m</sup>)</tt>
-     * @param gp
-     *                the irreducible Goppa polynomial
-     * @param p
-     *                the permutation
-     * @param h
-     *                the canonical check matrix
-     * @param qInv
-     *                the matrix used to compute square roots in
-     *                <tt>(GF(2^m))^t</tt>
+     *
+     * @param n     the length of the code
+     * @param k     the dimension of the code
+     * @param field the finite field <tt>GF(2<sup>m</sup>)</tt>
+     * @param gp    the irreducible Goppa polynomial
+     * @param p     the permutation
+     * @param h     the canonical check matrix
+     * @param qInv  the matrix used to compute square roots in
+     *              <tt>(GF(2^m))^t</tt>
      */
     public McElieceCCA2PrivateKeySpec(int n, int k, GF2mField field,
-	    PolynomialGF2mSmallM gp, Permutation p, GF2Matrix h,
-	    PolynomialGF2mSmallM[] qInv) {
-	this.n = n;
-	this.k = k;
-	this.field = field;
-	this.goppaPoly = gp;
-	this.p = p;
-	this.h = h;
-	this.qInv = qInv;
+                                      PolynomialGF2mSmallM gp, Permutation p, GF2Matrix h,
+                                      PolynomialGF2mSmallM[] qInv) {
+        this.n = n;
+        this.k = k;
+        this.field = field;
+        this.goppaPoly = gp;
+        this.p = p;
+        this.h = h;
+        this.qInv = qInv;
     }
 
     /**
      * Constructor used by the {@link de.flexiprovider.pqc.ecc.mceliece.McElieceKeyFactory}.
-     * 
-     * @param n
-     *                the length of the code
-     * @param k
-     *                the dimension of the code
-     * @param encFieldPoly
-     *                the encoded field polynomial defining the finite field
-     *                <tt>GF(2<sup>m</sup>)</tt>
-     * @param encGoppaPoly
-     *                the encoded irreducible Goppa polynomial
-     * @param encP
-     *                the encoded permutation
-     * @param encH
-     *                the encoded canonical check matrix
-     * @param encQInv
-     *                the encoded matrix used to compute square roots in
-     *                <tt>(GF(2^m))^t</tt>
+     *
+     * @param n            the length of the code
+     * @param k            the dimension of the code
+     * @param encFieldPoly the encoded field polynomial defining the finite field
+     *                     <tt>GF(2<sup>m</sup>)</tt>
+     * @param encGoppaPoly the encoded irreducible Goppa polynomial
+     * @param encP         the encoded permutation
+     * @param encH         the encoded canonical check matrix
+     * @param encQInv      the encoded matrix used to compute square roots in
+     *                     <tt>(GF(2^m))^t</tt>
      */
     protected McElieceCCA2PrivateKeySpec(int n, int k, byte[] encFieldPoly,
-	    byte[] encGoppaPoly, byte[] encP, byte[] encH, byte[][] encQInv) {
-	this.n = n;
-	this.k = k;
-	field = new GF2mField(encFieldPoly);
-	goppaPoly = new PolynomialGF2mSmallM(field, encGoppaPoly);
-	p = new Permutation(encP);
-	h = new GF2Matrix(encH);
-	qInv = new PolynomialGF2mSmallM[encQInv.length];
-	for (int i = 0; i < encQInv.length; i++) {
-	    qInv[i] = new PolynomialGF2mSmallM(field, encQInv[i]);
-	}
+                                         byte[] encGoppaPoly, byte[] encP, byte[] encH, byte[][] encQInv) {
+        this.n = n;
+        this.k = k;
+        field = new GF2mField(encFieldPoly);
+        goppaPoly = new PolynomialGF2mSmallM(field, encGoppaPoly);
+        p = new Permutation(encP);
+        h = new GF2Matrix(encH);
+        qInv = new PolynomialGF2mSmallM[encQInv.length];
+        for (int i = 0; i < encQInv.length; i++) {
+            qInv[i] = new PolynomialGF2mSmallM(field, encQInv[i]);
+        }
     }
 
     /**
      * @return the length of the code
      */
     public int getN() {
-	return n;
+        return n;
     }
 
     /**
      * @return the dimension of the code
      */
     public int getK() {
-	return k;
+        return k;
     }
 
     /**
      * @return the finite field
      */
     public GF2mField getField() {
-	return field;
+        return field;
     }
 
     /**
      * @return the irreducible Goppa polynomial
      */
     public PolynomialGF2mSmallM getGoppaPoly() {
-	return goppaPoly;
+        return goppaPoly;
     }
 
     /**
      * @return the permutation P
      */
     public Permutation getP() {
-	return p;
+        return p;
     }
 
     /**
      * @return the canonical check matrix H
      */
     public GF2Matrix getH() {
-	return h;
+        return h;
     }
 
     /**
      * @return the matrix used to compute square roots in <tt>(GF(2^m))^t</tt>
      */
     public PolynomialGF2mSmallM[] getQInv() {
-	return qInv;
+        return qInv;
     }
 
 }

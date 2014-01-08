@@ -13,7 +13,7 @@ package de.flexiprovider.common.exceptions;
  * This exception is thrown, if a point is stored in a byte array in a wrong
  * format. For a compressed point the first field has to hold a 2 or 3, for an
  * uncompressed form a 4 and for an hybrid form a 6 or 7.
- * 
+ *
  * @author Birgit Henhapl
  * @see de.flexiprovider.common.math.ellipticcurves.Point
  * @see de.flexiprovider.common.math.ellipticcurves.PointGFP
@@ -27,32 +27,30 @@ public class InvalidFormatException extends ECException {
      * message is a String that describes this particular exception.
      */
     public InvalidFormatException() {
-	super(diagnostic);
+        super(diagnostic);
     }
 
     /**
      * Constructs an InvalidFormatException with a detail message. A detail
      * message is a String that describes this particular exception.
-     * 
-     * @param msg
-     *                the detail message
+     *
+     * @param msg the detail message
      */
     public InvalidFormatException(String msg) {
-	super(diagnostic + ": " + msg);
+        super(diagnostic + ": " + msg);
     }
 
     /**
      * Constructs an InvalidFormatException with detailed message. It tells
      * about the content of the first byte and repeats the rules to use the byte
      * array representation.
-     * 
-     * @param type
-     *                the value of the first byte in the byte array
+     *
+     * @param type the value of the first byte in the byte array
      */
     public InvalidFormatException(byte type) {
-	super("diagnostic:\n" + type + " is an invalid type of point"
-		+ "representation:\n\t2, 3: compressed form,\n\t4"
-		+ ": uncompressed form\n\t6, 7: hybrid form");
+        super("diagnostic:\n" + type + " is an invalid type of point"
+                + "representation:\n\t2, 3: compressed form,\n\t4"
+                + ": uncompressed form\n\t6, 7: hybrid form");
     }
 
 }

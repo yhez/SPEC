@@ -32,24 +32,21 @@ public class PBKDF1_PKCS12ParameterSpec extends PBEParameterSpec {
     /**
      * Construct new PBKDF1 parameters using the given salt, iteration count,
      * and purpose identification byte.
-     * 
-     * @param salt
-     *                the salt
-     * @param iterationCount
-     *                the iteration count
-     * @param id
-     *                the purpose identification byte
+     *
+     * @param salt           the salt
+     * @param iterationCount the iteration count
+     * @param id             the purpose identification byte
      */
     public PBKDF1_PKCS12ParameterSpec(byte[] salt, int iterationCount, byte id) {
-	super(salt, iterationCount);
-	this.id = id;
+        super(salt, iterationCount);
+        this.id = id;
     }
 
     /**
      * @return the purpose identification byte
      */
     public byte getID() {
-	return id;
+        return id;
     }
 
 }

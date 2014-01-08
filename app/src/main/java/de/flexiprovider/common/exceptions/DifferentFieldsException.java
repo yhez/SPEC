@@ -11,7 +11,7 @@ package de.flexiprovider.common.exceptions;
 
 /**
  * This class is called, when trying to combine elements of different fields.
- * 
+ *
  * @author Birgit Henhapl
  */
 public class DifferentFieldsException extends GFException {
@@ -23,18 +23,17 @@ public class DifferentFieldsException extends GFException {
      * "Cannot combine elements from different fields"
      */
     public DifferentFieldsException() {
-	super(diagnostic);
+        super(diagnostic);
     }
 
     /**
      * Calls the parent-constructor with the message "Cannot combine elements
      * from different fields: <em>details</em>"
-     * 
-     * @param details
-     *                details of this exception
+     *
+     * @param details details of this exception
      */
     public DifferentFieldsException(String details) {
-	super(diagnostic + ": " + details);
+        super(diagnostic + ": " + details);
     }
 
 }

@@ -27,7 +27,7 @@ public class Contact {
             this.contactName = contactName;
             this.publicKey = publicKey;
             this.email = email;
-            this.session = session!=null?new Session(session).toString():new Session().toString();
+            this.session = session != null ? new Session(session).toString() : new Session().toString();
             this.sent = 0;
             this.received = session != null ? 1 : 0;
             this.sent = 0;
@@ -144,13 +144,15 @@ public class Contact {
                 contactName, email, publicKey, session);
         MySimpleArrayAdapter.adapter.updateCont(a, this);
     }
+
     //message sent
     public void update(Activity a) {
         sent++;
         Session.updateFlag(a, this);
-        ContactsDataSource.contactsDataSource.updateDB(id,sent);
+        ContactsDataSource.contactsDataSource.updateDB(id, sent);
         MySimpleArrayAdapter.adapter.updateCont(a, this);
     }
+
     //message received
     public void update(long time) {
         received++;

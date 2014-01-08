@@ -31,7 +31,7 @@ import de.flexiprovider.core.rc2.RC2KeyFactory;
  * version 1.2</a>. The key for the cipher (here RC2) is derived from the
  * passphrase by applying a hashfunction (here
  * {@link de.flexiprovider.core.md.SHA1 SHA-1}) several times on it.
- * 
+ *
  * @author Michele Boivin
  */
 public class PBEWithSHAAnd40BitRC2_CBC extends PBES1 {
@@ -49,46 +49,44 @@ public class PBEWithSHAAnd40BitRC2_CBC extends PBES1 {
      * secret key factory and the cipher.
      */
     public PBEWithSHAAnd40BitRC2_CBC() {
-	cipher = new RC2.RC2_CBC();
-	try {
-	    cipher.setPadding("PKCS5Padding");
-	} catch (NoSuchPaddingException nspe) {
-	    throw new RuntimeException("internal error");
-	}
-	rc2KeyFactory = new RC2KeyFactory();
-	kdf = new PBKDF1_PKCS12.SHA1();
+        cipher = new RC2.RC2_CBC();
+        try {
+            cipher.setPadding("PKCS5Padding");
+        } catch (NoSuchPaddingException nspe) {
+            throw new RuntimeException("internal error");
+        }
+        rc2KeyFactory = new RC2KeyFactory();
+        kdf = new PBKDF1_PKCS12.SHA1();
     }
 
     /**
      * @return the name of this cipher
      */
     public String getName() {
-	return "PbeWithSHAAnd40BitRC2_CBC";
+        return "PbeWithSHAAnd40BitRC2_CBC";
     }
 
     /**
      * Returns the key size of the given key object. Since the cipher underlying
      * this PBE scheme is 40 bit RC2, the return value is fixed.
-     * 
-     * @param key
-     *                the key object
+     *
+     * @param key the key object
      * @return the key size of the given key object.
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException
-     *                 if key is not an instance of <tt>PBEKey</tt>
+     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if key is not an instance of <tt>PBEKey</tt>
      */
     public int getKeySize(Key key) throws InvalidKeyException {
-	if (key instanceof PBEKey) {
-	    return 40;
-	}
-	throw new InvalidKeyException("Unsupported key.");
+        if (key instanceof PBEKey) {
+            return 40;
+        }
+        throw new InvalidKeyException("Unsupported key.");
     }
 
     /**
      * Initializes this cipher with a key, a set of algorithm parameters, and a
      * source of randomness.
-     * <p>
+     * <p/>
      * The cipher is initialized for encryption.
-     * <p>
+     * <p/>
      * If this cipher requires any algorithm parameters and params is null, the
      * underlying cipher implementation is supposed to generate the required
      * parameters itself (using provider-specific default or random values) if
@@ -96,87 +94,82 @@ public class PBEWithSHAAnd40BitRC2_CBC extends PBES1 {
      * InvalidAlgorithmParameterException if it is being initialized for
      * decryption. The generated parameters can be retrieved using
      * engineGetParameters or engineGetIV (if the parameter is an IV).
-     * <p>
+     * <p/>
      * If this cipher (including its underlying feedback or padding scheme)
      * requires any random bytes (e.g., for parameter generation), it will get
      * them from random.
-     * <p>
+     * <p/>
      * Note that when a Cipher object is initialized, it loses all
      * previously-acquired state. In other words, initializing a Cipher is
      * equivalent to creating a new instance of that Cipher and initializing it.
-     * 
-     * @param key
-     *                the encryption key
-     * @param params
-     *                the algorithm parameters
-     * @param random
-     *                the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException
-     *                 if the given key is inappropriate for initializing this
-     *                 cipher
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     *                 if the given algorithm parameters are inappropriate for
-     *                 this cipher, or if this cipher is being initialized fro
-     *                 decryption and requires algorithm parameters and params
-     *                 is null
+     *
+     * @param key    the encryption key
+     * @param params the algorithm parameters
+     * @param random the source of randomness
+     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the given key is inappropriate for initializing this
+     *                                                                            cipher
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the given algorithm parameters are inappropriate for
+     *                                                                            this cipher, or if this cipher is being initialized fro
+     *                                                                            decryption and requires algorithm parameters and params
+     *                                                                            is null
      */
     public void initEncrypt(Key key, AlgorithmParameterSpec params,
-	    SecureRandom random) throws InvalidKeyException,
-	    InvalidAlgorithmParameterException {
+                            SecureRandom random) throws InvalidKeyException,
+            InvalidAlgorithmParameterException {
 
-	// check key type
-	if (!(key instanceof PBEKey)) {
-	    throw new InvalidKeyException("unsupported type");
-	}
-	byte[] pbeKey = key.getEncoded();
+        // check key type
+        if (!(key instanceof PBEKey)) {
+            throw new InvalidKeyException("unsupported type");
+        }
+        byte[] pbeKey = key.getEncoded();
 
-	// check parameters type
-	if (!(params instanceof PBEParameterSpec)) {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
-	PBEParameterSpec pbeParamSpec = (PBEParameterSpec) params;
+        // check parameters type
+        if (!(params instanceof PBEParameterSpec)) {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
+        PBEParameterSpec pbeParamSpec = (PBEParameterSpec) params;
 
-	// extract the salt and iteration count from the parameters
-	byte[] salt = pbeParamSpec.getSalt();
-	int iterationCount = pbeParamSpec.getIterationCount();
+        // extract the salt and iteration count from the parameters
+        byte[] salt = pbeParamSpec.getSalt();
+        int iterationCount = pbeParamSpec.getIterationCount();
 
-	// generate the key bytes for the RC2 key
-	PBKDF1_PKCS12ParameterSpec kdfParams = new PBKDF1_PKCS12ParameterSpec(
-		salt, iterationCount, PBKDF1_PKCS12ParameterSpec.ID_ENCRYPTION);
-	kdf.init(pbeKey, kdfParams);
-	byte[] rc2Bytes = kdf.deriveKey(5);
+        // generate the key bytes for the RC2 key
+        PBKDF1_PKCS12ParameterSpec kdfParams = new PBKDF1_PKCS12ParameterSpec(
+                salt, iterationCount, PBKDF1_PKCS12ParameterSpec.ID_ENCRYPTION);
+        kdf.init(pbeKey, kdfParams);
+        byte[] rc2Bytes = kdf.deriveKey(5);
 
-	// generate a new RC2 key spec
-	SecretKeySpec rc2KeySpec = new SecretKeySpec(rc2Bytes, "RC2");
+        // generate a new RC2 key spec
+        SecretKeySpec rc2KeySpec = new SecretKeySpec(rc2Bytes, "RC2");
 
-	// convert the RC2 key spec into an RC2 key
-	SecretKey rc2Key;
-	try {
-	    rc2Key = rc2KeyFactory.generateSecret(rc2KeySpec);
-	} catch (InvalidKeySpecException ikse) {
-	    // the key spec is correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        // convert the RC2 key spec into an RC2 key
+        SecretKey rc2Key;
+        try {
+            rc2Key = rc2KeyFactory.generateSecret(rc2KeySpec);
+        } catch (InvalidKeySpecException ikse) {
+            // the key spec is correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
 
-	// generate the key bytes for the IV
-	kdfParams = new PBKDF1_PKCS12ParameterSpec(salt, iterationCount,
-		PBKDF1_PKCS12ParameterSpec.ID_IV);
-	kdf.init(pbeKey, kdfParams);
-	byte[] ivBytes = kdf.deriveKey(8);
+        // generate the key bytes for the IV
+        kdfParams = new PBKDF1_PKCS12ParameterSpec(salt, iterationCount,
+                PBKDF1_PKCS12ParameterSpec.ID_IV);
+        kdf.init(pbeKey, kdfParams);
+        byte[] ivBytes = kdf.deriveKey(8);
 
-	// generate the IV
-	ModeParameterSpec iv = new ModeParameterSpec(ivBytes);
+        // generate the IV
+        ModeParameterSpec iv = new ModeParameterSpec(ivBytes);
 
-	// initialize the RC2 cipher
-	cipher.initEncrypt(rc2Key, iv, null, random);
+        // initialize the RC2 cipher
+        cipher.initEncrypt(rc2Key, iv, null, random);
     }
 
     /**
      * Initializes this cipher with a key, a set of algorithm parameters, and a
      * source of randomness.
-     * <p>
+     * <p/>
      * The cipher is initialized for decryption.
-     * <p>
+     * <p/>
      * If this cipher requires any algorithm parameters and params is null, the
      * underlying cipher implementation is supposed to generate the required
      * parameters itself (using provider-specific default or random values) if
@@ -184,76 +177,72 @@ public class PBEWithSHAAnd40BitRC2_CBC extends PBES1 {
      * InvalidAlgorithmParameterException if it is being initialized for
      * decryption. The generated parameters can be retrieved using
      * engineGetParameters or engineGetIV (if the parameter is an IV).
-     * <p>
+     * <p/>
      * If this cipher (including its underlying feedback or padding scheme)
      * requires any random bytes (e.g., for parameter generation), it will get
      * them from random.
-     * <p>
+     * <p/>
      * Note that when a Cipher object is initialized, it loses all
      * previously-acquired state. In other words, initializing a Cipher is
      * equivalent to creating a new instance of that Cipher and initializing it.
-     * 
-     * @param key
-     *                the encryption key
-     * @param params
-     *                the algorithm parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException
-     *                 if the given key is inappropriate for initializing this
-     *                 cipher
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     *                 if the given algorithm parameters are inappropriate for
-     *                 this cipher, or if this cipher is being initialized fro
-     *                 decryption and requires algorithm parameters and params
-     *                 is null
+     *
+     * @param key    the encryption key
+     * @param params the algorithm parameters
+     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the given key is inappropriate for initializing this
+     *                                                                            cipher
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the given algorithm parameters are inappropriate for
+     *                                                                            this cipher, or if this cipher is being initialized fro
+     *                                                                            decryption and requires algorithm parameters and params
+     *                                                                            is null
      */
     public void initDecrypt(Key key, AlgorithmParameterSpec params)
-	    throws InvalidKeyException, InvalidAlgorithmParameterException {
+            throws InvalidKeyException, InvalidAlgorithmParameterException {
 
-	// check key type
-	if (!(key instanceof PBEKey)) {
-	    throw new InvalidKeyException("unsupported type");
-	}
-	byte[] pbeKey = key.getEncoded();
+        // check key type
+        if (!(key instanceof PBEKey)) {
+            throw new InvalidKeyException("unsupported type");
+        }
+        byte[] pbeKey = key.getEncoded();
 
-	// check parameters type
-	if (!(params instanceof PBEParameterSpec)) {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
-	PBEParameterSpec pbeParamSpec = (PBEParameterSpec) params;
+        // check parameters type
+        if (!(params instanceof PBEParameterSpec)) {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
+        PBEParameterSpec pbeParamSpec = (PBEParameterSpec) params;
 
-	// extract the salt and iteration count from the parameters
-	byte[] salt = pbeParamSpec.getSalt();
-	int iterationCount = pbeParamSpec.getIterationCount();
+        // extract the salt and iteration count from the parameters
+        byte[] salt = pbeParamSpec.getSalt();
+        int iterationCount = pbeParamSpec.getIterationCount();
 
-	// generate the key bytes for the RC2 key
-	PBKDF1_PKCS12ParameterSpec kdfParams = new PBKDF1_PKCS12ParameterSpec(
-		salt, iterationCount, PBKDF1_PKCS12ParameterSpec.ID_ENCRYPTION);
-	kdf.init(pbeKey, kdfParams);
-	byte[] rc2Bytes = kdf.deriveKey(5);
+        // generate the key bytes for the RC2 key
+        PBKDF1_PKCS12ParameterSpec kdfParams = new PBKDF1_PKCS12ParameterSpec(
+                salt, iterationCount, PBKDF1_PKCS12ParameterSpec.ID_ENCRYPTION);
+        kdf.init(pbeKey, kdfParams);
+        byte[] rc2Bytes = kdf.deriveKey(5);
 
-	// generate a new RC2 key spec
-	SecretKeySpec rc2KeySpec = new SecretKeySpec(rc2Bytes, "RC2");
+        // generate a new RC2 key spec
+        SecretKeySpec rc2KeySpec = new SecretKeySpec(rc2Bytes, "RC2");
 
-	// convert the RC2 key spec into an RC2 key
-	SecretKey rc2Key;
-	try {
-	    rc2Key = rc2KeyFactory.generateSecret(rc2KeySpec);
-	} catch (InvalidKeySpecException ikse) {
-	    // the key spec is correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        // convert the RC2 key spec into an RC2 key
+        SecretKey rc2Key;
+        try {
+            rc2Key = rc2KeyFactory.generateSecret(rc2KeySpec);
+        } catch (InvalidKeySpecException ikse) {
+            // the key spec is correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
 
-	// generate the key bytes for the IV
-	kdfParams = new PBKDF1_PKCS12ParameterSpec(salt, iterationCount,
-		PBKDF1_PKCS12ParameterSpec.ID_IV);
-	kdf.init(pbeKey, kdfParams);
-	byte[] ivBytes = kdf.deriveKey(8);
+        // generate the key bytes for the IV
+        kdfParams = new PBKDF1_PKCS12ParameterSpec(salt, iterationCount,
+                PBKDF1_PKCS12ParameterSpec.ID_IV);
+        kdf.init(pbeKey, kdfParams);
+        byte[] ivBytes = kdf.deriveKey(8);
 
-	// generate the IV
-	ModeParameterSpec iv = new ModeParameterSpec(ivBytes);
+        // generate the IV
+        ModeParameterSpec iv = new ModeParameterSpec(ivBytes);
 
-	// initialize the RC2 cipher
-	cipher.initDecrypt(rc2Key, iv, null);
+        // initialize the RC2 cipher
+        cipher.initDecrypt(rc2Key, iv, null);
     }
 
 }

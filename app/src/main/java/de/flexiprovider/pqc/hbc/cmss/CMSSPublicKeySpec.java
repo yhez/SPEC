@@ -4,9 +4,8 @@ import de.flexiprovider.api.keys.KeySpec;
 
 /**
  * This class provides a specification for a CMSS public key.
- * 
+ *
  * @author Elena Klintsevich
- * 
  * @see CMSSPublicKey
  * @see de.flexiprovider.api.keys.KeySpec
  */
@@ -23,34 +22,32 @@ public class CMSSPublicKeySpec implements KeySpec {
 
     /**
      * Construct a new CMSS2 public key.
-     * 
-     * @param oid
-     *                the OID of the algorithm
-     * @param keyBytes
-     *                the key bytes
+     *
+     * @param oid      the OID of the algorithm
+     * @param keyBytes the key bytes
      */
     public CMSSPublicKeySpec(String oid, byte[] keyBytes, byte[][][] masks) {
-	this.oid = oid;
-	this.keyBytes = keyBytes;
-	this.masks = masks;
+        this.oid = oid;
+        this.keyBytes = keyBytes;
+        this.masks = masks;
     }
 
     /**
      * @return the OID of the algorithm
      */
     public String getOIDString() {
-	return oid;
+        return oid;
     }
 
     /**
      * @return the key bytes
      */
     public byte[] getPubKeyBytes() {
-	return keyBytes;
+        return keyBytes;
     }
 
     public byte[][][] getMasks() {
-	return masks;
+        return masks;
     }
 
 }

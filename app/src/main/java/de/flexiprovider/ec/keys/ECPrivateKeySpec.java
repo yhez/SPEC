@@ -15,15 +15,14 @@ import de.flexiprovider.ec.parameters.CurveParams;
 
 /**
  * This class specifies an EC private key with its associated parameters.
- * 
+ *
+ * @author Birgit Henhapl
+ * @author Michele Boivin
  * @see de.flexiprovider.api.keys.Key
  * @see de.flexiprovider.api.keys.KeySpec
  * @see ECPublicKeySpec
  * @see de.flexiprovider.common.math.ellipticcurves.Point
  * @see CurveParams
- * 
- * @author Birgit Henhapl
- * @author Michele Boivin
  */
 public final class ECPrivateKeySpec implements KeySpec {
 
@@ -39,7 +38,7 @@ public final class ECPrivateKeySpec implements KeySpec {
     /**
      * Holds s, 1 < s < r, public key. r is order of G, generator of the
      * subgroup.
-     * 
+     *
      * @serial
      */
     private FlexiBigInt mS;
@@ -53,15 +52,13 @@ public final class ECPrivateKeySpec implements KeySpec {
      * private key <tt>s</tt> and an ecdomain parameters specification
      * <tt>params</tt> (see <a href =
      * ../..spec.ECParameterSpec.html>ECParameterSpec</a>).
-     * 
-     * @param s
-     *                private key represented by a FlexiBigInt
-     * @param params
-     *                an ecdomain parameters specification
+     *
+     * @param s      private key represented by a FlexiBigInt
+     * @param params an ecdomain parameters specification
      */
     public ECPrivateKeySpec(FlexiBigInt s, CurveParams params) {
-	mParams = params;
-	mS = s;
+        mParams = params;
+        mS = s;
     }
 
     // //////////////////////////////////////////////////////////////
@@ -71,20 +68,20 @@ public final class ECPrivateKeySpec implements KeySpec {
     /**
      * Returns the private key s. 1 < s < r, r is the order of point G, member
      * of the ECDomain Parameters.
-     * 
+     *
      * @return the private key s
      */
     public FlexiBigInt getS() {
-	return mS;
+        return mS;
     }
 
     /**
      * Returns the ECDomain Parameters params.
-     * 
+     *
      * @return the parameters params
      */
     public CurveParams getParams() {
-	return mParams;
+        return mParams;
     }
 
 }

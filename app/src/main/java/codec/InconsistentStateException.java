@@ -80,14 +80,14 @@ package codec;
  * Signals an inconsistent object state. Objects can enter inconsistent states
  * for instance if an exception is caught that shouldn't happen. Such exceptions
  * can occur due to unexpected exceptions from other code or internal errors.
- * <p>
+ * <p/>
  * A typical example is when an application knows that a specific error
  * condition cannot occur because the preconditions required for a successful
  * completion of a method call are met, but an exception is thrown nevertheless.
  * In this case, the exception can be caught and wrapped into an exception of
  * this class in order to pass on the original cause of the exception to code
  * further up the calling stack.
- * 
+ *
  * @author Volker Roth
  * @version "$Id: InconsistentStateException.java,v 1.3 2005/04/06 09:33:26
  *          flautens Exp $"
@@ -99,49 +99,27 @@ public class InconsistentStateException extends RuntimeException {
     private Exception e_;
 
     /**
-     * Creates an instance.
-     */
-    public InconsistentStateException() {
-    }
-
-    /**
      * Creates an instance with the given message.
-     * 
-     * @param message
-     *                The message.
+     *
+     * @param message The message.
      */
     public InconsistentStateException(String message) {
-	super(message);
-    }
-
-    /**
-     * Creates an exception that wraps around the given exception. The message
-     * of this exception is set to the one of the given exception. The given
-     * exception must not be <code>null</code>.
-     * 
-     * @param e
-     *                The exception that shall be wrapped in this one.
-     * @throws NullPointerException
-     *                 if the given exception is <code>null</code>.
-     */
-    public InconsistentStateException(Exception e) {
-	super(e.getMessage());
-	e_ = e;
+        super(message);
     }
 
     /**
      * Returns the wrapped exception or <code>this</code> if no exception is
      * wrapped in this one.
-     * 
+     *
      * @return The wrapped exception or <code>this</code> if there is no
-     *         exception wrapped by this one.
+     * exception wrapped by this one.
      */
     public Exception getException() {
-	if (e_ == null) {
-	    return this;
-	}
+        if (e_ == null) {
+            return this;
+        }
 
-	return e_;
+        return e_;
     }
 
     /**
@@ -153,10 +131,10 @@ public class InconsistentStateException extends RuntimeException {
      * exception.
      */
     public void printStackTrace() {
-	if (e_ == null) {
-	    super.printStackTrace();
-	} else {
-	    e_.printStackTrace();
-	}
+        if (e_ == null) {
+            super.printStackTrace();
+        } else {
+            e_.printStackTrace();
+        }
     }
 }

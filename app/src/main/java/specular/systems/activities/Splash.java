@@ -31,6 +31,13 @@ import specular.systems.StaticVariables;
 import specular.systems.Visual;
 
 public class Splash extends Activity {
+
+    @Override
+    public void onDestroy() {
+        CryptMethods.deleteKeys();
+        super.onDestroy();
+    }
+
     private final static int TIME_FOR_SPLASH = 3500;
     private final static long TIME_FOR_CLEAR_TASK = 15;//in minute
     private final Thread waitForSplash = new Thread(new Runnable() {
@@ -176,12 +183,13 @@ public class Splash extends Activity {
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         new KeysDeleter();
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         KeysDeleter.stop();
     }

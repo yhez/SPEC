@@ -31,7 +31,7 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
  * or {@link IQRDSAPublicKeySpec}), DER-encoded ASN.1 representations ({@link X509EncodedKeySpec}
  * or {@link PKCS8EncodedKeySpec}), and keys ({@link IQRDSAPrivateKey} or
  * {@link de.flexiprovider.nf.iq.iqrdsa.IQRDSAPublicKey}).
- * 
+ *
  * @author Birgit Henhapl
  * @author Michele Boivin
  * @author Ralf-P. Weinmann
@@ -46,159 +46,155 @@ public class IQRDSAKeyFactory extends KeyFactory {
     /**
      * Generates a private key object from the provided key specification (key
      * material).
-     * 
-     * @param keySpec
-     *                the specification (key material) of the private key
+     *
+     * @param keySpec the specification (key material) of the private key
      * @return the private key
-     * @throws InvalidKeySpecException
-     *                 if the given key specification is inappropriate for this
-     *                 key factory to produce a private key.
+     * @throws InvalidKeySpecException if the given key specification is inappropriate for this
+     *                                 key factory to produce a private key.
      */
     public PrivateKey generatePrivate(KeySpec keySpec)
-	    throws InvalidKeySpecException {
+            throws InvalidKeySpecException {
 
-	if (keySpec instanceof IQRDSAPrivateKeySpec) {
-	    return new IQRDSAPrivateKey((IQRDSAPrivateKeySpec) keySpec);
-	}
+        if (keySpec instanceof IQRDSAPrivateKeySpec) {
+            return new IQRDSAPrivateKey((IQRDSAPrivateKeySpec) keySpec);
+        }
 
-	if (keySpec instanceof PKCS8EncodedKeySpec) {
-	    // extract DER-encoded key
-	    byte[] encKey = ((PKCS8EncodedKeySpec) keySpec).getEncoded();
+        if (keySpec instanceof PKCS8EncodedKeySpec) {
+            // extract DER-encoded key
+            byte[] encKey = ((PKCS8EncodedKeySpec) keySpec).getEncoded();
 
-	    // decode the PKCS#8 data structure to the pki object
-	    PrivateKeyInfo pki = new PrivateKeyInfo();
-	    try {
-		ASN1Tools.derDecode(encKey, pki);
-	    } catch (Exception ce) {
-		throw new InvalidKeySpecException(
-			"Unable to decode PKCS8EncodedKeySpec.");
-	    }
+            // decode the PKCS#8 data structure to the pki object
+            PrivateKeyInfo pki = new PrivateKeyInfo();
+            try {
+                ASN1Tools.derDecode(encKey, pki);
+            } catch (Exception ce) {
+                throw new InvalidKeySpecException(
+                        "Unable to decode PKCS8EncodedKeySpec.");
+            }
 
-	    AlgorithmIdentifier aid = PKITools.getAlgorithmIdentifier(pki);
-	    IQRDSAParameterSpec iqrdsaParams;
-	    try {
-		AlgorithmParameters params = aid.getParams();
-		iqrdsaParams = (IQRDSAParameterSpec) params
-			.getParameterSpec(IQRDSAParameterSpec.class);
-	    } catch (NoSuchAlgorithmException e) {
-		throw new InvalidKeySpecException("NoSuchAlgorithmException: "
-			+ e.getMessage());
-	    } catch (InvalidAlgorithmParameterException e) {
-		throw new InvalidKeySpecException(
-			"InvalidAlgorithmParameterException: " + e.getMessage());
-	    } catch (InvalidParameterSpecException e) {
-		throw new InvalidKeySpecException(
-			"InvalidParameterSpecException: " + e.getMessage());
-	    }
+            AlgorithmIdentifier aid = PKITools.getAlgorithmIdentifier(pki);
+            IQRDSAParameterSpec iqrdsaParams;
+            try {
+                AlgorithmParameters params = aid.getParams();
+                iqrdsaParams = (IQRDSAParameterSpec) params
+                        .getParameterSpec(IQRDSAParameterSpec.class);
+            } catch (NoSuchAlgorithmException e) {
+                throw new InvalidKeySpecException("NoSuchAlgorithmException: "
+                        + e.getMessage());
+            } catch (InvalidAlgorithmParameterException e) {
+                throw new InvalidKeySpecException(
+                        "InvalidAlgorithmParameterException: " + e.getMessage());
+            } catch (InvalidParameterSpecException e) {
+                throw new InvalidKeySpecException(
+                        "InvalidParameterSpecException: " + e.getMessage());
+            }
 
-	    FlexiBigInt discriminant = iqrdsaParams.getDiscriminant();
+            FlexiBigInt discriminant = iqrdsaParams.getDiscriminant();
 
-	    ASN1Sequence privKeySequence;
-	    try {
-		privKeySequence = (ASN1Sequence) pki.getDecodedRawKey();
-	    } catch (CorruptedCodeException cce) {
-		throw new InvalidKeySpecException("CorruptedCodeException: "
-			+ cce.getMessage());
-	    }
+            ASN1Sequence privKeySequence;
+            try {
+                privKeySequence = (ASN1Sequence) pki.getDecodedRawKey();
+            } catch (CorruptedCodeException cce) {
+                throw new InvalidKeySpecException("CorruptedCodeException: "
+                        + cce.getMessage());
+            }
 
-	    byte[] encGamma = ((ASN1OctetString) privKeySequence.get(0))
-		    .getByteArray();
-	    byte[] encAlpha = ((ASN1OctetString) privKeySequence.get(1))
-		    .getByteArray();
-	    FlexiBigInt a = ASN1Tools
-		    .getFlexiBigInt((ASN1Integer) privKeySequence.get(2));
+            byte[] encGamma = ((ASN1OctetString) privKeySequence.get(0))
+                    .getByteArray();
+            byte[] encAlpha = ((ASN1OctetString) privKeySequence.get(1))
+                    .getByteArray();
+            FlexiBigInt a = ASN1Tools
+                    .getFlexiBigInt((ASN1Integer) privKeySequence.get(2));
 
-	    QuadraticIdeal gamma, alpha;
-	    try {
-		gamma = QuadraticIdeal.octetsToIdeal(discriminant, encGamma);
-		alpha = QuadraticIdeal.octetsToIdeal(discriminant, encAlpha);
-	    } catch (IQEncodingException iqee) {
-		throw new InvalidKeySpecException("CorruptedCodeException: "
-			+ iqee.getMessage());
-	    }
+            QuadraticIdeal gamma, alpha;
+            try {
+                gamma = QuadraticIdeal.octetsToIdeal(discriminant, encGamma);
+                alpha = QuadraticIdeal.octetsToIdeal(discriminant, encAlpha);
+            } catch (IQEncodingException iqee) {
+                throw new InvalidKeySpecException("CorruptedCodeException: "
+                        + iqee.getMessage());
+            }
 
-	    return new IQRDSAPrivateKey(iqrdsaParams, gamma, alpha, a);
-	}
+            return new IQRDSAPrivateKey(iqrdsaParams, gamma, alpha, a);
+        }
 
-	throw new InvalidKeySpecException("unsupported type");
+        throw new InvalidKeySpecException("unsupported type");
     }
 
     /**
      * Generates a public key object from the provided key specification (key
      * material).
-     * 
-     * @param keySpec
-     *                the specification (key material) of the public key
+     *
+     * @param keySpec the specification (key material) of the public key
      * @return the public key
-     * @throws InvalidKeySpecException
-     *                 if the given key specification is inappropriate for this
-     *                 key factory to produce a public key.
+     * @throws InvalidKeySpecException if the given key specification is inappropriate for this
+     *                                 key factory to produce a public key.
      */
     public PublicKey generatePublic(KeySpec keySpec)
-	    throws InvalidKeySpecException {
+            throws InvalidKeySpecException {
 
-	if (keySpec instanceof IQRDSAPublicKeySpec) {
-	    return new IQRDSAPublicKey((IQRDSAPublicKeySpec) keySpec);
-	}
+        if (keySpec instanceof IQRDSAPublicKeySpec) {
+            return new IQRDSAPublicKey((IQRDSAPublicKeySpec) keySpec);
+        }
 
-	if (keySpec instanceof X509EncodedKeySpec) {
-	    // extract DER-encoded key
-	    byte[] encKey = ((X509EncodedKeySpec) keySpec).getEncoded();
+        if (keySpec instanceof X509EncodedKeySpec) {
+            // extract DER-encoded key
+            byte[] encKey = ((X509EncodedKeySpec) keySpec).getEncoded();
 
-	    // decode the X.509 data structure to the spki object
-	    SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo();
-	    try {
-		ASN1Tools.derDecode(encKey, spki);
-	    } catch (Exception ce) {
-		throw new InvalidKeySpecException(
-			"Unable to decode X509EncodedKeySpec.");
-	    }
+            // decode the X.509 data structure to the spki object
+            SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo();
+            try {
+                ASN1Tools.derDecode(encKey, spki);
+            } catch (Exception ce) {
+                throw new InvalidKeySpecException(
+                        "Unable to decode X509EncodedKeySpec.");
+            }
 
-	    AlgorithmIdentifier aid = PKITools.getAlgorithmIdentifier(spki);
-	    IQRDSAParameterSpec iqrdsaParams;
-	    try {
-		AlgorithmParameters params = aid.getParams();
-		iqrdsaParams = (IQRDSAParameterSpec) params
-			.getParameterSpec(IQRDSAParameterSpec.class);
-	    } catch (NoSuchAlgorithmException e) {
-		throw new InvalidKeySpecException("NoSuchAlgorithmException: "
-			+ e.getMessage());
-	    } catch (InvalidAlgorithmParameterException e) {
-		throw new InvalidKeySpecException(
-			"InvalidAlgorithmParameterException: " + e.getMessage());
-	    } catch (InvalidParameterSpecException e) {
-		throw new InvalidKeySpecException(
-			"InvalidParameterSpecException: " + e.getMessage());
-	    }
+            AlgorithmIdentifier aid = PKITools.getAlgorithmIdentifier(spki);
+            IQRDSAParameterSpec iqrdsaParams;
+            try {
+                AlgorithmParameters params = aid.getParams();
+                iqrdsaParams = (IQRDSAParameterSpec) params
+                        .getParameterSpec(IQRDSAParameterSpec.class);
+            } catch (NoSuchAlgorithmException e) {
+                throw new InvalidKeySpecException("NoSuchAlgorithmException: "
+                        + e.getMessage());
+            } catch (InvalidAlgorithmParameterException e) {
+                throw new InvalidKeySpecException(
+                        "InvalidAlgorithmParameterException: " + e.getMessage());
+            } catch (InvalidParameterSpecException e) {
+                throw new InvalidKeySpecException(
+                        "InvalidParameterSpecException: " + e.getMessage());
+            }
 
-	    FlexiBigInt discriminant = iqrdsaParams.getDiscriminant();
+            FlexiBigInt discriminant = iqrdsaParams.getDiscriminant();
 
-	    ASN1Sequence pubKeySequence;
-	    try {
-		pubKeySequence = (ASN1Sequence) spki.getDecodedRawKey();
-	    } catch (CorruptedCodeException cce) {
-		throw new InvalidKeySpecException("CorruptedCodeException: "
-			+ cce.getMessage());
-	    }
+            ASN1Sequence pubKeySequence;
+            try {
+                pubKeySequence = (ASN1Sequence) spki.getDecodedRawKey();
+            } catch (CorruptedCodeException cce) {
+                throw new InvalidKeySpecException("CorruptedCodeException: "
+                        + cce.getMessage());
+            }
 
-	    byte[] encGamma = ((ASN1OctetString) pubKeySequence.get(0))
-		    .getByteArray();
-	    byte[] encAlpha = ((ASN1OctetString) pubKeySequence.get(1))
-		    .getByteArray();
+            byte[] encGamma = ((ASN1OctetString) pubKeySequence.get(0))
+                    .getByteArray();
+            byte[] encAlpha = ((ASN1OctetString) pubKeySequence.get(1))
+                    .getByteArray();
 
-	    QuadraticIdeal gamma, alpha;
-	    try {
-		gamma = QuadraticIdeal.octetsToIdeal(discriminant, encGamma);
-		alpha = QuadraticIdeal.octetsToIdeal(discriminant, encAlpha);
-	    } catch (IQEncodingException iqee) {
-		throw new InvalidKeySpecException("CorruptedCodeException: "
-			+ iqee.getMessage());
-	    }
+            QuadraticIdeal gamma, alpha;
+            try {
+                gamma = QuadraticIdeal.octetsToIdeal(discriminant, encGamma);
+                alpha = QuadraticIdeal.octetsToIdeal(discriminant, encAlpha);
+            } catch (IQEncodingException iqee) {
+                throw new InvalidKeySpecException("CorruptedCodeException: "
+                        + iqee.getMessage());
+            }
 
-	    return new IQRDSAPublicKey(iqrdsaParams, gamma, alpha);
-	}
+            return new IQRDSAPublicKey(iqrdsaParams, gamma, alpha);
+        }
 
-	throw new InvalidKeySpecException("unsupported type");
+        throw new InvalidKeySpecException("unsupported type");
     }
 
     /**
@@ -208,43 +204,40 @@ public class IQRDSAKeyFactory extends KeyFactory {
      * <tt>IQRDSAPublicKeySpec.class</tt>, to indicate that the key material
      * should be returned in an instance of the <tt>IQRDSAPublicKeySpec</tt>
      * class.
-     * 
-     * @param key
-     *                the key
-     * @param keySpec
-     *                the specification class in which the key material should
+     *
+     * @param key     the key
+     * @param keySpec the specification class in which the key material should
      *                be returned
      * @return the underlying key specification (key material) in an instance of
-     *         the requested specification class
-     * @throws InvalidKeySpecException
-     *                 if the requested key specification is inappropriate for
-     *                 the given key, or the given key cannot be dealt with
-     *                 (e.g., the given key has an unrecognized format).
+     * the requested specification class
+     * @throws InvalidKeySpecException if the requested key specification is inappropriate for
+     *                                 the given key, or the given key cannot be dealt with
+     *                                 (e.g., the given key has an unrecognized format).
      */
     public KeySpec getKeySpec(Key key, Class keySpec)
-	    throws InvalidKeySpecException {
+            throws InvalidKeySpecException {
 
-	if (key instanceof IQRDSAPublicKey) {
-	    if (!keySpec.isAssignableFrom(IQRDSAPublicKeySpec.class)) {
-		throw new InvalidKeySpecException("unsupported spec type");
-	    }
-	    IQRDSAPublicKey pubKey = (IQRDSAPublicKey) key;
-	    return new IQRDSAPublicKeySpec(pubKey.getParams(), pubKey
-		    .getGamma(), pubKey.getAlpha());
+        if (key instanceof IQRDSAPublicKey) {
+            if (!keySpec.isAssignableFrom(IQRDSAPublicKeySpec.class)) {
+                throw new InvalidKeySpecException("unsupported spec type");
+            }
+            IQRDSAPublicKey pubKey = (IQRDSAPublicKey) key;
+            return new IQRDSAPublicKeySpec(pubKey.getParams(), pubKey
+                    .getGamma(), pubKey.getAlpha());
 
-	}
+        }
 
-	if (key instanceof IQRDSAPrivateKey) {
-	    if (!keySpec.isAssignableFrom(IQRDSAPrivateKeySpec.class)) {
-		throw new InvalidKeySpecException("unsupported spec type");
-	    }
-	    IQRDSAPrivateKey privKey = (IQRDSAPrivateKey) key;
-	    return new IQRDSAPublicKeySpec(privKey.getParams(), privKey
-		    .getGamma(), privKey.getAlpha());
+        if (key instanceof IQRDSAPrivateKey) {
+            if (!keySpec.isAssignableFrom(IQRDSAPrivateKeySpec.class)) {
+                throw new InvalidKeySpecException("unsupported spec type");
+            }
+            IQRDSAPrivateKey privKey = (IQRDSAPrivateKey) key;
+            return new IQRDSAPublicKeySpec(privKey.getParams(), privKey
+                    .getGamma(), privKey.getAlpha());
 
-	}
+        }
 
-	throw new InvalidKeySpecException("unsupported key type");
+        throw new InvalidKeySpecException("unsupported key type");
     }
 
     /**
@@ -252,19 +245,17 @@ public class IQRDSAKeyFactory extends KeyFactory {
      * untrusted, into a corresponding key object of this key factory.
      * Currently, only the following key types are supported:
      * {@link de.flexiprovider.nf.iq.iqrdsa.IQRDSAPublicKey}, {@link IQRDSAPrivateKey}.
-     * 
-     * @param key
-     *                the key whose provider is unknown or untrusted
+     *
+     * @param key the key whose provider is unknown or untrusted
      * @return the translated key
-     * @throws InvalidKeyException
-     *                 if the given key cannot be processed by this key factory.
+     * @throws InvalidKeyException if the given key cannot be processed by this key factory.
      */
     public Key translateKey(Key key) throws InvalidKeyException {
-	if ((key instanceof IQRDSAPublicKey)
-		|| (key instanceof IQRDSAPrivateKey)) {
-	    return key;
-	}
-	throw new InvalidKeyException("unsupported type");
+        if ((key instanceof IQRDSAPublicKey)
+                || (key instanceof IQRDSAPrivateKey)) {
+            return key;
+        }
+        throw new InvalidKeyException("unsupported type");
     }
 
 }

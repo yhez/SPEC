@@ -16,9 +16,9 @@ import de.flexiprovider.common.math.FlexiBigInt;
 
 /**
  * This class specifies an ElGamal private key.
- * 
- * @see de.flexiprovider.core.elgamal.ElGamalKeyFactory
+ *
  * @author Thomas Wahrenbruch
+ * @see de.flexiprovider.core.elgamal.ElGamalKeyFactory
  */
 public class ElGamalPrivateKeySpec implements KeySpec {
 
@@ -44,50 +44,50 @@ public class ElGamalPrivateKeySpec implements KeySpec {
 
     /**
      * The constructor.
-     * 
-     * @param modulus -
-     *                the prime modulus which specifies the group
+     *
+     * @param modulus   -
+     *                  the prime modulus which specifies the group
      * @param generator -
-     *                a generator of the group
-     * @param publicA -
-     *                the public value <tt>A = g<sup>a</sup> mod modulus</tt>
-     * @param a -
-     *                the private value <tt>a</tt>
+     *                  a generator of the group
+     * @param publicA   -
+     *                  the public value <tt>A = g<sup>a</sup> mod modulus</tt>
+     * @param a         -
+     *                  the private value <tt>a</tt>
      */
     public ElGamalPrivateKeySpec(FlexiBigInt modulus, FlexiBigInt generator,
-	    FlexiBigInt publicA, FlexiBigInt a) {
-	this.modulus = modulus;
-	this.generator = generator;
-	this.publicA = publicA;
-	this.a = a;
+                                 FlexiBigInt publicA, FlexiBigInt a) {
+        this.modulus = modulus;
+        this.generator = generator;
+        this.publicA = publicA;
+        this.a = a;
     }
 
     /**
      * @return the prime modulus
      */
     public final FlexiBigInt getModulus() {
-	return modulus;
+        return modulus;
     }
 
     /**
      * @return the generator
      */
     public final FlexiBigInt getGenerator() {
-	return generator;
+        return generator;
     }
 
     /**
      * @return the public value <tt>A = g<sup>a</sup> mod modulus</tt>
      */
     public final FlexiBigInt getPublicA() {
-	return publicA;
+        return publicA;
     }
 
     /**
      * @return the private value <tt>a</tt>
      */
     public final FlexiBigInt getA() {
-	return a;
+        return a;
     }
 
 }

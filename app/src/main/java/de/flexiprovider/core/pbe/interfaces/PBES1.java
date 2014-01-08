@@ -7,7 +7,7 @@ import de.flexiprovider.core.pbe.PBEParameterSpec;
 /**
  * Translation layer between {@link javax.crypto.spec.PBEParameterSpec} and
  * {@link PBEParameterSpec}.
- * 
+ *
  * @author Martin Dring
  */
 public abstract class PBES1 extends Cipher {
@@ -24,38 +24,32 @@ public abstract class PBES1 extends Cipher {
      * it loses all previously-acquired state. In other words, initializing a
      * Cipher is equivalent to creating a new instance of that Cipher and
      * initializing it.
-     * 
-     * @param opMode
-     *                the operation mode of this cipher (this is one of the
-     *                following: ENCRYPT_MODE, DECRYPT_MODE)
-     * @param key
-     *                the encryption key
-     * @param params
-     *                the algorithm parameters
-     * @param javaRand
-     *                the source of randomness
-     * @throws java.security.InvalidKeyException
-     *                 if the given key is inappropriate for initializing this
-     *                 cipher
-     * @throws java.security.InvalidAlgorithmParameterException
-     *                 if the given algorithm parameters are inappropriate for
-     *                 this cipher, or if this cipher is being initialized for
-     *                 decryption and requires algorithm parameters and the
-     *                 parameters are null.
+     *
+     * @param opMode   the operation mode of this cipher (this is one of the
+     *                 following: ENCRYPT_MODE, DECRYPT_MODE)
+     * @param key      the encryption key
+     * @param params   the algorithm parameters
+     * @param javaRand the source of randomness
+     * @throws java.security.InvalidKeyException                if the given key is inappropriate for initializing this
+     *                                                          cipher
+     * @throws java.security.InvalidAlgorithmParameterException if the given algorithm parameters are inappropriate for
+     *                                                          this cipher, or if this cipher is being initialized for
+     *                                                          decryption and requires algorithm parameters and the
+     *                                                          parameters are null.
      */
     protected final void engineInit(int opMode, java.security.Key key,
-	    java.security.spec.AlgorithmParameterSpec params,
-	    java.security.SecureRandom javaRand)
-	    throws java.security.InvalidKeyException,
-	    java.security.InvalidAlgorithmParameterException {
+                                    java.security.spec.AlgorithmParameterSpec params,
+                                    java.security.SecureRandom javaRand)
+            throws java.security.InvalidKeyException,
+            java.security.InvalidAlgorithmParameterException {
 
-	if ((params != null) && !(params instanceof AlgorithmParameterSpec)
-		&& (params instanceof javax.crypto.spec.PBEParameterSpec)) {
-	    AlgorithmParameterSpec pbeParams = new PBEParameterSpec(
-		    (javax.crypto.spec.PBEParameterSpec) params);
-	    super.engineInit(opMode, key, pbeParams, javaRand);
-	} else {
-	    super.engineInit(opMode, key, params, javaRand);
-	}
+        if ((params != null) && !(params instanceof AlgorithmParameterSpec)
+                && (params instanceof javax.crypto.spec.PBEParameterSpec)) {
+            AlgorithmParameterSpec pbeParams = new PBEParameterSpec(
+                    (javax.crypto.spec.PBEParameterSpec) params);
+            super.engineInit(opMode, key, pbeParams, javaRand);
+        } else {
+            super.engineInit(opMode, key, params, javaRand);
+        }
     }
 }

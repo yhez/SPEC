@@ -7,7 +7,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
  * {@link de.flexiprovider.core.camellia.CamelliaKeyGenerator}. The parameters consist of the key size in
  * bits. Values for the key size are 128, 192, and 256 bits, with the default
  * being 128 bits.
- * 
+ *
  * @author Martin D�ring
  */
 public class CamelliaKeyGenParameterSpec implements AlgorithmParameterSpec {
@@ -25,29 +25,28 @@ public class CamelliaKeyGenParameterSpec implements AlgorithmParameterSpec {
      * {@link #DEFAULT_KEY_SIZE}.
      */
     public CamelliaKeyGenParameterSpec() {
-	keySize = DEFAULT_KEY_SIZE;
+        keySize = DEFAULT_KEY_SIZE;
     }
 
     /**
      * Construct new parameters from the given key size. If the key size is
      * invalid, the {@link #DEFAULT_KEY_SIZE default key size} is chosen.
-     * 
-     * @param keySize
-     *                the key size (128, 192, or 256 bits)
+     *
+     * @param keySize the key size (128, 192, or 256 bits)
      */
     public CamelliaKeyGenParameterSpec(int keySize) {
-	if ((keySize != 128) && (keySize != 192) && (keySize != 256)) {
-	    this.keySize = DEFAULT_KEY_SIZE;
-	} else {
-	    this.keySize = keySize;
-	}
+        if ((keySize != 128) && (keySize != 192) && (keySize != 256)) {
+            this.keySize = DEFAULT_KEY_SIZE;
+        } else {
+            this.keySize = keySize;
+        }
     }
 
     /**
      * @return the key size in bits
      */
     public int getKeySize() {
-	return keySize;
+        return keySize;
     }
 
 }

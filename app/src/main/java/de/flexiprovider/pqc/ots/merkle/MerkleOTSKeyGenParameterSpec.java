@@ -11,7 +11,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 /**
  * This class provides the specification of the parameters used by the
  * {@link de.flexiprovider.pqc.ots.merkle.MerkleOTSKeyPairGenerator}.
- * 
+ *
  * @author Elena Klintsevich
  */
 public class MerkleOTSKeyGenParameterSpec implements AlgorithmParameterSpec {
@@ -21,19 +21,18 @@ public class MerkleOTSKeyGenParameterSpec implements AlgorithmParameterSpec {
 
     /**
      * Construct new MerkleOTS parameters from the given seed for the PRNG.
-     * 
-     * @param seed
-     *                the seed
+     *
+     * @param seed the seed
      */
     public MerkleOTSKeyGenParameterSpec(byte[] seed) {
-	this.seed = seed;
+        this.seed = seed;
     }
 
     /**
      * @return the seed for the PRNG
      */
     public byte[] getSeed() {
-	return seed;
+        return seed;
     }
 
 }

@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import de.flexiprovider.common.math.FlexiBigInt;
 
 public abstract class RSAPrivateCrtKey extends RSAPrivateKey implements
-	java.security.interfaces.RSAPrivateCrtKey {
+        java.security.interfaces.RSAPrivateCrtKey {
 
     // ****************************************************
     // JCA adapter methods
@@ -15,42 +15,42 @@ public abstract class RSAPrivateCrtKey extends RSAPrivateKey implements
      * @return the public exponent e
      */
     public final BigInteger getPublicExponent() {
-	return my.BigInteger.get(getE().bigInt);
+        return my.BigInteger.get(getE().bigInt);
     }
 
     /**
      * @return the prime p
      */
     public final BigInteger getPrimeP() {
-	return my.BigInteger.get(getP().bigInt);
+        return my.BigInteger.get(getP().bigInt);
     }
 
     /**
      * @return the prime q
      */
     public final BigInteger getPrimeQ() {
-	return my.BigInteger.get(getQ().bigInt);
+        return my.BigInteger.get(getQ().bigInt);
     }
 
     /**
      * @return the private exponent d mod (p-1)
      */
     public final BigInteger getPrimeExponentP() {
-	return my.BigInteger.get(getDp().bigInt);
+        return my.BigInteger.get(getDp().bigInt);
     }
 
     /**
      * @return the private exponent d mod (q-1)
      */
     public final BigInteger getPrimeExponentQ() {
-	return my.BigInteger.get(getDq().bigInt);
+        return my.BigInteger.get(getDq().bigInt);
     }
 
     /**
      * @return the CRT coefficient
      */
     public final BigInteger getCrtCoefficient() {
-	return my.BigInteger.get(getCRTCoeff().bigInt);
+        return my.BigInteger.get(getCRTCoeff().bigInt);
     }
 
     // ****************************************************

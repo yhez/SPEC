@@ -16,81 +16,75 @@ import de.flexiprovider.common.math.FlexiBigInt;
 
 /**
  * This class specifies an ElGamal public key.
- * 
- * @see de.flexiprovider.core.elgamal.semanticallysecure.SSVElGamalKeyFactory
- * 
+ *
  * @author Thomas Wahrenbruch
  * @author Roberto Samarone dos Santos Ara�jo
- * 
+ * @see de.flexiprovider.core.elgamal.semanticallysecure.SSVElGamalKeyFactory
  */
 public class SSVElGamalPublicKeySpec implements KeySpec {
 
-	/**
-	 * The prime modulus which specifies the group
-	 */
-	private FlexiBigInt modulusP;
+    /**
+     * The prime modulus which specifies the group
+     */
+    private FlexiBigInt modulusP;
 
-	/**
-	 * The prime modulus which specifies the subgroup
-	 */
-	private FlexiBigInt modulusQ;
+    /**
+     * The prime modulus which specifies the subgroup
+     */
+    private FlexiBigInt modulusQ;
 
-	/**
-	 * A generator of <tt>(Zp/Z)*</tt>
-	 */
-	private FlexiBigInt generator;
+    /**
+     * A generator of <tt>(Zp/Z)*</tt>
+     */
+    private FlexiBigInt generator;
 
-	/**
-	 * The public value <tt>A = g<sup>a</sup> mod modulusP</tt>.
-	 */
-	private FlexiBigInt publicA;
+    /**
+     * The public value <tt>A = g<sup>a</sup> mod modulusP</tt>.
+     */
+    private FlexiBigInt publicA;
 
-	/**
-	 * The constructor.
-	 * 
-	 * @param modulusP
-	 *            the prime modulus p which specifies the group
-	 * @param modulusQ
-	 *            the prime modulus q which specifies the subgroup
-	 * @param generator
-	 *            a generator of the group
-	 * @param publicA
-	 *            the public value <tt>A = g<sup>a</sup> mod modulus</tt>
-	 */
-	public SSVElGamalPublicKeySpec(FlexiBigInt modulusP, FlexiBigInt modulusQ,
-			FlexiBigInt generator, FlexiBigInt publicA) {
-		this.modulusP = modulusP;
-		this.modulusQ = modulusQ;
-		this.generator = generator;
-		this.publicA = publicA;
-	}
+    /**
+     * The constructor.
+     *
+     * @param modulusP  the prime modulus p which specifies the group
+     * @param modulusQ  the prime modulus q which specifies the subgroup
+     * @param generator a generator of the group
+     * @param publicA   the public value <tt>A = g<sup>a</sup> mod modulus</tt>
+     */
+    public SSVElGamalPublicKeySpec(FlexiBigInt modulusP, FlexiBigInt modulusQ,
+                                   FlexiBigInt generator, FlexiBigInt publicA) {
+        this.modulusP = modulusP;
+        this.modulusQ = modulusQ;
+        this.generator = generator;
+        this.publicA = publicA;
+    }
 
-	/**
-	 * @return the prime modulus p
-	 */
-	public FlexiBigInt getModulusP() {
-		return modulusP;
-	}
+    /**
+     * @return the prime modulus p
+     */
+    public FlexiBigInt getModulusP() {
+        return modulusP;
+    }
 
-	/**
-	 * @return the prime modulus q
-	 */
-	public FlexiBigInt getModulusQ() {
-		return modulusQ;
-	}
+    /**
+     * @return the prime modulus q
+     */
+    public FlexiBigInt getModulusQ() {
+        return modulusQ;
+    }
 
-	/**
-	 * @return the generator
-	 */
-	public FlexiBigInt getGenerator() {
-		return generator;
-	}
+    /**
+     * @return the generator
+     */
+    public FlexiBigInt getGenerator() {
+        return generator;
+    }
 
-	/**
-	 * @return the public value <tt>A = g<sup>a</sup> mod modulus</tt>
-	 */
-	public FlexiBigInt getPublicA() {
-		return publicA;
-	}
+    /**
+     * @return the public value <tt>A = g<sup>a</sup> mod modulus</tt>
+     */
+    public FlexiBigInt getPublicA() {
+        return publicA;
+    }
 
 }

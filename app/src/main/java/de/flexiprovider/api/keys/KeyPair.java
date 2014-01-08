@@ -11,37 +11,34 @@ public final class KeyPair {
 
     /**
      * Construct a key pair from the given public key and private key.
-     * <p>
+     * <p/>
      * Note that this constructor only stores references to the public and
      * private key components in the generated key pair. This is safe, because
      * <tt>Key</tt> objects are immutable.
-     * 
-     * @param publicKey
-     *                the public key.
-     * 
-     * @param privateKey
-     *                the private key.
+     *
+     * @param publicKey  the public key.
+     * @param privateKey the private key.
      */
     public KeyPair(PublicKey publicKey, PrivateKey privateKey) {
-	pair = new java.security.KeyPair(publicKey, privateKey);
+        pair = new java.security.KeyPair(publicKey, privateKey);
     }
 
     /**
      * Return a reference to the public key component of this key pair.
-     * 
+     *
      * @return a reference to the public key.
      */
     public PublicKey getPublic() {
-	return (PublicKey) pair.getPublic();
+        return (PublicKey) pair.getPublic();
     }
 
     /**
      * Return a reference to the private key component of this key pair.
-     * 
+     *
      * @return a reference to the private key.
      */
     public PrivateKey getPrivate() {
-	return (PrivateKey) pair.getPrivate();
+        return (PrivateKey) pair.getPrivate();
     }
 
 }

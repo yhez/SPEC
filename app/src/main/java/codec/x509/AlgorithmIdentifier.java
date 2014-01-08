@@ -104,16 +104,16 @@ import codec.util.JCA;
  * in Annex D to Recommendation X.509. This structure is extensively used for
  * instance in the PKCS standards of RSA Inc. The ASN.1 definition of this
  * structure is as given below:
- * <p>
- * 
+ * <p/>
+ * <p/>
  * <pre>
  * AlgorithmIdentifier  ::= SEQUENCE{
  *   algorithm  OBJECT IDENTIFIER,
  *   parameters ANY DEFINED BY algorithm OPTIONAL
  * }
  * </pre>
- * 
- * <p>
+ * <p/>
+ * <p/>
  * For this class to work properly, providers need to define the following
  * algorithm aliases for the {@link java.security.AlgorithmParameters
  * AlgorithmParameters} implementations they provide:
@@ -126,19 +126,16 @@ import codec.util.JCA;
  * the algorithm to the implementing class. The second provider entry allows
  * mapping OID to those algorithm names while the third allows mapping those
  * names on corresponding OID.
- * <p>
- * 
+ * <p/>
+ * <p/>
  * The alias definitions are used by this class in order to find an
  * AlgorithmParameters implementation for the OID embedded in the X.509
  * AlgorithmIdentifier structure, and to create the OID for a given
  * AlgorithmParameters instances. This is done by means of the {@link codec.util.JCA JCA}
  * class, which operates on the engine and alias definitions of the installed
  * providers.
- * <p>
- * 
- * 
- * 
- * 
+ * <p/>
+ *
  * @author Volker Roth
  * @version "$Id: AlgorithmIdentifier.java,v 1.3 2004/08/13 11:37:03 pebinger
  *          Exp $"
@@ -161,38 +158,35 @@ public class AlgorithmIdentifier extends ASN1Sequence {
      * Creates an {@link codec.x509.AlgorithmIdentifier AlgorithmIdentifier} from the given
      * key. The key must be either a public key or a private key. No secret
      * (symmetric) keys are accepted.
-     * <p>
-     * 
+     * <p/>
+     * <p/>
      * The keys encoding must be either a a {@link PrivateKeyInfo
      * PrivateKeyInfo} or a {@link SubjectPublicKeyInfo SubjectPublicKeyInfo}.
-     * 
-     * @param key
-     *                The key from which the AlgorithmIdentifier shall be
-     *                extracted.
-     * @throws IllegalArgumentException
-     *                 if the given key is neither a PublicKey or a PrivateKey.
-     * @throws CorruptedCodeException
-     *                 if an exception was caught while decoding the key's
-     *                 encoding.
+     *
+     * @param key The key from which the AlgorithmIdentifier shall be
+     *            extracted.
+     * @throws IllegalArgumentException if the given key is neither a PublicKey or a PrivateKey.
+     * @throws CorruptedCodeException   if an exception was caught while decoding the key's
+     *                                  encoding.
      */
     public static AlgorithmIdentifier createAlgorithmIdentifier(Key key)
-	    throws CorruptedCodeException {
-	try {
-	    if (key instanceof PublicKey) {
-		return new SubjectPublicKeyInfo((PublicKey) key)
-			.getAlgorithmIdentifier();
-	    }
+            throws CorruptedCodeException {
+        try {
+            if (key instanceof PublicKey) {
+                return new SubjectPublicKeyInfo((PublicKey) key)
+                        .getAlgorithmIdentifier();
+            }
 
-	    if (key instanceof PrivateKey) {
-		return new PrivateKeyInfo((PrivateKey) key)
-			.getAlgorithmIdentifier();
-	    }
+            if (key instanceof PrivateKey) {
+                return new PrivateKeyInfo((PrivateKey) key)
+                        .getAlgorithmIdentifier();
+            }
 
-	    throw new IllegalArgumentException("Key type not supported!");
+            throw new IllegalArgumentException("Key type not supported!");
 
-	} catch (InvalidKeyException e) {
-	    throw new CorruptedCodeException("Error decoding key!");
-	}
+        } catch (InvalidKeyException e) {
+            throw new CorruptedCodeException("Error decoding key!");
+        }
     }
 
     /**
@@ -200,53 +194,50 @@ public class AlgorithmIdentifier extends ASN1Sequence {
      * structure.
      */
     public AlgorithmIdentifier() {
-	super(2);
+        super(2);
 
-	algorithm_ = new ASN1ObjectIdentifier();
-	parameters_ = new ASN1Opaque();
-	parameters_.setOptional(true);
-	add(algorithm_);
-	add(parameters_);
+        algorithm_ = new ASN1ObjectIdentifier();
+        parameters_ = new ASN1Opaque();
+        parameters_.setOptional(true);
+        add(algorithm_);
+        add(parameters_);
     }
 
     /**
      * Creates an instance initialized to the given algorithm. The algorithm
      * must not have parameters since this constructor does not take a parameter
      * argument.
-     * 
-     * @param algorithm
-     *                The JCE standard algorithm name.
-     * @throws java.security.NoSuchAlgorithmException
-     *                 if the name cannot be resolved to an OID or the OID has a
-     *                 bad syntax.
-     * @throws NullPointerException
-     *                 if <code>algorithm</code> is <code>null</code>.
+     *
+     * @param algorithm The JCE standard algorithm name.
+     * @throws java.security.NoSuchAlgorithmException if the name cannot be resolved to an OID or the OID has a
+     *                                                bad syntax.
+     * @throws NullPointerException                   if <code>algorithm</code> is <code>null</code>.
      */
     public AlgorithmIdentifier(String algorithm)
-	    throws NoSuchAlgorithmException {
-	super(2);
+            throws NoSuchAlgorithmException {
+        super(2);
 
-	if (algorithm == null)
-	    throw new NullPointerException("Need an algorithm name!");
+        if (algorithm == null)
+            throw new NullPointerException("Need an algorithm name!");
 
-	String oid;
+        String oid;
 
-	oid = JCA.getOID(algorithm);
-	if (oid == null)
-	    throw new NoSuchAlgorithmException("No OID alias for algorithm "
-		    + algorithm);
+        oid = JCA.getOID(algorithm);
+        if (oid == null)
+            throw new NoSuchAlgorithmException("No OID alias for algorithm "
+                    + algorithm);
 
-	try {
-	    algorithm_ = new ASN1ObjectIdentifier(oid);
-	} catch (IllegalArgumentException e) {
-	    throw new NoSuchAlgorithmException("Bad OID alias for algorithm "
-		    + algorithm);
-	}
-	parameters_ = new ASN1Opaque(ASN1.TAG_NULL, ASN1.CLASS_UNIVERSAL,
-		new byte[0]);
+        try {
+            algorithm_ = new ASN1ObjectIdentifier(oid);
+        } catch (IllegalArgumentException e) {
+            throw new NoSuchAlgorithmException("Bad OID alias for algorithm "
+                    + algorithm);
+        }
+        parameters_ = new ASN1Opaque(ASN1.TAG_NULL, ASN1.CLASS_UNIVERSAL,
+                new byte[0]);
 
-	add(algorithm_);
-	add(parameters_);
+        add(algorithm_);
+        add(parameters_);
     }
 
     /**
@@ -254,151 +245,140 @@ public class AlgorithmIdentifier extends ASN1Sequence {
      * representation. Both the given OID and the parameter encoding is cloned
      * or copied. No side effects occur if these arguments are modified after
      * completition of this constructor.
-     * 
-     * @param oid
-     *                The algorithm object identifier.
-     * @param b
-     *                The opaque DER encoding of the parameters for the
-     *                algorithm known under the given OID. If no parameters are
-     *                required then <code>null</code> might be passed. In that
-     *                case {@link codec.asn1.ASN1Null ASN.1 NULL} is encoded.
-     * @throws codec.asn1.ASN1Exception
-     *                 if the opaque representation does not contain a valid DER
-     *                 header and contents octets.
+     *
+     * @param oid The algorithm object identifier.
+     * @param b   The opaque DER encoding of the parameters for the
+     *            algorithm known under the given OID. If no parameters are
+     *            required then <code>null</code> might be passed. In that
+     *            case {@link codec.asn1.ASN1Null ASN.1 NULL} is encoded.
+     * @throws codec.asn1.ASN1Exception if the opaque representation does not contain a valid DER
+     *                                  header and contents octets.
      */
     public AlgorithmIdentifier(ASN1ObjectIdentifier oid, byte[] b)
-	    throws ASN1Exception {
-	super(2);
+            throws ASN1Exception {
+        super(2);
 
-	if (oid == null)
-	    throw new NullPointerException("Need an OID!");
+        if (oid == null)
+            throw new NullPointerException("Need an OID!");
 
-	algorithm_ = (ASN1ObjectIdentifier) oid.clone();
+        algorithm_ = (ASN1ObjectIdentifier) oid.clone();
 
-	if (b == null) {
-	    /*
+        if (b == null) {
+        /*
 	     * Usually, we'd define the following type as OPTIONAl. However, in
 	     * case no parameters are given a NULL is set instead.
 	     */
-	    parameters_ = new ASN1Opaque(ASN1.TAG_NULL, ASN1.CLASS_UNIVERSAL,
-		    new byte[0]);
-	} else
-	    parameters_ = new ASN1Opaque(b);
+            parameters_ = new ASN1Opaque(ASN1.TAG_NULL, ASN1.CLASS_UNIVERSAL,
+                    new byte[0]);
+        } else
+            parameters_ = new ASN1Opaque(b);
 
-	add(algorithm_);
-	add(parameters_);
+        add(algorithm_);
+        add(parameters_);
     }
 
     /**
      * Creates an instance that is initialized from the given
      * AlgorithmParameters instance. This method attempts to map the algorithm
      * name to an ASN.1 OID by calling {@link codec.util.JCA#getOID(String) JCA#getOID}.
-     * <p>
-     * 
-     * @param alg
-     *                The name of the algorithm.
-     * @param params
-     *                The AlgorithmParameters.
-     * @throws NullPointerException
-     *                 if <code>alg</code> is <code>null</code>.
-     * @throws java.security.InvalidAlgorithmParameterException
-     *                 if the given parameters have a bad encoding, or the OID
-     *                 of the algorithm cannot be determined.
+     * <p/>
+     *
+     * @param alg    The name of the algorithm.
+     * @param params The AlgorithmParameters.
+     * @throws NullPointerException                             if <code>alg</code> is <code>null</code>.
+     * @throws java.security.InvalidAlgorithmParameterException if the given parameters have a bad encoding, or the OID
+     *                                                          of the algorithm cannot be determined.
      */
     public AlgorithmIdentifier(String alg, AlgorithmParameters params)
-	    throws InvalidAlgorithmParameterException {
-	super(2);
+            throws InvalidAlgorithmParameterException {
+        super(2);
 
-	String s;
+        String s;
 
-	if (alg == null)
-	    throw new NullPointerException("Algorithm is null!");
+        if (alg == null)
+            throw new NullPointerException("Algorithm is null!");
 
-	s = JCA.getOID(alg);
+        s = JCA.getOID(alg);
 
-	if (s == null) {
-	    s = "1.3.14.3.2.7"; // DES_CBC
-	}
+        if (s == null) {
+            s = "1.3.14.3.2.7"; // DES_CBC
+        }
 
-	try {
-	    algorithm_ = new ASN1ObjectIdentifier(s);
-	} catch (IllegalArgumentException e) {
-	    throw new InvalidAlgorithmParameterException(
-		    "Bad OID alias for algorithm " + params.getAlgorithm());
-	}
+        try {
+            algorithm_ = new ASN1ObjectIdentifier(s);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidAlgorithmParameterException(
+                    "Bad OID alias for algorithm " + params.getAlgorithm());
+        }
 
-	try {
-	    if (params == null) {
-		parameters_ = new ASN1Opaque(ASN1.TAG_NULL,
-			ASN1.CLASS_UNIVERSAL, new byte[0]);
-	    } else {
-		parameters_ = new ASN1Opaque(params.getEncoded());
-	    }
-	} catch (IOException e) {
-	    throw new InvalidAlgorithmParameterException(
-		    "Error during parameter encoding!");
-	} catch (ASN1Exception e) {
-	    throw new InvalidAlgorithmParameterException(
-		    "Parameter encoding is not ASN.1/DER!");
-	}
+        try {
+            if (params == null) {
+                parameters_ = new ASN1Opaque(ASN1.TAG_NULL,
+                        ASN1.CLASS_UNIVERSAL, new byte[0]);
+            } else {
+                parameters_ = new ASN1Opaque(params.getEncoded());
+            }
+        } catch (IOException e) {
+            throw new InvalidAlgorithmParameterException(
+                    "Error during parameter encoding!");
+        } catch (ASN1Exception e) {
+            throw new InvalidAlgorithmParameterException(
+                    "Parameter encoding is not ASN.1/DER!");
+        }
 
-	add(algorithm_);
-	add(parameters_);
+        add(algorithm_);
+        add(parameters_);
     }
 
     /**
      * Creates an instance with the given OID and parameters. The parameters are
      * encoded according to DER and stored by means of an opaque type. If the
      * given parameters are <code>null</code> then an ASN.1 NULL is encoded.
-     * 
-     * @param oid
-     *                The OID to use.
-     * @param params
-     *                The ASN.1 type of which the parameters consist.
-     * @throws InconsistentStateException
-     *                 if an internal error occurs; this should never happen.
-     * @throws codec.asn1.ASN1Exception
-     *                 if the given parameters cannot be encoded. This should
-     *                 rarely happen.
+     *
+     * @param oid    The OID to use.
+     * @param params The ASN.1 type of which the parameters consist.
+     * @throws InconsistentStateException if an internal error occurs; this should never happen.
+     * @throws codec.asn1.ASN1Exception   if the given parameters cannot be encoded. This should
+     *                                    rarely happen.
      */
     public AlgorithmIdentifier(ASN1ObjectIdentifier oid, ASN1Type params)
-	    throws ASN1Exception {
-	super(2);
+            throws ASN1Exception {
+        super(2);
 
-	DEREncoder enc;
-	ByteArrayOutputStream bos;
+        DEREncoder enc;
+        ByteArrayOutputStream bos;
 
-	if (oid == null)
-	    throw new NullPointerException("Need an OID!");
+        if (oid == null)
+            throw new NullPointerException("Need an OID!");
 
-	algorithm_ = (ASN1ObjectIdentifier) oid.clone();
+        algorithm_ = (ASN1ObjectIdentifier) oid.clone();
 
-	try {
-	    if (params == null || (params instanceof ASN1Null))
-		parameters_ = new ASN1Opaque(ASN1.TAG_NULL,
-			ASN1.CLASS_UNIVERSAL, new byte[0]);
-	    else {
-		bos = new ByteArrayOutputStream();
-		enc = new DEREncoder(bos);
-		params.encode(enc);
+        try {
+            if (params == null || (params instanceof ASN1Null))
+                parameters_ = new ASN1Opaque(ASN1.TAG_NULL,
+                        ASN1.CLASS_UNIVERSAL, new byte[0]);
+            else {
+                bos = new ByteArrayOutputStream();
+                enc = new DEREncoder(bos);
+                params.encode(enc);
 
-		parameters_ = new ASN1Opaque(bos.toByteArray());
-		bos.close();
-	    }
-	    add(algorithm_);
-	    add(parameters_);
-	} catch (IOException e) {
-	    throw new InconsistentStateException(
-		    "Internal, caught IOException!");
-	}
+                parameters_ = new ASN1Opaque(bos.toByteArray());
+                bos.close();
+            }
+            add(algorithm_);
+            add(parameters_);
+        } catch (IOException e) {
+            throw new InconsistentStateException(
+                    "Internal, caught IOException!");
+        }
     }
 
     /**
      * This method locates a suitable {@link java.security.AlgorithmParameters
      * AlgorithmParameters} implementation if it is available from the JCE
      * compliant security providers that are installed locally.
-     * <p>
-     * 
+     * <p/>
+     * <p/>
      * Such providers need to specify the following aliases for this to work:
      * <ul>
      * <li> AlgorithmParameters.MyAlg = <i>class</i>
@@ -407,75 +387,73 @@ public class AlgorithmIdentifier extends ASN1Sequence {
      * If you ever want to test a provider for compliance with the JCE and
      * <i>cleverness</i>, test it against the FhG-IGD PKCS package. If it
      * doesn't work then better demand fixes from the provider's vendor.
-     * <p>
-     * 
+     * <p/>
+     * <p/>
      * This method may be called only if this instance is initialized properly
      * either by specifying AlgorithmParameters in a constructor or by parsing a
      * valid ASN.1/DER encoding.
-     * 
-     * @throws java.security.NoSuchAlgorithmException
-     *                 if no matching AlgorithmParameters engine is found.
-     * @throws java.security.InvalidAlgorithmParameterException
-     *                 if the parameters cannot be decoded properly.
+     *
      * @return The AlgorithmParameters or <code>null</code> if none are
-     *         enclosed in this structure.
+     * enclosed in this structure.
+     * @throws java.security.NoSuchAlgorithmException           if no matching AlgorithmParameters engine is found.
+     * @throws java.security.InvalidAlgorithmParameterException if the parameters cannot be decoded properly.
      */
     public AlgorithmParameters getParameters() throws NoSuchAlgorithmException,
-	    InvalidAlgorithmParameterException {
-	AlgorithmParameters params;
-	String s;
+            InvalidAlgorithmParameterException {
+        AlgorithmParameters params;
+        String s;
 
-	if (parameters_.isOptional())
-	    return null;
+        if (parameters_.isOptional())
+            return null;
 
-	if (parameters_.getTag() == ASN1.TAG_NULL
-		&& parameters_.getTagClass() == ASN1.CLASS_UNIVERSAL)
-	    return null;
+        if (parameters_.getTag() == ASN1.TAG_NULL
+                && parameters_.getTagClass() == ASN1.CLASS_UNIVERSAL)
+            return null;
 
 	/*
 	 * Since alias resolution is Provider-local and hardly any Provider does
 	 * it right and complete, we have to resolve aliases on our own.
 	 */
-	s = JCA.getName(algorithm_.toString());
+        s = JCA.getName(algorithm_.toString());
 
-	if (s == null)
-	    throw new NoSuchAlgorithmException("Cannot resolve "
-		    + algorithm_.toString());
+        if (s == null)
+            throw new NoSuchAlgorithmException("Cannot resolve "
+                    + algorithm_.toString());
 
 	/*
 	 * If we resolve cipher names then we have to remove the trailing
 	 * padding string, if present.
 	 */
-	int n;
+        int n;
 
-	n = s.indexOf("/");
+        n = s.indexOf("/");
 
-	if (n > 0)
-	    s = s.substring(0, n);
+        if (n > 0)
+            s = s.substring(0, n);
 
-	params = AlgorithmParameters.getInstance(s);
+        params = AlgorithmParameters.getInstance(s);
 
-	try {
-	    params.init(parameters_.getEncoded());
-	} catch (IOException e) {
-	    throw new InvalidAlgorithmParameterException(
-		    "Caught IOException(\"" + e.getMessage() + "\")");
-	} catch (ASN1Exception e) {
-	    throw new InvalidAlgorithmParameterException(
-		    "Caught ASN1Exception(\"" + e.getMessage() + "\")");
-	}
-	return params;
+        try {
+            params.init(parameters_.getEncoded());
+        } catch (IOException e) {
+            throw new InvalidAlgorithmParameterException(
+                    "Caught IOException(\"" + e.getMessage() + "\")");
+        } catch (ASN1Exception e) {
+            throw new InvalidAlgorithmParameterException(
+                    "Caught ASN1Exception(\"" + e.getMessage() + "\")");
+        }
+        return params;
     }
 
     /**
      * This method returns the OID of the algorithm represented by this
      * AlgorithmIdentifier. The OID returned is the one used internally. Do not
      * modify the returned OID! Otherwise, side effects occur.
-     * 
+     *
      * @return The algorithm OID.
      */
     public ASN1ObjectIdentifier getAlgorithmOID() {
-	return algorithm_;
+        return algorithm_;
     }
 
     /**
@@ -483,76 +461,76 @@ public class AlgorithmIdentifier extends ASN1Sequence {
      * this AlgorithmIdentifier. However, for this to work a proper alias for
      * the algorithm must be defined by some provider. See the general
      * documentation of this class for details on that.
-     * <p>
-     * 
+     * <p/>
+     * <p/>
      * This method calls {@link codec.util.JCA#getName(String) JCA.getName()} with the
      * string representation of this instance's
      * {@link #algorithm_ object identifier}.
-     * <p>
-     * 
+     * <p/>
+     * <p/>
      * If you are {@link #getParameters retrieving the parameters} anyway then
      * avoid calling this method and call
      * {@link java.security.AlgorithmParameters#getAlgorithm getAlgorithm} on
      * the parameter instance instead.
      */
     public String getAlgorithmName() {
-	return JCA.getName(algorithm_.toString());
+        return JCA.getName(algorithm_.toString());
     }
 
     /**
      * Returns a string representation of this object.
-     * 
+     *
      * @return The string representation.
      */
     public String toString() {
-	String s;
-	String t;
+        String s;
+        String t;
 
-	t = "X.509 AlgorithmIdentifier " + algorithm_.toString();
-	s = getAlgorithmName();
+        t = "X.509 AlgorithmIdentifier " + algorithm_.toString();
+        s = getAlgorithmName();
 
-	if (s != null)
-	    return t + " (" + s + ")";
+        if (s != null)
+            return t + " (" + s + ")";
 
-	return t;
+        return t;
     }
 
     /**
      * This method returns <code>true</code> if the given object is an
      * instance of this class or a subclass thereof and the algorithm OID of the
      * given object equals this object's algorithm OID.
-     * 
+     *
      * @return <code>true</code> if the given object equals this one.
      */
     public boolean equals(Object o) {
-	if (!(o instanceof AlgorithmIdentifier))
-	    return false;
+        if (!(o instanceof AlgorithmIdentifier))
+            return false;
 
-	return algorithm_.equals(((AlgorithmIdentifier) o).getAlgorithmOID());
+        return algorithm_.equals(((AlgorithmIdentifier) o).getAlgorithmOID());
     }
 
     public int hashCode() {
-	return algorithm_.hashCode();
+        return algorithm_.hashCode();
     }
 
     /**
      * Returns a clone. The clone is a deep copy of this instance except from
      * the constraints. Constraints are copied by reference.
-     * 
+     *
      * @return The clone.
      */
     public Object clone() {
-	AlgorithmIdentifier aid;
+        AlgorithmIdentifier aid;
 
-	aid = (AlgorithmIdentifier) super.clone();
-	aid.clear();
-	aid.algorithm_ = (ASN1ObjectIdentifier) algorithm_.clone();
-	aid.parameters_ = (ASN1Opaque) parameters_.clone();
+        aid = (AlgorithmIdentifier) super.clone();
+        aid.clear();
+        aid.algorithm_ = (ASN1ObjectIdentifier) algorithm_.clone();
+        aid.parameters_ = (ASN1Opaque) parameters_.clone();
 
-	aid.add(algorithm_);
-	aid.add(parameters_);
+        aid.add(algorithm_);
+        aid.add(parameters_);
 
-	return aid;
+        return aid;
     }
 
 }

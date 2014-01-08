@@ -18,7 +18,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 /**
  * This class is used to generate keys for the SAFER++ block cipher. Values for
  * the key size are 128 and 256 bits, with the default being 128 bits.
- * 
+ *
  * @author Martin Strese
  * @author Marcus Lippert
  */
@@ -39,31 +39,28 @@ public class SAFERPlusPlusKeyGenerator extends SecretKeyGenerator {
      * randomness. If the parameters are <tt>null</tt>, the
      * {@link SAFERPlusPlusKeyGenParameterSpec#SAFERPlusPlusKeyGenParameterSpec() default parameters}
      * are used.
-     * 
-     * @param params
-     *                the parameters
-     * @param random
-     *                the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     *                 if the parameters are <tt>null</tt> or not an instance
-     *                 of {@link SAFERPlusPlusKeyGenParameterSpec}.
+     *
+     * @param params the parameters
+     * @param random the source of randomness
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are <tt>null</tt> or not an instance
+     *                                                                            of {@link SAFERPlusPlusKeyGenParameterSpec}.
      */
     public void init(AlgorithmParameterSpec params, SecureRandom random)
-	    throws InvalidAlgorithmParameterException {
+            throws InvalidAlgorithmParameterException {
 
-	SAFERPlusPlusKeyGenParameterSpec saferPlusPlusParams;
-	if (params == null) {
-	    saferPlusPlusParams = new SAFERPlusPlusKeyGenParameterSpec();
-	} else if (params instanceof SAFERPlusPlusKeyGenParameterSpec) {
-	    saferPlusPlusParams = (SAFERPlusPlusKeyGenParameterSpec) params;
-	} else {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
+        SAFERPlusPlusKeyGenParameterSpec saferPlusPlusParams;
+        if (params == null) {
+            saferPlusPlusParams = new SAFERPlusPlusKeyGenParameterSpec();
+        } else if (params instanceof SAFERPlusPlusKeyGenParameterSpec) {
+            saferPlusPlusParams = (SAFERPlusPlusKeyGenParameterSpec) params;
+        } else {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
 
-	keySize = saferPlusPlusParams.getKeySize() >> 3;
-	this.random = random != null ? random : Registry.getSecureRandom();
+        keySize = saferPlusPlusParams.getKeySize() >> 3;
+        this.random = random != null ? random : Registry.getSecureRandom();
 
-	initialized = true;
+        initialized = true;
     }
 
     /**
@@ -71,54 +68,51 @@ public class SAFERPlusPlusKeyGenerator extends SecretKeyGenerator {
      * randomness. If the key size is invalid, the
      * {@link SAFERPlusPlusKeyGenParameterSpec#DEFAULT_KEY_SIZE default key size}
      * is chosen.
-     * 
-     * @param keySize
-     *                the key size (128, 192, or 256 bits)
-     * @param random
-     *                the source of randomness
+     *
+     * @param keySize the key size (128, 192, or 256 bits)
+     * @param random  the source of randomness
      */
     public void init(int keySize, SecureRandom random) {
-	SAFERPlusPlusKeyGenParameterSpec params = new SAFERPlusPlusKeyGenParameterSpec(
-		keySize);
-	try {
-	    init(params, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        SAFERPlusPlusKeyGenParameterSpec params = new SAFERPlusPlusKeyGenParameterSpec(
+                keySize);
+        try {
+            init(params, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Initialize the key generator with the default SAFERPlusPlus parameters
      * and the given source of randomness.
-     * 
-     * @param random
-     *                the source of randomness
+     *
+     * @param random the source of randomness
      */
     public void init(SecureRandom random) {
-	SAFERPlusPlusKeyGenParameterSpec defaultParams = new SAFERPlusPlusKeyGenParameterSpec();
-	try {
-	    init(defaultParams, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        SAFERPlusPlusKeyGenParameterSpec defaultParams = new SAFERPlusPlusKeyGenParameterSpec();
+        try {
+            init(defaultParams, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Generate a SAFER++ key.
-     * 
+     *
      * @return the generated {@link de.flexiprovider.core.saferplusplus.SAFERPlusPlusKey}
      */
     public SecretKey generateKey() {
-	if (!initialized) {
-	    init(Registry.getSecureRandom());
-	}
+        if (!initialized) {
+            init(Registry.getSecureRandom());
+        }
 
-	byte[] keyBytes = new byte[keySize];
-	random.nextBytes(keyBytes);
+        byte[] keyBytes = new byte[keySize];
+        random.nextBytes(keyBytes);
 
-	return new SAFERPlusPlusKey(keyBytes);
+        return new SAFERPlusPlusKey(keyBytes);
     }
 
 }

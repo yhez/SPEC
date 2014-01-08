@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 
+import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
@@ -30,6 +31,12 @@ public class SendReport extends Activity {
             return s.endsWith(".stacktrace");
         }
     };
+
+    @Override
+    public void onDestroy() {
+        CryptMethods.deleteKeys();
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +77,15 @@ public class SendReport extends Activity {
     public void finish(View v) {
         finish();
     }
+
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         new KeysDeleter();
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         KeysDeleter.stop();
     }

@@ -15,7 +15,7 @@ import de.flexiprovider.common.math.quadraticfields.QuadraticIdeal;
 /**
  * This class is used to generate key pairs for the IQRDSA signature algorithm
  * (implemented by {@link de.flexiprovider.nf.iq.iqrdsa.IQRDSASignature}.
- * 
+ *
  * @author Ralf-P. Weinmann
  */
 public class IQRDSAKeyPairGenerator extends KeyPairGenerator {
@@ -40,96 +40,91 @@ public class IQRDSAKeyPairGenerator extends KeyPairGenerator {
      * generated for the
      * {@link IQRDSAParamGenParameterSpec#DEFAULT_SIZE default size} using the
      * {@link IQRDSAParameterGenerator}.
-     * 
-     * @param params
-     *                the parameters
-     * @param random
-     *                the source of randomness
-     * @throws InvalidAlgorithmParameterException
-     *                 if the parameters are not an instance of
-     *                 {@link de.flexiprovider.nf.iq.iqrdsa.IQRDSAParameterSpec}.
+     *
+     * @param params the parameters
+     * @param random the source of randomness
+     * @throws InvalidAlgorithmParameterException if the parameters are not an instance of
+     *                                            {@link de.flexiprovider.nf.iq.iqrdsa.IQRDSAParameterSpec}.
      */
     public void initialize(AlgorithmParameterSpec params, SecureRandom random)
-	    throws InvalidAlgorithmParameterException {
+            throws InvalidAlgorithmParameterException {
 
-	this.random = random != null ? random : Registry.getSecureRandom();
+        this.random = random != null ? random : Registry.getSecureRandom();
 
-	// if no parameters are specified
-	if (params == null) {
-	    // generate parameters for the default key size
-	    initialize(IQRDSAParamGenParameterSpec.DEFAULT_SIZE, this.random);
-	}
+        // if no parameters are specified
+        if (params == null) {
+            // generate parameters for the default key size
+            initialize(IQRDSAParamGenParameterSpec.DEFAULT_SIZE, this.random);
+        }
 
-	if (!(params instanceof IQRDSAParameterSpec)) {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
-	this.params = (IQRDSAParameterSpec) params;
+        if (!(params instanceof IQRDSAParameterSpec)) {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
+        this.params = (IQRDSAParameterSpec) params;
 
-	discriminant = this.params.getDiscriminant();
-	classGroup = new IQClassGroup(discriminant);
-	modulus = this.params.getModulus();
+        discriminant = this.params.getDiscriminant();
+        classGroup = new IQClassGroup(discriminant);
+        modulus = this.params.getModulus();
 
-	initialized = true;
+        initialized = true;
     }
 
     /**
      * Initialize the IQRDSA key pair generator for given key size and source of
      * randomness. The key size is the bit length of the discriminant of the
      * class group.
-     * 
-     * @param keySize
-     *                the bit length of the discriminant of the class group
-     * @param random
-     *                the source of randomness
+     *
+     * @param keySize the bit length of the discriminant of the class group
+     * @param random  the source of randomness
      */
     public void initialize(int keySize, SecureRandom random) {
-	this.random = random != null ? random : Registry.getSecureRandom();
+        this.random = random != null ? random : Registry.getSecureRandom();
 
-	// generate parameters for the chosen key size
-	IQRDSAParamGenParameterSpec genParams = new IQRDSAParamGenParameterSpec(
-		keySize);
-	AlgorithmParameterGenerator paramGenerator = new IQRDSAParameterGenerator();
-	try {
-	    paramGenerator.init(genParams, this.random);
-	    initialize(paramGenerator.generateParameters(), this.random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        // generate parameters for the chosen key size
+        IQRDSAParamGenParameterSpec genParams = new IQRDSAParamGenParameterSpec(
+                keySize);
+        AlgorithmParameterGenerator paramGenerator = new IQRDSAParameterGenerator();
+        try {
+            paramGenerator.init(genParams, this.random);
+            initialize(paramGenerator.generateParameters(), this.random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     private void initializeDefault() {
-	// generate parameters for the default key size
-	initialize(IQRDSAParamGenParameterSpec.DEFAULT_SIZE, Registry
-		.getSecureRandom());
+        // generate parameters for the default key size
+        initialize(IQRDSAParamGenParameterSpec.DEFAULT_SIZE, Registry
+                .getSecureRandom());
     }
 
     /**
      * Generate an IQRDSA key pair, consisting of an {@link de.flexiprovider.nf.iq.iqrdsa.IQRDSAPublicKey} and
      * an {@link de.flexiprovider.nf.iq.iqrdsa.IQRDSAPrivateKey}.
-     * 
+     *
      * @return the generated key pair
      */
     public KeyPair genKeyPair() {
-	if (!initialized) {
-	    initializeDefault();
-	}
+        if (!initialized) {
+            initializeDefault();
+        }
 
-	// randomly pick an element gamma of the class group
-	QuadraticIdeal gamma = classGroup.randomIdeal();
+        // randomly pick an element gamma of the class group
+        QuadraticIdeal gamma = classGroup.randomIdeal();
 
-	// choose a random number a in the interval [2, p-2]
-	FlexiBigInt a = IntegerFunctions.randomize(
-		modulus.subtract(FlexiBigInt.valueOf(2)), random).add(
-		FlexiBigInt.valueOf(2));
+        // choose a random number a in the interval [2, p-2]
+        FlexiBigInt a = IntegerFunctions.randomize(
+                modulus.subtract(FlexiBigInt.valueOf(2)), random).add(
+                FlexiBigInt.valueOf(2));
 
-	// compute alpha = gamma^a
-	QuadraticIdeal alpha = classGroup.power(gamma, a);
+        // compute alpha = gamma^a
+        QuadraticIdeal alpha = classGroup.power(gamma, a);
 
-	IQRDSAPublicKey pubKey = new IQRDSAPublicKey(params, gamma, alpha);
-	IQRDSAPrivateKey privKey = new IQRDSAPrivateKey(params, gamma, alpha, a);
+        IQRDSAPublicKey pubKey = new IQRDSAPublicKey(params, gamma, alpha);
+        IQRDSAPrivateKey privKey = new IQRDSAPrivateKey(params, gamma, alpha, a);
 
-	return new KeyPair(pubKey, privKey);
+        return new KeyPair(pubKey, privKey);
     }
 
 }

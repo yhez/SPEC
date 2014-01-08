@@ -16,8 +16,8 @@ import java.util.HashMap;
 
 public class MyContentProvider extends ContentProvider {
 
-   // public static final Uri CONTENT_URI=Uri.parse("content://specular.systems/files/");
-    private static final HashMap<String, String> MIME_TYPES=new HashMap<String, String>();
+    // public static final Uri CONTENT_URI=Uri.parse("content://specular.systems/files/");
+    private static final HashMap<String, String> MIME_TYPES = new HashMap<String, String>();
 
     static {
         MIME_TYPES.put(".pdf", "application/pdf");
@@ -40,29 +40,29 @@ public class MyContentProvider extends ContentProvider {
             }
         }
 */
-        return(true);
+        return (true);
     }
 
     @Override
     public String getType(Uri uri) {
-        String path=uri.toString();
+        String path = uri.toString();
 
         for (String extension : MIME_TYPES.keySet()) {
             if (path.endsWith(extension)) {
-                return(MIME_TYPES.get(extension));
+                return (MIME_TYPES.get(extension));
             }
         }
 
-        return(null);
+        return (null);
     }
 
     @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode)
             throws FileNotFoundException {
-        File f=new File(getContext().getFilesDir(), uri.getPath());
+        File f = new File(getContext().getFilesDir(), uri.getPath());
 
         if (f.exists()) {
-            return(ParcelFileDescriptor.open(f,
+            return (ParcelFileDescriptor.open(f,
                     ParcelFileDescriptor.MODE_READ_ONLY));
         }
 
@@ -91,11 +91,11 @@ public class MyContentProvider extends ContentProvider {
     }
 
     static private void copy(InputStream in, File dst) throws IOException {
-        FileOutputStream out=new FileOutputStream(dst);
-        byte[] buf=new byte[1024];
+        FileOutputStream out = new FileOutputStream(dst);
+        byte[] buf = new byte[1024];
         int len;
 
-        while((len=in.read(buf))>0) {
+        while ((len = in.read(buf)) > 0) {
             out.write(buf, 0, len);
         }
 

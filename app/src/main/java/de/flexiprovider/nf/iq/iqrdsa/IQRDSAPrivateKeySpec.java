@@ -15,27 +15,27 @@ public class IQRDSAPrivateKeySpec implements KeySpec {
     private QuadraticIdeal alpha;
 
     public IQRDSAPrivateKeySpec(IQRDSAParameterSpec params,
-	    QuadraticIdeal gamma, QuadraticIdeal alpha, FlexiBigInt a) {
-	this.params = params;
-	this.gamma = gamma;
-	this.alpha = alpha;
-	this.a = a;
+                                QuadraticIdeal gamma, QuadraticIdeal alpha, FlexiBigInt a) {
+        this.params = params;
+        this.gamma = gamma;
+        this.alpha = alpha;
+        this.a = a;
     }
 
     public final IQRDSAParameterSpec getParams() {
-	return params;
+        return params;
     }
 
     public final QuadraticIdeal getGamma() {
-	return gamma;
+        return gamma;
     }
 
     public final QuadraticIdeal getAlpha() {
-	return alpha;
+        return alpha;
     }
 
     public final FlexiBigInt getA() {
-	return a;
+        return a;
     }
 
 }

@@ -96,8 +96,8 @@ import codec.asn1.DEREncoder;
 
 /**
  * This class represents an X.509 extension of this form
- * <p>
- * 
+ * <p/>
+ * <p/>
  * <pre>
  * Extension  ::=  SEQUENCE  {
  *  extnID      OBJECT IDENTIFIER,
@@ -105,13 +105,13 @@ import codec.asn1.DEREncoder;
  *  extnValue   OCTET STRING
  * }
  * </pre>
- * 
+ * <p/>
  * Creation date: (18.08.99 15:23:09)
- * 
+ *
  * @author Markus Tak
  */
 public class X509Extension extends ASN1Sequence implements
-	java.security.cert.X509Extension, Externalizable {
+        java.security.cert.X509Extension, Externalizable {
 
     protected ASN1ObjectIdentifier extnID = null;
     protected ASN1Boolean critical = null;
@@ -121,34 +121,32 @@ public class X509Extension extends ASN1Sequence implements
      * Creates an instance ready for use in decoding extensions.
      */
     public X509Extension() {
-	/*
+    /*
 	 * If used for decoding, ASN.1 objects do not need special
 	 * initialization values. On the contrary, ASN.1 objects generally
 	 * initialize for decoding when the default constructor is invoked.
 	 * --volker roth
 	 */
-	extnID = new ASN1ObjectIdentifier();
-	add(extnID);
+        extnID = new ASN1ObjectIdentifier();
+        add(extnID);
 
-	critical = new ASN1Boolean(false);
-	critical.setOptional(true);
+        critical = new ASN1Boolean(false);
+        critical.setOptional(true);
 
-	add(critical);
+        add(critical);
 
-	extnValue = new ASN1OctetString();
-	add(extnValue);
+        extnValue = new ASN1OctetString();
+        add(extnValue);
     }
 
     /**
      * Initializes this extension from the given DER code.
-     * 
-     * @param b
-     *                The DER code.
-     * @throws codec.asn1.ASN1Exception
-     *                 iff the data cannot be decoded correctly.
+     *
+     * @param b The DER code.
+     * @throws codec.asn1.ASN1Exception iff the data cannot be decoded correctly.
      */
     public X509Extension(byte[] b) throws ASN1Exception, IOException {
-	this();
+        this();
 
 	/*
 	 * This method need not declare or throw an IOException. It would be
@@ -156,138 +154,134 @@ public class X509Extension extends ASN1Sequence implements
 	 * 
 	 * --volker roth
 	 */
-	ByteArrayInputStream in;
-	DERDecoder dec;
+        ByteArrayInputStream in;
+        DERDecoder dec;
 
-	if (b == null) {
-	    throw new NullPointerException("input array");
-	}
-	in = new ByteArrayInputStream(b);
-	dec = new DERDecoder(in);
+        if (b == null) {
+            throw new NullPointerException("input array");
+        }
+        in = new ByteArrayInputStream(b);
+        dec = new DERDecoder(in);
 
-	decode(dec);
+        decode(dec);
 
 	/*
 	 * Let stream free resources.
 	 */
-	in.close();
+        in.close();
     }
 
     /**
      * This constructor fills-up the data structure.
-     * 
-     * @param theoid
-     *                This extension's OID
-     * @param crit
-     *                TRUE if this extension shall be critical
-     * @param val
-     *                The value of this extension as a ASN1Type. This one will
-     *                be DER-encoded and be put into an ASN1OctetString
+     *
+     * @param theoid This extension's OID
+     * @param crit   TRUE if this extension shall be critical
+     * @param val    The value of this extension as a ASN1Type. This one will
+     *               be DER-encoded and be put into an ASN1OctetString
      */
     public X509Extension(ASN1ObjectIdentifier theoid, boolean crit, ASN1Type val)
-	    throws Exception {
-	this();
+            throws Exception {
+        this();
 
-	this.setOID(theoid);
-	this.setCritical(crit);
-	this.setValue(val);
+        this.setOID(theoid);
+        this.setCritical(crit);
+        this.setValue(val);
     }
 
     /**
      * From interface java.security.cert.X509Extension.
-     * 
+     *
      * @return either an empty Set if this extension is not critical or a Set
-     *          containing one element (this extension's OID) if this extension
-     *          is marked as critical.
+     * containing one element (this extension's OID) if this extension
+     * is marked as critical.
      */
     public Set getCriticalExtensionOIDs() {
 
-	HashSet res = new HashSet();
+        HashSet res = new HashSet();
 
-	if (isCritical())
-	    res.add(getOID());
+        if (isCritical())
+            res.add(getOID());
 
-	return res;
+        return res;
     }
 
     /**
      * Returns the DER encoding of this extension. From
      * java.security.cert.X509Extension
-     * 
+     *
      * @return a byte array containing the DER-encoding of this extension
      */
     public byte[] getEncoded() throws CertificateEncodingException {
-	ByteArrayOutputStream bos = new ByteArrayOutputStream();
-	DEREncoder enc = new DEREncoder(bos);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        DEREncoder enc = new DEREncoder(bos);
 
-	try {
-	    this.encode(enc);
-	    bos.close();
-	} catch (IOException e) {
-	    System.err.println("getenc Internal error: shouldn't happen!");
-	    e.printStackTrace();
-	} catch (ASN1Exception e) {
-	    throw new CertificateEncodingException(e.getMessage());
-	}
-	return bos.toByteArray();
+        try {
+            this.encode(enc);
+            bos.close();
+        } catch (IOException e) {
+            System.err.println("getenc Internal error: shouldn't happen!");
+            e.printStackTrace();
+        } catch (ASN1Exception e) {
+            throw new CertificateEncodingException(e.getMessage());
+        }
+        return bos.toByteArray();
 
     }
 
     /**
      * From java.security.cert.X509Extension. Returns the DER encoding of this
      * extension if the given OID matches
-     * 
-     * @param oid
-     *                the OID to search for
+     *
+     * @param oid the OID to search for
      * @return a byte array containing the DER-encoding of this extension
      */
     public byte[] getExtensionValue(String oid) {
-	byte[] res = null;
+        byte[] res = null;
 
-	if (extnValue == null)
-	    return null;
+        if (extnValue == null)
+            return null;
 
-	if (extnID.toString().equals(oid)
-		|| extnID.toString().equals(new String("OID." + oid))) {
+        if (extnID.toString().equals(oid)
+                || extnID.toString().equals(new String("OID." + oid))) {
 
-	    // res = extnValue.getByteArray();
+            // res = extnValue.getByteArray();
 
-	    try {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		DEREncoder enc = new DEREncoder(baos);
-		extnValue.encode(enc);
-		res = baos.toByteArray();
-		baos.close();
-	    } catch (ASN1Exception asn1e) {
-		throw new IllegalStateException(
-			"Caught ASN1Exception. Internal Error. Shouldn't happen");
-	    } catch (IOException ioe) {
-		throw new IllegalStateException(
-			"Internal Error. Shouldn't happen");
-	    }
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                DEREncoder enc = new DEREncoder(baos);
+                extnValue.encode(enc);
+                res = baos.toByteArray();
+                baos.close();
+            } catch (ASN1Exception asn1e) {
+                throw new IllegalStateException(
+                        "Caught ASN1Exception. Internal Error. Shouldn't happen");
+            } catch (IOException ioe) {
+                throw new IllegalStateException(
+                        "Internal Error. Shouldn't happen");
+            }
 
-	}
-	return res;
+        }
+        return res;
     }
 
     public Set getNonCriticalExtensionOIDs() {
 
-	HashSet res = new HashSet();
+        HashSet res = new HashSet();
 
-	if (!isCritical())
-	    res.add(getOID());
+        if (!isCritical())
+            res.add(getOID());
 
-	return res;
+        return res;
 
     }
 
     /**
      * Returns the OID of this extension
-     * 
+     *
      * @return This extension's OID
      */
     public ASN1ObjectIdentifier getOID() {
-	return extnID;
+        return extnID;
     }
 
     /**
@@ -297,22 +291,22 @@ public class X509Extension extends ASN1Sequence implements
      * containing the original value is returned.
      */
     public Object getValue() {
-	ByteArrayInputStream bis;
-	DERDecoder dec;
-	ASN1Type res = null;
+        ByteArrayInputStream bis;
+        DERDecoder dec;
+        ASN1Type res = null;
 
-	try {
-	    bis = new ByteArrayInputStream(extnValue.getByteArray());
-	    dec = new DERDecoder(bis);
-	    res = dec.readType();
-	    dec.close();
-	} catch (IOException e) {
-	    System.err.println("Internal error: shouldn't happen!");
-	    e.printStackTrace();
-	} catch (ASN1Exception e) {
-	    res = extnValue;
-	}
-	return res;
+        try {
+            bis = new ByteArrayInputStream(extnValue.getByteArray());
+            dec = new DERDecoder(bis);
+            res = dec.readType();
+            dec.close();
+        } catch (IOException e) {
+            System.err.println("Internal error: shouldn't happen!");
+            e.printStackTrace();
+        } catch (ASN1Exception e) {
+            res = extnValue;
+        }
+        return res;
 
     }
 
@@ -321,117 +315,112 @@ public class X509Extension extends ASN1Sequence implements
      * template. This implicitly checks the syntax of the decoded type.
      */
     protected void decodeExtensionValue(ASN1Type t) throws ASN1Exception,
-	    IOException {
-	ByteArrayInputStream bis;
-	DERDecoder dec;
+            IOException {
+        ByteArrayInputStream bis;
+        DERDecoder dec;
 
-	if (t == null) {
-	    throw new NullPointerException("input parameter");
-	}
-	bis = new ByteArrayInputStream(extnValue.getByteArray());
-	dec = new DERDecoder(bis);
+        if (t == null) {
+            throw new NullPointerException("input parameter");
+        }
+        bis = new ByteArrayInputStream(extnValue.getByteArray());
+        dec = new DERDecoder(bis);
 
-	t.decode(dec);
-	dec.close();
+        t.decode(dec);
+        dec.close();
     }
 
     /**
      * From java.security.cert.X509Extension
-     * 
+     *
      * @return always false
      */
     public boolean hasUnsupportedCriticalExtension() {
 
-	if (!isCritical())
-	    return false;
-	return false;
+        if (!isCritical())
+            return false;
+        return false;
     }
 
     /**
      * Returns the critical flag of this extension
-     * 
+     *
      * @return true if this extension is marked as critical
      */
     public boolean isCritical() {
-	if (isOptional())
-	    return false;
-	return critical.isTrue();
+        if (isOptional())
+            return false;
+        return critical.isTrue();
     }
 
     /**
      * Set the critical of this extension
-     * 
-     * @param ncrit
-     *                true if this extension shall be marked critical
+     *
+     * @param ncrit true if this extension shall be marked critical
      */
     public void setCritical(boolean ncrit) {
 
-	if (!ncrit)
-	    critical.setOptional(true);
-	else {
-	    critical.setTrue(ncrit);
-	    critical.setOptional(false);
-	}
+        if (!ncrit)
+            critical.setOptional(true);
+        else {
+            critical.setTrue(ncrit);
+            critical.setOptional(false);
+        }
     }
 
     /**
      * Set this extension's OID
-     * 
-     * @param noid
-     *                this extension's new OID
+     *
+     * @param noid this extension's new OID
      */
     public void setOID(ASN1ObjectIdentifier noid) throws ConstraintException {
-	extnID.setOID(noid.getOID());
+        extnID.setOID(noid.getOID());
     }
 
     /**
      * Set this extension's value
-     * 
-     * @param nval
-     *                the new value of this extension. Note that this value will
-     *                be DER-encoded and stored inside an ASN1OctetString
-     * @throws java.security.cert.CertificateEncodingException
-     *                 if encoding fails
+     *
+     * @param nval the new value of this extension. Note that this value will
+     *             be DER-encoded and stored inside an ASN1OctetString
+     * @throws java.security.cert.CertificateEncodingException if encoding fails
      */
     public void setValue(ASN1Type nval) throws CertificateEncodingException {
-	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-	try {
-	    nval.encode(new DEREncoder(baos));
-	    extnValue.setByteArray(baos.toByteArray());
-	} catch (Exception e) {
-	    throw new CertificateEncodingException(e.getMessage());
-	}
+        try {
+            nval.encode(new DEREncoder(baos));
+            extnValue.setByteArray(baos.toByteArray());
+        } catch (Exception e) {
+            throw new CertificateEncodingException(e.getMessage());
+        }
     }
 
     /**
      * Returns a human-readable String representation of this extension
      */
     public String toString() {
-	return toString("");
+        return toString("");
 
     }
 
     /**
      * Returns a human-readable String representation of this extension with an
      * offset String.
-     * 
-     * @param offset
-     *                String that will be put before each line of output
+     *
+     * @param offset String that will be put before each line of output
      */
     public String toString(String offset) {
-	String res = offset;
+        String res = offset;
 
-	res = "Extension " + extnID.toString();
+        res = "Extension " + extnID.toString();
 
-	if (critical.isTrue())
-	    res = res + " (CRITICAL)";
-	else
-	    res = res + " (not critical)";
+        if (critical.isTrue())
+            res = res + " (CRITICAL)";
+        else
+            res = res + " (not critical)";
 
-	res = res + " Value=" + getValue().toString();
+        res = res + " Value=" + getValue().toString();
 
-	return res;
+        return res;
     }
 
 }

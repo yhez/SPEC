@@ -19,7 +19,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
  * This class is used to generate keys for the Shacal block cipher. Values for
  * the key are 128, 192, 256, 320, 384, and 448 bits, with the default being 128
  * bits.
- * 
+ *
  * @author Paul Nguentcheu
  */
 public class ShacalKeyGenerator extends SecretKeyGenerator {
@@ -39,85 +39,79 @@ public class ShacalKeyGenerator extends SecretKeyGenerator {
      * randomness. If the parameters are <tt>null</tt>, the
      * {@link ShacalKeyGenParameterSpec#ShacalKeyGenParameterSpec() default parameters}
      * are used.
-     * 
-     * @param params
-     *                the parameters
-     * @param random
-     *                the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     *                 if the parameters are not an instance of
-     *                 {@link ShacalKeyGenParameterSpec}.
+     *
+     * @param params the parameters
+     * @param random the source of randomness
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are not an instance of
+     *                                                                            {@link ShacalKeyGenParameterSpec}.
      */
     public void init(AlgorithmParameterSpec params, SecureRandom random)
-	    throws InvalidAlgorithmParameterException {
+            throws InvalidAlgorithmParameterException {
 
-	ShacalKeyGenParameterSpec shacalParams;
-	if (params == null) {
-	    shacalParams = new ShacalKeyGenParameterSpec();
-	} else if (params instanceof ShacalKeyGenParameterSpec) {
-	    shacalParams = (ShacalKeyGenParameterSpec) params;
-	} else {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
+        ShacalKeyGenParameterSpec shacalParams;
+        if (params == null) {
+            shacalParams = new ShacalKeyGenParameterSpec();
+        } else if (params instanceof ShacalKeyGenParameterSpec) {
+            shacalParams = (ShacalKeyGenParameterSpec) params;
+        } else {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
 
-	keySize = shacalParams.getKeySize();
-	this.random = random != null ? random : Registry.getSecureRandom();
+        keySize = shacalParams.getKeySize();
+        this.random = random != null ? random : Registry.getSecureRandom();
 
-	initialized = true;
+        initialized = true;
     }
 
     /**
      * Initialize the key generator for a certain key size, using the given
      * source of randomness. If the key size is invalid, the default key length
      * is chosen (see {@link ShacalKeyGenParameterSpec}).
-     * 
-     * @param keySize
-     *                the key size (128, 192, 256, 320, 384, or 448 bits)
-     * @param random
-     *                the source of randomness
+     *
+     * @param keySize the key size (128, 192, 256, 320, 384, or 448 bits)
+     * @param random  the source of randomness
      */
     public void init(int keySize, SecureRandom random) {
-	ShacalKeyGenParameterSpec params = new ShacalKeyGenParameterSpec(
-		keySize);
-	try {
-	    init(params, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        ShacalKeyGenParameterSpec params = new ShacalKeyGenParameterSpec(
+                keySize);
+        try {
+            init(params, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Initialize the key generator with the given source of randomness. The
      * default key size is chosen (see {@link ShacalKeyGenParameterSpec}).
-     * 
-     * @param random
-     *                the source of randomness
+     *
+     * @param random the source of randomness
      */
     public void init(SecureRandom random) {
-	ShacalKeyGenParameterSpec defaultParams = new ShacalKeyGenParameterSpec();
-	try {
-	    init(defaultParams, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        ShacalKeyGenParameterSpec defaultParams = new ShacalKeyGenParameterSpec();
+        try {
+            init(defaultParams, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Generate a Shacal key.
-     * 
+     *
      * @return the generated {@link de.flexiprovider.core.shacal.ShacalKey}
      */
     public SecretKey generateKey() {
-	if (!initialized) {
-	    init(Registry.getSecureRandom());
-	}
+        if (!initialized) {
+            init(Registry.getSecureRandom());
+        }
 
-	byte[] keyBytes = new byte[keySize >> 3];
-	random.nextBytes(keyBytes);
+        byte[] keyBytes = new byte[keySize >> 3];
+        random.nextBytes(keyBytes);
 
-	return new ShacalKey(keyBytes);
+        return new ShacalKey(keyBytes);
     }
 
 }

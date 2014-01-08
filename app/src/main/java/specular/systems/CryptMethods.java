@@ -30,38 +30,45 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
 
 public class CryptMethods {
     public static boolean doneCreatingKeys = false;
-    private static PrivateKey mPtK;
     public static String encryptedMsgToSend;
+    private static PrivateKey mPtK;
     private static String myName = null, myEmail = null, myPublicKey = null;
     private static PrivateKey tmpPtK = null;
     private static byte[] tmpPrivateKey;
     private static byte[] myPrivateKey;
     private static String tmpPublicKey = null;
     private static boolean notInit = true;
+    private static boolean lock = true;
 
     public static byte[] getPrivateToSave() {
         return myPrivateKey;
     }
 
-    static void deleteKeys() {
-        Log.d("start",System.currentTimeMillis()+"");
-        ECPrivateKey pk = (ECPrivateKey)mPtK;
-        pk.getS().bigInt.delete();
-        mPtK = null;
-        for(int a=0;a<myPrivateKey.length;a++){
-            myPrivateKey[a]=(byte)(System.currentTimeMillis()* new Random().nextLong());
+    public static void deleteKeys() {
+        if (lock) {
+            lock = false;
+            if (mPtK != null) {
+                ((ECPrivateKey) mPtK).getS().bigInt.delete();
+                mPtK = null;
+            }
+            if (myPrivateKey != null) {
+                for (int a = 0; a < myPrivateKey.length; a++) {
+                    myPrivateKey[a] = (byte) (System.currentTimeMillis() * new Random().nextLong());
+                }
+                Log.d("to prevent java from skipping it", "" + myPrivateKey[new Random().nextInt(myPrivateKey.length)]);
+                myPrivateKey = null;
+            }
+            MessageFormat.decryptedMsg = null;
+            LightMessage.decryptedLightMsg = null;
+            lock = true;
         }
-        Log.d("to prevent java from skipping it",""+myPrivateKey[new Random().nextInt(myPrivateKey.length)]);
-        MessageFormat.decryptedMsg = null;
-        LightMessage.decryptedLightMsg=null;
-        Log.d("end",System.currentTimeMillis()+"");
     }
 
     public static boolean setPrivate(byte[] p) {
         if (p != null) {
             mPtK = formatPrivate(p);
-            if(mPtK!=null){
-                myPrivateKey=p;
+            if (mPtK != null) {
+                myPrivateKey = p;
                 return true;
             }
         }
@@ -80,14 +87,14 @@ public class CryptMethods {
         tmpPublicKey = null;
         mPtK = tmpPtK;
         tmpPtK = null;
-        myPrivateKey=tmpPrivateKey;
-        tmpPrivateKey=null;
+        myPrivateKey = tmpPrivateKey;
+        tmpPrivateKey = null;
     }
 
     public static String[] getMyDetails(Activity a) {
-        if(myName==null||myEmail==null||myPublicKey==null)
+        if (myName == null || myEmail == null || myPublicKey == null)
             FilesManagement.getMyDetails(a);
-        return new String[]{myName,myEmail,myPublicKey};
+        return new String[]{myName, myEmail, myPublicKey};
     }
 
     public static String getPublic() {
@@ -131,7 +138,7 @@ public class CryptMethods {
             if (!doneCreatingKeys) {
                 tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
                 tmpPtK = keypair.getPrivate();
-                tmpPrivateKey =tmpPtK.getEncoded();
+                tmpPrivateKey = tmpPtK.getEncoded();
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -145,7 +152,7 @@ public class CryptMethods {
             Log.d("null", "null message");
             return;
         }
-        if(!privateExist()){
+        if (!privateExist()) {
             Log.e("no private", "message");
             return;
         }
@@ -161,21 +168,21 @@ public class CryptMethods {
             byte[] rawMsg = Visual.hex2bin(encryptedMessage);
             byte[] decryptedBytes = cipher.doFinal(rawMsg);
             MessageFormat.decryptedMsg = new MessageFormat(decryptedBytes);
-            if(MessageFormat.decryptedMsg.getPublicKey()==null){
-                MessageFormat.decryptedMsg=null;
-                LightMessage.decryptedLightMsg=new LightMessage(decryptedBytes);
-            }else
-                LightMessage.decryptedLightMsg=null;
-            StaticVariables.encrypted_msg_size=encryptedMessage.length();
-            StaticVariables.orig_msg_size=decryptedBytes.length;
+            if (MessageFormat.decryptedMsg.getPublicKey() == null) {
+                MessageFormat.decryptedMsg = null;
+                LightMessage.decryptedLightMsg = new LightMessage(decryptedBytes);
+            } else
+                LightMessage.decryptedLightMsg = null;
+            StaticVariables.encrypted_msg_size = encryptedMessage.length();
+            StaticVariables.orig_msg_size = decryptedBytes.length;
         } catch (Exception e) {
             MessageFormat.decryptedMsg = null;
-            LightMessage.decryptedLightMsg=null;
+            LightMessage.decryptedLightMsg = null;
             e.printStackTrace();
         }
     }
 
-    public static String encrypt(final byte[] msg,final byte[] light, final String friendPublicKey) {
+    public static String encrypt(final byte[] msg, final byte[] light, final String friendPublicKey) {
         if (notInit) {
             addProviders();
             notInit = false;
@@ -187,7 +194,7 @@ public class CryptMethods {
             IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",
                     "HmacSHA1", null, null);
             cipher.init(Cipher.ENCRYPT_MODE, frndPbK, iesParams);
-            if(light!=null)
+            if (light != null)
                 StaticVariables.encryptedLight = Visual.bin2hex(cipher.doFinal(light));
             encryptedMsgToSend = Visual.bin2hex(cipher.doFinal(msg));
             return encryptedMsgToSend;
@@ -219,6 +226,7 @@ public class CryptMethods {
     public static String getPublicTmp() {
         return tmpPublicKey;
     }
+
     public static byte[] getPrivateTmp() {
         return tmpPrivateKey;
     }

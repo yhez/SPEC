@@ -16,7 +16,7 @@ package de.flexiprovider.common.exceptions;
 public class PolynomialsHaveDifferentLengthException extends GFException {
 
     private static final String diagnostic = "The two Bitstrings have a different length and thus cannot be"
-	    + " vector-multiplied.";
+            + " vector-multiplied.";
 
     /**
      * Default constructor. Calls the parent-constructor with the message "The
@@ -24,7 +24,7 @@ public class PolynomialsHaveDifferentLengthException extends GFException {
      * vector-multiplied."
      */
     public PolynomialsHaveDifferentLengthException() {
-	super(diagnostic);
+        super(diagnostic);
     }
 
 }

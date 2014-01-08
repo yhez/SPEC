@@ -7,7 +7,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
  * This class specifies parameters used for initializing the
  * {@link de.flexiprovider.core.elgamal.ElGamalKeyPairGenerator}. The parameters consist of the bit length of
  * the prime <tt>p</tt>. The default bit length is 1024 bits.
- * 
+ *
  * @author Martin D�ring
  */
 public class ElGamalKeyGenParameterSpec implements AlgorithmParameterSpec {
@@ -25,32 +25,30 @@ public class ElGamalKeyGenParameterSpec implements AlgorithmParameterSpec {
      * <tt>p</tt> as {@link #DEFAULT_KEY_SIZE}.
      */
     public ElGamalKeyGenParameterSpec() {
-	keySize = DEFAULT_KEY_SIZE;
+        keySize = DEFAULT_KEY_SIZE;
     }
 
     /**
      * Construct new parameters from the given bit length of the prime
      * <tt>p</tt>. If the length is invalid, the
      * {@link #DEFAULT_KEY_SIZE default length} is chosen.
-     * 
-     * @param keySize
-     *                the bit length of the prime <tt>p</tt> (>= 512 bits)
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterException
-     *                 if the key size is less than 512 bits.
+     *
+     * @param keySize the bit length of the prime <tt>p</tt> (>= 512 bits)
+     * @throws de.flexiprovider.api.exceptions.InvalidParameterException if the key size is less than 512 bits.
      */
     public ElGamalKeyGenParameterSpec(int keySize)
-	    throws InvalidParameterException {
-	if (keySize < 512) {
-	    throw new InvalidParameterException("key size must be >= 512");
-	}
-	this.keySize = keySize;
+            throws InvalidParameterException {
+        if (keySize < 512) {
+            throw new InvalidParameterException("key size must be >= 512");
+        }
+        this.keySize = keySize;
     }
 
     /**
      * @return the bit length of the prime <tt>p</tt>
      */
     public int getKeySize() {
-	return keySize;
+        return keySize;
     }
 
 }

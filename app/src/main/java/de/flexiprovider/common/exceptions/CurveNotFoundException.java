@@ -12,7 +12,7 @@ package de.flexiprovider.common.exceptions;
 /**
  * This exception is thrown, if the given object identifier of a curve cannot be
  * found, that means, is not provided by this provider.
- * 
+ *
  * @author Birgit Henhapl
  * @see de.flexiprovider.common.math.ellipticcurves.Point
  * @see de.flexiprovider.common.math.ellipticcurves.PointGFP
@@ -26,17 +26,16 @@ public class CurveNotFoundException extends ECException {
      * OID is not found in the provided file."
      */
     public CurveNotFoundException() {
-	super(DIAGNOSTIC);
+        super(DIAGNOSTIC);
     }
 
     /**
      * Constructor with the message "This curve OID is not found in the provided
      * file: <em>oid</em>
-     * 
-     * @param oid
-     *                the oid not recognized by the provider
+     *
+     * @param oid the oid not recognized by the provider
      */
     public CurveNotFoundException(String oid) {
-	super(DIAGNOSTIC + ": " + oid);
+        super(DIAGNOSTIC + ": " + oid);
     }
 }

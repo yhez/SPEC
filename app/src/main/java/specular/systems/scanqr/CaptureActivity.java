@@ -67,8 +67,8 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(connecting!=null&&connecting.getVisibility()==View.GONE)
-        cameraManager.onF(event.getActionMasked() != MotionEvent.ACTION_UP);
+        if (connecting != null && connecting.getVisibility() == View.GONE)
+            cameraManager.onF(event.getActionMasked() != MotionEvent.ACTION_UP);
         return true;
     }
 

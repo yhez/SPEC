@@ -12,22 +12,22 @@ public class IQGQPublicKeySpec implements KeySpec {
     private FlexiBigInt exponent;
 
     public IQGQPublicKeySpec(IQGQParameterSpec params, QuadraticIdeal alpha,
-	    FlexiBigInt exponent) {
-	this.params = params;
-	this.alpha = alpha;
-	this.exponent = exponent;
+                             FlexiBigInt exponent) {
+        this.params = params;
+        this.alpha = alpha;
+        this.exponent = exponent;
     }
 
     public IQGQParameterSpec getParams() {
-	return params;
+        return params;
     }
 
     public QuadraticIdeal getAlpha() {
-	return alpha;
+        return alpha;
     }
 
     public FlexiBigInt getExponent() {
-	return exponent;
+        return exponent;
     }
 
 }

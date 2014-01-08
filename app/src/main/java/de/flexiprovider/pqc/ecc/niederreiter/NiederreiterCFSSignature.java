@@ -24,9 +24,9 @@ import de.flexiprovider.pqc.ecc.Conversions;
  * This class implements the NiederreiterCFS signature scheme (N. Courtois, M.
  * Finiasz, N. Sendrier, "How to achieve a McEliece-based Digital Signature
  * Scheme", in Advances in Cryptology - ASIACRYPT 2001, vol. 2248, pp. 157-174).
- * <p>
+ * <p/>
  * The NiederreiterCFSSignature can be used as follows:
- * <p>
+ * <p/>
  * <b>Signature generation:</b>
  * <ol>
  * <li> generate KeySpec from encoded Niederreiter private key:<br/>
@@ -43,7 +43,7 @@ import de.flexiprovider.pqc.ecc.Conversions;
  * signature = cfsSig.sign();<br/>
  * return signature;</tt></li>
  * </ol>
- * <p>
+ * <p/>
  * <b>Signature verification:</b>
  * <ol>
  * <li>generate KeySpec from encoded Niederreiter public key:<br/>
@@ -54,7 +54,7 @@ import de.flexiprovider.pqc.ecc.Conversions;
  * <li>Verify the signature:<br/> <tt>cfsSig.update(message.getBytes());<br/>
  * return cfsSig.verify(signature);</tt></li>
  * </ol>
- * 
+ *
  * @author Elena Klintsevich
  */
 public class NiederreiterCFSSignature extends Signature {
@@ -83,208 +83,197 @@ public class NiederreiterCFSSignature extends Signature {
      * Constructor. Choose the default message digest ({@link RIPEMD160}).
      */
     public NiederreiterCFSSignature() {
-	md = new RIPEMD160();
+        md = new RIPEMD160();
     }
 
     /**
      * Initialize the signature algorithm for signing a message.
-     * 
-     * @param key
-     *                the private key of the signer
-     * @param random
-     *                a source of randomness (not used)
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException
-     *                 if the key is not an instance of
-     *                 {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKey}.
+     *
+     * @param key    the private key of the signer
+     * @param random a source of randomness (not used)
+     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the key is not an instance of
+     *                                                             {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKey}.
      */
     public void initSign(PrivateKey key, SecureRandom random)
-	    throws InvalidKeyException {
-	if (!(key instanceof NiederreiterPrivateKey)) {
-	    throw new InvalidKeyException("unsupported type");
-	}
-	privKey = (NiederreiterPrivateKey) key;
+            throws InvalidKeyException {
+        if (!(key instanceof NiederreiterPrivateKey)) {
+            throw new InvalidKeyException("unsupported type");
+        }
+        privKey = (NiederreiterPrivateKey) key;
 
-	h = GoppaCode.createCanonicalCheckMatrix(privKey.getField(), privKey
-		.getGoppaPoly());
-	baos = new ByteArrayOutputStream();
+        h = GoppaCode.createCanonicalCheckMatrix(privKey.getField(), privKey
+                .getGoppaPoly());
+        baos = new ByteArrayOutputStream();
     }
 
     /**
      * Initialize the signature algorithm for verifying a signature.
-     * 
-     * @param key
-     *                the public key of the signer
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException
-     *                 if the public key is not an instance of
-     *                 NiederreiterPublicKey.
+     *
+     * @param key the public key of the signer
+     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the public key is not an instance of
+     *                                                             NiederreiterPublicKey.
      */
     public void initVerify(PublicKey key) throws InvalidKeyException {
-	if (!(key instanceof NiederreiterPublicKey)) {
-	    throw new InvalidKeyException("Key is not a NiederreiterPublicKey.");
-	}
-	pubKey = (NiederreiterPublicKey) key;
-	baos = new ByteArrayOutputStream();
+        if (!(key instanceof NiederreiterPublicKey)) {
+            throw new InvalidKeyException("Key is not a NiederreiterPublicKey.");
+        }
+        pubKey = (NiederreiterPublicKey) key;
+        baos = new ByteArrayOutputStream();
     }
 
     /**
      * Set parameters for the this signature. As the parameters are contained in
      * the keys, this method is not implemented.
-     * 
-     * @param params
-     *                the parameters (not used)
+     *
+     * @param params the parameters (not used)
      */
     public void setParameters(AlgorithmParameterSpec params) {
-	// empty
+        // empty
     }
 
     /**
      * Feed a message byte to the message digest.
-     * 
-     * @param data
-     *                array of message bytes
+     *
+     * @param data array of message bytes
      */
     public void update(byte data) {
-	baos.write(data);
+        baos.write(data);
     }
 
     /**
      * Feed message bytes to the message digest.
-     * 
-     * @param data
-     *                array of message bytes
-     * @param off
-     *                index of message start
-     * @param length
-     *                number of message bytes
+     *
+     * @param data   array of message bytes
+     * @param off    index of message start
+     * @param length number of message bytes
      */
     public void update(byte[] data, int off, int length) {
-	baos.write(data, off, length);
+        baos.write(data, off, length);
     }
 
     /**
      * Sign a message.
-     * 
+     *
      * @return the signature
      */
     public byte[] sign() {
-	int k = privKey.getK();
-	int m = privKey.getM();
-	int n = 1 << m;
-	int t = privKey.getT();
-	GF2mField field = privKey.getField();
-	PolynomialGF2mSmallM gp = privKey.getGoppaPoly();
-	GF2Matrix matrixS = privKey.getSInv();
-	Permutation p = privKey.getP();
-	PolynomialGF2mSmallM[] sqRootMatrix = privKey.getQInv();
+        int k = privKey.getK();
+        int m = privKey.getM();
+        int n = 1 << m;
+        int t = privKey.getT();
+        GF2mField field = privKey.getField();
+        PolynomialGF2mSmallM gp = privKey.getGoppaPoly();
+        GF2Matrix matrixS = privKey.getSInv();
+        Permutation p = privKey.getP();
+        PolynomialGF2mSmallM[] sqRootMatrix = privKey.getQInv();
 
-	int q = k >>> 3;
-	int r = Math.min(q, md.getDigestLength());
-	if ((k & 7) != 0) {
-	    q++;
-	}
+        int q = k >>> 3;
+        int r = Math.min(q, md.getDigestLength());
+        if ((k & 7) != 0) {
+            q++;
+        }
 
-	byte[] data = md.digest(getData());
+        byte[] data = md.digest(getData());
 
-	byte[] pad = new byte[8];
-	byte[] help, dt;
-	long ind = 0;
+        byte[] pad = new byte[8];
+        byte[] help, dt;
+        long ind = 0;
 
-	GF2Vector vec, s0, s1;
-	do {
-	    pad = BigEndianConversions.I2OSP(ind);
+        GF2Vector vec, s0, s1;
+        do {
+            pad = BigEndianConversions.I2OSP(ind);
 
-	    help = new byte[data.length + 8];
-	    System.arraycopy(data, 0, help, 0, data.length);
-	    System.arraycopy(pad, 0, help, data.length, 8);
+            help = new byte[data.length + 8];
+            System.arraycopy(data, 0, help, 0, data.length);
+            System.arraycopy(pad, 0, help, data.length, 8);
 
-	    help = md.digest(help);
+            help = md.digest(help);
 
-	    dt = new byte[q];
-	    System.arraycopy(help, 0, dt, 0, r);
+            dt = new byte[q];
+            System.arraycopy(help, 0, dt, 0, r);
 
-	    vec = GF2Vector.OS2VP(k, dt);
-	    s0 = (GF2Vector) matrixS.rightMultiply(vec);
-	    vec = GoppaCode.syndromeDecode(s0, field, gp, sqRootMatrix);
-	    s1 = (GF2Vector) h.rightMultiply(vec);
+            vec = GF2Vector.OS2VP(k, dt);
+            s0 = (GF2Vector) matrixS.rightMultiply(vec);
+            vec = GoppaCode.syndromeDecode(s0, field, gp, sqRootMatrix);
+            s1 = (GF2Vector) h.rightMultiply(vec);
 
-	    ind++;
+            ind++;
 
-	} while (!(s0.equals(s1) && vec.getHammingWeight() == t));
+        } while (!(s0.equals(s1) && vec.getHammingWeight() == t));
 
-	vec = (GF2Vector) vec.multiply(p);
+        vec = (GF2Vector) vec.multiply(p);
 
-	data = vec.getEncoded();
-	data = Conversions.signConversion(n, t, data);
-	byte[] sig = new byte[data.length + 8];
-	System.arraycopy(data, 0, sig, 0, data.length);
-	System.arraycopy(pad, 0, sig, data.length, 8);
-	return sig;
+        data = vec.getEncoded();
+        data = Conversions.signConversion(n, t, data);
+        byte[] sig = new byte[data.length + 8];
+        System.arraycopy(data, 0, sig, 0, data.length);
+        System.arraycopy(pad, 0, sig, data.length, 8);
+        return sig;
     }
 
     /**
      * Verify a signature.
-     * 
-     * @param signature
-     *                the signature to be verified
+     *
+     * @param signature the signature to be verified
      * @return true if the signature is correct, false otherwise.
      */
     public boolean verify(byte[] signature) {
-	boolean verifyKey = false;
+        boolean verifyKey = false;
 
-	if (signature.length < 9) {
-	    return false;
-	}
+        if (signature.length < 9) {
+            return false;
+        }
 
-	int k = pubKey.getK();
-	int n = pubKey.getN();
-	int t = pubKey.getT();
-	GF2Matrix matrixH = pubKey.getH();
+        int k = pubKey.getK();
+        int n = pubKey.getN();
+        int t = pubKey.getT();
+        GF2Matrix matrixH = pubKey.getH();
 
-	byte[] data = getData();
-	data = md.digest(data);
+        byte[] data = getData();
+        data = md.digest(data);
 
-	int z = signature.length - 8;
-	byte[] help = new byte[data.length + 8];
-	System.arraycopy(data, 0, help, 0, data.length);
-	System.arraycopy(signature, z, help, data.length, 8);
+        int z = signature.length - 8;
+        byte[] help = new byte[data.length + 8];
+        System.arraycopy(data, 0, help, 0, data.length);
+        System.arraycopy(signature, z, help, data.length, 8);
 
-	help = md.digest(help);
+        help = md.digest(help);
 
-	int q = k >>> 3;
-	int r = Math.min(q, md.getDigestLength());
-	if ((k & 7) != 0) {
-	    q++;
-	}
+        int q = k >>> 3;
+        int r = Math.min(q, md.getDigestLength());
+        if ((k & 7) != 0) {
+            q++;
+        }
 
-	data = new byte[q];
-	System.arraycopy(help, 0, data, 0, r);
+        data = new byte[q];
+        System.arraycopy(help, 0, data, 0, r);
 
-	GF2Vector vecT = GF2Vector.OS2VP(k, data);
+        GF2Vector vecT = GF2Vector.OS2VP(k, data);
 
-	byte[] s0 = new byte[z];
-	System.arraycopy(signature, 0, s0, 0, z);
+        byte[] s0 = new byte[z];
+        System.arraycopy(signature, 0, s0, 0, z);
 
-	GF2Vector vec = Conversions.encode(n, t, s0);
-	vec = (GF2Vector) matrixH.rightMultiplyRightCompactForm(vec);
-	verifyKey = vec.equals(vecT);
-	return verifyKey;
+        GF2Vector vec = Conversions.encode(n, t, s0);
+        vec = (GF2Vector) matrixH.rightMultiplyRightCompactForm(vec);
+        verifyKey = vec.equals(vecT);
+        return verifyKey;
     }
 
     /**
      * Convert the ByteArrayOutputStream into a byte array and close the stream.
-     * 
+     *
      * @return the contents of the stream
      */
     private byte[] getData() {
-	byte[] data = baos.toByteArray();
+        byte[] data = baos.toByteArray();
 
-	try {
-	    baos.close();
-	} catch (IOException ioe) {
-	    System.out.println("Can not close ByteArrayOutputStream");
-	}
-	baos.reset();
-	return data;
+        try {
+            baos.close();
+        } catch (IOException ioe) {
+            System.out.println("Can not close ByteArrayOutputStream");
+        }
+        baos.reset();
+        return data;
     }
 
 }

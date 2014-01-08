@@ -16,14 +16,13 @@ import de.flexiprovider.common.exceptions.NoSolutionException;
  * or in <i>polynomial</i> representation. It is extended by the classes <a
  * href = GF2nONBElement.html><tt> GF2nONBElement</tt></a> and <a href =
  * GF2nPolynomialElement.html> <tt>GF2nPolynomialElement</tt> </a>.
- * 
- * @see GF2nPolynomialElement
- * @see GF2nONBElement
- * @see GF2nONBField
- * 
+ *
  * @author Birgit Henhapl
  * @author Martin D�ring
  * @author Oliver Seiler
+ * @see GF2nPolynomialElement
+ * @see GF2nONBElement
+ * @see GF2nONBField
  */
 public abstract class GF2nElement implements GFElement {
 
@@ -72,27 +71,26 @@ public abstract class GF2nElement implements GFElement {
     /**
      * Returns whether the rightmost bit of the bit representation is set. This
      * is needed for data conversion according to 1363.
-     * 
+     *
      * @return true if the rightmost bit of this element is set
      */
     public abstract boolean testRightmostBit();
 
     /**
      * Checks whether the indexed bit of the bit representation is set
-     * 
-     * @param index
-     *                the index of the bit to test
+     *
+     * @param index the index of the bit to test
      * @return <tt>true</tt> if the indexed bit is set
      */
     abstract boolean testBit(int index);
 
     /**
      * Returns the field of this element.
-     * 
+     *
      * @return the field of this element
      */
     public final GF2nField getField() {
-	return mField;
+        return mField;
     }
 
     // /////////////////////////////////////////////////////////////////////
@@ -101,7 +99,7 @@ public abstract class GF2nElement implements GFElement {
 
     /**
      * Returns <tt>this</tt> element + 1.
-     * 
+     *
      * @return <tt>this</tt> + 1
      */
     public abstract GF2nElement increase();
@@ -113,34 +111,30 @@ public abstract class GF2nElement implements GFElement {
 
     /**
      * Compute the difference of this element and <tt>minuend</tt>.
-     * 
-     * @param minuend
-     *                the minuend
+     *
+     * @param minuend the minuend
      * @return <tt>this - minuend</tt> (newly created)
-     * @throws DifferentFieldsException
-     *                 if the elements are of different fields.
+     * @throws DifferentFieldsException if the elements are of different fields.
      */
     public final GFElement subtract(GFElement minuend)
-	    throws DifferentFieldsException {
-	return add(minuend);
+            throws DifferentFieldsException {
+        return add(minuend);
     }
 
     /**
      * Compute the difference of this element and <tt>minuend</tt>,
      * overwriting this element.
-     * 
-     * @param minuend
-     *                the minuend
-     * @throws DifferentFieldsException
-     *                 if the elements are of different fields.
+     *
+     * @param minuend the minuend
+     * @throws DifferentFieldsException if the elements are of different fields.
      */
     public final void subtractFromThis(GFElement minuend) {
-	addToThis(minuend);
+        addToThis(minuend);
     }
 
     /**
      * Returns <tt>this</tt> element to the power of 2.
-     * 
+     *
      * @return <tt>this</tt><sup>2</sup>
      */
     public abstract GF2nElement square();
@@ -153,7 +147,7 @@ public abstract class GF2nElement implements GFElement {
     /**
      * Compute the square root of this element and return the result in a new
      * {@link de.flexiprovider.common.math.finitefields.GF2nElement}.
-     * 
+     *
      * @return <tt>this<sup>1/2</sup></tt> (newly created)
      */
     public abstract GF2nElement squareRoot();
@@ -166,22 +160,20 @@ public abstract class GF2nElement implements GFElement {
     /**
      * Performs a basis transformation of this element to the given GF2nField
      * <tt>basis</tt>.
-     * 
-     * @param basis
-     *                the GF2nField representation to transform this element to
+     *
+     * @param basis the GF2nField representation to transform this element to
      * @return this element in the representation of <tt>basis</tt>
-     * @throws DifferentFieldsException
-     *                 if <tt>this</tt> cannot be converted according to
-     *                 <tt>basis</tt>.
+     * @throws DifferentFieldsException if <tt>this</tt> cannot be converted according to
+     *                                  <tt>basis</tt>.
      */
     public final GF2nElement convert(GF2nField basis)
-	    throws DifferentFieldsException {
-	return mField.convert(this, basis);
+            throws DifferentFieldsException {
+        return mField.convert(this, basis);
     }
 
     /**
      * Returns the trace of this element.
-     * 
+     *
      * @return the trace of this element
      */
     public abstract int trace();
@@ -189,14 +181,12 @@ public abstract class GF2nElement implements GFElement {
     /**
      * Solves a quadratic equation.<br>
      * Let z<sup>2</sup> + z = <tt>this</tt>. Then this method returns z.
-     * 
+     *
      * @return z with z<sup>2</sup> + z = <tt>this</tt>
-     * 
-     * @throws NoSolutionException
-     *                 if z<sup>2</sup> + z = <tt>this</tt> does not have a
-     *                 solution
+     * @throws NoSolutionException if z<sup>2</sup> + z = <tt>this</tt> does not have a
+     *                             solution
      */
     public abstract GF2nElement solveQuadraticEquation()
-	    throws NoSolutionException;
+            throws NoSolutionException;
 
 }

@@ -20,7 +20,7 @@ import de.flexiprovider.common.math.finitefields.GFPElement;
  * </p>
  * a and b are stored in <tt>FlexiBigInt</tt> instances <tt>mA</tt> and
  * <tt>mB</tt>, respectively.
- * 
+ *
  * @author Birgit Henhapl
  * @see de.flexiprovider.common.math.ellipticcurves.EllipticCurve
  */
@@ -34,17 +34,14 @@ public class EllipticCurveGFP extends EllipticCurve {
      * Constructs an elliptic curve E with the specified parameters <tt>a</tt>
      * and <tt>b</tt> in short Weierstrass normal form in projective
      * representation over the prime field with the specified characteristic.
-     * 
-     * @param a
-     *                curve parameter a
-     * @param b
-     *                curve parameter b
-     * @param p
-     *                characteristic of the underlying prime field
+     *
+     * @param a curve parameter a
+     * @param b curve parameter b
+     * @param p characteristic of the underlying prime field
      * @see de.flexiprovider.common.math.finitefields.GFPElement
      */
     public EllipticCurveGFP(GFPElement a, GFPElement b, FlexiBigInt p) {
-	super(a, b, p);
+        super(a, b, p);
     }
 
     // ////////////////////////////////////////////////////////////////////
@@ -55,9 +52,9 @@ public class EllipticCurveGFP extends EllipticCurve {
      * @return a human readable form of this elliptic curve
      */
     public final String toString() {
-	return "y^2 = x^3 + ax + b, where\n" + "a = " + mA.toString(16)
-		+ ",\nb = " + mB.toString(16) + "\n field order = "
-		+ mQ.toString(16);
+        return "y^2 = x^3 + ax + b, where\n" + "a = " + mA.toString(16)
+                + ",\nb = " + mB.toString(16) + "\n field order = "
+                + mQ.toString(16);
     }
 
 }

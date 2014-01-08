@@ -22,7 +22,7 @@ public class DegreeIsEvenException extends GFException {
      * degree of the used field is even. Cannot compute halftrace."
      */
     public DegreeIsEvenException() {
-	super(diagnostic);
+        super(diagnostic);
     }
 
 }

@@ -15,95 +15,93 @@ import de.flexiprovider.pqc.ots.lm.LMOTSSignature;
 
 public class LMOTS implements OTS {
 
-	private LMOTSPrivateKey privKey;
-	private LMOTSPublicKey pubKey;
+    private LMOTSPrivateKey privKey;
+    private LMOTSPublicKey pubKey;
 
-	private LMOTSSignature lmots;
+    private LMOTSSignature lmots;
 
-	private LMOTSParameterSpec pS;
+    private LMOTSParameterSpec pS;
 
-	private boolean alreadyGenerated = false;
-	
-	/**
-	 * Constructor.
-	 * 
-	 */
-	public LMOTS() {
-	    //pS = new LMOTSParameterSpec(256);
-	}
+    private boolean alreadyGenerated = false;
 
-	public boolean canComputeVerificationKeyFromSignature() {
-		return true;
-	}
+    /**
+     * Constructor.
+     */
+    public LMOTS() {
+        //pS = new LMOTSParameterSpec(256);
+    }
 
-	public byte[] computeVerificationKey(byte[] bytes, byte[] sigBytes) {
-		return pubKey.getEncoded();
-	}
+    public boolean canComputeVerificationKeyFromSignature() {
+        return true;
+    }
 
-	public void generateKeyPair(byte[] seed) {
-		LMOTSKeyPairGenerator kpg = new LMOTSKeyPairGenerator();
+    public byte[] computeVerificationKey(byte[] bytes, byte[] sigBytes) {
+        return pubKey.getEncoded();
+    }
 
-		if (pS == null) {
-			try {
-				throw new Exception("init has to be called first!");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+    public void generateKeyPair(byte[] seed) {
+        LMOTSKeyPairGenerator kpg = new LMOTSKeyPairGenerator();
 
-		try {
-			kpg.initialize(pS, Registry.getSecureRandom());
+        if (pS == null) {
+            try {
+                throw new Exception("init has to be called first!");
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
 
-			KeyPair keyPair = kpg.genKeyPair();
+        try {
+            kpg.initialize(pS, Registry.getSecureRandom());
 
-			pubKey = (LMOTSPublicKey) keyPair.getPublic();
-			privKey = (LMOTSPrivateKey) keyPair.getPrivate();
+            KeyPair keyPair = kpg.genKeyPair();
 
-			alreadyGenerated = true;
-		} catch (InvalidAlgorithmParameterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            pubKey = (LMOTSPublicKey) keyPair.getPublic();
+            privKey = (LMOTSPrivateKey) keyPair.getPrivate();
 
-	}
+            alreadyGenerated = true;
+        } catch (InvalidAlgorithmParameterException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-	public void generateSignatureKey(byte[] seed) {
-		if (!alreadyGenerated) {
-			generateKeyPair(null);
-		}
-	}
+    }
 
-	public void generateVerificationKey() {
-		if (!alreadyGenerated) {
-			generateKeyPair(null);
-		}
-	}
+    public void generateSignatureKey(byte[] seed) {
+        if (!alreadyGenerated) {
+            generateKeyPair(null);
+        }
+    }
 
-	public int getSignatureLength() {
-		return lmots.getSignatureLength();
-	}
+    public void generateVerificationKey() {
+        if (!alreadyGenerated) {
+            generateKeyPair(null);
+        }
+    }
 
-	public byte[] getVerificationKey() {
-		return pubKey.getEncoded();
-	}
+    public int getSignatureLength() {
+        return lmots.getSignatureLength();
+    }
 
-	public int getVerificationKeyLength() {
-		return 0;
-	}
+    public byte[] getVerificationKey() {
+        return pubKey.getEncoded();
+    }
 
-	public void init(MessageDigest md, PRNG rng) {
-	    int mdLength = md.getDigestLength() * 8 + 1;
-	    pS = new LMOTSParameterSpec(mdLength);
-	    lmots = new LMOTSSignature.GENERIC(md);
-	    try {
-		lmots.setParameters(pS);
-	    }
-	    catch (InvalidAlgorithmParameterException e) {
-		e.printStackTrace();
-	    }   
+    public int getVerificationKeyLength() {
+        return 0;
+    }
+
+    public void init(MessageDigest md, PRNG rng) {
+        int mdLength = md.getDigestLength() * 8 + 1;
+        pS = new LMOTSParameterSpec(mdLength);
+        lmots = new LMOTSSignature.GENERIC(md);
+        try {
+            lmots.setParameters(pS);
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        }
 /*		if (md.getClass().equals(SHA1.class)) {
-			try {
+            try {
 				pS = new LMOTSParameterSpec(256);
 				lmots = new LMOTSSignature.SHA1();
 				lmots.setParameters(pS);
@@ -176,32 +174,32 @@ public class LMOTS implements OTS {
 			}
 		}
 */
-	}
+    }
 
-	public byte[] sign(byte[] bytes) {
-		try {
-			lmots.initSign(privKey);
-			return lmots.sign(bytes);
-		} catch (SignatureException e) {
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    public byte[] sign(byte[] bytes) {
+        try {
+            lmots.initSign(privKey);
+            return lmots.sign(bytes);
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	public boolean verify(byte[] message, byte[] signedMessage, byte[] verificationKey) {
-		try {
-			lmots.initVerify(new LMOTSPublicKey(verificationKey));
-			lmots.setMessage(message);
-			return lmots.verify(message, signedMessage);
-		} catch (SignatureException e) {
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+    public boolean verify(byte[] message, byte[] signedMessage, byte[] verificationKey) {
+        try {
+            lmots.initVerify(new LMOTSPublicKey(verificationKey));
+            lmots.setMessage(message);
+            return lmots.verify(message, signedMessage);
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

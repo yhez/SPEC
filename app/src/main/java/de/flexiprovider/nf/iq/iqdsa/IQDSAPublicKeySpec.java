@@ -15,29 +15,27 @@ public class IQDSAPublicKeySpec implements KeySpec {
     /**
      * Construct an IQDSA public key specification from the given parameters and
      * the base element of the NFDL-problem.
-     * 
-     * @param params
-     *                the parameters
-     * @param alpha
-     *                the base element of the NFDL-problem
+     *
+     * @param params the parameters
+     * @param alpha  the base element of the NFDL-problem
      */
     public IQDSAPublicKeySpec(IQDSAParameterSpec params, QuadraticIdeal alpha) {
-	this.params = params;
-	this.alpha = alpha;
+        this.params = params;
+        this.alpha = alpha;
     }
 
     /**
      * @return the parameters
      */
     public IQDSAParameterSpec getParams() {
-	return params;
+        return params;
     }
 
     /**
      * @return the base element of the NFDL-problem
      */
     public QuadraticIdeal getAlpha() {
-	return alpha;
+        return alpha;
     }
 
 }

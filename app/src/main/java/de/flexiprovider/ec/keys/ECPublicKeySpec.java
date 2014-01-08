@@ -21,16 +21,15 @@ import de.flexiprovider.ec.parameters.CurveParams;
 
 /**
  * This class specifies a EC public key with its associated parameters.
- * 
+ *
+ * @author Birgit Henhapl
+ * @author Michele Boivin
  * @see KeySpec
  * @see de.flexiprovider.api.keys.KeyFactory
  * @see de.flexiprovider.pki.X509EncodedKeySpec
  * @see de.flexiprovider.ec.keys.ECPrivateKeySpec
  * @see de.flexiprovider.common.math.ellipticcurves.Point
  * @see CurveParams
- * 
- * @author Birgit Henhapl
- * @author Michele Boivin
  */
 public final class ECPublicKeySpec implements KeySpec {
 
@@ -40,7 +39,7 @@ public final class ECPublicKeySpec implements KeySpec {
 
     /**
      * holds W := s * G, 1 < s < r, public key
-     * 
+     *
      * @serial
      */
     private Point mW;
@@ -53,7 +52,7 @@ public final class ECPublicKeySpec implements KeySpec {
 
     /**
      * holds the parameters
-     * 
+     *
      * @serial
      */
     private CurveParams mParams;
@@ -67,24 +66,21 @@ public final class ECPublicKeySpec implements KeySpec {
      * key <tt>W</tt> and an EC domain parameters specification
      * <tt>params</tt> (see <a href =
      * ../..spec.ECParameterSpec.html>ECParameterSpec</a>).
-     * 
-     * @param W
-     *                public key represented by a Point
-     * @param params
-     *                ECParameterSpec, characteristic of underlying field
-     * @throws InvalidParameterException
-     *                 if <tt>params == null</tt> or <tt>params</tt> does
-     *                 not match parameters specified by <tt>W</tt>.
+     *
+     * @param W      public key represented by a Point
+     * @param params ECParameterSpec, characteristic of underlying field
+     * @throws InvalidParameterException if <tt>params == null</tt> or <tt>params</tt> does
+     *                                   not match parameters specified by <tt>W</tt>.
      */
     public ECPublicKeySpec(Point W, CurveParams params)
-	    throws InvalidParameterException {
-	if (params == null) {
-	    throw new InvalidParameterException(
-		    "EC domain parameters must not be null");
-	}
-	// TODO: Test if params match curve encoded in point
-	mW = W;
-	mParams = params;
+            throws InvalidParameterException {
+        if (params == null) {
+            throw new InvalidParameterException(
+                    "EC domain parameters must not be null");
+        }
+        // TODO: Test if params match curve encoded in point
+        mW = W;
+        mParams = params;
     }
 
     /**
@@ -92,40 +88,36 @@ public final class ECPublicKeySpec implements KeySpec {
      * the parameters of the curve. If curve parameters are presented, the point
      * is decoded (which may lead to the Exceptions named below). Otherwise, the
      * point is internally represented as byte array.
-     * 
+     * <p/>
      * Uncompressed encoding must be chosen for the point.
-     * 
-     * @param encodedW
-     *                the point in its uncompressed encoding
-     * @param params
-     *                EC domain parameters
-     * @throws InvalidParameterSpecException
-     *                 if the point cannot be decoded with the given parameters.
+     *
+     * @param encodedW the point in its uncompressed encoding
+     * @param params   EC domain parameters
+     * @throws InvalidParameterSpecException if the point cannot be decoded with the given parameters.
      */
     public ECPublicKeySpec(byte[] encodedW, CurveParams params)
-	    throws InvalidParameterSpecException {
-	mEncodedW = ByteUtils.clone(encodedW);
-	if (params != null) {
-	    setParams(params);
-	}
+            throws InvalidParameterSpecException {
+        mEncodedW = ByteUtils.clone(encodedW);
+        if (params != null) {
+            setParams(params);
+        }
     }
 
     /**
      * Copy constructor.
-     * 
-     * @param other
-     *                another ECPublicKeySpec
+     *
+     * @param other another ECPublicKeySpec
      */
     public ECPublicKeySpec(ECPublicKeySpec other) {
-	if (other.mW != null) {
-	    mW = (Point) other.mW.clone();
-	}
+        if (other.mW != null) {
+            mW = (Point) other.mW.clone();
+        }
 
-	if (other.mEncodedW != null) {
-	    mEncodedW = ByteUtils.clone(other.mEncodedW);
-	}
+        if (other.mEncodedW != null) {
+            mEncodedW = ByteUtils.clone(other.mEncodedW);
+        }
 
-	mParams = other.mParams;
+        mParams = other.mParams;
     }
 
     // //////////////////////////////////////////////////////////////
@@ -135,91 +127,88 @@ public final class ECPublicKeySpec implements KeySpec {
     /**
      * Returns the public key W. W = sG, s is private key, G generator of the
      * subgroup.
-     * 
+     *
      * @return the public key W
-     * @throws InvalidKeySpecException
-     *                 if no EC domain parameters have been defined for this
-     *                 public key yet.
+     * @throws InvalidKeySpecException if no EC domain parameters have been defined for this
+     *                                 public key yet.
      * @see de.flexiprovider.common.math.ellipticcurves.Point
      */
     public Point getW() throws InvalidKeySpecException {
-	if (mW == null) {
-	    throw new InvalidKeySpecException(
-		    "No EC domain parameters defined for the public point");
-	}
-	return mW;
+        if (mW == null) {
+            throw new InvalidKeySpecException(
+                    "No EC domain parameters defined for the public point");
+        }
+        return mW;
     }
 
     /**
      * @return the public key in its uncompressed encoding
      */
     public byte[] getEncodedW() {
-	if (mEncodedW != null) {
-	    return mEncodedW;
-	}
+        if (mEncodedW != null) {
+            return mEncodedW;
+        }
 
-	return mW.EC2OSP(Point.ENCODING_TYPE_UNCOMPRESSED);
+        return mW.EC2OSP(Point.ENCODING_TYPE_UNCOMPRESSED);
     }
 
     /**
      * @return the EC domain parameters
      */
     public CurveParams getParams() {
-	return mParams;
+        return mParams;
     }
 
     /**
      * Set the EC domain parameters for this public key.
-     * 
-     * @param params
-     *                the domain parameters
-     * @throws InvalidParameterSpecException
-     *                 if the domain parameters are already set and
-     *                 <tt>params</tt> is not equal to the set parameters or
-     *                 if the encoded point cannot be decoded with the given
-     *                 parameters.
+     *
+     * @param params the domain parameters
+     * @throws InvalidParameterSpecException if the domain parameters are already set and
+     *                                       <tt>params</tt> is not equal to the set parameters or
+     *                                       if the encoded point cannot be decoded with the given
+     *                                       parameters.
      */
     public void setParams(CurveParams params)
-	    throws InvalidParameterSpecException {
+            throws InvalidParameterSpecException {
 
-	if (params == null) { // case 1: deleting EC domain parameters
-	    // public point is already in the respective format
-	    if (mEncodedW != null) {
-		return;
-	    }
+        if (params == null) { // case 1: deleting EC domain parameters
+            // public point is already in the respective format
+            if (mEncodedW != null) {
+                return;
+            }
 
-	    // public point has to be encoded first
-	    mEncodedW = mW.EC2OSP(Point.ENCODING_TYPE_UNCOMPRESSED);
-	    mW = null;
-	} else { // case 2: defining EC domain parameters
-	    if (mParams == null) {
-		try {
-		    mW = Point.OS2ECP(mEncodedW, params);
-		    mParams = params;
-		    mEncodedW = null;
-		} catch (InvalidPointException ipe) {
-		    throw new InvalidParameterException(
-			    "Unable to compute point object from encoded point "
-				    + "and given EC domain parameters "
-				    + "(caught InvalidPointException: "
-				    + ipe.getMessage() + ").");
-		} catch (InvalidFormatException ife) {
-		    throw new InvalidParameterException(
-			    "Unable to compute point object from encoded point "
-				    + "and given EC domain parameters "
-				    + "(caught InvalidFormatException: "
-				    + ife.getMessage() + ").");
-		}
-	    } else {
-		// in this case nothing needs to be done
-		if (mParams.equals(params)) {
-		    return;
-		}
+            // public point has to be encoded first
+            mEncodedW = mW.EC2OSP(Point.ENCODING_TYPE_UNCOMPRESSED);
+            mW = null;
+        } else { // case 2: defining EC domain parameters
+            if (mParams == null) {
+                try {
+                    mW = Point.OS2ECP(mEncodedW, params);
+                    mParams = params;
+                    mEncodedW = null;
+                } catch (InvalidPointException ipe) {
+                    throw new InvalidParameterException(
+                            "Unable to compute point object from encoded point "
+                                    + "and given EC domain parameters "
+                                    + "(caught InvalidPointException: "
+                                    + ipe.getMessage() + ").");
+                } catch (InvalidFormatException ife) {
+                    throw new InvalidParameterException(
+                            "Unable to compute point object from encoded point "
+                                    + "and given EC domain parameters "
+                                    + "(caught InvalidFormatException: "
+                                    + ife.getMessage() + ").");
+                }
+            } else {
+                // in this case nothing needs to be done
+                if (mParams.equals(params)) {
+                    return;
+                }
 
-		throw new InvalidParameterException(
-			"Illegally tried to change existing curve parameters.");
-	    }
-	}
+                throw new InvalidParameterException(
+                        "Illegally tried to change existing curve parameters.");
+            }
+        }
 
     }
 

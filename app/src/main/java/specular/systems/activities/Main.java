@@ -217,6 +217,12 @@ public class Main extends FragmentActivity {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        CryptMethods.deleteKeys();
+        super.onDestroy();
+    }
+
     void encryptManager() {
         StaticVariables.luc.change(this, contact);
         final ProgressDlg prgd = new ProgressDlg(this, R.string.encrypting);
@@ -734,11 +740,10 @@ public class Main extends FragmentActivity {
             MenuItem mi3 = menu.getItem(2);
             mi2.setVisible(!drawerOpen);
             if (FragmentManagement.currentLayout == R.layout.encrypt)
-                if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0){
+                if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0) {
                     mi.setVisible(false);
                     mi3.setVisible(false);
-                }
-                else {
+                } else {
                     TextView tv = ((TextView) findViewById(R.id.contact_id_to_send));
                     boolean vis = mi.isVisible() && (tv == null || tv.getText().toString().length() == 0);
                     mi.setVisible(vis);

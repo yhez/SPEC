@@ -30,7 +30,7 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
  * or {@link IQDSAPublicKeySpec}), DER-encoded ASN.1 representations ({@link X509EncodedKeySpec}
  * or {@link PKCS8EncodedKeySpec}), and keys ({@link IQDSAPrivateKey} or
  * {@link de.flexiprovider.nf.iq.iqdsa.IQDSAPublicKey}).
- * 
+ *
  * @author Birgit Henhapl
  * @author Michele Boivin
  * @author Ralf-P. Weinmann
@@ -45,138 +45,134 @@ public class IQDSAKeyFactory extends KeyFactory {
     /**
      * Generates a private key object from the provided key specification (key
      * material).
-     * 
-     * @param keySpec
-     *                the specification (key material) of the private key
+     *
+     * @param keySpec the specification (key material) of the private key
      * @return the private key
-     * @throws InvalidKeySpecException
-     *                 if the given key specification is inappropriate for this
-     *                 key factory to produce a private key.
+     * @throws InvalidKeySpecException if the given key specification is inappropriate for this
+     *                                 key factory to produce a private key.
      */
     public PrivateKey generatePrivate(KeySpec keySpec)
-	    throws InvalidKeySpecException {
+            throws InvalidKeySpecException {
 
-	if (keySpec instanceof IQDSAPrivateKeySpec) {
-	    return new IQDSAPrivateKey((IQDSAPrivateKeySpec) keySpec);
-	}
+        if (keySpec instanceof IQDSAPrivateKeySpec) {
+            return new IQDSAPrivateKey((IQDSAPrivateKeySpec) keySpec);
+        }
 
-	if (keySpec instanceof PKCS8EncodedKeySpec) {
-	    // extract DER-encoded key
-	    byte[] encKey = ((PKCS8EncodedKeySpec) keySpec).getEncoded();
+        if (keySpec instanceof PKCS8EncodedKeySpec) {
+            // extract DER-encoded key
+            byte[] encKey = ((PKCS8EncodedKeySpec) keySpec).getEncoded();
 
-	    // decode the PKCS#8 data structure to the pki object
-	    PrivateKeyInfo pki = new PrivateKeyInfo();
-	    try {
-		ASN1Tools.derDecode(encKey, pki);
-	    } catch (Exception ce) {
-		throw new InvalidKeySpecException(
-			"Unable to decode PKCS8EncodedKeySpec.");
-	    }
+            // decode the PKCS#8 data structure to the pki object
+            PrivateKeyInfo pki = new PrivateKeyInfo();
+            try {
+                ASN1Tools.derDecode(encKey, pki);
+            } catch (Exception ce) {
+                throw new InvalidKeySpecException(
+                        "Unable to decode PKCS8EncodedKeySpec.");
+            }
 
-	    AlgorithmIdentifier aid = PKITools.getAlgorithmIdentifier(pki);
-	    IQDSAParameterSpec iqdsaParams;
-	    try {
-		AlgorithmParameters params = aid.getParams();
-		iqdsaParams = (IQDSAParameterSpec) params
-			.getParameterSpec(IQDSAParameterSpec.class);
-	    } catch (NoSuchAlgorithmException e) {
-		throw new InvalidKeySpecException("NoSuchAlgorithmException: "
-			+ e.getMessage());
-	    } catch (InvalidAlgorithmParameterException e) {
-		throw new InvalidKeySpecException(
-			"InvalidAlgorithmParameterException: " + e.getMessage());
-	    } catch (InvalidParameterSpecException e) {
-		throw new InvalidKeySpecException(
-			"InvalidParameterSpecException: " + e.getMessage());
-	    }
+            AlgorithmIdentifier aid = PKITools.getAlgorithmIdentifier(pki);
+            IQDSAParameterSpec iqdsaParams;
+            try {
+                AlgorithmParameters params = aid.getParams();
+                iqdsaParams = (IQDSAParameterSpec) params
+                        .getParameterSpec(IQDSAParameterSpec.class);
+            } catch (NoSuchAlgorithmException e) {
+                throw new InvalidKeySpecException("NoSuchAlgorithmException: "
+                        + e.getMessage());
+            } catch (InvalidAlgorithmParameterException e) {
+                throw new InvalidKeySpecException(
+                        "InvalidAlgorithmParameterException: " + e.getMessage());
+            } catch (InvalidParameterSpecException e) {
+                throw new InvalidKeySpecException(
+                        "InvalidParameterSpecException: " + e.getMessage());
+            }
 
-	    FlexiBigInt a;
-	    try {
-		a = ASN1Tools.getFlexiBigInt((ASN1Integer) pki
-			.getDecodedRawKey());
-	    } catch (CorruptedCodeException cce) {
-		throw new InvalidKeySpecException("CorruptedCodeException: "
-			+ cce.getMessage());
-	    }
+            FlexiBigInt a;
+            try {
+                a = ASN1Tools.getFlexiBigInt((ASN1Integer) pki
+                        .getDecodedRawKey());
+            } catch (CorruptedCodeException cce) {
+                throw new InvalidKeySpecException("CorruptedCodeException: "
+                        + cce.getMessage());
+            }
 
-	    return new IQDSAPrivateKey(iqdsaParams, a);
-	}
+            return new IQDSAPrivateKey(iqdsaParams, a);
+        }
 
-	throw new InvalidKeySpecException("unsupported type");
+        throw new InvalidKeySpecException("unsupported type");
     }
 
     /**
      * Generates a public key object from the provided key specification (key
      * material).
-     * 
-     * @param keySpec
-     *                the specification (key material) of the public key
+     *
+     * @param keySpec the specification (key material) of the public key
      * @return the public key
-     * @throws InvalidKeySpecException
-     *                 if the given key specification is inappropriate for this
-     *                 key factory to produce a public key.
+     * @throws InvalidKeySpecException if the given key specification is inappropriate for this
+     *                                 key factory to produce a public key.
      */
     public PublicKey generatePublic(KeySpec keySpec)
-	    throws InvalidKeySpecException {
+            throws InvalidKeySpecException {
 
-	if (keySpec instanceof IQDSAPublicKeySpec) {
-	    return new IQDSAPublicKey((IQDSAPublicKeySpec) keySpec);
-	}
+        if (keySpec instanceof IQDSAPublicKeySpec) {
+            return new IQDSAPublicKey((IQDSAPublicKeySpec) keySpec);
+        }
 
-	if (keySpec instanceof X509EncodedKeySpec) {
-	    // extract DER-encoded key
-	    byte[] encKey = ((X509EncodedKeySpec) keySpec).getEncoded();
+        if (keySpec instanceof X509EncodedKeySpec) {
+            // extract DER-encoded key
+            byte[] encKey = ((X509EncodedKeySpec) keySpec).getEncoded();
 
-	    // decode the X.509 data structure to the spki object
-	    SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo();
+            // decode the X.509 data structure to the spki object
+            SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo();
 
-	    try {
-		ASN1Tools.derDecode(encKey, spki);
-	    } catch (Exception ce) {
-		throw new InvalidKeySpecException(
-			"Unable to decode X509EncodedKeySpec.");
-	    }
+            try {
+                ASN1Tools.derDecode(encKey, spki);
+            } catch (Exception ce) {
+                throw new InvalidKeySpecException(
+                        "Unable to decode X509EncodedKeySpec.");
+            }
 
-	    AlgorithmIdentifier aid = PKITools.getAlgorithmIdentifier(spki);
-	    IQDSAParameterSpec iqdsaParams;
-	    try {
-		AlgorithmParameters params = aid.getParams();
-		iqdsaParams = (IQDSAParameterSpec) params
-			.getParameterSpec(IQDSAParameterSpec.class);
-	    } catch (NoSuchAlgorithmException e) {
-		throw new InvalidKeySpecException("NoSuchAlgorithmException: "
-			+ e.getMessage());
-	    } catch (InvalidAlgorithmParameterException e) {
-		throw new InvalidKeySpecException(
-			"InvalidAlgorithmParameterException: " + e.getMessage());
-	    } catch (InvalidParameterSpecException e) {
-		throw new InvalidKeySpecException(
-			"InvalidParameterSpecException: " + e.getMessage());
-	    }
+            AlgorithmIdentifier aid = PKITools.getAlgorithmIdentifier(spki);
+            IQDSAParameterSpec iqdsaParams;
+            try {
+                AlgorithmParameters params = aid.getParams();
+                iqdsaParams = (IQDSAParameterSpec) params
+                        .getParameterSpec(IQDSAParameterSpec.class);
+            } catch (NoSuchAlgorithmException e) {
+                throw new InvalidKeySpecException("NoSuchAlgorithmException: "
+                        + e.getMessage());
+            } catch (InvalidAlgorithmParameterException e) {
+                throw new InvalidKeySpecException(
+                        "InvalidAlgorithmParameterException: " + e.getMessage());
+            } catch (InvalidParameterSpecException e) {
+                throw new InvalidKeySpecException(
+                        "InvalidParameterSpecException: " + e.getMessage());
+            }
 
-	    byte[] encAlpha;
-	    try {
-		encAlpha = ((ASN1OctetString) spki.getDecodedRawKey())
-			.getByteArray();
-	    } catch (CorruptedCodeException cce) {
-		throw new InvalidKeySpecException("CorruptedCodeException: "
-			+ cce.getMessage());
-	    }
+            byte[] encAlpha;
+            try {
+                encAlpha = ((ASN1OctetString) spki.getDecodedRawKey())
+                        .getByteArray();
+            } catch (CorruptedCodeException cce) {
+                throw new InvalidKeySpecException("CorruptedCodeException: "
+                        + cce.getMessage());
+            }
 
-	    FlexiBigInt discriminant = iqdsaParams.getDiscriminant();
+            FlexiBigInt discriminant = iqdsaParams.getDiscriminant();
 
-	    QuadraticIdeal alpha;
-	    try {
-		alpha = QuadraticIdeal.octetsToIdeal(discriminant, encAlpha);
-	    } catch (IQEncodingException iqee) {
-		throw new InvalidKeySpecException("CorruptedCodeException: "
-			+ iqee.getMessage());
-	    }
+            QuadraticIdeal alpha;
+            try {
+                alpha = QuadraticIdeal.octetsToIdeal(discriminant, encAlpha);
+            } catch (IQEncodingException iqee) {
+                throw new InvalidKeySpecException("CorruptedCodeException: "
+                        + iqee.getMessage());
+            }
 
-	    return new IQDSAPublicKey(iqdsaParams, alpha);
-	}
+            return new IQDSAPublicKey(iqdsaParams, alpha);
+        }
 
-	throw new InvalidKeySpecException("unsupported type");
+        throw new InvalidKeySpecException("unsupported type");
     }
 
     /**
@@ -186,39 +182,36 @@ public class IQDSAKeyFactory extends KeyFactory {
      * <tt>IQDSAPublicKeySpec.class</tt>, to indicate that the key material
      * should be returned in an instance of the <tt>IQDSAPublicKeySpec</tt>
      * class.
-     * 
-     * @param key
-     *                the key
-     * @param keySpec
-     *                the specification class in which the key material should
+     *
+     * @param key     the key
+     * @param keySpec the specification class in which the key material should
      *                be returned
      * @return the underlying key specification (key material) in an instance of
-     *         the requested specification class
-     * @throws InvalidKeySpecException
-     *                 if the requested key specification is inappropriate for
-     *                 the given key, or the given key cannot be dealt with
-     *                 (e.g., the given key has an unrecognized format).
+     * the requested specification class
+     * @throws InvalidKeySpecException if the requested key specification is inappropriate for
+     *                                 the given key, or the given key cannot be dealt with
+     *                                 (e.g., the given key has an unrecognized format).
      */
     public KeySpec getKeySpec(Key key, Class keySpec)
-	    throws InvalidKeySpecException {
+            throws InvalidKeySpecException {
 
-	if (key instanceof IQDSAPublicKey) {
-	    if (!keySpec.isAssignableFrom(IQDSAPublicKeySpec.class)) {
-		throw new InvalidKeySpecException("unsupported spec type");
-	    }
-	    IQDSAPublicKey pubKey = (IQDSAPublicKey) key;
-	    return new IQDSAPublicKeySpec(pubKey.getParams(), pubKey.getAlpha());
-	}
+        if (key instanceof IQDSAPublicKey) {
+            if (!keySpec.isAssignableFrom(IQDSAPublicKeySpec.class)) {
+                throw new InvalidKeySpecException("unsupported spec type");
+            }
+            IQDSAPublicKey pubKey = (IQDSAPublicKey) key;
+            return new IQDSAPublicKeySpec(pubKey.getParams(), pubKey.getAlpha());
+        }
 
-	if (key instanceof IQDSAPrivateKey) {
-	    if (!keySpec.isAssignableFrom(IQDSAPrivateKeySpec.class)) {
-		throw new InvalidKeySpecException("unsupported spec type");
-	    }
-	    IQDSAPrivateKey privKey = (IQDSAPrivateKey) key;
-	    return new IQDSAPrivateKeySpec(privKey.getParams(), privKey.getA());
-	}
+        if (key instanceof IQDSAPrivateKey) {
+            if (!keySpec.isAssignableFrom(IQDSAPrivateKeySpec.class)) {
+                throw new InvalidKeySpecException("unsupported spec type");
+            }
+            IQDSAPrivateKey privKey = (IQDSAPrivateKey) key;
+            return new IQDSAPrivateKeySpec(privKey.getParams(), privKey.getA());
+        }
 
-	throw new InvalidKeySpecException("unsupported key type");
+        throw new InvalidKeySpecException("unsupported key type");
     }
 
     /**
@@ -226,18 +219,16 @@ public class IQDSAKeyFactory extends KeyFactory {
      * untrusted, into a corresponding key object of this key factory.
      * Currently, only the following key types are supported:
      * {@link de.flexiprovider.nf.iq.iqdsa.IQDSAPublicKey}, {@link IQDSAPrivateKey}.
-     * 
-     * @param key
-     *                the key whose provider is unknown or untrusted
+     *
+     * @param key the key whose provider is unknown or untrusted
      * @return the translated key
-     * @throws InvalidKeyException
-     *                 if the given key cannot be processed by this key factory.
+     * @throws InvalidKeyException if the given key cannot be processed by this key factory.
      */
     public Key translateKey(Key key) throws InvalidKeyException {
-	if ((key instanceof IQDSAPublicKey) || (key instanceof IQDSAPrivateKey)) {
-	    return key;
-	}
-	throw new InvalidKeyException("unsupported type");
+        if ((key instanceof IQDSAPublicKey) || (key instanceof IQDSAPrivateKey)) {
+            return key;
+        }
+        throw new InvalidKeyException("unsupported type");
     }
 
 }

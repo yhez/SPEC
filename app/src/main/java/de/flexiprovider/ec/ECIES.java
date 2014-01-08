@@ -30,28 +30,26 @@ public class ECIES extends IES {
      * @return the name of this cipher
      */
     public String getName() {
-	return "ECIES";
+        return "ECIES";
     }
 
     /**
      * Return the key size of the given key object in bits. Checks whether the
      * key object is an instance of <tt>ECPublicKey</tt> or
      * <tt>ECPrivateKey</tt>.
-     * 
-     * @param key
-     *                the key object
+     *
+     * @param key the key object
      * @return the key size of the given key object.
-     * @throws InvalidKeyException
-     *                 if key is invalid.
+     * @throws InvalidKeyException if key is invalid.
      */
     public int getKeySize(Key key) throws InvalidKeyException {
-	if (key instanceof ECPrivateKey) {
-	    return ((ECPrivateKey) key).getParams().getQ().bitLength();
-	}
-	if (key instanceof ECPublicKey) {
-	    return ((ECPublicKey) key).getParams().getQ().bitLength();
-	}
-	throw new InvalidKeyException("unsupported type");
+        if (key instanceof ECPrivateKey) {
+            return ((ECPrivateKey) key).getParams().getQ().bitLength();
+        }
+        if (key instanceof ECPublicKey) {
+            return ((ECPublicKey) key).getParams().getQ().bitLength();
+        }
+        throw new InvalidKeyException("unsupported type");
     }
 
     /**
@@ -59,22 +57,20 @@ public class ECIES extends IES {
      * {@link de.flexiprovider.ec.keys.ECPublicKey}. If not, terminate with an
      * {@link InvalidKeyException}. Otherwise, assign the key parameters and
      * return the checked key.
-     * 
-     * @param key
-     *                the key to be checked
+     *
+     * @param key the key to be checked
      * @return the checked key
-     * @throws InvalidKeyException
-     *                 if the key is not an instance of {@link de.flexiprovider.ec.keys.ECPublicKey}.
+     * @throws InvalidKeyException if the key is not an instance of {@link de.flexiprovider.ec.keys.ECPublicKey}.
      */
     protected PublicKey checkPubKey(Key key) throws InvalidKeyException {
-	// check key
-	if (!(key instanceof ECPublicKey)) {
-	    throw new InvalidKeyException("unsupported type");
-	}
-	ECPublicKey ecPubKey = (ECPublicKey) key;
-	keyParams = ecPubKey.getParams();
+        // check key
+        if (!(key instanceof ECPublicKey)) {
+            throw new InvalidKeyException("unsupported type");
+        }
+        ECPublicKey ecPubKey = (ECPublicKey) key;
+        keyParams = ecPubKey.getParams();
 
-	return ecPubKey;
+        return ecPubKey;
     }
 
     /**
@@ -82,101 +78,97 @@ public class ECIES extends IES {
      * {@link de.flexiprovider.ec.keys.ECPrivateKey}. If not, terminate with an
      * {@link InvalidKeyException}. Otherwise, assign the key parameters and
      * return the checked key.
-     * 
-     * @param key
-     *                the key to be checked
+     *
+     * @param key the key to be checked
      * @return the checked key
-     * @throws InvalidKeyException
-     *                 if the key is not an instance of {@link de.flexiprovider.ec.keys.ECPrivateKey}.
+     * @throws InvalidKeyException if the key is not an instance of {@link de.flexiprovider.ec.keys.ECPrivateKey}.
      */
     protected PrivateKey checkPrivKey(Key key) throws InvalidKeyException {
-	// check key
-	if (!(key instanceof ECPrivateKey)) {
-	    throw new InvalidKeyException("unsupported type");
-	}
-	ECPrivateKey ecPrivKey = (ECPrivateKey) key;
-	keyParams = ecPrivKey.getParams();
+        // check key
+        if (!(key instanceof ECPrivateKey)) {
+            throw new InvalidKeyException("unsupported type");
+        }
+        ECPrivateKey ecPrivKey = (ECPrivateKey) key;
+        keyParams = ecPrivKey.getParams();
 
-	return ecPrivKey;
+        return ecPrivKey;
     }
 
     /**
      * Instantiate and return the key agreement module.
-     * 
+     *
      * @return the key agreement module
      */
     protected KeyAgreement getKeyAgreement() {
-	return new ECSVDPDHC();
+        return new ECSVDPDHC();
     }
 
     /**
      * Generate an ephemeral key pair. This method is used in case no ephemeral
      * key pair is specified via the parameters during initialization.
-     * 
+     *
      * @return the generated ephemeral key pair
      */
     protected KeyPair generateEphKeyPair() {
-	KeyPairGenerator kpg = new ECKeyPairGenerator();
-	try {
-	    kpg.initialize(keyParams, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters have already been checked
-	    throw new RuntimeException("internal error");
-	}
-	return kpg.genKeyPair();
+        KeyPairGenerator kpg = new ECKeyPairGenerator();
+        try {
+            kpg.initialize(keyParams, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters have already been checked
+            throw new RuntimeException("internal error");
+        }
+        return kpg.genKeyPair();
     }
 
     /**
      * Encode the ephemeral public key.
-     * 
-     * @param ephPubKey
-     *                the ephemeral public key
+     *
+     * @param ephPubKey the ephemeral public key
      * @return the encoded key
      */
     protected byte[] encodeEphPubKey(PublicKey ephPubKey) {
-	Point q;
-	try {
-	    q = ((ECPublicKey) ephPubKey).getW();
-	} catch (InvalidKeyException e) {
-	    // the point is correctly initialized with parameters
-	    throw new RuntimeException("internal error");
-	}
-	return q.EC2OSP(Point.ENCODING_TYPE_COMPRESSED);
+        Point q;
+        try {
+            q = ((ECPublicKey) ephPubKey).getW();
+        } catch (InvalidKeyException e) {
+            // the point is correctly initialized with parameters
+            throw new RuntimeException("internal error");
+        }
+        return q.EC2OSP(Point.ENCODING_TYPE_COMPRESSED);
     }
 
     /**
      * Compute and return the size (in bytes) of the encoded ephemeral public
      * key.
-     * 
+     *
      * @return the size of the encoded ephemeral public key
      */
     protected int getEncEphPubKeySize() {
-	Point g = ((CurveParams) keyParams).getG();
-	return g.EC2OSP(Point.ENCODING_TYPE_COMPRESSED).length;
+        Point g = ((CurveParams) keyParams).getG();
+        return g.EC2OSP(Point.ENCODING_TYPE_COMPRESSED).length;
     }
 
     /**
      * Decode the ephemeral public key.
-     * 
-     * @param encEphPubKey
-     *                the encoded ephemeral public key
+     *
+     * @param encEphPubKey the encoded ephemeral public key
      * @return the decoded key
      */
     protected PublicKey decodeEphPubKey(byte[] encEphPubKey) {
 
-	try {
-	    ECPublicKeySpec ecPubKeySpec = new ECPublicKeySpec(encEphPubKey,
-		    (CurveParams) keyParams);
+        try {
+            ECPublicKeySpec ecPubKeySpec = new ECPublicKeySpec(encEphPubKey,
+                    (CurveParams) keyParams);
 
-	    KeyFactory kf = new ECKeyFactory();
-	    return kf.generatePublic(ecPubKeySpec);
-	} catch (InvalidParameterSpecException e) {
-	    throw new RuntimeException("InvalidParameterSpecException: "
-		    + e.getMessage());
-	} catch (InvalidKeySpecException e) {
-	    throw new RuntimeException("InvalidKeySpecException: "
-		    + e.getMessage());
-	}
+            KeyFactory kf = new ECKeyFactory();
+            return kf.generatePublic(ecPubKeySpec);
+        } catch (InvalidParameterSpecException e) {
+            throw new RuntimeException("InvalidParameterSpecException: "
+                    + e.getMessage());
+        } catch (InvalidKeySpecException e) {
+            throw new RuntimeException("InvalidKeySpecException: "
+                    + e.getMessage());
+        }
     }
 
 }

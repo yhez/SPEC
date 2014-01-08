@@ -21,113 +21,109 @@ import de.flexiprovider.common.math.polynomials.GFP32Polynomial;
  */
 public class LMOTSParameterSpec implements AlgorithmParameterSpec {
 
-	private int[] f;
+    private int[] f;
 
-	private int phi;
+    private int phi;
 
-	private int degree;
+    private int degree;
 
-	private int m;
+    private int m;
 
-	private int p;
+    private int p;
 
-	private LMOTSHash hFunction;
+    private LMOTSHash hFunction;
 
-	// ****************************************************
-	// JCA adapter methods
-	// ****************************************************
+    // ****************************************************
+    // JCA adapter methods
+    // ****************************************************
 
-	/**
-	 * (EXAMPLE/TEST ONLY) Constructs an example Parameter spec using the bit
-	 * length of the Encryption Key. This should be understood as a test or
-	 * example parameter spec and not necessary one that is applicable for
-	 * actual use.
-	 * 
-	 * @param keysize
-	 *            the bit length of the key used for encrypting the message
-	 */
-	public LMOTSParameterSpec(int keysize) {
-		phi = 1;
+    /**
+     * (EXAMPLE/TEST ONLY) Constructs an example Parameter spec using the bit
+     * length of the Encryption Key. This should be understood as a test or
+     * example parameter spec and not necessary one that is applicable for
+     * actual use.
+     *
+     * @param keysize the bit length of the key used for encrypting the message
+     */
+    public LMOTSParameterSpec(int keysize) {
+        phi = 1;
 
-		f = new int[keysize];
-		f[0] = 5;
-		for (int i = keysize - 2; i > 0; i--) {
-			f[i] = 0;
-		}
-		f[keysize - 1] = 1;
+        f = new int[keysize];
+        f[0] = 5;
+        for (int i = keysize - 2; i > 0; i--) {
+            f[i] = 0;
+        }
+        f[keysize - 1] = 1;
 
-		degree = f.length - 1;
-		m = IntegerFunctions.ceilLog(degree);
-		p = IntegerFunctions.pow(degree * phi, 3);
-	}
+        degree = f.length - 1;
+        m = IntegerFunctions.ceilLog(degree);
+        p = IntegerFunctions.pow(degree * phi, 3);
+    }
 
-	/**
-	 * Construct new LMOTS parameters from the given parameters.
-	 * 
-	 * @param f
-	 *            irreducible polynomial specified on page 10 in the paper
-	 * @param phi
-	 *            this parameter depends on f and is described on page 7 in the
-	 *            paper
-	 */
-	public LMOTSParameterSpec(int[] f, int phi) {
-		this.f = f;
-		this.phi = phi;
+    /**
+     * Construct new LMOTS parameters from the given parameters.
+     *
+     * @param f   irreducible polynomial specified on page 10 in the paper
+     * @param phi this parameter depends on f and is described on page 7 in the
+     *            paper
+     */
+    public LMOTSParameterSpec(int[] f, int phi) {
+        this.f = f;
+        this.phi = phi;
 
-		degree = f.length - 1;
-		m = IntegerFunctions.ceilLog(degree);
-		p = IntegerFunctions.pow(degree * phi, 3);
-	}
+        degree = f.length - 1;
+        m = IntegerFunctions.ceilLog(degree);
+        p = IntegerFunctions.pow(degree * phi, 3);
+    }
 
-	/**
-	 * @return returns the degree of f
-	 */
-	public int getDegree() {
-		return degree;
-	}
+    /**
+     * @return returns the degree of f
+     */
+    public int getDegree() {
+        return degree;
+    }
 
-	/**
-	 * @return returns the function f of this signature
-	 */
-	public int[] getF() {
-		return f;
-	}
+    /**
+     * @return returns the function f of this signature
+     */
+    public int[] getF() {
+        return f;
+    }
 
-	/**
-	 * @return returns the hash function of this signature
-	 */
-	public LMOTSHash getHFunction() {
-		return hFunction;
-	}
+    /**
+     * @return returns the hash function of this signature
+     */
+    public LMOTSHash getHFunction() {
+        return hFunction;
+    }
 
-	/**
-	 * @return returns the m parameter of this signature
-	 */
-	public int getM() {
-		return m;
-	}
+    /**
+     * @return returns the m parameter of this signature
+     */
+    public int getM() {
+        return m;
+    }
 
-	/**
-	 * @return returns the p parameter of this signature
-	 */
-	public int getP() {
-		return p;
-	}
+    /**
+     * @return returns the p parameter of this signature
+     */
+    public int getP() {
+        return p;
+    }
 
-	/**
-	 * @return returns the phi parameter of f
-	 */
-	public int getPhi() {
-		return phi;
-	}
+    /**
+     * @return returns the phi parameter of f
+     */
+    public int getPhi() {
+        return phi;
+    }
 
-	/**
-	 * @param a
-	 *            a vector of {@link GFP32Polynomial} needed to instantiate a
-	 *            hash function ({@link de.flexiprovider.pqc.ots.lm.LMOTSHash})
-	 */
-	public void setHFunction(Vector a) {
-		hFunction = new LMOTSHash(a);
-	}
+    /**
+     * @param a a vector of {@link GFP32Polynomial} needed to instantiate a
+     *          hash function ({@link de.flexiprovider.pqc.ots.lm.LMOTSHash})
+     */
+    public void setHFunction(Vector a) {
+        hFunction = new LMOTSHash(a);
+    }
 
 }

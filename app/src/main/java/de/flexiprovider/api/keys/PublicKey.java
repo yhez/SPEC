@@ -11,27 +11,27 @@ public abstract class PublicKey implements Key, java.security.PublicKey {
 
     /**
      * Return the encoding format, X.509.
-     * 
+     *
      * @return "X.509"
      */
     public final String getFormat() {
-	return "X.509";
+        return "X.509";
     }
 
     /**
      * Return the key in its primary encoding format, X.509.
-     * 
+     *
      * @return the X.509 encoded key.
      */
     public final byte[] getEncoded() {
-	AlgorithmIdentifier aid;
-	try {
-	    aid = new AlgorithmIdentifier(getOID(), getAlgParams());
-	} catch (ASN1Exception asn1e) {
-	    throw new RuntimeException("ASN1Exception: " + asn1e.getMessage());
-	}
-	SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo(aid, getKeyData());
-	return ASN1Tools.derEncode(spki);
+        AlgorithmIdentifier aid;
+        try {
+            aid = new AlgorithmIdentifier(getOID(), getAlgParams());
+        } catch (ASN1Exception asn1e) {
+            throw new RuntimeException("ASN1Exception: " + asn1e.getMessage());
+        }
+        SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo(aid, getKeyData());
+        return ASN1Tools.derEncode(spki);
     }
 
     /**
@@ -41,7 +41,7 @@ public abstract class PublicKey implements Key, java.security.PublicKey {
 
     /**
      * @return the algorithm parameters to encode in the SubjectPublicKeyInfo
-     *         structure
+     * structure
      */
     protected abstract ASN1Type getAlgParams();
 

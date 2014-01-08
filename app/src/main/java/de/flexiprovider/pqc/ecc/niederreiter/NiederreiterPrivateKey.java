@@ -16,7 +16,7 @@ import de.flexiprovider.common.util.ASN1Tools;
 /**
  * This class implements a Niederreiter private key and is usually instantiated
  * from the {@link NiederreiterKeyPairGenerator}.
- * 
+ *
  * @author Elena Klintsevich
  * @see NiederreiterKeyPairGenerator
  * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKey
@@ -60,178 +60,169 @@ public class NiederreiterPrivateKey extends PrivateKey {
 
     /**
      * Constructor, used by {@link NiederreiterKeyPairGenerator}.
-     * 
-     * @param m
-     *                extension degree of the field
-     * @param k
-     *                dimension of the code
-     * @param field
-     *                finite field
-     * @param gp
-     *                irreducible Goppa polynomial
-     * @param qInv
-     *                matrix used to compute square roots in
-     *                <tt>(GF(2<sup>m</sup>))<sup>t</sup></tt>
-     * @param sInv
-     *                random non-singular matrix S<sup>-1</sup>
-     * @param p
-     *                permutation P
+     *
+     * @param m     extension degree of the field
+     * @param k     dimension of the code
+     * @param field finite field
+     * @param gp    irreducible Goppa polynomial
+     * @param qInv  matrix used to compute square roots in
+     *              <tt>(GF(2<sup>m</sup>))<sup>t</sup></tt>
+     * @param sInv  random non-singular matrix S<sup>-1</sup>
+     * @param p     permutation P
      */
     protected NiederreiterPrivateKey(int m, int k, GF2mField field,
-	    PolynomialGF2mSmallM gp, PolynomialGF2mSmallM[] qInv,
-	    GF2Matrix sInv, Permutation p) {
-	this.k = k;
-	this.m = m;
-	this.field = field;
-	this.gp = gp;
-	this.qInv = qInv;
-	this.s = sInv;
-	this.p = p;
+                                     PolynomialGF2mSmallM gp, PolynomialGF2mSmallM[] qInv,
+                                     GF2Matrix sInv, Permutation p) {
+        this.k = k;
+        this.m = m;
+        this.field = field;
+        this.gp = gp;
+        this.qInv = qInv;
+        this.s = sInv;
+        this.p = p;
     }
 
     /**
      * Constructor, used by {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterKeyFactory}.
-     * 
-     * @param keySpec
-     *                a {@link NiederreiterPrivateKeySpec}
+     *
+     * @param keySpec a {@link NiederreiterPrivateKeySpec}
      */
     protected NiederreiterPrivateKey(NiederreiterPrivateKeySpec keySpec) {
-	this(keySpec.getM(), keySpec.getK(), keySpec.getField(), keySpec
-		.getGoppaPoly(), keySpec.getQInv(), keySpec.getSInv(), keySpec
-		.getP());
+        this(keySpec.getM(), keySpec.getK(), keySpec.getField(), keySpec
+                .getGoppaPoly(), keySpec.getQInv(), keySpec.getSInv(), keySpec
+                .getP());
     }
 
     /**
      * Return the name of the algorithm.
-     * 
+     *
      * @return "Niederreiter"
      */
     public String getAlgorithm() {
-	return "Niederreiter";
+        return "Niederreiter";
     }
 
     /**
      * @return the extension degree of the field
      */
     public int getM() {
-	return m;
+        return m;
     }
 
     /**
      * @return the dimension of the code
      */
     public int getK() {
-	return k;
+        return k;
     }
 
     /**
      * @return the error correction capability of the code
      */
     public int getT() {
-	return gp.getDegree();
+        return gp.getDegree();
     }
 
     /**
      * @return the length of the code
      */
     public int getN() {
-	return 1 << m;
+        return 1 << m;
     }
 
     /**
      * @return the underlying field
      */
     public GF2mField getField() {
-	return field;
+        return field;
     }
 
     /**
      * @return the irreducible Goppa polynomial
      */
     public PolynomialGF2mSmallM getGoppaPoly() {
-	return gp;
+        return gp;
     }
 
     /**
      * @return the random non-singular matrix S<sup>-1</sup>
      */
     public GF2Matrix getSInv() {
-	return s;
+        return s;
     }
 
     /**
      * @return the permutation P
      */
     public Permutation getP() {
-	return p;
+        return p;
     }
 
     /**
      * @return the matrix used to compute square roots in
-     *         <tt>(GF(2<sup>m</sup>))<sup>t</sup></tt>
+     * <tt>(GF(2<sup>m</sup>))<sup>t</sup></tt>
      */
     public PolynomialGF2mSmallM[] getQInv() {
-	return qInv;
+        return qInv;
     }
 
     /**
      * @return a human readable form of the key.
      */
     public String toString() {
-	String result = "";
-	result += " extension degree of the field      : " + m + "\n";
-	result += " dimension of the code              : " + k + "\n";
-	result += " irreducible Goppa polynomial       : " + gp + "\n";
-	return result;
+        String result = "";
+        result += " extension degree of the field      : " + m + "\n";
+        result += " dimension of the code              : " + k + "\n";
+        result += " irreducible Goppa polynomial       : " + gp + "\n";
+        return result;
     }
 
     /**
      * Compare this key with another object.
-     * 
-     * @param other
-     *                the other object
+     *
+     * @param other the other object
      * @return the result of the comparison
      */
     public boolean equals(Object other) {
-	if (other == null || !(other instanceof NiederreiterPrivateKey)) {
-	    return false;
-	}
+        if (other == null || !(other instanceof NiederreiterPrivateKey)) {
+            return false;
+        }
 
-	NiederreiterPrivateKey otherKey = (NiederreiterPrivateKey) other;
+        NiederreiterPrivateKey otherKey = (NiederreiterPrivateKey) other;
 
-	return (k == otherKey.k) && (m == otherKey.m)
-		&& (field.equals(otherKey.field)) && (gp.equals(otherKey.gp))
-		&& (s.equals(otherKey.s)) && (p.equals(otherKey.p));
+        return (k == otherKey.k) && (m == otherKey.m)
+                && (field.equals(otherKey.field)) && (gp.equals(otherKey.gp))
+                && (s.equals(otherKey.s)) && (p.equals(otherKey.p));
     }
 
     /**
      * @return the hash code of this key
      */
     public int hashCode() {
-	return k + m + field.hashCode() + gp.hashCode() + s.hashCode()
-		+ p.hashCode();
+        return k + m + field.hashCode() + gp.hashCode() + s.hashCode()
+                + p.hashCode();
     }
 
     /**
      * @return the OID to encode in the SubjectPublicKeyInfo structure
      */
     protected ASN1ObjectIdentifier getOID() {
-	return new ASN1ObjectIdentifier(NiederreiterKeyFactory.OID);
+        return new ASN1ObjectIdentifier(NiederreiterKeyFactory.OID);
     }
 
     /**
      * @return the algorithm parameters to encode in the SubjectPublicKeyInfo
-     *         structure
+     * structure
      */
     protected ASN1Type getAlgParams() {
-	return new ASN1Null();
+        return new ASN1Null();
     }
 
     /**
      * Return the key data to encode in the SubjectPublicKeyInfo structure.
-     * <p>
+     * <p/>
      * The ASN.1 definition of the key structure is
-     * 
+     * <p/>
      * <pre>
      *       NiederreiterPrivateKey ::= SEQUENCE {
      *         m             Integer       -- extension degree of the field
@@ -240,35 +231,35 @@ public class NiederreiterPrivateKey extends PrivateKey {
      *         irrGoppaPoly  OCTET STRING  -- encoded Goppa polynomial
      *         sInv          OCTET STRING  -- encoded random non-singular matrix
      *         p             OCTET STRING  -- encoded permutation
-     *         qInv          OCTET STRING  -- encoded matrix used to compute square roots  
+     *         qInv          OCTET STRING  -- encoded matrix used to compute square roots
      *       }
      * </pre>
-     * 
+     *
      * @return the keyData to encode in the SubjectPublicKeyInfo structure
      */
     protected byte[] getKeyData() {
-	ASN1Sequence keyData = new ASN1Sequence();
+        ASN1Sequence keyData = new ASN1Sequence();
 
-	// encode <m>
-	keyData.add(new ASN1Integer(m));
-	// encode <k>
-	keyData.add(new ASN1Integer(k));
-	// encode <field>
-	keyData.add(new ASN1OctetString(field.getEncoded()));
-	// encode <goppaPoly>
-	keyData.add(new ASN1OctetString(gp.getEncoded()));
-	// encode <sInv>
-	keyData.add(new ASN1OctetString(s.getEncoded()));
-	// encode <p>
-	keyData.add(new ASN1OctetString(p.getEncoded()));
-	// encode <qInv>
-	ASN1Sequence qInvSeq = new ASN1Sequence(qInv.length);
-	for (int i = 0; i < qInv.length; i++) {
-	    qInvSeq.add(new ASN1OctetString(qInv[i].getEncoded()));
-	}
-	keyData.add(qInvSeq);
+        // encode <m>
+        keyData.add(new ASN1Integer(m));
+        // encode <k>
+        keyData.add(new ASN1Integer(k));
+        // encode <field>
+        keyData.add(new ASN1OctetString(field.getEncoded()));
+        // encode <goppaPoly>
+        keyData.add(new ASN1OctetString(gp.getEncoded()));
+        // encode <sInv>
+        keyData.add(new ASN1OctetString(s.getEncoded()));
+        // encode <p>
+        keyData.add(new ASN1OctetString(p.getEncoded()));
+        // encode <qInv>
+        ASN1Sequence qInvSeq = new ASN1Sequence(qInv.length);
+        for (int i = 0; i < qInv.length; i++) {
+            qInvSeq.add(new ASN1OctetString(qInv[i].getEncoded()));
+        }
+        keyData.add(qInvSeq);
 
-	return ASN1Tools.derEncode(keyData);
+        return ASN1Tools.derEncode(keyData);
     }
 
 }

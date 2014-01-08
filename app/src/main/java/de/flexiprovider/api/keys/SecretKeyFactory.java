@@ -12,45 +12,45 @@ public abstract class SecretKeyFactory extends SecretKeyFactorySpi {
     // ****************************************************
 
     protected javax.crypto.SecretKey engineGenerateSecret(
-	    java.security.spec.KeySpec keySpec)
-	    throws java.security.spec.InvalidKeySpecException {
+            java.security.spec.KeySpec keySpec)
+            throws java.security.spec.InvalidKeySpecException {
 
-	if (keySpec == null) {
-	    throw new java.security.spec.InvalidKeySpecException();
-	}
+        if (keySpec == null) {
+            throw new java.security.spec.InvalidKeySpecException();
+        }
 
-	if (!(keySpec instanceof KeySpec)) {
-	    if (keySpec instanceof javax.crypto.spec.SecretKeySpec) {
-		javax.crypto.spec.SecretKeySpec javaSpec = (javax.crypto.spec.SecretKeySpec) keySpec;
-		KeySpec secretKeySpec = new SecretKeySpec(
-			javaSpec.getEncoded(), javaSpec.getAlgorithm());
-		return generateSecret(secretKeySpec);
-	    }
+        if (!(keySpec instanceof KeySpec)) {
+            if (keySpec instanceof javax.crypto.spec.SecretKeySpec) {
+                javax.crypto.spec.SecretKeySpec javaSpec = (javax.crypto.spec.SecretKeySpec) keySpec;
+                KeySpec secretKeySpec = new SecretKeySpec(
+                        javaSpec.getEncoded(), javaSpec.getAlgorithm());
+                return generateSecret(secretKeySpec);
+            }
 
-	    throw new java.security.spec.InvalidKeySpecException();
-	}
+            throw new java.security.spec.InvalidKeySpecException();
+        }
 
-	return generateSecret((KeySpec) keySpec);
+        return generateSecret((KeySpec) keySpec);
     }
 
     protected java.security.spec.KeySpec engineGetKeySpec(
-	    javax.crypto.SecretKey key, Class keySpec)
-	    throws java.security.spec.InvalidKeySpecException {
+            javax.crypto.SecretKey key, Class keySpec)
+            throws java.security.spec.InvalidKeySpecException {
 
-	if ((key == null) || (keySpec == null) || !(key instanceof SecretKey)) {
-	    throw new java.security.spec.InvalidKeySpecException();
-	}
-	return getKeySpec((SecretKey) key, keySpec);
+        if ((key == null) || (keySpec == null) || !(key instanceof SecretKey)) {
+            throw new java.security.spec.InvalidKeySpecException();
+        }
+        return getKeySpec((SecretKey) key, keySpec);
     }
 
     protected javax.crypto.SecretKey engineTranslateKey(
-	    javax.crypto.SecretKey key)
-	    throws java.security.InvalidKeyException {
+            javax.crypto.SecretKey key)
+            throws java.security.InvalidKeyException {
 
-	if ((key == null) || !(key instanceof SecretKey)) {
-	    throw new java.security.InvalidKeyException();
-	}
-	return translateKey((SecretKey) key);
+        if ((key == null) || !(key instanceof SecretKey)) {
+            throw new java.security.InvalidKeyException();
+        }
+        return translateKey((SecretKey) key);
     }
 
     // ****************************************************
@@ -58,12 +58,12 @@ public abstract class SecretKeyFactory extends SecretKeyFactorySpi {
     // ****************************************************
 
     public abstract SecretKey generateSecret(KeySpec keySpec)
-	    throws InvalidKeySpecException;
+            throws InvalidKeySpecException;
 
     public abstract KeySpec getKeySpec(SecretKey key, Class keySpec)
-	    throws InvalidKeySpecException;
+            throws InvalidKeySpecException;
 
     public abstract SecretKey translateKey(SecretKey key)
-	    throws InvalidKeyException;
+            throws InvalidKeyException;
 
 }

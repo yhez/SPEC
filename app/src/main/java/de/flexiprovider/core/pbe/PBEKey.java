@@ -14,7 +14,7 @@ import de.flexiprovider.common.util.CharUtils;
 
 /**
  * A simple class representing a key for PBE (Passphrase Based Encryption).
- * 
+ *
  * @author Thomas Wahrenbruch
  */
 public class PBEKey implements SecretKey {
@@ -24,44 +24,43 @@ public class PBEKey implements SecretKey {
 
     /**
      * Construct a new PBEKey with the specified chars.
-     * 
-     * @param keyChars
-     *                the key chars
+     *
+     * @param keyChars the key chars
      */
     protected PBEKey(char[] keyChars) {
-	this.keyChars = CharUtils.clone(keyChars);
+        this.keyChars = CharUtils.clone(keyChars);
     }
 
     /**
      * Returns the name of the algorithm the key is used with.
-     * 
+     *
      * @return "PBE"
      */
     public String getAlgorithm() {
-	return "PBE";
+        return "PBE";
     }
 
     /**
      * @return the key chars converted into a byte array
      */
     public byte[] getEncoded() {
-    	return CharUtils.toByteArrayForPBE(keyChars);
+        return CharUtils.toByteArrayForPBE(keyChars);
     }
 
     /**
      * Return the encoding format of the key.
-     * 
+     *
      * @return "RAW-BMP"
      */
     public String getFormat() {
-    	return "RAW-BMP";
+        return "RAW-BMP";
     }
 
     /**
      * @return a copy of the key chars
      */
     public char[] getKey() {
-	return CharUtils.clone(keyChars);
+        return CharUtils.clone(keyChars);
     }
 
 }

@@ -112,8 +112,8 @@ import my.BigInteger;
 /**
  * Implements a X.509v3 certificate TBS block according to the following ASN.1
  * data structure:
- * <p>
- * 
+ * <p/>
+ * <p/>
  * <pre>
  * TBSCertificate  ::=  SEQUENCE  {
  *  version         		[0]	EXPLICIT Version DEFAULT v1,
@@ -137,25 +137,25 @@ import my.BigInteger;
  *      generalTime    GeneralizedTime
  * }
  * </pre>
- * 
+ * <p/>
  * If you want to create a certificate, you should create a
  * {@link codec.x509.X509TBSCertificate X509TBSCertificate}, fill it with useful data
  * (certificate serial number, validity period, subject and issuer DN, subject
  * public key) and the signature algorithm!
- * <p>
+ * <p/>
  * Note that you have to set the signature algorithm before encoding a
  * X509TBSCertificate or putting it into a X509Certificate!
- * <p>
+ * <p/>
  * Certificate version will be set automatically to "V2" if issuerUniqueID or
  * subjectUniqueID is set and to "V3" if any extension is added. Version
  * defaults to "V1".
- * <p>
+ * <p/>
  * Example:
- * 
+ * <p/>
  * <pre>
  * ... tbd
  * </pre>
- * 
+ *
  * @author Markus Tak
  */
 public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
@@ -185,68 +185,67 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      */
     public X509TBSCertificate() {
 
-	// create TBS certificate Sequence
-	super(10);
+        // create TBS certificate Sequence
+        super(10);
 
 	/*
-	 * The standard says, default version number is v1(0). We set it to
+     * The standard says, default version number is v1(0). We set it to
 	 * v3(2) by default based on customer demand ;-) --volker roth
 	 */
-	version_ = new ASN1Integer(DEFAULT_VERSION);
+        version_ = new ASN1Integer(DEFAULT_VERSION);
 
 	/*
 	 * Consequently, we must set the version to NOT OPTIONAL. So, the last
 	 * boolean must be false. --volker roth
 	 */
-	versionTag_ = new ASN1TaggedType(0, version_, true, false);
-	add(versionTag_);
+        versionTag_ = new ASN1TaggedType(0, version_, true, false);
+        add(versionTag_);
 
-	serialNumber_ = new ASN1Integer();
-	add(serialNumber_);
+        serialNumber_ = new ASN1Integer();
+        add(serialNumber_);
 
-	signature_ = new codec.x509.AlgorithmIdentifier();
-	add(signature_);
+        signature_ = new codec.x509.AlgorithmIdentifier();
+        add(signature_);
 
-	issuer_ = new Name();
-	add(issuer_);
+        issuer_ = new Name();
+        add(issuer_);
 
-	ASN1Sequence validity = new ASN1Sequence();
-	notBefore_ = new ASN1Choice();
-	notBefore_.addType(new ASN1UTCTime());
-	notBefore_.addType(new ASN1GeneralizedTime());
-	validity.add(notBefore_);
-	notAfter_ = new ASN1Choice();
-	notAfter_.addType(new ASN1UTCTime());
-	notAfter_.addType(new ASN1GeneralizedTime());
-	validity.add(notAfter_);
-	add(validity);
+        ASN1Sequence validity = new ASN1Sequence();
+        notBefore_ = new ASN1Choice();
+        notBefore_.addType(new ASN1UTCTime());
+        notBefore_.addType(new ASN1GeneralizedTime());
+        validity.add(notBefore_);
+        notAfter_ = new ASN1Choice();
+        notAfter_.addType(new ASN1UTCTime());
+        notAfter_.addType(new ASN1GeneralizedTime());
+        validity.add(notAfter_);
+        add(validity);
 
-	subject_ = new Name();
-	add(subject_);
+        subject_ = new Name();
+        add(subject_);
 
-	subjectPublicKeyInfo_ = new SubjectPublicKeyInfo();
-	add(subjectPublicKeyInfo_);
+        subjectPublicKeyInfo_ = new SubjectPublicKeyInfo();
+        add(subjectPublicKeyInfo_);
 
-	issuerUniqueID_ = new ASN1BitString();
-	issuerUniqueIDTag_ = new ASN1TaggedType(1, issuerUniqueID_, false, true);
-	add(issuerUniqueIDTag_);
+        issuerUniqueID_ = new ASN1BitString();
+        issuerUniqueIDTag_ = new ASN1TaggedType(1, issuerUniqueID_, false, true);
+        add(issuerUniqueIDTag_);
 
-	subjectUniqueID_ = new ASN1BitString();
-	subjectUniqueIDTag_ = new ASN1TaggedType(2, subjectUniqueID_, false,
-		true);
-	add(subjectUniqueIDTag_);
+        subjectUniqueID_ = new ASN1BitString();
+        subjectUniqueIDTag_ = new ASN1TaggedType(2, subjectUniqueID_, false,
+                true);
+        add(subjectUniqueIDTag_);
 
-	extensions_ = new ASN1SequenceOf(X509Extension.class);
-	extensionsTag_ = new ASN1TaggedType(3, extensions_, true, true);
-	add(extensionsTag_);
+        extensions_ = new ASN1SequenceOf(X509Extension.class);
+        extensionsTag_ = new ASN1TaggedType(3, extensions_, true, true);
+        add(extensionsTag_);
     }
 
     /**
      * Adds an extension to this certificate. Note that calling this method
      * automatically means setting the version field to "2" (X.509 version V3)
-     * 
-     * @param ext
-     *                the extension to be added.
+     *
+     * @param ext the extension to be added.
      */
     public void addExtension(X509Extension ext) {
 
@@ -256,14 +255,14 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
 	 * version number shall only be changed explicitly.
 	 */
 
-	// // must set version to v3 (=2)
-	// versionTag_.setOptional(false);
-	// try {
-	// version_.setBigInteger(new BigInteger("2"));
-	// }
-	// catch (ConstraintException ignore) {}
-	extensions_.add(ext);
-	extensionsTag_.setOptional(false);
+        // // must set version to v3 (=2)
+        // versionTag_.setOptional(false);
+        // try {
+        // version_.setBigInteger(new BigInteger("2"));
+        // }
+        // catch (ConstraintException ignore) {}
+        extensions_.add(ext);
+        extensionsTag_.setOptional(false);
     }
 
     /**
@@ -271,74 +270,74 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * pathLenConstraint in a BC extension if present and cA set to true. If the
      * Basic Constraints extension (OID 2.5.29.19) is not present in this
      * certificate, null is returned.
-     * 
+     * <p/>
      * <pre>
      * BasicConstraints ::= SEQUENCE {
      * cA                  BOOLEAN DEFAULT FALSE,
      *  pathLenConstraint   INTEGER (0..MAX) OPTIONAL
      * }
      * </pre>
-     * 
+     *
      * @return the value of pathLenConstraint if present and cA set to true or
-     *          null if the extension is not present
+     * null if the extension is not present
      */
     public int getBasicConstraints() {
-	int res = -1;
-	byte[] ext_value;
-	DERDecoder dec;
-	ByteArrayInputStream bais;
-	ASN1Sequence seq;
-	ASN1Integer pathLen;
-	ASN1Boolean ca;
+        int res = -1;
+        byte[] ext_value;
+        DERDecoder dec;
+        ByteArrayInputStream bais;
+        ASN1Sequence seq;
+        ASN1Integer pathLen;
+        ASN1Boolean ca;
 
-	String bc_oid = "2.5.29.19";
+        String bc_oid = "2.5.29.19";
 
-	// get the extension "basic constraints"
-	ext_value = getExtensionValue(bc_oid);
+        // get the extension "basic constraints"
+        ext_value = getExtensionValue(bc_oid);
 
-	// is it present?
-	if (ext_value != null) {
+        // is it present?
+        if (ext_value != null) {
 
-	    // read the extension value through a byte array input stream
-	    bais = new ByteArrayInputStream(ext_value);
+            // read the extension value through a byte array input stream
+            bais = new ByteArrayInputStream(ext_value);
 
-	    try {
+            try {
 
-		// build outer sequence
-		seq = new ASN1Sequence();
+                // build outer sequence
+                seq = new ASN1Sequence();
 
-		ca = new ASN1Boolean();
-		ca.setOptional(true);
-		seq.add(ca);
+                ca = new ASN1Boolean();
+                ca.setOptional(true);
+                seq.add(ca);
 
-		pathLen = new ASN1Integer();
-		pathLen.setOptional(true);
-		seq.add(pathLen);
+                pathLen = new ASN1Integer();
+                pathLen.setOptional(true);
+                seq.add(pathLen);
 
 		/*
 		 * Switched decoding to the correct way of doing it, which is to
 		 * take the ASN.1 object and to call its decode() method, rather
 		 * than calling readX() methods of the decoder. --volker roth
 		 */
-		dec = new DERDecoder(bais);
-		seq.decode(dec);
-		bais.close();
+                dec = new DERDecoder(bais);
+                seq.decode(dec);
+                bais.close();
 
-		if (ca.isTrue()) {
+                if (ca.isTrue()) {
 		    /*
 		     * Replaced long->string->int parsing with a simpler method
 		     * with the same type of loss of precision. --volker roth
 		     */
-		    res = pathLen.getBigInteger().intValue();
-		}
-	    } catch (Exception e) {
+                    res = pathLen.getBigInteger().intValue();
+                }
+            } catch (Exception e) {
 
-		// EXCEPTION HANDLING!!!
-		System.out.println("gbc Internal Error.Shouldnt happen");
-		e.printStackTrace();
-	    }
-	}
-	return res;
+                // EXCEPTION HANDLING!!!
+                System.out.println("gbc Internal Error.Shouldnt happen");
+                e.printStackTrace();
+            }
+        }
+        return res;
     }
 
     /**
@@ -346,60 +345,59 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * all extension oids present being marked as critical.
      */
     public Set getCriticalExtensionOIDs() {
-	X509Extension theEx;
-	HashSet res = new HashSet();
+        X509Extension theEx;
+        HashSet res = new HashSet();
 
-	if (extensionsTag_.isOptional())
-	    return null;
+        if (extensionsTag_.isOptional())
+            return null;
 
-	try {
-	    Iterator it = extensions_.iterator();
+        try {
+            Iterator it = extensions_.iterator();
 
-	    while (it.hasNext()) {
-		theEx = (X509Extension) it.next();
-		if (theEx.isCritical())
-		    res.add(theEx.getOID().toString());
-	    }
-	} catch (Exception ignore) {
-	    System.out.println("gcritoid Internal Error.Shouldnt happen");
-	    ignore.printStackTrace();
-	    // Exception-handling!
-	}
+            while (it.hasNext()) {
+                theEx = (X509Extension) it.next();
+                if (theEx.isCritical())
+                    res.add(theEx.getOID().toString());
+            }
+        } catch (Exception ignore) {
+            System.out.println("gcritoid Internal Error.Shouldnt happen");
+            ignore.printStackTrace();
+            // Exception-handling!
+        }
 
-	return res;
+        return res;
     }
 
     /**
      * returns the DER-encoded bytearray of this certificate
-     * 
-     * @throws java.security.cert.CertificateEncodingException
-     *                 if TBSCertificate could not be encoded correctly
+     *
+     * @throws java.security.cert.CertificateEncodingException if TBSCertificate could not be encoded correctly
      */
     public byte[] getEncoded() throws CertificateEncodingException {
-	byte[] res = null;
+        byte[] res = null;
 
-	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-	try {
-	    encode(new DEREncoder(baos));
-	    res = baos.toByteArray();
-	    baos.close();
-	} catch (IOException e) {
-	    System.out.println("internal error:");
-	    e.printStackTrace();
-	} catch (ASN1Exception e) {
-	    throw new CertificateEncodingException(e.getMessage());
-	}
-	return res;
+        try {
+            encode(new DEREncoder(baos));
+            res = baos.toByteArray();
+            baos.close();
+        } catch (IOException e) {
+            System.out.println("internal error:");
+            e.printStackTrace();
+        } catch (ASN1Exception e) {
+            throw new CertificateEncodingException(e.getMessage());
+        }
+        return res;
     }
 
     /**
      * Returns a Collection containing all extensions
      */
     public Collection getExtensions() {
-	if (extensionsTag_.isOptional())
-	    return null;
-	return extensions_;
+        if (extensionsTag_.isOptional())
+            return null;
+        return extensions_;
     }
 
     /**
@@ -407,39 +405,39 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * denoted by ex or null if not present.
      */
     public byte[] getExtensionValue(String ex) {
-	X509Extension theEx;
-	byte[] res = null;
+        X509Extension theEx;
+        byte[] res = null;
 
-	if (extensionsTag_.isOptional())
-	    return null;
+        if (extensionsTag_.isOptional())
+            return null;
 
-	try {
-	    Iterator it = extensions_.iterator();
+        try {
+            Iterator it = extensions_.iterator();
 
-	    while (it.hasNext()) {
+            while (it.hasNext()) {
 		/*
 		 * Moved variable declaration to beginning of method. Otherwise,
 		 * the variable gets created and destroyed each time the loop is
 		 * entered, which is inefficient. --volker roth
 		 */
-		theEx = (X509Extension) it.next();
+                theEx = (X509Extension) it.next();
 
-		if (theEx.getOID().toString().equals(ex)) {
-		    res = (byte[]) theEx.getValue();
+                if (theEx.getOID().toString().equals(ex)) {
+                    res = (byte[]) theEx.getValue();
 
 		    /*
 		     * Inserted a break - no need to iterate through the rest of
 		     * the extensions after having found a match. --volker roth
 		     */
-		    break;
-		}
-	    }
+                    break;
+                }
+            }
 
-	} catch (Exception ignore) {
-	    System.out.println("getextval Internal Error.Shouldnt happen");
-	    ignore.printStackTrace();
-	}
-	return res;
+        } catch (Exception ignore) {
+            System.out.println("getextval Internal Error.Shouldnt happen");
+            ignore.printStackTrace();
+        }
+        return res;
     }
 
     /**
@@ -447,7 +445,7 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * issuer as a Principal.
      */
     public Principal getIssuerDN() {
-	return issuer_;
+        return issuer_;
     }
 
     /**
@@ -456,16 +454,16 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      */
     public boolean[] getIssuerUniqueID() {
 
-	if (issuerUniqueIDTag_.isOptional())
-	    return null;
-	return issuerUniqueID_.getBits();
+        if (issuerUniqueIDTag_.isOptional())
+            return null;
+        return issuerUniqueID_.getBits();
     }
 
     /**
      * From java.security.cert.X509Certificate. Returns the bits of the KeyUsage
      * extension (OID 2.5.29.15) if present in this certificate or null
      * otherwise.
-     * 
+     * <p/>
      * <pre>
      * KeyUsage ::= BIT STRING {
      *        digitalSignature        (0),
@@ -479,34 +477,34 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      *        decipherOnly            (8)
      * }
      * </pre>
-     * 
+     *
      * @return the key usage bits if present in this certificate, otherwise
-     *          null.
+     * null.
      */
     public boolean[] getKeyUsage() {
-	boolean[] res = null;
-	byte[] ext_value;
-	DERDecoder dec;
-	ByteArrayInputStream bais;
-	ASN1BitString bits;
+        boolean[] res = null;
+        byte[] ext_value;
+        DERDecoder dec;
+        ByteArrayInputStream bais;
+        ASN1BitString bits;
 
-	String ku_oid = "2.5.29.15";
+        String ku_oid = "2.5.29.15";
 
-	// get the extension "key usage"
-	ext_value = getExtensionValue(ku_oid);
+        // get the extension "key usage"
+        ext_value = getExtensionValue(ku_oid);
 
-	// is it present?
-	if (ext_value != null) {
+        // is it present?
+        if (ext_value != null) {
 
-	    // read the extension value through a byte array input stream
-	    bais = new ByteArrayInputStream(ext_value);
+            // read the extension value through a byte array input stream
+            bais = new ByteArrayInputStream(ext_value);
 
-	    try {
+            try {
 
-		// build outer sequence
-		bits = new ASN1BitString();
+                // build outer sequence
+                bits = new ASN1BitString();
 
-		dec = new DERDecoder(bais);
+                dec = new DERDecoder(bais);
 
 		/*
 		 * Replaced the construct dec.readX(X) by the correct use of
@@ -515,16 +513,16 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
 		 * decoded class in its decode method. Not of importance with a
 		 * bitstring, but in other classes. --volker roth
 		 */
-		bits.decode(dec);
-		bais.close();
+                bits.decode(dec);
+                bais.close();
 
-		res = bits.getBits();
-	    } catch (Exception e) {
-		System.out.println("Internal Error.Shouldnt happen");
-		e.printStackTrace();
-	    }
-	}
-	return res;
+                res = bits.getBits();
+            } catch (Exception e) {
+                System.out.println("Internal Error.Shouldnt happen");
+                e.printStackTrace();
+            }
+        }
+        return res;
     }
 
     /**
@@ -533,23 +531,23 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      */
     public Set getNonCriticalExtensionOIDs() {
 
-	HashSet res = new HashSet();
+        HashSet res = new HashSet();
 
-	if (extensionsTag_.isOptional())
-	    return null;
+        if (extensionsTag_.isOptional())
+            return null;
 
-	try {
-	    Iterator it = extensions_.iterator();
+        try {
+            Iterator it = extensions_.iterator();
 
-	    while (it.hasNext()) {
-		X509Extension theEx = (X509Extension) it.next();
-		if (!theEx.isCritical())
-		    res.add(theEx.getOID().getOID());
-	    }
-	} catch (Exception ignore) {
-	}
+            while (it.hasNext()) {
+                X509Extension theEx = (X509Extension) it.next();
+                if (!theEx.isCritical())
+                    res.add(theEx.getOID().getOID());
+            }
+        } catch (Exception ignore) {
+        }
 
-	return res;
+        return res;
     }
 
     /**
@@ -557,7 +555,7 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * this certificate is not valid anymore.
      */
     public Date getNotAfter() {
-	return ((ASN1Time) notAfter_.getInnerType()).getDate();
+        return ((ASN1Time) notAfter_.getInnerType()).getDate();
     }
 
     /**
@@ -565,7 +563,7 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * this certificate is not valid.
      */
     public Date getNotBefore() {
-	return ((ASN1Time) notBefore_.getInnerType()).getDate();
+        return ((ASN1Time) notBefore_.getInnerType()).getDate();
     }
 
     /**
@@ -573,8 +571,8 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * this certificate
      */
     public java.security.PublicKey getPublicKey()
-	    throws NoSuchAlgorithmException {
-	return subjectPublicKeyInfo_.getPublicKey();
+            throws NoSuchAlgorithmException {
+        return subjectPublicKeyInfo_.getPublicKey();
     }
 
     /**
@@ -582,7 +580,7 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * this certificate
      */
     public BigInteger getSerialNumber() {
-	return serialNumber_.getBigInteger();
+        return serialNumber_.getBigInteger();
     }
 
     /**
@@ -590,7 +588,7 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * Algorithm Name of the signature algorithm.
      */
     public String getSigAlgName() {
-	return codec.util.JCA.getName(getSigAlgOID());
+        return codec.util.JCA.getName(getSigAlgOID());
     }
 
     /**
@@ -598,7 +596,7 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * (OID) of the signature algorithm.
      */
     public String getSigAlgOID() {
-	return signature_.getAlgorithmOID().toString();
+        return signature_.getAlgorithmOID().toString();
     }
 
     /**
@@ -606,16 +604,16 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * for the signature algorithm in a DER encoded form.
      */
     public byte[] getSigAlgParams() {
-	byte[] res = null;
+        byte[] res = null;
 
-	try {
-	    res = signature_.getParameters().getEncoded();
-	} catch (Exception intern) {
-	    System.out.println("internal Error:");
-	    intern.printStackTrace();
-	}
+        try {
+            res = signature_.getParameters().getEncoded();
+        } catch (Exception intern) {
+            System.out.println("internal Error:");
+            intern.printStackTrace();
+        }
 
-	return res;
+        return res;
     }
 
     /**
@@ -623,7 +621,7 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * subject as a Principal.
      */
     public Principal getSubjectDN() {
-	return subject_;
+        return subject_;
     }
 
     /**
@@ -631,24 +629,24 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * or null if not present.
      */
     public boolean[] getSubjectUniqueID() {
-	if (issuerUniqueIDTag_.isOptional())
-	    return null;
-	return issuerUniqueID_.getBits();
+        if (issuerUniqueIDTag_.isOptional())
+            return null;
+        return issuerUniqueID_.getBits();
     }
 
     /**
      * Returns the version of this X509 certificate (0=v1, 1=v2, 2=v3)
      */
     public int getVersion() {
-	if (versionTag_.isOptional()) {
+        if (versionTag_.isOptional()) {
 	    /*
 	     * This branch should never be taken, though, because the version
 	     * will not ever be OPTIONAL again (we changed the default to v3(2).
 	     * --volker roth
 	     */
-	    return 0;
-	}
-	return version_.getBigInteger().intValue();
+            return 0;
+        }
+        return version_.getBigInteger().intValue();
     }
 
     /**
@@ -657,127 +655,121 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      * note that the version number passed to this method is the internal
      * version number identifier. Hence, a '2' must be passed if the certificate
      * shall be a version 3 certificate.
-     * 
-     * @param version
-     *                The internal version number, one of v1(0), v2(1), v3(2).
-     * @throws IllegalArgumentException
-     *                 if version number is smaller than 2 but extensions are
-     *                 present.
+     *
+     * @param version The internal version number, one of v1(0), v2(1), v3(2).
+     * @throws IllegalArgumentException if version number is smaller than 2 but extensions are
+     *                                  present.
      */
     public void setVersion(int version) {
 	/*
 	 * Added this method to set the version number explicitly. -- volker
 	 * roth
 	 */
-	ASN1TaggedType tt;
-	boolean opt;
+        ASN1TaggedType tt;
+        boolean opt;
 
-	if (version < 0 || version > 2) {
-	    throw new IllegalArgumentException("illegal version number: "
-		    + version);
-	}
+        if (version < 0 || version > 2) {
+            throw new IllegalArgumentException("illegal version number: "
+                    + version);
+        }
 	/*
 	 * This if statement is for safety reasons. If it causes trouble, and
 	 * you are willing to accept certificates with bad version numbers then
 	 * feel free to remove it. --volker roth
 	 */
-	if (version < 2 && !extensionsTag_.isOptional()) {
-	    throw new IllegalArgumentException("can't set to " + version
-		    + ", extensions are present");
-	}
-	opt = (version == 0);
-	tt = new ASN1TaggedType(0, new ASN1Integer(version), true, opt);
+        if (version < 2 && !extensionsTag_.isOptional()) {
+            throw new IllegalArgumentException("can't set to " + version
+                    + ", extensions are present");
+        }
+        opt = (version == 0);
+        tt = new ASN1TaggedType(0, new ASN1Integer(version), true, opt);
 
-	set(0, tt);
+        set(0, tt);
     }
 
     /**
      * From java.security.cert.X509Extension. Returns true if this certificate
      * contains any extension being marked as critical but not supported by this
      * implementation.
-     * <p>
+     * <p/>
      * Currently, this function will always return false since extensions are
      * managed in an abstract way.
      */
     public boolean hasUnsupportedCriticalExtension() {
 
-	// NOT IMPLEMENTED YET!!
-	return false;
+        // NOT IMPLEMENTED YET!!
+        return false;
     }
 
     /**
      * needed to explicitly name an encoding method in order to change between
      * encodings during runtime.
-     * 
-     * @param nissuer
-     *                the name of the issuer
-     * @param encType
-     *                ITU Tag of the Stringtype
+     *
+     * @param nissuer the name of the issuer
+     * @param encType ITU Tag of the Stringtype
      */
     public void setIssuerDN(Principal nissuer, int encType) {
 
-	if (nissuer instanceof Name) {
-	    issuer_ = (Name) nissuer;
-	} else {
+        if (nissuer instanceof Name) {
+            issuer_ = (Name) nissuer;
+        } else {
 
-	    try {
-		issuer_ = new Name(nissuer.getName(), encType);
-	    } catch (Exception e) {
-		System.out.println("Internal Error:");
-		e.printStackTrace();
-		return;
-	    }
-	}
+            try {
+                issuer_ = new Name(nissuer.getName(), encType);
+            } catch (Exception e) {
+                System.out.println("Internal Error:");
+                e.printStackTrace();
+                return;
+            }
+        }
 
-	// update the structure!
-	set(3, issuer_);
+        // update the structure!
+        set(3, issuer_);
 
     }
 
     /**
      * Sets the issuers distinguished name (DN). This method is especially for
      * issuing a certificate.
-     * 
-     * @param nissuer
-     *                the Principal object describing the issuer.
+     *
+     * @param nissuer the Principal object describing the issuer.
      */
     public void setIssuerDN(Principal nissuer) {
 
-	if (nissuer instanceof Name) {
-	    issuer_ = (Name) nissuer;
-	} else {
+        if (nissuer instanceof Name) {
+            issuer_ = (Name) nissuer;
+        } else {
 
-	    try {
-		issuer_ = new Name(nissuer.getName(),
-			Name.PRINTABLE_ENCODING);
-	    } catch (Exception e) {
-		System.out.println("Internal Error:");
-		e.printStackTrace();
-		return;
-	    }
-	}
+            try {
+                issuer_ = new Name(nissuer.getName(),
+                        Name.PRINTABLE_ENCODING);
+            } catch (Exception e) {
+                System.out.println("Internal Error:");
+                e.printStackTrace();
+                return;
+            }
+        }
 
-	// update the structure!
-	set(3, issuer_);
+        // update the structure!
+        set(3, issuer_);
 
     }
 
     /**
      * Sets the issuer's unique id. This method is especially for issuing a
      * certificate.
-     * 
-     * @param nid
-     *                the issuer's unique id
+     *
+     * @param nid the issuer's unique id
      */
     public void setIssuerUniqueID(byte[] nid) {
 
-	try {
-	    issuerUniqueID_.setBits(nid, 0);
-	    issuerUniqueIDTag_.setOptional(false);
-	} catch (ConstraintException e) {
-	    System.out.println("internal error. shouldnt happen:");
-	    e.printStackTrace();
-	}
+        try {
+            issuerUniqueID_.setBits(nid, 0);
+            issuerUniqueIDTag_.setOptional(false);
+        } catch (ConstraintException e) {
+            System.out.println("internal error. shouldnt happen:");
+            e.printStackTrace();
+        }
 
 	/*
 	 * Here, I commented out some code that set the version to v2(1) if
@@ -785,86 +777,82 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
 	 * fine. --volker roth
 	 */
 
-	// must set version to v2 (=1) if there are not already extensions (v3!)
-	// if (extensionsTag_.isOptional() || versionTag_.isOptional()) {
-	// versionTag_.setOptional(false);
-	// try {
-	// version_.setBigInteger(new BigInteger("1"));
-	// }
-	// catch (ConstraintException ignore) {}
-	// }
+        // must set version to v2 (=1) if there are not already extensions (v3!)
+        // if (extensionsTag_.isOptional() || versionTag_.isOptional()) {
+        // versionTag_.setOptional(false);
+        // try {
+        // version_.setBigInteger(new BigInteger("1"));
+        // }
+        // catch (ConstraintException ignore) {}
+        // }
     }
 
     /**
      * Sets the "not after" field. This method is especially for issuing a
      * certificate.
-     * 
-     * @param nnaf
-     *                "not after" date
+     *
+     * @param nnaf "not after" date
      */
     public void setNotAfter(Calendar nnaf) {
 
-	ASN1Time nai = (ASN1Time) notAfter_.getInnerType();
+        ASN1Time nai = (ASN1Time) notAfter_.getInnerType();
 
-	if (nai == null) {
-	    nai = new ASN1UTCTime();
-	    notAfter_.setInnerType(nai);
-	}
+        if (nai == null) {
+            nai = new ASN1UTCTime();
+            notAfter_.setInnerType(nai);
+        }
 
-	nai.setDate(nnaf);
+        nai.setDate(nnaf);
     }
 
     /**
      * Sets the "not after" field. This method is especially for issuing a
      * certificate.
-     * 
-     * @param nnaf
-     *                "not after" date
+     *
+     * @param nnaf "not after" date
      */
     public void setNotAfter(Date nnaf) {
 
-	Calendar x = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-	x.setTime(nnaf);
-	setNotAfter(x);
+        Calendar x = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        x.setTime(nnaf);
+        setNotAfter(x);
 
     }
 
     /**
      * Sets the "not before" field. This method is especially for issuing a
      * certificate.
-     * 
-     * @param nnbf
-     *                "not before" date
+     *
+     * @param nnbf "not before" date
      */
     public void setNotBefore(Calendar nnbf) {
-	ASN1Time nai = (ASN1Time) notBefore_.getInnerType();
+        ASN1Time nai = (ASN1Time) notBefore_.getInnerType();
 
-	if (nai == null) {
-	    nai = new ASN1UTCTime();
-	    notBefore_.setInnerType(nai);
-	}
+        if (nai == null) {
+            nai = new ASN1UTCTime();
+            notBefore_.setInnerType(nai);
+        }
 
-	nai.setDate(nnbf);
+        nai.setDate(nnbf);
     }
 
     /**
      * Sets the "not before" field. This method is especially for issuing a
      * certificate.
-     * 
-     * @param nnbf
-     *                "not before" date
+     *
+     * @param nnbf "not before" date
      */
     public void setNotBefore(Date nnbf) {
-	Calendar x = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-	x.setTime(nnbf);
-	setNotBefore(x);
+        Calendar x = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        x.setTime(nnbf);
+        setNotBefore(x);
     }
 
     /**
      * Sets the serial number of this certificate
      */
     public void setSerialNumber(int nsnr) {
-	setSerialNumber(new BigInteger(String.valueOf(nsnr), 10));
+        setSerialNumber(new BigInteger(String.valueOf(nsnr), 10));
     }
 
     /**
@@ -872,175 +860,171 @@ public class X509TBSCertificate extends ASN1Sequence implements Externalizable {
      */
     public void setSerialNumber(BigInteger nsnr) {
 
-	try {
-	    serialNumber_.setBigInteger(nsnr);
-	} catch (ConstraintException ignore) {
-	}
+        try {
+            serialNumber_.setBigInteger(nsnr);
+        } catch (ConstraintException ignore) {
+        }
     }
 
     /**
      * Sets the signature algorithm. Note that the AlgorithmIdentifier will be
      * cloned in order to prevent side-effects
-     * 
-     * @param aid
-     *                AlgorithmID of the signature algorithm
+     *
+     * @param aid AlgorithmID of the signature algorithm
      */
     public void setSignatureAlgorithm(codec.x509.AlgorithmIdentifier aid) {
 
-	signature_ = (codec.x509.AlgorithmIdentifier) aid.clone();
-	set(2, signature_);
+        signature_ = (codec.x509.AlgorithmIdentifier) aid.clone();
+        set(2, signature_);
 
     }
 
     /**
      * Sets the subject's distinguished name (DN). This method is especially for
      * issuing a certificate.
-     * 
-     * @param nsubject
-     *                the Principal object describing the subject.
+     *
+     * @param nsubject the Principal object describing the subject.
      */
     public void setSubjectDN(Principal nsubject) {
 
-	// FIXME Add and adjust saftey check for new Name implementation of
-	// Fraunhofer IGD
-	// if(!Name.defaultEncoding_)
-	// throw new BadNameException("Use the function call that explicit set
-	// the Name encoding type");
+        // FIXME Add and adjust saftey check for new Name implementation of
+        // Fraunhofer IGD
+        // if(!Name.defaultEncoding_)
+        // throw new BadNameException("Use the function call that explicit set
+        // the Name encoding type");
 
-	if (nsubject instanceof Name) {
-	    subject_ = (Name) nsubject;
-	} else {
+        if (nsubject instanceof Name) {
+            subject_ = (Name) nsubject;
+        } else {
 
-	    try {
-		subject_ = new Name(nsubject.getName(),
-			Name.IA5_ENCODING);
-	    } catch (Exception e) {
-		System.out.println("Internal Error:");
-		e.printStackTrace();
-		return;
-	    }
-	}
+            try {
+                subject_ = new Name(nsubject.getName(),
+                        Name.IA5_ENCODING);
+            } catch (Exception e) {
+                System.out.println("Internal Error:");
+                e.printStackTrace();
+                return;
+            }
+        }
 
-	set(5, subject_);
+        set(5, subject_);
     }
 
     /**
      * same as above but with an explicit name encoding
-     * 
+     *
      * @param nsubject
-     * @param encType
-     *                (the String Type the Name shall be encoded.
+     * @param encType  (the String Type the Name shall be encoded.
      */
     public void setSubjectDN(Principal nsubject, int encType) {
 
-	if (nsubject instanceof Name) {
-	    subject_ = (Name) nsubject;
-	} else {
+        if (nsubject instanceof Name) {
+            subject_ = (Name) nsubject;
+        } else {
 
-	    try {
-		subject_ = new Name(nsubject.getName(), encType);
-	    } catch (Exception e) {
-		System.out.println("Internal Error:");
-		e.printStackTrace();
-		return;
-	    }
-	}
+            try {
+                subject_ = new Name(nsubject.getName(), encType);
+            } catch (Exception e) {
+                System.out.println("Internal Error:");
+                e.printStackTrace();
+                return;
+            }
+        }
 
-	set(5, subject_);
+        set(5, subject_);
     }
 
     /**
      * Sets the subject's public key
      */
     public void setSubjectPublicKey(java.security.PublicKey pk)
-	    throws InvalidKeyException {
-	subjectPublicKeyInfo_.setPublicKey(pk);
+            throws InvalidKeyException {
+        subjectPublicKeyInfo_.setPublicKey(pk);
     }
 
     /**
      * Sets the subjects's unique id. This method is especially for issuing a
      * certificate.
-     * 
-     * @param nid
-     *                the subjects's unique id
+     *
+     * @param nid the subjects's unique id
      */
     public void setSubjectUniqueID(byte[] nid) {
-	try {
-	    subjectUniqueID_.setBits(nid, 0);
-	    subjectUniqueIDTag_.setOptional(false);
-	} catch (ConstraintException e) {
-	    System.out.println("internal error. shouldnt happen:");
-	    e.printStackTrace();
-	}
+        try {
+            subjectUniqueID_.setBits(nid, 0);
+            subjectUniqueIDTag_.setOptional(false);
+        } catch (ConstraintException e) {
+            System.out.println("internal error. shouldnt happen:");
+            e.printStackTrace();
+        }
 
-	// must set version to v2 (=1) if there are not already extensions (v3!)
-	if (extensionsTag_.isOptional() || versionTag_.isOptional()) {
-	    versionTag_.setOptional(false);
+        // must set version to v2 (=1) if there are not already extensions (v3!)
+        if (extensionsTag_.isOptional() || versionTag_.isOptional()) {
+            versionTag_.setOptional(false);
 
-	    try {
-		version_.setBigInteger(new BigInteger("1"));
-	    } catch (ConstraintException ignore) {
-	    }
+            try {
+                version_.setBigInteger(new BigInteger("1"));
+            } catch (ConstraintException ignore) {
+            }
 
-	}
+        }
     }
 
     /**
      * human-readable String representation of this certificate
      */
     public String toString() {
-	String res = "";
+        String res = "";
 
-	int vrs;
-	if (versionTag_.isOptional())
-	    vrs = 1;
-	else
-	    vrs = version_.getBigInteger().intValue() + 1;
+        int vrs;
+        if (versionTag_.isOptional())
+            vrs = 1;
+        else
+            vrs = version_.getBigInteger().intValue() + 1;
 
-	res = "TBS Certificate {";
-	res = res + "\nX509 certificate V" + vrs;
-	res = res + "\nserial number:" + serialNumber_.toString();
-	res = res + "\nsignature algorithm:" + signature_.toString();
-	res = res + "\nissuer:" + issuer_.getName();
-	res = res + "\nsubject:" + subject_.getName();
-	res = res + "\nvalidity:"
-		+ ((ASN1Time) notBefore_.getInnerType()).toString();
-	res = res + " - " + ((ASN1Time) notAfter_.getInnerType()).toString();
-	res = res + "\nsubject public key algorithm:"
-		+ subjectPublicKeyInfo_.getAlgorithmIdentifier().toString();
-	res = res + "\nsubject public key:";
-	try {
-	    res = res + "\n" + subjectPublicKeyInfo_.getPublicKey().toString();
-	} catch (codec.InconsistentStateException ise) {
-	    res = res + "<key data corrupted!>";
-	} catch (NoSuchAlgorithmException cce) {
-	    res = res + "<key algorithm not supported!>";
-	}
+        res = "TBS Certificate {";
+        res = res + "\nX509 certificate V" + vrs;
+        res = res + "\nserial number:" + serialNumber_.toString();
+        res = res + "\nsignature algorithm:" + signature_.toString();
+        res = res + "\nissuer:" + issuer_.getName();
+        res = res + "\nsubject:" + subject_.getName();
+        res = res + "\nvalidity:"
+                + ((ASN1Time) notBefore_.getInnerType()).toString();
+        res = res + " - " + ((ASN1Time) notAfter_.getInnerType()).toString();
+        res = res + "\nsubject public key algorithm:"
+                + subjectPublicKeyInfo_.getAlgorithmIdentifier().toString();
+        res = res + "\nsubject public key:";
+        try {
+            res = res + "\n" + subjectPublicKeyInfo_.getPublicKey().toString();
+        } catch (codec.InconsistentStateException ise) {
+            res = res + "<key data corrupted!>";
+        } catch (NoSuchAlgorithmException cce) {
+            res = res + "<key algorithm not supported!>";
+        }
 
-	// issueruid+subuid
-	if (!issuerUniqueIDTag_.isOptional())
-	    res = res + "\n(V2)issuer unique ID:" + issuerUniqueID_.toString();
-	if (!subjectUniqueIDTag_.isOptional())
-	    res = res + "\n(V2)subject unique ID:"
-		    + subjectUniqueID_.toString();
+        // issueruid+subuid
+        if (!issuerUniqueIDTag_.isOptional())
+            res = res + "\n(V2)issuer unique ID:" + issuerUniqueID_.toString();
+        if (!subjectUniqueIDTag_.isOptional())
+            res = res + "\n(V2)subject unique ID:"
+                    + subjectUniqueID_.toString();
 
-	// extensions
-	if (!extensionsTag_.isOptional() && !extensions_.isEmpty()) {
-	    res = res + "\n(V3)extensions (" + extensions_.size() + ")\n";
-	    Iterator it = extensions_.iterator();
-	    int j = 1;
-	    while (it.hasNext()) {
-		res = res + " " + String.valueOf(j++) + ":";
-		try {
-		    X509Extension mye = (X509Extension) it.next();
-		    res = res + mye.toString(" ") + "\n";
-		} catch (Exception e) {
-		    res = res + " not handled:" + e.getMessage() + "\n";
-		}
-	    }
-	}
+        // extensions
+        if (!extensionsTag_.isOptional() && !extensions_.isEmpty()) {
+            res = res + "\n(V3)extensions (" + extensions_.size() + ")\n";
+            Iterator it = extensions_.iterator();
+            int j = 1;
+            while (it.hasNext()) {
+                res = res + " " + String.valueOf(j++) + ":";
+                try {
+                    X509Extension mye = (X509Extension) it.next();
+                    res = res + mye.toString(" ") + "\n";
+                } catch (Exception e) {
+                    res = res + " not handled:" + e.getMessage() + "\n";
+                }
+            }
+        }
 
-	return res;
+        return res;
     }
 
 }

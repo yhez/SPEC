@@ -18,7 +18,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 /**
  * This class generates new keys for the Misty1 block cipher. The Misty1 key
  * size is 128 bits.
- * 
+ *
  * @author Paul Nguentcheu
  */
 public class Misty1KeyGenerator extends SecretKeyGenerator {
@@ -36,54 +36,49 @@ public class Misty1KeyGenerator extends SecretKeyGenerator {
     /**
      * Since Misty1 keys are of a fixed size and do not require any parameters,
      * this method only sets the source of randomness.
-     * 
-     * @param params
-     *                the parameters (not used)
-     * @param random
-     *                the source of randomness
+     *
+     * @param params the parameters (not used)
+     * @param random the source of randomness
      */
     public void init(AlgorithmParameterSpec params, SecureRandom random) {
-	init(random);
+        init(random);
     }
 
     /**
      * Since Misty1 keys are of a fixed size, this method only sets the source
      * of randomness.
-     * 
-     * @param strength
-     *                the key strength (not used)
-     * @param random
-     *                the source of randomness for this key generator
+     *
+     * @param strength the key strength (not used)
+     * @param random   the source of randomness for this key generator
      */
     public void init(int strength, SecureRandom random) {
-	init(random);
+        init(random);
     }
 
     /**
      * Initialize the key generator with the given source of randomness.
-     * 
-     * @param random
-     *                the source of randomness
+     *
+     * @param random the source of randomness
      */
     public void init(SecureRandom random) {
-	this.random = random != null ? random : Registry.getSecureRandom();
-	initialized = true;
+        this.random = random != null ? random : Registry.getSecureRandom();
+        initialized = true;
     }
 
     /**
      * Generate a Misty1 key.
-     * 
+     *
      * @return the generated {@link de.flexiprovider.core.misty1.Misty1Key}
      */
     public SecretKey generateKey() {
-	if (!initialized) {
-	    init(Registry.getSecureRandom());
-	}
+        if (!initialized) {
+            init(Registry.getSecureRandom());
+        }
 
-	byte[] bytes = new byte[MISTY1_KEY_SIZE];
-	random.nextBytes(bytes);
+        byte[] bytes = new byte[MISTY1_KEY_SIZE];
+        random.nextBytes(bytes);
 
-	return new Misty1Key(bytes);
+        return new Misty1Key(bytes);
     }
 
 }

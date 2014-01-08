@@ -23,125 +23,120 @@ import de.flexiprovider.core.dsa.interfaces.DSAParams;
  * The key pair generation follows the proposal of the <a
  * href="http://csrc.nist.gov/fips/fips186-2.pdf">FIPS 186-2 standard</a>,
  * except for the generation of the random numbers.
- * <p>
+ * <p/>
  * The default bit length of the prime <tt>p</tt> is 1024 bits.
- * 
+ *
  * @author Thomas Wahrenbruch
  */
 public class DSAKeyPairGenerator extends
-		de.flexiprovider.core.dsa.interfaces.DSAKeyPairGenerator {
+        de.flexiprovider.core.dsa.interfaces.DSAKeyPairGenerator {
 
-	// DSA parameters
-	private DSAParams params;
+    // DSA parameters
+    private DSAParams params;
 
-	// source of randomness
-	private SecureRandom random;
+    // source of randomness
+    private SecureRandom random;
 
-	// flag indicating whether the key pair generator has been initialized
-	private boolean initialized;
+    // flag indicating whether the key pair generator has been initialized
+    private boolean initialized;
 
-	/**
-	 * Initialize the key pair generator with the given parameters (supposed to
-	 * be an instance of {@link de.flexiprovider.core.dsa.interfaces.DSAParams}) and source of randomness. If the
-	 * parameters are <tt>null</tt>, new parameters are generated for the
-	 * {@link DSAParamGenParameterSpec#DEFAULT_L default size} using the
-	 * {@link DSAParameterGenerator}.
-	 * 
-	 * @param params
-	 *            the algorithm parameters
-	 * @param random
-	 *            the source of randomness
-	 * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-	 *             if the parameters are not an instance of {@link de.flexiprovider.core.dsa.interfaces.DSAParams}.
-	 */
-	public void initialize(AlgorithmParameterSpec params, SecureRandom random)
-			throws InvalidAlgorithmParameterException {
+    /**
+     * Initialize the key pair generator with the given parameters (supposed to
+     * be an instance of {@link de.flexiprovider.core.dsa.interfaces.DSAParams}) and source of randomness. If the
+     * parameters are <tt>null</tt>, new parameters are generated for the
+     * {@link DSAParamGenParameterSpec#DEFAULT_L default size} using the
+     * {@link DSAParameterGenerator}.
+     *
+     * @param params the algorithm parameters
+     * @param random the source of randomness
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are not an instance of {@link de.flexiprovider.core.dsa.interfaces.DSAParams}.
+     */
+    public void initialize(AlgorithmParameterSpec params, SecureRandom random)
+            throws InvalidAlgorithmParameterException {
 
-		this.random = (random != null) ? random : Registry.getSecureRandom();
+        this.random = (random != null) ? random : Registry.getSecureRandom();
 
-		// if no parameters are specified
-		if (params == null) {
-			// generate parameters for the default key size
-			initialize(DSAParamGenParameterSpec.DEFAULT_L, this.random);
-			return;
-		}
+        // if no parameters are specified
+        if (params == null) {
+            // generate parameters for the default key size
+            initialize(DSAParamGenParameterSpec.DEFAULT_L, this.random);
+            return;
+        }
 
-		if (!(params instanceof DSAParams)) {
-			throw new InvalidAlgorithmParameterException("unsupported type");
-		}
-		this.params = (DSAParams) params;
+        if (!(params instanceof DSAParams)) {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
+        this.params = (DSAParams) params;
 
-		initialized = true;
-	}
+        initialized = true;
+    }
 
-	/**
-	 * Initialize the key pair generator with the given strength (bit length of
-	 * the prime <tt>p</tt>) and source of randomness.
-	 * <p>
-	 * If the given strength is not a multiple of 64, the next smaller multiple
-	 * of 64 is used as strength. If strength is &gt; 1024 or &lt; 512, 1024 is
-	 * used as strength.
-	 * <p>
-	 * A new parameter set is generated for the chosen strength using the
-	 * {@link DSAParameterGenerator} and the given source of randomness.
-	 * 
-	 * @param keySize
-	 *            the bit length of the prime <tt>p</tt>
-	 * @param random
-	 *            the source of randomness
-	 */
-	public void initialize(int keySize, SecureRandom random) {
-		// generate parameters for the chosen key size
-		DSAParamGenParameterSpec genParams = new DSAParamGenParameterSpec(
-				keySize);
-		AlgorithmParameterGenerator paramGenerator = new DSAParameterGenerator();
-		try {
-			paramGenerator.init(genParams, random);
-			AlgorithmParameterSpec dsaParams = paramGenerator
-					.generateParameters();
-			initialize(dsaParams, random);
-		} catch (InvalidAlgorithmParameterException e) {
-			// the parameters are correct and must be accepted
-			throw new RuntimeException("internal error");
-		}
-	}
+    /**
+     * Initialize the key pair generator with the given strength (bit length of
+     * the prime <tt>p</tt>) and source of randomness.
+     * <p/>
+     * If the given strength is not a multiple of 64, the next smaller multiple
+     * of 64 is used as strength. If strength is &gt; 1024 or &lt; 512, 1024 is
+     * used as strength.
+     * <p/>
+     * A new parameter set is generated for the chosen strength using the
+     * {@link DSAParameterGenerator} and the given source of randomness.
+     *
+     * @param keySize the bit length of the prime <tt>p</tt>
+     * @param random  the source of randomness
+     */
+    public void initialize(int keySize, SecureRandom random) {
+        // generate parameters for the chosen key size
+        DSAParamGenParameterSpec genParams = new DSAParamGenParameterSpec(
+                keySize);
+        AlgorithmParameterGenerator paramGenerator = new DSAParameterGenerator();
+        try {
+            paramGenerator.init(genParams, random);
+            AlgorithmParameterSpec dsaParams = paramGenerator
+                    .generateParameters();
+            initialize(dsaParams, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
+    }
 
-	private void initializeDefault() {
-		// generate parameters for the default key size
-		initialize(DSAParamGenParameterSpec.DEFAULT_L, Registry
-				.getSecureRandom());
-	}
+    private void initializeDefault() {
+        // generate parameters for the default key size
+        initialize(DSAParamGenParameterSpec.DEFAULT_L, Registry
+                .getSecureRandom());
+    }
 
-	/**
-	 * Generate a key pair, containing a {@link de.flexiprovider.core.dsa.DSAPublicKey} and a
-	 * {@link de.flexiprovider.core.dsa.DSAPrivateKey}.
-	 * 
-	 * @return the generated key pair
-	 */
-	public KeyPair genKeyPair() {
-		if (!initialized) {
-			initializeDefault();
-		}
+    /**
+     * Generate a key pair, containing a {@link de.flexiprovider.core.dsa.DSAPublicKey} and a
+     * {@link de.flexiprovider.core.dsa.DSAPrivateKey}.
+     *
+     * @return the generated key pair
+     */
+    public KeyPair genKeyPair() {
+        if (!initialized) {
+            initializeDefault();
+        }
 
-		FlexiBigInt p = params.getPrimeP();
-		FlexiBigInt q = params.getPrimeQ();
-		FlexiBigInt g = params.getBaseG();
+        FlexiBigInt p = params.getPrimeP();
+        FlexiBigInt q = params.getPrimeQ();
+        FlexiBigInt g = params.getBaseG();
 
-		int N = q.bitLength();
+        int N = q.bitLength();
 
-		// generate the private x with 0 < x < q
-		FlexiBigInt x;
-		do {
-			x = new FlexiBigInt(N, random);
-		} while (x.compareTo(FlexiBigInt.ZERO) == 0 || x.compareTo(q) >= 0);
+        // generate the private x with 0 < x < q
+        FlexiBigInt x;
+        do {
+            x = new FlexiBigInt(N, random);
+        } while (x.compareTo(FlexiBigInt.ZERO) == 0 || x.compareTo(q) >= 0);
 
-		// compute the public y
-		FlexiBigInt y = g.modPow(x, p);
+        // compute the public y
+        FlexiBigInt y = g.modPow(x, p);
 
-		DSAPublicKey pubKey = new DSAPublicKey(y, params);
-		DSAPrivateKey privKey = new DSAPrivateKey(x, params);
+        DSAPublicKey pubKey = new DSAPublicKey(y, params);
+        DSAPrivateKey privKey = new DSAPrivateKey(x, params);
 
-		return new KeyPair(pubKey, privKey);
-	}
+        return new KeyPair(pubKey, privKey);
+    }
 
 }

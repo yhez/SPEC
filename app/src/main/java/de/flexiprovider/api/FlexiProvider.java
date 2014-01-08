@@ -22,7 +22,7 @@ import de.flexiprovider.api.exceptions.RegistrationException;
  * FlexiProvider library. It contains registration methods which provide
  * existence and type checking of the registered classes as well as an improved
  * alias handling.
- * 
+ *
  * @author Martin D�ring
  */
 public abstract class FlexiProvider extends Provider {
@@ -91,135 +91,118 @@ public abstract class FlexiProvider extends Provider {
     protected static final int KEY_AGREEMENT = 11;
 
     // array holding the algorithm type prefixes (indexed by algorithm type)
-    private static final String[] prefixes = { "Cipher.", "Mac.",
-	    "MessageDigest.", "SecureRandom.", "Signature.",
-	    "AlgorithmParameters.", "AlgorithmParameterGenerator.",
-	    "KeyGenerator.", "KeyPairGenerator.", "SecretKeyFactory.",
-	    "KeyFactory.", "KeyAgreement." };
+    private static final String[] prefixes = {"Cipher.", "Mac.",
+            "MessageDigest.", "SecureRandom.", "Signature.",
+            "AlgorithmParameters.", "AlgorithmParameterGenerator.",
+            "KeyGenerator.", "KeyPairGenerator.", "SecretKeyFactory.",
+            "KeyFactory.", "KeyAgreement."};
 
     // array holding all algorithm types (used for registration type checking)
-    private static final Class[] algClasses = { CipherSpi.class, MacSpi.class,
-	    MessageDigestSpi.class, SecureRandomSpi.class, SignatureSpi.class,
-	    AlgorithmParametersSpi.class, AlgorithmParameterGeneratorSpi.class,
-	    KeyGeneratorSpi.class, KeyPairGeneratorSpi.class,
-	    SecretKeyFactorySpi.class, KeyFactorySpi.class,
-	    KeyAgreementSpi.class };
+    private static final Class[] algClasses = {CipherSpi.class, MacSpi.class,
+            MessageDigestSpi.class, SecureRandomSpi.class, SignatureSpi.class,
+            AlgorithmParametersSpi.class, AlgorithmParameterGeneratorSpi.class,
+            KeyGeneratorSpi.class, KeyPairGeneratorSpi.class,
+            SecretKeyFactorySpi.class, KeyFactorySpi.class,
+            KeyAgreementSpi.class};
 
     /**
      * Construct a provider with the specified name, version number, and
      * provider information.
-     * 
-     * @param name
-     *                the provider name
-     * 
-     * @param version
-     *                the provider version number
-     * 
-     * @param info
-     *                a description of the provider and its services
+     *
+     * @param name    the provider name
+     * @param version the provider version number
+     * @param info    a description of the provider and its services
      */
     protected FlexiProvider(String name, double version, String info) {
-	super(name, version, info);
+        super(name, version, info);
     }
 
     /**
      * Register an algorithm of the given type under the given name.
-     * 
-     * @param type
-     *                the algorithm type
-     * @param algClass
-     *                the class implementing the algorithm
-     * @param algName
-     *                the name for the algorithm
-     * @throws de.flexiprovider.api.exceptions.RegistrationException
-     *                 if the expected and actual algorithm types do not match
-     *                 or an algorithm is already registered under the given
-     *                 name.
+     *
+     * @param type     the algorithm type
+     * @param algClass the class implementing the algorithm
+     * @param algName  the name for the algorithm
+     * @throws de.flexiprovider.api.exceptions.RegistrationException if the expected and actual algorithm types do not match
+     *                                                               or an algorithm is already registered under the given
+     *                                                               name.
      */
     protected void add(int type, Class algClass, String algName)
-	    throws RegistrationException {
-	add(type, algClass, new String[] { algName });
+            throws RegistrationException {
+        add(type, algClass, new String[]{algName});
     }
 
     /**
      * Register an algorithm of the given type under the given names.
-     * 
-     * @param type
-     *                the algorithm type
-     * @param algClass
-     *                the class implementing the algorithm
-     * @param algNames
-     *                the names for the algorithm
-     * @throws de.flexiprovider.api.exceptions.RegistrationException
-     *                 if the expected and actual algorithm types do not match
-     *                 or an algorithm is already registered under one of the
-     *                 given names.
+     *
+     * @param type     the algorithm type
+     * @param algClass the class implementing the algorithm
+     * @param algNames the names for the algorithm
+     * @throws de.flexiprovider.api.exceptions.RegistrationException if the expected and actual algorithm types do not match
+     *                                                               or an algorithm is already registered under one of the
+     *                                                               given names.
      */
     protected void add(int type, Class algClass, String[] algNames)
-	    throws RegistrationException {
+            throws RegistrationException {
 
-	String prefix = getPrefix(type);
-	// trivial cases
-	if ((prefix == null) || (algClass == null) || (algNames == null)
-		|| (algNames.length == 0)) {
-	    return;
-	}
+        String prefix = getPrefix(type);
+        // trivial cases
+        if ((prefix == null) || (algClass == null) || (algNames == null)
+                || (algNames.length == 0)) {
+            return;
+        }
 
-	// type checking
-	Class expClass = algClasses[type];
-	if (!expClass.isAssignableFrom(algClass)) {
-	    throw new RegistrationException(
-		    "expected and actual algorithm types do not match");
-	}
+        // type checking
+        Class expClass = algClasses[type];
+        if (!expClass.isAssignableFrom(algClass)) {
+            throw new RegistrationException(
+                    "expected and actual algorithm types do not match");
+        }
 
-	// register first name
-	put(prefix + algNames[0], algClass.getName());
+        // register first name
+        put(prefix + algNames[0], algClass.getName());
 
-	// register additional names (aliases)
-	for (int i = 1; i < algNames.length; i++) {
-	    put("Alg.Alias." + prefix + algNames[i], algNames[0]);
-	}
+        // register additional names (aliases)
+        for (int i = 1; i < algNames.length; i++) {
+            put("Alg.Alias." + prefix + algNames[i], algNames[0]);
+        }
     }
 
     /**
      * Assign an OID for the reverse mapping (OID -> algorithm name) to an
      * algorithm. Check whether the algorithm the OID is assigned to is
      * registered.
-     * 
-     * @param type
-     *                the algorithm type
-     * @param algName
-     *                the algorithm name
-     * @param oid
-     *                the OID used for reverse mapping
-     * @throws de.flexiprovider.api.exceptions.RegistrationException
-     *                 if the algorithm the OID is assigned to is not
-     *                 registered.
+     *
+     * @param type    the algorithm type
+     * @param algName the algorithm name
+     * @param oid     the OID used for reverse mapping
+     * @throws de.flexiprovider.api.exceptions.RegistrationException if the algorithm the OID is assigned to is not
+     *                                                               registered.
      */
     protected void addReverseOID(int type, String algName, String oid)
-	    throws RegistrationException {
-	// get prefix
-	String prefix = getPrefix(type);
-	if (prefix == null) {
-	    // unknown type
-	    return;
-	}
+            throws RegistrationException {
+        // get prefix
+        String prefix = getPrefix(type);
+        if (prefix == null) {
+            // unknown type
+            return;
+        }
 
-	// check if algorithm is registered
-	Object alg = get(prefix + algName);
-	if (alg == null) {
-	    throw new RegistrationException("no such algorithm: " + algName);
-	}
+        // check if algorithm is registered
+        Object alg = get(prefix + algName);
+        if (alg == null) {
+            throw new RegistrationException("no such algorithm: " + algName);
+        }
 
-	// register reverse OID alias
-	put("Alg.Alias." + prefix + "OID." + oid, algName);
+        // register reverse OID alias
+        put("Alg.Alias." + prefix + "OID." + oid, algName);
     }
 
     private static String getPrefix(int type) {
-	if (type > prefixes.length) {
-	    return null;
-	}
-	return prefixes[type];
+        if (type > prefixes.length) {
+            return null;
+        }
+        return prefixes[type];
     }
 
 }

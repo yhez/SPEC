@@ -10,12 +10,12 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
  * variants of the McEliece PKCS that are used with
  * {@link de.flexiprovider.pqc.ecc.mceliece.McElieceFujisakiCipher}, {@link de.flexiprovider.pqc.ecc.mceliece.McElieceKobaraImaiCipher}, and
  * {@link McEliecePointchevalCipher}.
- * 
+ *
+ * @author Elena Klintsevich
+ * @author Martin D�ring
  * @see de.flexiprovider.pqc.ecc.mceliece.McElieceFujisakiCipher
  * @see de.flexiprovider.pqc.ecc.mceliece.McElieceKobaraImaiCipher
  * @see McEliecePointchevalCipher
- * @author Elena Klintsevich
- * @author Martin D�ring
  */
 public class McElieceCCA2ParameterSpec implements AlgorithmParameterSpec {
 
@@ -30,33 +30,32 @@ public class McElieceCCA2ParameterSpec implements AlgorithmParameterSpec {
      * Construct the default parameters. Choose the
      */
     public McElieceCCA2ParameterSpec() {
-	this(DEFAULT_MD);
+        this(DEFAULT_MD);
     }
 
     /**
      * Constructor.
-     * 
-     * @param mdName
-     *                the name of the hash function
+     *
+     * @param mdName the name of the hash function
      */
     public McElieceCCA2ParameterSpec(String mdName) {
-	// check whether message digest is available
-	try {
-	    Registry.getMessageDigest(mdName);
-	} catch (NoSuchAlgorithmException nsae) {
-	    throw new InvalidParameterException("Message digest '" + mdName
-		    + "' not found'.");
-	}
+        // check whether message digest is available
+        try {
+            Registry.getMessageDigest(mdName);
+        } catch (NoSuchAlgorithmException nsae) {
+            throw new InvalidParameterException("Message digest '" + mdName
+                    + "' not found'.");
+        }
 
-	// assign message digest name
-	this.mdName = mdName;
+        // assign message digest name
+        this.mdName = mdName;
     }
 
     /**
      * @return the name of the hash function
      */
     public String getMDName() {
-	return mdName;
+        return mdName;
     }
 
 }

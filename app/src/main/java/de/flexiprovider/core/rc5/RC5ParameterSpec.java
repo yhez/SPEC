@@ -19,7 +19,7 @@ import de.flexiprovider.common.util.ByteUtils;
  * size. Values for the number of rounds are 8 to 127, with the default being
  * 12. Values for the word size are 16, 32, and 64 bits, with the default being
  * 32 bits.
- * 
+ *
  * @author Oliver Seiler
  * @author Martin Dring
  */
@@ -59,8 +59,8 @@ public class RC5ParameterSpec implements AlgorithmParameterSpec {
      * </ul>
      */
     public RC5ParameterSpec() {
-	numRounds = DEFAULT_NUM_ROUNDS;
-	wordSize = DEFAULT_WORD_SIZE;
+        numRounds = DEFAULT_NUM_ROUNDS;
+        wordSize = DEFAULT_WORD_SIZE;
     }
 
     /**
@@ -71,13 +71,12 @@ public class RC5ParameterSpec implements AlgorithmParameterSpec {
      * <li>number of rounds: {@link #DEFAULT_NUM_ROUNDS}</li>
      * <li>word size: {@link #DEFAULT_WORD_SIZE}</li>
      * </ul>
-     * 
-     * @param modeParams
-     *                the mode parameters containing the IV
+     *
+     * @param modeParams the mode parameters containing the IV
      */
     public RC5ParameterSpec(ModeParameterSpec modeParams) {
-	this();
-	iv = modeParams.getIV();
+        this();
+        iv = modeParams.getIV();
     }
 
     /**
@@ -86,24 +85,22 @@ public class RC5ParameterSpec implements AlgorithmParameterSpec {
      * is invalid, choose {@link #DEFAULT_NUM_ROUNDS}. If the word size is
      * invalid, choose the {@link #DEFAULT_WORD_SIZE}. The block size of RC5 is
      * twice the word size.
-     * 
-     * @param numRounds
-     *                the number of rounds (8...127)
-     * @param wordSize
-     *                the word size (16, 32, or 64 bits)
+     *
+     * @param numRounds the number of rounds (8...127)
+     * @param wordSize  the word size (16, 32, or 64 bits)
      */
     public RC5ParameterSpec(int numRounds, int wordSize) {
-	if ((numRounds < 8) || (numRounds > 127)) {
-	    this.numRounds = DEFAULT_NUM_ROUNDS;
-	} else {
-	    this.numRounds = numRounds;
-	}
+        if ((numRounds < 8) || (numRounds > 127)) {
+            this.numRounds = DEFAULT_NUM_ROUNDS;
+        } else {
+            this.numRounds = numRounds;
+        }
 
-	if ((wordSize != 16) && (wordSize != 32) && (wordSize != 64)) {
-	    this.wordSize = DEFAULT_WORD_SIZE;
-	} else {
-	    this.wordSize = wordSize;
-	}
+        if ((wordSize != 16) && (wordSize != 32) && (wordSize != 64)) {
+            this.wordSize = DEFAULT_WORD_SIZE;
+        } else {
+            this.wordSize = wordSize;
+        }
     }
 
     /**
@@ -112,75 +109,71 @@ public class RC5ParameterSpec implements AlgorithmParameterSpec {
      * If the number of rounds is invalid, choose {@link #DEFAULT_NUM_ROUNDS}.
      * If the word size is invalid, choose the {@link #DEFAULT_WORD_SIZE}. The
      * block size of RC5 is twice the word size.
-     * 
-     * @param numRounds
-     *                the number of rounds (8...127)
-     * @param wordSize
-     *                the word size (16, 32, or 64 bits)
-     * @param modeParams
-     *                the mode parameters containing the IV
+     *
+     * @param numRounds  the number of rounds (8...127)
+     * @param wordSize   the word size (16, 32, or 64 bits)
+     * @param modeParams the mode parameters containing the IV
      */
     public RC5ParameterSpec(int numRounds, int wordSize,
-	    ModeParameterSpec modeParams) {
-	this(numRounds, wordSize);
-	iv = modeParams.getIV();
+                            ModeParameterSpec modeParams) {
+        this(numRounds, wordSize);
+        iv = modeParams.getIV();
     }
 
     /**
      * @return the version number
      */
     public int getVersion() {
-	return RC5_v1_0;
+        return RC5_v1_0;
     }
 
     /**
      * @return the number of rounds
      */
     public int getNumRounds() {
-	return numRounds;
+        return numRounds;
     }
 
     /**
      * @return the word size in bits
      */
     public int getWordSize() {
-	return wordSize;
+        return wordSize;
     }
 
     /**
      * @return a copy of the initialization vector (IV) (maybe <tt>null</tt>)
      */
     public byte[] getIV() {
-	return ByteUtils.clone(iv);
+        return ByteUtils.clone(iv);
     }
 
     /**
      * Compare these parameters with another object.
-     * 
-     * @param other
-     *                the other object
+     *
+     * @param other the other object
      * @return the result of the comparison
      */
     public boolean equals(Object other) {
-	if ((other == null) || !(other instanceof RC5ParameterSpec)) {
-	    return false;
-	}
-	RC5ParameterSpec otherSpec = (RC5ParameterSpec) other;
+        if ((other == null) || !(other instanceof RC5ParameterSpec)) {
+            return false;
+        }
+        RC5ParameterSpec otherSpec = (RC5ParameterSpec) other;
 
-	return (numRounds == otherSpec.numRounds)
-		&& (wordSize == otherSpec.wordSize)
-		&& ByteUtils.equals(iv, otherSpec.iv);
+        return (numRounds == otherSpec.numRounds)
+                && (wordSize == otherSpec.wordSize)
+                && ByteUtils.equals(iv, otherSpec.iv);
     }
 
     /**
      * @return the hash code of these parameters
      */
     public int hashCode() {
-	int hash = RC5_v1_0 + numRounds + wordSize;
-	if (iv != null) {
-	    hash += iv.hashCode();
-	}
-	return hash;
+        int hash = RC5_v1_0 + numRounds + wordSize;
+        if (iv != null) {
+            hash += iv.hashCode();
+        }
+        return hash;
     }
 
 }

@@ -79,7 +79,6 @@ package codec.x509.extensions;
 import java.util.Iterator;
 
 import codec.asn1.ASN1BitString;
-import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1Sequence;
 import codec.asn1.ASN1SequenceOf;
 import codec.asn1.ASN1TaggedType;
@@ -129,60 +128,42 @@ public class DistributionPoint extends ASN1Sequence {
     private ASN1Sequence cRLIssuer_;
 
     public DistributionPoint() {
-	/*
+    /*
 	 * We do not support both choices of DistributionPointName, hence we
 	 * directly initialize the one we support rather than going through an
 	 * ASN1Choice (which just adds another layer of complication).
 	 */
-	fullName_ = new ASN1SequenceOf(GeneralName.class);
+        fullName_ = new ASN1SequenceOf(GeneralName.class);
 
 	/*
 	 * We wrap the only CHOICE we support into the appropriate tagged type.
 	 */
-	distributionPoint_ = new ASN1TaggedType(TAG_FULL_NAME, fullName_,
-		false, false);
+        distributionPoint_ = new ASN1TaggedType(TAG_FULL_NAME, fullName_,
+                false, false);
 	/*
 	 * We wrap again. Flags are EXPLICIT and OPTIONAL.
 	 */
-	distributionPointTag_ = new ASN1TaggedType(TAG_DISTRIBUTION_POINT,
-		distributionPoint_, true, true);
+        distributionPointTag_ = new ASN1TaggedType(TAG_DISTRIBUTION_POINT,
+                distributionPoint_, true, true);
 	/*
 	 * Finally, we add the tagged type.
 	 */
-	add(distributionPointTag_);
+        add(distributionPointTag_);
 
 	/*
 	 * Next element with tag [1].
 	 */
-	reasons_ = new ASN1BitString();
-	reasonsTag_ = new ASN1TaggedType(TAG_REASONS, reasons_, false, true);
-	add(reasonsTag_);
+        reasons_ = new ASN1BitString();
+        reasonsTag_ = new ASN1TaggedType(TAG_REASONS, reasons_, false, true);
+        add(reasonsTag_);
 
 	/*
 	 * Final element with tag [2].
 	 */
-	cRLIssuer_ = new ASN1SequenceOf(GeneralName.class);
-	cRLIssuerTag_ = new ASN1TaggedType(TAG_CRL_ISSUER, cRLIssuer_, false,
-		true);
-	add(cRLIssuerTag_);
-    }
-
-    public void setReasons(boolean flags[]) throws ASN1Exception {
-	if (flags.length > 7) {
-	    throw new ASN1Exception("Wrong number of flags!");
-	}
-	reasons_.setBits(flags);
-	reasonsTag_.setOptional(false);
-    }
-
-    public void addDistributionPointName(GeneralName aName) {
-	fullName_.add(aName);
-	distributionPointTag_.setOptional(false);
-    }
-
-    public void addCRLIssuer(GeneralName aName) {
-	cRLIssuer_.add(aName);
-	cRLIssuerTag_.setOptional(false);
+        cRLIssuer_ = new ASN1SequenceOf(GeneralName.class);
+        cRLIssuerTag_ = new ASN1TaggedType(TAG_CRL_ISSUER, cRLIssuer_, false,
+                true);
+        add(cRLIssuerTag_);
     }
 
     /**
@@ -191,10 +172,10 @@ public class DistributionPoint extends ASN1Sequence {
      * supported yet and will return null in this case!
      */
     public ASN1Sequence getDistributionPointNames() {
-	if (distributionPointTag_.isOptional()) {
-	    return null;
-	}
-	return fullName_;
+        if (distributionPointTag_.isOptional()) {
+            return null;
+        }
+        return fullName_;
     }
 
     /**
@@ -202,55 +183,55 @@ public class DistributionPoint extends ASN1Sequence {
      * RelativeDistinguishedName not implemented yet!
      */
     public String[] getDPURLs() {
-	ASN1Sequence names;
-	GeneralName gn;
-	Iterator i;
-	String[] res;
-	int n;
+        ASN1Sequence names;
+        GeneralName gn;
+        Iterator i;
+        String[] res;
+        int n;
 
-	names = getDistributionPointNames();
+        names = getDistributionPointNames();
 
-	if (names == null) {
-	    return null;
-	}
-	res = new String[names.size()];
+        if (names == null) {
+            return null;
+        }
+        res = new String[names.size()];
 
-	for (n = 0, i = names.iterator(); i.hasNext(); n++) {
-	    try {
-		gn = (GeneralName) i.next();
-		res[n] = gn.getGeneralName().getValue().toString();
-	    } catch (codec.x509.X509Exception ex) {
-		res[n] = "<could not decode this URL!>";
-	    }
-	}
-	return res;
+        for (n = 0, i = names.iterator(); i.hasNext(); n++) {
+            try {
+                gn = (GeneralName) i.next();
+                res[n] = gn.getGeneralName().getValue().toString();
+            } catch (codec.x509.X509Exception ex) {
+                res[n] = "<could not decode this URL!>";
+            }
+        }
+        return res;
     }
 
     public String toString(String offset) {
-	StringBuffer buf;
-	String[] dps;
+        StringBuffer buf;
+        String[] dps;
 
-	buf = new StringBuffer(offset + "DistributionPoint {\n");
-	dps = getDPURLs();
+        buf = new StringBuffer(offset + "DistributionPoint {\n");
+        dps = getDPURLs();
 
-	if (dps == null) {
-	    buf.append(offset + "No URLs\n");
-	} else {
-	    for (int i = 0; i < dps.length; i++) {
-		buf.append(offset + dps[i]);
-		buf.append("\n");
-	    }
-	}
-	if (!this.cRLIssuerTag_.isOptional()) {
-	    buf.append("CRL Issuers:\n" + cRLIssuer_.toString());
-	}
+        if (dps == null) {
+            buf.append(offset + "No URLs\n");
+        } else {
+            for (int i = 0; i < dps.length; i++) {
+                buf.append(offset + dps[i]);
+                buf.append("\n");
+            }
+        }
+        if (!this.cRLIssuerTag_.isOptional()) {
+            buf.append("CRL Issuers:\n" + cRLIssuer_.toString());
+        }
 
-	buf.append(offset + "}\n");
+        buf.append(offset + "}\n");
 
-	return buf.toString();
+        return buf.toString();
     }
 
     public String toString() {
-	return toString("");
+        return toString("");
     }
 }

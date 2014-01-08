@@ -14,7 +14,7 @@ import de.flexiprovider.common.util.ByteUtils;
 
 /**
  * This class implements a key for the CMAC-algorithm.
- * 
+ *
  * @author Paul Nguentcheu
  */
 public class CMacKey implements SecretKey {
@@ -26,38 +26,37 @@ public class CMacKey implements SecretKey {
 
     /**
      * Constructor of a CMacKey
-     * 
-     * @param keyBytes
-     *                the key bytes
+     *
+     * @param keyBytes the key bytes
      */
     protected CMacKey(byte[] keyBytes) {
-	this.keyBytes = ByteUtils.clone(keyBytes);
+        this.keyBytes = ByteUtils.clone(keyBytes);
     }
 
     /**
      * Return the name of the algorithm.
-     * 
+     *
      * @return "Cmac"
      */
     public String getAlgorithm() {
-	return "Cmac";
+        return "Cmac";
     }
 
     /**
      * @return a copy of the key bytes
      */
     public byte[] getEncoded() {
-	return ByteUtils.clone(keyBytes);
+        return ByteUtils.clone(keyBytes);
 
     }
 
     /**
      * Returns the format of the key (RAW)
-     * 
+     *
      * @return the format of the key (RAW)
      */
     public String getFormat() {
-	return "RAW";
+        return "RAW";
     }
 
 }

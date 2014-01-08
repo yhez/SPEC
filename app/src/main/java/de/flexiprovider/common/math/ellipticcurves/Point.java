@@ -13,7 +13,7 @@ import de.flexiprovider.ec.parameters.CurveParams;
  * over finite prime fields as well as over finite fields with characteristic 2.
  * There is a variety of methods for point multiplication. See the references
  * for complexity and details.
- * <P>
+ * <p/>
  * <table cellpadding="2" cellspacing="2" border="1" width="90% align="center"">
  * <tbody>
  * <tr>
@@ -85,7 +85,7 @@ import de.flexiprovider.ec.parameters.CurveParams;
  * </td>
  * </tr>
  * </tbody> </table>
- * 
+ *
  * @author Birgit Henhapl
  * @see EllipticCurve
  * @see PointGFP
@@ -99,7 +99,7 @@ public abstract class Point {
 
     /**
      * The elliptic curve this point is on.
-     * 
+     *
      * @see EllipticCurve
      */
     protected EllipticCurve mE;
@@ -131,9 +131,8 @@ public abstract class Point {
 
     /**
      * Compare this point with another object.
-     * 
-     * @param other
-     *                the other object
+     *
+     * @param other the other object
      * @return the result of the comparison
      */
     public abstract boolean equals(Object other);
@@ -151,7 +150,7 @@ public abstract class Point {
      * @return the underlying elliptic curve
      */
     public final EllipticCurve getE() {
-	return mE;
+        return mE;
     }
 
     /**
@@ -181,26 +180,26 @@ public abstract class Point {
 
     /**
      * Returns this point with affin coordinates.
-     * 
+     *
      * @return <tt>this</tt>
      */
     public abstract Point getAffin();
 
     /**
      * Test whether this point is on curve E.
-     * 
+     *
      * @return <tt>true</tt> if <tt>this</tt> == O or if (<tt>mX</tt>,
-     *         <tt>mY</tt>) is on <tt>mE</tt><br>
-     *         <tt>false</tt> if (<tt>mX</tt>, <tt>mY</tt>) is not on
-     *         <tt>mE</tt>
+     * <tt>mY</tt>) is on <tt>mE</tt><br>
+     * <tt>false</tt> if (<tt>mX</tt>, <tt>mY</tt>) is not on
+     * <tt>mE</tt>
      */
     public abstract boolean onCurve();
 
     /**
      * Tests, whether this point is at infinity.
-     * 
+     *
      * @return <tt>true</tt> if <tt>this</tt> == O<br>
-     *         <tt>false</tt> if <tt>this</tt> != O
+     * <tt>false</tt> if <tt>this</tt> != O
      */
     public abstract boolean isZero();
 
@@ -210,14 +209,13 @@ public abstract class Point {
 
     /**
      * Tests whether this point is the negative of other.
-     * 
-     * @param other
-     *                point to compare this point with
+     *
+     * @param other point to compare this point with
      * @return <tt>true</tt> if <tt>this == -other</tt>, <tt>false</tt>
-     *         otherwise.
+     * otherwise.
      */
     public final boolean isNegativeOf(Point other) {
-	return equals(other.negate());
+        return equals(other.negate());
     }
 
     // ////////////////////////////////////////////////////////////////////
@@ -226,63 +224,53 @@ public abstract class Point {
 
     /**
      * Adds to this point the point <tt>other</tt>.
-     * 
-     * @param other
-     *                point to add to this point
-     * @throws DifferentCurvesException
-     *                 when <tt>other</tt> is defined over another curve
+     *
+     * @param other point to add to this point
      * @return <tt>this</tt> + <tt>other</tt>
+     * @throws DifferentCurvesException when <tt>other</tt> is defined over another curve
      */
     public abstract Point add(Point other) throws DifferentCurvesException;
 
     /**
      * Adds to this point the point <tt>other</tt>.
-     * 
-     * @param other
-     *                point to add to this point
-     * @throws DifferentCurvesException
-     *                 when <tt>other</tt> is defined over another curve
+     *
+     * @param other point to add to this point
+     * @throws DifferentCurvesException when <tt>other</tt> is defined over another curve
      */
     public abstract void addToThis(Point other) throws DifferentCurvesException;
 
     /**
      * Adds in affine coordinates to this point the point <code>other</code>.
-     * 
-     * @param other
-     *                point to add to this point
-     * @exception DifferentCurvesException
-     *                    when <code>other</code> is defined over another
-     *                    curve
+     *
+     * @param other point to add to this point
      * @return <code>this</code> + <code>other</code> in affine coordinates
+     * @throws DifferentCurvesException when <code>other</code> is defined over another
+     *                                  curve
      */
     public abstract Point addAffine(Point other)
-	    throws DifferentCurvesException;
+            throws DifferentCurvesException;
 
     /**
      * Subtracts the point <tt>other</tt> from this point.
-     * 
-     * @param other
-     *                point to subtract from this point
+     *
+     * @param other point to subtract from this point
      * @return <tt>this</tt> - <tt>other</tt>
-     * @throws DifferentCurvesException
-     *                 if <tt>other</tt> is defined over a different curve
+     * @throws DifferentCurvesException if <tt>other</tt> is defined over a different curve
      */
     public abstract Point subtract(Point other) throws DifferentCurvesException;
 
     /**
      * Subtracts the point <tt>other</tt> from this point.
-     * 
-     * @param other
-     *                point to subtract from this point
-     * @throws DifferentCurvesException
-     *                 if <tt>other</tt> is defined over a different curve
+     *
+     * @param other point to subtract from this point
+     * @throws DifferentCurvesException if <tt>other</tt> is defined over a different curve
      */
     public abstract void subtractFromThis(Point other)
-	    throws DifferentCurvesException;
+            throws DifferentCurvesException;
 
     /**
      * Doubles this point.
-     * 
+     *
      * @return 2*<tt>this</tt>
      */
     public abstract Point multiplyBy2();
@@ -294,7 +282,7 @@ public abstract class Point {
 
     /**
      * Doubles this point in affine coordinates.
-     * 
+     *
      * @return 2*<code>this</code> in affine coordinates
      */
     public abstract Point multiplyBy2Affine();
@@ -317,60 +305,54 @@ public abstract class Point {
      * Encode this point into a byte array (octet string) using the specified
      * encoding format (one of {@link #ENCODING_TYPE_UNCOMPRESSED},
      * {@link #ENCODING_TYPE_COMPRESSED}, and {@link #ENCODING_TYPE_HYBRID}).
-     * 
-     * @param type
-     *                the encoding format
+     *
+     * @param type the encoding format
      * @return the encoded point, or <tt>null</tt> if the encoding format is
-     *         unknown.
+     * unknown.
      */
     public final byte[] EC2OSP(int type) {
-	switch (type) {
-	case ENCODING_TYPE_COMPRESSED:
-	    return encodeCompressed();
-	case ENCODING_TYPE_UNCOMPRESSED:
-	    return encodeUncompressed();
-	case ENCODING_TYPE_HYBRID:
-	    return encodeHybrid();
-	default:
-	    return null;
-	}
+        switch (type) {
+            case ENCODING_TYPE_COMPRESSED:
+                return encodeCompressed();
+            case ENCODING_TYPE_UNCOMPRESSED:
+                return encodeUncompressed();
+            case ENCODING_TYPE_HYBRID:
+                return encodeHybrid();
+            default:
+                return null;
+        }
     }
 
     /**
      * Decode the encoded point given as byte array using the given EC domain
      * parameters.
-     * 
-     * @param encoded
-     *                the encoded point
-     * @param params
-     *                the EC domain parameters
+     *
+     * @param encoded the encoded point
+     * @param params  the EC domain parameters
      * @return the decoded point
-     * @throws InvalidPointException
-     *                 if the point is encoded in hybrid format and the given
-     *                 and the decoded y-coordinates don't match.
-     * @throws InvalidFormatException
-     *                 if the encoded point is given in an invalid encoding
-     *                 format.
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterSpecException
-     *                 if the parameters are defined neither over GF(2^n) nor
-     *                 over GF(p).
+     * @throws InvalidPointException                                         if the point is encoded in hybrid format and the given
+     *                                                                       and the decoded y-coordinates don't match.
+     * @throws InvalidFormatException                                        if the encoded point is given in an invalid encoding
+     *                                                                       format.
+     * @throws de.flexiprovider.api.exceptions.InvalidParameterSpecException if the parameters are defined neither over GF(2^n) nor
+     *                                                                       over GF(p).
      */
     public static Point OS2ECP(byte[] encoded, CurveParams params)
-	    throws InvalidPointException, InvalidFormatException,
-	    InvalidParameterSpecException {
-	EllipticCurve mE = params.getE();
+            throws InvalidPointException, InvalidFormatException,
+            InvalidParameterSpecException {
+        EllipticCurve mE = params.getE();
 
-	Point mW;
-	if (mE instanceof EllipticCurveGF2n) {
-	    mW = new PointGF2n(encoded, (EllipticCurveGF2n) mE);
-	} else if (mE instanceof EllipticCurveGFP) {
-	    mW = new PointGFP(encoded, (EllipticCurveGFP) mE);
-	} else {
-	    throw new InvalidParameterSpecException(
-		    "the parameters are defined neither over GF(p) nor over GF(2^n)");
-	}
+        Point mW;
+        if (mE instanceof EllipticCurveGF2n) {
+            mW = new PointGF2n(encoded, (EllipticCurveGF2n) mE);
+        } else if (mE instanceof EllipticCurveGFP) {
+            mW = new PointGFP(encoded, (EllipticCurveGFP) mE);
+        } else {
+            throw new InvalidParameterSpecException(
+                    "the parameters are defined neither over GF(p) nor over GF(2^n)");
+        }
 
-	return mW;
+        return mW;
     }
 
     /**
@@ -379,7 +361,7 @@ public abstract class Point {
      * uncompressed format. The rest of the returned array is split in two
      * halves, the first holds the x-coordinate <tt>mX</tt> and the second
      * they-coordinate <tt>mY</tt>.
-     * 
+     *
      * @return <tt>this</tt> as byte array
      */
     abstract byte[] encodeUncompressed();
@@ -389,7 +371,7 @@ public abstract class Point {
      * byte keeps the value 2 or 3, to indicate, that this point is stored in a
      * compressed format. The rest of the returned array is the x-coordinate
      * <tt>mX</tt>.
-     * 
+     *
      * @return <tt>this</tt> as byte array
      */
     abstract byte[] encodeCompressed();
@@ -400,7 +382,7 @@ public abstract class Point {
      * hybrid format. The rest of the returned array is split in two halves, the
      * first holds the x-coordinate <tt>mX</tt> and the second they-coordinate
      * <tt>mY</tt>.
-     * 
+     *
      * @return <tt>this</tt> as byte array
      */
     abstract byte[] encodeHybrid();

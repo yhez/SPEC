@@ -5,7 +5,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 /**
  * This class specifies parameters used for initializing the
  * {@link de.flexiprovider.core.rc2.RC2KeyGenerator}. The parameters consist of the key size in bits.
- * 
+ *
  * @author Martin D�ring
  */
 public class RC2KeyGenParameterSpec implements AlgorithmParameterSpec {
@@ -23,29 +23,28 @@ public class RC2KeyGenParameterSpec implements AlgorithmParameterSpec {
      * {@link #DEFAULT_KEY_SIZE}.
      */
     public RC2KeyGenParameterSpec() {
-	keySize = DEFAULT_KEY_SIZE;
+        keySize = DEFAULT_KEY_SIZE;
     }
 
     /**
      * Construct new parameters from the given key size. If key size is &lt; 1,
      * the {@link #DEFAULT_KEY_SIZE default key size} is chosen.
-     * 
-     * @param keySize
-     *                the key size in bits
+     *
+     * @param keySize the key size in bits
      */
     public RC2KeyGenParameterSpec(int keySize) {
-	if (keySize < 1) {
-	    this.keySize = DEFAULT_KEY_SIZE;
-	} else {
-	    this.keySize = keySize;
-	}
+        if (keySize < 1) {
+            this.keySize = DEFAULT_KEY_SIZE;
+        } else {
+            this.keySize = keySize;
+        }
     }
 
     /**
      * @return the key size in bits
      */
     public int getKeySize() {
-	return keySize;
+        return keySize;
     }
 
 }

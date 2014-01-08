@@ -16,9 +16,9 @@ import de.flexiprovider.common.math.FlexiBigInt;
 
 /**
  * This class specifies an ElGamal public key.
- * 
- * @see de.flexiprovider.core.elgamal.ElGamalKeyFactory
+ *
  * @author Thomas Wahrenbruch
+ * @see de.flexiprovider.core.elgamal.ElGamalKeyFactory
  */
 public class ElGamalPublicKeySpec implements KeySpec {
 
@@ -39,40 +39,40 @@ public class ElGamalPublicKeySpec implements KeySpec {
 
     /**
      * The constructor.
-     * 
-     * @param modulus -
-     *                the prime modulus which specifies the group
+     *
+     * @param modulus   -
+     *                  the prime modulus which specifies the group
      * @param generator -
-     *                a generator of the group
-     * @param publicA -
-     *                the public value <tt>A = g<sup>a</sup> mod modulus</tt>
+     *                  a generator of the group
+     * @param publicA   -
+     *                  the public value <tt>A = g<sup>a</sup> mod modulus</tt>
      */
     public ElGamalPublicKeySpec(FlexiBigInt modulus, FlexiBigInt generator,
-	    FlexiBigInt publicA) {
-	this.modulus = modulus;
-	this.generator = generator;
-	this.publicA = publicA;
+                                FlexiBigInt publicA) {
+        this.modulus = modulus;
+        this.generator = generator;
+        this.publicA = publicA;
     }
 
     /**
      * @return the prime modulus
      */
     public FlexiBigInt getModulus() {
-	return modulus;
+        return modulus;
     }
 
     /**
      * @return the generator
      */
     public FlexiBigInt getGenerator() {
-	return generator;
+        return generator;
     }
 
     /**
      * @return the public value <tt>A = g<sup>a</sup> mod modulus</tt>
      */
     public FlexiBigInt getPublicA() {
-	return publicA;
+        return publicA;
     }
 
 }

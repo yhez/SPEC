@@ -79,11 +79,11 @@ package codec;
 /**
  * A converter that converts binary data into strings of hexadecimal characters
  * and vice versa.
- * 
+ *
  * @author Volker Roth
  * @version "$Id: Hex.java,v 1.2 2005/04/06 09:31:01 flautens Exp $"
  */
-public final class Hex extends Object {
+public final class Hex {
     /**
      * This class is never instantiated; use the class methods instead.
      */
@@ -95,92 +95,89 @@ public final class Hex extends Object {
      * being encoded with the corresponding character.
      */
     private static final char[] HEX_ = new String("0123456789abcdef")
-	    .toCharArray();
+            .toCharArray();
 
     /**
      * Encodes the input array of bytes into a hexadecimal encoded string.
-     * 
-     * @param in
-     *                The byte array to be encoded.
+     *
+     * @param in The byte array to be encoded.
      * @return The hexadecimal encoded String representing the input byte array.
      */
     public static String encode(byte[] in) {
-	StringBuffer out;
-	int m;
-	int n;
-	int k;
+        StringBuffer out;
+        int m;
+        int n;
+        int k;
 
-	if (in.length == 0) {
-	    return new String();
-	}
-	out = new StringBuffer(in.length * 2);
+        if (in.length == 0) {
+            return new String();
+        }
+        out = new StringBuffer(in.length * 2);
 
-	for (n = 0; n < in.length; n++) {
-	    m = in[n];
-	    k = (m >>> 4) & 0x0f;
+        for (n = 0; n < in.length; n++) {
+            m = in[n];
+            k = (m >>> 4) & 0x0f;
 
-	    out.append(HEX_[k]);
+            out.append(HEX_[k]);
 
-	    k = (m & 0x0f);
+            k = (m & 0x0f);
 
-	    out.append(HEX_[k]);
-	}
-	return out.toString();
+            out.append(HEX_[k]);
+        }
+        return out.toString();
     }
 
     /**
      * Decodes a hexadecimal encoded string into an array of bytes with exactly
      * the length of the encoded data.
-     * 
-     * @param in
-     *                The encoded hexadecimal character String.
+     *
+     * @param in The encoded hexadecimal character String.
      * @return The decoded data.
-     * @throws CorruptedCodeException
-     *                 if the hexadecimal code contains errors such as a missing
-     *                 character.
+     * @throws CorruptedCodeException if the hexadecimal code contains errors such as a missing
+     *                                character.
      */
     public static byte[] decode(String in) throws CorruptedCodeException {
-	byte[] buf;
-	int a;
-	int b;
-	int j;
-	int n;
+        byte[] buf;
+        int a;
+        int b;
+        int j;
+        int n;
 
-	if (in.length() == 0) {
-	    return new byte[0];
-	}
-	n = in.length();
+        if (in.length() == 0) {
+            return new byte[0];
+        }
+        n = in.length();
 
-	if ((n % 2) == 1) {
-	    throw new CorruptedCodeException("uneven input length");
-	}
-	n = n / 2;
-	buf = new byte[n];
+        if ((n % 2) == 1) {
+            throw new CorruptedCodeException("uneven input length");
+        }
+        n = n / 2;
+        buf = new byte[n];
 
-	for (j = 0, n = 0; n < buf.length; n++) {
-	    a = in.charAt(j++);
-	    b = in.charAt(j++);
+        for (j = 0, n = 0; n < buf.length; n++) {
+            a = in.charAt(j++);
+            b = in.charAt(j++);
 
-	    if (('0' <= a) && (a <= '9')) {
-		a = a - '0';
-	    } else if (('a' <= a) && (a <= 'f')) {
-		a = a - 'a' + 10;
-	    } else if (('A' <= a) && (a <= 'F')) {
-		a = a - 'A' + 10;
-	    } else {
-		throw new CorruptedCodeException("Illegal char: '" + a + "'");
-	    }
-	    if (('0' <= b) && (b <= '9')) {
-		b = b - '0';
-	    } else if (('a' <= b) && (b <= 'f')) {
-		b = b - 'a' + 10;
-	    } else if (('A' <= b) && (b <= 'F')) {
-		b = b - 'A' + 10;
-	    } else {
-		throw new CorruptedCodeException("Illegal char: '" + b + "'");
-	    }
-	    buf[n] = (byte) ((a << 4) | b);
-	}
-	return buf;
+            if (('0' <= a) && (a <= '9')) {
+                a = a - '0';
+            } else if (('a' <= a) && (a <= 'f')) {
+                a = a - 'a' + 10;
+            } else if (('A' <= a) && (a <= 'F')) {
+                a = a - 'A' + 10;
+            } else {
+                throw new CorruptedCodeException("Illegal char: '" + a + "'");
+            }
+            if (('0' <= b) && (b <= '9')) {
+                b = b - '0';
+            } else if (('a' <= b) && (b <= 'f')) {
+                b = b - 'a' + 10;
+            } else if (('A' <= b) && (b <= 'F')) {
+                b = b - 'A' + 10;
+            } else {
+                throw new CorruptedCodeException("Illegal char: '" + b + "'");
+            }
+            buf[n] = (byte) ((a << 4) | b);
+        }
+        return buf;
     }
 }

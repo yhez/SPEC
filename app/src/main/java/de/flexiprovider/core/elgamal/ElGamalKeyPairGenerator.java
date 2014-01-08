@@ -22,7 +22,7 @@ import de.flexiprovider.common.math.IntegerFunctions;
  * (implemented by {@link de.flexiprovider.core.elgamal.ElGamal}). It can be initialized with the bit length
  * of the prime <tt>p</tt>. The default bit length of the prime <tt>p</tt>
  * is 1024 bits.
- * 
+ *
  * @author Thomas Wahrenbruch
  * @author Martin D�ring
  */
@@ -53,67 +53,62 @@ public class ElGamalKeyPairGenerator extends KeyPairGenerator {
      * source of randomness. If the parameters are <tt>null</tt>, the
      * {@link ElGamalKeyGenParameterSpec#ElGamalKeyGenParameterSpec() default parameters}
      * are used.
-     * 
-     * @param params
-     *                the parameters
-     * @param random
-     *                the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     *                 if the parameters are not an instance of
-     *                 {@link ElGamalKeyGenParameterSpec}.
+     *
+     * @param params the parameters
+     * @param random the source of randomness
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are not an instance of
+     *                                                                            {@link ElGamalKeyGenParameterSpec}.
      */
     public void initialize(AlgorithmParameterSpec params, SecureRandom random)
-	    throws InvalidAlgorithmParameterException {
+            throws InvalidAlgorithmParameterException {
 
-	ElGamalKeyGenParameterSpec elGamalParams;
-	if (params == null) {
-	    elGamalParams = new ElGamalKeyGenParameterSpec();
-	} else if (params instanceof ElGamalKeyGenParameterSpec) {
-	    elGamalParams = (ElGamalKeyGenParameterSpec) params;
-	} else {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
+        ElGamalKeyGenParameterSpec elGamalParams;
+        if (params == null) {
+            elGamalParams = new ElGamalKeyGenParameterSpec();
+        } else if (params instanceof ElGamalKeyGenParameterSpec) {
+            elGamalParams = (ElGamalKeyGenParameterSpec) params;
+        } else {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
 
-	keySize = elGamalParams.getKeySize();
-	this.random = random != null ? random : Registry.getSecureRandom();
+        keySize = elGamalParams.getKeySize();
+        this.random = random != null ? random : Registry.getSecureRandom();
 
-	initialized = true;
+        initialized = true;
     }
 
     /**
      * Initialize the key pair generator with the specified key size and source
      * of randomness.
-     * 
-     * @param keySize
-     *                the bit length of the prime <tt>p</tt>
-     * @param random
-     *                the source of randomness
+     *
+     * @param keySize the bit length of the prime <tt>p</tt>
+     * @param random  the source of randomness
      */
     public void initialize(int keySize, SecureRandom random) {
-	ElGamalKeyGenParameterSpec params = new ElGamalKeyGenParameterSpec(
-		keySize);
-	try {
-	    initialize(params, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        ElGamalKeyGenParameterSpec params = new ElGamalKeyGenParameterSpec(
+                keySize);
+        try {
+            initialize(params, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     private void initializeDefault() {
-	ElGamalKeyGenParameterSpec defaultParams = new ElGamalKeyGenParameterSpec();
-	try {
-	    initialize(defaultParams, Registry.getSecureRandom());
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        ElGamalKeyGenParameterSpec defaultParams = new ElGamalKeyGenParameterSpec();
+        try {
+            initialize(defaultParams, Registry.getSecureRandom());
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Generate a key pair, containing an {@link de.flexiprovider.core.elgamal.ElGamalPublicKey} and an
      * {@link de.flexiprovider.core.elgamal.ElGamalPrivateKey}.
-     * <p>
+     * <p/>
      * The prime <tt>p</tt> is always of the form <tt>2*q+1</tt>. The
      * algorithm generates a prime number <tt>q</tt> and computes
      * <tt>p = 2*q+1</tt> until <tt>p</tt> is prime. Then, a generator of
@@ -122,69 +117,69 @@ public class ElGamalKeyPairGenerator extends KeyPairGenerator {
      * key parameters are <tt>A = g<sup>a</sup> mod p</tt>, <tt>p</tt>,
      * and <tt>g</tt>. The private key parameters are <tt>a</tt>,
      * <tt>p</tt>, and <tt>g</tt>.
-     * 
+     *
      * @return the generated key pair
      */
     public KeyPair genKeyPair() {
-	if (!initialized) {
-	    initializeDefault();
-	}
+        if (!initialized) {
+            initializeDefault();
+        }
 
 	/*
-	 * Implements an algorithm to find a strong prime. A strong prime p is
+     * Implements an algorithm to find a strong prime. A strong prime p is
 	 * given, if <tt>p = 2p'+1</tt> and p' is also prime (Sophie Germain
 	 * prime). This algorithm implements the suggestion of Cramer Shoup,
 	 * "Signature Schemes based on the strong RSA assumption", 2000.
 	 */
 
-	FlexiBigInt germainPrime;
-	FlexiBigInt strongPrime;
+        FlexiBigInt germainPrime;
+        FlexiBigInt strongPrime;
 
-	do {
-	    FlexiBigInt two2GermainPrime;
-	    do {
-		do {
-		    do {
-			do {
-			    germainPrime = new FlexiBigInt(keySize - 1, random);
-			    strongPrime = (germainPrime.shiftLeft(1))
-				    .add(FlexiBigInt.ONE);
-			} while (strongPrime.bitLength() != keySize);
-		    } while (!IntegerFunctions
-			    .passesSmallPrimeTest(germainPrime)
-			    || !IntegerFunctions
-				    .passesSmallPrimeTest(strongPrime));
-		} while (!germainPrime.isProbablePrime(CERTAINTY));
-		two2GermainPrime = TWO.modPow(germainPrime, strongPrime);
-	    } while (!two2GermainPrime.equals(FlexiBigInt.ONE)
-		    && !two2GermainPrime.subtract(strongPrime).equals(MINUSONE));
-	} while (!germainPrime.isProbablePrime(CERTAINTY));
+        do {
+            FlexiBigInt two2GermainPrime;
+            do {
+                do {
+                    do {
+                        do {
+                            germainPrime = new FlexiBigInt(keySize - 1, random);
+                            strongPrime = (germainPrime.shiftLeft(1))
+                                    .add(FlexiBigInt.ONE);
+                        } while (strongPrime.bitLength() != keySize);
+                    } while (!IntegerFunctions
+                            .passesSmallPrimeTest(germainPrime)
+                            || !IntegerFunctions
+                            .passesSmallPrimeTest(strongPrime));
+                } while (!germainPrime.isProbablePrime(CERTAINTY));
+                two2GermainPrime = TWO.modPow(germainPrime, strongPrime);
+            } while (!two2GermainPrime.equals(FlexiBigInt.ONE)
+                    && !two2GermainPrime.subtract(strongPrime).equals(MINUSONE));
+        } while (!germainPrime.isProbablePrime(CERTAINTY));
 
-	FlexiBigInt p = strongPrime;
-	FlexiBigInt q = germainPrime;
+        FlexiBigInt p = strongPrime;
+        FlexiBigInt q = germainPrime;
 
-	// find a generator
-	FlexiBigInt g, gPowTwo, gPowQ;
-	do {
-	    g = new FlexiBigInt(keySize - 1, random);
-	    gPowTwo = g.modPow(TWO, p);
-	    gPowQ = g.modPow(q, p);
-	} while (gPowTwo.equals(FlexiBigInt.ONE)
-		|| gPowQ.equals(FlexiBigInt.ONE) || g.equals(FlexiBigInt.ZERO));
+        // find a generator
+        FlexiBigInt g, gPowTwo, gPowQ;
+        do {
+            g = new FlexiBigInt(keySize - 1, random);
+            gPowTwo = g.modPow(TWO, p);
+            gPowQ = g.modPow(q, p);
+        } while (gPowTwo.equals(FlexiBigInt.ONE)
+                || gPowQ.equals(FlexiBigInt.ONE) || g.equals(FlexiBigInt.ZERO));
 
-	FlexiBigInt pMinusOne = p.subtract(FlexiBigInt.ONE);
+        FlexiBigInt pMinusOne = p.subtract(FlexiBigInt.ONE);
 
-	FlexiBigInt a;
-	do {
-	    a = new FlexiBigInt(keySize, random);
-	} while ((a.compareTo(pMinusOne)) >= 0);
+        FlexiBigInt a;
+        do {
+            a = new FlexiBigInt(keySize, random);
+        } while ((a.compareTo(pMinusOne)) >= 0);
 
-	FlexiBigInt A = g.modPow(a, p);
+        FlexiBigInt A = g.modPow(a, p);
 
-	ElGamalPublicKey pub = new ElGamalPublicKey(p, g, A);
-	ElGamalPrivateKey priv = new ElGamalPrivateKey(p, g, A, a);
+        ElGamalPublicKey pub = new ElGamalPublicKey(p, g, A);
+        ElGamalPrivateKey priv = new ElGamalPrivateKey(p, g, A, a);
 
-	return new KeyPair(pub, priv);
+        return new KeyPair(pub, priv);
     }
   /*  public KeyPair genKeyPair() {
 	if (!initialized) {

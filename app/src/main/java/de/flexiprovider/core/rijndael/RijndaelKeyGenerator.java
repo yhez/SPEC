@@ -18,7 +18,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 /**
  * This class generates new keys for the Rijndael and AES block ciphers. Values
  * for the key size are 128, 192 or 256 bits, with the default being 128 bits.
- * 
+ *
  * @author Katja Rauch
  */
 public class RijndaelKeyGenerator extends SecretKeyGenerator {
@@ -38,31 +38,28 @@ public class RijndaelKeyGenerator extends SecretKeyGenerator {
      * randomness. If the parameters are <tt>null</tt>, the
      * {@link RijndaelKeyGenParameterSpec#RijndaelKeyGenParameterSpec() default parameters}
      * are used.
-     * 
-     * @param params
-     *                the parameters
-     * @param random
-     *                the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     *                 if the parameters are <tt>null</tt> or not an instance
-     *                 of {@link RijndaelKeyGenParameterSpec}.
+     *
+     * @param params the parameters
+     * @param random the source of randomness
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are <tt>null</tt> or not an instance
+     *                                                                            of {@link RijndaelKeyGenParameterSpec}.
      */
     public void init(AlgorithmParameterSpec params, SecureRandom random)
-	    throws InvalidAlgorithmParameterException {
+            throws InvalidAlgorithmParameterException {
 
-	RijndaelKeyGenParameterSpec rijndaelParams;
-	if (params == null) {
-	    rijndaelParams = new RijndaelKeyGenParameterSpec();
-	} else if (params instanceof RijndaelKeyGenParameterSpec) {
-	    rijndaelParams = (RijndaelKeyGenParameterSpec) params;
-	} else {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
+        RijndaelKeyGenParameterSpec rijndaelParams;
+        if (params == null) {
+            rijndaelParams = new RijndaelKeyGenParameterSpec();
+        } else if (params instanceof RijndaelKeyGenParameterSpec) {
+            rijndaelParams = (RijndaelKeyGenParameterSpec) params;
+        } else {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
 
-	keySize = rijndaelParams.getKeySize() >> 3;
-	this.random = random != null ? random : Registry.getSecureRandom();
+        keySize = rijndaelParams.getKeySize() >> 3;
+        this.random = random != null ? random : Registry.getSecureRandom();
 
-	initialized = true;
+        initialized = true;
     }
 
     /**
@@ -70,54 +67,51 @@ public class RijndaelKeyGenerator extends SecretKeyGenerator {
      * randomness. If the key size is invalid, the
      * {@link RijndaelKeyGenParameterSpec#DEFAULT_KEY_SIZE default key size} is
      * chosen.
-     * 
-     * @param keySize
-     *                the key size (128, 192, or 256 bits)
-     * @param random
-     *                the source of randomness
+     *
+     * @param keySize the key size (128, 192, or 256 bits)
+     * @param random  the source of randomness
      */
     public void init(int keySize, SecureRandom random) {
-	RijndaelKeyGenParameterSpec params = new RijndaelKeyGenParameterSpec(
-		keySize);
-	try {
-	    init(params, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        RijndaelKeyGenParameterSpec params = new RijndaelKeyGenParameterSpec(
+                keySize);
+        try {
+            init(params, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Initialize the key generator with the default Rijndael parameters and the
      * given source of randomness.
-     * 
-     * @param random
-     *                the source of randomness
+     *
+     * @param random the source of randomness
      */
     public void init(SecureRandom random) {
-	RijndaelKeyGenParameterSpec defaultParams = new RijndaelKeyGenParameterSpec();
-	try {
-	    init(defaultParams, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        RijndaelKeyGenParameterSpec defaultParams = new RijndaelKeyGenParameterSpec();
+        try {
+            init(defaultParams, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Generate a Rijndael key.
-     * 
+     *
      * @return the generated {@link de.flexiprovider.core.rijndael.RijndaelKey}
      */
     public SecretKey generateKey() {
-	if (!initialized) {
-	    init(Registry.getSecureRandom());
-	}
+        if (!initialized) {
+            init(Registry.getSecureRandom());
+        }
 
-	byte[] keyBytes = new byte[keySize];
-	random.nextBytes(keyBytes);
+        byte[] keyBytes = new byte[keySize];
+        random.nextBytes(keyBytes);
 
-	return new RijndaelKey(keyBytes);
+        return new RijndaelKey(keyBytes);
     }
 
 }

@@ -213,7 +213,8 @@ public class Visual {
         cursor.close();
         return rs;
     }
-    public static void hideAllChildes(Activity act, ViewGroup v){
+
+    public static void hideAllChildes(Activity act, ViewGroup v) {
         for (int a = 0; a < v.getChildCount(); a++)
             try {
                 hideAllChildes(act, (ViewGroup) v.getChildAt(a));
@@ -224,7 +225,8 @@ public class Visual {
                 }
             }
     }
-    public static void showAllChildes(Activity act, ViewGroup v){
+
+    public static void showAllChildes(Activity act, ViewGroup v) {
         for (int a = 0; a < v.getChildCount(); a++)
             try {
                 showAllChildes(act, (ViewGroup) v.getChildAt(a));

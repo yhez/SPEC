@@ -14,11 +14,11 @@ import codec.asn1.ASN1Null;
 /**
  * This class represents a <tt>prime-field</tt> as defined in ANS X9.62 -
  * 1998. The ASN.1 definition of this structure is
- * 
+ * <p/>
  * <pre>
  *   gnBais :== NULL;
  * </pre>
- * 
+ *
  * @author Michele Boivin
  * @author Martin Dring
  */

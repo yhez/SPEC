@@ -79,12 +79,12 @@ package codec;
 /**
  * If there's Base64, why shouldn't there be Base16 as well? Simple and plain,
  * not hexadecimal, but based on letters.
- * 
+ *
  * @author Volker Roth
  * @version "$Id: Base16.java,v 1.3 2005/03/22 13:19:35 flautens Exp $"
  */
 
-public final class Base16 extends Object {
+public final class Base16 {
 
     /**
      * This class is never instantiated; use the class methods instead.
@@ -97,7 +97,7 @@ public final class Base16 extends Object {
      * being encoded with the corresponding character.
      */
     private static final char[] BASE16_ = new String(
-	    "ABCDEFGHIJKLMNOPQRSTUVWXYZ").toCharArray();
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ").toCharArray();
 
     /**
      * Marks an entry in the decoding table as an invalid code character.
@@ -108,44 +108,43 @@ public final class Base16 extends Object {
      * The table <code>reverse</code> serves to transform encoded characters
      * back into the corresponding six bit values efficiently.
      */
-    private static final byte[] REVERSE_ = { F, F, F, F, F, F, F, F, F, F, F,
-	    F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F,
-	    F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F,
-	    F, F, F, F, F, F, F, F, F, F, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-	    12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-	    F, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2,
-	    3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+    private static final byte[] REVERSE_ = {F, F, F, F, F, F, F, F, F, F, F,
+            F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F,
+            F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F,
+            F, F, F, F, F, F, F, F, F, F, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+            12, 13, 14, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+            F, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2,
+            3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 
     /**
      * Encodes the input array of bytes into a Base16 encoded string.
-     * 
-     * @param input
-     *                The byte array to be encoded.
+     *
+     * @param input The byte array to be encoded.
      * @return The Base64 encoded String representing the input byte array.
      */
     public static String encode(byte[] input) {
-	StringBuffer output;
-	int i, m;
-	int a;
+        StringBuffer output;
+        int i, m;
+        int a;
 
-	if (input.length == 0) {
-	    return "";
-	}
-	/*
+        if (input.length == 0) {
+            return "";
+        }
+    /*
 	 * Compute the length of the output buffer.
 	 */
-	output = new StringBuffer(2 * input.length);
+        output = new StringBuffer(2 * input.length);
 
-	for (i = 0; i < input.length; i++) {
-	    a = input[i];
+        for (i = 0; i < input.length; i++) {
+            a = input[i];
 
-	    m = (a >>> 4) & 15;
-	    output.append(BASE16_[m]);
+            m = (a >>> 4) & 15;
+            output.append(BASE16_[m]);
 
-	    m = a & 15;
-	    output.append(BASE16_[m]);
-	}
-	return output.toString();
+            m = a & 15;
+            output.append(BASE16_[m]);
+        }
+        return output.toString();
     }
 
     /**
@@ -153,44 +152,42 @@ public final class Base16 extends Object {
      * length of the encoded data. The encoded string may contain arbitrarily
      * much garbage data in the form of control sequences and non-base64
      * characters as long as the local charcter encoding is Unicode BASE_LATIN.
-     * <p>
-     * 
-     * @param input
-     *                The encoded Base64 character String.
+     * <p/>
+     *
+     * @param input The encoded Base64 character String.
      * @return The decoded data.
-     * @throws CorruptedCodeException
-     *                 if the Base64 code contains errors such as a missing
-     *                 character or bad padding.
+     * @throws CorruptedCodeException if the Base64 code contains errors such as a missing
+     *                                character or bad padding.
      */
     public static byte[] decode(String input) throws CorruptedCodeException {
-	byte[] buf;
-	int a;
-	int b;
-	int j;
-	int n;
+        byte[] buf;
+        int a;
+        int b;
+        int j;
+        int n;
 
-	if (input.length() == 0) {
-	    return new byte[0];
-	}
-	n = input.length();
+        if (input.length() == 0) {
+            return new byte[0];
+        }
+        n = input.length();
 
-	if (n % 2 == 1) {
-	    throw new CorruptedCodeException("uneven input length");
-	}
-	n = n / 2;
-	buf = new byte[n];
+        if (n % 2 == 1) {
+            throw new CorruptedCodeException("uneven input length");
+        }
+        n = n / 2;
+        buf = new byte[n];
 
-	for (j = 0, n = 0; n < buf.length; n++) {
-	    a = input.charAt(j++) & 255;
-	    a = REVERSE_[a];
-	    b = input.charAt(j++) & 255;
-	    b = REVERSE_[b];
+        for (j = 0, n = 0; n < buf.length; n++) {
+            a = input.charAt(j++) & 255;
+            a = REVERSE_[a];
+            b = input.charAt(j++) & 255;
+            b = REVERSE_[b];
 
-	    if (a == F || b == F) {
-		throw new CorruptedCodeException("illegal char");
-	    }
-	    buf[n] = (byte) ((a << 4) | b);
-	}
-	return buf;
+            if (a == F || b == F) {
+                throw new CorruptedCodeException("illegal char");
+            }
+            buf[n] = (byte) ((a << 4) | b);
+        }
+        return buf;
     }
 }

@@ -6,7 +6,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
 /**
  * This class specifies parameters for the IQGQ signature algorithm (implemented
  * by {@link de.flexiprovider.nf.iq.iqgq.IQGQSignature}.
- * 
+ *
  * @author Ralf-P. Weinmann
  */
 public class IQGQParameterSpec implements AlgorithmParameterSpec {
@@ -17,42 +17,40 @@ public class IQGQParameterSpec implements AlgorithmParameterSpec {
     /**
      * Construct new IQGQ parameters from the given discriminant of the class
      * group.
-     * 
-     * @param discriminant
-     *                the discriminant of the class group
+     *
+     * @param discriminant the discriminant of the class group
      */
     public IQGQParameterSpec(FlexiBigInt discriminant) {
-	this.discriminant = discriminant;
+        this.discriminant = discriminant;
     }
 
     /**
      * @return the discriminant of the class group
      */
     public FlexiBigInt getDiscriminant() {
-	return discriminant;
+        return discriminant;
     }
 
     /**
      * Compare these parameters with another object.
-     * 
-     * @param other
-     *                the other object
+     *
+     * @param other the other object
      * @return the result of the comparison
      */
     public boolean equals(Object other) {
-	if (other == null || !(other instanceof IQGQParameterSpec)) {
-	    return false;
-	}
-	IQGQParameterSpec oParamSpec = (IQGQParameterSpec) other;
+        if (other == null || !(other instanceof IQGQParameterSpec)) {
+            return false;
+        }
+        IQGQParameterSpec oParamSpec = (IQGQParameterSpec) other;
 
-	return discriminant.equals(oParamSpec.discriminant);
+        return discriminant.equals(oParamSpec.discriminant);
     }
 
     /**
      * @return the hash code of these parameters
      */
     public int hashCode() {
-	return discriminant.hashCode();
+        return discriminant.hashCode();
     }
 
 }

@@ -28,10 +28,10 @@ import de.flexiprovider.ec.parameters.CurveRegistry;
  * G generates the subgroup of points of E with order r. Then the <i>private key</i>
  * is defined to be <nobr><i>s</i>, <i>1 &lt; s &lt; r</i></nobr> and the
  * <i>public key</i> is defined to be <nobr><i>W = s * G</i></nobr>.
- * 
+ *
+ * @author Birgit Henhapl
  * @see de.flexiprovider.ec.keys.ECPublicKey
  * @see de.flexiprovider.ec.keys.ECPrivateKey
- * @author Birgit Henhapl
  */
 public class ECKeyPairGenerator extends KeyPairGenerator {
 
@@ -63,34 +63,31 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
      * to be an instance of {@link CurveParams}) and source of randomness. If
      * the parameters are <tt>null</tt>, the default parameters for the
      * {@link #DEFAULT_KEY_SIZE} are used.
-     * 
-     * @param params
-     *                the parameters
-     * @param random
-     *                the source of randomness
-     * @throws InvalidAlgorithmParameterException
-     *                 if the parameters are not an instance of
-     *                 {@link CurveParams}.
+     *
+     * @param params the parameters
+     * @param random the source of randomness
+     * @throws InvalidAlgorithmParameterException if the parameters are not an instance of
+     *                                            {@link CurveParams}.
      */
     public void initialize(AlgorithmParameterSpec params, SecureRandom random)
-	    throws InvalidAlgorithmParameterException {
+            throws InvalidAlgorithmParameterException {
 
-	if (params == null) {
-	    initialize(DEFAULT_KEY_SIZE, random);
-	    return;
-	}
+        if (params == null) {
+            initialize(DEFAULT_KEY_SIZE, random);
+            return;
+        }
 
-	if (!(params instanceof CurveParams)) {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
+        if (!(params instanceof CurveParams)) {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
 
-	curveParams = (CurveParams) params;
-	r = curveParams.getR();
-	rLength = r.bitLength();
-	mOddPowers = ScalarMult.pre_oddpowers(curveParams.getG(), 4);
-	mRandom = (random != null) ? random : Registry.getSecureRandom();
+        curveParams = (CurveParams) params;
+        r = curveParams.getR();
+        rLength = r.bitLength();
+        mOddPowers = ScalarMult.pre_oddpowers(curveParams.getG(), 4);
+        mRandom = (random != null) ? random : Registry.getSecureRandom();
 
-	initialized = true;
+        initialized = true;
     }
 
     /**
@@ -100,35 +97,32 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
      * corresponding curve is chosen. In effect, the bit length of the group
      * order of the chosen curve is greater than or equal to the specified key
      * size.
-     * 
-     * @param keySize
-     *                the key size in bits
-     * @param random
-     *                the source of randomness
-     * @throws RuntimeException
-     *                 if the key size is too large and no default curve exist
-     *                 for the specified key size.
+     *
+     * @param keySize the key size in bits
+     * @param random  the source of randomness
+     * @throws RuntimeException if the key size is too large and no default curve exist
+     *                          for the specified key size.
      */
     public void initialize(int keySize, SecureRandom random) {
-	CurveParams params;
-	try {
-	    String paramName = CurveRegistry.getDefaultCurveParams(keySize);
-	    params = (CurveParams) Registry.getAlgParamSpec(paramName);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // no default curve exists
-	    throw new RuntimeException(e.getMessage());
-	}
+        CurveParams params;
+        try {
+            String paramName = CurveRegistry.getDefaultCurveParams(keySize);
+            params = (CurveParams) Registry.getAlgParamSpec(paramName);
+        } catch (InvalidAlgorithmParameterException e) {
+            // no default curve exists
+            throw new RuntimeException(e.getMessage());
+        }
 
-	try {
-	    initialize(params, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        try {
+            initialize(params, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     private void initializeDefault() {
-	initialize(DEFAULT_KEY_SIZE, Registry.getSecureRandom());
+        initialize(DEFAULT_KEY_SIZE, Registry.getSecureRandom());
     }
 
     /**
@@ -138,33 +132,33 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
      * the field <tt>GF(q)</tt>. It is computed as <tt>W = s * G</tt>,
      * where <tt>G</tt>, together with <tt>E, q</tt> and <tt>r</tt> are
      * EC domain parameters.
-     * 
+     *
      * @return the generated EC key pair
      * @see CurveParams
      * @see de.flexiprovider.ec.keys.ECPublicKey
      * @see de.flexiprovider.ec.keys.ECPrivateKey
      */
     public KeyPair genKeyPair() {
-	if (!initialized) {
-	    initializeDefault();
-	}
+        if (!initialized) {
+            initializeDefault();
+        }
 
-	// find statistically unique and unpredictable integer s in the
-	// interval [1, r - 1]
-	FlexiBigInt s;
-	do {
-	    s = new FlexiBigInt(rLength, mRandom);
-	} while ((s.compareTo(FlexiBigInt.ONE) < 0) || (s.compareTo(r) >= 0));
+        // find statistically unique and unpredictable integer s in the
+        // interval [1, r - 1]
+        FlexiBigInt s;
+        do {
+            s = new FlexiBigInt(rLength, mRandom);
+        } while ((s.compareTo(FlexiBigInt.ONE) < 0) || (s.compareTo(r) >= 0));
 
-	// create new ECPrivateKey with value s
-	ECPrivateKey privKey = new ECPrivateKey(s, curveParams);
+        // create new ECPrivateKey with value s
+        ECPrivateKey privKey = new ECPrivateKey(s, curveParams);
 
-	// create new ECPublicKey with value W = sQ
-	ECPublicKey pubKey = new ECPublicKey(ScalarMult.eval_SquareMultiply(
-		ScalarMult.determineNaf(s, 4), mOddPowers), curveParams);
+        // create new ECPublicKey with value W = sQ
+        ECPublicKey pubKey = new ECPublicKey(ScalarMult.eval_SquareMultiply(
+                ScalarMult.determineNaf(s, 4), mOddPowers), curveParams);
 
-	// return the keypair
-	return new KeyPair(pubKey, privKey);
+        // return the keypair
+        return new KeyPair(pubKey, privKey);
     }
 
 }

@@ -22,11 +22,11 @@ import de.flexiprovider.common.util.ByteUtils;
 
 /**
  * This class represents parameters for passphrase based encryption.
- * 
+ *
  * @author Thomas Wahrenbruch
  */
 public class PBEParameters extends
-	de.flexiprovider.core.pbe.interfaces.PBEParameters {
+        de.flexiprovider.core.pbe.interfaces.PBEParameters {
 
     /**
      * The salt
@@ -40,113 +40,107 @@ public class PBEParameters extends
 
     /**
      * Inner class providing the PBES1 ASN.1 parameters structure.
-     * <p>
+     * <p/>
      * The ASN.1 parameters structure is defined as follows:
-     * 
+     * <p/>
      * <pre>
      * PBEParameters ::= SEQUENCE {
      * 	 salt             OCTET STRING,
      *   iteration count  INTEGER
      * }
      * </pre>
-     * 
+     *
      * @author Thomas Wahrenbruch
      * @author Martin D�ring
      */
     private static class PBES1ASN1Parameters extends ASN1Sequence {
 
-	// the salt
-	private ASN1OctetString salt;
+        // the salt
+        private ASN1OctetString salt;
 
-	// the iteration count
-	private ASN1Integer iterationCount;
+        // the iteration count
+        private ASN1Integer iterationCount;
 
-	/**
-	 * Construct the ASN.1 structure (used for decoding).
-	 */
-	public PBES1ASN1Parameters() {
-	    super(2);
-	    salt = new ASN1OctetString();
-	    iterationCount = new ASN1Integer();
+        /**
+         * Construct the ASN.1 structure (used for decoding).
+         */
+        public PBES1ASN1Parameters() {
+            super(2);
+            salt = new ASN1OctetString();
+            iterationCount = new ASN1Integer();
 
-	    add(salt);
-	    add(iterationCount);
-	}
+            add(salt);
+            add(iterationCount);
+        }
 
-	/**
-	 * Construct an ASN.1 structure with the given parameters (used for
-	 * encoding).
-	 * 
-	 * @param salt
-	 *                the salt
-	 * @param iterationCount
-	 *                the iteration count
-	 */
-	public PBES1ASN1Parameters(byte[] salt, int iterationCount) {
-	    super(2);
-	    this.salt = new ASN1OctetString(salt);
-	    this.iterationCount = new ASN1Integer(iterationCount);
+        /**
+         * Construct an ASN.1 structure with the given parameters (used for
+         * encoding).
+         *
+         * @param salt           the salt
+         * @param iterationCount the iteration count
+         */
+        public PBES1ASN1Parameters(byte[] salt, int iterationCount) {
+            super(2);
+            this.salt = new ASN1OctetString(salt);
+            this.iterationCount = new ASN1Integer(iterationCount);
 
-	    add(this.salt);
-	    add(this.iterationCount);
-	}
+            add(this.salt);
+            add(this.iterationCount);
+        }
 
-	/**
-	 * @return the iteration count
-	 */
-	public int getIterationCount() {
-	    return ASN1Tools.getFlexiBigInt(iterationCount).intValue();
-	}
+        /**
+         * @return the iteration count
+         */
+        public int getIterationCount() {
+            return ASN1Tools.getFlexiBigInt(iterationCount).intValue();
+        }
 
-	/**
-	 * @return the salt
-	 */
-	public byte[] getSalt() {
-	    return salt.getByteArray();
-	}
+        /**
+         * @return the salt
+         */
+        public byte[] getSalt() {
+            return salt.getByteArray();
+        }
     }
 
     /**
      * Initialize this parameters object using the specified parameters.
      * Currently, only {@link PBEParameterSpec} is supported as specification
      * type.
-     * 
-     * @param paramSpec
-     *                the parameter specification
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterSpecException
-     *                 if the parameter specification is not an instance of
-     *                 {@link PBEParameterSpec}.
+     *
+     * @param paramSpec the parameter specification
+     * @throws de.flexiprovider.api.exceptions.InvalidParameterSpecException if the parameter specification is not an instance of
+     *                                                                       {@link PBEParameterSpec}.
      */
     public void init(AlgorithmParameterSpec paramSpec)
-	    throws InvalidParameterSpecException {
-	if (!(paramSpec instanceof PBEParameterSpec)) {
-	    throw new InvalidParameterSpecException("unsupported type");
-	}
-	PBEParameterSpec pbeParamSpec = (PBEParameterSpec) paramSpec;
+            throws InvalidParameterSpecException {
+        if (!(paramSpec instanceof PBEParameterSpec)) {
+            throw new InvalidParameterSpecException("unsupported type");
+        }
+        PBEParameterSpec pbeParamSpec = (PBEParameterSpec) paramSpec;
 
-	salt = pbeParamSpec.getSalt();
-	iterationCount = pbeParamSpec.getIterationCount();
+        salt = pbeParamSpec.getSalt();
+        iterationCount = pbeParamSpec.getIterationCount();
     }
 
     /**
      * Import the specified parameters and decodes them according to the primary
      * decoding format (ASN.1) for parameters.
-     * 
-     * @param enc
-     *                the encoded parameters
-     * @throws java.io.IOException
-     *                 on decoding errors.
+     *
+     * @param enc the encoded parameters
+     * @throws java.io.IOException on decoding errors.
      */
     public void init(byte[] enc) throws IOException {
-	try {
-	    PBES1ASN1Parameters asn1params = new PBES1ASN1Parameters();
-	    ASN1Tools.derDecode(enc, asn1params);
+        try {
+            PBES1ASN1Parameters asn1params = new PBES1ASN1Parameters();
+            ASN1Tools.derDecode(enc, asn1params);
 
-	    salt = asn1params.getSalt();
-	    iterationCount = asn1params.getIterationCount();
-	} catch (ASN1Exception ae) {
-	    throw new IOException("ASN1Exception: " + ae.getMessage());
-	}
+            salt = asn1params.getSalt();
+            iterationCount = asn1params.getIterationCount();
+        } catch (ASN1Exception ae) {
+            throw new IOException("ASN1Exception: " + ae.getMessage());
+        }
     }
 
     /**
@@ -154,40 +148,36 @@ public class PBEParameters extends
      * specified decoding format. If <tt>format</tt> is null, the primary
      * decoding format for parameters (ASN.1) is used. Currently, only the
      * default decoding format is supported.
-     * 
-     * @param enc
-     *                the encoded parameters
-     * @param format
-     *                the decoding format
-     * @throws java.io.IOException
-     *                 on decoding errors.
+     *
+     * @param enc    the encoded parameters
+     * @param format the decoding format
+     * @throws java.io.IOException on decoding errors.
      */
     public void init(byte[] enc, String format) throws IOException {
-	if (format != null) {
-	    throw new IOException("Decoding format '" + format
-		    + "' not supported.");
-	}
+        if (format != null) {
+            throw new IOException("Decoding format '" + format
+                    + "' not supported.");
+        }
 
-	init(enc);
+        init(enc);
     }
 
     /**
      * Return the parameters in their primary encoding format. The primary
      * encoding format for parameters is ASN.1.
-     * 
+     *
      * @return the ASN.1 encoded parameters
-     * @throws java.io.IOException
-     *                 on encoding errors.
+     * @throws java.io.IOException on encoding errors.
      */
     public byte[] getEncoded() throws IOException {
-	PBES1ASN1Parameters asn1pbeParams = new PBES1ASN1Parameters(salt,
-		iterationCount);
+        PBES1ASN1Parameters asn1pbeParams = new PBES1ASN1Parameters(salt,
+                iterationCount);
 
-	try {
-	    return ASN1Tools.derEncode(asn1pbeParams);
-	} catch (RuntimeException re) {
-	    throw new IOException(re.getMessage());
-	}
+        try {
+            return ASN1Tools.derEncode(asn1pbeParams);
+        } catch (RuntimeException re) {
+            throw new IOException(re.getMessage());
+        }
     }
 
     /**
@@ -195,50 +185,46 @@ public class PBEParameters extends
      * <tt>format</tt> is null, the primary encoding format for parameters
      * (ASN.1) is used. Currently, only the default encoding format is
      * supported.
-     * 
-     * @param format
-     *                the encoding format
+     *
+     * @param format the encoding format
      * @return the ASN.1 encoded parameters
-     * @throws java.io.IOException
-     *                 on encoding errors.
+     * @throws java.io.IOException on encoding errors.
      */
     public byte[] getEncoded(String format) throws IOException {
-	if (format != null) {
-	    throw new IOException("Encoding format '" + format
-		    + "' not supported.");
-	}
+        if (format != null) {
+            throw new IOException("Encoding format '" + format
+                    + "' not supported.");
+        }
 
-	return getEncoded();
+        return getEncoded();
     }
 
     /**
      * Return a transparent specification of this parameters object. Currently,
      * only {@link PBEParameterSpec}is supported as specification type.
-     * 
-     * @param paramSpec
-     *                the the specification class in which the parameters should
-     *                be returned
+     *
+     * @param paramSpec the the specification class in which the parameters should
+     *                  be returned
      * @return the parameter specification
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterSpecException
-     *                 if the parameter specification type is not assignable
-     *                 from {@link PBEParameterSpec}.
+     * @throws de.flexiprovider.api.exceptions.InvalidParameterSpecException if the parameter specification type is not assignable
+     *                                                                       from {@link PBEParameterSpec}.
      */
     public AlgorithmParameterSpec getParameterSpec(Class paramSpec)
-	    throws InvalidParameterSpecException {
-	if (!paramSpec.isAssignableFrom(PBEParameterSpec.class)) {
-	    throw new InvalidParameterSpecException("unsupported type");
-	}
-	return new PBEParameterSpec(salt, iterationCount);
+            throws InvalidParameterSpecException {
+        if (!paramSpec.isAssignableFrom(PBEParameterSpec.class)) {
+            throw new InvalidParameterSpecException("unsupported type");
+        }
+        return new PBEParameterSpec(salt, iterationCount);
     }
 
     /**
      * @return a human readable form of the parameters
      */
     public String toString() {
-	String result = "";
-	result += "Salt           : " + ByteUtils.toHexString(salt);
-	result += "iteration count: " + iterationCount;
-	return result;
+        String result = "";
+        result += "Salt           : " + ByteUtils.toHexString(salt);
+        result += "iteration count: " + iterationCount;
+        return result;
     }
 
 }

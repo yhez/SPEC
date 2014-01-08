@@ -165,9 +165,9 @@ public class Session {
         return "session words: " + ses[0].replace(DIVIDER, "-")
                 + " " + ses[1].replace(DIVIDER, "-")
                 + "  secret sign: " + ses[2].replace(DIVIDER, "-")
-                + (ses.length>3?"\nsession status: "
-                    +(ses[3].equals(FLAG_SESSION_VERIFIED)?"session has verified":
-                (ses[3].equals(FLAG_SESSION_JUST_ADDED)?"contact just added":"you sent your session, but didn\'t got it back yet")):"");
+                + (ses.length > 3 ? "\nsession status: "
+                + (ses[3].equals(FLAG_SESSION_VERIFIED) ? "session has verified" :
+                (ses[3].equals(FLAG_SESSION_JUST_ADDED) ? "contact just added" : "you sent your session, but didn\'t got it back yet")) : "");
     }
 
     public static void updateFlag(Activity a, Contact contact) {

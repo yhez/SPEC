@@ -24,8 +24,8 @@ import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.FilesManagement;
 import specular.systems.LightMessage;
 import specular.systems.MessageFormat;
-import specular.systems.StaticVariables;
 import specular.systems.R;
+import specular.systems.StaticVariables;
 import specular.systems.Visual;
 import specular.systems.activities.SendMsg;
 
@@ -37,7 +37,7 @@ public class QuickMsg extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
-            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(),this));
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
         String widget = getIntent().getStringExtra("widget");
         if (widget == null) {
@@ -51,8 +51,8 @@ public class QuickMsg extends Activity {
                 finish();
             } else {
                 long id = WidgetContact.getId(widgetDetails);
-                if(ContactsDataSource.contactsDataSource==null)
-                    ContactsDataSource.contactsDataSource= new ContactsDataSource(this);
+                if (ContactsDataSource.contactsDataSource == null)
+                    ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
                 final Contact contact = ContactsDataSource.contactsDataSource.findContact(id);
                 if (contact == null) {
                     SharedPreferences.Editor edt = srp.edit();
@@ -64,7 +64,7 @@ public class QuickMsg extends Activity {
                 } else {
                     if (!contact.getContactName().equals(WidgetContact.getContactName(widgetDetails))) {
                         SharedPreferences.Editor edt = srp.edit();
-                        edt.putString(widget, WidgetContact.saveDetails(contact.getContactName(),contact.getId()));
+                        edt.putString(widget, WidgetContact.saveDetails(contact.getContactName(), contact.getId()));
                         edt.commit();
                         updateWidget(WidgetContact.getWidgetId(widget));
                     }
@@ -102,7 +102,7 @@ public class QuickMsg extends Activity {
                         @Override
                         public void onClick(View view) {
                             final String userInput = et.getText().toString();
-                            final MessageFormat msg = new MessageFormat(null,CryptMethods.getMyDetails(QuickMsg.this), "", userInput
+                            final MessageFormat msg = new MessageFormat(null, CryptMethods.getMyDetails(QuickMsg.this), "", userInput
                                     , contact.getSession());
                             final LightMessage lightMessage = new LightMessage(userInput);
                             final ProgressDlg prgd = new ProgressDlg(QuickMsg.this, R.string.encrypting);
@@ -111,13 +111,13 @@ public class QuickMsg extends Activity {
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    byte[] data = CryptMethods.encrypt(msg.getFormatedMsg(),lightMessage.getFormatedMsg(),
+                                    byte[] data = CryptMethods.encrypt(msg.getFormatedMsg(), lightMessage.getFormatedMsg(),
                                             contact.getPublicKey()).getBytes();
-                                    boolean success = FilesManagement.createFilesToSend(QuickMsg.this, userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR,data);
+                                    boolean success = FilesManagement.createFilesToSend(QuickMsg.this, userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR, data);
                                     if (success) {
                                         prgd.cancel();
-                                        Intent intent = new Intent(QuickMsg.this,SendMsg.class);
-                                        intent.putExtra("contactId",contact.getId());
+                                        Intent intent = new Intent(QuickMsg.this, SendMsg.class);
+                                        intent.putExtra("contactId", contact.getId());
                                         startActivity(intent);
                                     } else {
                                         Toast.makeText(QuickMsg.this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();

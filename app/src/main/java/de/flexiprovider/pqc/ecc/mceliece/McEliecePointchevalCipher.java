@@ -22,13 +22,13 @@ import de.flexiprovider.pqc.ecc.Conversions;
  * from any partially trapdoor one-way function in the random oracle model. For
  * details, see D. Engelbert, R. Overbeck, A. Schmidt, "A summary of the
  * development of the McEliece Cryptosystem", technical report.
- * <p>
+ * <p/>
  * This class extends the <a href="javax.crypto.CipherSpi">CipherSpi</a> class.
- * <p>
+ * <p/>
  * The Pointcheval conversion can be used as follows:
- * <p>
+ * <p/>
  * To encrypt a message, the following steps have to be performed:
- * 
+ * <p/>
  * <pre>
  * // setup
  * KeyPairGenerator kpg = KeyPairGenerator.getInstance(&quot;McEliece&quot;, &quot;FlexiPQC&quot;);
@@ -37,25 +37,25 @@ import de.flexiprovider.pqc.ecc.Conversions;
  * McElieceCCA2PrivateKey privK = (McElieceCCA2PrivateKey) keys.getPrivate();
  * SecureRandom sr = Registry.getSecureRandom();
  * Cipher cipher = Cipher.getInstance(&quot;McEliecePointchevalConversion&quot;);
- * 
+ *
  * // the string to encrypt and decrypt
  * String m = &quot;This is a test for the Fujisaki conversion of the McEliecePKCS.&quot;;
  * byte[] mBytes = m.getBytes();
- * 
+ *
  * // initialize cipher in encrypt mode
  * cipher.init(Cipher.ENCRYPT_MODE, pubK, sr);
- * 
+ *
  * // encrypt
  * byte[] cBytes = cipher.doFinal(mBytes);
  * </pre>
- * 
+ * <p/>
  * To decrypt, the following steps have to be performed (using setup from
  * above):
- * 
+ * <p/>
  * <pre>
  * // initialize cipher in decrypt mode
  * cipher.init(Cipher.DECRYPT_MODE, privK);
- * 
+ *
  * // decrypt
  * byte[] decBytes = cipher.doFinal(cBytes);
  * String newM = new String(decBytes);
@@ -96,283 +96,274 @@ public class McEliecePointchevalCipher extends AsymmetricHybridCipher {
      * @return the name of this cipher
      */
     public String getName() {
-	return "McEliecePointchevalCipher";
+        return "McEliecePointchevalCipher";
     }
 
     /**
      * Return the key size of the given key object. Checks whether the key
      * object is an instance of <tt>McElieceCCA2PublicKey</tt> or
      * <tt>McElieceCCA2PrivateKey</tt>.
-     * 
-     * @param key
-     *                the key object
+     *
+     * @param key the key object
      * @return the keysize of the given key object
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException
-     *                 if the key is invalid
+     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the key is invalid
      */
     public int getKeySize(Key key) throws InvalidKeyException {
-	if (key instanceof McElieceCCA2PrivateKey) {
-	    return ((McElieceCCA2PrivateKey) key).getN();
-	}
-	if (key instanceof McElieceCCA2PublicKey) {
-	    return ((McElieceCCA2PublicKey) key).getN();
-	}
-	throw new InvalidKeyException("Unsupported key.");
+        if (key instanceof McElieceCCA2PrivateKey) {
+            return ((McElieceCCA2PrivateKey) key).getN();
+        }
+        if (key instanceof McElieceCCA2PublicKey) {
+            return ((McElieceCCA2PublicKey) key).getN();
+        }
+        throw new InvalidKeyException("Unsupported key.");
     }
 
     protected int decryptOutputSize(int inLen) {
-	// TODO return correct output size
-	return 0;
+        // TODO return correct output size
+        return 0;
     }
 
     protected int encryptOutputSize(int inLen) {
-	// TODO return correct output size
-	return 0;
+        // TODO return correct output size
+        return 0;
     }
 
     /**
      * Continue a multiple-part encryption or decryption operation.
-     * 
-     * @param input
-     *                byte array containing the next part of the input
-     * @param inOff
-     *                index in the array where the input starts
-     * @param inLen
-     *                length of the input
+     *
+     * @param input byte array containing the next part of the input
+     * @param inOff index in the array where the input starts
+     * @param inLen length of the input
      * @return the processed byte array.
      */
     public byte[] update(byte[] input, int inOff, int inLen) {
-	buf.write(input, inOff, inLen);
-	return new byte[0];
+        buf.write(input, inOff, inLen);
+        return new byte[0];
     }
 
     /**
      * Encrypts or decrypts data in a single-part operation, or finishes a
      * multiple-part operation. The data is encrypted or decrypted, depending on
      * how this cipher was initialized.
-     * 
-     * @param input
-     *                the input buffer
-     * @param inOff
-     *                the offset in input where the input starts
-     * @param inLen
-     *                the input length
+     *
+     * @param input the input buffer
+     * @param inOff the offset in input where the input starts
+     * @param inLen the input length
      * @return the new buffer with the result
-     * @throws de.flexiprovider.api.exceptions.BadPaddingException
-     *                 on deryption errors.
+     * @throws de.flexiprovider.api.exceptions.BadPaddingException on deryption errors.
      */
     public byte[] doFinal(byte[] input, int inOff, int inLen)
-	    throws BadPaddingException {
-	update(input, inOff, inLen);
-	byte[] data = buf.toByteArray();
-	buf.reset();
-	if (opMode == ENCRYPT_MODE) {
-	    return messageEncrypt(data);
-	} else if (opMode == DECRYPT_MODE) {
-	    return messageDecrypt(data);
-	}
-	return null;
+            throws BadPaddingException {
+        update(input, inOff, inLen);
+        byte[] data = buf.toByteArray();
+        buf.reset();
+        if (opMode == ENCRYPT_MODE) {
+            return messageEncrypt(data);
+        } else if (opMode == DECRYPT_MODE) {
+            return messageDecrypt(data);
+        }
+        return null;
     }
 
     protected void initCipherEncrypt(Key key, AlgorithmParameterSpec params,
-	    SecureRandom sr) throws InvalidKeyException,
-	    InvalidAlgorithmParameterException {
+                                     SecureRandom sr) throws InvalidKeyException,
+            InvalidAlgorithmParameterException {
 
-	if (!(key instanceof McElieceCCA2PublicKey)) {
-	    reset();
-	    throw new InvalidKeyException("unsupported type");
-	}
-	pubKey = (McElieceCCA2PublicKey) key;
+        if (!(key instanceof McElieceCCA2PublicKey)) {
+            reset();
+            throw new InvalidKeyException("unsupported type");
+        }
+        pubKey = (McElieceCCA2PublicKey) key;
 
-	// if no parameters are given
-	if (params == null) {
-	    // generate the default parameters
-	    params = new McElieceCCA2ParameterSpec();
-	}
+        // if no parameters are given
+        if (params == null) {
+            // generate the default parameters
+            params = new McElieceCCA2ParameterSpec();
+        }
 
-	if (!(params instanceof McElieceCCA2ParameterSpec)) {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
+        if (!(params instanceof McElieceCCA2ParameterSpec)) {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
 
-	mdName = ((McElieceCCA2ParameterSpec) params).getMDName();
-	prngName = DEFAULT_PRNG_NAME;
+        mdName = ((McElieceCCA2ParameterSpec) params).getMDName();
+        prngName = DEFAULT_PRNG_NAME;
 
-	try {
-	    md = Registry.getMessageDigest(mdName);
-	} catch (NoSuchAlgorithmException nsae) {
-	    // the McElieceCCA2ParameterSpec constructor checks whether the
-	    // message digest is available. So if it is not available here, this
-	    // is an internal error.
-	    throw new RuntimeException("internal error");
-	}
+        try {
+            md = Registry.getMessageDigest(mdName);
+        } catch (NoSuchAlgorithmException nsae) {
+            // the McElieceCCA2ParameterSpec constructor checks whether the
+            // message digest is available. So if it is not available here, this
+            // is an internal error.
+            throw new RuntimeException("internal error");
+        }
 
-	this.sr = sr != null ? sr : Registry.getSecureRandom();
+        this.sr = sr != null ? sr : Registry.getSecureRandom();
 
-	n = pubKey.getN();
-	k = pubKey.getK();
-	t = pubKey.getT();
+        n = pubKey.getN();
+        k = pubKey.getK();
+        t = pubKey.getT();
     }
 
     protected void initCipherDecrypt(Key key, AlgorithmParameterSpec params)
-	    throws InvalidKeyException, InvalidAlgorithmParameterException {
+            throws InvalidKeyException, InvalidAlgorithmParameterException {
 
-	if (!(key instanceof McElieceCCA2PrivateKey)) {
-	    reset();
-	    throw new InvalidKeyException("unsupported type");
-	}
-	privKey = (McElieceCCA2PrivateKey) key;
+        if (!(key instanceof McElieceCCA2PrivateKey)) {
+            reset();
+            throw new InvalidKeyException("unsupported type");
+        }
+        privKey = (McElieceCCA2PrivateKey) key;
 
-	// if no parameters are given
-	if (params == null) {
-	    // generate the default parameters
-	    params = new McElieceCCA2ParameterSpec();
-	}
+        // if no parameters are given
+        if (params == null) {
+            // generate the default parameters
+            params = new McElieceCCA2ParameterSpec();
+        }
 
-	if (!(params instanceof McElieceCCA2ParameterSpec)) {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
+        if (!(params instanceof McElieceCCA2ParameterSpec)) {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
 
-	mdName = ((McElieceCCA2ParameterSpec) params).getMDName();
-	prngName = DEFAULT_PRNG_NAME;
+        mdName = ((McElieceCCA2ParameterSpec) params).getMDName();
+        prngName = DEFAULT_PRNG_NAME;
 
-	try {
-	    md = Registry.getMessageDigest(mdName);
-	} catch (NoSuchAlgorithmException nsae) {
-	    // the McElieceCCA2ParameterSpec constructor checks whether the
-	    // message digest is available. So if it is not available here, this
-	    // is an internal error.
-	    throw new RuntimeException("internal error");
-	}
+        try {
+            md = Registry.getMessageDigest(mdName);
+        } catch (NoSuchAlgorithmException nsae) {
+            // the McElieceCCA2ParameterSpec constructor checks whether the
+            // message digest is available. So if it is not available here, this
+            // is an internal error.
+            throw new RuntimeException("internal error");
+        }
 
-	n = privKey.getN();
-	k = privKey.getK();
-	t = privKey.getT();
+        n = privKey.getN();
+        k = privKey.getK();
+        t = privKey.getT();
     }
 
     protected byte[] messageEncrypt(byte[] input) {
 
-	int kDiv8 = k >> 3;
+        int kDiv8 = k >> 3;
 
-	// generate random r of length k div 8 bytes
-	byte[] r = new byte[kDiv8];
-	sr.nextBytes(r);
+        // generate random r of length k div 8 bytes
+        byte[] r = new byte[kDiv8];
+        sr.nextBytes(r);
 
-	// generate random vector r' of length k bits
-	GF2Vector rPrime = new GF2Vector(k, sr);
+        // generate random vector r' of length k bits
+        GF2Vector rPrime = new GF2Vector(k, sr);
 
-	// convert r' to byte array
-	byte[] rPrimeBytes = rPrime.getEncoded();
+        // convert r' to byte array
+        byte[] rPrimeBytes = rPrime.getEncoded();
 
-	// compute (input||r)
-	byte[] mr = ByteUtils.concatenate(input, r);
+        // compute (input||r)
+        byte[] mr = ByteUtils.concatenate(input, r);
 
-	// compute H(input||r)
-	md.update(mr);
-	byte[] hmr = md.digest();
+        // compute H(input||r)
+        md.update(mr);
+        byte[] hmr = md.digest();
 
-	// convert H(input||r) to error vector z
-	GF2Vector z = Conversions.encode(n, t, hmr);
+        // convert H(input||r) to error vector z
+        GF2Vector z = Conversions.encode(n, t, hmr);
 
-	// compute c1 = E(rPrime, z)
-	byte[] c1 = McElieceCCA2Primitives.encryptionPrimitive(pubKey, rPrime,
-		z).getEncoded();
+        // compute c1 = E(rPrime, z)
+        byte[] c1 = McElieceCCA2Primitives.encryptionPrimitive(pubKey, rPrime,
+                z).getEncoded();
 
-	// get PRNG object
-	SecureRandom sr0 = null;
-	try {
-	    sr0 = Registry.getSecureRandom(prngName);
-	} catch (NoSuchAlgorithmException nsae) {
-	    throw new RuntimeException("Secure random '" + prngName
-		    + "' not found.");
-	}
+        // get PRNG object
+        SecureRandom sr0 = null;
+        try {
+            sr0 = Registry.getSecureRandom(prngName);
+        } catch (NoSuchAlgorithmException nsae) {
+            throw new RuntimeException("Secure random '" + prngName
+                    + "' not found.");
+        }
 
-	// seed PRNG with r'
-	sr0.setSeed(rPrimeBytes);
+        // seed PRNG with r'
+        sr0.setSeed(rPrimeBytes);
 
-	// generate random c2
-	byte[] c2 = new byte[input.length + kDiv8];
-	sr0.nextBytes(c2);
+        // generate random c2
+        byte[] c2 = new byte[input.length + kDiv8];
+        sr0.nextBytes(c2);
 
-	// XOR with input
-	for (int i = 0; i < input.length; i++) {
-	    c2[i] ^= input[i];
-	}
-	// XOR with r
-	for (int i = 0; i < kDiv8; i++) {
-	    c2[input.length + i] ^= r[i];
-	}
+        // XOR with input
+        for (int i = 0; i < input.length; i++) {
+            c2[i] ^= input[i];
+        }
+        // XOR with r
+        for (int i = 0; i < kDiv8; i++) {
+            c2[input.length + i] ^= r[i];
+        }
 
-	// return (c1||c2)
-	return ByteUtils.concatenate(c1, c2);
+        // return (c1||c2)
+        return ByteUtils.concatenate(c1, c2);
     }
 
     protected byte[] messageDecrypt(byte[] input) throws BadPaddingException {
 
-	int c1Len = (n + 7) >> 3;
-	int c2Len = input.length - c1Len;
+        int c1Len = (n + 7) >> 3;
+        int c2Len = input.length - c1Len;
 
-	// split ciphertext (c1||c2)
-	byte[][] c1c2 = ByteUtils.split(input, c1Len);
-	byte[] c1 = c1c2[0];
-	byte[] c2 = c1c2[1];
+        // split ciphertext (c1||c2)
+        byte[][] c1c2 = ByteUtils.split(input, c1Len);
+        byte[] c1 = c1c2[0];
+        byte[] c2 = c1c2[1];
 
-	// decrypt c1 ...
-	GF2Vector c1Vec = GF2Vector.OS2VP(n, c1);
-	GF2Vector[] c1Dec = McElieceCCA2Primitives.decryptionPrimitive(privKey,
-		c1Vec);
-	byte[] rPrimeBytes = c1Dec[0].getEncoded();
-	// ... and obtain error vector z
-	GF2Vector z = c1Dec[1];
+        // decrypt c1 ...
+        GF2Vector c1Vec = GF2Vector.OS2VP(n, c1);
+        GF2Vector[] c1Dec = McElieceCCA2Primitives.decryptionPrimitive(privKey,
+                c1Vec);
+        byte[] rPrimeBytes = c1Dec[0].getEncoded();
+        // ... and obtain error vector z
+        GF2Vector z = c1Dec[1];
 
-	// get PRNG object
-	SecureRandom sr0 = null;
-	try {
-	    sr0 = Registry.getSecureRandom(prngName);
-	} catch (NoSuchAlgorithmException nsae) {
-	    throw new RuntimeException("Secure random '" + prngName
-		    + "' not found.");
-	}
+        // get PRNG object
+        SecureRandom sr0 = null;
+        try {
+            sr0 = Registry.getSecureRandom(prngName);
+        } catch (NoSuchAlgorithmException nsae) {
+            throw new RuntimeException("Secure random '" + prngName
+                    + "' not found.");
+        }
 
-	// seed PRNG with r'
-	sr0.setSeed(rPrimeBytes);
+        // seed PRNG with r'
+        sr0.setSeed(rPrimeBytes);
 
-	// generate random sequence
-	byte[] mrBytes = new byte[c2Len];
-	sr0.nextBytes(mrBytes);
+        // generate random sequence
+        byte[] mrBytes = new byte[c2Len];
+        sr0.nextBytes(mrBytes);
 
-	// XOR with c2 to obtain (m||r)
-	for (int i = 0; i < c2Len; i++) {
-	    mrBytes[i] ^= c2[i];
-	}
+        // XOR with c2 to obtain (m||r)
+        for (int i = 0; i < c2Len; i++) {
+            mrBytes[i] ^= c2[i];
+        }
 
-	// compute H(m||r)
-	md.update(mrBytes);
-	byte[] hmr = md.digest();
+        // compute H(m||r)
+        md.update(mrBytes);
+        byte[] hmr = md.digest();
 
-	// compute Conv(H(m||r))
-	c1Vec = Conversions.encode(n, t, hmr);
+        // compute Conv(H(m||r))
+        c1Vec = Conversions.encode(n, t, hmr);
 
-	// check that Conv(H(m||r)) = z
-	if (!c1Vec.equals(z)) {
-	    throw new BadPaddingException("Invalid ciphertext.");
-	}
+        // check that Conv(H(m||r)) = z
+        if (!c1Vec.equals(z)) {
+            throw new BadPaddingException("Invalid ciphertext.");
+        }
 
-	// split (m||r) to obtain m
-	int kDiv8 = k >> 3;
-	byte[][] mr = ByteUtils.split(mrBytes, c2Len - kDiv8);
+        // split (m||r) to obtain m
+        int kDiv8 = k >> 3;
+        byte[][] mr = ByteUtils.split(mrBytes, c2Len - kDiv8);
 
-	// return plaintext m
-	return mr[0];
+        // return plaintext m
+        return mr[0];
     }
 
     private void reset() {
-	privKey = null;
-	pubKey = null;
-	sr = null;
-	n = 0;
-	k = 0;
-	t = 0;
-	buf.reset();
+        privKey = null;
+        pubKey = null;
+        sr = null;
+        n = 0;
+        k = 0;
+        t = 0;
+        buf.reset();
     }
 
 }

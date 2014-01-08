@@ -1,10 +1,10 @@
 package de.flexiprovider.api.exceptions;
 
 public class InvalidParameterException extends
-	java.security.InvalidParameterException {
+        java.security.InvalidParameterException {
 
     public InvalidParameterException(String msg) {
-	super(msg);
+        super(msg);
     }
 
 }

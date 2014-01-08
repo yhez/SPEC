@@ -1,10 +1,10 @@
 package specular.systems;
 
 import android.app.Activity;
-import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +30,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
 
     public MySimpleArrayAdapter(Activity a) {
         super(a, R.layout.list_row, list);
-        list=StaticVariables.fullList;
+        list = StaticVariables.fullList;
         this.a = a;
     }
 
@@ -83,7 +83,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
         rowView.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Main.exit=false;
+                Main.exit = false;
                 Fragment fragment = new FragmentManagement();
                 Bundle args = new Bundle();
                 FragmentManagement.currentLayout = edit_contact;
@@ -107,9 +107,11 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
         name.setTypeface(FilesManagement.getOs(a));
         return rowView;
     }
-    public void updateViewAfterFilter(Activity a){
-        this.a=a;
+
+    public void updateViewAfterFilter(Activity a) {
+        this.a = a;
     }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -143,29 +145,31 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
         Collections.sort(list, new Comparator<Contact>() {
             @Override
             public int compare(Contact contact, Contact contact2) {
-                return (contact.getContactName().toLowerCase()+contact.getEmail().toLowerCase())
-                        .compareTo((contact2.getContactName().toLowerCase()+contact2.getEmail().toLowerCase()));
+                return (contact.getContactName().toLowerCase() + contact.getEmail().toLowerCase())
+                        .compareTo((contact2.getContactName().toLowerCase() + contact2.getEmail().toLowerCase()));
             }
         });
-        if(FragmentManagement.currentLayout==R.layout.encrypt){
-        View v = a.findViewById(R.id.list);
-        if (v != null)
-            if (StaticVariables.fullList.size() > 0) {
-                v.setVisibility(View.VISIBLE);
-                a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
-            } else {
-                v.setVisibility(View.GONE);
-                a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
-            }
+        if (FragmentManagement.currentLayout == R.layout.encrypt) {
+            View v = a.findViewById(R.id.list);
+            if (v != null)
+                if (StaticVariables.fullList.size() > 0) {
+                    v.setVisibility(View.VISIBLE);
+                    a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
+                } else {
+                    v.setVisibility(View.GONE);
+                    a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+                }
             notifyDataSetChanged();
         }
     }
-    public void showOriginal(){
-        if(list!=StaticVariables.fullList){
+
+    public void showOriginal() {
+        if (list != StaticVariables.fullList) {
             list = StaticVariables.fullList;
             notifyDataSetChanged();
         }
     }
+
     private void updateContactList() {
         if (isEmpty()) {
             a.findViewById(R.id.list).setVisibility(View.GONE);

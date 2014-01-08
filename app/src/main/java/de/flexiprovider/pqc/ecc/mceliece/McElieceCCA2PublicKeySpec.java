@@ -5,10 +5,10 @@ import de.flexiprovider.common.math.linearalgebra.GF2Matrix;
 
 /**
  * This class provides a specification for a McEliece CCA2 public key.
- * 
- * @see de.flexiprovider.pqc.ecc.mceliece.McElieceCCA2PublicKey
+ *
  * @author Elena Klintsevich
  * @author Martin D�ring
+ * @see de.flexiprovider.pqc.ecc.mceliece.McElieceCCA2PublicKey
  */
 public class McElieceCCA2PublicKeySpec implements KeySpec {
 
@@ -23,55 +23,49 @@ public class McElieceCCA2PublicKeySpec implements KeySpec {
 
     /**
      * Constructor.
-     * 
-     * @param n
-     *                length of the code
-     * @param t
-     *                error correction capability
-     * @param matrix
-     *                generator matrix
+     *
+     * @param n      length of the code
+     * @param t      error correction capability
+     * @param matrix generator matrix
      */
     public McElieceCCA2PublicKeySpec(int n, int t, GF2Matrix matrix) {
-	this.n = n;
-	this.t = t;
-	this.matrixG = new GF2Matrix(matrix);
+        this.n = n;
+        this.t = t;
+        this.matrixG = new GF2Matrix(matrix);
     }
 
     /**
      * Constructor (used by {@link de.flexiprovider.pqc.ecc.mceliece.McElieceKeyFactory}).
-     * 
-     * @param n
-     *                length of the code
-     * @param t
-     *                error correction capability of the code
-     * @param encMatrix
-     *                encoded generator matrix
+     *
+     * @param n         length of the code
+     * @param t         error correction capability of the code
+     * @param encMatrix encoded generator matrix
      */
     public McElieceCCA2PublicKeySpec(int t, int n, byte[] encMatrix) {
-	this.n = n;
-	this.t = t;
-	this.matrixG = new GF2Matrix(encMatrix);
+        this.n = n;
+        this.t = t;
+        this.matrixG = new GF2Matrix(encMatrix);
     }
 
     /**
      * @return the length of the code
      */
     public int getN() {
-	return n;
+        return n;
     }
 
     /**
      * @return the error correction capability of the code
      */
     public int getT() {
-	return t;
+        return t;
     }
 
     /**
      * @return the generator matrix
      */
     public GF2Matrix getMatrixG() {
-	return matrixG;
+        return matrixG;
     }
 
 }

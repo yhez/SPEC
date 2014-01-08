@@ -47,6 +47,12 @@ public class SendMsg extends Activity {
     Contact contact;
 
     @Override
+    public void onDestroy() {
+        CryptMethods.deleteKeys();
+        super.onDestroy();
+    }
+
+    @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
         done = false;

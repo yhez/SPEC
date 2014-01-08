@@ -4,7 +4,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class specifies parameters used by the {@link de.flexiprovider.core.rbrsa.RbRSAKeyPairGenerator}.
- * 
+ *
  * @author Paul Nguentcheu
  * @author Martin D�ring
  */
@@ -34,7 +34,7 @@ public class RbRSAKeyGenParameterSpec implements AlgorithmParameterSpec {
      * {@link #DEFAULT_PRIVATE_EXPONENT_SIZE}.
      */
     public RbRSAKeyGenParameterSpec() {
-	this(DEFAULT_KEY_SIZE, DEFAULT_PRIVATE_EXPONENT_SIZE);
+        this(DEFAULT_KEY_SIZE, DEFAULT_PRIVATE_EXPONENT_SIZE);
     }
 
     /**
@@ -42,12 +42,11 @@ public class RbRSAKeyGenParameterSpec implements AlgorithmParameterSpec {
      * size. The bit length of the prime <tt>p</tt> modulo <tt>p</tt> and
      * modulo <tt>q</tt> is chosen as {@link #DEFAULT_PRIVATE_EXPONENT_SIZE}.
      * If the key size is invalid, choose the {@link #DEFAULT_KEY_SIZE}.
-     * 
-     * @param keySize
-     *                the bit length of the modulus <tt>n</tt> (&gt;= 512)
+     *
+     * @param keySize the bit length of the modulus <tt>n</tt> (&gt;= 512)
      */
     public RbRSAKeyGenParameterSpec(int keySize) {
-	this(keySize, DEFAULT_PRIVATE_EXPONENT_SIZE);
+        this(keySize, DEFAULT_PRIVATE_EXPONENT_SIZE);
     }
 
     /**
@@ -56,40 +55,38 @@ public class RbRSAKeyGenParameterSpec implements AlgorithmParameterSpec {
      * modulo <tt>q</tt>. If the key size is invalid, choose the
      * {@link #DEFAULT_KEY_SIZE}. If the bit length of the prime <tt>p</tt>
      * is invalid, choose the {@link #DEFAULT_PRIVATE_EXPONENT_SIZE}.
-     * 
-     * @param keySize
-     *                the bit length of the modulus <tt>n</tt> (&gt;= 512)
-     * @param s
-     *                the bit length of the prime <tt>p</tt> modulo <tt>p</tt>
+     *
+     * @param keySize the bit length of the modulus <tt>n</tt> (&gt;= 512)
+     * @param s       the bit length of the prime <tt>p</tt> modulo <tt>p</tt>
      *                and modulo <tt>q</tt> (&gt;= 2)
      */
     public RbRSAKeyGenParameterSpec(int keySize, int s) {
-	if (keySize < 512) {
-	    this.keySize = DEFAULT_KEY_SIZE;
-	} else {
-	    this.keySize = keySize;
-	}
+        if (keySize < 512) {
+            this.keySize = DEFAULT_KEY_SIZE;
+        } else {
+            this.keySize = keySize;
+        }
 
-	if (s < 2) {
-	    this.s = DEFAULT_PRIVATE_EXPONENT_SIZE;
-	} else {
-	    this.s = s;
-	}
+        if (s < 2) {
+            this.s = DEFAULT_PRIVATE_EXPONENT_SIZE;
+        } else {
+            this.s = s;
+        }
     }
 
     /**
      * @return the bit length of the modulus <tt>n</tt>
      */
     public int getKeySize() {
-	return keySize;
+        return keySize;
     }
 
     /**
      * @return the bit length of the private exponent <tt>d</tt> modulo
-     *         <tt>p</tt> and modulo <tt>q</tt>
+     * <tt>p</tt> and modulo <tt>q</tt>
      */
     public int getPrivExpSize() {
-	return s;
+        return s;
     }
 
 }

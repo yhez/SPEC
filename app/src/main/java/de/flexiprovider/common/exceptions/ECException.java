@@ -12,7 +12,7 @@ package de.flexiprovider.common.exceptions;
 /**
  * This exception is the parentclass of all exceptions, that relate to the ec -
  * arithmetic.
- * 
+ *
  * @author Birgit Henhapl
  * @see de.flexiprovider.common.math.ellipticcurves.Point
  * @see de.flexiprovider.common.math.ellipticcurves.PointGFP
@@ -26,18 +26,17 @@ public class ECException extends RuntimeException {
      * ec-specific exception was thrown".
      */
     public ECException() {
-	super(diagnostic);
+        super(diagnostic);
     }
 
     /**
      * Constructor with the message "An ec-specific exception was thrown:
      * <em>cause</em>"
-     * 
-     * @param cause
-     *                String specifying cause of exception
+     *
+     * @param cause String specifying cause of exception
      */
     public ECException(String cause) {
-	super(diagnostic + ": " + cause);
+        super(diagnostic + ": " + cause);
     }
 
 }

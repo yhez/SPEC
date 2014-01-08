@@ -13,7 +13,7 @@ import de.flexiprovider.common.util.ASN1Tools;
 /**
  * This class implements a McEliece public key and is usually instantiated by
  * the {@link McElieceKeyPairGenerator} or {@link McElieceKeyFactory}.
- * 
+ *
  * @author Elena Klintsevich
  */
 public class McEliecePublicKey extends PublicKey {
@@ -35,121 +35,116 @@ public class McEliecePublicKey extends PublicKey {
 
     /**
      * Constructor (used by the {@link McElieceKeyPairGenerator}).
-     * 
-     * @param n
-     *                the length of the code
-     * @param t
-     *                the error correction capability of the code
-     * @param g
-     *                the generator matrix
+     *
+     * @param n the length of the code
+     * @param t the error correction capability of the code
+     * @param g the generator matrix
      */
     protected McEliecePublicKey(int n, int t, GF2Matrix g) {
-	this.n = n;
-	this.t = t;
-	this.g = g;
+        this.n = n;
+        this.t = t;
+        this.g = g;
     }
 
     /**
      * Constructor (used by the {@link McElieceKeyFactory}).
-     * 
-     * @param keySpec
-     *                a {@link McEliecePublicKeySpec}
+     *
+     * @param keySpec a {@link McEliecePublicKeySpec}
      */
     protected McEliecePublicKey(McEliecePublicKeySpec keySpec) {
-	this(keySpec.getN(), keySpec.getT(), keySpec.getG());
+        this(keySpec.getN(), keySpec.getT(), keySpec.getG());
     }
 
     /**
      * Return the name of the algorithm.
-     * 
+     *
      * @return "McEliece"
      */
     public String getAlgorithm() {
-	return "McEliece";
+        return "McEliece";
     }
 
     /**
      * @return the length of the code
      */
     protected int getN() {
-	return n;
+        return n;
     }
 
     /**
      * @return the dimension of the code
      */
     protected int getK() {
-	return g.getNumRows();
+        return g.getNumRows();
     }
 
     /**
      * @return the error correction capability of the code
      */
     protected int getT() {
-	return t;
+        return t;
     }
 
     /**
      * @return the generator matrix
      */
     protected GF2Matrix getG() {
-	return g;
+        return g;
     }
 
     /**
      * @return a human readable form of the key
      */
     public String toString() {
-	String result = "McEliecePublicKey:\n";
-	result += " length of the code         : " + n + "\n";
-	result += " error correction capability: " + t + "\n";
-	result += " generator matrix           : " + g.toString();
-	return result;
+        String result = "McEliecePublicKey:\n";
+        result += " length of the code         : " + n + "\n";
+        result += " error correction capability: " + t + "\n";
+        result += " generator matrix           : " + g.toString();
+        return result;
     }
 
     /**
      * Compare this key with another object.
-     * 
-     * @param other
-     *                the other object
+     *
+     * @param other the other object
      * @return the result of the comparison
      */
     public boolean equals(Object other) {
-	if (!(other instanceof McEliecePublicKey)) {
-	    return false;
-	}
-	McEliecePublicKey otherKey = (McEliecePublicKey) other;
+        if (!(other instanceof McEliecePublicKey)) {
+            return false;
+        }
+        McEliecePublicKey otherKey = (McEliecePublicKey) other;
 
-	return (n == otherKey.n) && (t == otherKey.t) && g.equals(otherKey.g);
+        return (n == otherKey.n) && (t == otherKey.t) && g.equals(otherKey.g);
     }
 
     /**
      * @return the hash code of this key
      */
     public int hashCode() {
-	return n + t + g.hashCode();
+        return n + t + g.hashCode();
     }
 
     /**
      * @return the OID to encode in the SubjectPublicKeyInfo structure
      */
     protected ASN1ObjectIdentifier getOID() {
-	return new ASN1ObjectIdentifier(McElieceKeyFactory.OID);
+        return new ASN1ObjectIdentifier(McElieceKeyFactory.OID);
     }
 
     /**
      * @return the algorithm parameters to encode in the SubjectPublicKeyInfo
-     *         structure
+     * structure
      */
     protected ASN1Type getAlgParams() {
-	return new ASN1Null();
+        return new ASN1Null();
     }
 
     /**
      * Return the keyData to encode in the SubjectPublicKeyInfo structure.
-     * <p>
+     * <p/>
      * The ASN.1 definition of the key structure is
-     * 
+     * <p/>
      * <pre>
      *       McEliecePublicKey ::= SEQUENCE {
      *         n           Integer      -- length of the code
@@ -157,15 +152,15 @@ public class McEliecePublicKey extends PublicKey {
      *         matrixG     OctetString  -- generator matrix as octet string
      *       }
      * </pre>
-     * 
+     *
      * @return the keyData to encode in the SubjectPublicKeyInfo structure
      */
     protected byte[] getKeyData() {
-	ASN1Sequence keyData = new ASN1Sequence();
-	keyData.add(new ASN1Integer(n));
-	keyData.add(new ASN1Integer(t));
-	keyData.add(new ASN1OctetString(g.getEncoded()));
-	return ASN1Tools.derEncode(keyData);
+        ASN1Sequence keyData = new ASN1Sequence();
+        keyData.add(new ASN1Integer(n));
+        keyData.add(new ASN1Integer(t));
+        keyData.add(new ASN1OctetString(g.getEncoded()));
+        return ASN1Tools.derEncode(keyData);
     }
 
 }

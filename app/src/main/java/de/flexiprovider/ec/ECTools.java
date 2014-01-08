@@ -10,25 +10,22 @@ public final class ECTools {
      * Default constructor (private).
      */
     private ECTools() {
-	// empty
+        // empty
     }
 
     /**
      * Check if the given {@link de.flexiprovider.ec.keys.ECPublicKey} is valid.
-     * 
-     * @param ecPubKey
-     *                the {@link de.flexiprovider.ec.keys.ECPublicKey}
-     * 
+     *
+     * @param ecPubKey the {@link de.flexiprovider.ec.keys.ECPublicKey}
      * @return <tt>true</tt> if this key is a valid {@link de.flexiprovider.ec.keys.ECPublicKey},
-     *         <tt>false</tt> otherwise
-     * @throws InvalidKeyException
-     *                 if the public key has not been initialized with EC domain
-     *                 parameters and thus is only available in encoded form.
+     * <tt>false</tt> otherwise
+     * @throws InvalidKeyException if the public key has not been initialized with EC domain
+     *                             parameters and thus is only available in encoded form.
      */
     public static boolean isValidPublicKey(ECPublicKey ecPubKey)
-	    throws InvalidKeyException {
-	Point q = ecPubKey.getW();
-	return !q.isZero() && q.onCurve();
+            throws InvalidKeyException {
+        Point q = ecPubKey.getW();
+        return !q.isZero() && q.onCurve();
     }
 
 }

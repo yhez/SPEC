@@ -20,64 +20,75 @@ public class Group {
     boolean dontAllowNewMembers;
     String encryptedPrivateFileNameForGroup;
     byte[] privateKey;
+
     //creates new from nothing
-    public Group(Activity a,String name,String locationForMessages,String groupMentor,String publicKey,
-                 byte[] privateKey,boolean noPrivateOnDevice,boolean dontAllowNewMembers){
-        this.noPrivateOnDevice=noPrivateOnDevice;
-        this.name=name;
-        this.locationForMessages=locationForMessages;
-        this.session=groupMentor;
-        this.privateKey=privateKey;
-        this.publicKey=publicKey;
-        this.dontAllowNewMembers=dontAllowNewMembers;
+    public Group(Activity a, String name, String locationForMessages, String groupMentor, String publicKey,
+                 byte[] privateKey, boolean noPrivateOnDevice, boolean dontAllowNewMembers) {
+        this.noPrivateOnDevice = noPrivateOnDevice;
+        this.name = name;
+        this.locationForMessages = locationForMessages;
+        this.session = groupMentor;
+        this.privateKey = privateKey;
+        this.publicKey = publicKey;
+        this.dontAllowNewMembers = dontAllowNewMembers;
         String[] details = CryptMethods.getMyDetails(a);
-        ownerName=details[0];
-        ownerEmail=details[1];
-        ownerPublicKey=details[2];
+        ownerName = details[0];
+        ownerEmail = details[1];
+        ownerPublicKey = details[2];
         this.id = GroupDataSource.groupDataSource.createGroup(a, this);
     }
+
     //getting a group from db
-    public Group(long id,String name,String locationForMessages,String groupMentor,String publicKey,
-                 boolean noPrivateOnDevice,boolean dontAllowNewMembers,
-                 String ownerName,String ownerEmail,String ownerPublicKey){
-        this.noPrivateOnDevice=noPrivateOnDevice;
-        this.dontAllowNewMembers=dontAllowNewMembers;
-        this.name=name;
-        this.locationForMessages=locationForMessages;
-        this.session=groupMentor;
-        this.publicKey=publicKey;
-        this.ownerName=ownerName;
-        this.ownerEmail=ownerEmail;
-        this.ownerPublicKey=ownerPublicKey;
-        this.id=id;
+    public Group(long id, String name, String locationForMessages, String groupMentor, String publicKey,
+                 boolean noPrivateOnDevice, boolean dontAllowNewMembers,
+                 String ownerName, String ownerEmail, String ownerPublicKey) {
+        this.noPrivateOnDevice = noPrivateOnDevice;
+        this.dontAllowNewMembers = dontAllowNewMembers;
+        this.name = name;
+        this.locationForMessages = locationForMessages;
+        this.session = groupMentor;
+        this.publicKey = publicKey;
+        this.ownerName = ownerName;
+        this.ownerEmail = ownerEmail;
+        this.ownerPublicKey = ownerPublicKey;
+        this.id = id;
     }
+
     //getting a group from an encrypted file
-    public Group(String rawData){
+    public Group(String rawData) {
 
     }
-    public void encrypt(){
+
+    public void encrypt() {
 
     }
-    public String getGroupName(){
+
+    public String getGroupName() {
         return name;
     }
-    public String getPublicKey(){
+
+    public String getPublicKey() {
         return publicKey;
     }
-    public String getEmail(){
+
+    public String getEmail() {
         return locationForMessages;
     }
-    public long getId(){
+
+    public long getId() {
         return id;
     }
-    public String getMentor(){
+
+    public String getMentor() {
         return session;
     }
-    public Contact getOwnerContact(){
-        Contact c =ContactsDataSource.contactsDataSource.findContactByKey(ownerPublicKey);
-            return c;
+
+    public Contact getOwnerContact() {
+        Contact c = ContactsDataSource.contactsDataSource.findContactByKey(ownerPublicKey);
+        return c;
     }
-    public String[] getOwnerDetails(){
-        return new String[]{ownerName,ownerEmail,ownerPublicKey};
+
+    public String[] getOwnerDetails() {
+        return new String[]{ownerName, ownerEmail, ownerPublicKey};
     }
 }

@@ -12,7 +12,7 @@ package de.flexiprovider.common.exceptions;
 /**
  * This exception is thrown, if the given object identifier of a curve cannot be
  * found.
- * 
+ *
  * @author Birgit Henhapl
  * @see de.flexiprovider.common.math.ellipticcurves.EllipticCurveGFP
  * @see de.flexiprovider.common.math.ellipticcurves.PointGFP
@@ -24,20 +24,19 @@ public class InvalidCurveTypeException extends ECException {
      * message is a String that describes this particular exception.
      */
     public InvalidCurveTypeException() {
-	super();
+        super();
     }
 
     /**
      * Constructs an InvalidCurveTypeException with detail message. The message
      * tells the user, that that particular object identifier could not be
      * found.
-     * 
-     * @param msg
-     *                the filename in which the oid is looked for
+     *
+     * @param msg the filename in which the oid is looked for
      */
     public InvalidCurveTypeException(String msg) {
-	super("The object identifier of the given curve"
-		+ "doesn't belong to the group of " + msg + " curves");
+        super("The object identifier of the given curve"
+                + "doesn't belong to the group of " + msg + " curves");
     }
 
 }

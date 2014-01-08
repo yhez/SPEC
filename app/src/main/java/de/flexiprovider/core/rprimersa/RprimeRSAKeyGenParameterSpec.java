@@ -4,12 +4,12 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class specifies parameters used by the {@link de.flexiprovider.core.rprimersa.RprimeRSAKeyPairGenerator}.
- * 
+ *
  * @author Paul Nguentcheu
  * @author Martin D�ring
  */
 public final class RprimeRSAKeyGenParameterSpec implements
-	AlgorithmParameterSpec {
+        AlgorithmParameterSpec {
 
     /**
      * The default bit length of the modulus <tt>n</tt> (1024 bits)
@@ -44,8 +44,8 @@ public final class RprimeRSAKeyGenParameterSpec implements
      * as {@link #DEFAULT_PRIVATE_EXPONENT_SIZE}.
      */
     public RprimeRSAKeyGenParameterSpec() {
-	this(DEFAULT_KEY_SIZE, DEFAULT_NUM_PRIMES,
-		DEFAULT_PRIVATE_EXPONENT_SIZE);
+        this(DEFAULT_KEY_SIZE, DEFAULT_NUM_PRIMES,
+                DEFAULT_PRIVATE_EXPONENT_SIZE);
     }
 
     /**
@@ -55,12 +55,11 @@ public final class RprimeRSAKeyGenParameterSpec implements
      * <tt>d</tt> modulo all primes is chosen as
      * {@link #DEFAULT_PRIVATE_EXPONENT_SIZE}. If the key size is invalid,
      * choose the {@link #DEFAULT_KEY_SIZE}.
-     * 
-     * @param keySize
-     *                the bit length of the modulus <tt>n</tt> (&gt;= 512)
+     *
+     * @param keySize the bit length of the modulus <tt>n</tt> (&gt;= 512)
      */
     public RprimeRSAKeyGenParameterSpec(int keySize) {
-	this(keySize, DEFAULT_NUM_PRIMES, DEFAULT_PRIVATE_EXPONENT_SIZE);
+        this(keySize, DEFAULT_NUM_PRIMES, DEFAULT_PRIVATE_EXPONENT_SIZE);
     }
 
     /**
@@ -70,14 +69,12 @@ public final class RprimeRSAKeyGenParameterSpec implements
      * {@link #DEFAULT_PRIVATE_EXPONENT_SIZE}. If the key size is invalid,
      * choose the {@link #DEFAULT_KEY_SIZE}. If the number of primes is
      * invalid, choose the {@link #DEFAULT_NUM_PRIMES}.
-     * 
-     * @param keySize
-     *                the bit length of the modulus <tt>n</tt> (&gt;= 512)
-     * @param k
-     *                the number of primes (&gt;= 2)
+     *
+     * @param keySize the bit length of the modulus <tt>n</tt> (&gt;= 512)
+     * @param k       the number of primes (&gt;= 2)
      */
     public RprimeRSAKeyGenParameterSpec(int keySize, int k) {
-	this(keySize, k, DEFAULT_PRIVATE_EXPONENT_SIZE);
+        this(keySize, k, DEFAULT_PRIVATE_EXPONENT_SIZE);
     }
 
     /**
@@ -88,55 +85,52 @@ public final class RprimeRSAKeyGenParameterSpec implements
      * invalid, choose the {@link #DEFAULT_NUM_PRIMES}. If the bit length of
      * the private exponent is invalid, choose the
      * {@link #DEFAULT_PRIVATE_EXPONENT_SIZE}.
-     * 
-     * @param keySize
-     *                the bit length of the modulus <tt>n</tt> (&gt;= 512)
-     * @param k
-     *                the number of primes (&gt;= 2)
-     * @param s
-     *                the bit length of the private exponent <tt>d</tt> modulo
+     *
+     * @param keySize the bit length of the modulus <tt>n</tt> (&gt;= 512)
+     * @param k       the number of primes (&gt;= 2)
+     * @param s       the bit length of the private exponent <tt>d</tt> modulo
      *                all primes (&gt;= 2)
      */
     public RprimeRSAKeyGenParameterSpec(int keySize, int k, int s) {
-	if (keySize < 512) {
-	    this.keySize = DEFAULT_KEY_SIZE;
-	} else {
-	    this.keySize = keySize;
-	}
+        if (keySize < 512) {
+            this.keySize = DEFAULT_KEY_SIZE;
+        } else {
+            this.keySize = keySize;
+        }
 
-	if (k < 2) {
-	    this.k = DEFAULT_NUM_PRIMES;
-	} else {
-	    this.k = k;
-	}
+        if (k < 2) {
+            this.k = DEFAULT_NUM_PRIMES;
+        } else {
+            this.k = k;
+        }
 
-	if (s < 2) {
-	    this.s = DEFAULT_PRIVATE_EXPONENT_SIZE;
-	} else {
-	    this.s = s;
-	}
+        if (s < 2) {
+            this.s = DEFAULT_PRIVATE_EXPONENT_SIZE;
+        } else {
+            this.s = s;
+        }
     }
 
     /**
      * @return the bit length of the modulus <tt>n</tt>
      */
     public int getKeySize() {
-	return keySize;
+        return keySize;
     }
 
     /**
      * @return the number of primes
      */
     public int getNumPrimes() {
-	return k;
+        return k;
     }
 
     /**
      * @return the bit length of the private exponent <tt>d</tt> modulo all
-     *         primes
+     * primes
      */
     public int getPrivExpSize() {
-	return s;
+        return s;
     }
 
 }

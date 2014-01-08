@@ -12,7 +12,7 @@ package de.flexiprovider.common.exceptions;
 /**
  * This exception is thrown, if one bit in a Bitstring shall be modified that
  * does not exist.
- * 
+ *
  * @see de.flexiprovider.common.math.finitefields.GF2Polynomial
  */
 public class BitDoesNotExistException extends GFException {
@@ -24,18 +24,17 @@ public class BitDoesNotExistException extends GFException {
      * given Bit does not exist and thus cannot be modified"
      */
     public BitDoesNotExistException() {
-	super(DIAGNOSTIC);
+        super(DIAGNOSTIC);
     }
 
     /**
      * Calls the parent-constructor with the message "The given Bit does not"
      * exist and thus cannot be modified: position <em>pos</em>"
-     * 
-     * @param pos
-     *                the position of the bit to modify
+     *
+     * @param pos the position of the bit to modify
      */
     public BitDoesNotExistException(int pos) {
-	super(DIAGNOSTIC + ": " + pos);
+        super(DIAGNOSTIC + ": " + pos);
     }
 
 }

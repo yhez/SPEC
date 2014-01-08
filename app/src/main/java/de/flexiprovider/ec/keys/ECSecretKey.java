@@ -13,7 +13,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
 
 /**
  * This class implements an EC secret key.
- * 
+ *
  * @author Jochen Hechler
  * @author Marcus St&ouml;gbauer
  */
@@ -24,56 +24,55 @@ public class ECSecretKey implements SecretKey {
 
     /**
      * Construct a new EC secret key.
-     * 
-     * @param s
-     *                the {@link FlexiBigInt} that represents the private key
+     *
+     * @param s the {@link FlexiBigInt} that represents the private key
      */
     public ECSecretKey(FlexiBigInt s) {
-	mS = s;
+        mS = s;
     }
 
     /**
      * Return the name of the algorithm this key is used with.
-     * 
+     *
      * @return "EC"
      */
     public String getAlgorithm() {
-	return "EC";
+        return "EC";
     }
 
     /**
      * @return the key material of this secret key
      */
     public byte[] getEncoded() {
-	return mS.toByteArray();
+        return mS.toByteArray();
     }
 
     /**
      * Returns the name of the encoding format for this secret key.
-     * 
+     *
      * @return "RAW"
      */
     public String getFormat() {
-	return "RAW";
+        return "RAW";
     }
 
     /**
      * @return the private key s
      */
     public FlexiBigInt getS() {
-	return mS;
+        return mS;
     }
 
     public boolean equals(Object other) {
-	if (!(other instanceof ECSecretKey)) {
-	    return false;
-	}
+        if (!(other instanceof ECSecretKey)) {
+            return false;
+        }
 
-	return mS.equals(((ECSecretKey) other).mS);
+        return mS.equals(((ECSecretKey) other).mS);
     }
 
     public int hashCode() {
-	return mS.hashCode();
+        return mS.hashCode();
     }
 
 }

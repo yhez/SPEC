@@ -84,11 +84,11 @@ import codec.asn1.ASN1UTF8String;
 /**
  * This Class implements the ASN1Structure NamingAuthority defined in ISIS_MTT
  * SigG_Core_Spec, V_1_0_2 by :
- * 
+ *
  * NamingAuthority ::= SEQUENCE { namingAuthorityId OBJECT IDENTIFIER OPTIONAL,
  * namingAuthorityUrl IA5String OPTIONAL, namingAuthorityText
  * DirectoryString(SIZE(1..128)) OPTIONAL}
- * 
+ *
  */
 
 /**
@@ -101,34 +101,32 @@ public class NamingAuthority extends ASN1Sequence {
     private ASN1IA5String namingUrl = null;
     private ASN1UTF8String namingText = null;
 
-    public static final String NAMING_AUTHORITY_OID = "1.3.36.8.3.11";
-
     /**
      * sets the NamingAuthorityID
      */
     public void setNamingId(String oid) {
-	this.namingID = new ASN1ObjectIdentifier(oid);
-	this.add(namingID);
+        this.namingID = new ASN1ObjectIdentifier(oid);
+        this.add(namingID);
     }
 
     /**
      * sets the NamingAuthorityURL
      */
     public void setNamingUrl(ASN1IA5String url) {
-	this.namingUrl = url;
-	this.add(namingUrl);
+        this.namingUrl = url;
+        this.add(namingUrl);
     }
 
     /**
      * sets the NamingAuthorityText
      */
     public void setNamingText(ASN1UTF8String text) {
-	this.namingText = text;
-	this.add(namingText);
+        this.namingText = text;
+        this.add(namingText);
     }
 
     public String toString() {
-	return null;
+        return null;
     }
 
 }

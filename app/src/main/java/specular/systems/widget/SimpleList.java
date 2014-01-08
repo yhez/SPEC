@@ -17,18 +17,18 @@ import specular.systems.FilesManagement;
 import specular.systems.R;
 import specular.systems.StaticVariables;
 
-public class SimpleList extends ArrayAdapter<Contact>  {
+public class SimpleList extends ArrayAdapter<Contact> {
     private static List<Contact> list;
     private Activity a;
 
     public SimpleList(Activity a) {
         super(a, R.layout.simple_list_row, list);
-        if(StaticVariables.fullList==null){
+        if (StaticVariables.fullList == null) {
             ContactsDataSource cdc = new ContactsDataSource(a);
-            StaticVariables.fullList=cdc.getAllContacts();
+            StaticVariables.fullList = cdc.getAllContacts();
         }
-        list=StaticVariables.fullList;
-        this.a=a;
+        list = StaticVariables.fullList;
+        this.a = a;
     }
 
     @Override
@@ -45,6 +45,7 @@ public class SimpleList extends ArrayAdapter<Contact>  {
     public long getItemId(int position) {
         return position;
     }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) a

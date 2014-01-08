@@ -10,26 +10,26 @@ public class SHA1PRNG extends SecureRandom {
     private java.security.SecureRandom javaRand;
 
     public SHA1PRNG() throws NoSuchAlgorithmException {
-	try {
-	    javaRand = java.security.SecureRandom
-		    .getInstance("SHA1PRNG", "SUN");
-	} catch (java.security.NoSuchAlgorithmException e) {
-	    throw new NoSuchAlgorithmException(e.getMessage());
-	} catch (NoSuchProviderException e) {
-	    throw new NoSuchAlgorithmException(e.getMessage());
-	}
+        try {
+            javaRand = java.security.SecureRandom
+                    .getInstance("SHA1PRNG", "SUN");
+        } catch (java.security.NoSuchAlgorithmException e) {
+            throw new NoSuchAlgorithmException(e.getMessage());
+        } catch (NoSuchProviderException e) {
+            throw new NoSuchAlgorithmException(e.getMessage());
+        }
     }
 
     public byte[] generateSeed(int numBytes) {
-	return javaRand.generateSeed(numBytes);
+        return javaRand.generateSeed(numBytes);
     }
 
     public void nextBytes(byte[] bytes) {
-	javaRand.nextBytes(bytes);
+        javaRand.nextBytes(bytes);
     }
 
     public void setSeed(byte[] seed) {
-	javaRand.setSeed(seed);
+        javaRand.setSeed(seed);
     }
 
 }

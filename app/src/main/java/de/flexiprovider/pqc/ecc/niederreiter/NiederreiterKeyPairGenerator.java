@@ -9,9 +9,9 @@ import de.flexiprovider.api.keys.KeyPairGenerator;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.math.codingtheory.GF2mField;
 import de.flexiprovider.common.math.codingtheory.GoppaCode;
+import de.flexiprovider.common.math.codingtheory.GoppaCode.MaMaPe;
 import de.flexiprovider.common.math.codingtheory.PolynomialGF2mSmallM;
 import de.flexiprovider.common.math.codingtheory.PolynomialRingGF2m;
-import de.flexiprovider.common.math.codingtheory.GoppaCode.MaMaPe;
 import de.flexiprovider.common.math.linearalgebra.GF2Matrix;
 import de.flexiprovider.common.math.linearalgebra.Permutation;
 import de.flexiprovider.pqc.ecc.ECCKeyGenParameterSpec;
@@ -20,7 +20,7 @@ import de.flexiprovider.pqc.ecc.ECCKeyGenParameterSpec;
  * This class implements key pair generation of the Niederreiter public-key
  * cryptosystem (Niederreiter PKCS). It class extends the
  * {@link de.flexiprovider.api.keys.KeyPairGenerator} class.
- * <p>
+ * <p/>
  * Given the parameters m and t or the key size n, the algorithm generates the
  * following matrices:
  * <ul>
@@ -30,17 +30,17 @@ import de.flexiprovider.pqc.ecc.ECCKeyGenParameterSpec;
  * <li>P - n x n a random peremutation matrix</li>
  * </ul>
  * Then, compute the k x n matrix H = SH'P.
- * <p>
+ * <p/>
  * The public key is (t, n, H), the private key is (m,k,field polynomial,Goppa
  * polynomial,S,P).
- * <p>
+ * <p/>
  * A key pair consists of a {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKey} and a
  * {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKey}.
- * <p>
+ * <p/>
  * The default parameters are (m, t) = (11, 50).
- * <p>
+ * <p/>
  * The Niederreiter key pair generator can be used as follows:
- * <p>
+ * <p/>
  * 1. get instance of NiederreiterPKC key pair generator:<br/>
  * <tt>KeyPairGenerator kpg =
  * KeyPairGenerator.getInstance("Niederreiter","FlexiPQC");</tt><br/>
@@ -51,10 +51,10 @@ import de.flexiprovider.pqc.ecc.ECCKeyGenParameterSpec;
  * private and public keys from the key pair:<br/>
  * <tt>encodedPublicKey = keyPair.getPublic().getEncoded();<br/>
  * encodedPrivateKey = keyPair.getPrivate().getEncoded();</tt>
- * 
- * @see ECCKeyGenParameterSpec
+ *
  * @author Elena Klintsevich
  * @author Martin D�ring
+ * @see ECCKeyGenParameterSpec
  */
 public class NiederreiterKeyPairGenerator extends KeyPairGenerator {
 
@@ -81,111 +81,106 @@ public class NiederreiterKeyPairGenerator extends KeyPairGenerator {
      * randomness. The parameters have to be an instance of
      * {@link ECCKeyGenParameterSpec}. If the parameters are <tt>null</tt>, the
      * default parameters are used (see {@link ECCKeyGenParameterSpec}).
-     * 
-     * @param params
-     *                the parameters
-     * @param random
-     *                the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     *                 if the parameters are not an instance of
-     *                 {@link ECCKeyGenParameterSpec}.
+     *
+     * @param params the parameters
+     * @param random the source of randomness
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are not an instance of
+     *                                                                            {@link ECCKeyGenParameterSpec}.
      */
     public void initialize(AlgorithmParameterSpec params, SecureRandom random)
-	    throws InvalidAlgorithmParameterException {
+            throws InvalidAlgorithmParameterException {
 
-	this.random = (random != null) ? random : Registry.getSecureRandom();
+        this.random = (random != null) ? random : Registry.getSecureRandom();
 
-	if (params == null) {
-	    initializeDefault();
-	    return;
-	}
+        if (params == null) {
+            initializeDefault();
+            return;
+        }
 
-	if (!(params instanceof ECCKeyGenParameterSpec)) {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
-	ECCKeyGenParameterSpec mParams = (ECCKeyGenParameterSpec) params;
+        if (!(params instanceof ECCKeyGenParameterSpec)) {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
+        ECCKeyGenParameterSpec mParams = (ECCKeyGenParameterSpec) params;
 
-	m = mParams.getM();
-	n = mParams.getN();
-	t = mParams.getT();
-	fieldPoly = mParams.getFieldPoly();
+        m = mParams.getM();
+        n = mParams.getN();
+        t = mParams.getT();
+        fieldPoly = mParams.getFieldPoly();
 
-	initialized = true;
+        initialized = true;
     }
 
     /**
      * Initialize the key pair generator.
-     * 
-     * @param keySize
-     *                the length of the code
-     * @param random
-     *                the source of randomness
+     *
+     * @param keySize the length of the code
+     * @param random  the source of randomness
      */
     public void initialize(int keySize, SecureRandom random) {
-	try {
-	    ECCKeyGenParameterSpec paramSpec = new ECCKeyGenParameterSpec(keySize);
-	    initialize(paramSpec, random);
-	} catch (InvalidParameterException e) {
-	    throw new RuntimeException("invalid key size");
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        try {
+            ECCKeyGenParameterSpec paramSpec = new ECCKeyGenParameterSpec(keySize);
+            initialize(paramSpec, random);
+        } catch (InvalidParameterException e) {
+            throw new RuntimeException("invalid key size");
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Default initialization of the key pair generator.
      */
     private void initializeDefault() {
-	try {
-	    ECCKeyGenParameterSpec paramSpec = new ECCKeyGenParameterSpec();
-	    initialize(paramSpec, Registry.getSecureRandom());
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        try {
+            ECCKeyGenParameterSpec paramSpec = new ECCKeyGenParameterSpec();
+            initialize(paramSpec, Registry.getSecureRandom());
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Generate a key pair.
-     * 
+     *
      * @return the key pair, consisting of a {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKey} and
-     *         a {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKey}.
+     * a {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKey}.
      * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKey
      * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKey
      */
     public KeyPair genKeyPair() {
-	if (!initialized) {
-	    initializeDefault();
-	}
+        if (!initialized) {
+            initializeDefault();
+        }
 
-	// finite field GF(2^m)
-	GF2mField field = new GF2mField(m, fieldPoly);
+        // finite field GF(2^m)
+        GF2mField field = new GF2mField(m, fieldPoly);
 
-	// generate Goppa polynomial
-	PolynomialGF2mSmallM gp = new PolynomialGF2mSmallM(field, t,
-		PolynomialGF2mSmallM.RANDOM_IRREDUCIBLE_POLYNOMIAL, random);
+        // generate Goppa polynomial
+        PolynomialGF2mSmallM gp = new PolynomialGF2mSmallM(field, t,
+                PolynomialGF2mSmallM.RANDOM_IRREDUCIBLE_POLYNOMIAL, random);
 
-	// polynomial ring used to compute square root matrix
-	PolynomialRingGF2m ring = new PolynomialRingGF2m(field, gp);
-	// the matrix used to compute square roots
-	PolynomialGF2mSmallM[] qInv = ring.getSquareRootMatrix();
+        // polynomial ring used to compute square root matrix
+        PolynomialRingGF2m ring = new PolynomialRingGF2m(field, gp);
+        // the matrix used to compute square roots
+        PolynomialGF2mSmallM[] qInv = ring.getSquareRootMatrix();
 
-	// generate canonical check matrix H
-	GF2Matrix h = GoppaCode.createCanonicalCheckMatrix(field, gp);
-	int k = h.getNumRows();
+        // generate canonical check matrix H
+        GF2Matrix h = GoppaCode.createCanonicalCheckMatrix(field, gp);
+        int k = h.getNumRows();
 
-	// generate matrices S^-1, M, and a permutation P satisfying
-	// S*H*P=(Id|M)
-	MaMaPe mmp = GoppaCode.computeSystematicForm(h, random);
-	GF2Matrix sInv = mmp.getFirstMatrix();
-	GF2Matrix matrixM = mmp.getSecondMatrix();
-	Permutation p = mmp.getPermutation();
+        // generate matrices S^-1, M, and a permutation P satisfying
+        // S*H*P=(Id|M)
+        MaMaPe mmp = GoppaCode.computeSystematicForm(h, random);
+        GF2Matrix sInv = mmp.getFirstMatrix();
+        GF2Matrix matrixM = mmp.getSecondMatrix();
+        Permutation p = mmp.getPermutation();
 
-	NiederreiterPublicKey pubKey = new NiederreiterPublicKey(n, t, matrixM);
-	NiederreiterPrivateKey privKey = new NiederreiterPrivateKey(m, k,
-		field, gp, qInv, sInv, p);
+        NiederreiterPublicKey pubKey = new NiederreiterPublicKey(n, t, matrixM);
+        NiederreiterPrivateKey privKey = new NiederreiterPrivateKey(m, k,
+                field, gp, qInv, sInv, p);
 
-	return new KeyPair(pubKey, privKey);
+        return new KeyPair(pubKey, privKey);
     }
 }

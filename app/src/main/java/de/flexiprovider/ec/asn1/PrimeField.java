@@ -16,11 +16,11 @@ import de.flexiprovider.common.util.ASN1Tools;
 /**
  * This class represents a <tt>prime-field</tt> as defined in ANS X9.62 -
  * 1998. The ASN.1 definition of this structure is
- * 
+ * <p/>
  * <pre>
  *   prime-field ::= INTEGER;
  * </pre>
- * 
+ *
  * @author Michele Boivin
  * @author Martin Dring
  */
@@ -30,25 +30,24 @@ public class PrimeField extends ASN1Integer {
      * Constructor used for decoding.
      */
     public PrimeField() {
-	// do not delete this constructor !!!
-	super();
+        // do not delete this constructor !!!
+        super();
     }
 
     /**
      * Constructor used for encoding.
-     * 
-     * @param order
-     *                the field order
+     *
+     * @param order the field order
      */
     public PrimeField(FlexiBigInt order) {
-	super(order.toByteArray());
+        super(order.toByteArray());
     }
 
     /**
      * @return the field order
      */
     public FlexiBigInt getQ() {
-	return ASN1Tools.getFlexiBigInt(this);
+        return ASN1Tools.getFlexiBigInt(this);
     }
 
 }

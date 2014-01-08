@@ -11,22 +11,22 @@ public class IQRDSAPublicKeySpec implements KeySpec {
     private QuadraticIdeal alpha;
 
     public IQRDSAPublicKeySpec(IQRDSAParameterSpec params,
-	    QuadraticIdeal gamma, QuadraticIdeal alpha) {
-	this.params = params;
-	this.gamma = gamma;
-	this.alpha = alpha;
+                               QuadraticIdeal gamma, QuadraticIdeal alpha) {
+        this.params = params;
+        this.gamma = gamma;
+        this.alpha = alpha;
     }
 
     public IQRDSAParameterSpec getParams() {
-	return params;
+        return params;
     }
 
     public QuadraticIdeal getGamma() {
-	return gamma;
+        return gamma;
     }
 
     public QuadraticIdeal getAlpha() {
-	return alpha;
+        return alpha;
     }
 
 }

@@ -16,15 +16,15 @@ public class MessageFormat {
 
     public MessageFormat(byte[] raw) {
         int loc = 0;
-        boolean found=false;
+        boolean found = false;
         while (loc < raw.length - 5) {
-            if (raw[loc] == 'f' && raw[loc + 1] == 'i' && raw[loc + 2] == 'l' && raw[loc + 3] == 'e' && raw[loc + 4] == '/' && raw[loc + 5] == '/'){
-                found=true;
+            if (raw[loc] == 'f' && raw[loc + 1] == 'i' && raw[loc + 2] == 'l' && raw[loc + 3] == 'e' && raw[loc + 4] == '/' && raw[loc + 5] == '/') {
+                found = true;
                 break;
             }
             loc++;
         }
-        if(!found)
+        if (!found)
             return;
         byte[] b = new byte[loc];
         System.arraycopy(raw, 0, b, 0, b.length);
@@ -54,7 +54,7 @@ public class MessageFormat {
         }
     }
 
-    public MessageFormat(byte[] fileContent,String[] myDetails, String fileName, String msgContent, String session) {
+    public MessageFormat(byte[] fileContent, String[] myDetails, String fileName, String msgContent, String session) {
         email = myDetails[1];
         this.msgContent = msgContent;
         publicKey = myDetails[2];
@@ -76,7 +76,7 @@ public class MessageFormat {
                 + sentTime);
     }
 
-    public static int checkReplay(Contact c,String sentTime) {
+    public static int checkReplay(Contact c, String sentTime) {
         if (c == null)
             return NOT_RELEVANT;
         SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");

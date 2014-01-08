@@ -36,7 +36,7 @@ public class ChooseContact extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
-            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(),this));
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
         setResult(RESULT_CANCELED);
         Intent intent = getIntent();
@@ -51,7 +51,7 @@ public class ChooseContact extends Activity {
             ListView lv = new ListView(this);
             SimpleList sl = new SimpleList(this);
             //todo add filter
-            if (StaticVariables.fullList==null) {
+            if (StaticVariables.fullList == null) {
                 ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
                 StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
             }

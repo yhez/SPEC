@@ -32,7 +32,7 @@ public class GenerateKeys extends DialogFragment {
         LinearLayout titles = (LinearLayout) v.findViewById(R.id.ll_titles);
         final View[] line = new View[3];
         final TextView tv = (TextView) v.findViewById(R.id.text_content);
-        final CheckBox cb  = (CheckBox)v.findViewById(R.id.check_verify);
+        final CheckBox cb = (CheckBox) v.findViewById(R.id.check_verify);
         for (int a = 0; a < 3; a++)
             line[a] = titles.getChildAt(a);
         final Button bt = (Button) v.findViewById(R.id.next);

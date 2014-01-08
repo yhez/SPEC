@@ -34,7 +34,7 @@ public class StaticVariables {
     public static Boolean flag_light_msg;
     //should be delete when goes to background
     public static String msg_content = null, file_name = null, session = null;
-    public static long orig_msg_size,encrypted_msg_size;
+    public static long orig_msg_size, encrypted_msg_size;
     public static String encryptedLight;
     public static File path;
 }

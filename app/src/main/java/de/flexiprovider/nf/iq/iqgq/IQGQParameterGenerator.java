@@ -18,7 +18,7 @@ import de.flexiprovider.common.math.quadraticfields.IQClassGroup;
 
 /**
  * This class is used to generate parameters for the IQGQ signature algorithm.
- * 
+ *
  * @author Martin D�ring
  */
 public class IQGQParameterGenerator extends AlgorithmParameterGenerator {
@@ -34,10 +34,10 @@ public class IQGQParameterGenerator extends AlgorithmParameterGenerator {
 
     /**
      * @return an instance of the {@link AlgorithmParameters} class
-     *         corresponding to the generated parameters
+     * corresponding to the generated parameters
      */
     protected AlgorithmParameters getAlgorithmParameters() {
-	return new IQGQParameters();
+        return new IQGQParameters();
     }
 
     /**
@@ -45,83 +45,78 @@ public class IQGQParameterGenerator extends AlgorithmParameterGenerator {
      * randomness. If the parameters are <tt>null</tt>, the
      * {@link IQGQParamGenParameterSpec#IQGQParamGenParameterSpec() default parameters}
      * are used.
-     * 
-     * @param genParams
-     *                the parameters
-     * @param random
-     *                the source of randomness
-     * @throws InvalidAlgorithmParameterException
-     *                 if the parameters are not an instance of
-     *                 {@link IQGQParamGenParameterSpec}.
+     *
+     * @param genParams the parameters
+     * @param random    the source of randomness
+     * @throws InvalidAlgorithmParameterException if the parameters are not an instance of
+     *                                            {@link IQGQParamGenParameterSpec}.
      */
     public void init(AlgorithmParameterSpec genParams, SecureRandom random)
-	    throws InvalidAlgorithmParameterException {
+            throws InvalidAlgorithmParameterException {
 
-	IQGQParamGenParameterSpec iqdsaGenParams;
-	if (genParams == null) {
-	    iqdsaGenParams = new IQGQParamGenParameterSpec();
-	} else if (genParams instanceof IQGQParamGenParameterSpec) {
-	    iqdsaGenParams = (IQGQParamGenParameterSpec) genParams;
-	} else {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
+        IQGQParamGenParameterSpec iqdsaGenParams;
+        if (genParams == null) {
+            iqdsaGenParams = new IQGQParamGenParameterSpec();
+        } else if (genParams instanceof IQGQParamGenParameterSpec) {
+            iqdsaGenParams = (IQGQParamGenParameterSpec) genParams;
+        } else {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
 
-	size = iqdsaGenParams.getSize();
-	this.random = random != null ? random : Registry.getSecureRandom();
+        size = iqdsaGenParams.getSize();
+        this.random = random != null ? random : Registry.getSecureRandom();
 
-	initialized = true;
+        initialized = true;
     }
 
     /**
      * Initialize the parameter generator with the size of the prime <tt>p</tt>
      * and a source of randomness.
-     * <p>
+     * <p/>
      * If the bit length of the discriminant is &lt; 2, the
      * {@link IQGQParamGenParameterSpec#DEFAULT_SIZE} is used as bit length. If
      * the bit length is &gt; {@link IQGQParamGenParameterSpec#MAX_SIZE},
      * {@link IQGQParamGenParameterSpec#MAX_SIZE} is used as bit length.
-     * 
-     * @param size
-     *                the bit length of the discriminant (&gt;= 2, &lt;=
-     *                {@link IQGQParamGenParameterSpec#MAX_SIZE})
-     * @param random
-     *                the source of randomness
+     *
+     * @param size   the bit length of the discriminant (&gt;= 2, &lt;=
+     *               {@link IQGQParamGenParameterSpec#MAX_SIZE})
+     * @param random the source of randomness
      */
     public void init(int size, SecureRandom random) {
-	IQGQParamGenParameterSpec genParams = new IQGQParamGenParameterSpec(
-		size);
-	try {
-	    init(genParams, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        IQGQParamGenParameterSpec genParams = new IQGQParamGenParameterSpec(
+                size);
+        try {
+            init(genParams, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     private void initDefault() {
-	IQGQParamGenParameterSpec defaultGenParams = new IQGQParamGenParameterSpec();
-	try {
-	    init(defaultGenParams, Registry.getSecureRandom());
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        IQGQParamGenParameterSpec defaultGenParams = new IQGQParamGenParameterSpec();
+        try {
+            init(defaultGenParams, Registry.getSecureRandom());
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Generate IQGQ algorithm parameters.
-     * 
+     *
      * @return the generated IQGQ parameters
      * @see de.flexiprovider.nf.iq.iqgq.IQGQParameterSpec
      */
     public AlgorithmParameterSpec generateParameters() {
-	if (!initialized) {
-	    initDefault();
-	}
+        if (!initialized) {
+            initDefault();
+        }
 
-	IQClassGroup classGroup = new IQClassGroup(size, true, random);
-	FlexiBigInt discriminant = classGroup.getDiscriminant();
-	return new IQGQParameterSpec(discriminant);
+        IQClassGroup classGroup = new IQClassGroup(size, true, random);
+        FlexiBigInt discriminant = classGroup.getDiscriminant();
+        return new IQGQParameterSpec(discriminant);
     }
 
 }

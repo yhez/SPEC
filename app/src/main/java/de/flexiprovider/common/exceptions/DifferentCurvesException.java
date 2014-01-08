@@ -12,7 +12,7 @@ package de.flexiprovider.common.exceptions;
 /**
  * This exception is thrown, when the parameters of a method are two points from
  * different curves.
- * 
+ *
  * @author Birgit Henhapl
  * @see de.flexiprovider.common.math.ellipticcurves.Point
  * @see de.flexiprovider.common.math.ellipticcurves.PointGFP
@@ -26,18 +26,17 @@ public class DifferentCurvesException extends ECException {
      * combine different elliptic curves".
      */
     public DifferentCurvesException() {
-	super(diagnostic);
+        super(diagnostic);
     }
 
     /**
      * Constructor with the message "Cannot combine different elliptic curves:
      * <em>detail</em>
-     * 
-     * @param detail
-     *                details of this Exception
+     *
+     * @param detail details of this Exception
      */
     public DifferentCurvesException(String detail) {
-	super(diagnostic + ":\n" + detail);
+        super(diagnostic + ":\n" + detail);
     }
 
 }

@@ -119,8 +119,8 @@ import codec.x501.Name;
 /**
  * Certificate Revocation List (CRL) according to rfc2459. It implements the
  * following ASN1 data structure:
- * <p>
- * 
+ * <p/>
+ * <p/>
  * <pre>
  * CertificateList  ::=  SEQUENCE  {
  * tbsCertList			TBSCertList,
@@ -139,9 +139,9 @@ import codec.x501.Name;
  * 						-- if present, must be v2
  * }
  * </pre>
- * 
+ * <p/>
  * Creation date: (18.08.99 15:23:09)
- * 
+ *
  * @author Markus Tak
  */
 public class X509Crl extends X509CRL implements ASN1Type {
@@ -163,72 +163,70 @@ public class X509Crl extends X509CRL implements ASN1Type {
      */
     public X509Crl() {
 
-	CertificateList = new ASN1Sequence(3);
-	TBSCertList = new ASN1Sequence(7);
+        CertificateList = new ASN1Sequence(3);
+        TBSCertList = new ASN1Sequence(7);
 
-	version = new ASN1Integer(1);
-	/**/// BUGFIX: optional feld must be false if respective parameter is
-	// set
+        version = new ASN1Integer(1);
+    /**/// BUGFIX: optional feld must be false if respective parameter is
+        // set
 	/**/
-	version.setOptional(false);
+        version.setOptional(false);
 	/**/// version.setOptional(true);
 	/**/// XIFGUB: optional feld must be false if respective parameter is
-	// set
-	TBSCertList.add(version);
+        // set
+        TBSCertList.add(version);
 
-	signatureAlgorithm = new AlgorithmIdentifier();
-	TBSCertList.add(signatureAlgorithm);
+        signatureAlgorithm = new AlgorithmIdentifier();
+        TBSCertList.add(signatureAlgorithm);
 
-	issuer = new Name();
-	TBSCertList.add(issuer);
+        issuer = new Name();
+        TBSCertList.add(issuer);
 
-	thisUpdate = new ASN1Choice();
-	thisUpdate.addType(new ASN1UTCTime());
-	thisUpdate.addType(new ASN1GeneralizedTime());
-	TBSCertList.add(thisUpdate);
+        thisUpdate = new ASN1Choice();
+        thisUpdate.addType(new ASN1UTCTime());
+        thisUpdate.addType(new ASN1GeneralizedTime());
+        TBSCertList.add(thisUpdate);
 
-	nextUpdate = new ASN1Choice();
-	nextUpdate.setOptional(true);
-	nextUpdate.addType(new ASN1UTCTime());
-	nextUpdate.addType(new ASN1GeneralizedTime());
+        nextUpdate = new ASN1Choice();
+        nextUpdate.setOptional(true);
+        nextUpdate.addType(new ASN1UTCTime());
+        nextUpdate.addType(new ASN1GeneralizedTime());
 
-	TBSCertList.add(nextUpdate);
+        TBSCertList.add(nextUpdate);
 
-	revokedCertificates = new ASN1SequenceOf(CRLEntry.class);
-	revokedCertificates.setOptional(true);
-	TBSCertList.add(revokedCertificates);
+        revokedCertificates = new ASN1SequenceOf(CRLEntry.class);
+        revokedCertificates.setOptional(true);
+        TBSCertList.add(revokedCertificates);
 
-	crlExtensions = new ASN1SequenceOf(X509Extension.class);
-	// ASN1TaggedType crl_ext = new ASN1TaggedType(0, crlExtensions, true,
-	// true);
-	// TBSCertList.add(crl_ext);
-	crlExtensionsTag = new ASN1TaggedType(0, crlExtensions, true, true);
-	TBSCertList.add(crlExtensionsTag);
+        crlExtensions = new ASN1SequenceOf(X509Extension.class);
+        // ASN1TaggedType crl_ext = new ASN1TaggedType(0, crlExtensions, true,
+        // true);
+        // TBSCertList.add(crl_ext);
+        crlExtensionsTag = new ASN1TaggedType(0, crlExtensions, true, true);
+        TBSCertList.add(crlExtensionsTag);
 
-	CertificateList.add(TBSCertList);
+        CertificateList.add(TBSCertList);
 
-	signatureAlgorithm2 = new AlgorithmIdentifier();
-	CertificateList.add(signatureAlgorithm);
+        signatureAlgorithm2 = new AlgorithmIdentifier();
+        CertificateList.add(signatureAlgorithm);
 
-	signature = new ASN1BitString();
-	CertificateList.add(signature);
+        signature = new ASN1BitString();
+        CertificateList.add(signature);
 
     }
 
     /**
      * Constructor upon Java objects. Takes an Name object (this crl's issuer)
      * and a Calendar object (date of this update)
-     * 
-     * @param issuer
-     *                the issuer as a Name object
-     * @param now
-     *                time of the revocation
+     *
+     * @param issuer the issuer as a Name object
+     * @param now    time of the revocation
      */
     public X509Crl(Name issuer, Calendar now) {
-	this();
+        this();
 
-	setIssuerDN(issuer);
-	setThisUpdate(now);
+        setIssuerDN(issuer);
+        setThisUpdate(now);
     }
 
     /**
@@ -236,63 +234,57 @@ public class X509Crl extends X509CRL implements ASN1Type {
      */
     public X509Crl(int i) {
 
-	CertificateList = new ASN1Sequence(3);
-	TBSCertList = new ASN1Sequence(6);
+        CertificateList = new ASN1Sequence(3);
+        TBSCertList = new ASN1Sequence(6);
 
-	version = new ASN1Integer(1);
+        version = new ASN1Integer(1);
 	/**/// BUGFIX: optional feld must be false if respective parameter is
-	// set
+        // set
 	/**/
-	version.setOptional(false);
+        version.setOptional(false);
 	/**/// version.setOptional(true);
 	/**/// XIFGUB: optional feld must be false if respective parameter is
-	// set
-	TBSCertList.add(version);
+        // set
+        TBSCertList.add(version);
 
-	signatureAlgorithm = new AlgorithmIdentifier();
-	TBSCertList.add(signatureAlgorithm);
+        signatureAlgorithm = new AlgorithmIdentifier();
+        TBSCertList.add(signatureAlgorithm);
 
-	issuer = new Name();
-	TBSCertList.add(issuer);
+        issuer = new Name();
+        TBSCertList.add(issuer);
 
-	thisUpdate = new ASN1Choice();
-	thisUpdate.addType(new ASN1UTCTime());
-	thisUpdate.addType(new ASN1GeneralizedTime());
-	TBSCertList.add(thisUpdate);
+        thisUpdate = new ASN1Choice();
+        thisUpdate.addType(new ASN1UTCTime());
+        thisUpdate.addType(new ASN1GeneralizedTime());
+        TBSCertList.add(thisUpdate);
 
-	/*
-	 * nextUpdate = new ASN1Choice(); nextUpdate.setOptional(true);
-	 * nextUpdate.addType(new ASN1UTCTime()); nextUpdate.addType(new
-	 * ASN1GeneralizedTime());
-	 * 
-	 * TBSCertList.add(nextUpdate);
-	 */
-	revokedCertificates = new ASN1SequenceOf(CRLEntry.class);
-	revokedCertificates.setOptional(true);
-	TBSCertList.add(revokedCertificates);
 
-	crlExtensions = new ASN1SequenceOf(X509Extension.class);
-	// ASN1TaggedType crl_ext = new ASN1TaggedType(0, crlExtensions, true,
-	// true);
-	// TBSCertList.add(crl_ext);
-	crlExtensionsTag = new ASN1TaggedType(0, crlExtensions, true, true);
-	TBSCertList.add(crlExtensionsTag);
+        revokedCertificates = new ASN1SequenceOf(CRLEntry.class);
+        revokedCertificates.setOptional(true);
+        TBSCertList.add(revokedCertificates);
 
-	CertificateList.add(TBSCertList);
+        crlExtensions = new ASN1SequenceOf(X509Extension.class);
+        // ASN1TaggedType crl_ext = new ASN1TaggedType(0, crlExtensions, true,
+        // true);
+        // TBSCertList.add(crl_ext);
+        crlExtensionsTag = new ASN1TaggedType(0, crlExtensions, true, true);
+        TBSCertList.add(crlExtensionsTag);
 
-	signatureAlgorithm2 = new AlgorithmIdentifier();
-	CertificateList.add(signatureAlgorithm);
+        CertificateList.add(TBSCertList);
 
-	signature = new ASN1BitString();
-	CertificateList.add(signature);
+        signatureAlgorithm2 = new AlgorithmIdentifier();
+        CertificateList.add(signatureAlgorithm);
+
+        signature = new ASN1BitString();
+        CertificateList.add(signature);
 
     }
 
     public X509Crl(Name issuer, Calendar now, boolean _nextUpdate) {
 
-	this(1);
-	setIssuerDN(issuer);
-	setThisUpdate(now);
+        this(1);
+        setIssuerDN(issuer);
+        setThisUpdate(now);
 
     }
 
@@ -301,35 +293,34 @@ public class X509Crl extends X509CRL implements ASN1Type {
      * revocation list.
      */
     public X509Crl(InputStream is) throws ASN1Exception, IOException {
-	this();
-	this.decode(new DERDecoder(is));
+        this();
+        this.decode(new DERDecoder(is));
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public void setConstraint(Constraint c) {
-	CertificateList.setConstraint(c);
+        CertificateList.setConstraint(c);
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public Constraint getConstraint() {
-	return CertificateList.getConstraint();
+        return CertificateList.getConstraint();
     }
 
     /**
      * Adds a CRL entry. Note that this method marks the revokedCertificates
      * field as _NOT_ optional so that it will be encoded.
-     * 
-     * @param e
-     *                a CRLEntry object that represents a revocation entry in
-     *                this crl
+     *
+     * @param e a CRLEntry object that represents a revocation entry in
+     *          this crl
      */
     public void addEntry(CRLEntry e) {
-	revokedCertificates.add(e);
-	revokedCertificates.setOptional(false);
+        revokedCertificates.add(e);
+        revokedCertificates.setOptional(false);
     }
 
     /**
@@ -337,17 +328,16 @@ public class X509Crl extends X509CRL implements ASN1Type {
      * the version number of this instance is already v2(1), which is the case
      * by default. This should be kept in mind when changing, modifying, or
      * subclassing this implementation.
-     * 
-     * @param ex
-     *                the X509 Extension to be added to the CRL (globally)
+     *
+     * @param ex the X509 Extension to be added to the CRL (globally)
      */
     public void addExtension(X509Extension ex) {
 
-	if (ex == null)
-	    throw new NullPointerException("Extension is null!");
-	System.out.println("CODEC : ADDING CRL EXTENSION");
-	crlExtensions.add(ex);
-	crlExtensionsTag.setOptional(false);
+        if (ex == null)
+            throw new NullPointerException("Extension is null!");
+        System.out.println("CODEC : ADDING CRL EXTENSION");
+        crlExtensions.add(ex);
+        crlExtensionsTag.setOptional(false);
 
 	/*
 	 * Commented out the code below. Based on agreement, version numbers
@@ -355,20 +345,20 @@ public class X509Crl extends X509CRL implements ASN1Type {
 	 * call. --volker roth
 	 */
 
-	// try {
-	// version.setBigInteger(new BigInteger("1"));
-	// }
-	// catch (ASN1Exception e) {
-	// System.out.println("shouldnt happen:");
-	// e.printStackTrace();
-	// }
+        // try {
+        // version.setBigInteger(new BigInteger("1"));
+        // }
+        // catch (ASN1Exception e) {
+        // System.out.println("shouldnt happen:");
+        // e.printStackTrace();
+        // }
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public void checkConstraints() throws ConstraintException {
-	CertificateList.checkConstraints();
+        CertificateList.checkConstraints();
     }
 
     /**
@@ -376,29 +366,29 @@ public class X509Crl extends X509CRL implements ASN1Type {
      * CRL
      */
     public boolean containsCertificate(BigInteger s) {
-	boolean res = false;
+        boolean res = false;
 
-	Iterator it = revokedCertificates.iterator();
-	while (it.hasNext() && !res) {
-	    if (((CRLEntry) it.next()).getSerialNumber().equals(s))
-		res = true;
-	}
+        Iterator it = revokedCertificates.iterator();
+        while (it.hasNext() && !res) {
+            if (((CRLEntry) it.next()).getSerialNumber().equals(s))
+                res = true;
+        }
 
-	return res;
+        return res;
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public void decode(Decoder dec) throws ASN1Exception, IOException {
-	CertificateList.decode(dec);
+        CertificateList.decode(dec);
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public void encode(Encoder enc) throws ASN1Exception, IOException {
-	CertificateList.encode(enc);
+        CertificateList.encode(enc);
     }
 
     /**
@@ -406,16 +396,16 @@ public class X509Crl extends X509CRL implements ASN1Type {
      */
     public Set getCriticalExtensionOIDs() {
 
-	HashSet res = new HashSet();
+        HashSet res = new HashSet();
 
-	Iterator it = crlExtensions.iterator();
-	while (it.hasNext()) {
-	    X509Extension theEx = (X509Extension) it.next();
-	    if (theEx.isCritical())
-		res.add(theEx.getOID().toString());
-	}
+        Iterator it = crlExtensions.iterator();
+        while (it.hasNext()) {
+            X509Extension theEx = (X509Extension) it.next();
+            if (theEx.isCritical())
+                res.add(theEx.getOID().toString());
+        }
 
-	return res;
+        return res;
     }
 
     /**
@@ -423,52 +413,52 @@ public class X509Crl extends X509CRL implements ASN1Type {
      */
     public byte[] getEncoded() throws java.security.cert.CRLException {
 
-	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-	try {
-	    CertificateList.encode(new DEREncoder(baos));
-	} catch (Exception e) {
-	    throw new java.security.cert.CRLException(e.getMessage());
-	}
+        try {
+            CertificateList.encode(new DEREncoder(baos));
+        } catch (Exception e) {
+            throw new java.security.cert.CRLException(e.getMessage());
+        }
 
-	return baos.toByteArray();
+        return baos.toByteArray();
     }
 
     /**
      * returns a collection of all global extensions inside this crl
      */
     public Collection getExtensions() {
-	return crlExtensions.getCollection();
+        return crlExtensions.getCollection();
     }
 
     /**
      * implementing abstract method in java.security.cert.X509CRL
      */
     public byte[] getExtensionValue(String ex) {
-	byte[] res = null;
+        byte[] res = null;
 
-	Iterator it = crlExtensions.iterator();
-	while (it.hasNext()) {
+        Iterator it = crlExtensions.iterator();
+        while (it.hasNext()) {
 
-	    X509Extension theEx = (X509Extension) it.next();
-	    if (theEx.getOID().toString().equals(ex)) {
-		try {
-		    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		    theEx.encode(new DEREncoder(baos));
-		    res = baos.toByteArray();
-		} catch (Exception ignore) {
-		}
-	    }
+            X509Extension theEx = (X509Extension) it.next();
+            if (theEx.getOID().toString().equals(ex)) {
+                try {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    theEx.encode(new DEREncoder(baos));
+                    res = baos.toByteArray();
+                } catch (Exception ignore) {
+                }
+            }
 
-	}
-	return res;
+        }
+        return res;
     }
 
     /**
      * implementing abstract method in java.security.cert.X509CRL
      */
     public Principal getIssuerDN() {
-	return issuer;
+        return issuer;
     }
 
     /**
@@ -476,12 +466,12 @@ public class X509Crl extends X509CRL implements ASN1Type {
      */
     public Date getNextUpdate() {
 
-	if (nextUpdate.isOptional())
-	    return null;
+        if (nextUpdate.isOptional())
+            return null;
 
-	ASN1Time a1t = (ASN1Time) nextUpdate.getInnerType();
+        ASN1Time a1t = (ASN1Time) nextUpdate.getInnerType();
 
-	return a1t.getDate();
+        return a1t.getDate();
     }
 
     /**
@@ -489,36 +479,36 @@ public class X509Crl extends X509CRL implements ASN1Type {
      */
     public Set getNonCriticalExtensionOIDs() {
 
-	HashSet res = new HashSet();
+        HashSet res = new HashSet();
 
-	Iterator it = crlExtensions.iterator();
-	while (it.hasNext()) {
+        Iterator it = crlExtensions.iterator();
+        while (it.hasNext()) {
 
-	    X509Extension theEx = (X509Extension) it.next();
-	    if (!theEx.isCritical())
-		res.add(theEx.getOID().toString());
+            X509Extension theEx = (X509Extension) it.next();
+            if (!theEx.isCritical())
+                res.add(theEx.getOID().toString());
 
-	}
+        }
 
-	return res;
+        return res;
     }
 
     /**
      * implementing abstract method in java.security.cert.X509CRL
      */
     public java.security.cert.X509CRLEntry getRevokedCertificate(
-	    BigInteger serialNumber) {
+            BigInteger serialNumber) {
 
-	CRLEntry res = null;
+        CRLEntry res = null;
 
-	Iterator it = revokedCertificates.iterator();
-	while (it.hasNext() && res == null) {
-	    CRLEntry cmp = (CRLEntry) it.next();
-	    if (cmp.getSerialNumber().equals(serialNumber))
-		res = cmp;
-	}
+        Iterator it = revokedCertificates.iterator();
+        while (it.hasNext() && res == null) {
+            CRLEntry cmp = (CRLEntry) it.next();
+            if (cmp.getSerialNumber().equals(serialNumber))
+                res = cmp;
+        }
 
-	return res;
+        return res;
 
     }
 
@@ -527,16 +517,16 @@ public class X509Crl extends X509CRL implements ASN1Type {
      */
     public Set getRevokedCertificates() {
 
-	HashSet hs = new HashSet();
+        HashSet hs = new HashSet();
 
-	Iterator it = revokedCertificates.iterator();
+        Iterator it = revokedCertificates.iterator();
 
-	while (it.hasNext()) {
-	    CRLEntry ce = (CRLEntry) it.next();
-	    hs.add(ce);
-	}
+        while (it.hasNext()) {
+            CRLEntry ce = (CRLEntry) it.next();
+            hs.add(ce);
+        }
 
-	return hs;
+        return hs;
     }
 
     /**
@@ -544,14 +534,14 @@ public class X509Crl extends X509CRL implements ASN1Type {
      */
     public String getSigAlgName() {
 
-	return codec.util.JCA.getName(getSigAlgOID());
+        return codec.util.JCA.getName(getSigAlgOID());
     }
 
     /**
      * implementing abstract method in java.security.cert.X509CRL
      */
     public String getSigAlgOID() {
-	return signatureAlgorithm.getAlgorithmOID().toString();
+        return signatureAlgorithm.getAlgorithmOID().toString();
     }
 
     /**
@@ -559,11 +549,11 @@ public class X509Crl extends X509CRL implements ASN1Type {
      */
     public byte[] getSigAlgParams() {
 
-	try {
-	    return signatureAlgorithm.getParameters().getEncoded();
-	} catch (Exception e) {
-	    return null;
-	}
+        try {
+            return signatureAlgorithm.getParameters().getEncoded();
+        } catch (Exception e) {
+            return null;
+        }
 
     }
 
@@ -571,63 +561,63 @@ public class X509Crl extends X509CRL implements ASN1Type {
      * implementing abstract method in java.security.cert.X509CRL
      */
     public byte[] getSignature() {
-	return signature.getBytes();
+        return signature.getBytes();
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public int getTag() {
-	return CertificateList.getTag();
+        return CertificateList.getTag();
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public int getTagClass() {
-	return CertificateList.getTagClass();
+        return CertificateList.getTagClass();
     }
 
     /**
      * gets the binary to-be-signed which is the input for the java Signature
      * object for verifying
-     * <p>
+     * <p/>
      * For signing use {@link #getTBSCertList(AlgorithmIdentifier)
      * getTBSCertList(AlgorithmIdentifier) }
      */
     public byte[] getTBSCertList() throws java.security.cert.CRLException {
 
-	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	try {
-	    TBSCertList.encode(new DEREncoder(baos));
-	} catch (Exception e) {
-	    throw new java.security.cert.CRLException(e.getMessage());
-	}
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            TBSCertList.encode(new DEREncoder(baos));
+        } catch (Exception e) {
+            throw new java.security.cert.CRLException(e.getMessage());
+        }
 
-	return baos.toByteArray();
+        return baos.toByteArray();
 
     }
 
     /**
      * gets the binary to-be-signed which is the input for the java Signature
      * object for signing
-     * <p>
+     * <p/>
      * For verifying use {@link #getTBSCertList() getTBSCertList()}
      */
     public byte[] getTBSCertList(AlgorithmIdentifier sigalg)
-	    throws java.security.cert.CRLException {
+            throws java.security.cert.CRLException {
 
-	setSignatureAlgorithm(sigalg);
+        setSignatureAlgorithm(sigalg);
 
-	byte[] res = null;
+        byte[] res = null;
 
-	try {
-	    res = getTBSCertList();
-	} catch (Exception e) {
-	    throw new java.security.cert.CRLException(e.getMessage());
-	}
+        try {
+            res = getTBSCertList();
+        } catch (Exception e) {
+            throw new java.security.cert.CRLException(e.getMessage());
+        }
 
-	return res;
+        return res;
 
     }
 
@@ -635,97 +625,95 @@ public class X509Crl extends X509CRL implements ASN1Type {
      * returns the issuing date of this crl update
      */
     public Date getThisUpdate() {
-	ASN1Time a1t = (ASN1Time) thisUpdate.getInnerType();
+        ASN1Time a1t = (ASN1Time) thisUpdate.getInnerType();
 
-	return a1t.getDate();
+        return a1t.getDate();
     }
 
     public Object getValue() {
-	return CertificateList.getValue();
+        return CertificateList.getValue();
     }
 
     /**
      * returns the X.509 version (1,2) of this crl
      */
     public int getVersion() {
-	return version.getBigInteger().intValue();
+        return version.getBigInteger().intValue();
     }
 
     /**
      * implementing abstract method in java.security.cert.X509CRL
-     * 
+     *
      * @return Always returns false
      */
     public boolean hasUnsupportedCriticalExtension() {
-	boolean res = false;
+        boolean res = false;
 
-	Set s = getCriticalExtensionOIDs();
+        Set s = getCriticalExtensionOIDs();
 
-	Iterator it = s.iterator();
+        Iterator it = s.iterator();
 
-	while (it.hasNext() && !res) {
-	    it.next();
+        while (it.hasNext() && !res) {
+            it.next();
 
-	    if (false)
-		res = true;
-	}
+        }
 
-	return res;
+        return res;
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public boolean isExplicit() {
-	return CertificateList.isExplicit();
+        return CertificateList.isExplicit();
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public boolean isOptional() {
-	return CertificateList.isOptional();
+        return CertificateList.isOptional();
     }
 
     /**
      * returns true if the given certificate is revoked in this crl
      */
     public boolean isRevoked(java.security.cert.Certificate crt) {
-	boolean res = false;
+        boolean res = false;
 
-	if (!(crt instanceof java.security.cert.X509Certificate))
-	    return false;
+        if (!(crt instanceof java.security.cert.X509Certificate))
+            return false;
 
-	try {
-	    BigInteger s = ((java.security.cert.X509Certificate) crt)
-		    .getSerialNumber();
+        try {
+            BigInteger s = ((java.security.cert.X509Certificate) crt)
+                    .getSerialNumber();
 
-	    Iterator it = revokedCertificates.iterator();
-	    while (it.hasNext() && !res) {
-		if (((CRLEntry) it.next()).getSerialNumber().equals(s))
-		    res = true;
-	    }
-	} catch (Exception i) {
-	    res = true; // vorsichtshalber
-	    System.out
-		    .println("Hinweis: sicherheitshalber als revoziert betrachtet!");
-	}
+            Iterator it = revokedCertificates.iterator();
+            while (it.hasNext() && !res) {
+                if (((CRLEntry) it.next()).getSerialNumber().equals(s))
+                    res = true;
+            }
+        } catch (Exception i) {
+            res = true; // vorsichtshalber
+            System.out
+                    .println("Hinweis: sicherheitshalber als revoziert betrachtet!");
+        }
 
-	return res;
+        return res;
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public boolean isType(int eins, int zwei) {
-	return CertificateList.isType(eins, zwei);
+        return CertificateList.isType(eins, zwei);
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public void setExplicit(boolean ex) {
-	CertificateList.setExplicit(ex);
+        CertificateList.setExplicit(ex);
     }
 
     /**
@@ -733,18 +721,18 @@ public class X509Crl extends X509CRL implements ASN1Type {
      */
     public void setIssuerDN(Principal iss) {
 
-	if (iss instanceof Name) {
-	    issuer = (Name) iss;
-	    TBSCertList.set(2, iss);
-	} else {
-	    try {
-		issuer = new Name(iss.toString(), -1);
-	    } catch (BadNameException e) {
-		throw new RuntimeException("bad principal name:"
-			+ e.getMessage());
-	    }
+        if (iss instanceof Name) {
+            issuer = (Name) iss;
+            TBSCertList.set(2, iss);
+        } else {
+            try {
+                issuer = new Name(iss.toString(), -1);
+            } catch (BadNameException e) {
+                throw new RuntimeException("bad principal name:"
+                        + e.getMessage());
+            }
 
-	}
+        }
 
     }
 
@@ -753,21 +741,15 @@ public class X509Crl extends X509CRL implements ASN1Type {
      */
     public void setNextUpdate(Calendar time) {
 
-	/*
-	 * nextUpdate = new ASN1Choice(); nextUpdate.setOptional(true);
-	 * nextUpdate.addType(new ASN1UTCTime()); nextUpdate.addType(new
-	 * ASN1GeneralizedTime());
-	 * 
-	 * TBSCertList.add(nextUpdate);
-	 */
 
-	ASN1Time akt_time = (ASN1Time) nextUpdate.getInnerType();
-	if (akt_time == null) {
-	    akt_time = new ASN1UTCTime(time);
-	    nextUpdate.setInnerType(akt_time);
-	}
-	akt_time.setDate(time);
-	nextUpdate.setOptional(false);
+
+        ASN1Time akt_time = (ASN1Time) nextUpdate.getInnerType();
+        if (akt_time == null) {
+            akt_time = new ASN1UTCTime(time);
+            nextUpdate.setInnerType(akt_time);
+        }
+        akt_time.setDate(time);
+        nextUpdate.setOptional(false);
     }
 
     /**
@@ -775,16 +757,16 @@ public class X509Crl extends X509CRL implements ASN1Type {
      * GMT since Date objects do not support time zones.
      */
     public void setNextUpdate(Date time) {
-	Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-	cal.setTime(time);
-	setNextUpdate(cal);
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        cal.setTime(time);
+        setNextUpdate(cal);
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public void setOptional(boolean opt) {
-	CertificateList.setOptional(opt);
+        CertificateList.setOptional(opt);
     }
 
     /**
@@ -792,21 +774,21 @@ public class X509Crl extends X509CRL implements ASN1Type {
      */
     public void setSignature(byte[] sig) {
 
-	try {
-	    signature.setBits(sig, 0);
-	} catch (ConstraintException ignore) {
-	}
+        try {
+            signature.setBits(sig, 0);
+        } catch (ConstraintException ignore) {
+        }
     }
 
     /**
      * sets the signature algorithm for the signature private key
      */
     public void setSignatureAlgorithm(AlgorithmIdentifier sigalg) {
-	signatureAlgorithm = sigalg;
-	CertificateList.set(1, signatureAlgorithm);
+        signatureAlgorithm = sigalg;
+        CertificateList.set(1, signatureAlgorithm);
 
-	signatureAlgorithm2 = (AlgorithmIdentifier) sigalg.clone();
-	TBSCertList.set(1, signatureAlgorithm2);
+        signatureAlgorithm2 = (AlgorithmIdentifier) sigalg.clone();
+        TBSCertList.set(1, signatureAlgorithm2);
     }
 
     /**
@@ -814,13 +796,13 @@ public class X509Crl extends X509CRL implements ASN1Type {
      */
     public void setThisUpdate(Calendar time) {
 
-	ASN1Time akt_time = (ASN1Time) thisUpdate.getInnerType();
-	if (akt_time == null) {
-	    akt_time = new ASN1UTCTime(time);
-	    thisUpdate.setInnerType(akt_time);
-	}
+        ASN1Time akt_time = (ASN1Time) thisUpdate.getInnerType();
+        if (akt_time == null) {
+            akt_time = new ASN1UTCTime(time);
+            thisUpdate.setInnerType(akt_time);
+        }
 
-	akt_time.setDate(time);
+        akt_time.setDate(time);
     }
 
     /**
@@ -828,9 +810,9 @@ public class X509Crl extends X509CRL implements ASN1Type {
      * since Date objects do not support time zones.
      */
     public void setThisUpdate(Date time) {
-	Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-	cal.setTime(time);
-	setThisUpdate(cal);
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        cal.setTime(time);
+        setThisUpdate(cal);
     }
 
     /**
@@ -838,7 +820,7 @@ public class X509Crl extends X509CRL implements ASN1Type {
      * revocation list
      */
     public String toString() {
-	return toString("");
+        return toString("");
 
     }
 
@@ -847,51 +829,51 @@ public class X509Crl extends X509CRL implements ASN1Type {
      * revocation list
      */
     public String toString(String offset) {
-	String res = "";
+        String res = "";
 
-	res = offset + "X.509 Certificate Revocation List (V";
-	res = res + (version.getBigInteger().intValue() + 1) + "):";
-	res = res + "\n" + offset + "issuer:" + getIssuerDN().toString();
+        res = offset + "X.509 Certificate Revocation List (V";
+        res = res + (version.getBigInteger().intValue() + 1) + "):";
+        res = res + "\n" + offset + "issuer:" + getIssuerDN().toString();
 
-	String thisupd = DateFormat.getDateTimeInstance(DateFormat.FULL,
-		DateFormat.FULL).format(getThisUpdate());
-	res = res + "\n" + offset + "this update:" + thisupd;
+        String thisupd = DateFormat.getDateTimeInstance(DateFormat.FULL,
+                DateFormat.FULL).format(getThisUpdate());
+        res = res + "\n" + offset + "this update:" + thisupd;
 
-	if (!nextUpdate.isOptional()) {
-	    String nextupd = DateFormat.getDateTimeInstance(DateFormat.FULL,
-		    DateFormat.FULL).format(getNextUpdate());
-	    res = res + "\n" + offset + "next update:" + nextupd;
-	}
+        if (!nextUpdate.isOptional()) {
+            String nextupd = DateFormat.getDateTimeInstance(DateFormat.FULL,
+                    DateFormat.FULL).format(getNextUpdate());
+            res = res + "\n" + offset + "next update:" + nextupd;
+        }
 
-	if (revokedCertificates.isEmpty())
-	    res = res + "\n" + offset + "no revoked certificates.";
-	else {
-	    res = res + "\n" + offset + "revoked certificates:";
+        if (revokedCertificates.isEmpty())
+            res = res + "\n" + offset + "no revoked certificates.";
+        else {
+            res = res + "\n" + offset + "revoked certificates:";
 
-	    int i = 1;
-	    Iterator it = revokedCertificates.iterator();
-	    while (it.hasNext()) {
-		CRLEntry ent = (CRLEntry) it.next();
-		res = res + "\n" + offset + String.valueOf(i) + ":";
-		res = res + ent.toString(offset + "  ");
-		i++;
-	    }
-	}
+            int i = 1;
+            Iterator it = revokedCertificates.iterator();
+            while (it.hasNext()) {
+                CRLEntry ent = (CRLEntry) it.next();
+                res = res + "\n" + offset + String.valueOf(i) + ":";
+                res = res + ent.toString(offset + "  ");
+                i++;
+            }
+        }
 
-	if (!crlExtensions.isEmpty()) {
-	    res = res + "\n" + offset + "CRL Extensions:";
-	    Iterator it = crlExtensions.iterator();
-	    while (it.hasNext()) {
-		X509Extension ext = (X509Extension) it.next();
-		res = res + "\n" + ext.toString(offset + " ");
-	    }
+        if (!crlExtensions.isEmpty()) {
+            res = res + "\n" + offset + "CRL Extensions:";
+            Iterator it = crlExtensions.iterator();
+            while (it.hasNext()) {
+                X509Extension ext = (X509Extension) it.next();
+                res = res + "\n" + ext.toString(offset + " ");
+            }
 
-	}
+        }
 
-	res = res + "\n" + offset + "signature algorithm:" + getSigAlgName();
-	res = res + "\n" + offset + "signature:" + signature.toString();
+        res = res + "\n" + offset + "signature algorithm:" + getSigAlgName();
+        res = res + "\n" + offset + "signature:" + signature.toString();
 
-	return res;
+        return res;
     }
 
     /**
@@ -900,20 +882,16 @@ public class X509Crl extends X509CRL implements ASN1Type {
      * #getTBSCertList() getTBSCertList()} and {link #getSignature()
      * getSignature()} should be used along with an external verification
      * routine.
-     * 
-     * @param key
-     *                the issuer's public key to verify the TBS certlist
-     * @throws java.security.NoSuchAlgorithmException
-     *                 If there is no appropriate provider
-     * @throws java.security.InvalidKeyException
-     *                 If there is a problem with the public key
-     * @throws java.security.SignatureException
-     *                 If the Signature was bad.
+     *
+     * @param key the issuer's public key to verify the TBS certlist
+     * @throws java.security.NoSuchAlgorithmException If there is no appropriate provider
+     * @throws java.security.InvalidKeyException      If there is a problem with the public key
+     * @throws java.security.SignatureException       If the Signature was bad.
      */
     public void verify(java.security.PublicKey key)
-	    throws java.security.cert.CRLException, NoSuchAlgorithmException,
-	    InvalidKeyException, NoSuchProviderException, SignatureException {
-	verify(key, "");
+            throws java.security.cert.CRLException, NoSuchAlgorithmException,
+            InvalidKeyException, NoSuchProviderException, SignatureException {
+        verify(key, "");
     }
 
     /**
@@ -922,46 +900,39 @@ public class X509Crl extends X509CRL implements ASN1Type {
      * #getTBSCertList() getTBSCertList()} and {link #getSignature()
      * getSignature()} should be used along with an external verification
      * routine.
-     * 
-     * @param key
-     *                the issuer's public key to verify the TBS certlist
-     * @param sigProvider
-     *                a preferred JCA provider to be used for verification
-     * 
-     * @throws java.security.NoSuchAlgorithmException
-     *                 If there is no appropriate provider
-     * @throws java.security.NoSuchProviderException
-     *                 If the given provider could not be found
-     * @throws java.security.InvalidKeyException
-     *                 If there is a problem with the public key
-     * @throws java.security.SignatureException
-     *                 If the Signature was bad.
+     *
+     * @param key         the issuer's public key to verify the TBS certlist
+     * @param sigProvider a preferred JCA provider to be used for verification
+     * @throws java.security.NoSuchAlgorithmException If there is no appropriate provider
+     * @throws java.security.NoSuchProviderException  If the given provider could not be found
+     * @throws java.security.InvalidKeyException      If there is a problem with the public key
+     * @throws java.security.SignatureException       If the Signature was bad.
      */
     public void verify(java.security.PublicKey key, String sigProvider)
-	    throws java.security.cert.CRLException, NoSuchAlgorithmException,
-	    InvalidKeyException, NoSuchProviderException, SignatureException {
+            throws java.security.cert.CRLException, NoSuchAlgorithmException,
+            InvalidKeyException, NoSuchProviderException, SignatureException {
 
-	Signature theSig = null;
-	String alg_oid = getSigAlgOID();
-	String alg_name = getSigAlgName();
+        Signature theSig = null;
+        String alg_oid = getSigAlgOID();
+        String alg_name = getSigAlgName();
 
-	// try to find the algorithm
-	try {
-	    if (!sigProvider.equals(""))
-		theSig = Signature.getInstance(alg_name, sigProvider);
-	    else
-		theSig = Signature.getInstance(alg_name);
-	} catch (NoSuchAlgorithmException nsae) {
-	    if (!sigProvider.equals(""))
-		theSig = Signature.getInstance(alg_oid, sigProvider);
-	    else
-		theSig = Signature.getInstance(alg_oid);
-	}
+        // try to find the algorithm
+        try {
+            if (!sigProvider.equals(""))
+                theSig = Signature.getInstance(alg_name, sigProvider);
+            else
+                theSig = Signature.getInstance(alg_name);
+        } catch (NoSuchAlgorithmException nsae) {
+            if (!sigProvider.equals(""))
+                theSig = Signature.getInstance(alg_oid, sigProvider);
+            else
+                theSig = Signature.getInstance(alg_oid);
+        }
 
-	theSig.initVerify(key);
-	theSig.update(getTBSCertList());
-	if (!theSig.verify(getSignature()))
-	    throw new SignatureException("Invalid Signature!");
+        theSig.initVerify(key);
+        theSig.update(getTBSCertList());
+        if (!theSig.verify(getSignature()))
+            throw new SignatureException("Invalid Signature!");
 
     }
 

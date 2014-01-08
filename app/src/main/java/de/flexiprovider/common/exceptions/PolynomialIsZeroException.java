@@ -12,7 +12,7 @@ package de.flexiprovider.common.exceptions;
 /**
  * This exception is thrown, when trying to divide or reduce by an element, that
  * is zero.
- * 
+ *
  * @see de.flexiprovider.common.math.finitefields.GF2Polynomial
  */
 public class PolynomialIsZeroException extends GFException {
@@ -24,7 +24,7 @@ public class PolynomialIsZeroException extends GFException {
      * element is Zero!"
      */
     public PolynomialIsZeroException() {
-	super(diagnostic);
+        super(diagnostic);
     }
 
 }

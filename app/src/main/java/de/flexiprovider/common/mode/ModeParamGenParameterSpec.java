@@ -6,7 +6,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
  * This class specifies parameters used for initializing the
  * {@link de.flexiprovider.common.mode.ModeParameterGenerator}. The parameters consist of the byte length of
  * the initialization vector.
- * 
+ *
  * @author Martin D�ring
  */
 public class ModeParamGenParameterSpec implements AlgorithmParameterSpec {
@@ -24,25 +24,24 @@ public class ModeParamGenParameterSpec implements AlgorithmParameterSpec {
      * chosen (somewhat arbitrarily) as 8 bytes.
      */
     public ModeParamGenParameterSpec() {
-	this(DEFAULT_LENGTH);
+        this(DEFAULT_LENGTH);
     }
 
     /**
      * Construct new parameters from the desired length of the initialization
      * vector (IV) in bytes.
-     * 
-     * @param ivLength
-     *                the length of the IV in bytes
+     *
+     * @param ivLength the length of the IV in bytes
      */
     public ModeParamGenParameterSpec(int ivLength) {
-	this.ivLength = ivLength;
+        this.ivLength = ivLength;
     }
 
     /**
      * @return the length of the IV in bytes
      */
     public int getIVLength() {
-	return ivLength;
+        return ivLength;
     }
 
 }

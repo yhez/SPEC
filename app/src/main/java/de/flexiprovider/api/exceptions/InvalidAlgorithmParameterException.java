@@ -1,14 +1,14 @@
 package de.flexiprovider.api.exceptions;
 
 public class InvalidAlgorithmParameterException extends
-	java.security.InvalidAlgorithmParameterException {
+        java.security.InvalidAlgorithmParameterException {
 
     public InvalidAlgorithmParameterException() {
-	super();
+        super();
     }
 
     public InvalidAlgorithmParameterException(String msg) {
-	super(msg);
+        super(msg);
     }
 
 }

@@ -26,9 +26,9 @@ public class GroupCreate extends DialogFragment {
         v.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Group.list==null){
+                if (Group.list == null) {
                     GroupDataSource gds = new GroupDataSource(getActivity());
-                   // Group.list=gds.getAllContacts();
+                    // Group.list=gds.getAllContacts();
                 }
             }
         });

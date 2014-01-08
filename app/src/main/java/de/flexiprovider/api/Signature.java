@@ -21,11 +21,11 @@ import de.flexiprovider.common.util.JavaSecureRandomWrapper;
  * the <tt>Signature</tt> class, which is used to provide the functionality of
  * a digital signature algorithm. Digital signatures are used for authentication
  * and integrity assurance of digital data. .
- * <p>
+ * <p/>
  * All the abstract methods in this class must be implemented by each
  * cryptographic service provider who wishes to supply the implementation of a
  * particular signature algorithm.
- * 
+ *
  * @author Martin D�ring, Johannes M�ller
  */
 public abstract class Signature extends java.security.SignatureSpi {
@@ -38,76 +38,76 @@ public abstract class Signature extends java.security.SignatureSpi {
      * @deprecated
      */
     protected final Object engineGetParameter(String param)
-	    throws java.security.InvalidParameterException {
-	// method is deprecated
-	return null;
+            throws java.security.InvalidParameterException {
+        // method is deprecated
+        return null;
     }
 
     /**
      * @deprecated
      */
     protected final void engineSetParameter(String param, Object value)
-	    throws java.security.InvalidParameterException {
-	// method is deprecated
+            throws java.security.InvalidParameterException {
+        // method is deprecated
     }
 
     protected final void engineInitSign(java.security.PrivateKey privateKey)
-	    throws java.security.InvalidKeyException {
-	if ((privateKey == null) || !(privateKey instanceof PrivateKey)) {
-	    throw new java.security.InvalidKeyException();
-	}
-	initSign((PrivateKey) privateKey);
+            throws java.security.InvalidKeyException {
+        if ((privateKey == null) || !(privateKey instanceof PrivateKey)) {
+            throw new java.security.InvalidKeyException();
+        }
+        initSign((PrivateKey) privateKey);
     }
 
     protected final void engineInitSign(java.security.PrivateKey privateKey,
-	    java.security.SecureRandom javaRand)
-	    throws java.security.InvalidKeyException {
-	if ((privateKey == null) || !(privateKey instanceof PrivateKey)) {
-	    throw new java.security.InvalidKeyException();
-	}
-	SecureRandom flexiRand = new JavaSecureRandomWrapper(javaRand);
-	initSign((PrivateKey) privateKey, flexiRand);
+                                        java.security.SecureRandom javaRand)
+            throws java.security.InvalidKeyException {
+        if ((privateKey == null) || !(privateKey instanceof PrivateKey)) {
+            throw new java.security.InvalidKeyException();
+        }
+        SecureRandom flexiRand = new JavaSecureRandomWrapper(javaRand);
+        initSign((PrivateKey) privateKey, flexiRand);
     }
 
     protected final void engineInitVerify(java.security.PublicKey publicKey)
-	    throws java.security.InvalidKeyException {
-	if ((publicKey == null) || !(publicKey instanceof PublicKey)) {
-	    throw new java.security.InvalidKeyException();
-	}
-	initVerify((PublicKey) publicKey);
+            throws java.security.InvalidKeyException {
+        if ((publicKey == null) || !(publicKey instanceof PublicKey)) {
+            throw new java.security.InvalidKeyException();
+        }
+        initVerify((PublicKey) publicKey);
     }
 
     protected void engineSetParameter(
-	    java.security.spec.AlgorithmParameterSpec params)
-	    throws java.security.InvalidAlgorithmParameterException {
-	if (params != null && !(params instanceof AlgorithmParameterSpec)) {
-	    throw new java.security.InvalidAlgorithmParameterException();
-	}
-	setParameters((AlgorithmParameterSpec) params);
+            java.security.spec.AlgorithmParameterSpec params)
+            throws java.security.InvalidAlgorithmParameterException {
+        if (params != null && !(params instanceof AlgorithmParameterSpec)) {
+            throw new java.security.InvalidAlgorithmParameterException();
+        }
+        setParameters((AlgorithmParameterSpec) params);
     }
 
     protected final void engineUpdate(byte b)
-	    throws java.security.SignatureException {
-	update(b);
+            throws java.security.SignatureException {
+        update(b);
     }
 
     protected final void engineUpdate(byte[] b, int off, int len)
-	    throws java.security.SignatureException {
-	update(b, off, len);
+            throws java.security.SignatureException {
+        update(b, off, len);
     }
 
     protected final byte[] engineSign() throws java.security.SignatureException {
-	return sign();
+        return sign();
     }
 
     protected final boolean engineVerify(byte[] sigBytes)
-	    throws java.security.SignatureException {
-	return verify(sigBytes);
+            throws java.security.SignatureException {
+        return verify(sigBytes);
     }
 
     protected final boolean engineVerify(byte[] sigBytes, int offset, int length)
-	    throws java.security.SignatureException {
-	return verify(sigBytes, offset, length);
+            throws java.security.SignatureException {
+        return verify(sigBytes, offset, length);
     }
 
     // ****************************************************
@@ -117,198 +117,164 @@ public abstract class Signature extends java.security.SignatureSpi {
     /**
      * Initialize the signature with the specified private key for signing
      * operations.
-     * 
-     * @param privKey
-     *                the private key of the identity whose signature will be
+     *
+     * @param privKey the private key of the identity whose signature will be
      *                generated.
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException
-     *                 if the key is invalid for initializing the signature.
+     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the key is invalid for initializing the signature.
      */
     public final void initSign(PrivateKey privKey) throws InvalidKeyException {
-	initSign(privKey, Registry.getSecureRandom());
+        initSign(privKey, Registry.getSecureRandom());
     }
 
     /**
      * Initialize the signature with the specified private key and source of
      * randomness for signing operations.
-     * 
-     * @param privKey
-     *                the private key of the identity whose signature will be
+     *
+     * @param privKey the private key of the identity whose signature will be
      *                generated.
-     * @param random
-     *                the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException
-     *                 if the key is invalid for initializing the signature.
+     * @param random  the source of randomness
+     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the key is invalid for initializing the signature.
      */
     public abstract void initSign(PrivateKey privKey, SecureRandom random)
-	    throws InvalidKeyException;
+            throws InvalidKeyException;
 
     /**
      * Initialize the signature with the specified public key for verification
      * operations.
-     * 
-     * @param pubKey
-     *                the public key of the identity whose signature is going to
-     *                be verified
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException
-     *                 if the key is invalid for initializing the signature.
+     *
+     * @param pubKey the public key of the identity whose signature is going to
+     *               be verified
+     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the key is invalid for initializing the signature.
      */
     public abstract void initVerify(PublicKey pubKey)
-	    throws InvalidKeyException;
+            throws InvalidKeyException;
 
     /**
      * Initialize the signature with the specified parameters.
-     * 
-     * @param params
-     *                the parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     *                 if the given parameters are inappropriate for this
-     *                 signature.
+     *
+     * @param params the parameters
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the given parameters are inappropriate for this
+     *                                                                            signature.
      */
     public abstract void setParameters(AlgorithmParameterSpec params)
-	    throws InvalidAlgorithmParameterException;
+            throws InvalidAlgorithmParameterException;
 
     /**
      * Update the data to be signed or verified using the specified byte.
-     * 
-     * @param input
-     *                the data byte
-     * @throws de.flexiprovider.api.exceptions.SignatureException
-     *                 if the engine is not initialized properly.
+     *
+     * @param input the data byte
+     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly.
      */
     public abstract void update(byte input) throws SignatureException;
 
     /**
      * Update the data to be signed or verified using the specified byte array.
-     * 
-     * @param input
-     *                the data byte array
-     * @throws de.flexiprovider.api.exceptions.SignatureException
-     *                 if the engine is not initialized properly.
+     *
+     * @param input the data byte array
+     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly.
      */
     public final void update(byte[] input) throws SignatureException {
-	update(input, 0, input.length);
+        update(input, 0, input.length);
     }
 
     /**
      * Update the data to be signed or verified, using the specified byte array
      * of the specified length, starting at the specified offset.
-     * 
-     * @param input
-     *                the data byte array
-     * @param inOff
-     *                the offset to start from in the array of bytes
-     * @param inLen
-     *                the number of bytes to use, starting at <tt>inOff</tt>
-     * @throws de.flexiprovider.api.exceptions.SignatureException
-     *                 if the engine is not initialized properly
+     *
+     * @param input the data byte array
+     * @param inOff the offset to start from in the array of bytes
+     * @param inLen the number of bytes to use, starting at <tt>inOff</tt>
+     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly
      */
     public abstract void update(byte[] input, int inOff, int inLen)
-	    throws SignatureException;
+            throws SignatureException;
 
     /**
      * Return the signature of all the data updated so far.
-     * 
+     *
      * @return the signature
-     * @throws de.flexiprovider.api.exceptions.SignatureException
-     *                 if the engine is not initialized properly.
+     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly.
      */
     public abstract byte[] sign() throws SignatureException;
 
     /**
      * Update the data to be signed and return the signature of all the data
      * updated so far.
-     * 
-     * @param input
-     *                the data byte array
+     *
+     * @param input the data byte array
      * @return the signature
-     * @throws de.flexiprovider.api.exceptions.SignatureException
-     *                 if the engine is not initialized properly.
+     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly.
      */
     public final byte[] sign(byte[] input) throws SignatureException {
-	update(input);
-	return sign();
+        update(input);
+        return sign();
     }
 
     /**
      * Verify the passed-in signature of the specified message.
-     * 
-     * @param signature
-     *                the signature
+     *
+     * @param signature the signature
      * @return <tt>true</tt> if the signature is valid, <tt>false</tt>
-     *         otherwise.
-     * @throws de.flexiprovider.api.exceptions.SignatureException
-     *                 if the engine is not initialized properly or the
-     *                 passed-in signature is improperly encoded or of the wrong
-     *                 type.
+     * otherwise.
+     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly or the
+     *                                                            passed-in signature is improperly encoded or of the wrong
+     *                                                            type.
      */
     public abstract boolean verify(byte[] signature) throws SignatureException;
 
     /**
      * Update the data to be verified and verify the passed-in signature.
-     * 
-     * @param input
-     *                the data byte array
-     * @param signature
-     *                the signature
+     *
+     * @param input     the data byte array
+     * @param signature the signature
      * @return <tt>true</tt> if the signature is valid, <tt>false</tt>
-     *         otherwise.
-     * @throws de.flexiprovider.api.exceptions.SignatureException
-     *                 if the engine is not initialized properly or the
-     *                 passed-in signature is improperly encoded or of the wrong
-     *                 type.
+     * otherwise.
+     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly or the
+     *                                                            passed-in signature is improperly encoded or of the wrong
+     *                                                            type.
      */
     public final boolean verify(byte[] input, byte[] signature)
-	    throws SignatureException {
-	update(input);
-	return verify(signature);
+            throws SignatureException {
+        update(input);
+        return verify(signature);
     }
 
     /**
      * Verify the passed-in signature.
-     * 
-     * @param signature
-     *                the signature
-     * @param sigOff
-     *                the offset where the signature starts
-     * @param sigLen
-     *                the length of the signature
+     *
+     * @param signature the signature
+     * @param sigOff    the offset where the signature starts
+     * @param sigLen    the length of the signature
      * @return <tt>true</tt> if the signature is valid, <tt>false</tt>
-     *         otherwise.
-     * @throws de.flexiprovider.api.exceptions.SignatureException
-     *                 if the engine is not initialized properly or the
-     *                 passed-in signature is improperly encoded or of the wrong
-     *                 type.
+     * otherwise.
+     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly or the
+     *                                                            passed-in signature is improperly encoded or of the wrong
+     *                                                            type.
      */
     public final boolean verify(byte[] signature, int sigOff, int sigLen)
-	    throws SignatureException {
-	byte[] sig = new byte[sigLen];
-	System.arraycopy(signature, sigOff, sig, 0, sigLen);
-	return verify(sig);
+            throws SignatureException {
+        byte[] sig = new byte[sigLen];
+        System.arraycopy(signature, sigOff, sig, 0, sigLen);
+        return verify(sig);
     }
 
     /**
      * Update the data to be verified and verify the passed-in signature.
-     * 
-     * @param input
-     *                the data byte array
-     * @param signature
-     *                the signature
-     * @param sigOff
-     *                the offset where the signature starts
-     * @param sigLen
-     *                the length of the signature
+     *
+     * @param input     the data byte array
+     * @param signature the signature
+     * @param sigOff    the offset where the signature starts
+     * @param sigLen    the length of the signature
      * @return <tt>true</tt> if the signature is valid, <tt>false</tt>
-     *         otherwise.
-     * @throws de.flexiprovider.api.exceptions.SignatureException
-     *                 if the engine is not initialized properly or the
-     *                 passed-in signature is improperly encoded or of the wrong
-     *                 type.
+     * otherwise.
+     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly or the
+     *                                                            passed-in signature is improperly encoded or of the wrong
+     *                                                            type.
      */
     public final boolean verify(byte[] input, byte[] signature, int sigOff,
-	    int sigLen) throws SignatureException {
-	update(input);
-	return verify(signature, sigOff, sigLen);
+                                int sigLen) throws SignatureException {
+        update(input);
+        return verify(signature, sigOff, sigLen);
     }
 
 }

@@ -6,7 +6,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
  * This class specifies parameters used for initializing the
  * {@link de.flexiprovider.core.pbe.PBEKeyGenerator}. The parameters consist of the key size in bytes.
  * The default key size is 16 bytes.
- * 
+ *
  * @author Martin D�ring
  */
 public class PBEKeyGenParameterSpec implements AlgorithmParameterSpec {
@@ -24,29 +24,28 @@ public class PBEKeyGenParameterSpec implements AlgorithmParameterSpec {
      * {@link #DEFAULT_KEY_SIZE}.
      */
     public PBEKeyGenParameterSpec() {
-	keySize = DEFAULT_KEY_SIZE;
+        keySize = DEFAULT_KEY_SIZE;
     }
 
     /**
      * Construct new parameters from the given key size. If the key size is
      * invalid, the {@link #DEFAULT_KEY_SIZE default key size} is chosen.
-     * 
-     * @param keySize
-     *                the key size (&gt;= 1 bytes)
+     *
+     * @param keySize the key size (&gt;= 1 bytes)
      */
     public PBEKeyGenParameterSpec(int keySize) {
-	if (keySize < 1) {
-	    this.keySize = DEFAULT_KEY_SIZE;
-	} else {
-	    this.keySize = keySize;
-	}
+        if (keySize < 1) {
+            this.keySize = DEFAULT_KEY_SIZE;
+        } else {
+            this.keySize = keySize;
+        }
     }
 
     /**
      * @return the key size in bytes
      */
     public int getKeySize() {
-	return keySize;
+        return keySize;
     }
 
 }

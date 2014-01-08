@@ -21,9 +21,9 @@ import de.flexiprovider.common.math.FlexiBigInt;
  * generation follows the proposal of the <a
  * href="http://csrc.nist.gov/fips/fips186-2.pdf">FIPS 186-2 standard</a>,
  * except for the generation of the random numbers.
- * <p>
+ * <p/>
  * The default bit length of the prime <tt>p</tt> is 1024 bits.
- * 
+ *
  * @author Thomas Wahrenbruch
  */
 public class DSAParameterGenerator extends AlgorithmParameterGenerator {
@@ -58,10 +58,10 @@ public class DSAParameterGenerator extends AlgorithmParameterGenerator {
 
     /**
      * @return an instance of the {@link de.flexiprovider.api.parameters.AlgorithmParameters} class
-     *         corresponding to the generated parameters
+     * corresponding to the generated parameters
      */
     protected AlgorithmParameters getAlgorithmParameters() {
-	return new DSAParameters();
+        return new DSAParameters();
     }
 
     /**
@@ -69,134 +69,129 @@ public class DSAParameterGenerator extends AlgorithmParameterGenerator {
      * randomness. If the parameters are <tt>null</tt>, the
      * {@link DSAParamGenParameterSpec#DSAParamGenParameterSpec() default parameters}
      * are used.
-     * 
-     * @param genParams
-     *                the parameters
-     * @param random
-     *                the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     *                 if the parameters are not an instance of
-     *                 {@link DSAParamGenParameterSpec}.
+     *
+     * @param genParams the parameters
+     * @param random    the source of randomness
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are not an instance of
+     *                                                                            {@link DSAParamGenParameterSpec}.
      */
     public void init(AlgorithmParameterSpec genParams, SecureRandom random)
-	    throws InvalidAlgorithmParameterException {
+            throws InvalidAlgorithmParameterException {
 
-	DSAParamGenParameterSpec dsaGenParams;
-	if (genParams == null) {
-	    dsaGenParams = new DSAParamGenParameterSpec();
-	} else if (genParams instanceof DSAParamGenParameterSpec) {
-	    dsaGenParams = (DSAParamGenParameterSpec) genParams;
-	} else {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
+        DSAParamGenParameterSpec dsaGenParams;
+        if (genParams == null) {
+            dsaGenParams = new DSAParamGenParameterSpec();
+        } else if (genParams instanceof DSAParamGenParameterSpec) {
+            dsaGenParams = (DSAParamGenParameterSpec) genParams;
+        } else {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
 
-	L = dsaGenParams.getL();
-	N = dsaGenParams.getN();
-	this.random = random != null ? random : Registry.getSecureRandom();
+        L = dsaGenParams.getL();
+        N = dsaGenParams.getN();
+        this.random = random != null ? random : Registry.getSecureRandom();
 
-	initialized = true;
+        initialized = true;
     }
 
     /**
      * Initialize the parameter generator with the size of the prime <tt>p</tt>
      * and a source of randomness.
-     * <p>
+     * <p/>
      * If the size is not a multiple of 64, the next smaller multiple of 64 is
      * used as size. If the size is &gt; 1024 or &lt; 512, the
      * {@link DSAParamGenParameterSpec#DEFAULT_L default size} is used.
-     * 
-     * @param size
-     *                the bit length of the prime p
-     * @param random
-     *                the source of randomness
+     *
+     * @param size   the bit length of the prime p
+     * @param random the source of randomness
      */
     public void init(int size, SecureRandom random) {
-	DSAParamGenParameterSpec genParams = new DSAParamGenParameterSpec(size);
-	try {
-	    init(genParams, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        DSAParamGenParameterSpec genParams = new DSAParamGenParameterSpec(size);
+        try {
+            init(genParams, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     private void initDefault() {
-	DSAParamGenParameterSpec defaultGenParams = new DSAParamGenParameterSpec();
-	try {
-	    init(defaultGenParams, Registry.getSecureRandom());
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        DSAParamGenParameterSpec defaultGenParams = new DSAParamGenParameterSpec();
+        try {
+            init(defaultGenParams, Registry.getSecureRandom());
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Generate DSA algorithm parameters.
-     * 
+     *
      * @return the generated DSA parameters
-     * 
      * @see de.flexiprovider.core.dsa.DSAParameterSpec
      */
     public AlgorithmParameterSpec generateParameters() {
-	if (!initialized) {
-	    initDefault();
-	}
+        if (!initialized) {
+            initDefault();
+        }
 
-	// the maximum number of tries to find a prime p given the subprime q
-	int maxTries;
-	FlexiBigInt q, x, c, p, qMultTwo;
+        // the maximum number of tries to find a prime p given the subprime q
+        int maxTries;
+        FlexiBigInt q, x, c, p, qMultTwo;
 
-	// TODO: speed up
-	out: while (true) {
-	    maxTries = 4096;
-	    q = new FlexiBigInt(N, HI_CERTAINTY, random);
+        // TODO: speed up
+        out:
+        while (true) {
+            maxTries = 4096;
+            q = new FlexiBigInt(N, HI_CERTAINTY, random);
 
-	    do {
-		x = generateX();
-		qMultTwo = q.multiply(TWO);
-		c = x.mod(qMultTwo);
-		p = x.subtract(c).add(FlexiBigInt.ONE);
-		// if p is long enough
-		if (p.bitLength() >= L) {
-		    // do fast primality test
-		    if (p.isProbablePrime(LO_CERTAINTY)) {
-			// do slow primality tests
-			if (p.isProbablePrime(HI_CERTAINTY)) {
-			    // p is prime - we're done
-			    break out;
-			}
-		    }
-		}
-	    } while (--maxTries > 0);
-	}
+            do {
+                x = generateX();
+                qMultTwo = q.multiply(TWO);
+                c = x.mod(qMultTwo);
+                p = x.subtract(c).add(FlexiBigInt.ONE);
+                // if p is long enough
+                if (p.bitLength() >= L) {
+                    // do fast primality test
+                    if (p.isProbablePrime(LO_CERTAINTY)) {
+                        // do slow primality tests
+                        if (p.isProbablePrime(HI_CERTAINTY)) {
+                            // p is prime - we're done
+                            break out;
+                        }
+                    }
+                }
+            } while (--maxTries > 0);
+        }
 
-	FlexiBigInt pMinusOne = p.subtract(FlexiBigInt.ONE);
-	FlexiBigInt pMinusOneModQ = pMinusOne.divide(q);
+        FlexiBigInt pMinusOne = p.subtract(FlexiBigInt.ONE);
+        FlexiBigInt pMinusOneModQ = pMinusOne.divide(q);
 
-	// generate random h with 1 < h < p-1
-	FlexiBigInt h, g;
-	do {
-	    h = new FlexiBigInt(L - 1, random);
-	    g = h.modPow(pMinusOneModQ, p);
-	} while ((h.compareTo(FlexiBigInt.ONE) <= 0)
-		|| (h.compareTo(pMinusOne) >= 0)
-		|| (g.compareTo(FlexiBigInt.ONE) <= 0));
+        // generate random h with 1 < h < p-1
+        FlexiBigInt h, g;
+        do {
+            h = new FlexiBigInt(L - 1, random);
+            g = h.modPow(pMinusOneModQ, p);
+        } while ((h.compareTo(FlexiBigInt.ONE) <= 0)
+                || (h.compareTo(pMinusOne) >= 0)
+                || (g.compareTo(FlexiBigInt.ONE) <= 0));
 
-	return new DSAParameterSpec(p, q, g);
+        return new DSAParameterSpec(p, q, g);
     }
 
     /**
      * Generate a random number <tt>r</tt> with
      * <tt>size-1 &lt;= |r| &lt; size</tt>.
-     * 
+     *
      * @return the generated random number
      */
     private FlexiBigInt generateX() {
-	byte[] xBytes = new byte[L >> 3];
-	random.nextBytes(xBytes);
-	xBytes[0] = (byte) (xBytes[0] | 0x80);
+        byte[] xBytes = new byte[L >> 3];
+        random.nextBytes(xBytes);
+        xBytes[0] = (byte) (xBytes[0] | 0x80);
 
-	return new FlexiBigInt(1, xBytes);
+        return new FlexiBigInt(1, xBytes);
     }
 
 }

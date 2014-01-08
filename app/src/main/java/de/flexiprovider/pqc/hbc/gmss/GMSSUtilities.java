@@ -2,7 +2,7 @@ package de.flexiprovider.pqc.hbc.gmss;
 
 /**
  * This class provides several methods that are required by the GMSS classes.
- * 
+ *
  * @author Elena Klintsevich
  */
 public class GMSSUtilities {
@@ -10,9 +10,8 @@ public class GMSSUtilities {
     /**
      * Converts a 32 bit integer into a byte array beginning at
      * <code>offset</code> (little-endian representation)
-     * 
-     * @param value
-     *            the integer to convert
+     *
+     * @param value the integer to convert
      */
     public byte[] intToBytesLittleEndian(int value) {
         byte[] bytes = new byte[4];
@@ -27,9 +26,8 @@ public class GMSSUtilities {
     /**
      * Converts a byte array beginning at <code>offset</code> into a 32 bit
      * integer (little-endian representation)
-     * 
-     * @param bytes
-     *            the byte array
+     *
+     * @param bytes the byte array
      * @return The resulting integer
      */
     public int bytesToIntLittleEndian(byte[] bytes) {
@@ -41,11 +39,9 @@ public class GMSSUtilities {
     /**
      * Converts a byte array beginning at <code>offset</code> into a 32 bit
      * integer (little-endian representation)
-     * 
-     * @param bytes
-     *            the byte array
-     * @param offset
-     *            the integer offset into the byte array
+     *
+     * @param bytes  the byte array
+     * @param offset the integer offset into the byte array
      * @return The resulting integer
      */
     public int bytesToIntLittleEndian(byte[] bytes, int offset) {
@@ -57,9 +53,8 @@ public class GMSSUtilities {
     /**
      * This method concatenates a 2-dimensional byte array into a 1-dimensional
      * byte array
-     * 
-     * @param arraycp
-     *            a 2-dimensional byte array.
+     *
+     * @param arraycp a 2-dimensional byte array.
      * @return 1-dimensional byte array with concatenated input array
      */
     public byte[] concatenateArray(byte[][] arraycp) {
@@ -74,11 +69,9 @@ public class GMSSUtilities {
 
     /**
      * This method prints the values of a 2-dimensional byte array
-     * 
-     * @param text
-     *            a String
-     * @param array
-     *            a 2-dimensional byte array
+     *
+     * @param text  a String
+     * @param array a 2-dimensional byte array
      */
     public void printArray(String text, byte[][] array) {
         System.out.println(text);
@@ -93,11 +86,9 @@ public class GMSSUtilities {
 
     /**
      * This method prints the values of a 1-dimensional byte array
-     * 
-     * @param text
-     *            a String
-     * @param array
-     *            a 1-dimensional byte array.
+     *
+     * @param text  a String
+     * @param array a 1-dimensional byte array.
      */
     public void printArray(String text, byte[] array) {
         System.out.println(text);
@@ -110,11 +101,10 @@ public class GMSSUtilities {
 
     /**
      * This method tests if an integer is a power of 2.
-     * 
-     * @param testValue
-     *            an integer
+     *
+     * @param testValue an integer
      * @return <code>TRUE</code> if <code>testValue</code> is a power of 2,
-     *         <code>FALSE</code> otherwise
+     * <code>FALSE</code> otherwise
      */
     public boolean testPowerOfTwo(int testValue) {
         int a = 1;
@@ -129,11 +119,10 @@ public class GMSSUtilities {
     /**
      * This method returns the least integer that is greater or equal to the
      * logarithm to the base 2 of an integer <code>intValue</code>.
-     * 
-     * @param intValue
-     *            an integer
+     *
+     * @param intValue an integer
      * @return The least integer greater or equal to the logarithm to the base 2
-     *         of <code>intValue</code>
+     * of <code>intValue</code>
      */
     public int getLog(int intValue) {
         int log = 1;
@@ -144,20 +133,19 @@ public class GMSSUtilities {
         }
         return log;
     }
-    
-   
-    
+
+
     /**
      * This Method calculates the actual index of the tree in level <code>height</code> from the global index byte array <code>glIndex</code>
-     * 
+     *
      * @param glIndex
      *            global Index byte array
      * @param height
      * 			  height of resulting tree index
-     * 
+     *
      * @return the actual index of the tree at level <code>height</code>
-     * 
-     * 
+     *
+     *
      */
  /*   
     public int[] calcIndex(byte[] glIndex,int[] heightOfTrees){

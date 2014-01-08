@@ -15,7 +15,7 @@ import de.flexiprovider.core.mac.HMac;
 /**
  * This class represents parameters for the {@link de.flexiprovider.core.kdf.PBKDF2} key derivation
  * function (OID 1.2.840.113549.2.7) used for passphrase based encryption.
- * 
+ *
  * @author Thomas Wahrenbruch
  * @author Martin D�ring
  */
@@ -38,50 +38,47 @@ public class PBKDF2ParameterSpec implements AlgorithmParameterSpec {
     /**
      * Construct new PBKDF2 parameters from the given salt, iteration count, and
      * key size.
-     * 
-     * @param salt
-     *                the salt
-     * @param iterationCount
-     *                the iteration count
-     * @param keySize
-     *                the key size
+     *
+     * @param salt           the salt
+     * @param iterationCount the iteration count
+     * @param keySize        the key size
      */
     public PBKDF2ParameterSpec(byte[] salt, int iterationCount, int keySize) {
-	this.salt = ByteUtils.clone(salt);
-	this.iterationCount = iterationCount;
-	this.keySize = keySize;
+        this.salt = ByteUtils.clone(salt);
+        this.iterationCount = iterationCount;
+        this.keySize = keySize;
     }
 
     /**
      * @return the salt
      */
     public byte[] getSalt() {
-	return salt;
+        return salt;
     }
 
     /**
      * @return the iteration count
      */
     public int getIterationCount() {
-	return iterationCount;
+        return iterationCount;
     }
 
     /**
      * @return the key size
      */
     public int getKeySize() {
-	return keySize;
+        return keySize;
     }
 
     /**
      * @return a human readable form of the parameters
      */
     public String toString() {
-	String result = "salt             : " + ByteUtils.toHexString(salt);
-	result += "\niteration count: " + iterationCount;
-	result += "\nkey size       : " + keySize;
-	result += "\nprf OID        : " + DEFAULT_PRF_OID;
-	return result;
+        String result = "salt             : " + ByteUtils.toHexString(salt);
+        result += "\niteration count: " + iterationCount;
+        result += "\nkey size       : " + keySize;
+        result += "\nprf OID        : " + DEFAULT_PRF_OID;
+        return result;
     }
 
 }

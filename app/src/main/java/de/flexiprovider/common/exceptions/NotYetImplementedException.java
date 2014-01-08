@@ -9,11 +9,11 @@ package de.flexiprovider.common.exceptions;
 public class NotYetImplementedException extends RuntimeException {
 
     public NotYetImplementedException() {
-	// empty
+        // empty
     }
 
     public NotYetImplementedException(String message) {
-	super(message);
+        super(message);
     }
 
 }

@@ -21,12 +21,12 @@ import de.flexiprovider.common.util.SeedGenerator;
  * This class implements a pseudorandom number generator as proposed by Kaliski.
  * Its security bases on the elliptic curve discrete logarithm problem. For
  * details, we refer to the ICICS 2002 paper of H. Baier.
- * 
+ * <p/>
  * The curve parameters are stored in a file named 'curve_parameters'. This file
  * has to be stored in the same directory as the Java-class containing the
  * main(...)-method . The validity of the parameters is not checked!!! Thus the
  * user is responsible for a good choice.
- * 
+ *
  * @author Harald Baier
  * @see EllipticCurveGFP
  */
@@ -129,261 +129,261 @@ public class ECPRNG extends SecureRandom {
 
     /**
      * Constructor.
-     * 
-     * @throws InvalidPointException
-     *                 should not happen with the default parameters.
+     *
+     * @throws InvalidPointException should not happen with the default parameters.
      */
     public ECPRNG() throws InvalidPointException {
 
-	// generate the seed generator object
-	seedGenerator = new SeedGenerator();
+        // generate the seed generator object
+        seedGenerator = new SeedGenerator();
 
-	// initialize the prime field
-	mP = new FlexiBigInt(p);
+        // initialize the prime field
+        mP = new FlexiBigInt(p);
 
-	// initialize the order r of G
-	mR = new FlexiBigInt(r);
+        // initialize the order r of G
+        mR = new FlexiBigInt(r);
 
-	// initialize the elliptic curve
-	mE = new EllipticCurveGFP(new GFPElement(new FlexiBigInt(a), mP),
-		new GFPElement(new FlexiBigInt(b), mP), mP);
+        // initialize the elliptic curve
+        mE = new EllipticCurveGFP(new GFPElement(new FlexiBigInt(a), mP),
+                new GFPElement(new FlexiBigInt(b), mP), mP);
 
-	// initialize the base point G on E
-	mG = new PointGFP(new GFPElement(new FlexiBigInt(gx), mP),
-		new GFPElement(new FlexiBigInt(gy), mP), mE);
+        // initialize the base point G on E
+        mG = new PointGFP(new GFPElement(new FlexiBigInt(gx), mP),
+                new GFPElement(new FlexiBigInt(gy), mP), mE);
 
-	// initialize the quadratic non-residue mGamma
-	mGamma = new FlexiBigInt(gamma);
+        // initialize the quadratic non-residue mGamma
+        mGamma = new FlexiBigInt(gamma);
 
-	// initialize the order r^tw of G^tw
-	mR_tw = new FlexiBigInt(rtw);
+        // initialize the order r^tw of G^tw
+        mR_tw = new FlexiBigInt(rtw);
 
-	// initialize the elliptic curve E^tw
-	mE_tw = new EllipticCurveGFP(new GFPElement(new FlexiBigInt(atw), mP),
-		new GFPElement(new FlexiBigInt(btw), mP), mP);
+        // initialize the elliptic curve E^tw
+        mE_tw = new EllipticCurveGFP(new GFPElement(new FlexiBigInt(atw), mP),
+                new GFPElement(new FlexiBigInt(btw), mP), mP);
 
-	// initialize the base point G^tw on E^tw
-	mG_tw = new PointGFP(new GFPElement(new FlexiBigInt(gxtw), mP),
-		new GFPElement(new FlexiBigInt(gytw), mP), mE_tw);
+        // initialize the base point G^tw on E^tw
+        mG_tw = new PointGFP(new GFPElement(new FlexiBigInt(gxtw), mP),
+                new GFPElement(new FlexiBigInt(gytw), mP), mE_tw);
 
-	// compute mGammaInverse
-	mGammaInverse = mGamma.modInverse(mP);
+        // compute mGammaInverse
+        mGammaInverse = mGamma.modInverse(mP);
 
-	// compute bitlengths of mR and mR_tw
-	bitLengthR = mR.bitLength();
-	bitLengthR_tw = mR_tw.bitLength();
+        // compute bitlengths of mR and mR_tw
+        bitLengthR = mR.bitLength();
+        bitLengthR_tw = mR_tw.bitLength();
 
-	// compute (mP - 1)/2
-	mP_minus_1_half = mP.subtract(FlexiBigInt.ONE);
-	mP_minus_1_half = mP_minus_1_half.shiftRight(1);
+        // compute (mP - 1)/2
+        mP_minus_1_half = mP.subtract(FlexiBigInt.ONE);
+        mP_minus_1_half = mP_minus_1_half.shiftRight(1);
 
-	// compute (mR - 1)/2
-	mR_minus_1_half = mR.subtract(FlexiBigInt.ONE);
-	mR_minus_1_half = mR_minus_1_half.shiftRight(1);
+        // compute (mR - 1)/2
+        mR_minus_1_half = mR.subtract(FlexiBigInt.ONE);
+        mR_minus_1_half = mR_minus_1_half.shiftRight(1);
 
-	// compute (mR_tw - 1)/2
-	mR_tw_minus_1_half = mR_tw.subtract(FlexiBigInt.ONE);
-	mR_tw_minus_1_half = mR_tw_minus_1_half.shiftRight(1);
+        // compute (mR_tw - 1)/2
+        mR_tw_minus_1_half = mR_tw.subtract(FlexiBigInt.ONE);
+        mR_tw_minus_1_half = mR_tw_minus_1_half.shiftRight(1);
 
-	// compute the length of the seed in bytes: bitlenghtR + 1 bits
-	mSeedLength = (bitLengthR + 1) >> 3;
+        // compute the length of the seed in bytes: bitlenghtR + 1 bits
+        mSeedLength = (bitLengthR + 1) >> 3;
 
-	// initialize mGArray with multiples of mG
-	mPoint = new PointGFP(mG);
-	mGArray = new PointGFP[bitLengthR];
-	for (int kk = 0; kk < bitLengthR; kk++) {
-	    mGArray[kk] = new PointGFP(mPoint);
-	    mPoint.multiplyThisBy2();
-	}
+        // initialize mGArray with multiples of mG
+        mPoint = new PointGFP(mG);
+        mGArray = new PointGFP[bitLengthR];
+        for (int kk = 0; kk < bitLengthR; kk++) {
+            mGArray[kk] = new PointGFP(mPoint);
+            mPoint.multiplyThisBy2();
+        }
 
-	mPoint = new PointGFP(mG_tw);
-	mG_twArray = new PointGFP[bitLengthR_tw];
-	for (int kk = 0; kk < bitLengthR_tw; kk++) {
-	    mG_twArray[kk] = new PointGFP(mPoint);
-	    mPoint.multiplyThisBy2();
-	}
+        mPoint = new PointGFP(mG_tw);
+        mG_twArray = new PointGFP[bitLengthR_tw];
+        for (int kk = 0; kk < bitLengthR_tw; kk++) {
+            mG_twArray[kk] = new PointGFP(mPoint);
+            mPoint.multiplyThisBy2();
+        }
     } // end of constructor ECPRNG()
 
     /**
      * Generate a seed of the given length.
-     * 
+     *
      * @param numBytes -
-     *                the intended number of seed bytes
+     *                 the intended number of seed bytes
      * @return the seed as array of bytes
      */
     public byte[] generateSeed(int numBytes) {
-	if (numBytes <= 0) {
-	    return new byte[0];
-	}
-	java.security.SecureRandom sr = new java.security.SecureRandom();
-	return sr.generateSeed(numBytes);
+        if (numBytes <= 0) {
+            return new byte[0];
+        }
+        java.security.SecureRandom sr = new java.security.SecureRandom();
+        return sr.generateSeed(numBytes);
 //	return this.generateSeed(numBytes);
     }
 
     /**
      * Sets the seed to the given argument.
-     * 
+     *
      * @param seed -
-     *                the seed
+     *             the seed
      */
     public void setSeed(byte[] seed) {
-	initializeS(seed);
-	mIsSeeded = true;
+        initializeS(seed);
+        mIsSeeded = true;
     }
 
     /**
      * Computes the required random bytes.
-     * 
+     *
      * @param randomBytes -
-     *                the output array
+     * the output array
      */
     static long counter = 0;
+
     public void nextBytes(byte[] randomBytes) {
-	
-	counter++;
-	int length = randomBytes.length;
 
-	if (length == 0) {
-	    return;
-	}
+        counter++;
+        int length = randomBytes.length;
 
-	// set the seed
-	if (!mIsSeeded) {
-	    initializeS(generateSeed(mSeedLength));
-	}
+        if (length == 0) {
+            return;
+        }
 
-	for (int i = 0; i < length; i++) {
-	    randomBytes[i] = phi();
-	}
+        // set the seed
+        if (!mIsSeeded) {
+            initializeS(generateSeed(mSeedLength));
+        }
 
-	// to ensure that a new seed is set before computing the next bytes
-	if(counter%5000 == 0){
-	    mIsSeeded = false;
-	}
+        for (int i = 0; i < length; i++) {
+            randomBytes[i] = phi();
+        }
+
+        // to ensure that a new seed is set before computing the next bytes
+        if (counter % 5000 == 0) {
+            mIsSeeded = false;
+        }
     } // end of engineNextBytes
 
     // the function initializeS() initializes S using the current Seed
     private void initializeS(byte[] seed) {
-	mS = new FlexiBigInt(seed);
+        mS = new FlexiBigInt(seed);
 
-	// set tmp = 2*mP + 2
-	tmp = new FlexiBigInt(mP.toString());
-	tmp.shiftLeft(1);
-	tmp = tmp.add(FlexiBigInt.ONE);
-	tmp = tmp.add(FlexiBigInt.ONE);
+        // set tmp = 2*mP + 2
+        tmp = new FlexiBigInt(mP.toString());
+        tmp.shiftLeft(1);
+        tmp = tmp.add(FlexiBigInt.ONE);
+        tmp = tmp.add(FlexiBigInt.ONE);
 
-	// if mS is negative, set it to its absolute value
-	if (mS.compareTo(FlexiBigInt.ZERO) == -1) {
-	    mS = mS.negate();
-	}
+        // if mS is negative, set it to its absolute value
+        if (mS.compareTo(FlexiBigInt.ZERO) == -1) {
+            mS = mS.negate();
+        }
 
-	// if mS is not lower than 2mP+2, set it to the remainder
-	if (mS.compareTo(tmp) != -1) {
-	    mS = mS.remainder(tmp);
-	}
+        // if mS is not lower than 2mP+2, set it to the remainder
+        if (mS.compareTo(tmp) != -1) {
+            mS = mS.remainder(tmp);
+        }
     }
 
     // the function computeB() computes the byte B corresponding
     // to the current state mS as explained in the paper
     private byte computeB(FlexiBigInt s, FlexiBigInt r,
-	    FlexiBigInt r_minus_1_half) {
+                          FlexiBigInt r_minus_1_half) {
 
-	// initialize tmp with the current state mS = s
-	tmp = new FlexiBigInt(s.toString());
-	// mLocalByte stores the result; initialized with 0
-	mLocalByte = 0;
-	// mBitmask stores the current bit to set
-	mBitmask = 1;
+        // initialize tmp with the current state mS = s
+        tmp = new FlexiBigInt(s.toString());
+        // mLocalByte stores the result; initialized with 0
+        mLocalByte = 0;
+        // mBitmask stores the current bit to set
+        mBitmask = 1;
 
-	for (int i = 0; i < 8; i++) {
-	    // set the current bit
-	    if ((tmp.compareTo(r_minus_1_half)) == 1) {
-		mLocalByte |= mBitmask;
-	    }
+        for (int i = 0; i < 8; i++) {
+            // set the current bit
+            if ((tmp.compareTo(r_minus_1_half)) == 1) {
+                mLocalByte |= mBitmask;
+            }
 
-	    // update tmp: tmp <-- 2*tmp mod r
-	    tmp = tmp.shiftLeft(1);
-	    tmp = tmp.remainder(r);
-	    // update mBitmask: mBitmask <-- 2*mBitmask
-	    mBitmask <<= 1;
-	} // end of for-loop
+            // update tmp: tmp <-- 2*tmp mod r
+            tmp = tmp.shiftLeft(1);
+            tmp = tmp.remainder(r);
+            // update mBitmask: mBitmask <-- 2*mBitmask
+            mBitmask <<= 1;
+        } // end of for-loop
 
-	return mLocalByte;
+        return mLocalByte;
     } // end of private method computeB
 
     // the function phi() is explained in the paper
     private byte phi() {
-	if (mS.equals(FlexiBigInt.ZERO)) {
+        if (mS.equals(FlexiBigInt.ZERO)) {
 
-	    // the current byte is equal to 0
-	    mCurrentByte = 0;
+            // the current byte is equal to 0
+            mCurrentByte = 0;
 
-	    // The point mPoint is equal to O in E(\F_p)
-	    // The updated mS is equal to 2mP
-	    mS = mP.shiftLeft(1); // mS = 2*mP
+            // The point mPoint is equal to O in E(\F_p)
+            // The updated mS is equal to 2mP
+            mS = mP.shiftLeft(1); // mS = 2*mP
 
-	    return mCurrentByte;
-	}
+            return mCurrentByte;
+        }
 
-	// mS is positive and smaller than mR
-	if ((mS.compareTo(mR)) == -1) {
-	    // compute the current byte
-	    mCurrentByte = computeB(mS, mR, mR_minus_1_half);
+        // mS is positive and smaller than mR
+        if ((mS.compareTo(mR)) == -1) {
+            // compute the current byte
+            mCurrentByte = computeB(mS, mR, mR_minus_1_half);
 
-	    // set mPoint <-- mS * mG
-	    mPoint = (PointGFP) ScalarMult.eval_SquareMultiply(ScalarMult
-		    .determineNaf(mS, 4), mGArray);
+            // set mPoint <-- mS * mG
+            mPoint = (PointGFP) ScalarMult.eval_SquareMultiply(ScalarMult
+                    .determineNaf(mS, 4), mGArray);
 
-	    // get x- and y-coordinate of mPoint
-	    mX = mPoint.getXAffin().toFlexiBigInt();
-	    mY = mPoint.getYAffin().toFlexiBigInt();
+            // get x- and y-coordinate of mPoint
+            mX = mPoint.getXAffin().toFlexiBigInt();
+            mY = mPoint.getYAffin().toFlexiBigInt();
 
-	    // initialize new state with 2*mX
-	    mS = mX.shiftLeft(1);
-	    // if y-coordinate is at least (p-1)/2, set mS <-- mS + 1
-	    if ((mY.compareTo(mP_minus_1_half)) == 1) {
-		mS = mS.add(FlexiBigInt.ONE);
-	    }
+            // initialize new state with 2*mX
+            mS = mX.shiftLeft(1);
+            // if y-coordinate is at least (p-1)/2, set mS <-- mS + 1
+            if ((mY.compareTo(mP_minus_1_half)) == 1) {
+                mS = mS.add(FlexiBigInt.ONE);
+            }
 
-	    return mCurrentByte;
-	}
+            return mCurrentByte;
+        }
 
-	// mS is equal to mR
-	if (mS.equals(mR)) {
+        // mS is equal to mR
+        if (mS.equals(mR)) {
 
-	    // The current byte is the equal to 0
-	    mCurrentByte = 0;
+            // The current byte is the equal to 0
+            mCurrentByte = 0;
 
-	    // The point mPoint is equal to O in E_tw(\F_p)
-	    mS = mP.shiftLeft(1); // mS = 2*mP + 1
-	    mS.add(FlexiBigInt.ONE);
+            // The point mPoint is equal to O in E_tw(\F_p)
+            mS = mP.shiftLeft(1); // mS = 2*mP + 1
+            mS.add(FlexiBigInt.ONE);
 
-	    return mCurrentByte;
-	}
-	// mS_minus_mR = mS - mR
-	mS_minus_mR = mS.subtract(mR);
+            return mCurrentByte;
+        }
+        // mS_minus_mR = mS - mR
+        mS_minus_mR = mS.subtract(mR);
 
-	// compute the current byte
-	mCurrentByte = computeB(mS_minus_mR, mR_tw, mR_tw_minus_1_half);
+        // compute the current byte
+        mCurrentByte = computeB(mS_minus_mR, mR_tw, mR_tw_minus_1_half);
 
-	// mPoint <-- (mS-mR) * mG_tw
-	mPoint = (PointGFP) ScalarMult.eval_SquareMultiply(ScalarMult
-		.determineNaf(mS_minus_mR, 4), mG_twArray);
+        // mPoint <-- (mS-mR) * mG_tw
+        mPoint = (PointGFP) ScalarMult.eval_SquareMultiply(ScalarMult
+                .determineNaf(mS_minus_mR, 4), mG_twArray);
 
-	// get x- and y-coordinate of mPoint
-	mX = mPoint.getXAffin().toFlexiBigInt();
-	mY = mPoint.getYAffin().toFlexiBigInt();
+        // get x- and y-coordinate of mPoint
+        mX = mPoint.getXAffin().toFlexiBigInt();
+        mY = mPoint.getYAffin().toFlexiBigInt();
 
-	// mS = 2 * ( mX / mGamma mod mP )
-	mS = mX.multiply(mGammaInverse);
-	mS = mS.remainder(mP);
-	mS = mS.shiftLeft(1);
-	// if y-coordinate is at least (p-1)/2, increase mS by 1
-	if ((mY.compareTo(mP_minus_1_half)) == 1) {
-	    mS = mS.add(FlexiBigInt.ONE);
-	}
+        // mS = 2 * ( mX / mGamma mod mP )
+        mS = mX.multiply(mGammaInverse);
+        mS = mS.remainder(mP);
+        mS = mS.shiftLeft(1);
+        // if y-coordinate is at least (p-1)/2, increase mS by 1
+        if ((mY.compareTo(mP_minus_1_half)) == 1) {
+            mS = mS.add(FlexiBigInt.ONE);
+        }
 
-	return mCurrentByte;
+        return mCurrentByte;
     } // end of method phi()
 
 }

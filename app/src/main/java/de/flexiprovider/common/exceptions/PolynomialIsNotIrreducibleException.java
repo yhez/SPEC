@@ -22,7 +22,7 @@ public class PolynomialIsNotIrreducibleException extends GFException {
      * given fieldpolynomial is not irreducible."
      */
     public PolynomialIsNotIrreducibleException() {
-	super(diagnostic);
+        super(diagnostic);
     }
 
 }

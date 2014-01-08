@@ -8,12 +8,11 @@ package de.flexiprovider.common.exceptions;
 
 /**
  * @author stefan
- * 
  */
 public class SigningException extends RuntimeException {
 
     public SigningException(String message) {
-	super(message);
+        super(message);
     }
 
 }

@@ -88,14 +88,14 @@ public class GroupDataSource {
         database.update(GroupDB.TABLE_GROUP, cv, "_id " + "=" + id, null);
         database.close();
     }
-    public void updateDB(long id,int sent) {
+
+    public void updateDB(long id, int sent) {
         ContentValues cv = new ContentValues();
         cv.put(GroupDB.MSG_I_SEND, sent);
         database = dbHelper.getWritableDatabase();
         database.update(GroupDB.TABLE_GROUP, cv, "_id " + "=" + id, null);
         database.close();
     }
-
 
 
     public List<Group> getAllGroups() {
@@ -119,8 +119,8 @@ public class GroupDataSource {
         Collections.sort(groups, new Comparator<Group>() {
             @Override
             public int compare(Group group, Group group2) {
-                return (group.getGroupName().toLowerCase()+group.getEmail().toLowerCase())
-                        .compareTo((group2.getGroupName().toLowerCase()+group2.getEmail().toLowerCase()));
+                return (group.getGroupName().toLowerCase() + group.getEmail().toLowerCase())
+                        .compareTo((group2.getGroupName().toLowerCase() + group2.getEmail().toLowerCase()));
             }
         });
         return groups;

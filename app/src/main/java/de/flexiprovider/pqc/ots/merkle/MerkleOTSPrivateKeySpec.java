@@ -4,7 +4,7 @@ import de.flexiprovider.api.keys.KeySpec;
 
 /**
  * This class provides a specification for a MerkleOTS key.
- * 
+ *
  * @author Klintsevich Elena
  * @see MerkleOTSPrivateKey
  * @see MerkleOTSPublicKey
@@ -20,29 +20,27 @@ public class MerkleOTSPrivateKeySpec implements KeySpec {
 
     /**
      * Construct a new key specification from the given OID and key bytes.
-     * 
-     * @param oid
-     *                the OID of the algorithm
-     * @param keyBytes
-     *                the key bytes
+     *
+     * @param oid      the OID of the algorithm
+     * @param keyBytes the key bytes
      */
     public MerkleOTSPrivateKeySpec(String oid, byte[][] keyBytes) {
-	this.oid = oid;
-	this.keyBytes = keyBytes;
+        this.oid = oid;
+        this.keyBytes = keyBytes;
     }
 
     /**
      * @return the OID of the algorithm
      */
     public String getOIDString() {
-	return oid;
+        return oid;
     }
 
     /**
      * @return the key bytes
      */
     public byte[][] getKeyBytes() {
-	return keyBytes;
+        return keyBytes;
     }
 
 }

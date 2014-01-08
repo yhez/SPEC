@@ -605,7 +605,7 @@ public class FragmentManagement extends Fragment {
             case R.layout.explorer:
                 ListView lv = (ListView) rootView.findViewById(R.id.list);
                 File folder;
-                if (StaticVariables.path==null)
+                if (StaticVariables.path == null)
                     StaticVariables.path = Environment.getExternalStorageDirectory();
                 final ArrayList<String> files = new ArrayList<String>();
                 Collections.addAll(files, StaticVariables.path.list());
@@ -636,7 +636,7 @@ public class FragmentManagement extends Fragment {
                             for (String s : f.list()) {
                                 files.add(s);
                             }
-                            StaticVariables.path=new File(StaticVariables.path,fname);
+                            StaticVariables.path = new File(StaticVariables.path, fname);
                             adapter.notifyDataSetChanged();
                         }
 

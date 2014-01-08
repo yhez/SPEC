@@ -21,12 +21,12 @@ import de.flexiprovider.common.math.FlexiBigInt;
  * of the modulus <tt>n = p*q</tt>. A key pair consists of an
  * {@link de.flexiprovider.core.rsa.RSAPublicKey} and an {@link de.flexiprovider.core.rsa.RSAPrivateCrtKey}. The default bit length
  * of <tt>n</tt> is 1024.
- * 
+ *
  * @author Thomas Wahrenbruch
  * @author Martin D�ring
  */
 public final class RSAKeyPairGenerator extends
-	de.flexiprovider.core.rsa.interfaces.RSAKeyPairGenerator {
+        de.flexiprovider.core.rsa.interfaces.RSAKeyPairGenerator {
 
     // the certainty that the generated numbers are prime
     private static final int CERTAINTY = 80;
@@ -52,104 +52,99 @@ public final class RSAKeyPairGenerator extends
      * randomness. If the parameters are <tt>null</tt>, the
      * {@link RSAKeyGenParameterSpec#RSAKeyGenParameterSpec() default parameters}
      * are used.
-     * 
-     * @param params
-     *                the key generation parameters
-     * @param random
-     *                the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     *                 if the parameters are not an instance of
-     *                 {@link RSAKeyGenParameterSpec}.
+     *
+     * @param params the key generation parameters
+     * @param random the source of randomness
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are not an instance of
+     *                                                                            {@link RSAKeyGenParameterSpec}.
      */
     public void initialize(AlgorithmParameterSpec params, SecureRandom random)
-	    throws InvalidAlgorithmParameterException {
+            throws InvalidAlgorithmParameterException {
 
-	RSAKeyGenParameterSpec rsaParams;
-	if (params == null) {
-	    rsaParams = new RSAKeyGenParameterSpec();
-	} else if (params instanceof RSAKeyGenParameterSpec) {
-	    rsaParams = (RSAKeyGenParameterSpec) params;
-	} else {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
+        RSAKeyGenParameterSpec rsaParams;
+        if (params == null) {
+            rsaParams = new RSAKeyGenParameterSpec();
+        } else if (params instanceof RSAKeyGenParameterSpec) {
+            rsaParams = (RSAKeyGenParameterSpec) params;
+        } else {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
 
-	keySize = rsaParams.getKeySize();
-	e = rsaParams.getE();
-	this.random = random != null ? random : Registry.getSecureRandom();
+        keySize = rsaParams.getKeySize();
+        e = rsaParams.getE();
+        this.random = random != null ? random : Registry.getSecureRandom();
 
-	initialized = true;
+        initialized = true;
     }
 
     /**
      * Initialize the key pair generator with the given key size.
-     * 
-     * @param keySize
-     *                the bit length of the modulus <tt>n</tt>
-     * @param random
-     *                the source of randomness
+     *
+     * @param keySize the bit length of the modulus <tt>n</tt>
+     * @param random  the source of randomness
      */
     public void initialize(int keySize, SecureRandom random) {
-	RSAKeyGenParameterSpec params = new RSAKeyGenParameterSpec(keySize);
-	try {
-	    initialize(params, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        RSAKeyGenParameterSpec params = new RSAKeyGenParameterSpec(keySize);
+        try {
+            initialize(params, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     private void initializeDefault() {
-	RSAKeyGenParameterSpec defaultParams = new RSAKeyGenParameterSpec();
-	try {
-	    initialize(defaultParams, Registry.getSecureRandom());
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        RSAKeyGenParameterSpec defaultParams = new RSAKeyGenParameterSpec();
+        try {
+            initialize(defaultParams, Registry.getSecureRandom());
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Generate an RSA key pair.
-     * 
+     *
      * @return the key pair, consisting of an {@link de.flexiprovider.core.rsa.RSAPrivateCrtKey} and an
-     *         {@link de.flexiprovider.core.rsa.RSAPublicKey}
+     * {@link de.flexiprovider.core.rsa.RSAPublicKey}
      */
     public KeyPair genKeyPair() {
-	if (!initialized) {
-	    initializeDefault();
-	}
+        if (!initialized) {
+            initializeDefault();
+        }
 
-	int bitsp = (keySize + 1) >> 1;
-	int bitsq = keySize - bitsp;
+        int bitsp = (keySize + 1) >> 1;
+        int bitsq = keySize - bitsp;
 
-	FlexiBigInt p, q, n, pm, qm, phi;
-	do {
-	    // initial try to get primes
-	    p = new FlexiBigInt(bitsp, CERTAINTY, random);
+        FlexiBigInt p, q, n, pm, qm, phi;
+        do {
+            // initial try to get primes
+            p = new FlexiBigInt(bitsp, CERTAINTY, random);
 
-	    do {
-		q = new FlexiBigInt(bitsq, CERTAINTY, random);
-	    } while (p.equals(q));
+            do {
+                q = new FlexiBigInt(bitsq, CERTAINTY, random);
+            } while (p.equals(q));
 
-	    n = p.multiply(q);
+            n = p.multiply(q);
 
-	    pm = p.subtract(ONE);
-	    qm = q.subtract(ONE);
-	    phi = pm.multiply(qm);
-	    // get new primes until n has the correct bitlength and the gcd of
-	    // phi and e is 1
-	} while ((n.bitLength() < keySize) || !(e.gcd(phi).compareTo(ONE) == 0));
+            pm = p.subtract(ONE);
+            qm = q.subtract(ONE);
+            phi = pm.multiply(qm);
+            // get new primes until n has the correct bitlength and the gcd of
+            // phi and e is 1
+        } while ((n.bitLength() < keySize) || !(e.gcd(phi).compareTo(ONE) == 0));
 
-	FlexiBigInt d = e.modInverse(phi);
-	FlexiBigInt dp = d.mod(pm);
-	FlexiBigInt dq = d.mod(qm);
-	FlexiBigInt crt = q.modInverse(p);
+        FlexiBigInt d = e.modInverse(phi);
+        FlexiBigInt dp = d.mod(pm);
+        FlexiBigInt dq = d.mod(qm);
+        FlexiBigInt crt = q.modInverse(p);
 
-	RSAPublicKey pubKey = new RSAPublicKey(n, e);
-	RSAPrivateCrtKey privKey = new RSAPrivateCrtKey(n, e, d, p, q, dp, dq,
-		crt);
+        RSAPublicKey pubKey = new RSAPublicKey(n, e);
+        RSAPrivateCrtKey privKey = new RSAPrivateCrtKey(n, e, d, p, q, dp, dq,
+                crt);
 
-	return new KeyPair(pubKey, privKey);
+        return new KeyPair(pubKey, privKey);
     }
 
 }

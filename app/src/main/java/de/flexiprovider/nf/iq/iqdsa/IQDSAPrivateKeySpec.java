@@ -15,29 +15,27 @@ public class IQDSAPrivateKeySpec implements KeySpec {
     /**
      * Construct an IQDSA private key specification from the given parameters
      * and integer.
-     * 
-     * @param params
-     *                the parameters
-     * @param a
-     *                the integer
+     *
+     * @param params the parameters
+     * @param a      the integer
      */
     public IQDSAPrivateKeySpec(IQDSAParameterSpec params, FlexiBigInt a) {
-	this.params = params;
-	this.a = a;
+        this.params = params;
+        this.a = a;
     }
 
     /**
      * @return the parameters
      */
     public IQDSAParameterSpec getParams() {
-	return params;
+        return params;
     }
 
     /**
      * @return the integer <tt>a</tt>
      */
     public FlexiBigInt getA() {
-	return a;
+        return a;
     }
 
 }

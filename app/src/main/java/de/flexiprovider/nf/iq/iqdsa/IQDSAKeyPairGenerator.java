@@ -14,7 +14,7 @@ import de.flexiprovider.common.math.quadraticfields.QuadraticIdeal;
 /**
  * This class is used to generate key pairs for the IQDSA signature algorithm
  * (implemented by {@link de.flexiprovider.nf.iq.iqdsa.IQDSASignature}.
- * 
+ *
  * @author Ralf-P. Weinmann
  */
 public class IQDSAKeyPairGenerator extends KeyPairGenerator {
@@ -40,92 +40,87 @@ public class IQDSAKeyPairGenerator extends KeyPairGenerator {
      * randomness. If no parameters are specified, new parameters are generated
      * for the {@link IQDSAParamGenParameterSpec#DEFAULT_SIZE default size}
      * using the {@link IQDSAParameterGenerator}.
-     * 
-     * @param params
-     *                the parameters
-     * @param random
-     *                the source of randomness
-     * @throws InvalidAlgorithmParameterException
-     *                 if the parameters are not an instance of
-     *                 {@link de.flexiprovider.nf.iq.iqdsa.IQDSAParameterSpec}.
+     *
+     * @param params the parameters
+     * @param random the source of randomness
+     * @throws InvalidAlgorithmParameterException if the parameters are not an instance of
+     *                                            {@link de.flexiprovider.nf.iq.iqdsa.IQDSAParameterSpec}.
      */
     public void initialize(AlgorithmParameterSpec params, SecureRandom random)
-	    throws InvalidAlgorithmParameterException {
+            throws InvalidAlgorithmParameterException {
 
-	this.random = random != null ? random : Registry.getSecureRandom();
+        this.random = random != null ? random : Registry.getSecureRandom();
 
-	// if no parameters are specified
-	if (params == null) {
-	    // generate parameters for the default key size
-	    initialize(IQDSAParamGenParameterSpec.DEFAULT_SIZE, this.random);
-	}
+        // if no parameters are specified
+        if (params == null) {
+            // generate parameters for the default key size
+            initialize(IQDSAParamGenParameterSpec.DEFAULT_SIZE, this.random);
+        }
 
-	if (!(params instanceof IQDSAParameterSpec)) {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
-	this.params = (IQDSAParameterSpec) params;
+        if (!(params instanceof IQDSAParameterSpec)) {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
+        this.params = (IQDSAParameterSpec) params;
 
-	discriminant = this.params.getDiscriminant();
-	classGroup = new IQClassGroup(discriminant);
-	gamma = this.params.getGamma();
+        discriminant = this.params.getDiscriminant();
+        classGroup = new IQClassGroup(discriminant);
+        gamma = this.params.getGamma();
 
-	initialized = true;
+        initialized = true;
     }
 
     /**
      * Initialize the IQDSA key pair generator for given key size and source of
      * randomness. The key size is the bit length of the discriminant of the
      * class group.
-     * 
-     * @param keySize
-     *                the bit length of the discriminant of the class group
-     * @param random
-     *                the source of randomness
+     *
+     * @param keySize the bit length of the discriminant of the class group
+     * @param random  the source of randomness
      */
     public void initialize(int keySize, SecureRandom random) {
-	this.random = random != null ? random : Registry.getSecureRandom();
+        this.random = random != null ? random : Registry.getSecureRandom();
 
-	// generate parameters for the chosen key size
-	IQDSAParamGenParameterSpec genParams = new IQDSAParamGenParameterSpec(
-		keySize);
-	AlgorithmParameterGenerator paramGen = new IQDSAParameterGenerator();
-	try {
-	    paramGen.init(genParams, this.random);
-	    initialize(paramGen.generateParameters(), this.random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        // generate parameters for the chosen key size
+        IQDSAParamGenParameterSpec genParams = new IQDSAParamGenParameterSpec(
+                keySize);
+        AlgorithmParameterGenerator paramGen = new IQDSAParameterGenerator();
+        try {
+            paramGen.init(genParams, this.random);
+            initialize(paramGen.generateParameters(), this.random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     private void initializeDefault() {
-	// generate parameters for the default key size
-	initialize(IQDSAParamGenParameterSpec.DEFAULT_SIZE, Registry
-		.getSecureRandom());
+        // generate parameters for the default key size
+        initialize(IQDSAParamGenParameterSpec.DEFAULT_SIZE, Registry
+                .getSecureRandom());
     }
 
     /**
      * Generate an IQDSA key pair, consisting of an {@link de.flexiprovider.nf.iq.iqdsa.IQDSAPublicKey} and
      * an {@link de.flexiprovider.nf.iq.iqdsa.IQDSAPrivateKey}.
-     * 
+     *
      * @return the generated key pair
      */
     public KeyPair genKeyPair() {
-	if (!initialized) {
-	    initializeDefault();
-	}
+        if (!initialized) {
+            initializeDefault();
+        }
 
-	// generate a random integer a of fixed bit length
-	FlexiBigInt a = new FlexiBigInt(exponentLength, random)
-		.setBit(exponentLength - 1);
+        // generate a random integer a of fixed bit length
+        FlexiBigInt a = new FlexiBigInt(exponentLength, random)
+                .setBit(exponentLength - 1);
 
-	// compute alpha = gamma^a
-	QuadraticIdeal alpha = classGroup.power(gamma, a);
+        // compute alpha = gamma^a
+        QuadraticIdeal alpha = classGroup.power(gamma, a);
 
-	IQDSAPublicKey pubKey = new IQDSAPublicKey(params, alpha);
-	IQDSAPrivateKey privKey = new IQDSAPrivateKey(params, a);
+        IQDSAPublicKey pubKey = new IQDSAPublicKey(params, alpha);
+        IQDSAPrivateKey privKey = new IQDSAPrivateKey(params, a);
 
-	return new KeyPair(pubKey, privKey);
+        return new KeyPair(pubKey, privKey);
     }
 
 }

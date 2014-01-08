@@ -19,16 +19,16 @@ import de.flexiprovider.core.md.SHA1;
 /**
  * KDF1 is a key derivation function descriped in IEEE 1363-2000. It is a more
  * general version of a key derivation function in ANSI X9.42.
- * <p>
+ * <p/>
  * KDF1 can be used as follows:
- * 
+ * <p/>
  * <pre>
  * KeyDerivation kdf = Registry.getKeyDerivation(&quot;KDF1&quot;);
  * kdf.init(secretKey.toByteArray());
  * kdf.setSharedInfo(byte[] sharedInfo);
  * byte[] derivedKey = kdf.doFinal(int keyDataLen);
  * </pre>
- * 
+ *
  * @author Jochen Hechler
  * @author Marcus St�gbauer
  * @author Martin D�ring
@@ -48,40 +48,36 @@ public class KDF1 extends KeyDerivation {
      * Constructor. Set the message digest.
      */
     public KDF1() {
-	md = new SHA1();
+        md = new SHA1();
     }
 
     /**
      * Initialize this KDF with a secret and parameters. The parameters have to
      * be an instance of {@link KDFParameterSpec}.
-     * 
-     * @param secret
-     *                the secret from which to derive the key
-     * @param params
-     *                the parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException
-     *                 if the secret is <tt>null</tt>.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     *                 if the parameters are not an instance of
-     *                 {@link KDFParameterSpec} or the shared information stored
-     *                 in the parameters is <tt>null</tt>.
+     *
+     * @param secret the secret from which to derive the key
+     * @param params the parameters
+     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the secret is <tt>null</tt>.
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are not an instance of
+     *                                                                            {@link KDFParameterSpec} or the shared information stored
+     *                                                                            in the parameters is <tt>null</tt>.
      */
     public void init(byte[] secret, AlgorithmParameterSpec params)
-	    throws InvalidKeyException, InvalidAlgorithmParameterException {
+            throws InvalidKeyException, InvalidAlgorithmParameterException {
 
-	if (secret == null) {
-	    throw new InvalidKeyException("null");
-	}
-	z = ByteUtils.clone(secret);
+        if (secret == null) {
+            throw new InvalidKeyException("null");
+        }
+        z = ByteUtils.clone(secret);
 
-	if (!(params instanceof KDFParameterSpec)) {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
-	sharedInfo = ((KDFParameterSpec) params).getSharedInfo();
-	if (sharedInfo == null) {
-	    throw new InvalidAlgorithmParameterException(
-		    "shared information must not be null");
-	}
+        if (!(params instanceof KDFParameterSpec)) {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
+        sharedInfo = ((KDFParameterSpec) params).getSharedInfo();
+        if (sharedInfo == null) {
+            throw new InvalidAlgorithmParameterException(
+                    "shared information must not be null");
+        }
     }
 
     /**
@@ -90,15 +86,13 @@ public class KDF1 extends KeyDerivation {
      * the key <tt>hash(z || shared-info)</tt>. Thus, the derived key will
      * always have the same length as the hash function output and the given key
      * data length is ignored.
-     * 
-     * @param keySize
-     *                the desired length of the derived key (not used)
+     *
+     * @param keySize the desired length of the derived key (not used)
      * @return the derived key
-     * 
      */
     public byte[] deriveKey(int keySize) {
-	byte[] both = ByteUtils.concatenate(z, sharedInfo);
-	return md.digest(both);
+        byte[] both = ByteUtils.concatenate(z, sharedInfo);
+        return md.digest(both);
     }
 
 }

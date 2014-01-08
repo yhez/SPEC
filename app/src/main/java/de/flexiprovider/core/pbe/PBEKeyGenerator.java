@@ -18,9 +18,9 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * The key generator for PBEKeys.
- * 
- * @see PBEKey
+ *
  * @author Thomas Wahrenbruch
+ * @see PBEKey
  */
 public class PBEKeyGenerator extends SecretKeyGenerator {
 
@@ -38,88 +38,82 @@ public class PBEKeyGenerator extends SecretKeyGenerator {
      * randomness. If the parameters are <tt>null</tt>, the
      * {@link PBEKeyGenParameterSpec#PBEKeyGenParameterSpec() default parameters}
      * are used.
-     * 
-     * @param params
-     *                the parameters
-     * @param random
-     *                the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     *                 if the parameters are not an instance of
-     *                 {@link PBEKeyGenParameterSpec}.
+     *
+     * @param params the parameters
+     * @param random the source of randomness
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are not an instance of
+     *                                                                            {@link PBEKeyGenParameterSpec}.
      */
     public void init(AlgorithmParameterSpec params, SecureRandom random)
-	    throws InvalidAlgorithmParameterException {
+            throws InvalidAlgorithmParameterException {
 
-	PBEKeyGenParameterSpec pbeParams;
-	if (params == null) {
-	    pbeParams = new PBEKeyGenParameterSpec();
-	} else if (params instanceof PBEKeyGenParameterSpec) {
-	    pbeParams = (PBEKeyGenParameterSpec) params;
-	} else {
-	    throw new InvalidAlgorithmParameterException("unsupported type");
-	}
+        PBEKeyGenParameterSpec pbeParams;
+        if (params == null) {
+            pbeParams = new PBEKeyGenParameterSpec();
+        } else if (params instanceof PBEKeyGenParameterSpec) {
+            pbeParams = (PBEKeyGenParameterSpec) params;
+        } else {
+            throw new InvalidAlgorithmParameterException("unsupported type");
+        }
 
-	keySize = pbeParams.getKeySize();
-	this.random = random != null ? random : Registry.getSecureRandom();
+        keySize = pbeParams.getKeySize();
+        this.random = random != null ? random : Registry.getSecureRandom();
 
-	initialized = true;
+        initialized = true;
     }
 
     /**
      * Initialize the key generator with the given key size and source of
      * randomness.
-     * 
-     * @param keySize
-     *                the key size
-     * @param random
-     *                the source of randomness
+     *
+     * @param keySize the key size
+     * @param random  the source of randomness
      */
     public void init(int keySize, SecureRandom random) {
-	PBEKeyGenParameterSpec params = new PBEKeyGenParameterSpec(keySize);
-	try {
-	    init(params, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        PBEKeyGenParameterSpec params = new PBEKeyGenParameterSpec(keySize);
+        try {
+            init(params, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Initialize the key generator with the default parameters and the given
      * source of randomness.
-     * 
-     * @param random
-     *                the source of randomness
+     *
+     * @param random the source of randomness
      */
     public void init(SecureRandom random) {
-	PBEKeyGenParameterSpec defaultParams = new PBEKeyGenParameterSpec();
-	try {
-	    init(defaultParams, random);
-	} catch (InvalidAlgorithmParameterException e) {
-	    // the parameters are correct and must be accepted
-	    throw new RuntimeException("internal error");
-	}
+        PBEKeyGenParameterSpec defaultParams = new PBEKeyGenParameterSpec();
+        try {
+            init(defaultParams, random);
+        } catch (InvalidAlgorithmParameterException e) {
+            // the parameters are correct and must be accepted
+            throw new RuntimeException("internal error");
+        }
     }
 
     /**
      * Generate a new PBEKey.
-     * 
+     *
      * @return the generated {@link de.flexiprovider.core.pbe.PBEKey}
      */
     public SecretKey generateKey() {
-	if (!initialized) {
-	    init(Registry.getSecureRandom());
-	}
+        if (!initialized) {
+            init(Registry.getSecureRandom());
+        }
 
-	byte[] out = new byte[keySize];
-	char[] kchar = new char[keySize];
-	random.nextBytes(out);
+        byte[] out = new byte[keySize];
+        char[] kchar = new char[keySize];
+        random.nextBytes(out);
 
-	for (int i = 0; i < keySize; i++) {
-	    kchar[i] = (char) out[i];
-	}
+        for (int i = 0; i < keySize; i++) {
+            kchar[i] = (char) out[i];
+        }
 
-	return new PBEKey(kchar);
+        return new PBEKey(kchar);
     }
 
 }

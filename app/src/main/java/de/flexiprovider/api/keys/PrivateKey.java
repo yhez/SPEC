@@ -11,27 +11,27 @@ public abstract class PrivateKey implements Key, java.security.PrivateKey {
 
     /**
      * Return the encoding format, PKCS #8.
-     * 
+     *
      * @return "PKCS#8"
      */
     public final String getFormat() {
-	return "PKCS#8";
+        return "PKCS#8";
     }
 
     /**
      * Return the key in its primary encoding format, PKCS #8.
-     * 
+     *
      * @return the PKCS #8 encoded key.
      */
     public final byte[] getEncoded() {
-	AlgorithmIdentifier aid;
-	try {
-	    aid = new AlgorithmIdentifier(getOID(), getAlgParams());
-	} catch (ASN1Exception asn1e) {
-	    throw new RuntimeException("ASN1Exception: " + asn1e.getMessage());
-	}
-	PrivateKeyInfo spki = new PrivateKeyInfo(aid, getKeyData());
-	return ASN1Tools.derEncode(spki);
+        AlgorithmIdentifier aid;
+        try {
+            aid = new AlgorithmIdentifier(getOID(), getAlgParams());
+        } catch (ASN1Exception asn1e) {
+            throw new RuntimeException("ASN1Exception: " + asn1e.getMessage());
+        }
+        PrivateKeyInfo spki = new PrivateKeyInfo(aid, getKeyData());
+        return ASN1Tools.derEncode(spki);
     }
 
     /**
@@ -41,7 +41,7 @@ public abstract class PrivateKey implements Key, java.security.PrivateKey {
 
     /**
      * @return the algorithm parameters to encode in the SubjectPublicKeyInfo
-     *         structure
+     * structure
      */
     protected abstract ASN1Type getAlgParams();
 

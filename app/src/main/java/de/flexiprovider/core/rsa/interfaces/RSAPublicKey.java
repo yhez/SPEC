@@ -1,12 +1,11 @@
 package de.flexiprovider.core.rsa.interfaces;
 
-import my.BigInteger;
-
 import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.common.math.FlexiBigInt;
+import my.BigInteger;
 
 public abstract class RSAPublicKey extends PublicKey implements RSAKey,
-	java.security.interfaces.RSAPublicKey {
+        java.security.interfaces.RSAPublicKey {
 
     // ****************************************************
     // JCA adapter methods
@@ -16,14 +15,14 @@ public abstract class RSAPublicKey extends PublicKey implements RSAKey,
      * @return the modulus n
      */
     public final java.math.BigInteger getModulus() {
-	return BigInteger.get(getN().bigInt);
+        return BigInteger.get(getN().bigInt);
     }
 
     /**
      * @return the public exponent e
      */
     public final java.math.BigInteger getPublicExponent() {
-	return BigInteger.get(getE().bigInt);
+        return BigInteger.get(getE().bigInt);
     }
 
     // ****************************************************
@@ -34,7 +33,7 @@ public abstract class RSAPublicKey extends PublicKey implements RSAKey,
      * @return name of the algorithm - "RSA"
      */
     public final String getAlgorithm() {
-	return "RSA";
+        return "RSA";
     }
 
     /**

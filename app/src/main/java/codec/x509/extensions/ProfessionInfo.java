@@ -87,16 +87,15 @@ import codec.asn1.ASN1UTF8String;
 /**
  * Class implements the ASN1Structure ProfessionInfo as a pert of the Admission
  * Extension.
- * 
+ * <p/>
  * ProfessionInfo ::= SEQUENCE {
- * 
+ * <p/>
  * namingAuthority [0] EXPLICIT NamingAuthority Optional, professionItems
  * Sequence Of DirectoryString, professionOIDs Sequence Of ObjectIdentifiers
  * Optional, registrationNumber PrintableString(SIZE(1...128)) Optional,
  * addProfessionInfo OctetString Optional }
- * 
+ *
  * @author cval
- * 
  */
 
 public class ProfessionInfo extends ASN1Sequence {
@@ -137,34 +136,34 @@ public class ProfessionInfo extends ASN1Sequence {
     private ASN1OctetString addProfessionInfo = null;
 
     public ProfessionInfo() {
-	professionItems = new ASN1SequenceOf(ASN1UTF8String.class);
-	professionOids = new ASN1SequenceOf(ASN1ObjectIdentifier.class);
+        professionItems = new ASN1SequenceOf(ASN1UTF8String.class);
+        professionOids = new ASN1SequenceOf(ASN1ObjectIdentifier.class);
     }
 
     public void addNamingAuthority(NamingAuthority na) {
-	namingAuth = na;
-	namingAuthTag = new ASN1TaggedType(TAG_NAMING_AUTH, namingAuth, true,
-		false);
-	add(namingAuthTag);
+        namingAuth = na;
+        namingAuthTag = new ASN1TaggedType(TAG_NAMING_AUTH, namingAuth, true,
+                false);
+        add(namingAuthTag);
     }
 
     public void addProfessionItem(ASN1Sequence item) {
-	professionItems = item;
-	add(professionItems);
+        professionItems = item;
+        add(professionItems);
     }
 
     public void addProfessionOid(ASN1SequenceOf oid) {
-	professionOids = oid;
-	add(professionOids);
+        professionOids = oid;
+        add(professionOids);
     }
 
     public void addRegistrationNumber(ASN1PrintableString reg) {
-	registrationNumber = reg;
-	add(registrationNumber);
+        registrationNumber = reg;
+        add(registrationNumber);
     }
 
     public void addAddProfessionInfo(ASN1OctetString addInfo) {
-	addProfessionInfo = addInfo;
-	add(addProfessionInfo);
+        addProfessionInfo = addInfo;
+        add(addProfessionInfo);
     }
 }

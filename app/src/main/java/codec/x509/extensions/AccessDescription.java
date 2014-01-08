@@ -84,13 +84,13 @@ import codec.x509.GeneralName;
 /**
  * AccessDescription ::= SEQUENCE { accessMethod OID, accessLocation
  * GeneralName}
- * 
+ *
  * @author cval
- * 
- * there are no "addValue" functions, because none parameter is optional, so it
- * must not be that one parameter is empty. the 2 constructors force either to
- * use the default values or to set both parameters during instantiating the
- * Object.
+ *         <p/>
+ *         there are no "addValue" functions, because none parameter is optional, so it
+ *         must not be that one parameter is empty. the 2 constructors force either to
+ *         use the default values or to set both parameters during instantiating the
+ *         Object.
  */
 
 public class AccessDescription extends ASN1Sequence {
@@ -108,30 +108,30 @@ public class AccessDescription extends ASN1Sequence {
      * in case of an empty conctructor default values are set.
      */
     public AccessDescription() {
-	accessLocation = new GeneralName();
-	accessLocation.setUniformResourceIdentifier(new ASN1IA5String(
-		"http://ocsptest:8080/ocsp"));
-	accessMethod = new ASN1ObjectIdentifier("1.3.6.1.5.5.7.48.1");
+        accessLocation = new GeneralName();
+        accessLocation.setUniformResourceIdentifier(new ASN1IA5String(
+                "http://ocsptest:8080/ocsp"));
+        accessMethod = new ASN1ObjectIdentifier("1.3.6.1.5.5.7.48.1");
 
-	add(accessMethod);
-	add(accessLocation);
+        add(accessMethod);
+        add(accessLocation);
     }
 
     /**
      * the constructor as it should be used, with variable parameters.
      */
     public AccessDescription(ASN1ObjectIdentifier oid, GeneralName name) {
-	if (oid == null || name == null) {
-	    throw new NullPointerException("oid or name");
-	}
-	accessLocation = name;
-	accessMethod = oid;
-	add(accessMethod);
-	add(accessLocation);
+        if (oid == null || name == null) {
+            throw new NullPointerException("oid or name");
+        }
+        accessLocation = name;
+        accessMethod = oid;
+        add(accessMethod);
+        add(accessLocation);
     }
 
     public String toString() {
-	return "AccessDescription : accessMethod : " + accessMethod.toString()
-		+ "\n  accessLocation : " + accessLocation.toString();
+        return "AccessDescription : accessMethod : " + accessMethod.toString()
+                + "\n  accessLocation : " + accessLocation.toString();
     }
 }

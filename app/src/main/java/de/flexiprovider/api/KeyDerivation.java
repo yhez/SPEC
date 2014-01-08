@@ -21,7 +21,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
  * or shorter secret key, with a second secret shared by both parties. The
  * derived secret key may be used by other schemes which use different key
  * length, to the normal secret keys.
- * 
+ *
  * @author Jochen Hechler
  * @author Marcus St�gbauer
  * @author Martin D�ring
@@ -30,28 +30,23 @@ public abstract class KeyDerivation {
 
     /**
      * Initialize this KDF with a secret and parameters.
-     * 
-     * @param secret
-     *                the secret from which to derive the key
-     * @param params
-     *                the parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException
-     *                 if the secret is invalid.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     *                 if the parameters are invalid.
+     *
+     * @param secret the secret from which to derive the key
+     * @param params the parameters
+     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the secret is invalid.
+     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are invalid.
      */
     public abstract void init(byte[] secret, AlgorithmParameterSpec params)
-	    throws InvalidKeyException, InvalidAlgorithmParameterException;
+            throws InvalidKeyException, InvalidAlgorithmParameterException;
 
     /**
      * Start the derivation process and return the derived key. If supported by
      * the concrete implementation, the derived key will be of the specified
      * length.
-     * 
-     * @param keySize
-     *                the desired length of the derived key
+     *
+     * @param keySize the desired length of the derived key
      * @return the derived key with the specified length, or <tt>null</tt> if
-     *         the key size is <tt>&lt; 0</tt>.
+     * the key size is <tt>&lt; 0</tt>.
      */
     public abstract byte[] deriveKey(int keySize);
 

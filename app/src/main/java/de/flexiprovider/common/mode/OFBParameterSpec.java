@@ -2,7 +2,7 @@ package de.flexiprovider.common.mode;
 
 /**
  * This class is the parameter specification of the Cipher Feedback Mode
- * 
+ *
  * @author Johannes Mller
  */
 public class OFBParameterSpec extends ModeParameterSpec {
@@ -12,22 +12,20 @@ public class OFBParameterSpec extends ModeParameterSpec {
 
     /**
      * Constructor. Set the passed initialization vector and block size.
-     * 
-     * @param iv
-     *                the initialization vector
-     * @param blockSize
-     *                the block size
+     *
+     * @param iv        the initialization vector
+     * @param blockSize the block size
      */
     public OFBParameterSpec(byte[] iv, int blockSize) {
-	super(iv);
-	this.blockSize = blockSize;
+        super(iv);
+        this.blockSize = blockSize;
     }
 
     /**
      * @return the block size
      */
     public final int getBlockSize() {
-	return blockSize;
+        return blockSize;
     }
 
 }

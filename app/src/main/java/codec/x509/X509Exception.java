@@ -78,38 +78,30 @@ package codec.x509;
 
 /**
  * This exception signals X.509 specific error consitions
- * 
+ *
  * @author Volker Roth
  * @version "$Id: X509Exception.java,v 1.7 2004/08/13 10:58:22 pebinger Exp $"
  */
 public class X509Exception extends Exception {
     protected Throwable t_;
 
-    public X509Exception() {
-	super();
-    }
-
     public X509Exception(String message) {
-	super(message);
-    }
-
-    public X509Exception(Throwable t) {
-	t_ = t;
+        super(message);
     }
 
     public String getMessage() {
-	if (t_ == null)
-	    return super.getMessage();
+        if (t_ == null)
+            return super.getMessage();
 
-	return t_.getMessage();
+        return t_.getMessage();
     }
 
     public void printStackTrace() {
-	if (t_ != null) {
-	    System.out.println("Encapsulated in " + getClass().getName());
+        if (t_ != null) {
+            System.out.println("Encapsulated in " + getClass().getName());
 
-	    t_.printStackTrace();
-	} else
-	    super.printStackTrace();
+            t_.printStackTrace();
+        } else
+            super.printStackTrace();
     }
 }

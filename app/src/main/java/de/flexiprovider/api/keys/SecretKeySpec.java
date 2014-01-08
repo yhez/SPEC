@@ -1,14 +1,14 @@
 package de.flexiprovider.api.keys;
 
 public class SecretKeySpec extends javax.crypto.spec.SecretKeySpec implements
-	KeySpec {
+        KeySpec {
 
     public SecretKeySpec(byte[] key, String algorithm) {
-	super(key, algorithm);
+        super(key, algorithm);
     }
 
     public SecretKeySpec(byte[] key, int offset, int len, String algorithm) {
-	super(key, offset, len, algorithm);
+        super(key, offset, len, algorithm);
     }
 
 }

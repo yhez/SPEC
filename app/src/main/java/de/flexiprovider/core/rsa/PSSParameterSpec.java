@@ -7,12 +7,12 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
  * (implemented by {@link de.flexiprovider.core.rsa.RSASignaturePSS}). The parameters consist of the OIDs
  * of a hash function and a mask generation function, a salt length, and a
  * trailer field value.
- * <p>
+ * <p/>
  * The default hash function is SHA1 (1.3.14.3.2.26). The only supported mask
  * generation function is MGF1 (1.2.840.113549.1.1.8). The default salt length
  * is 20 bytes. The only supported trailer field value is
  * <tt>trailerFieldBC(1)</tt>.
- * 
+ *
  * @author Martin D�ring
  */
 public class PSSParameterSpec implements AlgorithmParameterSpec {
@@ -55,18 +55,18 @@ public class PSSParameterSpec implements AlgorithmParameterSpec {
      * Parameter set (md = "1.3.14.3.2.26" (SHA1), saltLen = 20)
      */
     public static final class SHA1 extends PSSParameterSpec {
-	public SHA1() {
-	    super("1.3.14.3.2.26", 20);
-	}
+        public SHA1() {
+            super("1.3.14.3.2.26", 20);
+        }
     }
 
     /**
      * Parameter set (md = "2.16.840.1.101.3.4.2.1" (SHA256), saltLen = 32)
      */
     public static final class SHA256 extends PSSParameterSpec {
-	public SHA256() {
-	    super("2.16.840.1.101.3.4.2.1", 32);
-	}
+        public SHA256() {
+            super("2.16.840.1.101.3.4.2.1", 32);
+        }
     }
 
     /**
@@ -74,8 +74,8 @@ public class PSSParameterSpec implements AlgorithmParameterSpec {
      * the {@link #DEFAULT_SALT_LENGTH}.
      */
     public PSSParameterSpec() {
-	md = DEFAULT_MD;
-	saltLength = DEFAULT_SALT_LENGTH;
+        md = DEFAULT_MD;
+        saltLength = DEFAULT_SALT_LENGTH;
     }
 
     /**
@@ -83,74 +83,71 @@ public class PSSParameterSpec implements AlgorithmParameterSpec {
      * and salt length. If the message digest name is invalid, choose the
      * {@link #DEFAULT_MD}. If the salt length is invalid, choose the
      * {@link #DEFAULT_SALT_LENGTH}.
-     * 
-     * @param md
-     *                the name of the message digest
-     * @param saltLength
-     *                the salt length (in bytes)
+     *
+     * @param md         the name of the message digest
+     * @param saltLength the salt length (in bytes)
      */
     public PSSParameterSpec(String md, int saltLength) {
-	if (md == null) {
-	    this.md = DEFAULT_MD;
-	} else {
-	    this.md = md;
-	}
+        if (md == null) {
+            this.md = DEFAULT_MD;
+        } else {
+            this.md = md;
+        }
 
-	if (saltLength < 0) {
-	    this.saltLength = DEFAULT_SALT_LENGTH;
-	} else {
-	    this.saltLength = saltLength;
-	}
+        if (saltLength < 0) {
+            this.saltLength = DEFAULT_SALT_LENGTH;
+        } else {
+            this.saltLength = saltLength;
+        }
     }
 
     /**
      * @return the OID of the message digest
      */
     public String getMD() {
-	return md;
+        return md;
     }
 
     /**
      * @return the salt length in bytes
      */
     public int getSaltLength() {
-	return saltLength;
+        return saltLength;
     }
 
     /**
      * Compare the parameters with another object
-     * 
-     * @param other
-     *                the other object
+     *
+     * @param other the other object
      * @return the result of the comparison
      */
     public boolean equals(Object other) {
-	if ((other == null) || (!(other instanceof PSSParameterSpec))) {
-	    return false;
-	}
-	PSSParameterSpec otherSpec = (PSSParameterSpec) other;
+        if ((other == null) || (!(other instanceof PSSParameterSpec))) {
+            return false;
+        }
+        PSSParameterSpec otherSpec = (PSSParameterSpec) other;
 
-	return md.equals(otherSpec.md) && (saltLength == otherSpec.saltLength);
+        return md.equals(otherSpec.md) && (saltLength == otherSpec.saltLength);
     }
 
     /**
      * @return the hash code of the parameters
      */
     public int hashCode() {
-	return md.hashCode() + DEFAULT_MGF.hashCode() + saltLength
-		+ DEFAULT_TRAILER_FIELD;
+        return md.hashCode() + DEFAULT_MGF.hashCode() + saltLength
+                + DEFAULT_TRAILER_FIELD;
     }
 
     /**
      * @return a human readable form of the parameters
      */
     public String toString() {
-	String result = "PSS parameters:\n";
-	result += "MD OID       : " + md + "\n";
-	result += "MGF OID      : " + DEFAULT_MGF + "\n";
-	result += "salt length  : " + saltLength + "\n";
-	result += "trailer field: " + DEFAULT_TRAILER_FIELD + "\n";
-	return result;
+        String result = "PSS parameters:\n";
+        result += "MD OID       : " + md + "\n";
+        result += "MGF OID      : " + DEFAULT_MGF + "\n";
+        result += "salt length  : " + saltLength + "\n";
+        result += "trailer field: " + DEFAULT_TRAILER_FIELD + "\n";
+        return result;
     }
 
 }

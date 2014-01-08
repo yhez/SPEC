@@ -9,23 +9,23 @@ public class RSAOtherPrimeInfo {
     private FlexiBigInt crtCoefficient;
 
     public RSAOtherPrimeInfo(FlexiBigInt prime, FlexiBigInt primeExponent,
-	    FlexiBigInt crtCoefficient) {
-	this.prime = prime;
-	this.primeExponent = primeExponent;
-	this.crtCoefficient = crtCoefficient;
+                             FlexiBigInt crtCoefficient) {
+        this.prime = prime;
+        this.primeExponent = primeExponent;
+        this.crtCoefficient = crtCoefficient;
 
     }
 
     public final FlexiBigInt getPrime() {
-	return prime;
+        return prime;
     }
 
     public final FlexiBigInt getExponent() {
-	return primeExponent;
+        return primeExponent;
     }
 
     public final FlexiBigInt getCrtCoefficient() {
-	return crtCoefficient;
+        return crtCoefficient;
     }
 
 }

@@ -19,7 +19,7 @@ import de.flexiprovider.pki.AlgorithmIdentifier;
 /**
  * This is the parameter specification for the
  * {@link PBES2 passphrase based encryption scheme 2}.
- * 
+ *
  * @author Thomas Wahrenbruch
  */
 public class PBES2ParameterSpec implements AlgorithmParameterSpec {
@@ -39,57 +39,53 @@ public class PBES2ParameterSpec implements AlgorithmParameterSpec {
      * {@link de.flexiprovider.core.desede.DESede.DESede_CBC DESede/CBC} (OID
      * 1.2.840.113549.3.7) and the default key derivation function
      * {@link de.flexiprovider.core.kdf.PBKDF2} (OID 1.2.840.113549.1.5.12).
-     * 
-     * @param kdfParamSpec
-     *                the KDF parameters (salt, iteration count, and key size)
-     * @param iv
-     *                the initialization vector for the underlying cipher
+     *
+     * @param kdfParamSpec the KDF parameters (salt, iteration count, and key size)
+     * @param iv           the initialization vector for the underlying cipher
      */
     public PBES2ParameterSpec(PBKDF2ParameterSpec kdfParamSpec, byte[] iv) {
-	try {
-	    PBKDF2Parameters kdfParams = new PBKDF2Parameters();
-	    kdfParams.init(kdfParamSpec);
-	    ASN1ObjectIdentifier kdfOID = new ASN1ObjectIdentifier(
-		    "1.2.840.113549.1.5.12");
-	    keyDerivationFunction = new AlgorithmIdentifier(kdfOID, kdfParams
-		    .getEncoded());
+        try {
+            PBKDF2Parameters kdfParams = new PBKDF2Parameters();
+            kdfParams.init(kdfParamSpec);
+            ASN1ObjectIdentifier kdfOID = new ASN1ObjectIdentifier(
+                    "1.2.840.113549.1.5.12");
+            keyDerivationFunction = new AlgorithmIdentifier(kdfOID, kdfParams
+                    .getEncoded());
 
-	    ASN1ObjectIdentifier cipherOID = new ASN1ObjectIdentifier(
-		    "1.2.840.113549.3.7");
-	    encryptionScheme = new AlgorithmIdentifier(cipherOID,
-		    new ASN1OctetString(iv));
-	} catch (Exception e) {
-	    throw new RuntimeException("Internal error: " + e.getMessage());
-	}
+            ASN1ObjectIdentifier cipherOID = new ASN1ObjectIdentifier(
+                    "1.2.840.113549.3.7");
+            encryptionScheme = new AlgorithmIdentifier(cipherOID,
+                    new ASN1OctetString(iv));
+        } catch (Exception e) {
+            throw new RuntimeException("Internal error: " + e.getMessage());
+        }
     }
 
     /**
      * Construct a new PBE2ParameterSpec object.
-     * 
-     * @param keyDerivationFunction
-     *                the key derivation function
-     * @param encryptionScheme
-     *                the encryption scheme
+     *
+     * @param keyDerivationFunction the key derivation function
+     * @param encryptionScheme      the encryption scheme
      */
     protected PBES2ParameterSpec(AlgorithmIdentifier keyDerivationFunction,
-	    AlgorithmIdentifier encryptionScheme) {
+                                 AlgorithmIdentifier encryptionScheme) {
 
-	this.keyDerivationFunction = keyDerivationFunction;
-	this.encryptionScheme = encryptionScheme;
+        this.keyDerivationFunction = keyDerivationFunction;
+        this.encryptionScheme = encryptionScheme;
     }
 
     /**
      * @return the AlgorithmIdentifier of the encryption scheme
      */
     public AlgorithmIdentifier getEncryptionScheme() {
-	return encryptionScheme;
+        return encryptionScheme;
     }
 
     /**
      * @return the AlgorithmIdentifier of key derivation function.
      */
     public AlgorithmIdentifier getKeyDerivationFunction() {
-	return keyDerivationFunction;
+        return keyDerivationFunction;
     }
 
 }

@@ -112,7 +112,7 @@ import my.BigInteger;
 /**
  * a CRLEntry is an entry in an {@link codec.x509.X509Crl X509Crl}. It consists of a
  * serial number, a date representation and optional extensions
- * 
+ * <p/>
  * <pre>
  * SEQUENCE  {
  *     userCertificate         CertificateSerialNumber,
@@ -121,9 +121,9 @@ import my.BigInteger;
  *                              -- if present, must be v2
  *  }
  * </pre>
- * 
+ * <p/>
  * Creation date: (10.09.99 19:03:34)
- * 
+ *
  * @author Markus Tak
  */
 public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
@@ -141,75 +141,65 @@ public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
      */
     public CRLEntry() {
 
-	crlEntry_ = new ASN1Sequence();
-	userCertificate_ = new ASN1Integer();
+        crlEntry_ = new ASN1Sequence();
+        userCertificate_ = new ASN1Integer();
 
-	crlEntry_.add(userCertificate_);
+        crlEntry_.add(userCertificate_);
 
-	revocationDate_ = new ASN1Choice();
-	revocationDate_.addType(new ASN1UTCTime());
-	revocationDate_.addType(new ASN1GeneralizedTime());
+        revocationDate_ = new ASN1Choice();
+        revocationDate_.addType(new ASN1UTCTime());
+        revocationDate_.addType(new ASN1GeneralizedTime());
 
-	crlEntry_.add(revocationDate_);
+        crlEntry_.add(revocationDate_);
 
-	crlEntryExtensions_ = new ASN1SequenceOf(X509Extension.class);
-	crlEntryExtensions_.setOptional(true);
-	crlEntry_.add(crlEntryExtensions_);
-    }
-
-    /**
-     * constructor for a specific CRL entry
-     */
-    public CRLEntry(BigInteger nr, Calendar wann) {
-	this();
-
-	setSerialNumber(nr);
-	setRevocationDate(wann);
+        crlEntryExtensions_ = new ASN1SequenceOf(X509Extension.class);
+        crlEntryExtensions_.setOptional(true);
+        crlEntry_.add(crlEntryExtensions_);
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public void setConstraint(Constraint c) {
-	crlEntry_.setConstraint(c);
+        crlEntry_.setConstraint(c);
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public Constraint getConstraint() {
-	return crlEntry_.getConstraint();
+        return crlEntry_.getConstraint();
     }
 
     /**
      * adds an extension to this CRLEntry
      */
     public void addExtension(X509Extension ex) {
-	if (ex != null) {
-	    crlEntryExtensions_.add(ex);
-	    crlEntryExtensions_.setOptional(false);
-	}
+        if (ex != null) {
+            crlEntryExtensions_.add(ex);
+            crlEntryExtensions_.setOptional(false);
+        }
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public void checkConstraints() throws ConstraintException {
-	crlEntry_.checkConstraints();
+        crlEntry_.checkConstraints();
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public void decode(Decoder dec) throws ASN1Exception, IOException {
-	crlEntry_.decode(dec);
+        crlEntry_.decode(dec);
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public void encode(Encoder enc) throws ASN1Exception, IOException {
-	crlEntry_.encode(enc);
+        crlEntry_.encode(enc);
     }
 
     /**
@@ -217,18 +207,18 @@ public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
      * {@link java.security.cert.X509CRLEntry java.security.cert.X509CRLEntry}
      */
     public Set getCriticalExtensionOIDs() {
-	HashSet res = new HashSet();
+        HashSet res = new HashSet();
 
-	Iterator it = crlEntryExtensions_.iterator();
+        Iterator it = crlEntryExtensions_.iterator();
 
-	while (it.hasNext()) {
-	    X509Extension theEx = (X509Extension) it.next();
+        while (it.hasNext()) {
+            X509Extension theEx = (X509Extension) it.next();
 
-	    if (theEx.isCritical()) {
-		res.add(theEx.getOID().toString());
-	    }
-	}
-	return res;
+            if (theEx.isCritical()) {
+                res.add(theEx.getOID().toString());
+            }
+        }
+        return res;
     }
 
     /**
@@ -236,15 +226,15 @@ public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
      * {@link java.security.cert.X509CRLEntry java.security.cert.X509CRLEntry}
      */
     public byte[] getEncoded() throws java.security.cert.CRLException {
-	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-	try {
-	    crlEntry_.encode(new DEREncoder(baos));
-	} catch (Exception e) {
-	    throw new java.security.cert.CRLException(e.getMessage());
-	}
+        try {
+            crlEntry_.encode(new DEREncoder(baos));
+        } catch (Exception e) {
+            throw new java.security.cert.CRLException(e.getMessage());
+        }
 
-	return baos.toByteArray();
+        return baos.toByteArray();
     }
 
     /**
@@ -252,7 +242,7 @@ public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
      * {@link java.security.cert.X509CRLEntry java.security.cert.X509CRLEntry}
      */
     public Collection getExtensions() {
-	return crlEntryExtensions_.getCollection();
+        return crlEntryExtensions_.getCollection();
     }
 
     /**
@@ -260,23 +250,23 @@ public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
      * {@link java.security.cert.X509CRLEntry java.security.cert.X509CRLEntry}
      */
     public byte[] getExtensionValue(String oid) {
-	byte[] res = null;
+        byte[] res = null;
 
-	Iterator it = crlEntryExtensions_.iterator();
+        Iterator it = crlEntryExtensions_.iterator();
 
-	while (it.hasNext()) {
-	    X509Extension theEx = (X509Extension) it.next();
+        while (it.hasNext()) {
+            X509Extension theEx = (X509Extension) it.next();
 
-	    if (theEx.getOID().toString().equals(oid)) {
-		try {
-		    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		    theEx.encode(new DEREncoder(baos));
-		    res = baos.toByteArray();
-		} catch (Exception ignore) {
-		}
-	    }
-	}
-	return res;
+            if (theEx.getOID().toString().equals(oid)) {
+                try {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    theEx.encode(new DEREncoder(baos));
+                    res = baos.toByteArray();
+                } catch (Exception ignore) {
+                }
+            }
+        }
+        return res;
     }
 
     /**
@@ -285,17 +275,17 @@ public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
      */
     public Set getNonCriticalExtensionOIDs() {
 
-	HashSet res = new HashSet();
-	Iterator it = crlEntryExtensions_.iterator();
+        HashSet res = new HashSet();
+        Iterator it = crlEntryExtensions_.iterator();
 
-	while (it.hasNext()) {
-	    X509Extension theEx = (X509Extension) it.next();
+        while (it.hasNext()) {
+            X509Extension theEx = (X509Extension) it.next();
 
-	    if (!theEx.isCritical()) {
-		res.add(theEx.getOID().toString());
-	    }
-	}
-	return res;
+            if (!theEx.isCritical()) {
+                res.add(theEx.getOID().toString());
+            }
+        }
+        return res;
     }
 
     /**
@@ -303,8 +293,8 @@ public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
      * {@link java.security.cert.X509CRLEntry java.security.cert.X509CRLEntry}
      */
     public Date getRevocationDate() {
-	ASN1Time a1t = (ASN1Time) revocationDate_.getInnerType();
-	return a1t.getDate();
+        ASN1Time a1t = (ASN1Time) revocationDate_.getInnerType();
+        return a1t.getDate();
     }
 
     /**
@@ -312,28 +302,28 @@ public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
      * {@link java.security.cert.X509CRLEntry java.security.cert.X509CRLEntry}
      */
     public java.math.BigInteger getSerialNumber() {
-	return BigInteger.get(userCertificate_.getBigInteger());
+        return BigInteger.get(userCertificate_.getBigInteger());
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public int getTag() {
-	return crlEntry_.getTag();
+        return crlEntry_.getTag();
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public int getTagClass() {
-	return crlEntry_.getTagClass();
+        return crlEntry_.getTagClass();
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public Object getValue() {
-	return crlEntry_.getValue();
+        return crlEntry_.getValue();
     }
 
     /**
@@ -341,65 +331,63 @@ public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
      * {@link java.security.cert.X509CRLEntry java.security.cert.X509CRLEntry}
      */
     public boolean hasExtensions() {
-	return (!crlEntryExtensions_.isEmpty());
+        return (!crlEntryExtensions_.isEmpty());
     }
 
     /**
      * implemented abstract method from
      * {@link java.security.cert.X509CRLEntry java.security.cert.X509CRLEntry}
-     * 
+     *
      * @return always returns <code>false</code>
      */
     public boolean hasUnsupportedCriticalExtension() {
 
-	boolean res = false;
+        boolean res = false;
 
-	Set s = getCriticalExtensionOIDs();
+        Set s = getCriticalExtensionOIDs();
 
-	Iterator it = s.iterator();
+        Iterator it = s.iterator();
 
-	while (it.hasNext() && !res) {
-	    it.next();
+        while (it.hasNext() && !res) {
+            it.next();
 
-	    if (false)
-		res = true;
-	}
-	return res;
+        }
+        return res;
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public boolean isExplicit() {
-	return crlEntry_.isExplicit();
+        return crlEntry_.isExplicit();
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public boolean isOptional() {
-	return crlEntry_.isOptional();
+        return crlEntry_.isOptional();
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public boolean isType(int eins, int zwei) {
-	return crlEntry_.isType(eins, zwei);
+        return crlEntry_.isType(eins, zwei);
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public void setExplicit(boolean ex) {
-	crlEntry_.setExplicit(ex);
+        crlEntry_.setExplicit(ex);
     }
 
     /**
      * for interface {@link codec.asn1.ASN1Type codec.asn1.ASN1Type}
      */
     public void setOptional(boolean opt) {
-	crlEntry_.setOptional(opt);
+        crlEntry_.setOptional(opt);
     }
 
     /**
@@ -407,23 +395,23 @@ public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
      */
     public void setRevocationDate(Calendar cal) {
 
-	ASN1Time inner = (ASN1Time) revocationDate_.getInnerType();
+        ASN1Time inner = (ASN1Time) revocationDate_.getInnerType();
 
-	if (inner == null) {
-	    inner = new ASN1UTCTime(cal);
-	    revocationDate_.setInnerType(inner);
-	}
+        if (inner == null) {
+            inner = new ASN1UTCTime(cal);
+            revocationDate_.setInnerType(inner);
+        }
 
-	inner.setDate(cal);
+        inner.setDate(cal);
     }
 
     /**
      * set the date of this revocation entry
      */
     public void setRevocationDate(Date date) {
-	Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-	cal.setTime(date);
-	setRevocationDate(cal);
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        cal.setTime(date);
+        setRevocationDate(cal);
 
     }
 
@@ -432,7 +420,7 @@ public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
      * entry.
      */
     public void setSerialNumber(int nsnr) {
-	setSerialNumber(new BigInteger(String.valueOf(nsnr), 10));
+        setSerialNumber(new BigInteger(String.valueOf(nsnr), 10));
     }
 
     /**
@@ -440,64 +428,64 @@ public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
      * entry.
      */
     public void setSerialNumber(BigInteger nsnr) {
-	try {
-	    userCertificate_.setBigInteger(nsnr);
-	} catch (ASN1Exception ignore) {
-	}
+        try {
+            userCertificate_.setBigInteger(nsnr);
+        } catch (ASN1Exception ignore) {
+        }
     }
 
     /**
      * menschl. lesbare Form
      */
     public String toString() {
-	return toString("");
+        return toString("");
     }
 
     /**
      * menschl. lesbare Form
      */
     public String toString(String offset) {
-	String res = offset + "SNR (dec):" + getSerialNumber().toString(10);
+        String res = offset + "SNR (dec):" + getSerialNumber().toString(10);
 
-	String date = DateFormat.getDateTimeInstance(DateFormat.FULL,
-		DateFormat.FULL).format(getRevocationDate());
+        String date = DateFormat.getDateTimeInstance(DateFormat.FULL,
+                DateFormat.FULL).format(getRevocationDate());
 
-	res = res + " date:" + date;
+        res = res + " date:" + date;
 
-	if (!crlEntryExtensions_.isEmpty()) {
-	    res = res + "\n" + offset + "extensions (";
-	    res = res + crlEntryExtensions_.size() + "):";
+        if (!crlEntryExtensions_.isEmpty()) {
+            res = res + "\n" + offset + "extensions (";
+            res = res + crlEntryExtensions_.size() + "):";
 
-	    for (int i = 0; i < crlEntryExtensions_.size(); i++) {
-		res = res + "\n";
-		res = res
-			+ ((X509Extension) crlEntryExtensions_.get(i))
-				.toString(offset + " ");
-	    }
-	}
-	return res;
+            for (int i = 0; i < crlEntryExtensions_.size(); i++) {
+                res = res + "\n";
+                res = res
+                        + ((X509Extension) crlEntryExtensions_.get(i))
+                        .toString(offset + " ");
+            }
+        }
+        return res;
     }
 
     public void writeExternal(ObjectOutput s) throws IOException {
-	byte[] res = null;
+        byte[] res = null;
 
-	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-	try {
-	    encode(new DEREncoder(baos));
-	    res = baos.toByteArray();
-	    baos.close();
-	    s.write(res);
-	} catch (ASN1Exception e) {
-	    throw new RuntimeException(e.toString());
-	}
+        try {
+            encode(new DEREncoder(baos));
+            res = baos.toByteArray();
+            baos.close();
+            s.write(res);
+        } catch (ASN1Exception e) {
+            throw new RuntimeException(e.toString());
+        }
     }
 
     public void readExternal(ObjectInput s) throws IOException {
-	try {
-	    decode(new DERDecoder((ObjectInputStream) s));
-	} catch (ASN1Exception e) {
-	    throw new RuntimeException(e.toString());
-	}
+        try {
+            decode(new DERDecoder((ObjectInputStream) s));
+        } catch (ASN1Exception e) {
+            throw new RuntimeException(e.toString());
+        }
     }
 }

@@ -92,7 +92,8 @@ public class ContactsDataSource {
         database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
         database.close();
     }
-    public void updateDB(long id,int sent) {
+
+    public void updateDB(long id, int sent) {
         ContentValues cv = new ContentValues();
         cv.put(MySQLiteHelper.MSG_I_SEND, sent);
         database = dbHelper.getWritableDatabase();
@@ -102,9 +103,9 @@ public class ContactsDataSource {
 
     public Contact findContact(long id) {
         //trying find on lost before going to db
-        if(StaticVariables.fullList!=null)
-            for(Contact c:StaticVariables.fullList)
-                if(c.getId()==id)
+        if (StaticVariables.fullList != null)
+            for (Contact c : StaticVariables.fullList)
+                if (c.getId() == id)
                     return c;
         database = dbHelper.getReadableDatabase();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
@@ -183,8 +184,8 @@ public class ContactsDataSource {
         Collections.sort(contacts, new Comparator<Contact>() {
             @Override
             public int compare(Contact contact, Contact contact2) {
-                return (contact.getContactName().toLowerCase()+contact.getEmail().toLowerCase())
-                        .compareTo((contact2.getContactName().toLowerCase()+contact2.getEmail().toLowerCase()));
+                return (contact.getContactName().toLowerCase() + contact.getEmail().toLowerCase())
+                        .compareTo((contact2.getContactName().toLowerCase() + contact2.getEmail().toLowerCase()));
             }
         });
         return contacts;

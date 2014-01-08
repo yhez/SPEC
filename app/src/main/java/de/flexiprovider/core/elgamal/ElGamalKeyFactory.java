@@ -29,9 +29,9 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
 /**
  * This class is able to transform ElGamal-keys and ElGamal-key specs into a
  * form that can be used with the FlexiCoreProvider.
- * 
- * @see de.flexiprovider.core.elgamal.ElGamal
+ *
  * @author Thomas Wahrenbruch
+ * @see de.flexiprovider.core.elgamal.ElGamal
  */
 public class ElGamalKeyFactory extends KeyFactory {
 
@@ -44,117 +44,113 @@ public class ElGamalKeyFactory extends KeyFactory {
      * Converts, if possible, a key specification into a ElGamalPrivateKey.
      * Currently the following key specifications are supported:
      * ElGamalPrivateKeySpec, PKCS8EncodedKeySpec.
-     * 
-     * @param keySpec
-     *                the key specification
+     *
+     * @param keySpec the key specification
      * @return the private ElGamal key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException
-     *                 if the KeySpec is not supported.
+     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
      * @see de.flexiprovider.core.elgamal.ElGamalPrivateKey
      * @see de.flexiprovider.core.elgamal.ElGamalPrivateKeySpec
      */
     public PrivateKey generatePrivate(KeySpec keySpec)
-	    throws InvalidKeySpecException {
+            throws InvalidKeySpecException {
 
-	if (keySpec instanceof ElGamalPrivateKeySpec) {
-	    return new ElGamalPrivateKey((ElGamalPrivateKeySpec) keySpec);
-	} else if (keySpec instanceof PKCS8EncodedKeySpec) {
-	    // get the DER-encoded key according to X.509 from the spec
-	    byte[] enc = ((PKCS8EncodedKeySpec) keySpec).getEncoded();
+        if (keySpec instanceof ElGamalPrivateKeySpec) {
+            return new ElGamalPrivateKey((ElGamalPrivateKeySpec) keySpec);
+        } else if (keySpec instanceof PKCS8EncodedKeySpec) {
+            // get the DER-encoded key according to X.509 from the spec
+            byte[] enc = ((PKCS8EncodedKeySpec) keySpec).getEncoded();
 
-	    // decode the PrivateKeyInfo data structure to the pki object
-	    PrivateKeyInfo pki = new PrivateKeyInfo();
-	    try {
-		ASN1Tools.derDecode(enc, pki);
-	    } catch (Exception ce) {
-		throw new InvalidKeySpecException(
-			"Unable to decode PKCS8EncodedKeySpec.");
-	    }
+            // decode the PrivateKeyInfo data structure to the pki object
+            PrivateKeyInfo pki = new PrivateKeyInfo();
+            try {
+                ASN1Tools.derDecode(enc, pki);
+            } catch (Exception ce) {
+                throw new InvalidKeySpecException(
+                        "Unable to decode PKCS8EncodedKeySpec.");
+            }
 
-	    try {
-		// build and return the actual key
-		ASN1Sequence encPrivKey = (ASN1Sequence) pki.getDecodedRawKey();
+            try {
+                // build and return the actual key
+                ASN1Sequence encPrivKey = (ASN1Sequence) pki.getDecodedRawKey();
 
-		// decode modulus
-		FlexiBigInt modulus = ASN1Tools
-			.getFlexiBigInt((ASN1Integer) encPrivKey.get(0));
-		// decode generator
-		FlexiBigInt generator = ASN1Tools
-			.getFlexiBigInt((ASN1Integer) encPrivKey.get(1));
-		// decode publicA
-		FlexiBigInt publicA = ASN1Tools
-			.getFlexiBigInt((ASN1Integer) encPrivKey.get(2));
-		// decode a
-		FlexiBigInt a = ASN1Tools
-			.getFlexiBigInt((ASN1Integer) encPrivKey.get(3));
+                // decode modulus
+                FlexiBigInt modulus = ASN1Tools
+                        .getFlexiBigInt((ASN1Integer) encPrivKey.get(0));
+                // decode generator
+                FlexiBigInt generator = ASN1Tools
+                        .getFlexiBigInt((ASN1Integer) encPrivKey.get(1));
+                // decode publicA
+                FlexiBigInt publicA = ASN1Tools
+                        .getFlexiBigInt((ASN1Integer) encPrivKey.get(2));
+                // decode a
+                FlexiBigInt a = ASN1Tools
+                        .getFlexiBigInt((ASN1Integer) encPrivKey.get(3));
 
-		return new ElGamalPrivateKey(modulus, generator, publicA, a);
+                return new ElGamalPrivateKey(modulus, generator, publicA, a);
 
-	    } catch (CorruptedCodeException cce) {
-		throw new InvalidKeySpecException(
-			"Unable to decode PKCS8EncodedKeySpec.");
-	    }
-	}
+            } catch (CorruptedCodeException cce) {
+                throw new InvalidKeySpecException(
+                        "Unable to decode PKCS8EncodedKeySpec.");
+            }
+        }
 
-	throw new InvalidKeySpecException("Unknown key specification: "
-		+ keySpec + ".");
+        throw new InvalidKeySpecException("Unknown key specification: "
+                + keySpec + ".");
     }
 
     /**
      * Converts, if possible, a key specification into a ElGamalPublicKey.
      * Currently the following key specifications are supported:
      * ElGamalPublicKeySpec, X509EncodedKeySpec.
-     * 
-     * @param keySpec
-     *                the key specification
+     *
+     * @param keySpec the key specification
      * @return the public ElGamal key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException
-     *                 if the KeySpec is not supported.
+     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
      * @see ElGamalPublicKey
      * @see de.flexiprovider.core.elgamal.ElGamalPublicKeySpec
      */
     public PublicKey generatePublic(KeySpec keySpec)
-	    throws InvalidKeySpecException {
+            throws InvalidKeySpecException {
 
-	if (keySpec instanceof ElGamalPublicKeySpec) {
-	    return new ElGamalPublicKey((ElGamalPublicKeySpec) keySpec);
-	} else if (keySpec instanceof X509EncodedKeySpec) {
-	    // get the DER-encoded key according to X.509 from the spec
-	    byte[] enc = ((X509EncodedKeySpec) keySpec).getEncoded();
+        if (keySpec instanceof ElGamalPublicKeySpec) {
+            return new ElGamalPublicKey((ElGamalPublicKeySpec) keySpec);
+        } else if (keySpec instanceof X509EncodedKeySpec) {
+            // get the DER-encoded key according to X.509 from the spec
+            byte[] enc = ((X509EncodedKeySpec) keySpec).getEncoded();
 
-	    // decode the SubjectPublicKeyInfo data structure to the pki object
-	    SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo();
-	    try {
-		ASN1Tools.derDecode(enc, spki);
-	    } catch (Exception ce) {
-		throw new InvalidKeySpecException(
-			"Unable to decode X509EncodedKeySpec.");
-	    }
+            // decode the SubjectPublicKeyInfo data structure to the pki object
+            SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo();
+            try {
+                ASN1Tools.derDecode(enc, spki);
+            } catch (Exception ce) {
+                throw new InvalidKeySpecException(
+                        "Unable to decode X509EncodedKeySpec.");
+            }
 
-	    try {
-		// build and return the actual key
-		ASN1Sequence encPubKey = (ASN1Sequence) spki.getDecodedRawKey();
+            try {
+                // build and return the actual key
+                ASN1Sequence encPubKey = (ASN1Sequence) spki.getDecodedRawKey();
 
-		// decode modulus
-		FlexiBigInt modulus = ASN1Tools
-			.getFlexiBigInt((ASN1Integer) encPubKey.get(0));
-		// decode generator
-		FlexiBigInt generator = ASN1Tools
-			.getFlexiBigInt((ASN1Integer) encPubKey.get(1));
-		// decode publicA
-		FlexiBigInt publicA = ASN1Tools
-			.getFlexiBigInt((ASN1Integer) encPubKey.get(2));
+                // decode modulus
+                FlexiBigInt modulus = ASN1Tools
+                        .getFlexiBigInt((ASN1Integer) encPubKey.get(0));
+                // decode generator
+                FlexiBigInt generator = ASN1Tools
+                        .getFlexiBigInt((ASN1Integer) encPubKey.get(1));
+                // decode publicA
+                FlexiBigInt publicA = ASN1Tools
+                        .getFlexiBigInt((ASN1Integer) encPubKey.get(2));
 
-		return new ElGamalPublicKey(modulus, generator, publicA);
+                return new ElGamalPublicKey(modulus, generator, publicA);
 
-	    } catch (CorruptedCodeException cce) {
-		throw new InvalidKeySpecException(
-			"Unable to decode X509EncodedKeySpec.");
-	    }
-	}
+            } catch (CorruptedCodeException cce) {
+                throw new InvalidKeySpecException(
+                        "Unable to decode X509EncodedKeySpec.");
+            }
+        }
 
-	throw new InvalidKeySpecException("Unknown key specification: "
-		+ keySpec + ".");
+        throw new InvalidKeySpecException("Unknown key specification: "
+                + keySpec + ".");
     }
 
     /**
@@ -164,65 +160,60 @@ public class ElGamalKeyFactory extends KeyFactory {
      * <li>for ElGamalPublicKey: X509EncodedKeySpec, ElGamalPublicKeySpec</li>
      * <li>for ElGamalPrivateKey: PKCS8EncodedKeySpec, ElGamalPrivateKeySpec</li>
      * </ul>
-     * 
-     * @param key
-     *                the key
-     * @param keySpec
-     *                the class of which type the returned class should be
+     *
+     * @param key     the key
+     * @param keySpec the class of which type the returned class should be
      * @return the specification of the ElGamal key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException
-     *                 if the specification is not supported.
+     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the specification is not supported.
      * @see de.flexiprovider.core.elgamal.ElGamalPrivateKey
      * @see ElGamalPublicKey
      * @see de.flexiprovider.core.elgamal.ElGamalPrivateKeySpec
      * @see de.flexiprovider.core.elgamal.ElGamalPublicKeySpec
      */
     public KeySpec getKeySpec(Key key, Class keySpec)
-	    throws InvalidKeySpecException {
+            throws InvalidKeySpecException {
 
-	if (key instanceof ElGamalPublicKey) {
-	    if (X509EncodedKeySpec.class.isAssignableFrom(keySpec)) {
-		return new X509EncodedKeySpec(key.getEncoded());
-	    } else if (ElGamalPublicKeySpec.class.isAssignableFrom(keySpec)) {
-		ElGamalPublicKey elGamalPubKey = (ElGamalPublicKey) key;
-		return new ElGamalPublicKeySpec(elGamalPubKey.getModulus(),
-			elGamalPubKey.getGenerator(), elGamalPubKey
-				.getPublicA());
-	    }
-	} else if (key instanceof ElGamalPrivateKey) {
-	    if (PKCS8EncodedKeySpec.class.isAssignableFrom(keySpec)) {
-		return new PKCS8EncodedKeySpec(key.getEncoded());
-	    } else if (ElGamalPrivateKeySpec.class.isAssignableFrom(keySpec)) {
-		ElGamalPrivateKey elGamalPrivKey = (ElGamalPrivateKey) key;
-		return new ElGamalPrivateKeySpec(elGamalPrivKey.getModulus(),
-			elGamalPrivKey.getGenerator(), elGamalPrivKey
-				.getPublicA(), elGamalPrivKey.getA());
-	    }
-	} else {
-	    throw new InvalidKeySpecException("Unsupported key type: "
-		    + key.getClass() + ".");
-	}
+        if (key instanceof ElGamalPublicKey) {
+            if (X509EncodedKeySpec.class.isAssignableFrom(keySpec)) {
+                return new X509EncodedKeySpec(key.getEncoded());
+            } else if (ElGamalPublicKeySpec.class.isAssignableFrom(keySpec)) {
+                ElGamalPublicKey elGamalPubKey = (ElGamalPublicKey) key;
+                return new ElGamalPublicKeySpec(elGamalPubKey.getModulus(),
+                        elGamalPubKey.getGenerator(), elGamalPubKey
+                        .getPublicA());
+            }
+        } else if (key instanceof ElGamalPrivateKey) {
+            if (PKCS8EncodedKeySpec.class.isAssignableFrom(keySpec)) {
+                return new PKCS8EncodedKeySpec(key.getEncoded());
+            } else if (ElGamalPrivateKeySpec.class.isAssignableFrom(keySpec)) {
+                ElGamalPrivateKey elGamalPrivKey = (ElGamalPrivateKey) key;
+                return new ElGamalPrivateKeySpec(elGamalPrivKey.getModulus(),
+                        elGamalPrivKey.getGenerator(), elGamalPrivKey
+                        .getPublicA(), elGamalPrivKey.getA());
+            }
+        } else {
+            throw new InvalidKeySpecException("Unsupported key type: "
+                    + key.getClass() + ".");
+        }
 
-	throw new InvalidKeySpecException("Unknown key specification: "
-		+ keySpec + ".");
+        throw new InvalidKeySpecException("Unknown key specification: "
+                + keySpec + ".");
     }
 
     /**
      * Translates a key into a form known by the FlexiProvider. Currently the
      * following "source" keys are supported: ElGamalPublicKey,
      * ElGamalPrivateKey.
-     * 
-     * @param key
-     *                the key
+     *
+     * @param key the key
      * @return a key of a known key-type
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException
-     *                 if the key is not supported.
+     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the key is not supported.
      */
     public Key translateKey(Key key) throws InvalidKeyException {
-	if (key instanceof ElGamalPublicKey || key instanceof ElGamalPrivateKey) {
-	    return key;
-	}
-	throw new InvalidKeyException("Unsupported key type.");
+        if (key instanceof ElGamalPublicKey || key instanceof ElGamalPrivateKey) {
+            return key;
+        }
+        throw new InvalidKeyException("Unsupported key type.");
     }
 
 }
