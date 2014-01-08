@@ -31,9 +31,7 @@ import specular.systems.R;
 import specular.systems.StaticVariables;
 import specular.systems.Visual;
 
-/**
- * Created by yehezkelk on 12/9/13.
- */
+
 public class ChooseContact extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);

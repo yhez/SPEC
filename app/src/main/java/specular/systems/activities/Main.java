@@ -550,7 +550,7 @@ public class Main extends FragmentActivity {
         if (FragmentManagement.currentLayout == R.layout.wait_nfc_to_write) {
             Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if (tag != null) {
-                byte[] bin = Visual.hex2bin(CryptMethods.getPrivateTmp());
+                byte[] bin = CryptMethods.getPrivateTmp();
                 // record to launch Play Store if app is not installed
                 NdefRecord appRecord = NdefRecord
                         .createApplicationRecord(this.getPackageName());

@@ -15,12 +15,14 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Random;
 
 import javax.crypto.Cipher;
 
 import de.flexiprovider.common.ies.IESParameterSpec;
 import de.flexiprovider.core.FlexiCoreProvider;
 import de.flexiprovider.ec.FlexiECProvider;
+import de.flexiprovider.ec.keys.ECPrivateKey;
 import de.flexiprovider.ec.parameters.CurveParams;
 import de.flexiprovider.ec.parameters.CurveRegistry;
 import de.flexiprovider.pki.PKCS8EncodedKeySpec;
@@ -28,27 +30,40 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
 
 public class CryptMethods {
     public static boolean doneCreatingKeys = false;
-    private static PrivateKey mPtK = null;
+    private static PrivateKey mPtK;
     public static String encryptedMsgToSend;
     private static String myName = null, myEmail = null, myPublicKey = null;
     private static PrivateKey tmpPtK = null;
+    private static byte[] tmpPrivateKey;
+    private static byte[] myPrivateKey;
     private static String tmpPublicKey = null;
     private static boolean notInit = true;
 
     public static byte[] getPrivateToSave() {
-        return mPtK.getEncoded();
+        return myPrivateKey;
     }
 
     static void deleteKeys() {
+        Log.d("start",System.currentTimeMillis()+"");
+        ECPrivateKey pk = (ECPrivateKey)mPtK;
+        pk.getS().bigInt.delete();
         mPtK = null;
+        for(int a=0;a<myPrivateKey.length;a++){
+            myPrivateKey[a]=(byte)(System.currentTimeMillis()* new Random().nextLong());
+        }
+        Log.d("to prevent java from skipping it",""+myPrivateKey[new Random().nextInt(myPrivateKey.length)]);
         MessageFormat.decryptedMsg = null;
         LightMessage.decryptedLightMsg=null;
+        Log.d("end",System.currentTimeMillis()+"");
     }
 
     public static boolean setPrivate(byte[] p) {
         if (p != null) {
             mPtK = formatPrivate(p);
-            return mPtK != null;
+            if(mPtK!=null){
+                myPrivateKey=p;
+                return true;
+            }
         }
         return false;
     }
@@ -65,6 +80,8 @@ public class CryptMethods {
         tmpPublicKey = null;
         mPtK = tmpPtK;
         tmpPtK = null;
+        myPrivateKey=tmpPrivateKey;
+        tmpPrivateKey=null;
     }
 
     public static String[] getMyDetails(Activity a) {
@@ -90,8 +107,8 @@ public class CryptMethods {
     }
 
     private static void addProviders() {
-        Security.addProvider(new FlexiCoreProvider());
         Security.addProvider(new FlexiECProvider());
+        Security.addProvider(new FlexiCoreProvider());
     }
 
     public static void createKeys() {
@@ -113,7 +130,8 @@ public class CryptMethods {
             keypair = kpg.generateKeyPair();
             if (!doneCreatingKeys) {
                 tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
-                tmpPtK = formatPrivate(keypair.getPrivate().getEncoded());
+                tmpPtK = keypair.getPrivate();
+                tmpPrivateKey =tmpPtK.getEncoded();
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -201,7 +219,7 @@ public class CryptMethods {
     public static String getPublicTmp() {
         return tmpPublicKey;
     }
-    public static String getPrivateTmp() {
-        return Visual.bin2hex(tmpPtK.getEncoded());
+    public static byte[] getPrivateTmp() {
+        return tmpPrivateKey;
     }
 }

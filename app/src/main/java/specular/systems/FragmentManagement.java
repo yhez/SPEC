@@ -45,6 +45,7 @@ import com.google.zxing.WriterException;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import specular.systems.activities.Main;
@@ -607,8 +608,7 @@ public class FragmentManagement extends Fragment {
                 if (StaticVariables.path==null)
                     StaticVariables.path = Environment.getExternalStorageDirectory();
                 final ArrayList<String> files = new ArrayList<String>();
-                for (String s : StaticVariables.path.list())
-                    files.add(s);
+                Collections.addAll(files, StaticVariables.path.list());
                 final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, files);
                 lv.setAdapter(adapter);
                 //adapter.notifyDataSetChanged();

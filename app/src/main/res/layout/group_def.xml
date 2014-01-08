@@ -5,20 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <EditText
-        android:hint="your group secret mentor"
+        android:hint="@string/group_mentor_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <EditText
-        android:hint="your group name"
+        android:hint="@string/group_name_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <EditText
-        android:hint="your group messages address"
+        android:hint="@string/group_location_for_messages_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
-        android:text="group contacts"
+        android:text="@string/group_contacts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <ListView
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"/>
     <Button
         android:id="@+id/done"
-        android:text="done"
+        android:text="@string/create_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>
