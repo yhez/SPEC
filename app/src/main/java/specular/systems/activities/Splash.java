@@ -32,11 +32,7 @@ import specular.systems.Visual;
 
 public class Splash extends Activity {
 
-    @Override
-    public void onDestroy() {
-        CryptMethods.deleteKeys();
-        super.onDestroy();
-    }
+
 
     private final static int TIME_FOR_SPLASH = 3500;
     private final static long TIME_FOR_CLEAR_TASK = 15;//in minute

@@ -217,12 +217,6 @@ public class Main extends FragmentActivity {
         }
     }
 
-    @Override
-    public void onDestroy() {
-        CryptMethods.deleteKeys();
-        super.onDestroy();
-    }
-
     void encryptManager() {
         StaticVariables.luc.change(this, contact);
         final ProgressDlg prgd = new ProgressDlg(this, R.string.encrypting);

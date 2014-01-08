@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 
-import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
@@ -32,11 +31,6 @@ public class SendReport extends Activity {
         }
     };
 
-    @Override
-    public void onDestroy() {
-        CryptMethods.deleteKeys();
-        super.onDestroy();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

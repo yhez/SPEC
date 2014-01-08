@@ -58,11 +58,6 @@ public class PrivateKeyManager extends Activity {
         Visual.setAllFonts(this, (ViewGroup) findViewById(android.R.id.content));
     }
 
-    @Override
-    public void onDestroy() {
-        CryptMethods.deleteKeys();
-        super.onDestroy();
-    }
 
     private void updateViews() {
         if (status == NO_CHOICE)

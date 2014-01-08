@@ -46,11 +46,6 @@ public class SendMsg extends Activity {
     ArrayList<Uri> uris;
     Contact contact;
 
-    @Override
-    public void onDestroy() {
-        CryptMethods.deleteKeys();
-        super.onDestroy();
-    }
 
     @Override
     public void onCreate(Bundle b) {

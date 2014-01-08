@@ -4,18 +4,13 @@ import android.widget.TextView;
 
 import com.google.zxing.Result;
 
-import specular.systems.CryptMethods;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
 import specular.systems.scanqr.CaptureActivity;
 
 public class StartScan extends CaptureActivity {
 
-    @Override
-    public void onDestroy() {
-        CryptMethods.deleteKeys();
-        super.onDestroy();
-    }
+
 
     final static int MESSAGE = 0, CONTACT = 1, PRIVATE = 2;
 
