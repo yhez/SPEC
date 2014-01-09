@@ -3,9 +3,9 @@ package specular.systems.scanqr;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.ResultPointCallback;
+import zxing.BarcodeFormat;
+import zxing.DecodeHintType;
+import zxing.ResultPointCallback;
 
 import java.util.Collection;
 import java.util.EnumMap;

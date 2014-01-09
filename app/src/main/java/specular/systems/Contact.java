@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.graphics.Bitmap;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
+import zxing.BarcodeFormat;
+import zxing.WriterException;
 
 public class Contact {
 

@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.TextView;
 
-import com.google.zxing.Result;
+import zxing.Result;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -17,8 +17,8 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
+import zxing.BarcodeFormat;
+import zxing.WriterException;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

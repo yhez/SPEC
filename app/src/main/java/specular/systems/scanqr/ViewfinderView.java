@@ -9,7 +9,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.google.zxing.ResultPoint;
+import zxing.ResultPoint;
 
 import java.util.ArrayList;
 import java.util.List;

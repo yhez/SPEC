@@ -2,7 +2,7 @@ package specular.systems.scanqr;
 
 import android.content.Intent;
 
-import com.google.zxing.BarcodeFormat;
+import zxing.BarcodeFormat;
 
 import java.util.Arrays;
 import java.util.Collection;

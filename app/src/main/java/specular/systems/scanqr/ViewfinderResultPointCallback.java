@@ -1,7 +1,7 @@
 package specular.systems.scanqr;
 
-import com.google.zxing.ResultPoint;
-import com.google.zxing.ResultPointCallback;
+import zxing.ResultPoint;
+import zxing.ResultPointCallback;
 
 final class ViewfinderResultPointCallback implements ResultPointCallback {
 

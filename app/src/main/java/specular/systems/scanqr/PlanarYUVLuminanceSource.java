@@ -2,7 +2,7 @@ package specular.systems.scanqr;
 
 import android.graphics.Bitmap;
 
-import com.google.zxing.LuminanceSource;
+import zxing.LuminanceSource;
 
 
 public final class PlanarYUVLuminanceSource extends LuminanceSource {

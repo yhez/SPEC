@@ -48,9 +48,6 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -86,6 +83,8 @@ import specular.systems.R;
 import specular.systems.Session;
 import specular.systems.StaticVariables;
 import specular.systems.Visual;
+import zxing.BarcodeFormat;
+import zxing.WriterException;
 
 
 public class Main extends FragmentActivity {
@@ -173,6 +172,10 @@ public class Main extends FragmentActivity {
                     break;
                 case 77:
                     Toast.makeText(Main.this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
+                    break;
+                case 551:
+                    t.setText(R.string.bad_data);
+                    t.show();
                     break;
             }
         }
@@ -435,8 +438,7 @@ public class Main extends FragmentActivity {
                         if (StaticVariables.fileContactCard.getPublicKey() != null) {
                             setUpViews();
                         } else {
-                            t.setText(R.string.bad_data);
-                            t.show();
+                            hndl.sendEmptyMessage(551);
                         }
                     }
                 }
@@ -832,12 +834,12 @@ public class Main extends FragmentActivity {
                 @Override
                 public void run() {
                     fragmentManager.beginTransaction()
-                            .replace(R.id.content_frame, fragment).commit();
+                            .replace(R.id.content_frame, fragment).commitAllowingStateLoss();
                 }
             }, 300);
         } else
             fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, fragment).commit();
+                    .replace(R.id.content_frame, fragment).commitAllowingStateLoss();
         exit = false;
     }
 

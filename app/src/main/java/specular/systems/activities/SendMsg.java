@@ -20,8 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
+import zxing.BarcodeFormat;
+import zxing.WriterException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -282,7 +282,7 @@ public class SendMsg extends Activity {
             if (contact != null)
                 contact.update(this);
         } catch (Exception e) {
-            //todo
+            //todo handle activity is missing can happen in rare cases
         }
     }
 
@@ -310,7 +310,7 @@ public class SendMsg extends Activity {
                 findViewById(R.id.title_file).setVisibility(View.GONE);
                 findViewById(R.id.file_details).setVisibility(View.GONE);
             } else {
-                //todo both null
+                //todo both null, shouldn't happen
             }
         } else {
             findViewById(R.id.gl_app_file).setVisibility(View.GONE);

@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.Result;
+import zxing.BarcodeFormat;
+import zxing.Result;
 
 import java.util.Collection;
 

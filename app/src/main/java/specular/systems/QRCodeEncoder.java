@@ -2,11 +2,11 @@ package specular.systems;
 
 import android.graphics.Bitmap;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
+import zxing.BarcodeFormat;
+import zxing.EncodeHintType;
+import zxing.MultiFormatWriter;
+import zxing.WriterException;
+import zxing.common.BitMatrix;
 
 import java.util.EnumMap;
 import java.util.Map;

@@ -2,7 +2,7 @@ package specular.systems.activities;
 
 import android.widget.TextView;
 
-import com.google.zxing.Result;
+import zxing.Result;
 
 import specular.systems.KeysDeleter;
 import specular.systems.R;

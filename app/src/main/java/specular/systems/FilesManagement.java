@@ -16,8 +16,8 @@ import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
+import zxing.BarcodeFormat;
+import zxing.WriterException;
 
 import java.io.BufferedInputStream;
 import java.io.File;

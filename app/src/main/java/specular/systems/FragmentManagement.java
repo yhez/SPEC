@@ -40,15 +40,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import specular.systems.activities.Main;
+import zxing.BarcodeFormat;
+import zxing.WriterException;
 
 import static specular.systems.R.layout.create_new_keys;
 import static specular.systems.R.layout.decrypt;
@@ -61,7 +60,7 @@ import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 public class FragmentManagement extends Fragment {
-    public static int currentLayout;
+    public static int currentLayout=-1;
     final Thread checkHash = new Thread(new Runnable() {
         @Override
         public void run() {

@@ -22,8 +22,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
+import zxing.BarcodeFormat;
+import zxing.WriterException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

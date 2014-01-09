@@ -14,8 +14,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.Result;
+import zxing.BarcodeFormat;
+import zxing.Result;
 
 import java.io.IOException;
 import java.util.Collection;
