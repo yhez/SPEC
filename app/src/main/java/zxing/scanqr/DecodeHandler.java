@@ -1,20 +1,19 @@
-package specular.systems.scanqr;
+package zxing.scanqr;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import java.util.Map;
+
+import specular.systems.R;
 import zxing.BinaryBitmap;
 import zxing.DecodeHintType;
 import zxing.MultiFormatReader;
 import zxing.ReaderException;
 import zxing.Result;
 import zxing.common.HybridBinarizer;
-
-import java.util.Map;
-
-import specular.systems.R;
 
 final class DecodeHandler extends Handler {
 

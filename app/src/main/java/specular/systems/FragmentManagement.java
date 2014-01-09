@@ -47,6 +47,7 @@ import java.util.List;
 
 import specular.systems.activities.Main;
 import zxing.BarcodeFormat;
+import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
 import static specular.systems.R.layout.create_new_keys;

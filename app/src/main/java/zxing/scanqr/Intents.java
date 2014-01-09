@@ -1,4 +1,4 @@
-package specular.systems.scanqr;
+package zxing.scanqr;
 
 final class Intents {
     private Intents() {

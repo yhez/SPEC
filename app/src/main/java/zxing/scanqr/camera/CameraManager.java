@@ -1,4 +1,4 @@
-package specular.systems.scanqr.camera;
+package zxing.scanqr.camera;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -10,7 +10,7 @@ import android.view.SurfaceHolder;
 import java.io.IOException;
 
 import specular.systems.R;
-import specular.systems.scanqr.PlanarYUVLuminanceSource;
+import zxing.scanqr.PlanarYUVLuminanceSource;
 
 public final class CameraManager {
 

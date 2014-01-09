@@ -78,7 +78,7 @@ import specular.systems.LeftMenu;
 import specular.systems.LightMessage;
 import specular.systems.MessageFormat;
 import specular.systems.MySimpleArrayAdapter;
-import specular.systems.QRCodeEncoder;
+import zxing.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.Session;
 import specular.systems.StaticVariables;

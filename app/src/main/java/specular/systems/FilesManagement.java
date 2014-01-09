@@ -16,9 +16,6 @@ import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import zxing.BarcodeFormat;
-import zxing.WriterException;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,6 +25,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+
+import zxing.BarcodeFormat;
+import zxing.QRCodeEncoder;
+import zxing.WriterException;
 
 import static android.graphics.Typeface.createFromAsset;
 

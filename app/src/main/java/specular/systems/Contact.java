@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.graphics.Bitmap;
 
 import zxing.BarcodeFormat;
+import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
 public class Contact {

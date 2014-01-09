@@ -1,4 +1,4 @@
-package specular.systems.scanqr;
+package zxing.scanqr;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import specular.systems.R;
-import specular.systems.scanqr.camera.CameraManager;
+import zxing.scanqr.camera.CameraManager;
 
 final class ViewfinderView extends View {
 

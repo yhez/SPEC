@@ -35,7 +35,7 @@ import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
-import specular.systems.QRCodeEncoder;
+import zxing.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.Visual;
 

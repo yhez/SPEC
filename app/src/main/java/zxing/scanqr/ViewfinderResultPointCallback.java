@@ -1,4 +1,4 @@
-package specular.systems.scanqr;
+package zxing.scanqr;
 
 import zxing.ResultPoint;
 import zxing.ResultPointCallback;

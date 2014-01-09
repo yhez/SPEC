@@ -1,14 +1,14 @@
-package specular.systems.scanqr;
+package zxing.scanqr;
 
 import android.content.Intent;
-
-import zxing.BarcodeFormat;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import zxing.BarcodeFormat;
 
 final class DecodeFormatManager {
 

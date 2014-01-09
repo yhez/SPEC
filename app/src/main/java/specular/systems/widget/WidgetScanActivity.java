@@ -12,7 +12,7 @@ import java.io.OutputStream;
 
 import specular.systems.R;
 import specular.systems.activities.Splash;
-import specular.systems.scanqr.CaptureActivity;
+import zxing.scanqr.CaptureActivity;
 
 /**
  * Created by yehezkelk on 12/11/13.

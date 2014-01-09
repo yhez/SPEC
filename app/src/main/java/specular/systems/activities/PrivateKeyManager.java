@@ -33,7 +33,7 @@ import specular.systems.Dialogs.NotImplemented;
 import specular.systems.Dialogs.TurnNFCOn;
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
-import specular.systems.QRCodeEncoder;
+import zxing.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.Visual;
 

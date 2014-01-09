@@ -1,17 +1,16 @@
-package specular.systems.scanqr;
+package zxing.scanqr;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
-import zxing.BarcodeFormat;
-import zxing.Result;
-
 import java.util.Collection;
 
 import specular.systems.R;
-import specular.systems.scanqr.camera.CameraManager;
+import zxing.BarcodeFormat;
+import zxing.Result;
+import zxing.scanqr.camera.CameraManager;
 
 public final class CaptureActivityHandler extends Handler {
 

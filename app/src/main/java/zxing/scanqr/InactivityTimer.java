@@ -1,4 +1,4 @@
-package specular.systems.scanqr;
+package zxing.scanqr;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;

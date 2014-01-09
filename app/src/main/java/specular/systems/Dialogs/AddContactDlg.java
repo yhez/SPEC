@@ -19,7 +19,7 @@ import specular.systems.Contact;
 import specular.systems.ContactCard;
 import specular.systems.ContactsDataSource;
 import specular.systems.FragmentManagement;
-import specular.systems.QRCodeEncoder;
+import zxing.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.StaticVariables;
 import specular.systems.Visual;

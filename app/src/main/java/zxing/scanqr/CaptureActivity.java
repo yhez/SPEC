@@ -1,4 +1,4 @@
-package specular.systems.scanqr;
+package zxing.scanqr;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,14 +14,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 
-import zxing.BarcodeFormat;
-import zxing.Result;
-
 import java.io.IOException;
 import java.util.Collection;
 
 import specular.systems.R;
-import specular.systems.scanqr.camera.CameraManager;
+import zxing.BarcodeFormat;
+import zxing.Result;
+import zxing.scanqr.camera.CameraManager;
 
 public class CaptureActivity extends Activity implements SurfaceHolder.Callback {
     final private int FADE = 0, GONE = 1, ERROR = 2, LENGTH = 300;

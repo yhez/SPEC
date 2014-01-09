@@ -26,7 +26,7 @@ import java.io.FileOutputStream;
 import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
 import specular.systems.CustomExceptionHandler;
-import specular.systems.QRCodeEncoder;
+import zxing.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.StaticVariables;
 import specular.systems.Visual;

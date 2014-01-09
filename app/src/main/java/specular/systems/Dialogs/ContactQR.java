@@ -11,7 +11,7 @@ import android.widget.TextView;
 import zxing.BarcodeFormat;
 import zxing.WriterException;
 
-import specular.systems.QRCodeEncoder;
+import zxing.QRCodeEncoder;
 import specular.systems.R;
 
 

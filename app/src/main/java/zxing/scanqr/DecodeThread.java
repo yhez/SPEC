@@ -1,17 +1,17 @@
-package specular.systems.scanqr;
+package zxing.scanqr;
 
 import android.os.Handler;
 import android.os.Looper;
-
-import zxing.BarcodeFormat;
-import zxing.DecodeHintType;
-import zxing.ResultPointCallback;
 
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+
+import zxing.BarcodeFormat;
+import zxing.DecodeHintType;
+import zxing.ResultPointCallback;
 
 final class DecodeThread extends Thread {
 

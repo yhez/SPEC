@@ -1,15 +1,11 @@
-package specular.systems;
+package zxing;
 
 import android.graphics.Bitmap;
 
-import zxing.BarcodeFormat;
-import zxing.EncodeHintType;
-import zxing.MultiFormatWriter;
-import zxing.WriterException;
-import zxing.common.BitMatrix;
-
 import java.util.EnumMap;
 import java.util.Map;
+
+import zxing.common.BitMatrix;
 
 final public class QRCodeEncoder {
     private static final int WHITE = 0xFFFFFFFF;

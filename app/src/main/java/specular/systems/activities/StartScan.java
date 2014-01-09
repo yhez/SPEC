@@ -6,7 +6,7 @@ import zxing.Result;
 
 import specular.systems.KeysDeleter;
 import specular.systems.R;
-import specular.systems.scanqr.CaptureActivity;
+import zxing.scanqr.CaptureActivity;
 
 public class StartScan extends CaptureActivity {
 
