@@ -755,7 +755,7 @@ public class Rijndael extends BlockCipher {
         public static final String OID = "2.16.840.1.101.3.4.1";
 
 		/*
-		 * Inner classes providing concrete implementations of AES with a
+         * Inner classes providing concrete implementations of AES with a
 		 * variety of modes and key sizes.
 		 */
 

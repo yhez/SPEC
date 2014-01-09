@@ -29,6 +29,7 @@ public class RSASignaturePSS extends Signature {
     private RSAPublicKey pubKey;
     private RSAPrivateKey privKey;
     private ByteArrayOutputStream baos;
+
     public RSASignaturePSS() {
         params = new PSSParameterSpec();
     }
@@ -43,6 +44,7 @@ public class RSASignaturePSS extends Signature {
         cipherBlockSize = (modBits + 7) >> 3;
         baos = new ByteArrayOutputStream();
     }
+
     public void initSign(PrivateKey privateKey, SecureRandom random)
             throws InvalidKeyException {
 
@@ -59,6 +61,7 @@ public class RSASignaturePSS extends Signature {
         }
         initCommon();
     }
+
     public void initVerify(PublicKey publicKey) throws InvalidKeyException {
         if (publicKey instanceof RSAPublicKey) {
             pubKey = (RSAPublicKey) publicKey;
@@ -69,14 +72,18 @@ public class RSASignaturePSS extends Signature {
         }
         initCommon();
     }
+
     public void setParameters(AlgorithmParameterSpec params) {
     }
+
     public void update(byte b) {
         baos.write(b);
     }
+
     public void update(byte[] b, int offset, int length) {
         baos.write(b, offset, length);
     }
+
     private byte[] getMessage() throws IOException {
         byte[] msg = baos.toByteArray();
 
@@ -85,6 +92,7 @@ public class RSASignaturePSS extends Signature {
 
         return msg;
     }
+
     public byte[] sign() throws SignatureException {
         FlexiBigInt s, m;
         byte[] EM;
@@ -110,6 +118,7 @@ public class RSASignaturePSS extends Signature {
             throw new SignatureException("internal error.");
         }
     }
+
     public boolean verify(byte[] signature) {
         FlexiBigInt m, s;
         byte[] EM;

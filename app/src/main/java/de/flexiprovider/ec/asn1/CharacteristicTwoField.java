@@ -24,26 +24,32 @@ public class CharacteristicTwoField extends ASN1Sequence {
         add(FieldId.BASIS_TYPE_TRINOMIAL);
         add(new TpBasis(tc));
     }
+
     public CharacteristicTwoField(int n, int pc1, int pc2, int pc3) {
         super(3);
         add(new ASN1Integer(n));
         add(FieldId.BASIS_TYPE_PENTANOMIAL);
         add(new PpBasis(pc1, pc2, pc3));
     }
+
     public boolean isONB() {
         return get(1).equals(FieldId.BASIS_TYPE_ONB);
     }
+
     public boolean isTrinomial() {
         return get(1)
                 .equals(FieldId.BASIS_TYPE_TRINOMIAL);
     }
+
     public boolean isPentanomial() {
         return get(1)
                 .equals(FieldId.BASIS_TYPE_PENTANOMIAL);
     }
+
     public int getN() {
         return ASN1Tools.getFlexiBigInt((ASN1Integer) get(0)).intValue();
     }
+
     public TpBasis getTrinom() {
         ASN1Type type = (ASN1Type) get(2);
         if (type instanceof TpBasis) {
@@ -56,6 +62,7 @@ public class CharacteristicTwoField extends ASN1Sequence {
             throw new RuntimeException("ResolverException: " + re.getMessage());
         }
     }
+
     public PpBasis getPenta() {
         ASN1Type type = (ASN1Type) get(2);
         if (type instanceof PpBasis) {

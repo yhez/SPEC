@@ -13,6 +13,7 @@ import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.core.md.MD5;
 import de.flexiprovider.core.md.SHA1;
+
 public class SSLSignature extends Signature {
 
     private MessageDigest mdMD5_;
@@ -26,24 +27,30 @@ public class SSLSignature extends Signature {
         mdMD5_ = new MD5();
         cipher_ = new RSA_PKCS1_v1_5();
     }
+
     public void initSign(PrivateKey privateKey, SecureRandom secureRandom)
             throws InvalidKeyException {
         cipher_.initEncrypt(privateKey, secureRandom);
     }
+
     public void initVerify(PublicKey publicKey) throws InvalidKeyException {
         initCommon();
         cipher_.initDecrypt(publicKey);
     }
+
     public void setParameters(AlgorithmParameterSpec params) {
     }
+
     public void update(byte[] b, int offset, int length) {
         mdMD5_.update(b, offset, length);
         mdSHA1_.update(b, offset, length);
     }
+
     public void update(byte b) {
         mdMD5_.update(b);
         mdSHA1_.update(b);
     }
+
     public byte[] sign() throws SignatureException {
 
         byte[] out;
@@ -65,6 +72,7 @@ public class SSLSignature extends Signature {
                     "SSLSignature: failure in cipher.doFinal() (bad padding)");
         }
     }
+
     public boolean verify(byte[] signature) {
 
         byte[] shaMBytes = mdSHA1_.digest();

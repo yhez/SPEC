@@ -138,13 +138,9 @@ abstract public class ASN1Time extends ASN1VisibleString {
             if (len < w) {
                 buf.append(ZEROES.substring(0, w - len));
                 buf.append(s);
-            }
-
-            else if (len > w) {
+            } else if (len > w) {
                 buf.append(s.substring(len - w));
-            }
-
-            else {
+            } else {
                 buf.append(s);
             }
         }
@@ -242,17 +238,14 @@ abstract public class ASN1Time extends ASN1VisibleString {
                 s = code.substring(pos, pos + 5);
                 tz = TimeZone.getTimeZone("GMT" + s);
                 pos = pos + 5;
-            }
-            else if (code.charAt(pos) != 'Z') {
+            } else if (code.charAt(pos) != 'Z') {
                 throw new IllegalArgumentException(
                         "Illegal char in place of 'Z' (" + pos + ")");
-            }
-            else {
+            } else {
                 tz = TimeZone.getTimeZone("GMT");
                 pos++;
             }
-        }
-        else {
+        } else {
             tz = TimeZone.getDefault();
         }
         if (pos != len) {

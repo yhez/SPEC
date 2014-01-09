@@ -31,6 +31,7 @@ public final class ASN1 {
     public static final int CONSTRUCTED = 0x20;
     public static final int LENGTH_LONGFORM = 0x80;
     public static final int LENGTH_MASK = 0x7f;
+
     private ASN1() {
     }
 }

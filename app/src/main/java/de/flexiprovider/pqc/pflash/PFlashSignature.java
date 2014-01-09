@@ -337,7 +337,7 @@ public class PFlashSignature extends Signature {
             p_vec = pfpke.getP_Vector();
             p = new GF2Polynomial(96, p_vec.getIntArrayForm());
             /*
-    		 * GF2nPolynomialDarstellung q_vec + p + pfpke.getR();
+             * GF2nPolynomialDarstellung q_vec + p + pfpke.getR();
     		 * Ergebnis einsetzen in zstrichBytes[i]
     		 */
         }

@@ -27,6 +27,7 @@ public class RunLengthEncoder implements Encoder {
         System.arraycopy(stack_, 0, res, 0, tops_);
         return res;
     }
+
     public void writeType(ASN1Type o) throws ASN1Exception {
         try {
             o.encode(this);
@@ -221,9 +222,11 @@ public class RunLengthEncoder implements Encoder {
         } else
             acc_[topa_++] = n;
     }
+
     protected int sp() {
         return topa_;
     }
+
     protected int accumulate(int pos) {
         int n;
         int i;

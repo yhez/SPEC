@@ -16,19 +16,25 @@ public abstract class ASN1AbstractCollection extends ArrayList implements
     private boolean optional_ = false;
     private boolean explicit_ = true;
     private Constraint constraint_;
+
     public abstract int getTag();
+
     public ASN1AbstractCollection() {
         super();
     }
+
     public ASN1AbstractCollection(int capacity) {
         super(capacity);
     }
+
     public Object getValue() {
         return this;
     }
+
     public Collection getCollection() {
         return this;
     }
+
     public void setOptional(boolean optional) {
         optional_ = optional;
     }

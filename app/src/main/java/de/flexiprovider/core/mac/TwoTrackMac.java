@@ -70,7 +70,7 @@ public abstract class TwoTrackMac extends Mac {
     private int[] state_r = new int[5];
 
 	/*
-	 * Inner classes providing concrete implementations of TTMAC with a variety
+     * Inner classes providing concrete implementations of TTMAC with a variety
 	 * of output length.
 	 */
 

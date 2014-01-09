@@ -184,11 +184,13 @@ public class FlexiCoreProvider extends FlexiProvider {
         registerPBE();
         registerBBS();
     }
+
     private void registerCommon() {
         add(ALG_PARAMS, ModeParameters.class, new String[]{"Mode", "IV"});
         add(ALG_PARAM_GENERATOR, ModeParameterGenerator.class, new String[]{
                 "Mode", "IV"});
     }
+
     private void registerDSA() {
         add(KEY_PAIR_GENERATOR, DSAKeyPairGenerator.class, new String[]{
                 "DSA", DSAKeyFactory.OID, DSAKeyFactory.OID2});
@@ -214,6 +216,7 @@ public class FlexiCoreProvider extends FlexiProvider {
         add(SIGNATURE, DSASignature.Raw.class, new String[]{"RawDSA",
                 "RAWDSA"});
     }
+
     private void registerRSA() {
         add(KEY_PAIR_GENERATOR, RSAKeyPairGenerator.class, new String[]{
                 "RSA", RSAKeyFactory.OID});
@@ -293,6 +296,7 @@ public class FlexiCoreProvider extends FlexiProvider {
         add(CIPHER, MpRSA.class, "RprimeRSA");
         add(SIGNATURE, MpRSASignaturePSS.class, "RprimeRSA");
     }
+
     private void registerElGamal() {
         add(KEY_PAIR_GENERATOR, ElGamalKeyPairGenerator.class, new String[]{
                 ElGamal.ALG_NAME, ElGamalKeyPairGenerator.OID});
@@ -303,6 +307,7 @@ public class FlexiCoreProvider extends FlexiProvider {
                 new String[]{ElGamal.ALG_NAME, ElGamal.OID});
         addReverseOID(CIPHER, ElGamal.ALG_NAME, ElGamal.OID);
     }
+
     private void registerSSVElGamal() {
         add(KEY_PAIR_GENERATOR, SSVElGamalKeyPairGenerator.class,
                 SSVElGamal.ALG_NAME);
@@ -310,6 +315,7 @@ public class FlexiCoreProvider extends FlexiProvider {
 
         add(CIPHER, SSVElGamal.class, SSVElGamal.ALG_NAME);
     }
+
     private void registerSHAfamily() {
         add(MESSAGE_DIGEST, SHA1.class, new String[]{SHA1.ALG_NAME,
                 SHA1.ALG_NAME2, SHA1.OID});
@@ -328,6 +334,7 @@ public class FlexiCoreProvider extends FlexiProvider {
                 SHA512.OID});
         addReverseOID(MESSAGE_DIGEST, SHA512.ALG_NAME, SHA512.OID);
     }
+
     private void registerMDfamily() {
         add(MESSAGE_DIGEST, MD4.class, new String[]{MD4.ALG_NAME, MD4.OID});
         addReverseOID(MESSAGE_DIGEST, MD4.ALG_NAME, MD4.OID);
@@ -347,26 +354,32 @@ public class FlexiCoreProvider extends FlexiProvider {
         addReverseOID(MESSAGE_DIGEST, RIPEMD256.ALG_NAME, RIPEMD256.OID);
         add(MESSAGE_DIGEST, RIPEMD320.class, RIPEMD320.ALG_NAME);
     }
+
     private void registerTiger() {
         add(MESSAGE_DIGEST, Tiger.class, new String[]{Tiger.ALG_NAME,
                 Tiger.OID});
         addReverseOID(MESSAGE_DIGEST, Tiger.ALG_NAME, Tiger.OID);
     }
+
     private void registerDHA256() {
         add(MESSAGE_DIGEST, DHA256.class, DHA256.ALG_NAME);
     }
+
     private void registerFORK256() {
         add(MESSAGE_DIGEST, FORK256.class, FORK256.ALG_NAME);
     }
+
     private void registerSWIFFTX() {
         add(MESSAGE_DIGEST, SWIFFTX224.class, SWIFFTX224.ALG_NAME);
         add(MESSAGE_DIGEST, SWIFFTX256.class, SWIFFTX256.ALG_NAME);
         add(MESSAGE_DIGEST, SWIFFTX384.class, SWIFFTX384.ALG_NAME);
         add(MESSAGE_DIGEST, SWIFFTX512.class, SWIFFTX512.ALG_NAME);
     }
+
     private void registerVSH() {
         add(MESSAGE_DIGEST, VSH.class, VSH.ALG_NAME);
     }
+
     private void registerCBCMAC() {
         add(MAC, CBCMac.AES128.class, CBCMac.AES128.ALG_NAME);
         add(MAC, CBCMac.AES192.class, CBCMac.AES192.ALG_NAME);
@@ -480,6 +493,7 @@ public class FlexiCoreProvider extends FlexiProvider {
                         TwoTrackMac.TTMac160.ALG_NAME3,
                         TwoTrackMac.TTMac160.ALG_NAME4});
     }
+
     private void registerAESRijndael() {
         add(SECRET_KEY_GENERATOR, RijndaelKeyGenerator.class, new String[]{
                 Rijndael.ALG_NAME, AES.ALG_NAME, AES.OID});
@@ -723,7 +737,7 @@ public class FlexiCoreProvider extends FlexiProvider {
     }
 
     private void registerPBE() {
-		/* common */
+        /* common */
 
         add(SECRET_KEY_GENERATOR, PBEKeyGenerator.class, new String[]{"PBE",
                 "PBES1", "PBES2"});

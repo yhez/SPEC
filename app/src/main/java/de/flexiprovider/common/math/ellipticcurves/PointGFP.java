@@ -556,7 +556,7 @@ public class PointGFP extends Point {
             final GFElement ax = mA.multiply(mX); // a*x
             return y2.equals(x3.add(ax).add(mB));
         }
-	/*
+    /*
 	 * Z != 1, we have to use the jacobian equation for E:
 	 */
         // Update mZ* fields if necessary:

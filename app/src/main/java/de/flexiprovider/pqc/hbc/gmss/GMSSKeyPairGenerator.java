@@ -60,7 +60,7 @@ import de.flexiprovider.core.CoreRegistry;
  */
 public class GMSSKeyPairGenerator extends KeyPairGenerator {
     /*
-	 * Inner classes providing concrete implementations of GMSSKeyPairGenerator
+     * Inner classes providing concrete implementations of GMSSKeyPairGenerator
 	 * with a variety of message digests.
 	 */
 

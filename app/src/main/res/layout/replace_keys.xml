@@ -87,12 +87,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/first_text" />
+
         <CheckBox
             android:visibility="gone"
             android:id="@+id/check_verify"
             android:text="@string/check_box_confirm_recreate_keys"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <LinearLayout
             android:clickable="false"
             style="?android:attr/buttonBarButtonStyle"

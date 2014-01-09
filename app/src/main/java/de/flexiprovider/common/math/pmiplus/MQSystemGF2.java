@@ -69,7 +69,7 @@ public class MQSystemGF2 {
         int nn = ((n * (n + 1)) >>> 1) + 1;
 
 	/*
-	 * Since each element of array keeps 32 coefficients of polynomial
+     * Since each element of array keeps 32 coefficients of polynomial
 	 * system, number of elements is equal to ceil(m/32)
 	 */
         int mm = (m + 31) >> 5;

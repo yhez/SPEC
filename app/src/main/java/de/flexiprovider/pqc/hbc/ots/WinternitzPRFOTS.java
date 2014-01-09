@@ -207,7 +207,7 @@ public class WinternitzPRFOTS implements OTS {
     }
 
 	/*
-	 * (non-Javadoc)
+     * (non-Javadoc)
 	 * 
 	 * @see de.flexiprovider.pqc.hbc.ots.OTS#generateKeyPair(byte[])
 	 */

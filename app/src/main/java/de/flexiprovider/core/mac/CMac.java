@@ -91,7 +91,7 @@ public class CMac extends Mac {
     private byte[] K1, K2;
 
 	/*
-	 * Inner classes providing concrete implementations of MAC with a variety of
+     * Inner classes providing concrete implementations of MAC with a variety of
 	 * symmetric ciphers.
 	 */
 

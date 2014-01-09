@@ -57,14 +57,12 @@ public class JCA {
                     }
                     map.put("oid." + k, v);
                     map.put(s + "." + k, v);
-                }
-                else if (k.startsWith("oid.")) {
+                } else if (k.startsWith("oid.")) {
                     k = k.substring(4);
                     v = v.toLowerCase();
 
                     map.put("oid." + v, k);
-                }
-                else {
+                } else {
                     map.put(s + "." + k, v);
                 }
             }

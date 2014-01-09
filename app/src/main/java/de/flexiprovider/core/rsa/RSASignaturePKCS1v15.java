@@ -41,6 +41,7 @@ public abstract class RSASignaturePKCS1v15 extends Signature {
                     new de.flexiprovider.core.md.MD5());
         }
     }
+
     public static class SHA1 extends RSASignaturePKCS1v15 {
 
         public static final String OID = "1.2.840.113549.1.1.5";
@@ -52,6 +53,7 @@ public abstract class RSASignaturePKCS1v15 extends Signature {
                     new de.flexiprovider.core.md.SHA1());
         }
     }
+
     public static class SHA224 extends RSASignaturePKCS1v15 {
 
         public static final String OID = "1.2.840.113549.1.1.14";
@@ -61,6 +63,7 @@ public abstract class RSASignaturePKCS1v15 extends Signature {
                     new de.flexiprovider.core.md.SHA224());
         }
     }
+
     public static class SHA256 extends RSASignaturePKCS1v15 {
 
         public static final String OID = "1.2.840.113549.1.1.11";
@@ -70,6 +73,7 @@ public abstract class RSASignaturePKCS1v15 extends Signature {
                     new de.flexiprovider.core.md.SHA256());
         }
     }
+
     public static class SHA384 extends RSASignaturePKCS1v15 {
 
         public static final String OID = "1.2.840.113549.1.1.12";
@@ -79,6 +83,7 @@ public abstract class RSASignaturePKCS1v15 extends Signature {
                     new de.flexiprovider.core.md.SHA384());
         }
     }
+
     public static class SHA512 extends RSASignaturePKCS1v15 {
 
         public static final String OID = "1.2.840.113549.1.1.13";
@@ -110,31 +115,37 @@ public abstract class RSASignaturePKCS1v15 extends Signature {
             super(de.flexiprovider.core.md.SHA1.OID, new NullDigest());
         }
     }
+
     public static class RawSHA224 extends RSASignaturePKCS1v15 {
         public RawSHA224() {
             super(de.flexiprovider.core.md.SHA224.OID, new NullDigest());
         }
     }
+
     public static class RawSHA256 extends RSASignaturePKCS1v15 {
         public RawSHA256() {
             super(de.flexiprovider.core.md.SHA256.OID, new NullDigest());
         }
     }
+
     public static class RawSHA384 extends RSASignaturePKCS1v15 {
         public RawSHA384() {
             super(de.flexiprovider.core.md.SHA384.OID, new NullDigest());
         }
     }
+
     public static class RawSHA512 extends RSASignaturePKCS1v15 {
         public RawSHA512() {
             super(de.flexiprovider.core.md.SHA512.OID, new NullDigest());
         }
     }
+
     public static class RawRIPEMD160 extends RSASignaturePKCS1v15 {
         public RawRIPEMD160() {
             super(de.flexiprovider.core.md.RIPEMD160.OID, new NullDigest());
         }
     }
+
     protected RSASignaturePKCS1v15(String oidStr, MessageDigest md) {
         try {
             aid = new AlgorithmIdentifier(new ASN1ObjectIdentifier(oidStr),
@@ -144,6 +155,7 @@ public abstract class RSASignaturePKCS1v15 extends Signature {
         }
         this.md = md;
     }
+
     public void initSign(PrivateKey privateKey, SecureRandom secureRandom)
             throws InvalidKeyException {
         if (!(privateKey instanceof RSAPrivateKey)) {
@@ -153,6 +165,7 @@ public abstract class RSASignaturePKCS1v15 extends Signature {
         privKey = (RSAPrivateKey) privateKey;
         modBitLen = privKey.getN().bitLength();
     }
+
     public void initVerify(PublicKey publicKey) throws InvalidKeyException {
         if (!(publicKey instanceof RSAPublicKey)) {
             throw new InvalidKeyException("key is not a RSAPublicKey.");
@@ -161,14 +174,18 @@ public abstract class RSASignaturePKCS1v15 extends Signature {
         pubKey = (RSAPublicKey) publicKey;
         modBitLen = pubKey.getN().bitLength();
     }
+
     public void setParameters(AlgorithmParameterSpec params) {
     }
+
     public void update(byte[] b, int offset, int length) {
         md.update(b, offset, length);
     }
+
     public void update(byte b) {
         md.update(b);
     }
+
     public byte[] sign() throws SignatureException {
         FlexiBigInt s, m;
         int k = (modBitLen + 7) >> 3;
@@ -190,6 +207,7 @@ public abstract class RSASignaturePKCS1v15 extends Signature {
             throw new SignatureException("internal error.");
         }
     }
+
     public boolean verify(byte[] signature) {
         FlexiBigInt m, s;
         byte[] EM, EM2;

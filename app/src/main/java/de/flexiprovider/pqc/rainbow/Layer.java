@@ -205,7 +205,7 @@ public class Layer {
                 }
             }
         }
-		/* evaluate the gama-part of the polynomial (containing no oils) */
+        /* evaluate the gama-part of the polynomial (containing no oils) */
         for (int k = 0; k < oi; k++) {
             for (int i = 0; i < vi; i++) {
                 // gamma * xi (plug in)

@@ -15,6 +15,7 @@ public class ASN1ObjectIdentifier extends ASN1AbstractType implements
     public ASN1ObjectIdentifier(int[] oid) {
         set0(oid);
     }
+
     public ASN1ObjectIdentifier(String s) throws NumberFormatException {
         int n;
         int[] oid;

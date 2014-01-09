@@ -10,5 +10,4 @@
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
     android:configure="specular.systems.widget.ChooseContact"
-    android:initialKeyguardLayout="@layout/widget_contact">
-</appwidget-provider>
+    android:initialKeyguardLayout="@layout/widget_contact"></appwidget-provider>

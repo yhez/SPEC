@@ -44,12 +44,14 @@ public class ASN1OpenType extends ASN1AbstractType {
         }
         return inner_.getTagClass();
     }
+
     public Object getValue() {
         if (inner_ == null) {
             throw new IllegalStateException(NO_INNER);
         }
         return inner_.getValue();
     }
+
     public void setExplicit(boolean explicit) {
         super.setExplicit(explicit);
 
@@ -64,6 +66,7 @@ public class ASN1OpenType extends ASN1AbstractType {
         }
         inner_.setConstraint(constraint);
     }
+
     public void checkConstraints() throws ConstraintException {
         if (inner_ == null) {
             throw new IllegalStateException(NO_INNER);
@@ -85,6 +88,7 @@ public class ASN1OpenType extends ASN1AbstractType {
 
         return inner_ == null || inner_.isType(tag, tagclass);
     }
+
     public void encode(Encoder enc) throws ASN1Exception, IOException {
         if (inner_ == null) {
             throw new IllegalStateException(NO_INNER);

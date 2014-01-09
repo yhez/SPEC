@@ -24,9 +24,11 @@ public class DigestInfo extends ASN1Sequence {
         }
         add(os_);
     }
+
     public AlgorithmIdentifier getAlgorithmIdentifier() {
         return aid_;
     }
+
     public byte[] getDigest() {
         return os_.getByteArray();
     }

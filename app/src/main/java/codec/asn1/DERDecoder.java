@@ -107,6 +107,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
         }
         throw new ASN1Exception("Unknown tag! (" + tag + ")");
     }
+
     public DERDecoder(InputStream in) {
         super(in);
     }
@@ -116,6 +117,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
 
         setInputLimit(limit);
     }
+
     public void setInputLimit(int limit) {
         if (limit < 0) {
             throw new IllegalArgumentException("No negative limits allowed!");
@@ -290,7 +292,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
         skip_ = skip;
     }
 
-  public ASN1Type readType() throws ASN1Exception, IOException {
+    public ASN1Type readType() throws ASN1Exception, IOException {
         if (!readNext()) {
             throw new EOFException("End of encoding reached!");
         }
@@ -696,6 +698,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
         pos_ += ls;
         return ls;
     }
+
     public int read(byte[] b) throws IOException {
         int l;
         int ls;
@@ -723,14 +726,17 @@ public class DERDecoder extends FilterInputStream implements Decoder {
         pos_ += (int) l;
         return l;
     }
+
     public void mark(int readAheadLimit) {
         in.mark(readAheadLimit);
         markpos_ = pos_;
     }
+
     public void reset() throws IOException {
         in.reset();
         pos_ = markpos_;
     }
+
     public boolean markSupported() {
         return in.markSupported();
     }
@@ -739,6 +745,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
     public int available() throws IOException {
         return in.available();
     }
+
     public void close() throws IOException {
         in.close();
         in = null;

@@ -6,6 +6,7 @@
     android:background="@android:color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TextView
         android:textColor="@color/spec_black"
         android:padding="@dimen/default_gap"
@@ -13,12 +14,14 @@
         android:text="@string/recreating_keys_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <View
         android:padding="@dimen/default_gap"
         android:layout_gravity="center_horizontal"
         android:background="@color/spec_blue"
         android:layout_width="240dp"
         android:layout_height="1dp" />
+
     <ProgressBar
         android:id="@+id/progress_bar"
         style="@android:style/Widget.Holo.ProgressBar.Horizontal"

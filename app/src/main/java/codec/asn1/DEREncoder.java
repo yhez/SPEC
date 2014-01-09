@@ -234,6 +234,7 @@ public class DEREncoder extends AbstractEncoder {
     public void write(byte[] b, int off, int len) throws IOException {
         out.write(b, off, len);
     }
+
     public void writeType(ASN1Type t) throws ASN1Exception, IOException {
         if (!t.isOptional())
             t.encode(this);

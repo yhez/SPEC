@@ -11,7 +11,6 @@ import specular.systems.scanqr.CaptureActivity;
 public class StartScan extends CaptureActivity {
 
 
-
     final static int MESSAGE = 0, CONTACT = 1, PRIVATE = 2;
 
     @Override

@@ -66,10 +66,12 @@
             android:layout_gravity="center"
             android:text="@string/move_key_to_nfc_and_such"
             android:textColor="@color/spec_black" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/spec_blue" />
+
         <Button
             android:onClick="notImp"
             style="?android:attr/buttonBarButtonStyle"

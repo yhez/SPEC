@@ -3,7 +3,6 @@ package codec.asn1;
 import java.util.Comparator;
 
 
-
 public class ASN1TagComparator implements Comparator {
 
     public int compare(Object o1, Object o2) {

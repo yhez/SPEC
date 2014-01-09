@@ -150,6 +150,7 @@
             android:visibility="gone"
             android:background="@android:drawable/alert_light_frame"
             android:layout_height="wrap_content">
+
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -2383,7 +2383,7 @@ public class CMSSSignature extends Signature {
             throw new SignatureException(
                     "No more signatures can be generated with this key.");
         }
-		/* first part of the signature */
+        /* first part of the signature */
 
         // obtain the message
         byte[] message = getData();

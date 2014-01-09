@@ -14,6 +14,7 @@ public abstract class AbstractEncoder extends FilterOutputStream implements
     public void writeType(ASN1Type t) throws ASN1Exception, IOException {
         t.encode(this);
     }
+
     protected void writeHeader(int tag, int cls, boolean prim, int len)
             throws IOException {
         int b;

@@ -95,6 +95,7 @@ public class PrivateKeyInfo extends ASN1Sequence {
         attributes_ = new ASN1Set();
         add(new ASN1TaggedType(0, attributes_, false, true));
     }
+
     public PrivateKeyInfo(PrivateKey key) throws InvalidKeyException {
         super(2);
         setPrivateKey(key);
@@ -134,6 +135,7 @@ public class PrivateKeyInfo extends ASN1Sequence {
                     "Encoded key spec rejected by key factory!");
         }
     }
+
     public void setPrivateKey(PrivateKey key) throws InvalidKeyException {
         if (key == null)
             throw new NullPointerException("Key is null!");
@@ -165,9 +167,11 @@ public class PrivateKeyInfo extends ASN1Sequence {
             throw new InvalidKeyException("Bad encoding!");
         }
     }
+
     public int getVersion() {
         return version_.getBigInteger().intValue();
     }
+
     public void setVersion(int version) {
         version_ = new ASN1Integer(version);
         set(0, version_);

@@ -118,7 +118,7 @@ public class RFC2253Parser {
             switch (state) {
                 case 0:
         /*
-		 * We consume whitespace characters and wait for an attribute
+         * We consume whitespace characters and wait for an attribute
 		 * keyword in this state.
 		 */
                     if (WHITESPACE.indexOf(tok) >= 0) {

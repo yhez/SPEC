@@ -182,7 +182,7 @@ public class ElGamalKeyPairGenerator extends KeyPairGenerator {
         return new KeyPair(pub, priv);
     }
   /*  public KeyPair genKeyPair() {
-	if (!initialized) {
+    if (!initialized) {
 	    initializeDefault();
 	}
 

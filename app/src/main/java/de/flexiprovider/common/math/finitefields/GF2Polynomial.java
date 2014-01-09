@@ -1100,7 +1100,7 @@ public class GF2Polynomial {
      */
     public GF2Polynomial quotient(GF2Polynomial g)
             throws PolynomialIsZeroException {
-	/* a div b = q / r */
+    /* a div b = q / r */
         GF2Polynomial q = new GF2Polynomial(len);
         GF2Polynomial a = new GF2Polynomial(this);
         GF2Polynomial b = new GF2Polynomial(g);

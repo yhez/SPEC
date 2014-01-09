@@ -281,7 +281,7 @@ public class RainbowSignature extends Signature {
                 ok = false;
             }
         } while (!ok);
-		/* return the signature in bytes */
+        /* return the signature in bytes */
         return S;
     }
 

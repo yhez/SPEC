@@ -15,12 +15,12 @@ import codec.asn1.ASN1Type;
 import codec.asn1.Decoder;
 
 
-
 public class Attribute extends ASN1Sequence implements ASN1RegisteredType {
 
     protected ASN1ObjectIdentifier type_;
 
     protected ASN1Set values_;
+
     public ASN1ObjectIdentifier getOID() {
         return type_;
     }

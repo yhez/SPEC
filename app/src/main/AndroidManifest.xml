@@ -25,7 +25,8 @@
             android:authorities="specular.systems.MyContentProvider"
             android:multiprocess="true"
             android:grantUriPermissions="true"/>-->
-        <receiver android:name=".widget.WidgetContact"
+        <receiver
+            android:name=".widget.WidgetContact"
             android:label="@string/widget_label">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -35,7 +36,8 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_contact_info" />
         </receiver>
-        <receiver android:name=".widget.WidgetScanner"
+        <receiver
+            android:name=".widget.WidgetScanner"
             android:label="@string/widget_name_scanner">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -66,13 +68,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/specular.systems" />
             </intent-filter>
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:scheme="content" />
-                <data android:scheme="file" />
-                <data android:pathPattern="*SPEC*" />
-                <data android:mimeType="image/png"/>
-            </intent-filter>-->
+            <!-- <intent-filter>
+                 <action android:name="android.intent.action.VIEW"/>
+                 <data android:scheme="content" />
+                 <data android:scheme="file" />
+                 <data android:pathPattern="*SPEC*" />
+                 <data android:mimeType="image/png"/>
+             </intent-filter>-->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -88,11 +90,12 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="file"/>
-                <data android:pathPattern=".*\\.SPEC"/>
-                <data android:pathPattern=".*\\.spec"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="file" />
+                <data android:pathPattern=".*\\.SPEC" />
+                <data android:pathPattern=".*\\.spec" />
             </intent-filter>
         </activity>
         <activity
@@ -109,7 +112,7 @@
             android:name=".widget.ChooseContact"
             android:theme="@android:style/Theme.Holo.Light.Dialog">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
         <activity
@@ -119,7 +122,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:name=".widget.QuickMsg"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth"/>
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
         <activity
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
             android:screenOrientation="landscape"
@@ -128,25 +131,25 @@
             android:exported="true"
             android:noHistory="true"
             android:excludeFromRecents="true"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance" />
         <activity
             android:noHistory="true"
             android:excludeFromRecents="true"
             android:label="@string/send_report_title"
             android:name=".activities.SendReport"
-            android:theme="@android:style/Theme.Holo.Light.Dialog"/>
+            android:theme="@android:style/Theme.Holo.Light.Dialog" />
 
         <activity
             android:noHistory="true"
             android:excludeFromRecents="true"
             android:name=".activities.SendMsg"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth"/>
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
 
         <activity
             android:noHistory="true"
             android:excludeFromRecents="true"
             android:name=".activities.PrivateKeyManager"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth"/>
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
 
     </application>
 </manifest>

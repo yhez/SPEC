@@ -404,6 +404,7 @@ public abstract class CoreRegistry extends Registry {
         Registry.add(ASYMMETRIC_BLOCK_CIPHER, MpRSA.class, "RprimeRSA");
         add(SIGNATURE, MpRSASignaturePSS.class, "RprimeRSA");
     }
+
     private static void registerElGamal() {
         add(ALG_PARAM_SPEC, ElGamalKeyGenParameterSpec.class, new String[]{
                 ElGamal.ALG_NAME + "KeyGen", ElGamalKeyPairGenerator.OID});
@@ -633,7 +634,7 @@ public abstract class CoreRegistry extends Registry {
     }
 
     private static void registerAESRijndael() {
-		/* common */
+        /* common */
 
         add(ALG_PARAM_SPEC, RijndaelKeyGenParameterSpec.class,
                 new String[]{Rijndael.ALG_NAME + "KeyGen",

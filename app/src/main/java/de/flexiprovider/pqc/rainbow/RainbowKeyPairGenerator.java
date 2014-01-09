@@ -88,7 +88,7 @@ public class RainbowKeyPairGenerator extends KeyPairGenerator {
      */
     public void initialize(AlgorithmParameterSpec params, SecureRandom random)
             throws InvalidAlgorithmParameterException {
-		/* params */
+        /* params */
 
         if (params == null) {
             this.rainbowParams = new RainbowParameterSpec();

@@ -85,12 +85,15 @@ public abstract class AbstractOIDRegistry extends OIDRegistry {
             System.err.println("Warning: no OIDs loaded from " + path);
         }
     }
+
     public AbstractOIDRegistry() {
         this(null);
     }
+
     public AbstractOIDRegistry(OIDRegistry parent) {
         super(parent);
     }
+
     protected abstract Map getOIDMap();
 
     protected ASN1Type getLocalASN1Type(ASN1ObjectIdentifier oid) {

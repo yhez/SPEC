@@ -33,7 +33,6 @@ import codec.asn1.Decoder;
 import codec.asn1.Resolver;
 
 
-
 public class Name extends ASN1SequenceOf implements Principal, Resolver {
     /**
      * The serial version UID of the class.
@@ -418,7 +417,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
             n = rdn.size();
 
             for (j = 0; j < n; j++) {
-		/*
+        /*
 		 * We have to mark siblings. An AVA has a sibling if it is not
 		 * the last AVA in the set.
 		 */
@@ -659,7 +658,6 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
     }
 
 
-
     public static Name clone(Name source) throws IllegalArgumentException {
         ASN1Sequence seq;
         Vector sets;
@@ -695,6 +693,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         }
         return new Name(sourcePrincipal.getName(), Name.defaultEncoding_);
     }
+
     public Hashtable divide() {
         StringTokenizer st;
         Hashtable result;

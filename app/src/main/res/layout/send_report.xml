@@ -4,17 +4,20 @@
     android:layout_gravity="center"
     style="@android:style/Theme.Holo.Light.Dialog"
     android:layout_height="match_parent">
+
     <TextView
         android:padding="@dimen/default_gap"
         android:text="@string/send_report_message_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
     <LinearLayout
         android:padding="@dimen/default_gap"
         android:orientation="horizontal"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <Button
             android:onClick="send"
             android:text="@string/send_report_button"
@@ -22,10 +25,12 @@
             android:layout_weight="1"
             android:layout_width="0dip"
             android:layout_height="wrap_content" />
+
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/spec_blue"/>
+            android:background="@color/spec_blue" />
+
         <Button
             android:onClick="finish"
             android:text="@string/dont_send_now"
@@ -33,6 +38,6 @@
             android:layout_weight="1"
             android:layout_width="0dip"
             android:layout_height="wrap_content" />
-        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

@@ -22,6 +22,7 @@ public class ASN1BitString extends ASN1AbstractType {
 
     public ASN1BitString() {
     }
+
     public ASN1BitString(boolean[] b) {
         setBits0(b);
     }
@@ -108,10 +109,12 @@ public class ASN1BitString extends ASN1AbstractType {
         value_ = b;
         pad_ = (8 - j) & 0x07;
     }
+
     public void setBits(byte[] b, int pad) throws ConstraintException {
         setBits0(b, pad);
         checkConstraints();
     }
+
     protected void setBits0(byte[] b, int p) {
         int n;
 

@@ -28,7 +28,7 @@
             android:id="@+id/gl_app_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="4"/>
+            android:columnCount="4" />
 
         <TextView
             android:textColor="@color/spec_black"
@@ -46,6 +46,6 @@
             android:id="@+id/gl_app_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="4"/>
+            android:columnCount="4" />
     </LinearLayout>
 </ScrollView>

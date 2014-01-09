@@ -5,6 +5,7 @@
     android:paddingLeft="6dip"
     android:paddingTop="6dip"
     android:paddingRight="6dip">
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,6 +40,7 @@
             android:id="@+id/sec_line"
             android:textSize="17sp" />
     </LinearLayout>
+
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"

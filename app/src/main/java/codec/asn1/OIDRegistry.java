@@ -88,6 +88,7 @@ public class OIDRegistry {
     public boolean equals(Object o) {
         return getClass() == o.getClass();
     }
+
     public int hashCode() {
         return getClass().hashCode();
     }
