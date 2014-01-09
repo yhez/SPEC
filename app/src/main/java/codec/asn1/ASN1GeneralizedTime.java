@@ -20,14 +20,6 @@ public class ASN1GeneralizedTime extends ASN1Time {
     }
 
 
-    public ASN1GeneralizedTime(Date date) {
-        setDate(date);
-    }
-
-    public ASN1GeneralizedTime(long time) {
-        setDate(time);
-    }
-
     protected int[] getFields() {
         return FIELDS.clone();
     }

@@ -7,9 +7,6 @@ public class ASN1Boolean extends ASN1AbstractType {
 
     private boolean value_ = true;
 
-    public ASN1Boolean() {
-    }
-
     public ASN1Boolean(boolean t) {
         setTrue(t);
     }

@@ -20,7 +20,6 @@ public final class ASN1 {
     public static final int TAG_UTCTIME = 23;
     public static final int TAG_GENERALIZEDTIME = 24;
     public static final int TAG_VISIBLESTRING = 26;
-    public static final int TAG_BMPSTRING = 30;
     public static final int TAG_MASK = 0x1f;
     public static final int TAG_LONGFORM = 0x1f;
     public static final int CLASS_UNIVERSAL = 0x00;

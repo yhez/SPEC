@@ -19,10 +19,6 @@ public class ASN1UTCTime extends ASN1Time {
         setDate(new Date(0));
     }
 
-    public ASN1UTCTime(Calendar cal) {
-        setDate(cal);
-    }
-
     public int getTag() {
         return ASN1.TAG_UTCTIME;
     }
@@ -37,15 +33,6 @@ public class ASN1UTCTime extends ASN1Time {
 
     protected int[] getFieldCorrections() {
         return CORRECT.clone();
-    }
-
-    public void setDate(Calendar calendar) {
-        if (calendar == null) {
-            throw new NullPointerException("calendar");
-        }
-        date_ = new Date((calendar.getTime().getTime() / 1000) * 1000);
-
-        setString0(toString(date_));
     }
 
     public void setDate(Date date) {

@@ -25,27 +25,7 @@ import de.flexiprovider.pqc.hbc.ots.OTS;
 import de.flexiprovider.pqc.hbc.ots.WinternitzOTS;
 import de.flexiprovider.pqc.hbc.ots.WinternitzPRFOTS;
 
-/**
- * This class implements key pair generation of the Coronado-Merkle signature
- * scheme (CMSS). The class extends the KeyPairGeneratorSpi class. It is able to
- * use the SPR hash functions as described in E. Dahmen et al., "Digital
- * Signatures Out of Second-Preimage Resistant Hash Functions".
- * <p/>
- * The CMSSKeyPairGenerator can be used as follows:
- * <p/>
- * 1. get instance of CMSS key pair generator:<br/> <tt>KeyPairGenerator kpg =
- * KeyPairGenerator.getInstance("SHA1andWinternitzOTS_1",
- * "FlexiPQC");</tt><br/>
- * 2. initialize the KPG with the desired height of the trees:<br/>
- * <tt>kpg.initialize(heightOfTrees);</tt><br/> 3. create CMSS key pair:<br/>
- * <tt>KeyPair keyPair = kpg.generateKeyPair();</tt><br/> 4. get the encoded
- * private and public keys from the key pair:<br/>
- * <tt>encodedPublicKey = keyPair.getPublic().getEncoded();<br/>
- * encodedPrivateKey = keyPair.getPrivate().getEncoded();</tt>
- *
- * @author Elena Klintsevich
- * @see de.flexiprovider.pqc.hbc.cmss.CMSSSignature
- */
+
 public class CMSSKeyPairGenerator extends KeyPairGenerator {
 
     // the OID string of the algorithm
@@ -728,106 +708,7 @@ public class CMSSKeyPairGenerator extends KeyPairGenerator {
         }
     }
 
-    /**
-     * CMSSKeyPairGenerator with SHA1 message digest, BiBa OTS (security level
-     * 50) and SHA1PRNG
-     */
-    public static class SHA1andBiBaOTS50 extends CMSSKeyPairGenerator {
-
-        /**
-         * The OID of the algorithm.
-         */
-        public static final String OID = "1.3.6.1.4.1.8301.3.1.3.2.203";
-
-        /**
-         * Constructor.
-         */
-        public SHA1andBiBaOTS50() {
-            super(OID, new SHA1(), new BiBaOTS(new Integer(6),
-                    new Integer(994), null, null), false);
-        }
-    }
-
-    /**
-     * CMSSKeyPairGenerator with SHA1 message digest, BiBa OTS (security level
-     * 80) and SHA1PRNG
-     */
-    public static class SHA1andBiBaOTS80 extends CMSSKeyPairGenerator {
-
-        /**
-         * The OID of the algorithm.
-         */
-        public static final String OID = "1.3.6.1.4.1.8301.3.1.3.2.205";
-
-        /**
-         * Constructor.
-         */
-        public SHA1andBiBaOTS80() {
-            super(OID, new SHA1(), new BiBaOTS(new Integer(11),
-                    new Integer(260), null, null), false);
-        }
-    }
-
     // SPR classes
-
-    /**
-     * CMSSKeyPairGenerator with SHA1 message digest, BiBa OTS and SHA1PRNG
-     * with SPR
-     */
-    public static class SHA1andBiBaOTSwithSPR extends CMSSKeyPairGenerator {
-
-        /**
-         * The OID of the algorithm.
-         */
-        public static final String OID = "1.3.6.1.4.1.8301.3.1.3.2.202";
-
-        /**
-         * Constructor.
-         */
-        public SHA1andBiBaOTSwithSPR() {
-            super(OID, new SHA1(), new BiBaOTS(), true);
-        }
-    }
-
-    /**
-     * CMSSKeyPairGenerator with SHA1 message digest, BiBa OTS (security level
-     * 50) and SHA1PRNG with SPR
-     */
-    public static class SHA1andBiBaOTS50withSPR extends CMSSKeyPairGenerator {
-
-        /**
-         * The OID of the algorithm.
-         */
-        public static final String OID = "1.3.6.1.4.1.8301.3.1.3.2.204";
-
-        /**
-         * Constructor.
-         */
-        public SHA1andBiBaOTS50withSPR() {
-            super(OID, new SHA1(), new BiBaOTS(new Integer(6),
-                    new Integer(994), null, null), true);
-        }
-    }
-
-    /**
-     * CMSSKeyPairGenerator with SHA1 message digest, BiBa OTS (security level
-     * 80) and SHA1PRNG with SPR
-     */
-    public static class SHA1andBiBaOTS80withSPR extends CMSSKeyPairGenerator {
-
-        /**
-         * The OID of the algorithm.
-         */
-        public static final String OID = "1.3.6.1.4.1.8301.3.1.3.2.206";
-
-        /**
-         * Constructor.
-         */
-        public SHA1andBiBaOTS80withSPR() {
-            super(OID, new SHA1(), new BiBaOTS(new Integer(11),
-                    new Integer(260), null, null), true);
-        }
-    }
 
     /**
      * CMSSKeyPairGenerator with SHA1 message digest, Winternitz OTS with
@@ -1735,25 +1616,6 @@ public class CMSSKeyPairGenerator extends KeyPairGenerator {
         }
     }
 
-    /**
-     * CMSSKeyPairGenerator with SHA1 message digest, Winternitz2 OTS with
-     * parameter w=16, and SHA1PRNG
-     */
-    public static class SHA1andWinternitzPRFOTS_20 extends CMSSKeyPairGenerator {
-
-        /**
-         * The OID of the algorithm.
-         */
-        public static final String OID = "1.3.6.1.4.1.8301.3.1.3.2.45";
-
-        /**
-         * Constructor.
-         */
-        public SHA1andWinternitzPRFOTS_20() {
-            super(OID, new SHA1(), new WinternitzPRFOTS(20), false);
-        }
-    }
-
 
     /**
      * CMSSKeyPairGenerator with SHA256 message digest, Winternitz2 OTS with
@@ -2123,26 +1985,13 @@ public class CMSSKeyPairGenerator extends KeyPairGenerator {
         this.useSpr = useSpr;
     }
 
-    /**
-     * Initialize the key pair generator.
-     *
-     * @param heightOfTrees the height of the authentication trees
-     * @param secureRandom  the PRNG used for key generation
-     */
+
     public void initialize(int heightOfTrees, SecureRandom secureRandom) {
         int seedSize = md.getDigestLength();
         initialize(heightOfTrees, seedSize, secureRandom);
     }
 
-    /**
-     * Initialize the key pair generator.
-     *
-     * @param params       an instance of {@link de.flexiprovider.pqc.hbc.cmss.CMSSParameterSpec}
-     * @param secureRandom the PRNG used for key generation
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the given AlgorithmParameterSpec object is not an
-     *                                                                            instance of {@link de.flexiprovider.pqc.hbc.cmss.CMSSParameterSpec}
-     * @see de.flexiprovider.pqc.hbc.cmss.CMSSParameterSpec
-     */
+
     public void initialize(AlgorithmParameterSpec params,
                            SecureRandom secureRandom)
             throws InvalidAlgorithmParameterException {
@@ -2158,13 +2007,7 @@ public class CMSSKeyPairGenerator extends KeyPairGenerator {
         initialize(heightOfTrees, seedSize, secureRandom);
     }
 
-    /**
-     * Initialize the key pair generator.
-     *
-     * @param heightOfTrees the height of the authentication trees
-     * @param seedSize      the bit length of the seed for the PRNG
-     * @param sr            the PRNG used for key pair generation
-     */
+
     private void initialize(int heightOfTrees, int seedSize, SecureRandom sr) {
         if (mdLength > seedSize) {
             seedSize = mdLength;
@@ -2185,26 +2028,12 @@ public class CMSSKeyPairGenerator extends KeyPairGenerator {
         initialized = true;
     }
 
-    /**
-     * This method is called by {@link #generateKeyPair()} in case that no other
-     * initialization method has been called by the user. It initializes the key
-     * pair generator with default parameters.
-     */
+
     private void initializeDefault() {
         CMSSParameterSpec defaultParams = new CMSSParameterSpec();
         initialize(defaultParams.getHeightOfTrees(), defaultParams
                 .getSeedSize(), null);
     }
-
-    /**
-     * Generate a CMSS2 key pair. The public key is an instance of
-     * {@link CMSS2PublicKey}, the private key is an instance of
-     * {@link CMSS2PrivateKey}.
-     *
-     * @return the generated key pair
-     * @see CMSS2PublicKey
-     * @see CMSS2PrivateKey
-     */
     public KeyPair genKeyPair() {
         if (!initialized) {
             initializeDefault();

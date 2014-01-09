@@ -26,15 +26,6 @@ abstract public class ASN1Time extends ASN1VisibleString {
         return date_.getTime();
     }
 
-    public void setDate(Calendar calendar) {
-        if (calendar == null) {
-            throw new NullPointerException("calendar");
-        }
-        date_ = calendar.getTime();
-
-        setString0(toString(date_));
-    }
-
     public void setDate(Date date) {
         if (date == null) {
             throw new NullPointerException("date");
@@ -44,21 +35,6 @@ abstract public class ASN1Time extends ASN1VisibleString {
         setString0(toString(date_));
     }
 
-
-    public void setDate(long time) {
-        date_ = new Date(time);
-
-        setString0(toString(date_));
-    }
-
-    public void setDate(String date) {
-        if (date == null) {
-            throw new NullPointerException("date string");
-        }
-        date_ = toDate(date);
-
-        setString0(toString(date_));
-    }
 
     public void setString(String s) {
         date_ = toDate(s);

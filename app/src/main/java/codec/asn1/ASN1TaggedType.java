@@ -18,14 +18,6 @@ public class ASN1TaggedType extends ASN1AbstractType {
     }
 
 
-    public ASN1TaggedType(int tag, ASN1Type inner, boolean explicit) {
-        setTag(tag);
-        setTagClass(ASN1.CLASS_CONTEXT);
-        setInnerType(inner);
-        inner_.setExplicit(explicit);
-    }
-
-
     public ASN1TaggedType(int tag, ASN1Type inner, boolean explicit,
                           boolean optional) {
         setTag(tag);

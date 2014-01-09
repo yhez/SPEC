@@ -179,11 +179,6 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         initMaps();
 
         if (encType == -1) {
-            if (false) {
-                throw new BadNameException(
-                        "Use the other constructor with the explicit "
-                                + "encoding parameter!");
-            }
             currentEncoding_ = defaultEncoding_;
         } else {
             if (encType != UTF8_ENCODING && encType != T61_ENCODING

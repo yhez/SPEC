@@ -67,40 +67,6 @@ public class PrivateKeyInfo extends ASN1Sequence {
         add(new ASN1TaggedType(0, attributes_, false, true));
     }
 
-    public PrivateKeyInfo(AlgorithmIdentifier aid, ASN1Type key) {
-        ByteArrayOutputStream bos;
-        DEREncoder enc;
-        byte[] code;
-
-        version_ = new ASN1Integer(VERSION);
-        add(version_);
-
-        algorithm_ = aid;
-        add(algorithm_);
-
-        try {
-            bos = new ByteArrayOutputStream();
-            enc = new DEREncoder(bos);
-            key.encode(enc);
-            code = bos.toByteArray();
-            enc.close();
-        } catch (IOException e) {
-            throw new InconsistentStateException("Caught IOException!");
-        } catch (ASN1Exception e) {
-            throw new InconsistentStateException("Caught ASN1Exception!");
-        }
-        encodedKey_ = new ASN1OctetString(code);
-        add(encodedKey_);
-
-        attributes_ = new ASN1Set();
-        add(new ASN1TaggedType(0, attributes_, false, true));
-    }
-
-    public PrivateKeyInfo(PrivateKey key) throws InvalidKeyException {
-        super(2);
-        setPrivateKey(key);
-    }
-
 
     public AlgorithmIdentifier getAlgorithmIdentifier() {
         return algorithm_;

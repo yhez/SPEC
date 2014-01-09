@@ -23,10 +23,6 @@ public class ASN1BitString extends ASN1AbstractType {
     public ASN1BitString() {
     }
 
-    public ASN1BitString(boolean[] b) {
-        setBits0(b);
-    }
-
     public ASN1BitString(byte[] b, int pad) {
         setBits0(b, pad);
     }
@@ -51,63 +47,6 @@ public class ASN1BitString extends ASN1AbstractType {
             }
         }
         return b;
-    }
-
-    public void setBits(boolean[] bits) throws ConstraintException {
-        setBits0(bits);
-        checkConstraints();
-    }
-
-    protected void setBits0(boolean[] bits) {
-        namedBits_ = true;
-
-        if ((bits == null) || (bits.length == 0)) {
-            value_ = DEFAULT_VALUE;
-            pad_ = 0;
-
-            return;
-        }
-        int i;
-        int j;
-        int n;
-        int k;
-        byte m;
-        byte[] b;
-        for (k = bits.length - 1; k >= 0; k--) {
-            if (bits[k]) {
-                break;
-            }
-        }
-        if (k < 0) {
-            value_ = DEFAULT_VALUE;
-            pad_ = 0;
-
-            return;
-        }
-        k++;
-
-
-        b = new byte[(k + 7) / 8];
-        m = 0;
-
-        for (n = 0, i = 0; i < k; i++) {
-            j = i & 0x07;
-
-            if (bits[i]) {
-                m = (byte) (m | MASK[j]);
-            }
-            if (j == 7) {
-                b[n++] = m;
-                m = 0;
-            }
-        }
-        j = i & 0x07;
-
-        if (j != 0) {
-            b[n] = m;
-        }
-        value_ = b;
-        pad_ = (8 - j) & 0x07;
     }
 
     public void setBits(byte[] b, int pad) throws ConstraintException {

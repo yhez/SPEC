@@ -206,29 +206,13 @@ public abstract class Registry {
         add(PADDING_SCHEME, PKCS5Padding.class, "PKCS5Padding");
     }
 
-    /**
-     * Register an algorithm of the given type under the given name.
-     *
-     * @param type     the algorithm type
-     * @param algClass the class implementing the algorithm
-     * @param algName  the name for the algorithm
-     * @throws de.flexiprovider.api.exceptions.RegistrationException if the expected and actual algorithm types do not match or an
-     *                                                               algorithm is already registered under the given name.
-     */
-    public static final void add(int type, Class algClass, String algName) {
+
+    public static void add(int type, Class algClass, String algName) {
         add(type, algClass, new String[]{algName});
     }
 
-    /**
-     * Register an algorithm of the given type under the given names.
-     *
-     * @param type     the algorithm type
-     * @param algClass the class implementing the algorithm
-     * @param algNames the names for the algorithm
-     * @throws de.flexiprovider.api.exceptions.RegistrationException if the expected and actual algorithm types do not match or an
-     *                                                               algorithm is already registered under one of the given names.
-     */
-    public static final void add(int type, Class algClass, String[] algNames) {
+
+    public static void add(int type, Class algClass, String[] algNames) {
         Hashtable table = getHashtable(type);
         // trivial cases
         if ((table == null) || (algClass == null) || (algNames == null)

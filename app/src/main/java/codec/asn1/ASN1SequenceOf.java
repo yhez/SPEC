@@ -19,22 +19,6 @@ public class ASN1SequenceOf extends ASN1Sequence implements ASN1CollectionOf {
         resolver_ = new ClassInstanceResolver(type);
     }
 
-    public ASN1SequenceOf(Class type, int capacity) {
-        super(capacity);
-
-        if (type == null)
-            throw new NullPointerException("Need a class!");
-
-        resolver_ = new ClassInstanceResolver(type);
-    }
-
-    public ASN1SequenceOf(Resolver resolver) {
-        if (resolver == null) {
-            throw new NullPointerException("Need a resolver!");
-        }
-        resolver_ = resolver;
-    }
-
     public Class getElementType() {
         if (resolver_ instanceof ClassInstanceResolver) {
             return ((ClassInstanceResolver) resolver_).getFactoryClass();
