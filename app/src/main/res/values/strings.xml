@@ -240,7 +240,7 @@
     <string name="group_mentor_hint">your group secret mentor</string>
     <string name="group_name_hint">your group name</string>
     <string name="group_location_for_messages_hint">your group messages address</string>
-    <string name="group_contacts">group contacts</string>
+    <string name="group_contacts">choose contacts for the group</string>
     <string name="create_group">done</string>
     <string name="default_app_click_to_remove">default app\nclick to remove</string>
 

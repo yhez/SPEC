@@ -1,37 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:padding="@dimen/default_gap"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:hint="@string/group_mentor_hint"
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:hint="@string/group_name_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <EditText
+            android:textColor="@color/spec_black"
+            android:imeOptions="flagNavigateNext"
+            android:inputType="textShortMessage"
+            android:nextFocusDown="@id/name"
+            android:hint="@string/group_mentor_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <EditText
-        android:hint="@string/group_location_for_messages_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <EditText
+            android:textColor="@color/spec_black"
+            android:id="@+id/name"
+            android:nextFocusDown="@id/email"
+            android:imeOptions="flagNavigateNext"
+            android:inputType="textPersonName"
+            android:hint="@string/group_name_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:text="@string/group_contacts"
-        android:layout_width="match_parent"
+        <EditText
+            android:textColor="@color/spec_black"
+            android:id="@+id/email"
+            android:imeOptions="flagNoEnterAction"
+            android:hint="@string/group_location_for_messages_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:padding="@dimen/default_gap"
+            android:textColor="@color/spec_black"
+            android:text="@string/group_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+    <Button
+        style="?android:attr/borderlessButtonStyle"
+        android:id="@+id/done"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/create_group"
+        android:textColor="@color/spec_black"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <ListView
+        android:layout_below="@id/ll"
+        android:layout_above="@id/done"
+        android:id="@id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/done"
-        android:text="@string/create_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+</RelativeLayout>

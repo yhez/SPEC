@@ -67,8 +67,8 @@ public class Session {
 
     public Session(String session) {
         String s = new Session().toString();
-        String r[] = parseSession(s);
-        String t[] = parseSession(session);
+        String[] r = parseSession(s);
+        String[] t = parseSession(session);
         Session ss = attachBoth(r, t, "");
         word1 = ss.word1;
         word2 = ss.word2;
@@ -138,7 +138,8 @@ public class Session {
     }
 
     private static boolean contains(String[] a, String[] b) {
-        return a[0].contains(b[0]) && a[1].contains(b[1]) && a[2].contains(b[2]);
+        return (a[0].contains(b[0]) && a[1].contains(b[1]) && a[2].contains(b[2])
+                ||b[0].contains(a[0]) && b[1].contains(a[1]) && b[2].contains(a[2]));
     }
 
     private static boolean equals(String[] a, String[] b) {

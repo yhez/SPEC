@@ -58,6 +58,25 @@ public class Group {
     public Group(String rawData) {
 
     }
+    public byte[] getLightGroupToShare(){
+        String s = name+"\n"+session+"\n"+locationForMessages+"\n"+
+                (dontAllowNewMembers?"private_group\n":"")+(noPrivateOnDevice?"nfc_required\n":""+"private_key");
+        byte[] strLength;
+        try {
+            strLength = s.getBytes("UTF-8");
+        } catch (Exception e) {
+            strLength = s.getBytes();
+        }
+        byte[] data = new byte[strLength.length+privateKey.length];
+        int a;
+        for(a=0;a<strLength.length;a++){
+            data[a]=strLength[a];
+        }
+        for(;a<data.length;a++){
+            data[a]=privateKey[a-strLength.length];
+        }
+        return data;
+    }
 
     public void encrypt() {
 

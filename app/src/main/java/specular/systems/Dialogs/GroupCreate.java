@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import specular.systems.ChooseList;
 import specular.systems.Group;
 import specular.systems.GroupDataSource;
 import specular.systems.R;
@@ -23,12 +25,16 @@ public class GroupCreate extends DialogFragment {
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         View v = inflater.inflate(R.layout.group_def, null);
+        final ListView lv = (ListView)v.findViewById(R.id.list);
+        ChooseList cl = new ChooseList(getActivity());
+        lv.setAdapter(cl);
         v.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (Group.list == null) {
                     GroupDataSource gds = new GroupDataSource(getActivity());
                     // Group.list=gds.getAllContacts();
+                    GroupCreate.this.getDialog().cancel();
                 }
             }
         });
