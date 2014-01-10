@@ -1,6 +1,7 @@
 package specular.systems;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -128,7 +129,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
         final Contact c = list.get(position);
         TextView name = (TextView) rowView.findViewById(R.id.first_line);
         TextView email = (TextView) rowView.findViewById(R.id.sec_line);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+        final ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         TextView id = (TextView) rowView.findViewById(R.id.id_contact);
         id.setText("" + c.getId());
         if (type == EDIT) {
@@ -153,7 +154,24 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                 }
             });
         }
-        imageView.setImageBitmap(c.getPhoto());
+        imageView.setImageResource(R.drawable.empty);
+        new Thread(new Runnable() {
+            public void run() {
+                synchronized (this){
+                    try {
+                        wait(250);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                final Bitmap bitmap = c.getPhoto();
+                imageView.post(new Runnable() {
+                    public void run() {
+                        imageView.setImageBitmap(bitmap);
+                    }
+                });
+            }
+        }).start();
         email.setText(c.getEmail());
         email.setTypeface(FilesManagement.getOs(a));
         name.setText(c.getContactName());

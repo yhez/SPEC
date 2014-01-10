@@ -29,7 +29,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -176,6 +175,9 @@ public class Main extends FragmentActivity {
                 case 551:
                     t.setText(R.string.bad_data);
                     t.show();
+                    break;
+                case 779:
+                    mDrawerLayout.closeDrawer(mDrawerList);
                     break;
             }
         }
@@ -522,7 +524,7 @@ public class Main extends FragmentActivity {
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
-
+        fragmentManager = getSupportFragmentManager();
         if (StaticVariables.fullList == null) {
             ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
             StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
@@ -776,7 +778,7 @@ public class Main extends FragmentActivity {
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
-
+    FragmentManager fragmentManager;
     private void selectItem(int position, int layout_screen, String title) {
         // update the main content by replacing fragments
         int layout = layout_screen;
@@ -825,14 +827,25 @@ public class Main extends FragmentActivity {
         View v = findViewById(FragmentManagement.currentLayout);
         if (v != null) v.animate().setDuration(100).alpha(0).start();
         final Fragment fragment = new FragmentManagement();
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        Log.e("start", System.currentTimeMillis() + "");
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment).commitAllowingStateLoss();
-        Log.e("end",System.currentTimeMillis()+"");
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commitAllowingStateLoss();
         if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
-            mDrawerLayout.closeDrawer(mDrawerList);
-        }/*
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (!fragment.isAdded())
+                    synchronized (this){
+                        try {
+                            wait(15);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    hndl.sendEmptyMessage(779);
+                }
+            }).start();
+        }
+
+        /*
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

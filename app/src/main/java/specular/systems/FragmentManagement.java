@@ -19,7 +19,6 @@ import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -176,7 +175,6 @@ public class FragmentManagement extends Fragment {
             else if (ext.equals("doc") || ext.equals("docx"))
                 imageButton.setImageResource(R.drawable.word);
             else {
-                Log.d("type", type);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setType(type);
                 List<ResolveInfo> matches = getActivity().getPackageManager().queryIntentActivities(intent, 0);
