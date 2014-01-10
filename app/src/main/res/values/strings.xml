@@ -7,7 +7,7 @@
 
     <!--strings related to writing/reading private key to/from the nfc tag-->
     <string name="tab_nfc_title">Tap NFC</string>
-    <string name="cant_connect_nfc_adapter">Something went wrong</string>
+    <string name="cant_connect_nfc_adapter">Something went wrong.</string>
     <string name="turn_nfc_on_nfc_wait">NFC is OFF, go to settings and turn it ON.</string>
     <string name="failed_read_only">Read-only tag.\nUse another tag.</string>
     <string name="tag_formatted">Tag has been formatted.\nTap again to save.</string>
@@ -42,7 +42,7 @@
     <string name="explain_button">Explain</string>
     <!--session check-->
     <string name="session_title">Session Info:</string>
-    <string name="session_try_again">try sending a message again, the other guy has not sent you your secret session</string>
+    <string name="session_try_again">Try sending a message again, the other guy has not sent you your secret session</string>
     <string name="session_reset">session has reset because of a possible attack on you</string>
     <string name="session_updated">session has updated but everything is ok</string>
     <string name="what_is_session">What is a Session?</string>
