@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.graphics.Bitmap;
 
-import zxing.BarcodeFormat;
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
@@ -55,7 +54,7 @@ public class Contact {
 
     public Bitmap getPhoto() {
 
-        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(publicKey, BarcodeFormat.QR_CODE.toString(), 128);
+        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(publicKey, 128);
         Bitmap bitmap = null;
         try {
             bitmap = qrCodeEncoder.encodeAsBitmap();

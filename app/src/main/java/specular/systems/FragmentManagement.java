@@ -318,7 +318,7 @@ public class FragmentManagement extends Fragment {
                 ((TextView) rootView.findViewById(R.id.contact_session))
                         .setText(sessions);
                 ImageButton ibb = (ImageButton) rootView.findViewById(R.id.contact_picture);
-                QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(currContact.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 256);
+                QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(currContact.getPublicKey(), 256);
                 Bitmap bitmap = null;
                 try {
                     bitmap = qrCodeEncoder.encodeAsBitmap();
@@ -547,7 +547,7 @@ public class FragmentManagement extends Fragment {
             case decrypt:
                 break;
             case wait_nfc_to_write:
-                QRCodeEncoder qr = new QRCodeEncoder(CryptMethods.getPublicTmp(), BarcodeFormat.QR_CODE.toString(), 256);
+                QRCodeEncoder qr = new QRCodeEncoder(CryptMethods.getPublicTmp(),  256);
                 try {
                     ((ImageView) rootView.findViewById(R.id.image_public)).setImageBitmap(qr.encodeAsBitmap());
                 } catch (WriterException e) {

@@ -20,9 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import zxing.BarcodeFormat;
-import zxing.WriterException;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -35,9 +32,10 @@ import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
-import zxing.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.Visual;
+import zxing.QRCodeEncoder;
+import zxing.WriterException;
 
 public class SendMsg extends Activity {
     private static final int FILE = 0, IMAGE = 1, BOTH = 2;
@@ -118,8 +116,7 @@ public class SendMsg extends Activity {
             etFile.setFilters(Visual.filters());
         }
         if (uris.get(1) != null) {
-            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(CryptMethods.encryptedMsgToSend,
-                    BarcodeFormat.QR_CODE.toString(), 76);
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(CryptMethods.encryptedMsgToSend, 76);
             Bitmap bitmap;
             try {
                 bitmap = qrCodeEncoder.encodeAsBitmap();

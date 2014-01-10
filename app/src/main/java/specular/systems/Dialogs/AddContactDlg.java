@@ -12,17 +12,15 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import zxing.BarcodeFormat;
-import zxing.WriterException;
-
 import specular.systems.Contact;
 import specular.systems.ContactCard;
 import specular.systems.ContactsDataSource;
 import specular.systems.FragmentManagement;
-import zxing.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.StaticVariables;
 import specular.systems.Visual;
+import zxing.QRCodeEncoder;
+import zxing.WriterException;
 
 
 public class AddContactDlg extends DialogFragment {
@@ -79,7 +77,7 @@ public class AddContactDlg extends DialogFragment {
                 });
         ((TextView) v.findViewById(R.id.acd_chosen_name)).setText(pcc.getName());
         ((TextView) v.findViewById(R.id.acd_chosen_email)).setText(pcc.getEmail());
-        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(pcc.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 128);
+        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(pcc.getPublicKey(),  128);
         try {
             ((ImageView) v.findViewById(R.id.acd_chosen_icon)).setImageBitmap(qrCodeEncoder.encodeAsBitmap());
         } catch (WriterException e) {

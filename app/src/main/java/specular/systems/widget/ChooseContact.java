@@ -17,19 +17,18 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import zxing.BarcodeFormat;
-import zxing.WriterException;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
 import specular.systems.CustomExceptionHandler;
-import zxing.QRCodeEncoder;
+import specular.systems.MySimpleArrayAdapter;
 import specular.systems.R;
 import specular.systems.StaticVariables;
 import specular.systems.Visual;
+import zxing.QRCodeEncoder;
+import zxing.WriterException;
 
 
 public class ChooseContact extends Activity {
@@ -49,7 +48,7 @@ public class ChooseContact extends Activity {
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
             ListView lv = new ListView(this);
-            SimpleList sl = new SimpleList(this);
+            MySimpleArrayAdapter sl = new MySimpleArrayAdapter(this,MySimpleArrayAdapter.SIMPLE);
             //todo add filter
             if (StaticVariables.fullList == null) {
                 ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
@@ -69,7 +68,7 @@ public class ChooseContact extends Activity {
                         RemoteViews views = new RemoteViews(ChooseContact.this.getPackageName(),
                                 R.layout.widget_contact);
                         Contact c = ContactsDataSource.contactsDataSource.findContact(Long.parseLong(((TextView) view.findViewById(R.id.id_contact)).getText().toString()));
-                        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(c.getPublicKey(), BarcodeFormat.QR_CODE.toString(), 200);
+                        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(c.getPublicKey(),  200);
                         try {
                             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
                             try {

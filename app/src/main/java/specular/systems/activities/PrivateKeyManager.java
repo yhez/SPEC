@@ -22,9 +22,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import zxing.BarcodeFormat;
-import zxing.WriterException;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 
@@ -33,9 +30,10 @@ import specular.systems.Dialogs.NotImplemented;
 import specular.systems.Dialogs.TurnNFCOn;
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
-import zxing.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.Visual;
+import zxing.QRCodeEncoder;
+import zxing.WriterException;
 
 
 public class PrivateKeyManager extends Activity {
@@ -282,7 +280,7 @@ public class PrivateKeyManager extends Activity {
                     try {
                         byte[] p = CryptMethods.getPrivateToSave();
                         String key = Visual.bin2hex(p);
-                        QRCodeEncoder qr = new QRCodeEncoder(key, BarcodeFormat.QR_CODE.toString(), 512);
+                        QRCodeEncoder qr = new QRCodeEncoder(key, 512);
                         Bitmap b = qr.encodeAsBitmap();
                         final PrintHelper photoPrinter = new PrintHelper(this);
                         photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);

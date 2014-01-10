@@ -17,9 +17,9 @@
 package zxing;
 
 
-import zxing.qrcode.QRCodeReader;
-
 import java.util.Map;
+
+import zxing.qrcode.QRCodeReader;
 
 /**
  * MultiFormatReader is a convenience class and the main entry point into the library for most uses.

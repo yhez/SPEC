@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import specular.systems.ChooseList;
 import specular.systems.Group;
 import specular.systems.GroupDataSource;
+import specular.systems.MySimpleArrayAdapter;
 import specular.systems.R;
 import specular.systems.Visual;
 
@@ -26,7 +26,7 @@ public class GroupCreate extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         View v = inflater.inflate(R.layout.group_def, null);
         final ListView lv = (ListView)v.findViewById(R.id.list);
-        ChooseList cl = new ChooseList(getActivity());
+        MySimpleArrayAdapter cl = new MySimpleArrayAdapter(getActivity(),MySimpleArrayAdapter.CHECKABLE);
         lv.setAdapter(cl);
         v.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override

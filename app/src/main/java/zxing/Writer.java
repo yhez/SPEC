@@ -16,9 +16,9 @@
 
 package zxing;
 
-import zxing.common.BitMatrix;
-
 import java.util.Map;
+
+import zxing.common.BitMatrix;
 
 /**
  * The base class for all objects which encode/generate a barcode image.
@@ -27,15 +27,7 @@ import java.util.Map;
  */
 public interface Writer {
 
-  /**
-   * Encode a barcode using the default settings.
-   *
-   * @param contents The contents to encode in the barcode
-   * @param format The barcode format to generate
-   * @param width The preferred width in pixels
-   * @param height The preferred height in pixels
-   */
-  BitMatrix encode(String contents, BarcodeFormat format, int width, int height)
+  BitMatrix encode(String contents, int width, int height)
       throws WriterException;
 
   /**
@@ -47,7 +39,6 @@ public interface Writer {
    * @param hints Additional parameters to supply to the encoder
    */
   BitMatrix encode(String contents,
-                   BarcodeFormat format,
                    int width,
                    int height,
                    Map<EncodeHintType, ?> hints)

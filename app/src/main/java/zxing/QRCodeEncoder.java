@@ -13,32 +13,17 @@ final public class QRCodeEncoder {
 
     private int dimension = Integer.MIN_VALUE;
     private String contents = null;
-    private BarcodeFormat format = null;
     private boolean encoded = false;
 
-    public QRCodeEncoder(String data, String format, int dimension) {
+    public QRCodeEncoder(String data, int dimension) {
         this.dimension = dimension;
         //todo prevent too light colors
         BLACK = 0xFF000000 + Integer.parseInt(data.substring(data.length() - 6), 16);
-        encoded = encodeContents(data, format);
+        encoded = encodeContents(data);
     }
 
-    private boolean encodeContents(String data, String formatString) {
-        // Default to QR_CODE if no format given.
-        format = null;
-        if (formatString != null) {
-            try {
-                format = BarcodeFormat.valueOf(formatString);
-            } catch (IllegalArgumentException iae) {
-                // Ignore it then
-            }
-        }
-        if (format == null || format == BarcodeFormat.QR_CODE) {
-            this.format = BarcodeFormat.QR_CODE;
+    private boolean encodeContents(String data) {
             encodeQRCodeContents(data);
-        } else if (data != null && data.length() > 0) {
-            contents = data;
-        }
         return contents != null && contents.length() > 0;
     }
 
@@ -58,7 +43,7 @@ final public class QRCodeEncoder {
             hints.put(EncodeHintType.CHARACTER_SET, encoding);
         }
         MultiFormatWriter writer = new MultiFormatWriter();
-        BitMatrix result = writer.encode(contents, format, dimension, dimension, hints);
+        BitMatrix result = writer.encode(contents, dimension, dimension, hints);
         int width = result.getWidth();
         int height = result.getHeight();
         int[] pixels = new int[width * height];

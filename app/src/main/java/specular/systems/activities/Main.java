@@ -149,7 +149,7 @@ public class Main extends FragmentActivity {
                             //todo needs to call only on the first key created
                             findViewById(R.id.image_public).clearAnimation();
                             findViewById(R.id.image_public).setClickable(true);
-                            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(CryptMethods.getPublicTmp(), BarcodeFormat.QR_CODE.toString(), 512);
+                            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(CryptMethods.getPublicTmp(), 512);
                             try {
                                 ((ImageView) findViewById(R.id.image_public)).setImageBitmap(qrCodeEncoder.encodeAsBitmap());
                             } catch (WriterException e) {
@@ -530,7 +530,7 @@ public class Main extends FragmentActivity {
             StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
         }
         if (MySimpleArrayAdapter.adapter == null) {
-            MySimpleArrayAdapter.adapter = new MySimpleArrayAdapter(this);
+            MySimpleArrayAdapter.adapter = new MySimpleArrayAdapter(this,MySimpleArrayAdapter.EDIT);
         }
         File folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports");
         if (folder.exists() && folder.list().length > 0) {
@@ -1239,7 +1239,7 @@ public class Main extends FragmentActivity {
             StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
         }
         if (MySimpleArrayAdapter.adapter == null) {
-            MySimpleArrayAdapter.adapter = new MySimpleArrayAdapter(this);
+            MySimpleArrayAdapter.adapter = new MySimpleArrayAdapter(this,MySimpleArrayAdapter.EDIT);
         }
     }
 

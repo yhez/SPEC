@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import zxing.BarcodeFormat;
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
@@ -145,8 +144,7 @@ public final class FilesManagement {
     private static boolean saveQRToSend(Activity a) {
         int qrCodeDimention = 500;
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(
-                StaticVariables.encryptedLight, BarcodeFormat.QR_CODE
-                .toString(), qrCodeDimention);
+                StaticVariables.encryptedLight, qrCodeDimention);
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
             try {
@@ -274,7 +272,7 @@ public final class FilesManagement {
         String email = ((EditText) a.findViewById(R.id.contact_email).findViewById(R.id.edit_text)).getText().toString();
         String publicKey = ((TextView) a.findViewById(R.id.contact_pb)).getText().toString();
         ContactCard pcc = new ContactCard(a, publicKey, email, name);
-        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(pcc.getQRToPublish(), BarcodeFormat.QR_CODE.toString(), 512);
+        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(pcc.getQRToPublish(), 512);
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
             //Bitmap crop = crop(bitmap);
@@ -375,7 +373,7 @@ public final class FilesManagement {
                     e.printStackTrace();
                 }
             }
-            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrpk.getQRToPublish(), BarcodeFormat.QR_CODE.toString(), 512);
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrpk.getQRToPublish(), 512);
 
             try {
                 Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
@@ -432,7 +430,7 @@ public final class FilesManagement {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrpk.getQRToPublish(), BarcodeFormat.QR_CODE.toString(), 512);
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrpk.getQRToPublish(), 512);
             try {
                 Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
 

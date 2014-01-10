@@ -16,7 +16,9 @@
 
 package zxing.qrcode;
 
-import zxing.BarcodeFormat;
+import java.util.List;
+import java.util.Map;
+
 import zxing.BinaryBitmap;
 import zxing.ChecksumException;
 import zxing.DecodeHintType;
@@ -32,9 +34,6 @@ import zxing.common.DetectorResult;
 import zxing.qrcode.decoder.Decoder;
 import zxing.qrcode.decoder.QRCodeDecoderMetaData;
 import zxing.qrcode.detector.Detector;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * This implementation can detect and decode QR Codes in an image.
@@ -84,7 +83,7 @@ public class QRCodeReader implements Reader {
       ((QRCodeDecoderMetaData) decoderResult.getOther()).applyMirroredCorrection(points);
     }
 
-    Result result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), points, BarcodeFormat.QR_CODE);
+    Result result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), points);
     List<byte[]> byteSegments = decoderResult.getByteSegments();
     if (byteSegments != null) {
       result.putMetadata(ResultMetadataType.BYTE_SEGMENTS, byteSegments);
@@ -106,15 +105,6 @@ public class QRCodeReader implements Reader {
   public void reset() {
     // do nothing
   }
-
-  /**
-   * This method detects a code in a "pure" image -- that is, pure monochrome image
-   * which contains only an unrotated, unskewed, image of a code, with some white border
-   * around it. This is a specialized method that works exceptionally fast in this special
-   * case.
-   *
-   * @see com.google.zxing.datamatrix.DataMatrixReader#extractPureBits(zxing.common.BitMatrix)
-   */
   private static BitMatrix extractPureBits(BitMatrix image) throws NotFoundException {
 
     int[] leftTopBlack = image.getTopLeftOnBit();

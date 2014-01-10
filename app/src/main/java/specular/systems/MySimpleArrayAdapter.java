@@ -1,7 +1,6 @@
 package specular.systems;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,14 +23,17 @@ import specular.systems.activities.Main;
 import static specular.systems.R.layout.edit_contact;
 
 public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filterable {
+    public static final int CHECKABLE = 0, EDIT = 1, SIMPLE = 2;
     public static MySimpleArrayAdapter adapter;
     private Activity a;
+    int type;
     private static List<Contact> list;
 
-    public MySimpleArrayAdapter(Activity a) {
+    public MySimpleArrayAdapter(Activity a, int type) {
         super(a, R.layout.list_row, list);
         list = StaticVariables.fullList;
         this.a = a;
+        this.type = type;
     }
 
     @Override
@@ -71,35 +73,42 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) a
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.list_row, parent, false);
+        LayoutInflater inflater = a.getLayoutInflater();
+        View rowView;
+        if (type == EDIT)
+            rowView = inflater.inflate(R.layout.list_row, parent, false);
+        else if (type == CHECKABLE)
+            rowView = inflater.inflate(R.layout.choose_list_row, parent, false);
+        else
+            rowView = inflater.inflate(R.layout.simple_list_row, parent, false);
         final Contact c = list.get(position);
         TextView name = (TextView) rowView.findViewById(R.id.first_line);
         TextView email = (TextView) rowView.findViewById(R.id.sec_line);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         TextView id = (TextView) rowView.findViewById(R.id.id_contact);
         id.setText("" + c.getId());
-        rowView.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Main.exit = false;
-                Fragment fragment = new FragmentManagement();
-                Bundle args = new Bundle();
-                FragmentManagement.currentLayout = edit_contact;
-                args.putInt("index", position);
-                fragment.setArguments(args);
-                FragmentManager fragmentManager = Main.main.getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.content_frame, fragment).commit();
-            }
-        });
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.fragmentManagement.contactChosen(c.getId());
-            }
-        });
+        if (type == EDIT) {
+            rowView.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Main.exit = false;
+                    Fragment fragment = new FragmentManagement();
+                    Bundle args = new Bundle();
+                    FragmentManagement.currentLayout = edit_contact;
+                    args.putInt("index", position);
+                    fragment.setArguments(args);
+                    FragmentManager fragmentManager = Main.main.getSupportFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame, fragment).commit();
+                }
+            });
+            rowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    StaticVariables.fragmentManagement.contactChosen(c.getId());
+                }
+            });
+        }
         imageView.setImageBitmap(c.getPhoto());
         email.setText(c.getEmail());
         email.setTypeface(FilesManagement.getOs(a));

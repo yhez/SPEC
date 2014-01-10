@@ -5,10 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
-import java.util.Collection;
-
 import specular.systems.R;
-import zxing.BarcodeFormat;
 import zxing.Result;
 import zxing.scanqr.camera.CameraManager;
 
@@ -26,12 +23,10 @@ public final class CaptureActivityHandler extends Handler {
     }
 
     CaptureActivityHandler(CaptureActivity activity,
-                           Collection<BarcodeFormat> decodeFormats,
                            String characterSet,
                            CameraManager cameraManager) {
         this.activity = activity;
-        decodeThread = new DecodeThread(activity, decodeFormats, characterSet,
-                new ViewfinderResultPointCallback(activity.getViewfinderView()));
+        decodeThread = new DecodeThread(activity,new ViewfinderResultPointCallback(activity.getViewfinderView()));
         decodeThread.start();
         state = State.SUCCESS;
 

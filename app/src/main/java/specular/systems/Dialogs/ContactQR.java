@@ -8,11 +8,9 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import zxing.BarcodeFormat;
-import zxing.WriterException;
-
-import zxing.QRCodeEncoder;
 import specular.systems.R;
+import zxing.QRCodeEncoder;
+import zxing.WriterException;
 
 
 public class ContactQR extends DialogFragment {
@@ -23,7 +21,7 @@ public class ContactQR extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         TextView tv;
         String pb = ((TextView) getActivity().findViewById(R.id.contact_pb)).getText().toString();
-        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(pb, BarcodeFormat.QR_CODE.toString(), 512);
+        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(pb,  512);
         Bitmap bitmap;
         try {
             bitmap = qrCodeEncoder.encodeAsBitmap();

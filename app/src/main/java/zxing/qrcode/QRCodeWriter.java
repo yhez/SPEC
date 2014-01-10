@@ -16,17 +16,16 @@
 
 package zxing.qrcode;
 
-import zxing.BarcodeFormat;
+import java.util.Map;
+
 import zxing.EncodeHintType;
 import zxing.Writer;
 import zxing.WriterException;
 import zxing.common.BitMatrix;
-import zxing.qrcode.encoder.ByteMatrix;
 import zxing.qrcode.decoder.ErrorCorrectionLevel;
+import zxing.qrcode.encoder.ByteMatrix;
 import zxing.qrcode.encoder.Encoder;
 import zxing.qrcode.encoder.QRCode;
-
-import java.util.Map;
 
 /**
  * This object renders a QR Code as a BitMatrix 2D array of greyscale values.
@@ -38,25 +37,20 @@ public final class QRCodeWriter implements Writer {
   private static final int QUIET_ZONE_SIZE = 4;
 
   @Override
-  public BitMatrix encode(String contents, BarcodeFormat format, int width, int height)
+  public BitMatrix encode(String contents, int width, int height)
       throws WriterException {
 
-    return encode(contents, format, width, height, null);
+    return encode(contents, width, height, null);
   }
 
   @Override
   public BitMatrix encode(String contents,
-                          BarcodeFormat format,
                           int width,
                           int height,
                           Map<EncodeHintType,?> hints) throws WriterException {
 
     if (contents.isEmpty()) {
       throw new IllegalArgumentException("Found empty contents");
-    }
-
-    if (format != BarcodeFormat.QR_CODE) {
-      throw new IllegalArgumentException("Can only encode QR_CODE, but got " + format);
     }
 
     if (width < 0 || height < 0) {

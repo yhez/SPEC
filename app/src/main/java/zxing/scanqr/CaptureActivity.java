@@ -32,7 +32,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
                 // Creating the handler starts the preview_direct_msg, which can also throw a RuntimeException.
                 try {
                     if (handler == null) {
-                        handler = new CaptureActivityHandler(CaptureActivity.this, decodeFormats, characterSet, cameraManager);
+                        handler = new CaptureActivityHandler(CaptureActivity.this, characterSet, cameraManager);
                     }
                 } catch (RuntimeException r) {
                     displayFrameworkBugMessageAndExit();
@@ -107,9 +107,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         }
         inactivityTimer.onResume();
         Intent intent = getIntent();
-        decodeFormats = null;
         characterSet = null;
-        decodeFormats = DecodeFormatManager.parseDecodeFormats(intent);
         characterSet = intent.getStringExtra(Intents.Scan.CHARACTER_SET);
     }
 
