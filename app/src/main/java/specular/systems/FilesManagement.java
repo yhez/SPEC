@@ -89,14 +89,12 @@ public final class FilesManagement {
     }
 
     public static void saveTempDecryptedMSG(Activity a) {
-        if (MessageFormat.decryptedMsg == null)
-            return;
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
                 .getApplicationContext());
         SharedPreferences.Editor edt = srp.edit();
-        edt.putString("msg", MessageFormat.decryptedMsg.getMsgContent());
-        edt.putString("file_name", MessageFormat.decryptedMsg.getFileName());
-        edt.putString("session", MessageFormat.decryptedMsg.getSession());
+        edt.putString("msg", StaticVariables.msg_content);
+        edt.putString("file_name", StaticVariables.file_name);
+        edt.putString("session", StaticVariables.session);
         StaticVariables.session = null;
         StaticVariables.file_name = null;
         StaticVariables.msg_content = null;

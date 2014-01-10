@@ -42,9 +42,9 @@
     <string name="explain_button">Explain</string>
     <!--session check-->
     <string name="session_title">Session Info:</string>
-    <string name="session_try_again">Try sending a message again, the other guy has not sent you your secret session</string>
-    <string name="session_reset">session has reset because of a possible attack on you</string>
-    <string name="session_updated">session has updated but everything is ok</string>
+    <string name="session_try_again">Try sending a message again, the other guy has not sent you your secret session\n</string>
+    <string name="session_reset">session has reset because of a possible attack on you\n</string>
+    <string name="session_updated">session has updated but everything is ok\n</string>
     <string name="what_is_session">What is a Session?</string>
     <string name="session_explain">A session identifier or session token is a piece
         of data that is used in network communications to identify a session, a series of related

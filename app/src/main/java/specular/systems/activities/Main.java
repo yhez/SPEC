@@ -29,6 +29,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -521,6 +522,11 @@ public class Main extends FragmentActivity {
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
+
+        if (StaticVariables.fullList == null) {
+            ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
+            StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
+        }
         t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
         t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         handler = new Handler(Looper.getMainLooper());
@@ -820,18 +826,26 @@ public class Main extends FragmentActivity {
         if (v != null) v.animate().setDuration(100).alpha(0).start();
         final Fragment fragment = new FragmentManagement();
         final FragmentManager fragmentManager = getSupportFragmentManager();
+        Log.e("start", System.currentTimeMillis() + "");
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment).commitAllowingStateLoss();
+        Log.e("end",System.currentTimeMillis()+"");
         if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
             mDrawerLayout.closeDrawer(mDrawerList);
+        }/*
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame, fragment).commitAllowingStateLoss();
                 }
-            }, 300);
-        } else
+            }, 250);
+        } else{
+            Log.e("start", System.currentTimeMillis() + "");
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame, fragment).commitAllowingStateLoss();
+            Log.e("end",System.currentTimeMillis()+"");
+        }*/
         exit = false;
     }
 
@@ -1202,6 +1216,9 @@ public class Main extends FragmentActivity {
         NfcAdapter
                 .getDefaultAdapter(this)
                 .enableForegroundDispatch(this, pi, filters, null);
+        if (StaticVariables.flag_msg != null && StaticVariables.flag_msg) {
+            FilesManagement.getTempDecryptedMSG(this);
+        }
         if (KeysDeleter.keysDeleted) {
             FilesManagement.getKeysFromSDCard(this);
             KeysDeleter.keysDeleted = false;
@@ -1222,9 +1239,6 @@ public class Main extends FragmentActivity {
             getIntent().setData(null);
             if (uri != null)
                 attachFile(uri);
-        }
-        if (StaticVariables.flag_msg != null && StaticVariables.flag_msg) {
-            FilesManagement.getTempDecryptedMSG(this);
         }
     }
 

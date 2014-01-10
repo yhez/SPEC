@@ -8,6 +8,7 @@ public class KeysDeleter {
 
     public KeysDeleter() {
         if (CryptMethods.privateExist()) {
+            keysDeleted=false;
             if (t != null && t.isAlive()) {
                 t.interrupt();
                 t = null;
@@ -18,9 +19,7 @@ public class KeysDeleter {
                     synchronized (this) {
                         try {
                             wait(15000);
-                            oldStatus = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
-                            CryptMethods.deleteKeys();
-                            keysDeleted = true;
+                            delete();
                         } catch (InterruptedException e) {
                         }
                     }
@@ -31,12 +30,15 @@ public class KeysDeleter {
     }
 
     public static void stop() {
-        if (t != null && t.isAlive())
+        if (t != null && t.isAlive()){
             t.interrupt();
+            t=null;
+        }
     }
 
     public static void delete() {
         oldStatus = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         CryptMethods.deleteKeys();
+        keysDeleted=true;
     }
 }
