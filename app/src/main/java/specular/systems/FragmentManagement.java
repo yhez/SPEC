@@ -46,7 +46,6 @@ import java.util.Collections;
 import java.util.List;
 
 import specular.systems.activities.Main;
-import zxing.BarcodeFormat;
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
@@ -274,7 +273,7 @@ public class FragmentManagement extends Fragment {
                 break;
             case edit_contact:
                 int index = getArguments().getInt("index");
-                final Contact currContact = MySimpleArrayAdapter.adapter.getItem(index);
+                final Contact currContact = MySimpleArrayAdapter.getAdapter().getItem(index);
                 ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
                         + currContact.getId());
                 ((TextView) rootView.findViewById(R.id.contact_name).

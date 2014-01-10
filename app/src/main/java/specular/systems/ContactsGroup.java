@@ -53,8 +53,8 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
                     tv.setVisibility(View.VISIBLE);
                     lv.setVisibility(View.GONE);
                 } else {
-                    lv.setAdapter(MySimpleArrayAdapter.adapter);
-                    MySimpleArrayAdapter.adapter.showOriginal();
+                    lv.setAdapter(new MySimpleArrayAdapter(getActivity(),MySimpleArrayAdapter.EDIT));
+                    MySimpleArrayAdapter.showOriginal();
                     lv.setVisibility(View.VISIBLE);
                     tv.setVisibility(View.GONE);
                 }

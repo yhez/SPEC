@@ -50,10 +50,6 @@ public class ChooseContact extends Activity {
             ListView lv = new ListView(this);
             MySimpleArrayAdapter sl = new MySimpleArrayAdapter(this,MySimpleArrayAdapter.SIMPLE);
             //todo add filter
-            if (StaticVariables.fullList == null) {
-                ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
-                StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
-            }
             if (StaticVariables.fullList.isEmpty()) {
                 Toast t = Toast.makeText(this, R.string.widget_add_contact_list_empty, Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);

@@ -24,16 +24,80 @@ import static specular.systems.R.layout.edit_contact;
 
 public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filterable {
     public static final int CHECKABLE = 0, EDIT = 1, SIMPLE = 2;
-    public static MySimpleArrayAdapter adapter;
-    private Activity a;
-    int type;
+    private static MySimpleArrayAdapter adapter;
     private static List<Contact> list;
+    int type;
+    private Activity a;
 
     public MySimpleArrayAdapter(Activity a, int type) {
         super(a, R.layout.list_row, list);
         list = StaticVariables.fullList;
         this.a = a;
         this.type = type;
+        adapter = this;
+        if (StaticVariables.fullList == null) {
+            ContactsDataSource.contactsDataSource = new ContactsDataSource(a);
+            StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
+        }
+    }
+
+    public static MySimpleArrayAdapter getAdapter() {
+        return adapter;
+    }
+
+    public static void updateCont(Activity aa, Contact c) {
+        for (int a = 0; a < StaticVariables.fullList.size(); a++)
+            if (StaticVariables.fullList.get(a).getId() == c.getId()) {
+                StaticVariables.fullList.remove(a);
+                break;
+            }
+        StaticVariables.fullList.add(c);
+        if (adapter != null)
+            refreshList(aa);
+    }
+
+    public static void removeCont(Activity a, int index) {
+        StaticVariables.fullList.remove(index);
+        if (adapter != null)
+            refreshList(a);
+    }
+
+    public static void addCont(Activity a, Contact c) {
+        StaticVariables.fullList.add(c);
+        if (adapter != null)
+            refreshList(a);
+    }
+
+    private static void refreshList(Activity a) {
+        list = StaticVariables.fullList;
+        Collections.sort(list, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact contact, Contact contact2) {
+                return (contact.getContactName().toLowerCase() + contact.getEmail().toLowerCase())
+                        .compareTo((contact2.getContactName().toLowerCase() + contact2.getEmail().toLowerCase()));
+            }
+        });
+        if (FragmentManagement.currentLayout == R.layout.encrypt) {
+            View v = a.findViewById(R.id.list);
+            if (v != null)
+                if (StaticVariables.fullList.size() > 0) {
+                    v.setVisibility(View.VISIBLE);
+                    a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
+                } else {
+                    v.setVisibility(View.GONE);
+                    a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+                }
+            if (adapter != null)
+                adapter.notifyDataSetChanged();
+        }
+    }
+
+    public static void showOriginal() {
+        if (list != StaticVariables.fullList) {
+            list = StaticVariables.fullList;
+            if (adapter != null)
+                adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -49,26 +113,6 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
     @Override
     public long getItemId(int position) {
         return position;
-    }
-
-    public void updateCont(Activity aa, Contact c) {
-        for (int a = 0; a < StaticVariables.fullList.size(); a++)
-            if (StaticVariables.fullList.get(a).getId() == c.getId()) {
-                StaticVariables.fullList.remove(a);
-                break;
-            }
-        StaticVariables.fullList.add(c);
-        refreshList(aa);
-    }
-
-    public void removeCont(Activity a, int index) {
-        StaticVariables.fullList.remove(index);
-        refreshList(a);
-    }
-
-    public void addCont(Activity a, Contact c) {
-        StaticVariables.fullList.add(c);
-        refreshList(a);
     }
 
     @Override
@@ -116,7 +160,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
         name.setTypeface(FilesManagement.getOs(a));
         return rowView;
     }
-
+    //todo should be ok now, this method can probably deleted
     public void updateViewAfterFilter(Activity a) {
         this.a = a;
     }
@@ -147,36 +191,6 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                 return results;
             }
         };
-    }
-
-    private void refreshList(Activity a) {
-        list = StaticVariables.fullList;
-        Collections.sort(list, new Comparator<Contact>() {
-            @Override
-            public int compare(Contact contact, Contact contact2) {
-                return (contact.getContactName().toLowerCase() + contact.getEmail().toLowerCase())
-                        .compareTo((contact2.getContactName().toLowerCase() + contact2.getEmail().toLowerCase()));
-            }
-        });
-        if (FragmentManagement.currentLayout == R.layout.encrypt) {
-            View v = a.findViewById(R.id.list);
-            if (v != null)
-                if (StaticVariables.fullList.size() > 0) {
-                    v.setVisibility(View.VISIBLE);
-                    a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
-                } else {
-                    v.setVisibility(View.GONE);
-                    a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
-                }
-            notifyDataSetChanged();
-        }
-    }
-
-    public void showOriginal() {
-        if (list != StaticVariables.fullList) {
-            list = StaticVariables.fullList;
-            notifyDataSetChanged();
-        }
     }
 
     private void updateContactList() {

@@ -58,7 +58,7 @@ public class GroupDataSource {
                 + " = " + id, null);
         dbHelper.close();
         if (!(position < 0)) {
-            MySimpleArrayAdapter.adapter.removeCont(aa, position);
+            MySimpleArrayAdapter.removeCont(aa, position);
         }
     }
 

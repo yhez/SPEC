@@ -35,7 +35,7 @@ public final class ASN1Tools {
      * @return a new {@link codec.asn1.ASN1Integer} holding the {@link de.flexiprovider.common.math.FlexiBigInt} value
      */
     public static ASN1Integer createInteger(FlexiBigInt value) {
-        return new ASN1Integer(value.bigInt);
+        return new ASN1Integer(my.BigInteger.get(value.bigInt));
     }
 
     /**

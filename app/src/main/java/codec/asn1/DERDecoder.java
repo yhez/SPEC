@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import my.BigInteger;
+import java.math.BigInteger;
 
 
 public class DERDecoder extends FilterInputStream implements Decoder {

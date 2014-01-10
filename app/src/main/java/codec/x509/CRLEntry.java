@@ -28,7 +28,6 @@ import codec.asn1.DERDecoder;
 import codec.asn1.DEREncoder;
 import codec.asn1.Decoder;
 import codec.asn1.Encoder;
-import my.BigInteger;
 
 
 public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
@@ -136,7 +135,7 @@ public class CRLEntry extends X509CRLEntry implements ASN1Type, Externalizable {
         return a1t.getDate();
     }
     public java.math.BigInteger getSerialNumber() {
-        return BigInteger.get(userCertificate_.getBigInteger());
+        return userCertificate_.getBigInteger();
     }
     public int getTag() {
         return crlEntry_.getTag();

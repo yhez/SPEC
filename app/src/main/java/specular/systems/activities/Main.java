@@ -78,12 +78,11 @@ import specular.systems.LeftMenu;
 import specular.systems.LightMessage;
 import specular.systems.MessageFormat;
 import specular.systems.MySimpleArrayAdapter;
-import zxing.QRCodeEncoder;
 import specular.systems.R;
 import specular.systems.Session;
 import specular.systems.StaticVariables;
 import specular.systems.Visual;
-import zxing.BarcodeFormat;
+import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
 
@@ -322,7 +321,7 @@ public class Main extends FragmentActivity {
                     case Session.DONT_TRUST:
                         contact = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
                         msg = getString(R.string.dont_trust_session_explain)
-                                + "\n" + Session.toShow(contact.getSession()) + "\n"
+                                + Session.toShow(contact.getSession()) + "\n"
                                 + "other's session is:\n"
                                 + Session.toShow(StaticVariables.session);
                         break;
@@ -525,13 +524,6 @@ public class Main extends FragmentActivity {
         t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
         t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         handler = new Handler(Looper.getMainLooper());
-        if (StaticVariables.fullList == null) {
-            ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
-            StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
-        }
-        if (MySimpleArrayAdapter.adapter == null) {
-            MySimpleArrayAdapter.adapter = new MySimpleArrayAdapter(this,MySimpleArrayAdapter.EDIT);
-        }
         File folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports");
         if (folder.exists() && folder.list().length > 0) {
             Intent i = new Intent(this, SendReport.class);
@@ -691,8 +683,8 @@ public class Main extends FragmentActivity {
 
                 @Override
                 public boolean onQueryTextChange(String s) {
-                    MySimpleArrayAdapter.adapter.updateViewAfterFilter(Main.this);
-                    MySimpleArrayAdapter.adapter.getFilter().filter(s);
+                    MySimpleArrayAdapter.getAdapter().updateViewAfterFilter(Main.this);
+                    MySimpleArrayAdapter.getAdapter().getFilter().filter(s);
                     return false;
                 }
             });
@@ -1233,13 +1225,6 @@ public class Main extends FragmentActivity {
         }
         if (StaticVariables.flag_msg != null && StaticVariables.flag_msg) {
             FilesManagement.getTempDecryptedMSG(this);
-        }
-        if (StaticVariables.fullList == null) {
-            ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
-            StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
-        }
-        if (MySimpleArrayAdapter.adapter == null) {
-            MySimpleArrayAdapter.adapter = new MySimpleArrayAdapter(this,MySimpleArrayAdapter.EDIT);
         }
     }
 

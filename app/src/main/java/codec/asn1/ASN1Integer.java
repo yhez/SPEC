@@ -2,7 +2,7 @@ package codec.asn1;
 
 import java.io.IOException;
 
-import my.BigInteger;
+import java.math.BigInteger;
 
 
 public class ASN1Integer extends ASN1AbstractType {
