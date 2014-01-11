@@ -73,7 +73,7 @@
     <string name="light_msg_week">Message created within the last week.</string>
     <string name="light_msg_two_weeks">Message created within the last two weeks.</string>
     <string name="light_msg_old">Message is over due and may not be relevant.</string>
-    <string name="light_msg_message_created_at">Message created:    </string>
+    <string name="light_msg_message_created_at">Message created:     </string>
     <string name="replay_what_we_did">we checking the time of the last message you received from this contact, and the day that the message was created</string>
     <string name="replay_qr_what_we_did">messages came from QR may be taking longer to get to you.\nwe decide to give three parameters: now int this week in last two weeks, and old</string>
 
