@@ -96,6 +96,7 @@ public class Main extends FragmentActivity {
                 case FAILED:
                     break;
                 case REPLACE_PHOTO:
+                    ((TextView)findViewById(R.id.file_content_length)).setText(StaticVariables.fileContent.length+"");
                     invalidateOptionsMenu();
                     break;
                 case CANT_DECRYPT:
@@ -385,6 +386,7 @@ public class Main extends FragmentActivity {
     private void attachFile(final Uri uri) {
         if (uri != null) {
             loadingFile = true;
+            StaticVariables.fileContent=null;
             invalidateOptionsMenu();
             addFile = new Thread(new Runnable() {
                 @Override
