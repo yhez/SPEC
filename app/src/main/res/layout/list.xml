@@ -106,12 +106,6 @@
                     android:visibility="gone" />
             </LinearLayout>
         </GridLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="bottom"
-            android:background="@color/spec_blue" />
     </FrameLayout>
 
     <FrameLayout
@@ -133,16 +127,6 @@
             android:textColor="@color/spec_black"
             android:textSize="22sp"
             android:visibility="gone" />
-
-        <ImageButton
-            android:id="@+id/add_file"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:drawablePadding="0dip"
-            android:onClick="onClickEncrypt"
-            android:src="@drawable/ic_attachment_universal_small" />
 
         <FrameLayout
             android:id="@+id/en_contact"

@@ -35,12 +35,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -91,21 +88,15 @@ public class Main extends FragmentActivity {
             DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_FOCUS = 76;
     public static Main main;
     public static boolean exit = false;
+    private boolean loadingFile = false;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            ImageButton imageButton = null;
-            if (FragmentManagement.currentLayout == R.layout.encrypt) {
-                imageButton = (ImageButton) findViewById(R.id.add_file);
-            }
             switch (msg.what) {
                 case FAILED:
                     break;
                 case REPLACE_PHOTO:
-                    imageButton.clearAnimation();
-                    imageButton.setClickable(true);
-                    ((TextView) findViewById(R.id.file_content_length)).setText(StaticVariables.fileContent.length + "");
-                    ((ImageButton) findViewById(R.id.add_file)).setImageResource(R.drawable.after_attach);
+                    invalidateOptionsMenu();
                     break;
                 case CANT_DECRYPT:
                     String s = msg.obj != null ? (String) msg.obj : getString(R.string.cant_decrypt);
@@ -120,20 +111,14 @@ public class Main extends FragmentActivity {
                     selectItem(1, R.layout.decrypted_msg, null);
                     break;
                 case FilesManagement.RESULT_ADD_FILE_TO_BIG:
-                    imageButton.clearAnimation();
-                    imageButton.setClickable(true);
                     t.setText(R.string.file_to_big);
                     t.show();
                     break;
                 case FilesManagement.RESULT_ADD_FILE_FAILED:
-                    imageButton.clearAnimation();
-                    imageButton.setClickable(true);
                     t.setText(R.string.failed);
                     t.show();
                     break;
                 case FilesManagement.RESULT_ADD_FILE_EMPTY:
-                    imageButton.clearAnimation();
-                    imageButton.setClickable(true);
                     t.setText(R.string.file_is_empty);
                     t.show();
                     break;
@@ -398,17 +383,14 @@ public class Main extends FragmentActivity {
     }
 
     private void attachFile(final Uri uri) {
-
         if (uri != null) {
-            ImageButton aniView = (ImageButton) findViewById(R.id.add_file);
-            aniView.setImageResource(R.drawable.ic_attachment_universal_small);
-            Animation animation1 = AnimationUtils.loadAnimation(this, R.anim.rotate);
-            aniView.startAnimation(animation1);
-            aniView.setClickable(false);
+            loadingFile = true;
+            invalidateOptionsMenu();
             addFile = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     int r = FilesManagement.addFile(Main.this, uri);
+                    loadingFile = false;
                     if (r == FilesManagement.RESULT_ADD_FILE_OK) {
                         fileName = Visual.getFileName(Main.this, uri);
                         hndl.sendEmptyMessage(REPLACE_PHOTO);
@@ -465,13 +447,6 @@ public class Main extends FragmentActivity {
 
     public void onClickEncrypt(View v) {
         switch (v.getId()) {
-            case R.id.add_file:
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("*/*");
-                Intent i = Intent.createChooser(intent, getString(R.string.choose_file_to_attach));
-                startActivityForResult(i, ATTACH_FILE);
-                break;
             case R.id.send:
                 if (StaticVariables.readyToSend) {
                     EditText et = (EditText) findViewById(R.id.message);
@@ -647,8 +622,21 @@ public class Main extends FragmentActivity {
                 Intent i = new Intent(this, StartScan.class);
                 startActivityForResult(i, SCAN_QR);
             } else if (item.getTitle().equals("Add")) {
-                GroupCreate gc = new GroupCreate();
-                gc.show(getFragmentManager(), "gc");
+                if (((ViewPager) findViewById(R.id.pager)).getCurrentItem() == ContactsGroup.GROUPS) {
+                    GroupCreate gc = new GroupCreate();
+                    gc.show(getFragmentManager(), "gc");
+                } else {
+                    if (loadingFile) {
+                        t.setText("loading file");
+                        t.show();
+                    } else {
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        intent.setType("*/*");
+                        Intent i = Intent.createChooser(intent, getString(R.string.choose_file_to_attach));
+                        startActivityForResult(i, ATTACH_FILE);
+                    }
+                }
             }
         } else if (FragmentManagement.currentLayout == R.layout.edit_contact) {
             ShareContactDlg sd = new ShareContactDlg();
@@ -735,22 +723,30 @@ public class Main extends FragmentActivity {
             MenuItem mi2 = menu.getItem(1);
             MenuItem mi3 = menu.getItem(2);
             mi2.setVisible(!drawerOpen);
-            if (FragmentManagement.currentLayout == R.layout.encrypt)
-                if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0) {
-                    mi.setVisible(false);
-                    mi3.setVisible(false);
-                } else {
-                    TextView tv = ((TextView) findViewById(R.id.contact_id_to_send));
-                    boolean vis = mi.isVisible() && (tv == null || tv.getText().toString().length() == 0);
-                    mi.setVisible(vis);
-                    mi2.setVisible(vis);
-                    ViewPager vp = (ViewPager) findViewById(R.id.pager);
-                    if (vp.getCurrentItem() == ContactsGroup.GROUPS) {
-                        mi3.setVisible(vis);
-                    } else {
+            mi3.setVisible(!drawerOpen);
+            if (FragmentManagement.currentLayout == R.layout.encrypt) {
+                ViewPager vp = (ViewPager) findViewById(R.id.pager);
+                if (vp.getCurrentItem() == ContactsGroup.CONTACTS) {
+                    if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0) {
+                        mi.setVisible(false);
                         mi3.setVisible(false);
+                    } else {
+                        TextView tv = (TextView) findViewById(R.id.contact_id_to_send);
+                        if (tv != null && tv.getText().toString().length() != 0) {
+                            mi.setVisible(false);
+                            mi2.setVisible(false);
+                            if (loadingFile)
+                                mi3.setIcon(android.R.drawable.ic_menu_upload);
+                            else if (StaticVariables.fileContent != null)
+                                mi3.setIcon(R.drawable.after_attached);
+                            else
+                                mi3.setIcon(R.drawable.attachment);
+                        } else
+                            mi3.setVisible(false);
                     }
-                }
+                } else
+                    mi.setVisible(false);
+            }
         } else if (FragmentManagement.currentLayout == R.layout.decrypted_msg) {
             TextView flag_contact = (TextView) findViewById(R.id.flag_contact_exist);
             if (flag_contact != null && flag_contact.getText().toString().equals(true + ""))
@@ -778,7 +774,9 @@ public class Main extends FragmentActivity {
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
+
     FragmentManager fragmentManager;
+
     private void selectItem(int position, int layout_screen, String title) {
         // update the main content by replacing fragments
         int layout = layout_screen;
@@ -833,33 +831,24 @@ public class Main extends FragmentActivity {
                 @Override
                 public void run() {
                     while (!fragment.isAdded())
-                    synchronized (this){
-                        try {
-                            wait(15);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                        synchronized (this) {
+                            try {
+                                wait(15);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
                     hndl.sendEmptyMessage(779);
                 }
             }).start();
         }
-
-        /*
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.content_frame, fragment).commitAllowingStateLoss();
-                }
-            }, 250);
-        } else{
-            Log.e("start", System.currentTimeMillis() + "");
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, fragment).commitAllowingStateLoss();
-            Log.e("end",System.currentTimeMillis()+"");
-        }*/
         exit = false;
+        View vf = getCurrentFocus();
+        if(vf!=null){
+        InputMethodManager imm = (InputMethodManager)getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(vf.getWindowToken(), 0);
+        }
     }
 
     @Override
@@ -1071,7 +1060,6 @@ public class Main extends FragmentActivity {
                 case R.layout.encrypt:
                     TextView contactChosen = (TextView) findViewById(R.id.contact_id_to_send);
                     EditText etMessage = (EditText) findViewById(R.id.message);
-                    ImageButton ibFile = (ImageButton) findViewById(R.id.add_file);
                     boolean clearedSomething = false;
                     if (etMessage.getText().length() > 0) {
                         clearedSomething = true;
@@ -1089,16 +1077,13 @@ public class Main extends FragmentActivity {
                     if (StaticVariables.fileContent != null) {
                         clearedSomething = true;
                         StaticVariables.fileContent = null;
-                        ibFile.setImageResource(R.drawable.ic_attachment_universal_small);
-                        ibFile.clearAnimation();
                     }
                     if (addFile != null && addFile.isAlive()) {
                         addFile.interrupt();
                         addFile = null;
                         clearedSomething = true;
-                        ibFile.setClickable(true);
+                        loadingFile = false;
                         StaticVariables.fileContent = null;
-                        ibFile.clearAnimation();
                     }
                     if (!clearedSomething && FragmentManagement.currentLayout == defaultScreen)
                         new prepareToExit();

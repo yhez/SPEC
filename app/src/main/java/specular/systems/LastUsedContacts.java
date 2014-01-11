@@ -1,6 +1,7 @@
 package specular.systems;
 
 import android.app.Activity;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -48,8 +49,12 @@ public class LastUsedContacts {
     }
 
     public void showIfNeeded(Activity a, View v) {
+        TextView tv = (TextView)a.findViewById(R.id.contact_id_to_send);
+        ViewPager vp = (ViewPager) a.findViewById(R.id.pager);
         if (StaticVariables.fullList.size() < StaticVariables.minContactSize
-                || lasts.length == 0 || lasts[0] == null) {
+                || lasts.length == 0 || lasts[0] == null
+                || (tv!=null&&tv.getText().toString().length()!=0)
+                || (vp!=null&&vp.getCurrentItem()==ContactsGroup.GROUPS)) {
             if (v != null)
                 v.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
             else {
@@ -59,7 +64,12 @@ public class LastUsedContacts {
             return;
         }
         final ViewGroup vg = (ViewGroup) a.findViewById(R.id.grid_lasts);
-        a.findViewById(R.id.frame_grid_last).setVisibility(View.VISIBLE);
+        if(vg==null)
+            return;
+        View vv = a.findViewById(R.id.frame_grid_last);
+        if(vv==null)
+            return;
+        vv.setVisibility(View.VISIBLE);
         vlc = new ViewLastContact[NUM_LASTS];
         for (int c = 0; c < NUM_LASTS; c++) {
             vlc[c] = new ViewLastContact((LinearLayout) ((GridLayout) a.findViewById(R.id.grid_lasts)).getChildAt(c));

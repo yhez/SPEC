@@ -155,6 +155,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
             });
         }
         imageView.setImageResource(R.drawable.empty);
+        imageView.setAlpha(0f);
         new Thread(new Runnable() {
             public void run() {
                 synchronized (this){
@@ -168,6 +169,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                 imageView.post(new Runnable() {
                     public void run() {
                         imageView.setImageBitmap(bitmap);
+                        imageView.animate().setDuration(500).alpha(1f).start();
                     }
                 });
             }

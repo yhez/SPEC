@@ -219,9 +219,6 @@ public class FragmentManagement extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(currentLayout,
                 container, false);
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
         if (StaticVariables.luc == null)
             StaticVariables.luc = new LastUsedContacts(getActivity());
         switch (currentLayout) {
@@ -449,6 +446,7 @@ public class FragmentManagement extends Fragment {
                     @Override
                     public void onPageSelected(int i) {
                         getActivity().invalidateOptionsMenu();
+                        StaticVariables.luc.showIfNeeded(getActivity(),null);
                     }
 
                     @Override
@@ -790,9 +788,9 @@ public class FragmentManagement extends Fragment {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(rootView.findViewById(R.id.message).getWindowToken(), 0);
         rootView.findViewById(R.id.list).setVisibility(View.GONE);
-        StaticVariables.luc.showIfNeeded(getActivity(), null);
         Contact cvc = ContactsDataSource.contactsDataSource.findContact(contactID);
         ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText(contactID + "");
+        StaticVariables.luc.showIfNeeded(getActivity(), null);
         ((TextView) rootView.findViewById(R.id.chosen_name)).setText(cvc.getContactName());
         ((TextView) rootView.findViewById(R.id.chosen_email)).setText(cvc.getEmail());
         ((ImageView) rootView.findViewById(R.id.chosen_icon)).setImageBitmap(cvc.getPhoto());
