@@ -42,9 +42,9 @@
     <string name="explain_button">Explain</string>
     <!--session check-->
     <string name="session_title">Session Info:</string>
-    <string name="session_try_again">Try sending a message again, the other guy has not sent you your secret session\n</string>
-    <string name="session_reset">session has reset because of a possible attack on you\n</string>
-    <string name="session_updated">session has updated but everything is ok\n</string>
+    <string name="session_try_again">Try sending the message again. You have not received a session ID from your contact\n</string>
+    <string name="session_reset">Session has been reset, due to a possible attack, problem\n</string>
+    <string name="session_updated">Session updated, everything is A OK\n</string>
     <string name="what_is_session">What is a Session?</string>
     <string name="session_explain">A session identifier or session token is a piece
         of data that is used in network communications to identify a session, a series of related
@@ -233,15 +233,15 @@
     <string name="time_created">Message time-stamp:\n</string>
     <string name="not_valid_change">Change not valid (length, format).</string>
     <string name="make_it_default">Make default?</string>
-    <string name="there_is_no_groups">no groups yet</string>
-    <string name="no_support_print">Your device does not support direct printing</string>
+    <string name="there_is_no_groups">No groups yet</string>
+    <string name="no_support_print">Your device does not support direct printing.</string>
     <string name="private_scan_explain">Place Private QR Key within the box to scan.</string>
-    <string name="private_key_loaded_from_qr">Key has loaded successfully</string>
-    <string name="group_mentor_hint">your group secret mentor</string>
-    <string name="group_name_hint">your group name</string>
-    <string name="group_location_for_messages_hint">your group messages address</string>
-    <string name="group_contacts">choose contacts for the group</string>
-    <string name="create_group">done</string>
+    <string name="private_key_loaded_from_qr">Key loaded successfully.</string>
+    <string name="group_mentor_hint">Group Lead</string>
+    <string name="group_name_hint">Group Name</string>
+    <string name="group_location_for_messages_hint">Group Address</string>
+    <string name="group_contacts">Choose group contacts</string>
+    <string name="create_group">START</string>
     <string name="default_app_click_to_remove">default app\nclick to remove</string>
 
     <string-array name="links">
