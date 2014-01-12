@@ -19,6 +19,7 @@ import specular.systems.FragmentManagement;
 import specular.systems.R;
 import specular.systems.StaticVariables;
 import specular.systems.Visual;
+import specular.systems.activities.Main;
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
@@ -65,7 +66,7 @@ public class AddContactDlg extends DialogFragment {
                             getActivity().invalidateOptionsMenu();
                         }
                         if (FragmentManagement.currentLayout == R.layout.encrypt) {
-                            StaticVariables.fragmentManagement.contactChosen(c.getId());
+                            Main.main.contactChosen(true,c.getId());
                         }
 
                     }

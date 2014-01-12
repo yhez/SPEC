@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:padding="@dimen/default_gap"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
         <EditText
+            android:id="@+id/session"
             android:textColor="@color/spec_black"
             android:imeOptions="flagNavigateNext"
             android:inputType="textShortMessage"
@@ -39,31 +34,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress" />
-
-        <TextView
-            android:layout_gravity="center"
-            android:padding="@dimen/default_gap"
-            android:textColor="@color/spec_black"
-            android:text="@string/group_contacts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-
+    <CheckBox
+        android:id="@+id/force"
+        android:button="@drawable/check_box"
+        android:text="force nfc"
+        android:layout_width="wrap_content"
+        android:textColor="@color/spec_black"
+        android:layout_height="wrap_content" />
+    <CheckBox
+        android:id="@+id/open"
+        android:button="@drawable/check_box"
+        android:text="open group"
+        android:textColor="@color/spec_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <Button
         style="?android:attr/borderlessButtonStyle"
         android:id="@+id/done"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
         android:text="@string/create_group"
         android:textColor="@color/spec_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
-    <ListView
-        android:layout_below="@id/ll"
-        android:layout_above="@id/done"
-        android:id="@id/list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</RelativeLayout>
+</LinearLayout>

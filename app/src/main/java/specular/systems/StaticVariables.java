@@ -18,6 +18,7 @@ public class StaticVariables {
     public static String currentText = "";
     //the complete list
     public static List<Contact> fullList;
+    public static List<Group> fullListG;
     public static byte[] fileContent;
     //from fragment
     public static FragmentManagement fragmentManagement;

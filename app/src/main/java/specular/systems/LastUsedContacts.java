@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import specular.systems.activities.Main;
+
 
 public class LastUsedContacts {
     final int NUM_LASTS = 4;
@@ -84,7 +86,7 @@ public class LastUsedContacts {
             vg2.getChildAt(0).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    StaticVariables.fragmentManagement.contactChosen(
+                    Main.main.contactChosen(true,
                             Long.parseLong(((TextView) vg2.getChildAt(2)).getText().toString()));
                 }
             });

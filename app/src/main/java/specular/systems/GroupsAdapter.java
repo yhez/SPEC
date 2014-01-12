@@ -1,7 +1,6 @@
 package specular.systems;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,66 +22,65 @@ import specular.systems.activities.Main;
 
 import static specular.systems.R.layout.edit_contact;
 
-public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filterable {
+public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
     public static final int EDIT = 1, SIMPLE = 2;
-    private static MySimpleArrayAdapter adapter;
-    public static boolean flagWait=false;
-    private static List<Contact> list;
+    private static GroupsAdapter adapter;
+    private static List<Group> list;
     int type;
     private Activity a;
 
-    public MySimpleArrayAdapter(Activity a, int type) {
+    public GroupsAdapter(Activity a, int type) {
         super(a, R.layout.list_row, list);
-        list = StaticVariables.fullList;
         this.a = a;
         this.type = type;
         adapter = this;
-        if (StaticVariables.fullList == null) {
-            ContactsDataSource.contactsDataSource = new ContactsDataSource(a);
-            StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
+        if (StaticVariables.fullListG == null) {
+            GroupDataSource.groupDataSource = new GroupDataSource(a);
+            StaticVariables.fullListG = GroupDataSource.groupDataSource.getAllGroups();
         }
+        list = StaticVariables.fullListG;
     }
 
-    public static MySimpleArrayAdapter getAdapter() {
+    public static GroupsAdapter getAdapter() {
         return adapter;
     }
 
-    public static void updateCont(Activity aa, Contact c) {
-        for (int a = 0; a < StaticVariables.fullList.size(); a++)
-            if (StaticVariables.fullList.get(a).getId() == c.getId()) {
-                StaticVariables.fullList.remove(a);
+    public static void updateCont(Activity aa, Group c) {
+        for (int a = 0; a < StaticVariables.fullListG.size(); a++)
+            if (StaticVariables.fullListG.get(a).getId() == c.getId()) {
+                StaticVariables.fullListG.remove(a);
                 break;
             }
-        StaticVariables.fullList.add(c);
+        StaticVariables.fullListG.add(c);
         if (adapter != null)
             refreshList(aa);
     }
 
     public static void removeCont(Activity a, int index) {
-        StaticVariables.fullList.remove(index);
+        StaticVariables.fullListG.remove(index);
         if (adapter != null)
             refreshList(a);
     }
 
-    public static void addCont(Activity a, Contact c) {
-        StaticVariables.fullList.add(c);
+    public static void addCont(Activity a, Group c) {
+        StaticVariables.fullListG.add(c);
         if (adapter != null)
             refreshList(a);
     }
 
     private static void refreshList(Activity a) {
-        list = StaticVariables.fullList;
-        Collections.sort(list, new Comparator<Contact>() {
+        list = StaticVariables.fullListG;
+        Collections.sort(list, new Comparator<Group>() {
             @Override
-            public int compare(Contact contact, Contact contact2) {
-                return (contact.getContactName().toLowerCase() + contact.getEmail().toLowerCase())
-                        .compareTo((contact2.getContactName().toLowerCase() + contact2.getEmail().toLowerCase()));
+            public int compare(Group contact, Group contact2) {
+                return (contact.getGroupName().toLowerCase() + contact.getEmail().toLowerCase())
+                        .compareTo((contact2.getGroupName().toLowerCase() + contact2.getEmail().toLowerCase()));
             }
         });
         if (FragmentManagement.currentLayout == R.layout.encrypt) {
             View v = a.findViewById(R.id.list);
             if (v != null)
-                if (StaticVariables.fullList.size() > 0) {
+                if (StaticVariables.fullListG.size() > 0) {
                     v.setVisibility(View.VISIBLE);
                     a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
                 } else {
@@ -95,8 +93,8 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
     }
 
     public static void showOriginal() {
-        if (list != StaticVariables.fullList) {
-            list = StaticVariables.fullList;
+        if (list != StaticVariables.fullListG) {
+            list = StaticVariables.fullListG;
             if (adapter != null)
                 adapter.notifyDataSetChanged();
         }
@@ -108,7 +106,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
     }
 
     @Override
-    public Contact getItem(int position) {
+    public Group getItem(int position) {
         return list.get(position);
     }
 
@@ -125,7 +123,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
             rowView = inflater.inflate(R.layout.list_row, parent, false);
         else
             rowView = inflater.inflate(R.layout.simple_list_row, parent, false);
-        final Contact c = list.get(position);
+        final Group c = list.get(position);
         TextView name = (TextView) rowView.findViewById(R.id.first_line);
         TextView email = (TextView) rowView.findViewById(R.id.sec_line);
         final ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
@@ -139,6 +137,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                     Fragment fragment = new FragmentManagement();
                     Bundle args = new Bundle();
                     FragmentManagement.currentLayout = edit_contact;
+                    args.putBoolean("groups",true);
                     args.putInt("index", position);
                     fragment.setArguments(args);
                     FragmentManager fragmentManager = Main.main.getSupportFragmentManager();
@@ -149,53 +148,14 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
             rowView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Main.main.contactChosen(true,c.getId());
+                    Main.main.contactChosen(false,c.getId());
                 }
             });
         }
-
-        if(flagWait){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (this){
-                        try {
-                            wait(1000);
-                            flagWait=false;
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }).start();
-            imageView.setVisibility(View.INVISIBLE);
-            imageView.setImageResource(R.drawable.empty);
-            imageView.setAlpha(0f);
-        new Thread(new Runnable() {
-            public void run() {
-                synchronized (this){
-                    try {
-                        wait(150);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                final Bitmap bitmap = c.getPhoto();
-                imageView.post(new Runnable() {
-                    public void run() {
-                        imageView.setVisibility(View.VISIBLE);
-                        imageView.setImageBitmap(bitmap);
-                        imageView.animate().setDuration(500).alpha(1f).start();
-                    }
-                });
-            }
-        }).start();
-    }
-        else
-            imageView.setImageBitmap(c.getPhoto());
+        imageView.setImageBitmap(c.getPhoto());
         email.setText(c.getEmail());
         email.setTypeface(FilesManagement.getOs(a));
-        name.setText(c.getContactName());
+        name.setText(c.getGroupName());
         name.setTypeface(FilesManagement.getOs(a));
         return rowView;
     }
@@ -210,7 +170,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                list = (List<Contact>) results.values;
+                list = (List<Group>) results.values;
                 updateContactList();
                 notifyDataSetChanged();
             }
@@ -218,12 +178,12 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
-                ArrayList<Contact> FilteredArrayNames = new ArrayList<Contact>();
+                ArrayList<Group> FilteredArrayNames = new ArrayList<Group>();
                 constraint = constraint.toString().toLowerCase();
-                for (int i = 0; i < StaticVariables.fullList.size(); i++) {
-                    String dataNames = StaticVariables.fullList.get(i).getEmail() + StaticVariables.fullList.get(i).getContactName();
+                for (int i = 0; i < StaticVariables.fullListG.size(); i++) {
+                    String dataNames = StaticVariables.fullListG.get(i).getEmail() + StaticVariables.fullListG.get(i).getGroupName();
                     if (dataNames.toLowerCase().contains(constraint.toString())) {
-                        FilteredArrayNames.add(StaticVariables.fullList.get(i));
+                        FilteredArrayNames.add(StaticVariables.fullListG.get(i));
                     }
                 }
                 results.values = FilteredArrayNames;
@@ -234,12 +194,12 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
 
     private void updateContactList() {
         if (isEmpty()) {
-            a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).setVisibility(View.GONE);
-            ((TextView) a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.no_contacts)).setText(R.string.no_result_filter);
-            a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+            a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).setVisibility(View.GONE);
+            ((TextView) a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts)).setText(R.string.no_result_filter);
+            a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
         } else {
-            a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.no_contacts).setVisibility(View.GONE);
-            a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).setVisibility(View.VISIBLE);
+            a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts).setVisibility(View.GONE);
+            a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).setVisibility(View.VISIBLE);
         }
     }
 }

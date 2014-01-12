@@ -3,7 +3,6 @@ package specular.systems;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -26,7 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,6 +33,7 @@ import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +58,7 @@ import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 public class FragmentManagement extends Fragment {
-    public static int currentLayout=-1;
+    public static int currentLayout = -1;
     final Thread checkHash = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -267,123 +266,245 @@ public class FragmentManagement extends Fragment {
                 });
                 break;
             case edit_contact:
+                boolean group = getArguments().getBoolean("groups", false);
                 int index = getArguments().getInt("index");
-                final Contact currContact = MySimpleArrayAdapter.getAdapter().getItem(index);
-                ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
-                        + currContact.getId());
-                ((TextView) rootView.findViewById(R.id.contact_name).
-                        findViewById(R.id.text_view)).setText(getString(R.string.edit_name) + "\t");
-                ((TextView) rootView.findViewById(R.id.contact_email).
-                        findViewById(R.id.text_view)).setText(getString(R.string.edit_email) + "\t");
-                if (currContact.getDefaultApp() != null) {
-                    Intent i = new Intent();
-                    i.setComponent(currContact.getDefaultApp());
-                    ResolveInfo rs = getActivity().getPackageManager().resolveActivity(i, 0);
-                    final ImageButton ibbb = (ImageButton) rootView.findViewById(R.id.default_app_send);
-                    ibbb.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
-                    rootView.findViewById(R.id.default_app_send_ll).setVisibility(View.VISIBLE);
-                    ibbb.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            currContact.update(null, getActivity());
-                            rootView.findViewById(R.id.default_app_send_ll).setVisibility(View.GONE);
-                        }
-                    });
-                }
-                final EditText etName = (EditText) rootView.findViewById(R.id.contact_name).findViewById(R.id.edit_text);
-                if (StaticVariables.edit == null)
-                    StaticVariables.edit = etName.getKeyListener();
-                etName.setText(currContact.getContactName());
-                etName.setKeyListener(null);
-                etName.setFocusable(false);
-                ((TextView) rootView.findViewById(R.id.orig_name))
-                        .setText(currContact.getContactName());
-                final EditText etEmail = (EditText) rootView.findViewById(R.id.contact_email).findViewById(R.id.edit_text);
-                etEmail.setText(currContact.getEmail());
-                etEmail.setKeyListener(null);
-                etEmail.setFocusable(false);
-                ((TextView) rootView.findViewById(R.id.orig_eamil))
-                        .setText(currContact.getEmail());
-                String sessions;
-                if (CryptMethods.privateExist())
-                    sessions = Session.toShow(currContact.getSession());
-                else
-                    sessions = Session.toHide();
-                ((TextView) rootView.findViewById(R.id.contact_session))
-                        .setText(sessions);
-                ImageButton ibb = (ImageButton) rootView.findViewById(R.id.contact_picture);
-                QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(currContact.getPublicKey(), 256);
-                Bitmap bitmap = null;
-                try {
-                    bitmap = qrCodeEncoder.encodeAsBitmap();
-                } catch (WriterException e) {
-                    e.printStackTrace();
-                }
-                ibb.setImageBitmap(bitmap);
-                TextView tvt = (TextView) rootView.findViewById(R.id.contact_pb);
-                tvt.setText(currContact.getPublicKey());
-                final ImageButton ib = (ImageButton) rootView.findViewById(R.id.contact_email)
-                        .findViewById(R.id.image_button);
-                rootView.findViewById(R.id.contact_email)
-                        .findViewById(R.id.image_button).setOnClickListener(
-                        new View.OnClickListener() {
+                if (group) {
+                    LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.group_details);
+                    ll.setVisibility(View.VISIBLE);
+                    final Group currContact = GroupsAdapter.getAdapter().getItem(index);
+                    String[] ownDet = currContact.getOwnerDetails();
+                    ((TextView) ll.findViewById(R.id.name)).setText(ownDet[0]);
+                    ((TextView) ll.findViewById(R.id.email)).setText(ownDet[1]);
+                    ((TextView) ll.findViewById(R.id.public_)).setText(ownDet[2]);
+                    ((TextView) ll.findViewById(R.id.limits)).setText("no nfc and no sharing this group");
+                    ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
+                            + currContact.getId());
+                    ((TextView) rootView.findViewById(R.id.contact_name).
+                            findViewById(R.id.text_view)).setText(getString(R.string.edit_name) + "\t");
+                    ((TextView) rootView.findViewById(R.id.contact_email).
+                            findViewById(R.id.text_view)).setText("address" + "\t");
+                    if (currContact.getDefaultApp() != null) {
+                        Intent i = new Intent();
+                        i.setComponent(currContact.getDefaultApp());
+                        ResolveInfo rs = getActivity().getPackageManager().resolveActivity(i, 0);
+                        final ImageButton ibbb = (ImageButton) rootView.findViewById(R.id.default_app_send);
+                        ibbb.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
+                        rootView.findViewById(R.id.default_app_send_ll).setVisibility(View.VISIBLE);
+                        ibbb.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                if (etEmail.getKeyListener() == null) {
-                                    Visual.edit(getActivity(), etEmail, ib);
-                                    etEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                                    etEmail.setSelection(etEmail.getText().length());
-                                } else {
-                                    String email = etEmail.getText().toString();
-                                    String origEmail = ((TextView) rootView.findViewById(R.id.orig_eamil)).getText()
-                                            .toString();
-                                    if (!email.equals(origEmail))
-                                        if (email.length() > 2) {
-                                            currContact.update(getActivity(), null, email, null, null);
-                                            ((TextView) rootView.findViewById(R.id.orig_eamil)).setText(email);
-                                        } else {
-                                            etEmail.setText(origEmail);
-                                            Toast t = Toast.makeText(getActivity(), R.string.not_valid_change, Toast.LENGTH_LONG);
-                                            t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                                            t.show();
-                                        }
-                                    Visual.edit(getActivity(), etEmail, ib);
+                                currContact.update(null, getActivity());
+                                rootView.findViewById(R.id.default_app_send_ll).setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                    final EditText etName = (EditText) rootView.findViewById(R.id.contact_name).findViewById(R.id.edit_text);
+                    if (StaticVariables.edit == null)
+                        StaticVariables.edit = etName.getKeyListener();
+                    etName.setText(currContact.getGroupName());
+                    etName.setKeyListener(null);
+                    etName.setFocusable(false);
+                    ((TextView) rootView.findViewById(R.id.orig_name))
+                            .setText(currContact.getGroupName());
+                    final EditText etEmail = (EditText) rootView.findViewById(R.id.contact_email).findViewById(R.id.edit_text);
+                    etEmail.setText(currContact.getEmail());
+                    etEmail.setKeyListener(null);
+                    etEmail.setFocusable(false);
+                    ((TextView) rootView.findViewById(R.id.orig_eamil))
+                            .setText(currContact.getEmail());
+                    ((TextView) rootView.findViewById(R.id.contact_session))
+                            .setText(currContact.getMentor());
+                    ImageButton ibb = (ImageButton) rootView.findViewById(R.id.contact_picture);
+                    QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(currContact.getPublicKey(), 256);
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = qrCodeEncoder.encodeAsBitmap();
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                    }
+                    ibb.setImageBitmap(bitmap);
+                    TextView tvt = (TextView) rootView.findViewById(R.id.contact_pb);
+                    tvt.setText(currContact.getPublicKey());
+                    final ImageButton ib = (ImageButton) rootView.findViewById(R.id.contact_email)
+                            .findViewById(R.id.image_button);
+                    rootView.findViewById(R.id.contact_email)
+                            .findViewById(R.id.image_button).setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (etEmail.getKeyListener() == null) {
+                                        Visual.edit(getActivity(), etEmail, ib);
+                                        etEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                                        etEmail.setSelection(etEmail.getText().length());
+                                    } else {
+                                        String email = etEmail.getText().toString();
+                                        String origEmail = ((TextView) rootView.findViewById(R.id.orig_eamil)).getText()
+                                                .toString();
+                                        if (!email.equals(origEmail))
+                                            if (email.length() > 2) {
+                                                currContact.update(getActivity(), null, email, null, null);
+                                                ((TextView) rootView.findViewById(R.id.orig_eamil)).setText(email);
+                                            } else {
+                                                etEmail.setText(origEmail);
+                                                Toast t = Toast.makeText(getActivity(), R.string.not_valid_change, Toast.LENGTH_LONG);
+                                                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                                t.show();
+                                            }
+                                        Visual.edit(getActivity(), etEmail, ib);
+                                    }
                                 }
                             }
-                        }
-                );
-                rootView.findViewById(R.id.contact_name)
-                        .findViewById(R.id.image_button).setOnClickListener(
-                        new View.OnClickListener() {
+                    );
+                    rootView.findViewById(R.id.contact_name)
+                            .findViewById(R.id.image_button).setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    ImageButton ib = (ImageButton) getActivity()
+                                            .findViewById(R.id.contact_name)
+                                            .findViewById(R.id.image_button);
+                                    if (etName.getKeyListener() == null) {
+                                        Visual.edit(getActivity(), etName, ib);
+                                        etName.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                                        etName.setSelection(etName.getText().length());
+                                    } else {
+                                        String origName = ((TextView) rootView.findViewById(R.id.orig_name)).getText()
+                                                .toString();
+                                        String name = etName.getText().toString();
+                                        if (!name.equals(origName))
+                                            if (name.length() > 2) {
+                                                currContact.update(getActivity(), name, null, null, null);
+                                                ((TextView) rootView.findViewById(R.id.orig_name)).setText(name);
+                                            } else {
+                                                etName.setText(origName);
+                                                Toast t = Toast.makeText(getActivity(), R.string.not_valid_change,
+                                                        Toast.LENGTH_LONG);
+                                                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                                t.show();
+                                            }
+                                        Visual.edit(getActivity(), etName, ib);
+                                    }
+                                }
+                            }
+                    );
+                } else {
+                    final Contact currContact = MySimpleArrayAdapter.getAdapter().getItem(index);
+                    ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
+                            + currContact.getId());
+                    ((TextView) rootView.findViewById(R.id.contact_name).
+                            findViewById(R.id.text_view)).setText(getString(R.string.edit_name) + "\t");
+                    ((TextView) rootView.findViewById(R.id.contact_email).
+                            findViewById(R.id.text_view)).setText(getString(R.string.edit_email) + "\t");
+                    if (currContact.getDefaultApp() != null) {
+                        Intent i = new Intent();
+                        i.setComponent(currContact.getDefaultApp());
+                        ResolveInfo rs = getActivity().getPackageManager().resolveActivity(i, 0);
+                        final ImageButton ibbb = (ImageButton) rootView.findViewById(R.id.default_app_send);
+                        ibbb.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
+                        rootView.findViewById(R.id.default_app_send_ll).setVisibility(View.VISIBLE);
+                        ibbb.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                ImageButton ib = (ImageButton) getActivity()
-                                        .findViewById(R.id.contact_name)
-                                        .findViewById(R.id.image_button);
-                                if (etName.getKeyListener() == null) {
-                                    Visual.edit(getActivity(), etName, ib);
-                                    etName.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                                    etName.setSelection(etName.getText().length());
-                                } else {
-                                    String origName = ((TextView) rootView.findViewById(R.id.orig_name)).getText()
-                                            .toString();
-                                    String name = etName.getText().toString();
-                                    if (!name.equals(origName))
-                                        if (name.length() > 2) {
-                                            currContact.update(getActivity(), name, null, null, null);
-                                            ((TextView) rootView.findViewById(R.id.orig_name)).setText(name);
-                                        } else {
-                                            etName.setText(origName);
-                                            Toast t = Toast.makeText(getActivity(), R.string.not_valid_change,
-                                                    Toast.LENGTH_LONG);
-                                            t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                                            t.show();
-                                        }
-                                    Visual.edit(getActivity(), etName, ib);
+                                currContact.update(null, getActivity());
+                                rootView.findViewById(R.id.default_app_send_ll).setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                    final EditText etName = (EditText) rootView.findViewById(R.id.contact_name).findViewById(R.id.edit_text);
+                    if (StaticVariables.edit == null)
+                        StaticVariables.edit = etName.getKeyListener();
+                    etName.setText(currContact.getContactName());
+                    etName.setKeyListener(null);
+                    etName.setFocusable(false);
+                    ((TextView) rootView.findViewById(R.id.orig_name))
+                            .setText(currContact.getContactName());
+                    final EditText etEmail = (EditText) rootView.findViewById(R.id.contact_email).findViewById(R.id.edit_text);
+                    etEmail.setText(currContact.getEmail());
+                    etEmail.setKeyListener(null);
+                    etEmail.setFocusable(false);
+                    ((TextView) rootView.findViewById(R.id.orig_eamil))
+                            .setText(currContact.getEmail());
+                    String sessions;
+                    if (CryptMethods.privateExist())
+                        sessions = Session.toShow(currContact.getSession());
+                    else
+                        sessions = Session.toHide();
+                    ((TextView) rootView.findViewById(R.id.contact_session))
+                            .setText(sessions);
+                    ImageButton ibb = (ImageButton) rootView.findViewById(R.id.contact_picture);
+                    QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(currContact.getPublicKey(), 256);
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = qrCodeEncoder.encodeAsBitmap();
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                    }
+                    ibb.setImageBitmap(bitmap);
+                    TextView tvt = (TextView) rootView.findViewById(R.id.contact_pb);
+                    tvt.setText(currContact.getPublicKey());
+                    final ImageButton ib = (ImageButton) rootView.findViewById(R.id.contact_email)
+                            .findViewById(R.id.image_button);
+                    rootView.findViewById(R.id.contact_email)
+                            .findViewById(R.id.image_button).setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (etEmail.getKeyListener() == null) {
+                                        Visual.edit(getActivity(), etEmail, ib);
+                                        etEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                                        etEmail.setSelection(etEmail.getText().length());
+                                    } else {
+                                        String email = etEmail.getText().toString();
+                                        String origEmail = ((TextView) rootView.findViewById(R.id.orig_eamil)).getText()
+                                                .toString();
+                                        if (!email.equals(origEmail))
+                                            if (email.length() > 2) {
+                                                currContact.update(getActivity(), null, email, null, null);
+                                                ((TextView) rootView.findViewById(R.id.orig_eamil)).setText(email);
+                                            } else {
+                                                etEmail.setText(origEmail);
+                                                Toast t = Toast.makeText(getActivity(), R.string.not_valid_change, Toast.LENGTH_LONG);
+                                                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                                t.show();
+                                            }
+                                        Visual.edit(getActivity(), etEmail, ib);
+                                    }
                                 }
                             }
-                        }
-                );
+                    );
+                    rootView.findViewById(R.id.contact_name)
+                            .findViewById(R.id.image_button).setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    ImageButton ib = (ImageButton) getActivity()
+                                            .findViewById(R.id.contact_name)
+                                            .findViewById(R.id.image_button);
+                                    if (etName.getKeyListener() == null) {
+                                        Visual.edit(getActivity(), etName, ib);
+                                        etName.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                                        etName.setSelection(etName.getText().length());
+                                    } else {
+                                        String origName = ((TextView) rootView.findViewById(R.id.orig_name)).getText()
+                                                .toString();
+                                        String name = etName.getText().toString();
+                                        if (!name.equals(origName))
+                                            if (name.length() > 2) {
+                                                currContact.update(getActivity(), name, null, null, null);
+                                                ((TextView) rootView.findViewById(R.id.orig_name)).setText(name);
+                                            } else {
+                                                etName.setText(origName);
+                                                Toast t = Toast.makeText(getActivity(), R.string.not_valid_change,
+                                                        Toast.LENGTH_LONG);
+                                                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                                t.show();
+                                            }
+                                        Visual.edit(getActivity(), etName, ib);
+                                    }
+                                }
+                            }
+                    );
+                }
                 break;
             case me:
                 if (FilesManagement.getMyQRPublicKey(getActivity()) != null)
@@ -446,7 +567,7 @@ public class FragmentManagement extends Fragment {
                     @Override
                     public void onPageSelected(int i) {
                         getActivity().invalidateOptionsMenu();
-                        StaticVariables.luc.showIfNeeded(getActivity(),null);
+                        StaticVariables.luc.showIfNeeded(getActivity(), null);
                     }
 
                     @Override
@@ -542,7 +663,7 @@ public class FragmentManagement extends Fragment {
             case decrypt:
                 break;
             case wait_nfc_to_write:
-                QRCodeEncoder qr = new QRCodeEncoder(CryptMethods.getPublicTmp(),  256);
+                QRCodeEncoder qr = new QRCodeEncoder(CryptMethods.getPublicTmp(), 256);
                 try {
                     ((ImageView) rootView.findViewById(R.id.image_public)).setImageBitmap(qr.encodeAsBitmap());
                 } catch (WriterException e) {
@@ -688,7 +809,7 @@ public class FragmentManagement extends Fragment {
         //todo for some reason this font doesn't act properly in android 4.4
         //if(StaticVariables.currentLayout==me)
         //    ((TextView)rootView.findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
-        rootView.animate().setDuration(1000).alpha(1).start();
+        rootView.animate().setDuration(500).alpha(1).start();
         Main.main.invalidateOptionsMenu();
         return rootView;
     }
@@ -781,39 +902,5 @@ public class FragmentManagement extends Fragment {
             return false;
         String[] parse2 = parse[1].split("\\.");
         return !(parse2.length < 2 || parse2[0].length() < 2 || parse2[1].length() < 2);
-    }
-
-    public void contactChosen(long contactID) {
-        getActivity().invalidateOptionsMenu();
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(rootView.findViewById(R.id.message).getWindowToken(), 0);
-        rootView.findViewById(R.id.list).setVisibility(View.GONE);
-        Contact cvc = ContactsDataSource.contactsDataSource.findContact(contactID);
-        ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText(contactID + "");
-        StaticVariables.luc.showIfNeeded(getActivity(), null);
-        ((TextView) rootView.findViewById(R.id.chosen_name)).setText(cvc.getContactName());
-        ((TextView) rootView.findViewById(R.id.chosen_email)).setText(cvc.getEmail());
-        ((ImageView) rootView.findViewById(R.id.chosen_icon)).setImageBitmap(cvc.getPhoto());
-        EditText myEditText = (EditText) rootView.findViewById(R.id.message);
-        myEditText.requestFocus();
-        ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
-                .showSoftInput(myEditText, InputMethodManager.SHOW_FORCED);
-        final View cont = rootView.findViewById(R.id.en_contact);
-        cont.setVisibility(View.VISIBLE);
-        cont.setAlpha(1);
-        rootView.findViewById(R.id.x).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cont.setVisibility(View.GONE);
-                ((TextView) rootView.findViewById(R.id.contact_id_to_send)).setText("");
-                EditText myEditText = (EditText) rootView.findViewById(R.id.message);
-                rootView.findViewById(R.id.message).clearFocus();
-                ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
-                        .hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
-                rootView.findViewById(R.id.list).setVisibility(View.VISIBLE);
-                StaticVariables.luc.showIfNeeded(getActivity(), null);
-                getActivity().invalidateOptionsMenu();
-            }
-        });
     }
 }

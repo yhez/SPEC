@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 
 
 public class ContactsGroup extends FragmentStatePagerAdapter {
-    public static final int CONTACTS = 0, GROUPS = 1;
+    public static final int CONTACTS = 97978, GROUPS = 97979;
 
     public ContactsGroup(FragmentManager fm) {
         super(fm);
@@ -21,7 +20,7 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        Fragment fragment = new PageList(i);
+        Fragment fragment = new PageList(i==0?CONTACTS:GROUPS);
         return fragment;
     }
 
@@ -32,7 +31,7 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int p) {
-        return (p == CONTACTS ? "Contacts" : "Groups");
+        return (p == 0 ? "Contacts" : "Groups");
     }
 
     public static class PageList extends Fragment {
@@ -50,6 +49,7 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
             TextView tv = (TextView) rootView.findViewById(R.id.no_contacts);
             ListView lv = (ListView) rootView.findViewById(R.id.list);
             if (currentLayout == CONTACTS) {
+                rootView.setId(CONTACTS);
                 if (StaticVariables.fullList.size() == 0) {
                     tv.setVisibility(View.VISIBLE);
                     lv.setVisibility(View.GONE);
@@ -60,9 +60,17 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
                     tv.setVisibility(View.GONE);
                 }
             } else if (currentLayout == GROUPS) {
-                tv.setText(R.string.there_is_no_groups);
-                tv.setVisibility(View.VISIBLE);
-                lv.setVisibility(View.GONE);
+                rootView.setId(GROUPS);
+                if(StaticVariables.fullListG.size()==0){
+                    tv.setText(R.string.there_is_no_groups);
+                    tv.setVisibility(View.VISIBLE);
+                    lv.setVisibility(View.GONE);
+                }else{
+                    lv.setAdapter(new GroupsAdapter(getActivity(),GroupsAdapter.EDIT));
+                    GroupsAdapter.showOriginal();
+                    lv.setVisibility(View.VISIBLE);
+                    tv.setVisibility(View.GONE);
+                }
             }
             Visual.setAllFonts(getActivity(), (ViewGroup) rootView);
             return rootView;

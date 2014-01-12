@@ -11,34 +11,38 @@ import java.util.Comparator;
 import java.util.List;
 
 public class GroupDataSource {
-    //form main
     public static GroupDataSource groupDataSource;
-    private final String[] allColumns = {GroupDB.COLUMN_ID,
-            GroupDB.COLUMN_GROUP_NAME, GroupDB.COLUMN_ADDRESS,
-            GroupDB.COLUMN_GROUP_ADDED_DATE, GroupDB.COLUMN_LAST_MSG,
-            GroupDB.MSG_I_SEND, GroupDB.MSG_RECEIVED,
-            GroupDB.COLUMN_PUBLIC_KEY, GroupDB.COLUMN_SESSION,
-            GroupDB.COLUMN_DEFAULT_APP};
-    private final GroupDB dbHelper;
+    private final String[] allColumns = {MySQLiteHelper.COLUMN_ID,
+            MySQLiteHelper.COLUMN_GROUP_NAME, MySQLiteHelper.COLUMN_ADDRESS,
+            MySQLiteHelper.COLUMN_SESSION, MySQLiteHelper.COLUMN_PUBLIC_KEY,
+            MySQLiteHelper.COLUMN_PRIVATE_KEY, MySQLiteHelper.FORCE_NFC,
+            MySQLiteHelper.PRIVATE_GROUP, MySQLiteHelper.OWNER_NAME,MySQLiteHelper.OWNER_EMAIL,
+            MySQLiteHelper.OWNER_PUBLIC, MySQLiteHelper.COLUMN_DEFAULT_APP};
+    private final MySQLiteHelper dbHelper;
     // Database fields
     private SQLiteDatabase database;
 
     public GroupDataSource(Activity a) {
-        dbHelper = new GroupDB(a);
+        dbHelper = new MySQLiteHelper(a);
         database = dbHelper.getReadableDatabase();
         dbHelper.close();
     }
 
     public long createGroup(Activity a, Group group) {
         ContentValues values = new ContentValues();
-        values.put(GroupDB.COLUMN_GROUP_NAME, group.getGroupName());
-        values.put(GroupDB.COLUMN_ADDRESS, group.getEmail());
-        values.put(GroupDB.COLUMN_PUBLIC_KEY, group.getPublicKey());
-        values.put(GroupDB.COLUMN_SESSION, group.getMentor());
-        values.put(GroupDB.COLUMN_DEFAULT_APP, "");
+        values.put(MySQLiteHelper.COLUMN_GROUP_NAME, group.getGroupName());
+        values.put(MySQLiteHelper.COLUMN_ADDRESS, group.getEmail());
+        values.put(MySQLiteHelper.COLUMN_PUBLIC_KEY, group.getPublicKey());
+        values.put(MySQLiteHelper.COLUMN_SESSION, group.getMentor());
+        values.put(MySQLiteHelper.COLUMN_DEFAULT_APP, "");
+        values.put(MySQLiteHelper.OWNER_NAME,group.ownerName);
+        values.put(MySQLiteHelper.OWNER_EMAIL,group.ownerEmail);
+        values.put(MySQLiteHelper.OWNER_PUBLIC,group.ownerPublicKey);
+        values.put(MySQLiteHelper.FORCE_NFC,group.noPrivateOnDevice);
+        values.put(MySQLiteHelper.PRIVATE_GROUP, group.dontAllowNewMembers);
 
         database = dbHelper.getWritableDatabase();
-        long l = database.insert(GroupDB.TABLE_GROUP, null,
+        long l = database.insert(MySQLiteHelper.TABLE_GROUP, null,
                 values);
         dbHelper.close();
         //todo update user list
@@ -54,7 +58,7 @@ public class GroupDataSource {
                 break;
             }
         database = dbHelper.getWritableDatabase();
-        database.delete(GroupDB.TABLE_GROUP, GroupDB.COLUMN_ID
+        database.delete(MySQLiteHelper.TABLE_GROUP, MySQLiteHelper.COLUMN_ID
                 + " = " + id, null);
         dbHelper.close();
         if (!(position < 0)) {
@@ -66,34 +70,34 @@ public class GroupDataSource {
                          String publicKey, String session) {
         ContentValues cv = new ContentValues();
         if (groupName != null)
-            cv.put(GroupDB.COLUMN_GROUP_NAME, groupName);
+            cv.put(MySQLiteHelper.COLUMN_GROUP_NAME, groupName);
         if (email != null)
-            cv.put(GroupDB.COLUMN_ADDRESS, email);
+            cv.put(MySQLiteHelper.COLUMN_ADDRESS, email);
         if (publicKey != null)
-            cv.put(GroupDB.COLUMN_PUBLIC_KEY, publicKey);
+            cv.put(MySQLiteHelper.COLUMN_PUBLIC_KEY, publicKey);
         if (session != null)
-            cv.put(GroupDB.COLUMN_SESSION, session);
+            cv.put(MySQLiteHelper.COLUMN_SESSION, session);
         database = dbHelper.getWritableDatabase();
-        database.update(GroupDB.TABLE_GROUP, cv, "_id " + "=" + id, null);
+        database.update(MySQLiteHelper.TABLE_GROUP, cv, "_id " + "=" + id, null);
         database.close();
     }
 
     public void updateDB(long id, long last, int received) {
         ContentValues cv = new ContentValues();
         if (last > 0)
-            cv.put(GroupDB.COLUMN_LAST_MSG, last);
+            cv.put(MySQLiteHelper.COLUMN_LAST_MSG, last);
         if (received > 0)
-            cv.put(GroupDB.MSG_RECEIVED, received);
+            cv.put(MySQLiteHelper.MSG_RECEIVED, received);
         database = dbHelper.getWritableDatabase();
-        database.update(GroupDB.TABLE_GROUP, cv, "_id " + "=" + id, null);
+        database.update(MySQLiteHelper.TABLE_GROUP, cv, "_id " + "=" + id, null);
         database.close();
     }
 
     public void updateDB(long id, int sent) {
         ContentValues cv = new ContentValues();
-        cv.put(GroupDB.MSG_I_SEND, sent);
+        cv.put(MySQLiteHelper.MSG_I_SEND, sent);
         database = dbHelper.getWritableDatabase();
-        database.update(GroupDB.TABLE_GROUP, cv, "_id " + "=" + id, null);
+        database.update(MySQLiteHelper.TABLE_GROUP, cv, "_id " + "=" + id, null);
         database.close();
     }
 
@@ -101,19 +105,18 @@ public class GroupDataSource {
     public List<Group> getAllGroups() {
         database = dbHelper.getReadableDatabase();
         List<Group> groups = new ArrayList<Group>();
-        Cursor cursor = database.query(GroupDB.TABLE_GROUP,
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_GROUP,
                 allColumns, null, null, null, null, null);
         cursor.moveToFirst();
-       /* while (!cursor.isAfterLast()) {
+        while (!cursor.isAfterLast()) {
             Group group = new Group(cursor.getLong(0), cursor.getString(1)
-                    , cursor.getString(2), cursor.getInt(3)
-                    , cursor.getLong(4), cursor.getInt(5)
-                    , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8), cursor.getString(9));
+                    , cursor.getString(2), cursor.getString(3)
+                    , cursor.getString(4),cursor.getBlob(5)
+                    , cursor.getInt(6)==0, cursor.getInt(7)==0,cursor.getString(8)
+                    ,cursor.getString(9),cursor.getString(10),cursor.getString(11));
             groups.add(group);
             cursor.moveToNext();
-        }*/
-        // Make sure to close the cursor
+        }
         cursor.close();
         dbHelper.close();
         Collections.sort(groups, new Comparator<Group>() {
@@ -128,9 +131,32 @@ public class GroupDataSource {
 
     public void updateDB(long id, String defaultApp) {
         ContentValues cv = new ContentValues();
-        cv.put(GroupDB.COLUMN_DEFAULT_APP, defaultApp);
+        cv.put(MySQLiteHelper.COLUMN_DEFAULT_APP, defaultApp);
         database = dbHelper.getWritableDatabase();
-        database.update(GroupDB.TABLE_GROUP, cv, "_id " + "=" + id, null);
+        database.update(MySQLiteHelper.TABLE_GROUP, cv, "_id " + "=" + id, null);
         database.close();
+    }
+    public Group findGroup(long id) {
+        //trying find on lost before going to db
+        if (StaticVariables.fullList != null)
+            for (Group c : StaticVariables.fullListG)
+                if (c.getId() == id)
+                    return c;
+        database = dbHelper.getReadableDatabase();
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_GROUP,
+                allColumns, MySQLiteHelper.COLUMN_ID + " = " + id, null, null,
+                null, null);
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            Group c = new Group(cursor.getLong(0), cursor.getString(1)
+                    , cursor.getString(2), cursor.getString(3)
+                    , cursor.getString(4),cursor.getBlob(5)
+                    , cursor.getInt(6)==0, cursor.getInt(7)==0,cursor.getString(8)
+                    ,cursor.getString(9),cursor.getString(10),cursor.getString(11));
+            dbHelper.close();
+            return c;
+        }
+        dbHelper.close();
+        return null;
     }
 }
