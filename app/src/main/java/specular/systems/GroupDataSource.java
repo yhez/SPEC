@@ -35,11 +35,12 @@ public class GroupDataSource {
         values.put(MySQLiteHelper.COLUMN_PUBLIC_KEY, group.getPublicKey());
         values.put(MySQLiteHelper.COLUMN_SESSION, group.getMentor());
         values.put(MySQLiteHelper.COLUMN_DEFAULT_APP, "");
-        values.put(MySQLiteHelper.OWNER_NAME,group.ownerName);
-        values.put(MySQLiteHelper.OWNER_EMAIL,group.ownerEmail);
-        values.put(MySQLiteHelper.OWNER_PUBLIC,group.ownerPublicKey);
-        values.put(MySQLiteHelper.FORCE_NFC,group.noPrivateOnDevice);
-        values.put(MySQLiteHelper.PRIVATE_GROUP, group.dontAllowNewMembers);
+        String[] own = group.getOwnerDetails();
+        values.put(MySQLiteHelper.OWNER_NAME,own[0]);
+        values.put(MySQLiteHelper.OWNER_EMAIL,own[1]);
+        values.put(MySQLiteHelper.OWNER_PUBLIC,own[2]);
+        values.put(MySQLiteHelper.FORCE_NFC,group.getLimitNFC());
+        values.put(MySQLiteHelper.PRIVATE_GROUP, group.getLimitInvite());
 
         database = dbHelper.getWritableDatabase();
         long l = database.insert(MySQLiteHelper.TABLE_GROUP, null,

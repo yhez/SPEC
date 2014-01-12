@@ -31,13 +31,12 @@ public class GroupCreate extends DialogFragment {
                 CryptMethods.createKeys();
                 String pub = CryptMethods.getPublicTmp();
                 byte[] pvt = CryptMethods.getPrivateTmp();
-                Group g = new Group(getActivity(),
+               new Group(getActivity(),
                         ((EditText)v.findViewById(R.id.name)).getText().toString(),
                         ((EditText)v.findViewById(R.id.email)).getText().toString(),
                         ((EditText)v.findViewById(R.id.session)).getText().toString(),
                         pub,pvt,((CheckBox)v.findViewById(R.id.force)).isChecked(),
                         ((CheckBox)v.findViewById(R.id.open)).isChecked());
-                byte[] b = g.getLightGroupToShare();
                 GroupCreate.this.getDialog().cancel();
             }
         });

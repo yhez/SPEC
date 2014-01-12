@@ -11,21 +11,21 @@ import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
 public class Group {
-    long id;
+    private long id;
     public static List<Group> list;
-    byte[] encryptedGroup;
-    String defaultAPP;
-    String ownerName;
-    String ownerEmail;
-    String ownerPublicKey;
-    boolean noPrivateOnDevice;
-    String name;
-    String locationForMessages;
-    String session;
-    String publicKey;
-    boolean dontAllowNewMembers;
-    String encryptedPrivateFileNameForGroup;
-    byte[] privateKey;
+    private byte[] encryptedGroup;
+    private String defaultAPP;
+    private String ownerName;
+    private String ownerEmail;
+    private String ownerPublicKey;
+    private boolean noPrivateOnDevice;
+    private String name;
+    private String locationForMessages;
+    private String session;
+    private String publicKey;
+    private boolean dontAllowNewMembers;
+    private String encryptedPrivateFileNameForGroup;
+    private byte[] privateKey;
 
     //creates new from nothing
     public Group(Activity a, String name, String locationForMessages, String groupMentor, String publicKey,
@@ -57,6 +57,7 @@ public class Group {
         this.name = name;
         this.locationForMessages = locationForMessages;
         this.session = groupMentor;
+        this.privateKey=privatek;
         this.publicKey = publicKey;
         this.ownerName = ownerName;
         this.ownerEmail = ownerEmail;
@@ -92,7 +93,12 @@ public class Group {
     public void encrypt() {
 
     }
-
+    public boolean getLimitNFC(){
+        return noPrivateOnDevice;
+    }
+    public boolean getLimitInvite(){
+        return dontAllowNewMembers;
+    }
     public String getGroupName() {
         return name;
     }

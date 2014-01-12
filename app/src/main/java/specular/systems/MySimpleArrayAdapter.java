@@ -26,7 +26,6 @@ import static specular.systems.R.layout.edit_contact;
 public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filterable {
     public static final int EDIT = 1, SIMPLE = 2;
     private static MySimpleArrayAdapter adapter;
-    public static boolean flagWait=false;
     private static List<Contact> list;
     int type;
     private Activity a;
@@ -153,46 +152,18 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                 }
             });
         }
-
-        if(flagWait){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (this){
-                        try {
-                            wait(1000);
-                            flagWait=false;
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }).start();
-            imageView.setVisibility(View.INVISIBLE);
-            imageView.setImageResource(R.drawable.empty);
-            imageView.setAlpha(0f);
         new Thread(new Runnable() {
             public void run() {
-                synchronized (this){
-                    try {
-                        wait(150);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
                 final Bitmap bitmap = c.getPhoto();
-                imageView.post(new Runnable() {
+                imageView.postDelayed(new Runnable() {
                     public void run() {
                         imageView.setVisibility(View.VISIBLE);
                         imageView.setImageBitmap(bitmap);
                         imageView.animate().setDuration(500).alpha(1f).start();
                     }
-                });
+                },250);
             }
         }).start();
-    }
-        else
-            imageView.setImageBitmap(c.getPhoto());
         email.setText(c.getEmail());
         email.setTypeface(FilesManagement.getOs(a));
         name.setText(c.getContactName());

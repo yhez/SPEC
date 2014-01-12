@@ -62,6 +62,7 @@ import specular.systems.Dialogs.DeleteContactDialog;
 import specular.systems.Dialogs.ExplainDialog;
 import specular.systems.Dialogs.GenerateKeys;
 import specular.systems.Dialogs.GroupCreate;
+import specular.systems.Dialogs.InviteToGroup;
 import specular.systems.Dialogs.NotImplemented;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.Dialogs.Response;
@@ -870,8 +871,6 @@ public class Main extends FragmentActivity {
         View v = findViewById(FragmentManagement.currentLayout);
         if (v != null) v.animate().setDuration(100).alpha(0).start();
         final Fragment fragment = new FragmentManagement();
-        if(FragmentManagement.currentLayout==R.layout.encrypt)
-            MySimpleArrayAdapter.flagWait=true;
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commitAllowingStateLoss();
         if (mDrawerLayout.isDrawerOpen(mDrawerList))
             mDrawerLayout.closeDrawer(mDrawerList);
@@ -1361,6 +1360,21 @@ public class Main extends FragmentActivity {
             case R.id.contact_picture:
                 ContactQR cqr = new ContactQR();
                 cqr.show(getFragmentManager(), "cqr");
+                break;
+            case R.id.invite:
+                Group grp = GroupDataSource
+                        .groupDataSource
+                        .findGroup(Long.parseLong(((TextView) findViewById(R.id.contact_id))
+                                .getText().toString()));
+                InviteToGroup ing = new InviteToGroup(grp);
+                ing.show(getFragmentManager(),"ing");
+                break;
+            case R.id.add_to_contact:
+                String pbk = ((TextView)findViewById(R.id.public_)).getText().toString();
+                String name = ((TextView)findViewById(R.id.name)).getText().toString();
+                String email = ((TextView)findViewById(R.id.email)).getText().toString();
+                StaticVariables.fileContactCard = new ContactCard(this,pbk,email,name);
+                openByFile();
                 break;
         }
     }

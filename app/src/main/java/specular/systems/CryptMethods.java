@@ -204,6 +204,24 @@ public class CryptMethods {
         }
     }
 
+    public static byte[] encrypyt(byte[] b,String publicKey){
+        if (notInit) {
+            addProviders();
+            notInit = false;
+        }
+        try {
+            PublicKey frndPbK = KeyFactory.getInstance("ECIES", "FlexiEC")
+                    .generatePublic(new X509EncodedKeySpec(Visual.hex2bin(publicKey)));
+            Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
+            IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",
+                    "HmacSHA1", null, null);
+            cipher.init(Cipher.ENCRYPT_MODE, frndPbK, iesParams);
+            return cipher.doFinal(b);
+        } catch (Exception ignore) {
+            ignore.printStackTrace();
+            return null;
+        }
+    }
     private static PrivateKey formatPrivate(byte[] p) {
         if (notInit) {
             addProviders();

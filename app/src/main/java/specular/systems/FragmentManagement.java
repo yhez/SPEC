@@ -28,6 +28,7 @@ import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
@@ -276,7 +277,10 @@ public class FragmentManagement extends Fragment {
                     ((TextView) ll.findViewById(R.id.name)).setText(ownDet[0]);
                     ((TextView) ll.findViewById(R.id.email)).setText(ownDet[1]);
                     ((TextView) ll.findViewById(R.id.public_)).setText(ownDet[2]);
-                    ((TextView) ll.findViewById(R.id.limits)).setText("no nfc and no sharing this group");
+                    ((CheckBox) ll.findViewById(R.id.reinvite)).setChecked(currContact.getLimitInvite());
+                    if(currContact.getLimitInvite()&&!currContact.getOwnerDetails()[2].equals(CryptMethods.getPublic()))
+                        ll.findViewById(R.id.invite).setVisibility(View.GONE);
+                    ((CheckBox) ll.findViewById(R.id.nfc)).setChecked(currContact.getLimitNFC());
                     ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
                             + currContact.getId());
                     ((TextView) rootView.findViewById(R.id.contact_name).

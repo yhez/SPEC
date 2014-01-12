@@ -3,16 +3,17 @@ package zxing.scanqr;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -28,7 +29,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == FADE) {
-                connecting.animate().alpha(0).setDuration(LENGTH).start();
+                findViewById(R.id.connecting_to_camera).animate().alpha(0).setDuration(cameraTime!=-1?cameraTime:LENGTH).start();
                 // Creating the handler starts the preview_direct_msg, which can also throw a RuntimeException.
                 try {
                     if (handler == null) {
@@ -38,8 +39,26 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
                     displayFrameworkBugMessageAndExit();
                 }
             } else if (msg.what == GONE) {
-                connecting.clearAnimation();
-                connecting.setVisibility(View.GONE);
+                findViewById(R.id.connecting_to_camera).setVisibility(View.GONE);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        endCamera = System.currentTimeMillis();
+                        long result = endCamera-startCamera;
+                        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(CaptureActivity.this);
+                        SharedPreferences.Editor edt = srp.edit();
+                        if(cameraTime!=-1){
+                            cameraNumber=srp.getLong("camera_number",0);
+                            long newResult = (result-cameraTime)/++cameraNumber+result;
+                            edt.putLong("camera_number",cameraNumber);
+                            edt.putLong("camera_time",newResult);
+                        }else{
+                            edt.putLong("camera_number",1);
+                            edt.putLong("camera_time",result);
+                        }
+                        edt.commit();
+                    }
+                }).start();
             } else if (msg.what == ERROR) displayFrameworkBugMessageAndExit();
         }
     };
@@ -50,7 +69,6 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     private Collection<BarcodeFormat> decodeFormats;
     private String characterSet;
     private InactivityTimer inactivityTimer;
-    private View connecting;
 
     ViewfinderView getViewfinderView() {
         return viewfinderView;
@@ -66,19 +84,23 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (connecting != null && connecting.getVisibility() == View.GONE)
+        if (endCamera!=-1)
             cameraManager.onF(event.getActionMasked() != MotionEvent.ACTION_UP);
         return true;
     }
+    long cameraNumber,cameraTime,startCamera,endCamera=-1;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        SharedPreferences srp = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+       cameraTime= srp.getLong("camera_time",-1);
+        startCamera = System.currentTimeMillis();
         setContentView(R.layout.capture);
-        connecting = findViewById(R.id.connecting_to_camera);
-        connecting.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate));
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
     }

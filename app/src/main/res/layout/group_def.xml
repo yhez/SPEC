@@ -44,7 +44,7 @@
     <CheckBox
         android:id="@+id/open"
         android:button="@drawable/check_box"
-        android:text="open group"
+        android:text="limit group"
         android:textColor="@color/spec_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
