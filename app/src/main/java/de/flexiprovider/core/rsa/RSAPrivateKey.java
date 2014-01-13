@@ -91,11 +91,8 @@ public class RSAPrivateKey extends
 
         RSAPrivateKey otherKey = (RSAPrivateKey) other;
 
-        if (n.equals(otherKey.n) && d.equals(otherKey.d)) {
-            return true;
-        }
+        return n.equals(otherKey.n) && d.equals(otherKey.d);
 
-        return false;
     }
 
     public int hashCode() {

@@ -28,8 +28,6 @@ public class IQClassGroup {
 
     private FlexiBigInt discriminant;
 
-    private final boolean reduceFlag = true;
-
     /**
      * Constructor.
      *
@@ -136,27 +134,8 @@ public class IQClassGroup {
         FlexiBigInt c = I.b.multiply(I.b).subtract(discriminant);
         c = c.divide(I.a).divide(FlexiBigInt.valueOf(4));
 
-        if (I.a.compareTo(c) > 0) {
-            return false;
-        }
-        if (I.a.compareTo(c) == 0 && I.b.signum() < 0) {
-            return false;
-        }
+        return I.a.compareTo(c) <= 0 && !(I.a.compareTo(c) == 0 && I.b.signum() < 0);
 
-        return true;
-    }
-
-    /**
-     * <tt>discriminant = b^2 - 4ac</tt>, thus
-     * <tt>(b^2 - discriminant) mod 4a</tt> better be zero for <tt>c</tt> to
-     * be an integer.
-     *
-     * @return the result of the test <tt>(b^2 - discriminant) mod 4a == 0</tt>
-     */
-    public boolean isValid(QuadraticIdeal I) {
-        FlexiBigInt tmp = I.b.multiply(I.b).subtract(discriminant);
-
-        return tmp.remainder(I.a.multiply(FlexiBigInt.valueOf(4))).signum() == 0;
     }
 
     /**
@@ -272,7 +251,7 @@ public class IQClassGroup {
      */
     public QuadraticIdeal multiply(FlexiBigInt a1, FlexiBigInt b1,
                                    FlexiBigInt a2, FlexiBigInt b2) {
-        FlexiBigInt[] temp = new FlexiBigInt[3];
+        FlexiBigInt[] temp;
         FlexiBigInt t1, tb;
         FlexiBigInt d1, d2, v, w;
         FlexiBigInt a3, b3;
@@ -281,7 +260,6 @@ public class IQClassGroup {
         temp = IntegerFunctions.extgcd(a1, a2);
         d1 = temp[0];
         v = temp[1];
-        w = temp[2];
 
         // tb = a1 * v * (b2 - b1)
         tb = a1.multiply(v).multiply(b2.subtract(b1));
@@ -308,10 +286,7 @@ public class IQClassGroup {
         // b3 = (b1 + tb) mod (2 * a3)
         b3 = b1.add(tb).mod(a3.shiftLeft(1));
 
-        if (reduceFlag) {
-            return reduce(a3, b3);
-        }
-        return new QuadraticIdeal(a3, b3);
+        return reduce(a3, b3);
     }
 
     /**
@@ -340,7 +315,7 @@ public class IQClassGroup {
      * @return the squared ideal
      */
     public QuadraticIdeal square(FlexiBigInt a, FlexiBigInt b) {
-        FlexiBigInt[] temp = new FlexiBigInt[3];
+        FlexiBigInt[] temp;
         FlexiBigInt t1;
         FlexiBigInt d1;
         FlexiBigInt a3, b3;
@@ -362,10 +337,7 @@ public class IQClassGroup {
 
         b3 = t1.mod(a3.shiftLeft(1));
 
-        if (reduceFlag) {
-            return reduce(a3, b3);
-        }
-        return new QuadraticIdeal(a3, b3);
+        return reduce(a3, b3);
     }
 
     /**
@@ -382,18 +354,6 @@ public class IQClassGroup {
      */
     public QuadraticIdeal one() {
         return new QuadraticIdeal(1, discriminant.testBit(0) ? 1 : 0);
-    }
-
-    /**
-     * Check whether the given ideal is the neutral element of the class group.
-     *
-     * @param I the ideal
-     * @return <tt>true</tt> if <tt>I</tt> is the neutral element of the
-     * class group, <tt>false</tt> otherwise
-     */
-    public boolean isOne(QuadraticIdeal I) {
-        return I.a.equals(FlexiBigInt.ONE)
-                && !(discriminant.testBit(0) ^ I.b.equals(FlexiBigInt.ONE));
     }
 
     /**
@@ -442,15 +402,6 @@ public class IQClassGroup {
         return sign < 0 ? invert(T) : T;
     }
 
-    /**
-     * Exponentiate a quadratic ideal (uses signed-digit exponent recoding) This
-     * assumes we have precomputed an array of powers of the ideal (see
-     * Gordon-Brickell precomputation).
-     *
-     * @param powI the array of precomputed ideals (first element is base)
-     * @param n    the exponent
-     * @return <tt>powI[0]<sup>n</sup></tt>
-     */
     public QuadraticIdeal power(QuadraticIdeal[] powI, FlexiBigInt n) {
         QuadraticIdeal T;
         int c, cn, d, e, en, i, t;
@@ -594,93 +545,6 @@ public class IQClassGroup {
         }
 
         return A;
-    }
-
-    /**
-     * Simultaneous power computation for <= 10 ideals and exponents.
-     *
-     * @param I the ideal array
-     * @param n the exponent array
-     * @return <tt>I[0]<sup>n[0]</sup> * ... * I[I.length-1]<sup>n[I.length-1]</sup></tt>,
-     * or one if <tt>I.length > 10</tt> or
-     * <tt>I.length != n.length</tt>
-     */
-    public QuadraticIdeal simPower(QuadraticIdeal[] I, FlexiBigInt[] n) {
-        QuadraticIdeal[] Q;
-        QuadraticIdeal C;
-        int b, i, j, k, l;
-        int m1, m2;
-        int[] lut = new int[16];
-        int maxBitLength = 0;
-        FlexiBigInt[] e = new FlexiBigInt[n.length];
-        for (i = n.length - 1; i >= 0; i--) {
-            e[i] = n[i];
-        }
-
-        k = I.length;
-
-        // no more than 10 please. and please use the
-        // same number of exponents and ideals.
-        if (k > 10 || n.length != k) {
-            return one();
-        }
-
-        Q = new QuadraticIdeal[1 << k];
-
-        // precomputations
-        Q[0] = one();
-        for (i = 0; i < k; i++) {
-            if (e[i].signum() < 0) {
-                Q[1 << i] = invert(I[i]);
-                e[i] = e[i].abs();
-            } else {
-                Q[1 << i] = I[i];
-            }
-
-            l = e[i].bitLength();
-            if (l > maxBitLength) {
-                maxBitLength = l;
-            }
-        }
-
-        for (l = 2; l <= k; l++) {
-            for (j = 0; j < l; j++) {
-                lut[j] = j;
-            }
-
-            while (lut[l - 1] < k) {
-                m1 = 1 << lut[0];
-                m2 = 0;
-                for (j = 1; j < l; j++) {
-                    m2 |= 1 << lut[j];
-                }
-                Q[m1 + m2] = multiply(Q[m1], Q[m2]);
-
-                lut[0]++;
-                for (j = 0; j < l - 1; j++) {
-                    if (lut[j] == lut[j + 1]) {
-                        lut[j] = j;
-                        lut[j + 1]++;
-                    }
-                }
-            }
-        }
-
-        // simultaneous exponentation
-        C = one();
-        for (i = maxBitLength; i >= 0; i--) {
-            b = 0;
-            for (j = 0; j < k; j++) {
-                if (e[j].testBit(i)) {
-                    b |= 1 << j;
-                }
-            }
-
-            C = square(C);
-            C = multiply(C, Q[b]);
-        }
-
-        return C;
     }
 
     // /////////////////////////////////////////////////////////////////////////

@@ -59,10 +59,7 @@ public class MARSKey implements SecretKey {
      * @return <tt>true</tt> if the keys are equal
      */
     public boolean equals(Object other) {
-        if ((other == null) || !(other instanceof MARSKey)) {
-            return false;
-        }
-        return ByteUtils.equals(keyBytes, ((MARSKey) other).keyBytes);
+        return !((other == null) || !(other instanceof MARSKey)) && ByteUtils.equals(keyBytes, ((MARSKey) other).keyBytes);
     }
 
     /**

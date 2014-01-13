@@ -419,8 +419,9 @@ public final class PKCS1Operations {
         // to zero.
         DB[0] &= bitMask;
         // 10) If the emLen-hLen-sLen-2 leftmost octets of DB are not zero...
-        for (i = 0; DB[i] == 0 && i < DB.length - 1; i++) {
-            ;
+        i = 0;
+        while (DB[i] == 0 && i < DB.length - 1) {
+            i++;
         }
         // ... or if the octet at position emLen-hLen-sLen-1 (the leftmost
         // position is

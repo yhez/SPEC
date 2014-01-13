@@ -75,11 +75,8 @@ public class RSAOAEPParameterSpec implements AlgorithmParameterSpec {
      * @return the result of the comparison
      */
     public boolean equals(Object other) {
-        if ((other == null) || (!(other instanceof RSAOAEPParameterSpec))) {
-            return false;
-        }
+        return !((other == null) || (!(other instanceof RSAOAEPParameterSpec))) && md.equals(((RSAOAEPParameterSpec) other).md);
 
-        return md.equals(((RSAOAEPParameterSpec) other).md);
     }
 
     /**

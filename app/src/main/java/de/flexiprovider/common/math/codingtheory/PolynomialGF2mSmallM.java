@@ -439,20 +439,6 @@ public class PolynomialGF2mSmallM {
     }
 
     /**
-     * Divide this polynomial by the given polynomial.
-     *
-     * @param f a polynomial
-     * @return polynomial pair = {q,r} where this = q*f+r and deg(r) &lt;
-     * deg(f);
-     */
-    public PolynomialGF2mSmallM[] div(PolynomialGF2mSmallM f) {
-        int[][] resultCoeffs = div(coefficients, f.coefficients);
-        return new PolynomialGF2mSmallM[]{
-                new PolynomialGF2mSmallM(field, resultCoeffs[0]),
-                new PolynomialGF2mSmallM(field, resultCoeffs[1])};
-    }
-
-    /**
      * Compute the result of the division of two polynomials over the field
      * <tt>GF(2^m)</tt>.
      *
@@ -562,7 +548,7 @@ public class PolynomialGF2mSmallM {
 
         int d1 = mult1.length;
         int d2 = mult2.length;
-        int[] result = new int[d1 + d2 - 1];
+        int[] result;
 
         if (d2 != d1) {
             int[] res1 = new int[d2];
@@ -676,56 +662,6 @@ public class PolynomialGF2mSmallM {
     }
 
     /**
-     * Compute the product of this polynomial and another polynomial modulo a
-     * third polynomial.
-     *
-     * @param a another polynomial
-     * @param b the reduction polynomial
-     * @return <tt>this * a mod b</tt>
-     */
-    public PolynomialGF2mSmallM modMultiply(PolynomialGF2mSmallM a,
-                                            PolynomialGF2mSmallM b) {
-        int[] resultCoeff = modMultiply(coefficients, a.coefficients,
-                b.coefficients);
-        return new PolynomialGF2mSmallM(field, resultCoeff);
-    }
-
-    /**
-     * Square this polynomial using a squaring matrix.
-     *
-     * @param matrix the squaring matrix
-     * @return <tt>this^2</tt> modulo the reduction polynomial implicitly
-     * given via the squaring matrix
-     */
-    public PolynomialGF2mSmallM modSquareMatrix(PolynomialGF2mSmallM[] matrix) {
-
-        int length = matrix.length;
-
-        int[] resultCoeff = new int[length];
-        int[] thisSquare = new int[length];
-
-        // square each entry of this polynomial
-        for (int i = 0; i < coefficients.length; i++) {
-            thisSquare[i] = field.mult(coefficients[i], coefficients[i]);
-        }
-
-        // do matrix-vector multiplication
-        for (int i = 0; i < length; i++) {
-            // compute scalar product of i-th row and coefficient vector
-            for (int j = 0; j < length; j++) {
-                if (i >= matrix[j].coefficients.length) {
-                    continue;
-                }
-                int scalarTerm = field.mult(matrix[j].coefficients[i],
-                        thisSquare[j]);
-                resultCoeff[i] = field.add(resultCoeff[i], scalarTerm);
-            }
-        }
-
-        return new PolynomialGF2mSmallM(field, resultCoeff);
-    }
-
-    /**
      * Compute the product of two polynomials modulo a third polynomial over the
      * finite field <tt>GF(2^m)</tt>.
      *
@@ -736,23 +672,6 @@ public class PolynomialGF2mSmallM {
      */
     private int[] modMultiply(int[] a, int[] b, int[] g) {
         return mod(multiply(a, b), g);
-    }
-
-    /**
-     * Compute the square root of this polynomial modulo the given polynomial.
-     *
-     * @param a the reduction polynomial
-     * @return <tt>this^(1/2) mod a</tt>
-     */
-    public PolynomialGF2mSmallM modSquareRoot(PolynomialGF2mSmallM a) {
-        int[] resultCoeff = IntUtils.clone(coefficients);
-        int[] help = modMultiply(resultCoeff, resultCoeff, a.coefficients);
-        while (!isEqual(help, coefficients)) {
-            resultCoeff = normalForm(help);
-            help = modMultiply(resultCoeff, resultCoeff, a.coefficients);
-        }
-
-        return new PolynomialGF2mSmallM(field, resultCoeff);
     }
 
     /**
@@ -791,21 +710,6 @@ public class PolynomialGF2mSmallM {
             resultCoeff[i] = field.sqRoot(resultCoeff[i]);
         }
 
-        return new PolynomialGF2mSmallM(field, resultCoeff);
-    }
-
-    /**
-     * Compute the result of the division of this polynomial by another
-     * polynomial modulo a third polynomial.
-     *
-     * @param divisor the divisor
-     * @param modulus the reduction polynomial
-     * @return <tt>this * divisor^(-1) mod modulus</tt>
-     */
-    public PolynomialGF2mSmallM modDiv(PolynomialGF2mSmallM divisor,
-                                       PolynomialGF2mSmallM modulus) {
-        int[] resultCoeff = modDiv(coefficients, divisor.coefficients,
-                modulus.coefficients);
         return new PolynomialGF2mSmallM(field, resultCoeff);
     }
 
@@ -896,12 +800,9 @@ public class PolynomialGF2mSmallM {
 
         PolynomialGF2mSmallM p = (PolynomialGF2mSmallM) other;
 
-        if ((field.equals(p.field)) && (degree == p.degree)
-                && (isEqual(coefficients, p.coefficients))) {
-            return true;
-        }
+        return (field.equals(p.field)) && (degree == p.degree)
+                && (isEqual(coefficients, p.coefficients));
 
-        return false;
     }
 
     /**

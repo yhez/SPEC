@@ -103,22 +103,13 @@ class Treehash {
         this.tailLength = statInt[1];
         this.firstNodeHeight = statInt[2];
 
-        if (statInt[3] == 1)
-            this.isFinished = true;
-        else
-            this.isFinished = false;
-        if (statInt[4] == 1)
-            this.isInitialized = true;
-        else
-            this.isInitialized = false;
-        if (statInt[5] == 1)
-            this.seedInitialized = true;
-        else
-            this.seedInitialized = false;
+        this.isFinished = statInt[3] == 1;
+        this.isInitialized = statInt[4] == 1;
+        this.seedInitialized = statInt[5] == 1;
 
         this.heightOfNodes = new Vector();
         for (int i = 0; i < tailLength; i++) {
-            this.heightOfNodes.addElement(new Integer(statInt[6 + i]));
+            this.heightOfNodes.addElement(Integer.valueOf(statInt[6 + i]));
         }
 
         // decode statByte
@@ -160,12 +151,7 @@ class Treehash {
         this.seedActive = new byte[messDigestTree.getDigestLength()];
     }
 
-    /**
-     * Method to initialize the seeds needed for the precomputation of right
-     * nodes. Should be initialized with index 3*2^i for treehash_i
-     *
-     * @param seedIn
-     */
+
     public void initializeSeed(byte[] seedIn) {
         System.arraycopy(seedIn, 0, this.seedNext, 0, this.messDigestTree
                 .getDigestLength());
@@ -212,7 +198,7 @@ class Treehash {
         }
 
         byte[] help = new byte[this.messDigestTree.getDigestLength()];
-        int helpHeight = -1;
+        int helpHeight;
 
         gmssRandom.nextSeed(this.seedActive);
 
@@ -227,8 +213,7 @@ class Treehash {
 
             // hash the nodes on the stack if possible
             while (this.tailLength > 0
-                    && helpHeight == ((Integer) heightOfNodes.lastElement())
-                    .intValue()) {
+                    && helpHeight == (Integer) heightOfNodes.lastElement()) {
                 // put top element of the stack and help node in array
                 // 'tobehashed'
                 // and hash them together, put result again in help array
@@ -255,13 +240,13 @@ class Treehash {
 
             // push the new node on the stack
             this.tailStack.addElement(help);
-            this.heightOfNodes.addElement(new Integer(helpHeight));
+            this.heightOfNodes.addElement(Integer.valueOf(helpHeight));
             this.tailLength++;
 
             // finally check whether the top node on stack and the first node
             // in treehash have same height. If so hash them together
             // and store them in treehash
-            if (((Integer) heightOfNodes.lastElement()).intValue() == this.firstNodeHeight) {
+            if ((Integer) heightOfNodes.lastElement() == this.firstNodeHeight) {
                 byte[] toBeHashed = new byte[this.messDigestTree
                         .getDigestLength() << 1];
                 System.arraycopy(this.firstNode, 0, toBeHashed, 0,
@@ -323,18 +308,6 @@ class Treehash {
     }
 
     /**
-     * Returns the top node height
-     *
-     * @return Height of the first node, the top node
-     */
-    public int getFirstNodeHeight() {
-        if (firstNode == null) {
-            return maxHeight;
-        }
-        return firstNodeHeight;
-    }
-
-    /**
      * Method to check whether the instance has been initialized or not
      *
      * @return true if treehash was already initialized
@@ -370,11 +343,6 @@ class Treehash {
         return this.seedActive;
     }
 
-    /**
-     * This method sets the first node stored in the treehash instance itself
-     *
-     * @param hash
-     */
     public void setFirstNode(byte[] hash) {
         if (!this.isInitialized)
             this.initialize();
@@ -391,15 +359,6 @@ class Treehash {
      */
     public void updateNextSeed(GMSSRandom gmssRandom) {
         gmssRandom.nextSeed(seedNext);
-    }
-
-    /**
-     * Returns the tailstack
-     *
-     * @return the tailstack
-     */
-    public Vector getTailStack() {
-        return this.tailStack;
     }
 
     /**
@@ -444,7 +403,7 @@ class Treehash {
         else
             statInt[5] = 0;
         for (int i = 0; i < tailLength; i++) {
-            statInt[6 + i] = ((Integer) heightOfNodes.elementAt(i)).intValue();
+            statInt[6 + i] = (Integer) heightOfNodes.elementAt(i);
         }
         return statInt;
     }

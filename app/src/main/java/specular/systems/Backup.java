@@ -55,4 +55,5 @@ public class Backup {
             return contact.getBytes();
         }
     }
+
 }

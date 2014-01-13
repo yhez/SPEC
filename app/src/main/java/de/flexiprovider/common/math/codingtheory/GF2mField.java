@@ -1,6 +1,5 @@
 package de.flexiprovider.common.math.codingtheory;
 
-import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.common.util.LittleEndianConversions;
 
@@ -112,35 +111,13 @@ public class GF2mField {
         return LittleEndianConversions.I2OSP(polynomial);
     }
 
-    /**
-     * Return sum of two elements
-     *
-     * @param a
-     * @param b
-     * @return a+b
-     */
     public int add(int a, int b) {
         return a ^ b;
     }
 
-    /**
-     * Return product of two elements
-     *
-     * @param a
-     * @param b
-     * @return a*b
-     */
     public int mult(int a, int b) {
         return PolynomialRingGF2.modMultiply(a, b, polynomial);
     }
-
-    /**
-     * compute exponentiation a^k
-     *
-     * @param a a field element a
-     * @param k k degree
-     * @return a^k
-     */
     public int exp(int a, int k) {
         if (a == 0) {
             return 0;
@@ -188,35 +165,8 @@ public class GF2mField {
         return a;
     }
 
-    /**
-     * create a random field element
-     *
-     * @return a random element
-     */
-    public int getRandomElement() {
-        SecureRandom random = Registry.getSecureRandom();
-        int result = random.nextInt(1 << degree);
-        return result;
-    }
-
-    /**
-     * create a random field element using PRNG sr
-     *
-     * @param sr SecureRandom
-     * @return a random element
-     */
     public int getRandomElement(SecureRandom sr) {
-        int result = sr.nextInt(1 << degree);
-        return result;
-    }
-
-    /**
-     * create a random non-zero field element
-     *
-     * @return a random element
-     */
-    public int getRandomNonZeroElement() {
-        return getRandomNonZeroElement(Registry.getSecureRandom());
+        return sr.nextInt(1 << degree);
     }
 
     /**
@@ -281,12 +231,9 @@ public class GF2mField {
 
         GF2mField otherField = (GF2mField) other;
 
-        if ((degree == otherField.degree)
-                && (polynomial == otherField.polynomial)) {
-            return true;
-        }
+        return (degree == otherField.degree)
+                && (polynomial == otherField.polynomial);
 
-        return false;
     }
 
     public int hashCode() {
@@ -300,9 +247,8 @@ public class GF2mField {
      * @return a human readable form of this field.
      */
     public String toString() {
-        String str = "Finite Field GF(2^" + degree + ") = " + "GF(2)[X]/<"
+        return "Finite Field GF(2^" + degree + ") = " + "GF(2)[X]/<"
                 + polyToString(polynomial) + "> ";
-        return str;
     }
 
     private static String polyToString(int p) {

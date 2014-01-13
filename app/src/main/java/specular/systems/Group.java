@@ -134,8 +134,7 @@ public class Group {
     }
 
     public Contact getOwnerContact() {
-        Contact c = ContactsDataSource.contactsDataSource.findContactByKey(ownerPublicKey);
-        return c;
+        return ContactsDataSource.contactsDataSource.findContactByKey(ownerPublicKey);
     }
 
     public String[] getOwnerDetails() {

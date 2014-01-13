@@ -2,21 +2,12 @@ package de.flexiprovider.ec.parameters;
 
 import codec.asn1.ASN1ObjectIdentifier;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
-import de.flexiprovider.common.exceptions.NoSuchBasisException;
-import de.flexiprovider.common.exceptions.PolynomialIsNotIrreducibleException;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.EllipticCurve;
-import de.flexiprovider.common.math.ellipticcurves.EllipticCurveGF2n;
 import de.flexiprovider.common.math.ellipticcurves.EllipticCurveGFP;
 import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.common.math.ellipticcurves.PointGF2n;
 import de.flexiprovider.common.math.ellipticcurves.PointGFP;
-import de.flexiprovider.common.math.finitefields.GF2Polynomial;
-import de.flexiprovider.common.math.finitefields.GF2nElement;
-import de.flexiprovider.common.math.finitefields.GF2nONBElement;
-import de.flexiprovider.common.math.finitefields.GF2nONBField;
-import de.flexiprovider.common.math.finitefields.GF2nPolynomialElement;
-import de.flexiprovider.common.math.finitefields.GF2nPolynomialField;
 import de.flexiprovider.common.math.finitefields.GFPElement;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.common.util.StringUtils;
@@ -70,7 +61,7 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
         String s = StringUtils.filterSpaces(r);
         this.r = new FlexiBigInt(s, 16);
         s = StringUtils.filterSpaces(k);
-        this.k = Integer.valueOf(s, 16).intValue();
+        this.k = Integer.valueOf(s, 16);
     }
 
     /**
@@ -85,7 +76,7 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
         String s = StringUtils.filterSpaces(r);
         this.r = new FlexiBigInt(s, 16);
         s = StringUtils.filterSpaces(k);
-        this.k = Integer.valueOf(s, 16).intValue();
+        this.k = Integer.valueOf(s, 16);
     }
 
     /**
@@ -199,38 +190,6 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
     public static class CurveParamsGFP extends CurveParams {
 
         /**
-         * Construct new curve parameters from the given Strings.
-         *
-         * @param a curve coefficient a
-         * @param b curve coefficient b
-         * @param p prime characteristic p
-         * @param g basepoint G
-         * @param r order r of basepoint G
-         * @param k cofactor k
-         */
-        public CurveParamsGFP(String a, String b, String p, String g, String r,
-                              String k) {
-            super(r, k);
-
-            String s = StringUtils.filterSpaces(p);
-            this.q = new FlexiBigInt(s, 16);
-
-            s = StringUtils.filterSpaces(a);
-            byte[] encA = ByteUtils.fromHexString(s);
-            GFPElement mA = new GFPElement(encA, this.q);
-
-            s = StringUtils.filterSpaces(b);
-            byte[] encB = ByteUtils.fromHexString(s);
-            GFPElement mB = new GFPElement(encB, this.q);
-
-            E = new EllipticCurveGFP(mA, mB, this.q);
-
-            s = StringUtils.filterSpaces(g);
-            byte[] encG = ByteUtils.fromHexString(s);
-            this.g = new PointGFP(encG, (EllipticCurveGFP) E);
-        }
-
-        /**
          * Construct new curve parameters from the given parameters.
          *
          * @param g basepoint G
@@ -288,10 +247,7 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
          * @return the result of the comparison
          */
         public boolean equals(Object other) {
-            if ((other == null) || !(other instanceof CurveParamsGFP)) {
-                return false;
-            }
-            return super.equals(other);
+            return !((other == null) || !(other instanceof CurveParamsGFP)) && super.equals(other);
         }
     }
 
@@ -304,35 +260,6 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
          * extension degree n
          */
         protected int n;
-
-        /**
-         * Construct new curve parameters from the given Strings.
-         *
-         * @param r order r of basepoint G
-         * @param n extension degree n
-         * @param k cofactor k
-         */
-        protected CurveParamsGF2n(String r, String n, String k) {
-            super(r, k);
-            String s = StringUtils.filterSpaces(n);
-            this.n = Integer.valueOf(s).intValue();
-            this.q = FlexiBigInt.ONE.shiftLeft(this.n);
-        }
-
-        /**
-         * Construct new curve parameters from the given Strings.
-         *
-         * @param oid OID of the curve parameters
-         * @param r   order r of basepoint G
-         * @param n   extension degree n
-         * @param k   cofactor k
-         */
-        protected CurveParamsGF2n(String oid, String r, String n, String k) {
-            super(oid, r, k);
-            String s = StringUtils.filterSpaces(n);
-            this.n = Integer.valueOf(s).intValue();
-            this.q = FlexiBigInt.ONE.shiftLeft(this.n);
-        }
 
         /**
          * Construct new curve parameters from the given parameters.
@@ -382,43 +309,6 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
     public static class CurveParamsGF2nONB extends CurveParamsGF2n {
 
         /**
-         * Construct new curve parameters from the given Strings.
-         *
-         * @param a curve coefficient a
-         * @param b curve coefficient b
-         * @param g basepoint G
-         * @param r order r of basepoint G
-         * @param n extension degree n
-         * @param k cofactor k
-         */
-        public CurveParamsGF2nONB(String a, String b, String g, String r,
-                                  String n, String k) {
-            super(r, n, k);
-
-            String s = StringUtils.filterSpaces(a);
-            byte[] encA = ByteUtils.fromHexString(s);
-
-            s = StringUtils.filterSpaces(b);
-            byte[] encB = ByteUtils.fromHexString(s);
-
-            s = StringUtils.filterSpaces(g);
-            byte[] encG = ByteUtils.fromHexString(s);
-
-            // field
-            GF2nONBField onbField = new GF2nONBField(getN());
-
-            // curve coefficients
-            GF2nElement mA = new GF2nONBElement(onbField, encA);
-            GF2nElement mB = new GF2nONBElement(onbField, encB);
-
-            // curve
-            E = new EllipticCurveGF2n(mA, mB, getN());
-
-            // basepoint
-            this.g = new PointGF2n(encG, (EllipticCurveGF2n) E);
-        }
-
-        /**
          * Construct new curve parameters from the given parameters.
          *
          * @param g basepoint G
@@ -428,44 +318,6 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
          */
         public CurveParamsGF2nONB(PointGF2n g, FlexiBigInt r, int n, int k) {
             super(g, r, n, k);
-        }
-
-        /**
-         * Construct new curve parameters from the given Strings.
-         *
-         * @param oid OID of the curve parameters
-         * @param a   curve coefficient a
-         * @param b   curve coefficient b
-         * @param g   basepoint G
-         * @param r   order r of basepoint G
-         * @param n   extension degree n
-         * @param k   cofactor k
-         */
-        protected CurveParamsGF2nONB(String oid, String a, String b, String g,
-                                     String r, String n, String k) {
-            super(oid, r, n, k);
-
-            String s = StringUtils.filterSpaces(a);
-            byte[] encA = ByteUtils.fromHexString(s);
-
-            s = StringUtils.filterSpaces(b);
-            byte[] encB = ByteUtils.fromHexString(s);
-
-            s = StringUtils.filterSpaces(g);
-            byte[] encG = ByteUtils.fromHexString(s);
-
-            // field
-            GF2nONBField onbField = new GF2nONBField(getN());
-
-            // curve coefficients
-            GF2nElement mA = new GF2nONBElement(onbField, encA);
-            GF2nElement mB = new GF2nONBElement(onbField, encB);
-
-            // curve
-            E = new EllipticCurveGF2n(mA, mB, getN());
-
-            // basepoint
-            this.g = new PointGF2n(encG, (EllipticCurveGF2n) E);
         }
 
         /**
@@ -482,10 +334,7 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
          * @return the result of the comparison
          */
         public boolean equals(Object other) {
-            if ((other == null) || !(other instanceof CurveParamsGF2nONB)) {
-                return false;
-            }
-            return super.equals(other);
+            return !((other == null) || !(other instanceof CurveParamsGF2nONB)) && super.equals(other);
         }
     }
 
@@ -497,59 +346,6 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
          * trinomial coefficient
          */
         private int tc;
-
-        /**
-         * Construct new curve parameters from the given Strings.
-         *
-         * @param a  curve coefficient a
-         * @param b  curve coefficient b
-         * @param g  basepoint G
-         * @param r  order r of basepoint G
-         * @param n  extension degree n
-         * @param k  cofactor k
-         * @param tc trinomial coefficient
-         */
-        public CurveParamsGF2nTrinomial(String a, String b, String g, String r,
-                                        String n, String k, String tc) {
-            super(r, n, k);
-
-            String s = StringUtils.filterSpaces(a);
-            byte[] encA = ByteUtils.fromHexString(s);
-
-            s = StringUtils.filterSpaces(b);
-            byte[] encB = ByteUtils.fromHexString(s);
-
-            s = StringUtils.filterSpaces(g);
-            byte[] encG = ByteUtils.fromHexString(s);
-
-            this.tc = Integer.valueOf(tc).intValue();
-
-            // construct the field polynomial
-            int[] polBytes = new int[(this.n + 31) >> 5];
-            // set the trinomial coefficients
-            polBytes[0] = 1;
-            polBytes[this.tc >> 5] |= 1 << (this.tc & 0x1f);
-            polBytes[this.n >> 5] |= 1 << (this.n & 0x1f);
-
-            // field polynomial and field
-            GF2Polynomial fieldPoly = new GF2Polynomial(this.n + 1, polBytes);
-            GF2nPolynomialField polyField = null;
-            try {
-                polyField = new GF2nPolynomialField(this.n, fieldPoly);
-            } catch (PolynomialIsNotIrreducibleException pinie) {
-                throw new NoSuchBasisException(pinie.getMessage());
-            }
-
-            // curve coefficients
-            GF2nElement mA = new GF2nPolynomialElement(polyField, encA);
-            GF2nElement mB = new GF2nPolynomialElement(polyField, encB);
-
-            // curve
-            E = new EllipticCurveGF2n(mA, mB, this.n);
-
-            // basepoint
-            this.g = new PointGF2n(encG, (EllipticCurveGF2n) E);
-        }
 
         /**
          * Construct new curve parameters from the given parameters.
@@ -564,60 +360,6 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
                                         int k, int tc) {
             super(g, r, n, k);
             this.tc = tc;
-        }
-
-        /**
-         * Construct new curve parameters from the given Strings.
-         *
-         * @param oid OID of the curve parameters
-         * @param a   curve coefficient a
-         * @param b   curve coefficient b
-         * @param g   basepoint G
-         * @param r   order r of basepoint G
-         * @param n   extension degree n
-         * @param k   cofactor k
-         * @param tc  trinomial coefficient
-         */
-        protected CurveParamsGF2nTrinomial(String oid, String a, String b,
-                                           String g, String r, String n, String k, String tc) {
-            super(oid, r, n, k);
-
-            String s = StringUtils.filterSpaces(a);
-            byte[] encA = ByteUtils.fromHexString(s);
-
-            s = StringUtils.filterSpaces(b);
-            byte[] encB = ByteUtils.fromHexString(s);
-
-            s = StringUtils.filterSpaces(g);
-            byte[] encG = ByteUtils.fromHexString(s);
-
-            this.tc = Integer.valueOf(tc).intValue();
-
-            // construct the field polynomial
-            int[] polBytes = new int[(this.n + 31) >> 5];
-            // set the trinomial coefficients
-            polBytes[0] = 1;
-            polBytes[this.tc >> 5] |= 1 << (this.tc & 0x1f);
-            polBytes[this.n >> 5] |= 1 << (this.n & 0x1f);
-
-            // field polynomial and field
-            GF2Polynomial fieldPoly = new GF2Polynomial(this.n + 1, polBytes);
-            GF2nPolynomialField polyField = null;
-            try {
-                polyField = new GF2nPolynomialField(this.n, fieldPoly);
-            } catch (PolynomialIsNotIrreducibleException pinie) {
-                throw new NoSuchBasisException(pinie.getMessage());
-            }
-
-            // curve coefficients
-            GF2nElement mA = new GF2nPolynomialElement(polyField, encA);
-            GF2nElement mB = new GF2nPolynomialElement(polyField, encB);
-
-            // curve
-            E = new EllipticCurveGF2n(mA, mB, this.n);
-
-            // basepoint
-            this.g = new PointGF2n(encG, (EllipticCurveGF2n) E);
         }
 
         /**
@@ -669,65 +411,6 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
         private int pc3;
 
         /**
-         * Construct new curve parameters from the given Strings.
-         *
-         * @param a   curve coefficient a
-         * @param b   curve coefficient b
-         * @param g   basepoint G
-         * @param r   order r of basepoint G
-         * @param n   extension degree n
-         * @param k   cofactor k
-         * @param pc1 first pentanomial coefficient
-         * @param pc2 second pentanomial coefficient
-         * @param pc3 third pentanomial coefficient
-         */
-        public CurveParamsGF2nPentanomial(String a, String b, String g,
-                                          String r, String n, String k, String pc1, String pc2, String pc3) {
-            super(r, n, k);
-
-            String s = StringUtils.filterSpaces(a);
-            byte[] encA = ByteUtils.fromHexString(s);
-
-            s = StringUtils.filterSpaces(b);
-            byte[] encB = ByteUtils.fromHexString(s);
-
-            s = StringUtils.filterSpaces(g);
-            byte[] encG = ByteUtils.fromHexString(s);
-
-            this.pc1 = Integer.valueOf(pc1).intValue();
-            this.pc2 = Integer.valueOf(pc2).intValue();
-            this.pc3 = Integer.valueOf(pc3).intValue();
-
-            // construct the field polynomial
-            int[] polBytes = new int[(this.n + 31) >> 5];
-            // set the pentanomial coefficients
-            polBytes[0] = 1;
-            polBytes[this.pc1 >> 5] |= 1 << (this.pc1 & 0x1f);
-            polBytes[this.pc2 >> 5] |= 1 << (this.pc2 & 0x1f);
-            polBytes[this.pc3 >> 5] |= 1 << (this.pc3 & 0x1f);
-            polBytes[this.n >> 5] |= 1 << (this.n & 0x1f);
-
-            // field polynomial and field
-            GF2Polynomial fieldPoly = new GF2Polynomial(this.n + 1, polBytes);
-            GF2nPolynomialField polyField = null;
-            try {
-                polyField = new GF2nPolynomialField(this.n, fieldPoly);
-            } catch (PolynomialIsNotIrreducibleException pinie) {
-                throw new NoSuchBasisException(pinie.getMessage());
-            }
-
-            // curve coefficients
-            GF2nElement mA = new GF2nPolynomialElement(polyField, encA);
-            GF2nElement mB = new GF2nPolynomialElement(polyField, encB);
-
-            // curve
-            E = new EllipticCurveGF2n(mA, mB, this.n);
-
-            // basepoint
-            this.g = new PointGF2n(encG, (EllipticCurveGF2n) E);
-        }
-
-        /**
          * Construct new curve parameters from the given parameters.
          *
          * @param g   basepoint G
@@ -744,67 +427,6 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
             this.pc1 = pc1;
             this.pc2 = pc2;
             this.pc3 = pc3;
-        }
-
-        /**
-         * Construct new curve parameters from the given Strings.
-         *
-         * @param oid OID of the curve parameters
-         * @param a   curve coefficient a
-         * @param b   curve coefficient b
-         * @param g   basepoint G
-         * @param r   order r of basepoint G
-         * @param n   extension degree n
-         * @param k   cofactor k
-         * @param pc1 first pentanomial coefficient
-         * @param pc2 second pentanomial coefficient
-         * @param pc3 third pentanomial coefficient
-         */
-        protected CurveParamsGF2nPentanomial(String oid, String a, String b,
-                                             String g, String r, String n, String k, String pc1, String pc2,
-                                             String pc3) {
-            super(oid, r, n, k);
-
-            String s = StringUtils.filterSpaces(a);
-            byte[] encA = ByteUtils.fromHexString(s);
-
-            s = StringUtils.filterSpaces(b);
-            byte[] encB = ByteUtils.fromHexString(s);
-
-            s = StringUtils.filterSpaces(g);
-            byte[] encG = ByteUtils.fromHexString(s);
-
-            this.pc1 = Integer.valueOf(pc1).intValue();
-            this.pc2 = Integer.valueOf(pc2).intValue();
-            this.pc3 = Integer.valueOf(pc3).intValue();
-
-            // construct the field polynomial
-            int[] polBytes = new int[(this.n + 31) >> 5];
-            // set the pentanomial coefficients
-            polBytes[0] = 1;
-            polBytes[this.pc1 >> 5] |= 1 << (this.pc1 & 0x1f);
-            polBytes[this.pc2 >> 5] |= 1 << (this.pc2 & 0x1f);
-            polBytes[this.pc3 >> 5] |= 1 << (this.pc3 & 0x1f);
-            polBytes[this.n >> 5] |= 1 << (this.n & 0x1f);
-
-            // field polynomial and field
-            GF2Polynomial fieldPoly = new GF2Polynomial(this.n + 1, polBytes);
-            GF2nPolynomialField polyField = null;
-            try {
-                polyField = new GF2nPolynomialField(this.n, fieldPoly);
-            } catch (PolynomialIsNotIrreducibleException pinie) {
-                throw new NoSuchBasisException(pinie.getMessage());
-            }
-
-            // curve coefficients
-            GF2nElement mA = new GF2nPolynomialElement(polyField, encA);
-            GF2nElement mB = new GF2nPolynomialElement(polyField, encB);
-
-            // curve
-            E = new EllipticCurveGF2n(mA, mB, this.n);
-
-            // basepoint
-            this.g = new PointGF2n(encG, (EllipticCurveGF2n) E);
         }
 
         /**

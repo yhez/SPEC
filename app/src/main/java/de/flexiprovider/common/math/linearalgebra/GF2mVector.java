@@ -80,17 +80,6 @@ public class GF2mVector extends Vector {
     }
 
     /**
-     * Copy constructor.
-     *
-     * @param other another {@link de.flexiprovider.common.math.linearalgebra.GF2mVector}
-     */
-    public GF2mVector(GF2mVector other) {
-        field = new GF2mField(other.field);
-        length = other.length;
-        vector = IntUtils.clone(other.vector);
-    }
-
-    /**
      * @return the finite field this vector is defined over
      */
     public GF2mField getField() {
@@ -186,11 +175,8 @@ public class GF2mVector extends Vector {
         }
         GF2mVector otherVec = (GF2mVector) other;
 
-        if (!field.equals(otherVec.field)) {
-            return false;
-        }
+        return field.equals(otherVec.field) && IntUtils.equals(vector, otherVec.vector);
 
-        return IntUtils.equals(vector, otherVec.vector);
     }
 
     /**

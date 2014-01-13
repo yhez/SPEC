@@ -46,13 +46,6 @@ public class PolynomialRingGF2m {
     }
 
     /**
-     * @return the squaring matrix for this polynomial ring
-     */
-    public PolynomialGF2mSmallM[] getSquaringMatrix() {
-        return sqMatrix;
-    }
-
-    /**
      * @return the matrix for computing square roots for this polynomial ring
      */
     public PolynomialGF2mSmallM[] getSquareRootMatrix() {
@@ -114,7 +107,6 @@ public class PolynomialRingGF2m {
                         swapColumns(sqRootMatrix, i, j);
                         // ... and quit searching
                         j = numColumns;
-                        continue;
                     }
                 }
                 // if no non-zero element was found

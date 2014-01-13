@@ -66,10 +66,7 @@ public class SAFERPlusKey implements SecretKey {
      * @return the result of the comparison
      */
     public boolean equals(Object other) {
-        if (other == null || !(other instanceof SAFERPlusKey)) {
-            return false;
-        }
-        return ByteUtils.equals(keyBytes, ((SAFERPlusKey) other).keyBytes);
+        return !(other == null || !(other instanceof SAFERPlusKey)) && ByteUtils.equals(keyBytes, ((SAFERPlusKey) other).keyBytes);
     }
 
     /**

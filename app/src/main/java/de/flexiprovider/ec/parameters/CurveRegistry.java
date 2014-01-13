@@ -1,18 +1,8 @@
-/*
- * Copyright (c) 1998-2008 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.ec.parameters;
 
 import java.util.Hashtable;
 
 import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
-import de.flexiprovider.ec.parameters.CurveParams.CurveParamsGF2nPentanomial;
-import de.flexiprovider.ec.parameters.CurveParams.CurveParamsGF2nTrinomial;
 import de.flexiprovider.ec.parameters.CurveParams.CurveParamsGFP;
 
 /**
@@ -1771,387 +1761,6 @@ public final class CurveRegistry {
                     "01");
         }
     }
-
-    /*-------------------------------------------------
-     * CHARACTERISTIC 2 CURVES
-     -------------------------------------------------*/
-
-    public static final class C2pnb163v1 extends CurveParamsGF2nPentanomial {
-
-        /**
-         * The OID of c2pnb163v1.
-         */
-        public static final String OID = "1.2.840.10045.3.0.1";
-
-        public C2pnb163v1() {
-            super(OID,
-                    // curve coefficient a
-                    "07 2546B543 5234A422 E0789675 F432C894 35DE5242",
-                    // curve coefficient b
-                    "00 C9517D06 D5240D3C FF38C74B 20B6CD4D 6F9DD4D9",
-                    // basepoint G
-                    "0307 AF699895 46103D79 329FCC3D 74880F33 BBE803CB",
-                    // order of basepoint G
-                    "04 00000000 00000000 0001E60F C8821CC7 4DAEAFC1",
-                    // extension degree n
-                    "163",
-                    // cofactor h
-                    "02",
-                    // pentanomial coefficients
-                    "1", "2", "8");
-        }
-    }
-
-    public static final class C2pnb163v2 extends CurveParamsGF2nPentanomial {
-
-        /**
-         * The OID of c2pnb163v2.
-         */
-        public static final String OID = "1.2.840.10045.3.0.2";
-
-        public C2pnb163v2() {
-            super(OID,
-                    // curve coefficient a
-                    "01 08B39E77 C4B108BE D981ED0E 890E117C 511CF072",
-                    // curve coefficient b
-                    "06 67ACEB38 AF4E488C 407433FF AE4F1C81 1638DF20",
-                    // basepoint G
-                    "0300 24266E4E B5106D0A 964D92C4 860E2671 DB9B6CC5",
-                    // order of basepoint G
-                    "03 FFFFFFFF FFFFFFFF FFFDF64D E1151ADB B78F10A7",
-                    // extension degree n
-                    "163",
-                    // cofactor h
-                    "02",
-                    // pentanomial coefficients
-                    "1", "2", "8");
-        }
-    }
-
-    public static final class C2pnb163v3 extends CurveParamsGF2nPentanomial {
-
-        /**
-         * The OID of c2pnb163v3.
-         */
-        public static final String OID = "1.2.840.10045.3.0.3";
-
-        public C2pnb163v3() {
-            super(OID,
-                    // curve coefficient a
-                    "07 A526C63D 3E25A256 A007699F 5447E32A E456B50E",
-                    // curve coefficient b
-                    "03 F7061798 EB99E238 FD6F1BF9 5B48FEEB 4854252B",
-                    // basepoint G
-                    "0202 F9F87B7C 574D0BDE CF8A22E6 524775F9 8CDEBDCB",
-                    // order of basepoint G
-                    "03 FFFFFFFF FFFFFFFF FFFE1AEE 140F110A FF961309",
-                    // extension degree n
-                    "163",
-                    // cofactor h
-                    "02",
-                    // pentanomial coefficients
-                    "1", "2", "8");
-        }
-    }
-
-    public static final class C2tnb191v1 extends CurveParamsGF2nTrinomial {
-
-        /**
-         * The OID of c2tnb191v1.
-         */
-        public static final String OID = "1.2.840.10045.3.0.5";
-
-        public C2tnb191v1() {
-            super(OID,
-                    // curve coefficient a
-                    "2866537B 67675263 6A68F565 54E12640 276B649E F7526267",
-                    // curve coefficient b
-                    "2E45EF57 1F00786F 67B0081B 9495A3D9 5462F5DE 0AA185EC",
-                    // basepoint G
-                    "02 36B3DAF8 A23206F9 C4F299D7 B21A9C36 9137F2C8 4AE1AA0D",
-                    // order of basepoint G
-                    "40000000 00000000 00000000 04A20E90 C39067C8 93BBB9A5",
-                    // extension degree n
-                    "191",
-                    // cofactor h
-                    "02",
-                    // trinomial coefficient
-                    "9");
-        }
-    }
-
-    public static final class C2tnb191v2 extends CurveParamsGF2nTrinomial {
-
-        /**
-         * The OID of c2tnb191v2.
-         */
-        public static final String OID = "1.2.840.10045.3.0.6";
-
-        public C2tnb191v2() {
-            super(OID,
-                    // curve coefficient a
-                    "40102877 4D7777C7 B7666D13 66EA4320 71274F89 FF01E718",
-                    // curve coefficient b
-                    "0620048D 28BCBD03 B6249C99 182B7C8C D19700C3 62C46A01",
-                    // basepoint G
-                    "02 3809B2B7 CC1B28CC 5A87926A AD83FD28 789E81E2 C9E3BF10",
-                    // order of basepoint G
-                    "20000000 00000000 00000000 50508CB8 9F652824 E06B8173",
-                    // extension degree n
-                    "191",
-                    // cofactor h
-                    "04",
-                    // trinomial coefficient
-                    "9");
-        }
-    }
-
-    public static final class C2tnb191v3 extends CurveParamsGF2nTrinomial {
-
-        /**
-         * The OID of c2tnb191v3.
-         */
-        public static final String OID = "1.2.840.10045.3.0.7";
-
-        public C2tnb191v3() {
-            super(OID,
-                    // curve coefficient a
-                    "6C010747 56099122 22105691 1C77D77E 77A777E7 E7E77FCB",
-                    // curve coefficient b
-                    "71FE1AF9 26CF8479 89EFEF8D B459F663 94D90F32 AD3F15E8",
-                    // basepoint G
-                    "03 375D4CE2 4FDE4344 89DE8746 E7178601 5009E66E 38A926DD",
-                    // order of basepoint G
-                    "15555555 55555555 55555555 610C0B19 6812BFB6 288A3EA3",
-                    // extension degree n
-                    "191",
-                    // cofactor h
-                    "06",
-                    // trinomial coefficient
-                    "9");
-        }
-    }
-
-    public static final class C2pnb208w1 extends CurveParamsGF2nPentanomial {
-
-        /**
-         * The OID of c2pnb208w1.
-         */
-        public static final String OID = "1.2.840.10045.3.0.10";
-
-        public C2pnb208w1() {
-            super(
-                    OID,
-                    // curve coefficient a
-                    "0000 00000000 00000000 00000000 00000000 00000000 00000000",
-                    // curve coefficient b
-                    "C861 9ED45A62 E6212E11 60349E2B FA844439 FAFC2A3F D1638F9E",
-                    // basepoint G
-                    "0289FD FBE4ABE1 93DF9559 ECF07AC0 CE78554E 2784EB8C 1ED1A57A",
-                    // order of basepoint G
-                    " 01 01BAF95C 9723C57B 6C21DA2E FF2D5ED5 88BDD571 7E212F9D",
-                    // extension degree n
-                    "208",
-                    // cofactor h
-                    "FE48",
-                    // pentanomial coefficients
-                    "1", "2", "83");
-        }
-    }
-
-    public static final class C2tnb239v1 extends CurveParamsGF2nTrinomial {
-
-        /**
-         * The OID of c2tnb239v1.
-         */
-        public static final String OID = "1.2.840.10045.3.0.11";
-
-        public C2tnb239v1() {
-            super(
-                    OID,
-                    // curve coefficient a
-                    "3201 0857077C 5431123A 46B80890 6756F543 423E8D27 87757812 5778AC76",
-                    // curve coefficient b
-                    "7904 08F2EEDA F392B012 EDEFB339 2F30F432 7C0CA3F3 1FC383C4 22AA8C16",
-                    // basepoint G
-                    "025792 7098FA93 2E7C0A96 D3FD5B70 6EF7E5F5 C156E16B 7E7C8603 8552E91D",
-                    // order of basepoint G
-                    "2000 00000000 00000000 00000000 000F4D42 FFE1492A 4993F1CA D666E447",
-                    // extension degree n
-                    "239",
-                    // cofactor h
-                    "04",
-                    // trinomial coefficient
-                    "36");
-        }
-    }
-
-    public static final class C2tnb239v2 extends CurveParamsGF2nTrinomial {
-
-        /**
-         * The OID of c2tnb239v2.
-         */
-        public static final String OID = "1.2.840.10045.3.0.12";
-
-        public C2tnb239v2() {
-            super(
-                    OID,
-                    // curve coefficient a
-                    "4230 017757A7 67FAE423 98569B74 6325D453 13AF0766 266479B7 5654E65F",
-                    // curve coefficient b
-                    "5037 EA654196 CFF0CD82 B2C14A2F CF2E3FF8 775285B5 45722F03 EACDB74B",
-                    // basepoint G
-                    "0228F9 D04E9000 69C8DC47 A08534FE 76D2B900 B7D7EF31 F5709F20 0C4CA205",
-                    // order of basepoint G
-                    "1555 55555555 55555555 55555555 553C6F28 85259C31 E3FCDF15 4624522D",
-                    // extension degree n
-                    "239",
-                    // cofactor h
-                    "06",
-                    // trinomial coefficient
-                    "36");
-        }
-    }
-
-    public static final class C2tnb239v3 extends CurveParamsGF2nTrinomial {
-
-        /**
-         * The OID of c2tnb239v3.
-         */
-        public static final String OID = "1.2.840.10045.3.0.13";
-
-        public C2tnb239v3() {
-            super(
-                    OID,
-                    // curve coefficient a
-                    "0123 8774666A 67766D66 76F778E6 76B66999 176666E6 87666D87 66C66A9F",
-                    // curve coefficient b
-                    "6A94 1977BA9F 6A435199 ACFC5106 7ED587F5 19C5ECB5 41B8E441 11DE1D40",
-                    // basepoint G
-                    "0370F6 E9D04D28 9C4E8991 3CE3530B FDE90397 7D42B146 D539BF1B DE4E9C92",
-                    // order of basepoint G
-                    "0CCC CCCCCCCC CCCCCCCC CCCCCCCC CCAC4912 D2D9DF90 3EF9888B 8A0E4CFF",
-                    // extension degree n
-                    "239",
-                    // cofactor h
-                    "0A",
-                    // trinomial coefficient
-                    "36");
-        }
-    }
-
-    public static final class C2pnb272w1 extends CurveParamsGF2nPentanomial {
-
-        /**
-         * The OID of c2pnb272w1.
-         */
-        public static final String OID = "1.2.840.10045.3.0.16";
-
-        public C2pnb272w1() {
-            super(
-                    OID,
-                    // curve coefficient a
-                    "91A0 91F03B5F BA4AB2CC F49C4EDD 220FB028 712D42BE 752B2C40 094DBACD B586FB20",
-                    // curve coefficient b
-                    "7167 EFC92BB2 E3CE7C8A AAFF34E1 2A9C5570 03D7C73A 6FAF003F 99F6CC84 82E540F7",
-                    // basepoint G
-                    " 026108 BABB2CEE BCF78705 8A056CBE 0CFE622D 7723A289 E08A07AE 13EF0D10 D171DD8D",
-                    // order of basepoint G
-                    "01 00FAF513 54E0E39E 4892DF6E 319C72C8 161603FA 45AA7B99 8A167B8F 1E629521",
-                    // extension degree n
-                    "272",
-                    // cofactor h
-                    "FF06",
-                    // pentanomial coefficients
-                    "1", "3", "56");
-        }
-    }
-
-    public static final class C2tnb359v1 extends CurveParamsGF2nTrinomial {
-
-        /**
-         * The OID of c2tnb359v1.
-         */
-        public static final String OID = "1.2.840.10045.3.0.18";
-
-        public C2tnb359v1() {
-            super(
-                    OID,
-                    // curve coefficient a
-                    "56 67676A65 4B20754F 356EA920 17D94656 7C466755 56F19556 A04616B5 67D223A5 E05656FB 549016A9 6656A557",
-                    // curve coefficient b
-                    "24 72E2D019 7C49363F 1FE7F5B6 DB075D52 B6947D13 5D8CA445 805D39BC 34562608 9687742B 6329E706 80231988",
-                    // basepoint G
-                    "033C 258EF304 7767E7ED E0F1FDAA 79DAEE38 41366A13 2E163ACE D4ED2401 DF9C6BDC DE98E8E7 07C07A22 39B1B097",
-                    // order of basepoint G
-                    "01 AF286BCA 1AF286BC A1AF286B CA1AF286 BCA1AF28 6BC9FB8F 6B85C556 892C20A7 EB964FE7 719E74F4 90758D3B",
-                    // extension degree n
-                    "359",
-                    // cofactor h
-                    "4C",
-                    // trinomial coefficient
-                    "68");
-        }
-    }
-
-    public static final class C2pnb368w1 extends CurveParamsGF2nPentanomial {
-
-        /**
-         * The OID of c2pnb368w1.
-         */
-        public static final String OID = "1.2.840.10045.3.0.19";
-
-        public C2pnb368w1() {
-            super(
-                    OID,
-                    // curve coefficient a
-                    "E0D2 EE250952 06F5E2A4 F9ED229F 1F256E79 A0E2B455 970D8D0D 865BD947 78C576D6 2F0AB751 9CCD2A1A 906AE30D",
-                    // curve coefficient b
-                    "FC12 17D4320A 90452C76 0A58EDCD 30C8DD06 9B3C3445 3837A34E D50CB549 17E1C211 2D84D164 F444F8F7 4786046A",
-                    // basepoint G
-                    "021085 E2755381 DCCCE3C1 557AFA10 C2F0C0C2 825646C5 B34A394C BCFA8BC1 6B22E7E7 89E927BE 216F02E1 FB136A5F",
-                    // order of basepoint G
-                    "01 0090512D A9AF72B0 8349D98A 5DD4C7B0 532ECA51 CE03E2D1 0F3B7AC5 79BD87E9 09AE40A6 F131E9CF CE5BD967",
-                    // extension degree n
-                    "368",
-                    // cofactor h
-                    "FF70",
-                    // pentanomial coefficients
-                    "1", "2", "85");
-        }
-    }
-
-    public static final class C2tnb431r1 extends CurveParamsGF2nTrinomial {
-
-        /**
-         * The OID of c2tnb431r1.
-         */
-        public static final String OID = "1.2.840.10045.3.0.20";
-
-        public C2tnb431r1() {
-            super(
-                    OID,
-                    // curve coefficient a
-                    "1A82 7EF00DD6 FC0E234C AF046C6A 5D8A8539 5B236CC4 AD2CF32A 0CADBDC9 DDF620B0 EB9906D0 957F6C6F EACD6154 68DF104D E296CD8F",
-                    // curve coefficient b
-                    "10D9 B4A3D904 7D8B1543 59ABFB1B 7F5485B0 4CEB8682 37DDC9DE DA982A67 9A5A919B 626D4E50 A8DD731B 107A9962 381FB5D8 07BF2618",
-                    // basepoint G
-                    "02120F C05D3C67 A99DE161 D2F40926 22FECA70 1BE4F50F 4758714E 8A87BBF2 A658EF8C 21E7C5EF E965361F 6C2999C0 C247B0DB D70CE6B7",
-                    // order of basepoint G
-                    "03 40340340 34034034 03403403 40340340 34034034 03403403 40340323 C313FAB5 0589703B 5EC68D35 87FEC60D 161CC149 C1AD4A91",
-                    // extension degree n
-                    "431",
-                    // cofactor h
-                    "2760",
-                    // trinomial coefficient
-                    "120");
-        }
-    }
-
-    /**
-     * Array holding the key sizes to index the <tt>defaultParamsMap</tt>
-     * hashtable.
-     */
     private static final int[] keySizes = {112, 128, 160, 170, 180, 190, 192,
             200, 210, 220, 224, 230, 239, 240, 250, 256, 260, 270, 280, 290,
             300, 310, 320, 330, 340, 350, 360, 370, 380, 384, 390, 400, 410,
@@ -2168,68 +1777,53 @@ public final class CurveRegistry {
      */
     static {
         defaultParamsMap = new Hashtable();
-        defaultParamsMap.put(new Integer(112), "secp112r1");
-        defaultParamsMap.put(new Integer(128), "secp128r1");
-        defaultParamsMap.put(new Integer(160), "brainpoolP160r1");
-        defaultParamsMap.put(new Integer(170), "primeCurve2");
-        defaultParamsMap.put(new Integer(180), "primeCurve3");
-        defaultParamsMap.put(new Integer(190), "primeCurve4");
-        defaultParamsMap.put(new Integer(192), "brainpoolP192r1");
-        defaultParamsMap.put(new Integer(200), "primeCurve5");
-        defaultParamsMap.put(new Integer(210), "primeCurve6");
-        defaultParamsMap.put(new Integer(220), "primeCurve7");
-        defaultParamsMap.put(new Integer(224), "brainpoolP224r1");
-        defaultParamsMap.put(new Integer(230), "primeCurve9");
-        defaultParamsMap.put(new Integer(239), "prime239v1");
-        defaultParamsMap.put(new Integer(240), "primeCurve10");
-        defaultParamsMap.put(new Integer(250), "primeCurve11");
-        defaultParamsMap.put(new Integer(256), "brainpoolP256r1");
-        defaultParamsMap.put(new Integer(260), "primeCurve12");
-        defaultParamsMap.put(new Integer(270), "primeCurve13");
-        defaultParamsMap.put(new Integer(280), "primeCurve14");
-        defaultParamsMap.put(new Integer(290), "primeCurve15");
-        defaultParamsMap.put(new Integer(300), "primeCurve16");
-        defaultParamsMap.put(new Integer(310), "primeCurve17");
-        defaultParamsMap.put(new Integer(320), "brainpoolP320r1");
-        defaultParamsMap.put(new Integer(330), "primeCurve19");
-        defaultParamsMap.put(new Integer(340), "primeCurve20");
-        defaultParamsMap.put(new Integer(350), "primeCurve21");
-        defaultParamsMap.put(new Integer(360), "primeCurve22");
-        defaultParamsMap.put(new Integer(370), "primeCurve23");
-        defaultParamsMap.put(new Integer(380), "primeCurve24");
-        defaultParamsMap.put(new Integer(384), "brainpoolP384r1");
-        defaultParamsMap.put(new Integer(390), "primeCurve26");
-        defaultParamsMap.put(new Integer(400), "primeCurve27");
-        defaultParamsMap.put(new Integer(410), "primeCurve28");
-        defaultParamsMap.put(new Integer(420), "primeCurve29");
-        defaultParamsMap.put(new Integer(430), "primeCurve30");
-        defaultParamsMap.put(new Integer(440), "primeCurve31");
-        defaultParamsMap.put(new Integer(450), "primeCurve32");
-        defaultParamsMap.put(new Integer(460), "primeCurve33");
-        defaultParamsMap.put(new Integer(470), "primeCurve34");
-        defaultParamsMap.put(new Integer(480), "primeCurve35");
-        defaultParamsMap.put(new Integer(490), "primeCurve36");
-        defaultParamsMap.put(new Integer(500), "primeCurve37");
-        defaultParamsMap.put(new Integer(512), "brainpoolP512r1");
+        defaultParamsMap.put(Integer.valueOf(112), "secp112r1");
+        defaultParamsMap.put(Integer.valueOf(128), "secp128r1");
+        defaultParamsMap.put(Integer.valueOf(160), "brainpoolP160r1");
+        defaultParamsMap.put(Integer.valueOf(170), "primeCurve2");
+        defaultParamsMap.put(Integer.valueOf(180), "primeCurve3");
+        defaultParamsMap.put(Integer.valueOf(190), "primeCurve4");
+        defaultParamsMap.put(Integer.valueOf(192), "brainpoolP192r1");
+        defaultParamsMap.put(Integer.valueOf(200), "primeCurve5");
+        defaultParamsMap.put(Integer.valueOf(210), "primeCurve6");
+        defaultParamsMap.put(Integer.valueOf(220), "primeCurve7");
+        defaultParamsMap.put(Integer.valueOf(224), "brainpoolP224r1");
+        defaultParamsMap.put(Integer.valueOf(230), "primeCurve9");
+        defaultParamsMap.put(Integer.valueOf(239), "prime239v1");
+        defaultParamsMap.put(Integer.valueOf(240), "primeCurve10");
+        defaultParamsMap.put(Integer.valueOf(250), "primeCurve11");
+        defaultParamsMap.put(Integer.valueOf(256), "brainpoolP256r1");
+        defaultParamsMap.put(Integer.valueOf(260), "primeCurve12");
+        defaultParamsMap.put(Integer.valueOf(270), "primeCurve13");
+        defaultParamsMap.put(Integer.valueOf(280), "primeCurve14");
+        defaultParamsMap.put(Integer.valueOf(290), "primeCurve15");
+        defaultParamsMap.put(Integer.valueOf(300), "primeCurve16");
+        defaultParamsMap.put(Integer.valueOf(310), "primeCurve17");
+        defaultParamsMap.put(Integer.valueOf(320), "brainpoolP320r1");
+        defaultParamsMap.put(Integer.valueOf(330), "primeCurve19");
+        defaultParamsMap.put(Integer.valueOf(340), "primeCurve20");
+        defaultParamsMap.put(Integer.valueOf(350), "primeCurve21");
+        defaultParamsMap.put(Integer.valueOf(360), "primeCurve22");
+        defaultParamsMap.put(Integer.valueOf(370), "primeCurve23");
+        defaultParamsMap.put(Integer.valueOf(380), "primeCurve24");
+        defaultParamsMap.put(Integer.valueOf(384), "brainpoolP384r1");
+        defaultParamsMap.put(Integer.valueOf(390), "primeCurve26");
+        defaultParamsMap.put(Integer.valueOf(400), "primeCurve27");
+        defaultParamsMap.put(Integer.valueOf(410), "primeCurve28");
+        defaultParamsMap.put(Integer.valueOf(420), "primeCurve29");
+        defaultParamsMap.put(Integer.valueOf(430), "primeCurve30");
+        defaultParamsMap.put(Integer.valueOf(440), "primeCurve31");
+        defaultParamsMap.put(Integer.valueOf(450), "primeCurve32");
+        defaultParamsMap.put(Integer.valueOf(460), "primeCurve33");
+        defaultParamsMap.put(Integer.valueOf(470), "primeCurve34");
+        defaultParamsMap.put(Integer.valueOf(480), "primeCurve35");
+        defaultParamsMap.put(Integer.valueOf(490), "primeCurve36");
+        defaultParamsMap.put(Integer.valueOf(500), "primeCurve37");
+        defaultParamsMap.put(Integer.valueOf(512), "brainpoolP512r1");
     }
-
-    /**
-     * Default constructor (private)
-     */
     private CurveRegistry() {
         // empty
     }
-
-    ;
-
-    /**
-     * Return the OID of the default curve for the given key size.
-     *
-     * @param keySize the key size
-     * @return the OID of the default curve for the given key size
-     * @throws InvalidAlgorithmParameterException if no default parameters exist for the specified key
-     *                                            size.
-     */
     public static String getDefaultCurveParams(int keySize)
             throws InvalidAlgorithmParameterException {
         int index = 0;
@@ -2242,7 +1836,7 @@ public final class CurveRegistry {
                     "No default parameters exist for key size '" + keySize
                             + "'.");
         }
-        return (String) defaultParamsMap.get(new Integer(size));
+        return (String) defaultParamsMap.get(Integer.valueOf(size));
     }
 
 }

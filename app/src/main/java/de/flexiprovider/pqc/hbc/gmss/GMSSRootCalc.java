@@ -8,16 +8,6 @@ import de.flexiprovider.api.exceptions.NoSuchAlgorithmException;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.CoreRegistry;
 
-/**
- * This class computes a whole Merkle tree and saves the needed values for
- * AuthPath computation. It is used for precomputation of the root of a
- * following tree. After initialization, 2^H updates are required to complete
- * the root. Every update requires one leaf value as parameter. While computing
- * the root all initial values for the authentication path algorithm (treehash,
- * auth, retain) are stored for later use.
- *
- * @author Michael Schneider
- */
 class GMSSRootCalc {
 
     /**
@@ -129,14 +119,8 @@ class GMSSRootCalc {
         this.K = statInt[2];
         this.indexForNextSeed = statInt[3];
         this.heightOfNextSeed = statInt[4];
-        if (statInt[5] == 1)
-            this.isFinished = true;
-        else
-            this.isFinished = false;
-        if (statInt[6] == 1)
-            this.isInitialized = true;
-        else
-            this.isInitialized = false;
+        this.isFinished = statInt[5] == 1;
+        this.isInitialized = statInt[6] == 1;
 
         int tailLength = statInt[7];
 
@@ -147,7 +131,7 @@ class GMSSRootCalc {
 
         this.heightOfNodes = new Vector();
         for (int i = 0; i < tailLength; i++) {
-            this.heightOfNodes.addElement(new Integer(statInt[8 + heightOfTree
+            this.heightOfNodes.addElement(Integer.valueOf(statInt[8 + heightOfTree
                     + i]));
         }
 
@@ -287,7 +271,7 @@ class GMSSRootCalc {
         // if first update to this tree is made
         if (index[0] == 0) {
             tailStack.addElement(leaf);
-            heightOfNodes.addElement(new Integer(0));
+            heightOfNodes.addElement(Integer.valueOf(0));
         } else {
 
             byte[] help = new byte[mdLength];
@@ -343,7 +327,7 @@ class GMSSRootCalc {
             }
             // push help element to the stack
             tailStack.addElement(help);
-            heightOfNodes.addElement(new Integer(helpHeight));
+            heightOfNodes.addElement(Integer.valueOf(helpHeight));
 
             // is the root calculation finished?
             if (helpHeight == heightOfTree) {
@@ -364,15 +348,6 @@ class GMSSRootCalc {
      */
     public void initializeTreehashSeed(byte[] seed, int index) {
         treehash[index].initializeSeed(seed);
-    }
-
-    /**
-     * Method to check whether the instance has been initialized or not
-     *
-     * @return true if treehash was already initialized
-     */
-    public boolean wasInitialized() {
-        return isInitialized;
     }
 
     /**
@@ -488,8 +463,8 @@ class GMSSRootCalc {
             statInt[8 + i] = index[i];
         }
         for (int i = 0; i < tailLength; i++) {
-            statInt[8 + heightOfTree + i] = ((Integer) heightOfNodes
-                    .elementAt(i)).intValue();
+            statInt[8 + heightOfTree + i] = (Integer) heightOfNodes
+                    .elementAt(i);
         }
 
         return statInt;

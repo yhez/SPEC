@@ -249,7 +249,7 @@ public class BDSAuthPath {
         }
 
         // 1.
-        int tau = computeTau(H, s);
+        int tau = computeTau(s);
 
         // 2.
         if (tau < H - 1 && (s >>> tau + 1) % 2 == 0) {
@@ -302,7 +302,7 @@ public class BDSAuthPath {
 
             // b)
             if (index > -1)
-                treehash[index].update(prng, ots, md, nodeCalc);
+                treehash[index].update(prng, ots, nodeCalc);
 
         }
 
@@ -318,7 +318,7 @@ public class BDSAuthPath {
         return auth;
     }
 
-    private int computeTau(int H, int s) {
+    private int computeTau(int s) {
         if (s % 2 == 0)
             return 0;
 
@@ -599,7 +599,7 @@ class Treehash {
         currentHeight = targetHeight;
     }
 
-    public void update(PRNG prng, OTS ots, MessageDigest md, NodeCalc pc) {
+    public void update(PRNG prng, OTS ots, NodeCalc pc) {
         byte[] otsSeed = prng.nextSeed(seed);
         ots.generateKeyPair(otsSeed);
         byte[] leaf = pc.getLeaf(ots.getVerificationKey());
@@ -639,9 +639,8 @@ class Treehash {
     }
 
     public Node getNode() {
-        Node newNode = new Node(ByteUtils.clone(node.getValue()), node
+        return new Node(ByteUtils.clone(node.getValue()), node
                 .getHeight());
-        return newNode;
     }
 
     public int getHeight() {

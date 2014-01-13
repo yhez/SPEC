@@ -9,14 +9,7 @@ import codec.asn1.ASN1Type;
 import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.common.util.ASN1Tools;
 
-/**
- * This class implements a pFLASH public key and is usually instantiated
- * by the {@link PFlashKeyPairGenerator}.
- *
- * @author Marian Hornschuch, Alexander Koller
- * @see PFlashKeyPairGenerator
- * @see de.flexiprovider.pqc.pflash.PFlashPublicKey
- */
+
 public class PFlashPublicKey extends PublicKey {
 
     // the OID of the algorithm
@@ -26,25 +19,12 @@ public class PFlashPublicKey extends PublicKey {
 
     private int arraycounter;
 
-    /**
-     * Construct a new public pFLASH key.
-     * <p/>
-     * FIXME
-     *
-     * @param publicKeyBytes the key bytes
-     */
+
     protected PFlashPublicKey(int size) {
         ppke = new PFlashPublicKeyElement[size];
         arraycounter = 0;
     }
-
-    /**
-     * Construct a new public pFLASH key from the given key specification.
-     *
-     * @param keySpec a {@link PFlashPublicKeySpec}
-     */
     protected PFlashPublicKey(PFlashPublicKeySpec keySpec) {
-        // FIXME
     }
 
     /**
@@ -78,11 +58,7 @@ public class PFlashPublicKey extends PublicKey {
             return false;
         }
         PFlashPublicKey otherKey = (PFlashPublicKey) other;
-
-        boolean result = oid.equals(otherKey.oid);
-
-        // FIXME
-        return result;
+        return oid.equals(otherKey.oid);
     }
 
     protected ASN1ObjectIdentifier getOID() {

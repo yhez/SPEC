@@ -20,8 +20,7 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        Fragment fragment = new PageList(i==0?CONTACTS:GROUPS);
-        return fragment;
+        return new PageList(i==0?CONTACTS:GROUPS);
     }
 
     @Override

@@ -129,11 +129,8 @@ public class GFPElement implements GFElement {
 
         GFPElement otherElement = (GFPElement) other;
 
-        if (mP.equals(otherElement.mP) && mValue.equals(otherElement.mValue)) {
-            return true;
-        }
+        return mP.equals(otherElement.mP) && mValue.equals(otherElement.mValue);
 
-        return false;
     }
 
     /**

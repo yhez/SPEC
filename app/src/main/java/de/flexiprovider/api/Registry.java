@@ -1,6 +1,5 @@
 package de.flexiprovider.api;
 
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -237,71 +236,6 @@ public abstract class Registry {
     }
 
     /**
-     * Return all algorithms of the given type.
-     *
-     * @param type the algorithm type
-     * @return an {@link java.util.Enumeration} of all algorithms contained in the hash
-     * table
-     */
-    public static final Enumeration getAlgorithms(int type) {
-        Hashtable table = getHashtable(type);
-        if (table == null) {
-            return null;
-        }
-        return table.keys();
-    }
-
-    /**
-     * Return all names of the given algorithm and type.
-     *
-     * @param type the algorithm type
-     * @param name (one of the) names of the algorithm
-     * @return a {@link java.util.Vector} containing all names of the algorithm
-     */
-    public static final Vector getNames(int type, String name) {
-        Hashtable table = getHashtable(type);
-        if (table == null) {
-            return null;
-        }
-        Enumeration algorithms = getAlgorithms(type);
-        Object target = resolveAlias(table, name);
-        Vector result = new Vector();
-        while (algorithms.hasMoreElements()) {
-            String key = (String) algorithms.nextElement();
-            if (resolveAlias(table, key).equals(target)) {
-                result.addElement(key);
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Return an instance of the specified asymmetric block cipher.
-     *
-     * @param algName the name of the asymmetric block cipher
-     * @return a new {@link AsymmetricBlockCipher} object implementing the
-     * chosen algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the asymmetric block cipher cannot be found.
-     */
-    public static final AsymmetricBlockCipher getAsymmetricBlockCipher(
-            String algName) throws NoSuchAlgorithmException {
-        return (AsymmetricBlockCipher) getInstance(asymBlockCiphers, algName);
-    }
-
-    /**
-     * Return an instance of the specified asymmetric hybrid cipher.
-     *
-     * @param algName the name of the asymmetric hybrid cipher
-     * @return a new {@link AsymmetricHybridCipher} object implementing the
-     * chosen algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the asymmetric hybrid cipher cannot be found.
-     */
-    public static final AsymmetricHybridCipher getAsymmetricHybridCipher(
-            String algName) throws NoSuchAlgorithmException {
-        return (AsymmetricHybridCipher) getInstance(asymHybridCiphers, algName);
-    }
-
-    /**
      * Try to find an algorithm with the specified name inside the corresponding
      * hashtable and return an instance of the algorithm.
      *
@@ -311,7 +245,7 @@ public abstract class Registry {
      * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the block cipher or mode cannot be found.
      * @throws de.flexiprovider.api.exceptions.NoSuchPaddingException   if the padding scheme cannot be found.
      */
-    public static final BlockCipher getBlockCipher(String transformation)
+    public static BlockCipher getBlockCipher(String transformation)
             throws NoSuchAlgorithmException, NoSuchPaddingException {
 
         String algName, modeName = null, paddingName = null;
@@ -361,7 +295,7 @@ public abstract class Registry {
     /**
      * @return an instance of the default mode (CBC)
      */
-    protected static final Mode getMode() {
+    protected static Mode getMode() {
         return new CBC();
     }
 
@@ -372,7 +306,7 @@ public abstract class Registry {
      * @return a new {@link de.flexiprovider.api.Mode} object implementing the chosen algorithm
      * @throws de.flexiprovider.api.exceptions.NoSuchModeException if the mode cannot be found.
      */
-    protected static final Mode getMode(String modeName)
+    protected static Mode getMode(String modeName)
             throws NoSuchModeException {
         try {
             return (Mode) getInstance(modes, modeName);
@@ -384,7 +318,7 @@ public abstract class Registry {
     /**
      * @return an instance of the default padding scheme (PKCS5Padding)
      */
-    protected static final PaddingScheme getPaddingScheme() {
+    protected static PaddingScheme getPaddingScheme() {
         return new PKCS5Padding();
     }
 
@@ -396,7 +330,7 @@ public abstract class Registry {
      * algorithm
      * @throws de.flexiprovider.api.exceptions.NoSuchPaddingException if the padding scheme cannot be found.
      */
-    protected static final PaddingScheme getPaddingScheme(String paddingName)
+    protected static PaddingScheme getPaddingScheme(String paddingName)
             throws NoSuchPaddingException {
         try {
             return (PaddingScheme) getInstance(paddingSchemes, paddingName);
@@ -406,25 +340,13 @@ public abstract class Registry {
     }
 
     /**
-     * Return an instance of the specified cipher.
-     *
-     * @param algName the name of the cipher
-     * @return a new {@link de.flexiprovider.api.Cipher} object implementing the chosen algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the cipher cannot be found.
-     */
-    public static final Cipher getCipher(String algName)
-            throws NoSuchAlgorithmException {
-        return (Cipher) getInstance(ciphers, algName);
-    }
-
-    /**
      * Return an instance of the specified message authentication code (MAC).
      *
      * @param algName the name of the MAC
      * @return a new {@link de.flexiprovider.api.Mac} object implementing the chosen algorithm
      * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the MAC cannot be found.
      */
-    public static final Mac getMAC(String algName)
+    public static Mac getMAC(String algName)
             throws NoSuchAlgorithmException {
         return (Mac) getInstance(macs, algName);
     }
@@ -437,7 +359,7 @@ public abstract class Registry {
      * algorithm
      * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the message digest cannot be found.
      */
-    public static final MessageDigest getMessageDigest(String algName)
+    public static MessageDigest getMessageDigest(String algName)
             throws NoSuchAlgorithmException {
         return (MessageDigest) getInstance(messageDigests, algName);
     }
@@ -450,7 +372,7 @@ public abstract class Registry {
      * algorithm
      * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the source of randomness cannot be found.
      */
-    public static final SecureRandom getSecureRandom(String algName)
+    public static SecureRandom getSecureRandom(String algName)
             throws NoSuchAlgorithmException {
         return (SecureRandom) getInstance(secureRandoms, algName);
     }
@@ -459,20 +381,8 @@ public abstract class Registry {
      * @return the default secure random
      * @throws RuntimeException if the default secure random cannot be instantiated.
      */
-    public static final SecureRandom getSecureRandom() {
+    public static SecureRandom getSecureRandom() {
         return new DefaultPRNG();
-    }
-
-    /**
-     * Return an instance of the specified signature.
-     *
-     * @param algName the name of the signature
-     * @return a new {@link Signature} object implementing the chosen algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the signature cannot be found.
-     */
-    public static final Signature getSignature(String algName)
-            throws NoSuchAlgorithmException {
-        return (Signature) getInstance(signatures, algName);
     }
 
     /**
@@ -483,7 +393,7 @@ public abstract class Registry {
      * @return the corresponding algorithm parameter specification class
      * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the parameters class cannot be found.
      */
-    public static final Class getAlgParamSpecClass(String algName)
+    public static Class getAlgParamSpecClass(String algName)
             throws NoSuchAlgorithmException {
         Class algorithmClass = (Class) resolveAlias(algParamSpecs, algName);
         if (algorithmClass == null) {
@@ -500,7 +410,7 @@ public abstract class Registry {
      * @return the standard algorithm parameters
      * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters cannot be found.
      */
-    public static final AlgorithmParameterSpec getAlgParamSpec(String paramName)
+    public static AlgorithmParameterSpec getAlgParamSpec(String paramName)
             throws InvalidAlgorithmParameterException {
         try {
             return (AlgorithmParameterSpec) getInstance(algParamSpecs,
@@ -509,22 +419,6 @@ public abstract class Registry {
             throw new InvalidAlgorithmParameterException(
                     "Unknown parameters: '" + paramName + "'.");
         }
-    }
-
-    /**
-     * Register a list of (names of) standardized algorithm parameters for the
-     * given algorithm. Additionally, each parameter set has to be registered
-     * separately using the {@link #add(int, Class, String)} or
-     * {@link #add(int, Class, String[])} method with the
-     * {@link #ALG_PARAM_SPEC} type.
-     *
-     * @param algName    the name of the algorithm
-     * @param paramNames the names of the standardized algorithm parameters suitable
-     *                   for the specified algorithm
-     */
-    public static final void addStandardAlgParams(String algName,
-                                                  String[] paramNames) {
-        addStandardAlgParams(new String[]{algName}, paramNames);
     }
 
     /**
@@ -538,7 +432,7 @@ public abstract class Registry {
      * @param paramNames the names of the standardized algorithm parameters suitable
      *                   for the specified algorithm
      */
-    public static final void addStandardAlgParams(String[] algNames,
+    public static void addStandardAlgParams(String[] algNames,
                                                   String[] paramNames) {
 
         if ((algNames == null) || (paramNames == null)) {
@@ -559,123 +453,13 @@ public abstract class Registry {
             standardAlgParams.put(algNames[i], algNames[0]);
         }
     }
-
-    /**
-     * Return the set of standardized algorithm parameters registered for the
-     * given algorithm, or <tt>null</tt> if no parameters are registered for the
-     * given algorithm.
-     *
-     * @param algName the algorithm name
-     * @return the {@link java.util.Vector} of standardized algorithms parameters for the
-     * specified algorithm, or <tt>null</tt> if no parameters are
-     * registered for the algorithm
-     */
-    public static final Vector getStandardAlgParams(String algName) {
-        return (Vector) resolveAlias(standardAlgParams, algName);
-    }
-
-    /**
-     * Return an instance of the specified algorithm parameters.
-     *
-     * @param algName the name of the algorithm parameters
-     * @return a new {@link de.flexiprovider.api.parameters.AlgorithmParameters} object implementing the chosen
-     * algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the algorithm parameters cannot be found.
-     */
-    public static final AlgorithmParameters getAlgParams(String algName)
+    public static AlgorithmParameters getAlgParams(String algName)
             throws NoSuchAlgorithmException {
         return (AlgorithmParameters) getInstance(algParams, algName);
     }
-
-    /**
-     * Return an instance of the specified algorithm parameter generator.
-     *
-     * @param algName the name of the algorithm parameter generator
-     * @return a new {@link de.flexiprovider.api.parameters.AlgorithmParameterGenerator} object implementing the
-     * chosen algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the algorithm parameter generator cannot be found.
-     */
-    public static final AlgorithmParameterGenerator getAlgParamGenerator(
-            String algName) throws NoSuchAlgorithmException {
-        return (AlgorithmParameterGenerator) getInstance(algParamGenerators,
-                algName);
-    }
-
-    /**
-     * Return an instance of the specified secret key generator.
-     *
-     * @param algName the name of the secret key generator
-     * @return a new {@link de.flexiprovider.api.keys.SecretKeyGenerator} object implementing the chosen
-     * algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the secret key generator cannot be found.
-     */
-    public static final SecretKeyGenerator getSecretKeyGenerator(String algName)
-            throws NoSuchAlgorithmException {
-        return (SecretKeyGenerator) getInstance(secretKeyGenerators, algName);
-    }
-
-    /**
-     * Return an instance of the specified key pair generator.
-     *
-     * @param algName the name of the key pair generator
-     * @return a new {@link de.flexiprovider.api.keys.KeyPairGenerator} object implementing the chosen
-     * algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the key pair generator cannot be found.
-     */
-    public static final KeyPairGenerator getKeyPairGenerator(String algName)
-            throws NoSuchAlgorithmException {
-        return (KeyPairGenerator) getInstance(keyPairGenerators, algName);
-    }
-
-    /**
-     * Return an instance of the specified secret key factory.
-     *
-     * @param algName the name of the secret key factory
-     * @return a new {@link de.flexiprovider.api.keys.SecretKeyFactory} object implementing the chosen
-     * algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the secret key factory cannot be found.
-     */
-    public static final SecretKeyFactory getSecretKeyFactory(String algName)
+    public static SecretKeyFactory getSecretKeyFactory(String algName)
             throws NoSuchAlgorithmException {
         return (SecretKeyFactory) getInstance(secretKeyFactories, algName);
-    }
-
-    /**
-     * Return an instance of the specified key factory.
-     *
-     * @param algName the name of the key factory
-     * @return a new {@link de.flexiprovider.api.keys.KeyFactory} object implementing the chosen algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the key factory cannot be found.
-     */
-    public static final KeyFactory getKeyFactory(String algName)
-            throws NoSuchAlgorithmException {
-        return (KeyFactory) getInstance(keyFactories, algName);
-    }
-
-    /**
-     * Return an instance of the specified key derivation function.
-     *
-     * @param algName the name of the key derivation function
-     * @return a new {@link KeyDerivation} object implementing the chosen
-     * algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the key derivation cannot be found.
-     */
-    public static final KeyDerivation getKeyDerivation(String algName)
-            throws NoSuchAlgorithmException {
-        return (KeyDerivation) getInstance(keyDerivations, algName);
-    }
-
-    /**
-     * Return an instance of the specified key agreement scheme.
-     *
-     * @param algName the name of the key agreement scheme
-     * @return a new {@link KeyAgreement} object implementing the chosen
-     * algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the key agreement scheme cannot be found.
-     */
-    public static final KeyAgreement getKeyAgreement(String algName)
-            throws NoSuchAlgorithmException {
-        return (KeyAgreement) getInstance(keyAgreements, algName);
     }
 
     private static Hashtable getHashtable(int type) {

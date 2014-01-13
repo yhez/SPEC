@@ -241,37 +241,7 @@ public class GMSSPrivateKey extends PrivateKey {
                 gmssPrivKeySpec.getGmssPS(), gmssPrivKeySpec.getAlgNames());
     }
 
-    /**
-     * Generates a new GMSS private key
-     *
-     * @param index             tree indices
-     * @param currentSeeds      seed for the generation of private OTS keys for the
-     *                          current subtrees (TREE)
-     * @param nextNextSeeds     seed for the generation of private OTS keys for the
-     *                          subtrees after next (TREE++)
-     * @param currentAuthPaths  array of current authentication paths (AUTHPATH)
-     * @param nextAuthPaths     array of next authentication paths (AUTHPATH+)
-     * @param keep              keep array for the authPath algorithm
-     * @param currentTreehash   treehash for authPath algorithm of current tree
-     * @param nextTreehash      treehash for authPath algorithm of next tree (TREE+)
-     * @param currentStack      shared stack for authPath algorithm of current tree
-     * @param nextStack         shared stack for authPath algorithm of next tree (TREE+)
-     * @param currentRetain     retain stack for authPath algorithm of current tree
-     * @param nextRetain        retain stack for authPath algorithm of next tree (TREE+)
-     * @param nextNextLeaf      array of upcoming leafs of the tree after next (LEAF++) of
-     *                          each layer
-     * @param upperLeaf         needed for precomputation of upper nodes
-     * @param upperTreehashLeaf needed for precomputation of upper treehash nodes
-     * @param nextRoot          the roots of the next trees (ROOT+)
-     * @param nextNextRoot      the roots of the tree after next (ROOT++)
-     * @param currentRootSig    array of signatures of the roots of the current subtrees
-     *                          (SIG)
-     * @param nextRootSig       array of signatures of the roots of the next subtree
-     *                          (SIG+)
-     * @param gmssParameterset  the GMSS Parameterset
-     * @param algNames          An array of strings, containing the name of the used hash
-     *                          function and the name of the corresponding provider
-     */
+
     protected GMSSPrivateKey(int[] index, byte[][] currentSeeds,
                              byte[][] nextNextSeeds, byte[][][] currentAuthPaths,
                              byte[][][] nextAuthPaths, byte[][][] keep,
@@ -432,7 +402,7 @@ public class GMSSPrivateKey extends PrivateKey {
 
         // construct the nextRootSig (RootSig++)
         byte[] dummy = new byte[mdLength];
-        byte[] OTSseed = new byte[mdLength];
+        byte[] OTSseed;
         if (nextRootSig == null) {
             this.nextRootSig = new GMSSRootSig[numLayer - 1];
             for (int i = 0; i < numLayer - 1; i++) {
@@ -501,7 +471,7 @@ public class GMSSPrivateKey extends PrivateKey {
                 // last step of distributed signature calculation
                 try {
                     nextRootSig[layer - 1].updateSign();
-                } catch (SignatureException se) {
+                } catch (SignatureException ignored) {
                 }
 
                 // last step of distributed leaf calculation for nextNextLeaf
@@ -584,7 +554,7 @@ public class GMSSPrivateKey extends PrivateKey {
                 // -----------------------
 
                 // -----------------
-                byte[] OTSseed = new byte[mdLength];
+                byte[] OTSseed;
                 byte[] dummy = new byte[mdLength];
                 // gmssRandom.setSeed(currentSeeds[layer]);
                 System
@@ -603,15 +573,6 @@ public class GMSSPrivateKey extends PrivateKey {
         }
     }
 
-    /**
-     * This method computes the authpath (AUTH) for the current tree,
-     * Additionally the root signature for the next tree (SIG+), the authpath
-     * (AUTH++) and root (ROOT++) for the tree after next in layer
-     * <code>layer</code>, and the LEAF++^1 for the next next tree in the
-     * layer above are updated This method is used by nextKey()
-     *
-     * @param layer
-     */
     private void updateKey(int layer) {
         // ----------current tree processing of actual layer---------
         // compute upcoming authpath for current Tree (AUTH)
@@ -659,13 +620,7 @@ public class GMSSPrivateKey extends PrivateKey {
                     } catch (Exception e) {
                         System.out.println(e);
                     }
-                    // ------------------------------------------------
                 }
-
-                // initialize next leaf precomputation
-                // ------------------------------------------------
-
-                // get lowest index of treehashs
                 this.minTreehash[layer - 1] = getMinTreehashIndex(layer - 1);
 
                 if (this.minTreehash[layer - 1] >= 0) {
@@ -694,7 +649,7 @@ public class GMSSPrivateKey extends PrivateKey {
             // layer)
             try {
                 nextRootSig[layer - 1].updateSign();
-            } catch (SignatureException se) {
+            } catch (SignatureException ignored) {
             }
 
             // compute (partial) AUTHPATH++ & ROOT++ (not on top layer)
@@ -774,7 +729,7 @@ public class GMSSPrivateKey extends PrivateKey {
                     mdLength);
         }
 
-        byte[] help = new byte[mdLength];
+        byte[] help;
         // STEP 3 of Algorithm
         // if phi is left child, compute and store leaf for next currentAuthPath
         // path,
@@ -872,14 +827,6 @@ public class GMSSPrivateKey extends PrivateKey {
             System.arraycopy(tempKeep, 0,
                     keep[layer][(int) Math.floor(Tau / 2)], 0, mdLength);
         }
-
-        // only update empty stack at height h if all other stacks have
-        // tailnodes with height >h
-        // finds active stack with lowest node height, choses lower index in
-        // case of tie
-
-        // on the lowest layer leafs must be computed at once, no precomputation
-        // is possible. So all treehash updates are done at once here
         if (layer == numLayer - 1) {
             for (int tmp = 1; tmp <= (H - K) / 2; tmp++) {
                 // index of the treehash instance that receives the next update
@@ -928,15 +875,9 @@ public class GMSSPrivateKey extends PrivateKey {
         return Tau - 1;
     }
 
-    /**
-     * Updates the authentication path and root calculation for the tree after
-     * next (AUTH++, ROOT++) in layer <code>layer</code>
-     *
-     * @param layer
-     */
     private void updateNextNextAuthRoot(int layer) {
 
-        byte[] OTSseed = new byte[mdLength];
+        byte[] OTSseed;
         OTSseed = gmssRandom.nextSeed(nextNextSeeds[layer - 1]);
 
         // get the necessary leaf
@@ -1105,54 +1046,26 @@ public class GMSSPrivateKey extends PrivateKey {
         return numLeafs[i];
     }
 
-    /**
-     * @return The array of number of leafs of a tree of each layer
-     */
-    protected int[] getNumLeafs() {
-        return numLeafs;
-    }
-
-    /**
-     * @return The stack array <code>keep</code>
-     */
     protected byte[][][] getKeep() {
         return keep;
     }
 
-    /**
-     * @return An array of the GMSSLeafs of the tree after next of each layer
-     * (LEAF++)
-     */
     protected GMSSLeaf[] getNextNextLeaf() {
         return nextNextLeaf;
     }
 
-    /**
-     * @return An array of the GMSSLeafs of the tree after next of each layer
-     * (LEAF++)
-     */
     protected GMSSLeaf[] getUpperLeaf() {
         return upperLeaf;
     }
 
-    /**
-     * @return An array of the GMSSLeafs of the tree after next of each layer
-     * (LEAF++)
-     */
     protected GMSSLeaf[] getUpperTreehashLeaf() {
         return upperTreehashLeaf;
     }
 
-    /**
-     * @return An array of the indices of the next treehashs to receive updates
-     */
     protected int[] getMinTreehash() {
         return minTreehash;
     }
 
-    /**
-     * @return An array of roots of the next subtree of each layer (ROOT+)
-     */
     protected byte[][] getNextRoot() {
         return nextRoot;
     }

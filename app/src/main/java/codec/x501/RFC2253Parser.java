@@ -44,9 +44,6 @@ public class RFC2253Parser {
      */
     public static final String QUOTE = "\"";
 
-    /**
-     * The plus character.
-     */
     public static final String PLUS = "+";
 
     /**
@@ -98,7 +95,7 @@ public class RFC2253Parser {
         state = 0;
         tokParsed = true;
         utfParsed = true;
-        key = new String();
+        key = "";
         value = new StringBuffer();
         tok = "";
         baos = new ByteArrayOutputStream();
@@ -121,7 +118,7 @@ public class RFC2253Parser {
          * We consume whitespace characters and wait for an attribute
 		 * keyword in this state.
 		 */
-                    if (WHITESPACE.indexOf(tok) >= 0) {
+                    if (WHITESPACE.contains(tok)) {
                         continue;
                     }
                     if (SPECIALS.indexOf(tok.charAt(0)) < 0) {
@@ -171,7 +168,7 @@ public class RFC2253Parser {
 		 * We again consume whitespace characters until we encounter an
 		 * equals sign ('='). Then we advance our state.
 		 */
-                    if (WHITESPACE.indexOf(tok) >= 0) {
+                    if (WHITESPACE.contains(tok)) {
                         continue;
                     }
                     if (tok.equals("=")) {
@@ -188,7 +185,7 @@ public class RFC2253Parser {
 		 * transition to state number 3. In other words, we fall through
 		 * with the current token still being valid.
 		 */
-                    if (WHITESPACE.indexOf(tok) >= 0) {
+                    if (WHITESPACE.contains(tok)) {
                         continue;
                     }
 		/*
@@ -227,7 +224,7 @@ public class RFC2253Parser {
 		 * transformed into 'cn=foo'. that means all whitespace
 		 * characters before the delimiter must be truncated.
 		 */
-                    if (WHITESPACE.indexOf(tok) >= 0) {
+                    if (WHITESPACE.contains(tok)) {
 		    /*
 		     * Ignore leading whitespace characters.
 		     */
@@ -481,7 +478,7 @@ public class RFC2253Parser {
                         ava_.add(new AVA(key, val, plus));
                         continue;
                     }
-                    if (WHITESPACE.indexOf(tok) < 0) {
+                    if (!WHITESPACE.contains(tok)) {
                         throw new BadNameException("(" + state
                                 + ") Only whitespace characters are "
                                 + "allowed after the second unescaped quotation "
@@ -521,7 +518,7 @@ public class RFC2253Parser {
 		/*
 		 * Remove trailing spaces.
 		 */
-                    if (WHITESPACE.indexOf(tok) >= 0) {
+                    if (WHITESPACE.contains(tok)) {
                         if (trunc == -1) {
                             trunc = value.length();
                         }
@@ -602,7 +599,7 @@ public class RFC2253Parser {
                 break;
 
             case 2:
-                ava_.add(new AVA(key, new String(), false));
+                ava_.add(new AVA(key, "", false));
                 break;
         }
         return ava_;

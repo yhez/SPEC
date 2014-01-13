@@ -44,28 +44,10 @@ public final class IntegerFunctions {
         // empty
     }
 
-    /**
-     * Computes the value of the Jacobi symbol (A|B). The following properties
-     * hold for the Jacobi symbol which makes it a very efficient way to
-     * evaluate the Legendre symbol
-     * <p/>
-     * (A|B) = 0 IF gcd(A,B) > 1<br>
-     * (-1|B) = 1 IF n = 1 (mod 1)<br>
-     * (-1|B) = -1 IF n = 3 (mod 4)<br>
-     * (A|B) (C|B) = (AC|B)<br>
-     * (A|B) (A|C) = (A|CB)<br>
-     * (A|B) = (C|B) IF A = C (mod B)<br>
-     * (2|B) = 1 IF N = 1 OR 7 (mod 8)<br>
-     * (2|B) = 1 IF N = 3 OR 5 (mod 8)
-     * <p/>
-     *
-     * @param A integer value
-     * @param B integer value
-     * @return value of the jacobi symbol (A|B)
-     */
+
     public static int jacobi(FlexiBigInt A, FlexiBigInt B) {
         FlexiBigInt a, b, v;
-        long k = 1;
+        long k;
 
         k = 1;
 
@@ -132,20 +114,11 @@ public final class IntegerFunctions {
         return b.equals(ONE) ? (int) k : 0;
     }
 
-    /**
-     * Computes the square root of a FlexiBigInt modulo a prime employing the
-     * Shanks-Tonelli algorithm.
-     *
-     * @param a value out of which we extract the square root
-     * @param p prime modulus that determines the underlying field
-     * @return a number <tt>b</tt> such that b<sup>2</sup> = a (mod p) if
-     * <tt>a</tt> is a quadratic residue modulo <tt>p</tt>.
-     * @throws NoQuadraticResidueException if <tt>a</tt> is a quadratic non-residue modulo <tt>p</tt>
-     */
+
     public static FlexiBigInt ressol(FlexiBigInt a, FlexiBigInt p)
             throws NoQuadraticResidueException {
 
-        FlexiBigInt v = null;
+        FlexiBigInt v;
 
         if (a.compareTo(ZERO) < 0) {
             a = a.add(p);
@@ -170,7 +143,7 @@ public final class IntegerFunctions {
             throw new NoQuadraticResidueException(a, p);
         }
 
-        long t = 0;
+        long t;
 
         // initialization
         // compute k and s, where p = 2^s (2k+1) +1
@@ -275,31 +248,6 @@ public final class IntegerFunctions {
         return a.shiftLeft(1).add(b).divide(b.shiftLeft(1));
     }
 
-    public static FlexiBigInt[] divideAndRound(FlexiBigInt[] a, FlexiBigInt b) {
-        FlexiBigInt[] out = new FlexiBigInt[a.length];
-        for (int i = 0; i < a.length; i++) {
-            out[i] = divideAndRound(a[i], b);
-        }
-        return out;
-    }
-
-    /**
-     * Compute the smallest integer that is greater than or equal to the
-     * logarithm to the base 2 of the given FlexiBigInt.
-     *
-     * @param a the integer
-     * @return ceil[log(a)]
-     */
-    public static int ceilLog(FlexiBigInt a) {
-        int result = 0;
-        FlexiBigInt p = FlexiBigInt.ONE;
-        while (p.compareTo(a) < 0) {
-            result++;
-            p = p.shiftLeft(1);
-        }
-        return result;
-    }
-
     /**
      * Compute the smallest integer that is greater than or equal to the
      * logarithm to the base 2 of the given integer.
@@ -329,32 +277,6 @@ public final class IntegerFunctions {
             return 1;
         }
         int m;
-        if (n < 0) {
-            m = -n;
-        } else {
-            m = n;
-        }
-
-        int d = 0;
-        while (m > 0) {
-            d++;
-            m >>>= 8;
-        }
-        return d;
-    }
-
-    /**
-     * Compute <tt>ceil(log_256 n)</tt>, the number of bytes needed to encode
-     * the long integer <tt>n</tt>.
-     *
-     * @param n the long integer
-     * @return the number of bytes needed to encode <tt>n</tt>
-     */
-    public static int ceilLog256(long n) {
-        if (n == 0) {
-            return 1;
-        }
-        long m;
         if (n < 0) {
             m = -n;
         } else {
@@ -408,41 +330,6 @@ public final class IntegerFunctions {
     }
 
     /**
-     * Compute the largest <tt>h</tt> with <tt>2^h | a</tt> if <tt>a!=0</tt>.
-     *
-     * @param a an integer
-     * @return the largest <tt>h</tt> with <tt>2^h | a</tt> if <tt>a!=0</tt>,
-     * <tt>0</tt> otherwise
-     */
-    public static int maxPower(int a) {
-        int h = 0;
-        if (a != 0) {
-            int p = 1;
-            while ((a & p) == 0) {
-                h++;
-                p <<= 1;
-            }
-        }
-
-        return h;
-    }
-
-    /**
-     * @param a an integer
-     * @return the number of ones in the binary representation of an integer
-     * <tt>a</tt>
-     */
-    public static int bitCount(int a) {
-        int h = 0;
-        while (a != 0) {
-            h += a & 1;
-            a >>>= 1;
-        }
-
-        return h;
-    }
-
-    /**
      * determines the order of g modulo p, p prime and 1 < g < p. This algorithm
      * is only efficient for small p (see X9.62-1998, p. 68).
      *
@@ -474,19 +361,6 @@ public final class IntegerFunctions {
         }
 
         return j;
-    }
-
-    /**
-     * Reduces an integer into a given interval
-     *
-     * @param n     - the integer
-     * @param begin - left bound of the interval
-     * @param end   - right bound of the interval
-     * @return <tt>n</tt> reduced into <tt>[begin,end]</tt>
-     */
-    public static FlexiBigInt reduceInto(FlexiBigInt n, FlexiBigInt begin,
-                                         FlexiBigInt end) {
-        return n.subtract(begin).mod(end.subtract(begin)).add(begin);
     }
 
     /**
@@ -526,17 +400,8 @@ public final class IntegerFunctions {
         }
         return result;
     }
-
-    /**
-     * Compute <tt>a<sup>e</sup> mod n</tt>.
-     *
-     * @param a the base
-     * @param e the exponent
-     * @param n the modulus
-     * @return <tt>a<sup>e</sup> mod n</tt>
-     */
     public static int modPow(int a, int e, int n) {
-        if (n <= 0 || (n * n) > Integer.MAX_VALUE || e < 0) {
+        if (n <= 0 || e < 0) {
             return 0;
         }
         int result = 1;
@@ -581,22 +446,6 @@ public final class IntegerFunctions {
     }
 
     /**
-     * Computation of the least common multiple of a set of FlexiBigInts.
-     *
-     * @param numbers - the set of numbers
-     * @return the lcm(numbers)
-     */
-    public static FlexiBigInt leastCommonMultiple(FlexiBigInt[] numbers) {
-        int n = numbers.length;
-        FlexiBigInt result = numbers[0];
-        for (int i = 1; i < n; i++) {
-            FlexiBigInt gcd = result.gcd(numbers[i]);
-            result = result.multiply(numbers[i]).divide(gcd);
-        }
-        return result;
-    }
-
-    /**
      * Returns a long integer whose value is <tt>(a mod m</tt>). This method
      * differs from <tt>%</tt> in that it always returns a <i>non-negative</i>
      * integer.
@@ -638,57 +487,6 @@ public final class IntegerFunctions {
     }
 
     /**
-     * Tests whether an integer <tt>a</tt> is power of another integer
-     * <tt>p</tt>.
-     *
-     * @param a - the first integer
-     * @param p - the second integer
-     * @return n if a = p^n or -1 otherwise
-     */
-    public static int isPower(int a, int p) {
-        if (a <= 0) {
-            return -1;
-        }
-        int n = 0;
-        int d = a;
-        while (d > 1) {
-            if (d % p != 0) {
-                return -1;
-            }
-            d /= p;
-            n++;
-        }
-        return n;
-    }
-
-    /**
-     * Find and return the least non-trivial divisor of an integer <tt>a</tt>.
-     *
-     * @param a - the integer
-     * @return divisor p >1 or 1 if a = -1,0,1
-     */
-    public static int leastDiv(int a) {
-        if (a < 0) {
-            a = -a;
-        }
-        if (a == 0) {
-            return 1;
-        }
-        if ((a & 1) == 0) {
-            return 2;
-        }
-        int p = 3;
-        while (p <= (a / p)) {
-            if ((a % p) == 0) {
-                return p;
-            }
-            p += 2;
-        }
-
-        return a;
-    }
-
-    /**
      * Miller-Rabin-Test, determines wether the given integer is probably prime
      * or composite. This method returns <tt>true</tt> if the given integer is
      * prime with probability <tt>1 - 2<sup>-20</sup></tt>.
@@ -715,14 +513,8 @@ public final class IntegerFunctions {
             }
         }
 
-        if ((n % 3 == 0) || (n % 5 == 0) || (n % 7 == 0) || (n % 11 == 0)
-                || (n % 13 == 0) || (n % 17 == 0) || (n % 19 == 0)
-                || (n % 23 == 0) || (n % 29 == 0) || (n % 31 == 0)
-                || (n % 37 == 0) || (n % 41 == 0)) {
-            return false;
-        }
+        return !((n % 3 == 0) || (n % 5 == 0) || (n % 7 == 0) || (n % 11 == 0) || (n % 13 == 0) || (n % 17 == 0) || (n % 19 == 0) || (n % 23 == 0) || (n % 29 == 0) || (n % 31 == 0) || (n % 37 == 0) || (n % 41 == 0)) && FlexiBigInt.valueOf(n).isProbablePrime(20);
 
-        return FlexiBigInt.valueOf(n).isProbablePrime(20);
     }
 
     /**
@@ -763,34 +555,6 @@ public final class IntegerFunctions {
             }
         }
         return true;
-    }
-
-    /**
-     * Returns the largest prime smaller than the given integer
-     *
-     * @param n - upper bound
-     * @return the largest prime smaller than <tt>n</tt>, or <tt>1</tt> if
-     * <tt>n &lt;= 2</tt>
-     */
-    public static int nextSmallerPrime(int n) {
-        if (n <= 2) {
-            return 1;
-        }
-
-        if (n == 3) {
-            return 2;
-        }
-
-        if ((n & 1) == 0) {
-            n--;
-        } else {
-            n -= 2;
-        }
-
-        while (n > 3 & !isPrime(n)) {
-            n -= 2;
-        }
-        return n;
     }
 
     /**
@@ -923,13 +687,6 @@ public final class IntegerFunctions {
         return result;
     }
 
-    public static FlexiBigInt randomize(FlexiBigInt upperBound) {
-        if (sr == null) {
-            sr = Registry.getSecureRandom();
-        }
-        return randomize(upperBound, sr);
-    }
-
     public static FlexiBigInt randomize(FlexiBigInt upperBound,
                                         SecureRandom prng) {
         int blen = upperBound.bitLength();
@@ -999,26 +756,18 @@ public final class IntegerFunctions {
     public static float intRoot(int base, int root) {
         float gNew = base / root;
         float gOld = 0;
-        int counter = 0;
         while (Math.abs(gOld - gNew) > 0.0001) {
             float gPow = floatPow(gNew, root);
             while (Float.isInfinite(gPow)) {
                 gNew = (gNew + gOld) / 2;
                 gPow = floatPow(gNew, root);
             }
-            counter += 1;
             gOld = gNew;
             gNew = gOld - (gPow - base) / (root * floatPow(gOld, root - 1));
         }
         return gNew;
     }
 
-    /**
-     * Calculation of a logarithmus of a float param
-     *
-     * @param param
-     * @return
-     */
     public static float floatLog(float param) {
         double arg = (param - 1) / (param + 1);
         double arg2 = arg;
@@ -1033,13 +782,7 @@ public final class IntegerFunctions {
         return 2 * result;
     }
 
-    /**
-     * int power of a base float, only use for small ints
-     *
-     * @param f
-     * @param i
-     * @return
-     */
+
     public static float floatPow(float f, int i) {
         float g = 1;
         for (; i > 0; i--) {
@@ -1058,8 +801,7 @@ public final class IntegerFunctions {
     public static double log(double x) {
         if (x > 0 && x < 1) {
             double d = 1 / x;
-            double result = -log(d);
-            return result;
+            return -log(d);
         }
 
         int tmp = 0;
@@ -1219,17 +961,6 @@ public final class IntegerFunctions {
         return y;
     }
 
-    public static boolean isIncreasing(int[] a) {
-        for (int i = 1; i < a.length; i++) {
-            if (a[i - 1] >= a[i]) {
-                System.out.println("a[" + (i - 1) + "] = " + a[i - 1] + " >= "
-                        + a[i] + " = a[" + i + "]");
-                return false;
-            }
-        }
-        return true;
-    }
-
     public static byte[] integerToOctets(FlexiBigInt val) {
         byte[] valBytes = val.abs().toByteArray();
 
@@ -1252,7 +983,4 @@ public final class IntegerFunctions {
         return new FlexiBigInt(val);
     }
 
-    public static FlexiBigInt octetsToInteger(byte[] data) {
-        return octetsToInteger(data, 0, data.length);
-    }
 }

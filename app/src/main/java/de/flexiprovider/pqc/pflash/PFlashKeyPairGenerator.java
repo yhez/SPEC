@@ -12,23 +12,7 @@ import de.flexiprovider.common.math.linearalgebra.GF2Vector;
 import de.flexiprovider.common.math.linearalgebra.GF2mMatrix;
 import de.flexiprovider.common.math.linearalgebra.GF2mVector;
 
-/**
- * This class implements key pair generation of the pLASH signature scheme.
- * <p><b>The PFlashKeyPairGenerator can be used as follows:</b></p>
- * <b> Key generation:</b>
- * <ol>
- * <li> get instance of pFLASH key generator<br/>
- * <tt> KeyPairGenerator kpg = Registry.getKeyPairGenerator("pFLASH");</tt></li>
- * <li> initialize generator with "default" set of parameters<br/>
- * <tt> kpg.initialize(null, secureRandom);</tt></li>
- * <li> generate keys<br/>
- * <tt> KeyPair keys = kpg.genKeypair();</tt></li>
- * </ol>
- *
- * @author Marian Hornschuch, Alexander Koller
- * @see de.flexiprovider.pqc.pflash.PFlashPrivateKey
- * @see de.flexiprovider.pqc.pflash.PFlashPublicKey
- */
+
 public class PFlashKeyPairGenerator extends KeyPairGenerator {
 
     /**

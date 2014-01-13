@@ -125,7 +125,6 @@ public class RprimeRSAKeyPairGenerator extends KeyPairGenerator {
         }
 
         int pBitSize = (keySize + 1) / k;
-        int qBitSize = pBitSize;
         int rnBitSize = keySize - (k - 1) * pBitSize;
 
         Vector v;
@@ -135,7 +134,7 @@ public class RprimeRSAKeyPairGenerator extends KeyPairGenerator {
             // generate primes p and q
             p = new FlexiBigInt(pBitSize, CERTAINTY, random);
             do {
-                q = new FlexiBigInt(qBitSize, CERTAINTY, random);
+                q = new FlexiBigInt(pBitSize, CERTAINTY, random);
 
             } while ((p.equals(q))
                     || !((p.subtract(FlexiBigInt.ONE)).gcd(q

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.mersa;
 
 import codec.asn1.ASN1Integer;
@@ -18,13 +9,6 @@ import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.core.rsa.RSAPrivateCrtKey;
 
-/**
- * This class implements the MeRSAPrivateKey interface.
- *
- * @author Erik Dahmen
- * @author Paul Nguentcheu
- * @see de.flexiprovider.core.mersa.MeRSAKeyPairGenerator
- */
 public class MeRSAPrivateKey extends RSAPrivateCrtKey {
 
     /**
@@ -98,16 +82,13 @@ public class MeRSAPrivateKey extends RSAPrivateCrtKey {
 
         MeRSAPrivateKey otherKey = (MeRSAPrivateKey) other;
 
-        if (n.equals(otherKey.n) && p.equals(otherKey.p)
+        return n.equals(otherKey.n) && p.equals(otherKey.p)
                 && q.equals(otherKey.q) && d.equals(otherKey.d)
                 && e.equals(otherKey.e) && dP.equals(otherKey.dP)
                 && dQ.equals(otherKey.dQ) && k.equals(otherKey.k)
                 && eInvP.equals(otherKey.eInvP)
-                && crtCoeff.equals(otherKey.crtCoeff)) {
-            return true;
-        }
+                && crtCoeff.equals(otherKey.crtCoeff);
 
-        return false;
     }
 
     /**

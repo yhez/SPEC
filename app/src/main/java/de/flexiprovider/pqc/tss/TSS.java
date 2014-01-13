@@ -234,14 +234,7 @@ public abstract class TSS extends Signature {
         return ternary;
     }
 
-    /**
-     * Checks if all of the values in the given array are smaller or equal the
-     * defined boundary
-     *
-     * @param arr
-     * @param bound
-     * @return
-     */
+
     public boolean checkBound(long[] arr, long bound) {
         for (int i = arr.length - 1; i >= 0; i--) {
             if (Math.abs(arr[i]) > bound) {
@@ -252,14 +245,7 @@ public abstract class TSS extends Signature {
         return true;
     }
 
-    /**
-     * Checks if all of the values in the contained arrays are smaller or equal
-     * bound
-     *
-     * @param v     a Vector containing long[]
-     * @param bound
-     * @return
-     */
+
     public boolean checkBound(Vector v, long bound) {
         for (int i = v.size() - 1; i >= 0; i--) {
             if (!checkBound(((TSSPolynomial) v.elementAt(i)).getCompressed(),
@@ -306,16 +292,6 @@ public abstract class TSS extends Signature {
             throw new InvalidKeyException();
         }
     }
-
-    /**
-     * returns a pseudo random {@link TSSPolynomial} with values <= |1|
-     *
-     * @param u the input byte array for which to create the pseudo random
-     *          output
-     * @return a pseudo random {@link TSSPolynomial}
-     * @throws java.io.IOException
-     * @throws codec.asn1.ASN1Exception
-     */
     public TSSPolynomial oracle(TSSPolynomial gfp, byte[] b) {
         byte[] gfpArr = null;
 
@@ -348,18 +324,6 @@ public abstract class TSS extends Signature {
         v.setElementAt(gfp, size - 1);
 
         return new TSSVectorSerial(v).getArrayRepresentation();
-    }
-
-    private Vector parse2TSSVector(byte[] b) {
-        TSSVectorSerial gv = new TSSVectorSerial(b);
-
-        Vector v = gv.getVectorRepresentation();
-
-        // Inversion of parse2TSSByte
-        // TODO special case, need to include in method where both e and z are
-        // required
-
-        return v;
     }
 
     public void setParameters(AlgorithmParameterSpec params)
@@ -476,15 +440,6 @@ public abstract class TSS extends Signature {
         gBound = yBound - (long) (Math.sqrt(n) * IntegerFunctions.floatLog(n));
         e.print();
 
-        if (checkBound(z, gBound)) {
-            if (e.equals(oracle(hashFunction.calculatHash(z).subtract(
-                    pubKey.getS().multiply(e)), mue))) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        return checkBound(z, gBound) && e.equals(oracle(hashFunction.calculatHash(z).subtract(pubKey.getS().multiply(e)), mue));
     }
 }

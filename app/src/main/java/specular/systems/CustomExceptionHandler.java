@@ -40,7 +40,7 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
         try {
             PackageInfo pInfo = a.getPackageManager().getPackageInfo(a.getPackageName(), 0);
             version = pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e1) {
+        } catch (PackageManager.NameNotFoundException ignored) {
         }
         writeToFile("spec version: " + version + "\n" + stacktrace);
         android.os.Process.killProcess(android.os.Process.myPid());

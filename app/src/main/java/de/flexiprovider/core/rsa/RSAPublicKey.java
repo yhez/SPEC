@@ -95,11 +95,8 @@ public final class RSAPublicKey extends
 
         RSAPublicKey otherKey = (RSAPublicKey) other;
 
-        if (n.equals(otherKey.n) && e.equals(otherKey.e)) {
-            return true;
-        }
+        return n.equals(otherKey.n) && e.equals(otherKey.e);
 
-        return false;
     }
 
     public int hashCode() {

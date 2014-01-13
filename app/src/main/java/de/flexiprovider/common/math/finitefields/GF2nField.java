@@ -67,13 +67,6 @@ public abstract class GF2nField {
         return new GF2Polynomial(fieldPolynomial);
     }
 
-    /**
-     * Decides whether the given object <tt>other</tt> is the same as this
-     * field.
-     *
-     * @param other another object
-     * @return (this == other)
-     */
     public final boolean equals(Object other) {
         if (other == null || !(other instanceof GF2nField)) {
             return false;
@@ -81,21 +74,7 @@ public abstract class GF2nField {
 
         GF2nField otherField = (GF2nField) other;
 
-        if (otherField.mDegree != mDegree) {
-            return false;
-        }
-        if (!fieldPolynomial.equals(otherField.fieldPolynomial)) {
-            return false;
-        }
-        if ((this instanceof GF2nPolynomialField)
-                && !(otherField instanceof GF2nPolynomialField)) {
-            return false;
-        }
-        if ((this instanceof GF2nONBField)
-                && !(otherField instanceof GF2nONBField)) {
-            return false;
-        }
-        return true;
+        return otherField.mDegree == mDegree && fieldPolynomial.equals(otherField.fieldPolynomial) && !((this instanceof GF2nPolynomialField) && !(otherField instanceof GF2nPolynomialField)) && !((this instanceof GF2nONBField) && !(otherField instanceof GF2nONBField));
     }
 
     /**

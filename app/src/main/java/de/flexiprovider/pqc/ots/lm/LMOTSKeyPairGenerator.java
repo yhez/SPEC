@@ -32,14 +32,7 @@ public class LMOTSKeyPairGenerator extends KeyPairGenerator {
     // the hashFunction used to calculate the public-keys
     private LMOTSHash hFunction;
 
-    /**
-     * this method generates a new vector of size m with polynomials
-     * {@link GFP32Polynomial} in it, where the infinite norm is less than
-     * limit.
-     *
-     * @param limit
-     * @return a vector of polynomials
-     */
+
     private Vector generateMPoly(int limit) {
         GFP32Polynomial gfp = new GFP32Polynomial(f, p, Registry
                 .getSecureRandom());
@@ -83,11 +76,7 @@ public class LMOTSKeyPairGenerator extends KeyPairGenerator {
         SecureRandom generator = Registry.getSecureRandom();
 
         int bound = IntegerFunctions.pow(2, len) - 1;
-        String result = "";
-
-        result = Integer.toBinaryString(generator.nextInt(bound));
-
-        return result;
+        return Integer.toBinaryString(generator.nextInt(bound));
     }
 
     /**
@@ -130,18 +119,14 @@ public class LMOTSKeyPairGenerator extends KeyPairGenerator {
     private Vector pickK() {
         int limit = (int) Math.ceil(5 * pos * IntegerFunctions.intRoot(p, m));
 
-        Vector result = generateMPoly(limit);
-
-        return result;
+        return generateMPoly(limit);
     }
 
     private Vector pickL() {
         int limit = (int) Math.ceil(5 * pos * degree * phi
                 * IntegerFunctions.intRoot(p, m));
 
-        Vector result = generateMPoly(limit);
-
-        return result;
+        return generateMPoly(limit);
     }
 
 }

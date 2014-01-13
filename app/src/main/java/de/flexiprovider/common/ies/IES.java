@@ -74,9 +74,6 @@ public abstract class IES extends AsymmetricHybridCipher {
      */
     protected AlgorithmParameterSpec keyParams;
 
-    // the derived symmetric key
-    private SecretKey symKey;
-
     // the length of the symmetric cipher key
     private int symKeyLength;
 
@@ -409,7 +406,7 @@ public abstract class IES extends AsymmetricHybridCipher {
                         .getSecretKeyFactory(iesParams.getSymKFName());
                 SecretKeySpec keySpec = new SecretKeySpec(symKeyData,
                         symCipherName);
-                symKey = symKeyFactory.generateSecret(keySpec);
+                SecretKey symKey = symKeyFactory.generateSecret(keySpec);
                 if (opMode == ENCRYPT_MODE) {
                     symCipher.initEncrypt(symKey, random);
                 } else if (opMode == DECRYPT_MODE) {
@@ -493,9 +490,8 @@ public abstract class IES extends AsymmetricHybridCipher {
             System.arraycopy(macEncParams, 0, macInput, macKeyLen,
                     macEncParams.length);
         }
-        byte[] macTag = mac.doFinal(macInput);
 
-        return macTag;
+        return mac.doFinal(macInput);
 
     }
 

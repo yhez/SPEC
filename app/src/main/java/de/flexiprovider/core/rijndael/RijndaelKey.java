@@ -64,10 +64,7 @@ public class RijndaelKey implements SecretKey {
      * @return the result of the comparison
      */
     public boolean equals(Object other) {
-        if (other == null || !(other instanceof RijndaelKey)) {
-            return false;
-        }
-        return ByteUtils.equals(keyBytes, ((RijndaelKey) other).keyBytes);
+        return !(other == null || !(other instanceof RijndaelKey)) && ByteUtils.equals(keyBytes, ((RijndaelKey) other).keyBytes);
     }
 
     /**

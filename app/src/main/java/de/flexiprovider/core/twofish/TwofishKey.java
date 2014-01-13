@@ -64,10 +64,7 @@ public class TwofishKey implements SecretKey {
      * @return the result of the comparison
      */
     public boolean equals(Object other) {
-        if (other == null || !(other instanceof TwofishKey)) {
-            return false;
-        }
-        return ByteUtils.equals(keyBytes, ((TwofishKey) other).keyBytes);
+        return !(other == null || !(other instanceof TwofishKey)) && ByteUtils.equals(keyBytes, ((TwofishKey) other).keyBytes);
     }
 
     /**

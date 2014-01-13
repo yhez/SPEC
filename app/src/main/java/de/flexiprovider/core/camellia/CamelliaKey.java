@@ -44,28 +44,14 @@ public class CamelliaKey implements SecretKey {
         return "Camellia";
     }
 
-    /**
-     * This method will return the format of the key as a String.
-     *
-     * @return format of the stored key as a <tt>String</tt>.
-     */
     public String getFormat() {
         return "RAW";
     }
 
-    /**
-     * @return a copy of the key bytes
-     */
     public byte[] getEncoded() {
         return ByteUtils.clone(keyBytes);
     }
 
-    /**
-     * Tests if the argument contains the same key material as <tt>this</tt>
-     *
-     * @param other comparing key material
-     * @return <tt>true</tt> if the keys are equal
-     */
     public boolean equals(Object other) {
         if (other == null || !(other instanceof CamelliaKey)) {
             return false;
@@ -74,9 +60,6 @@ public class CamelliaKey implements SecretKey {
         return ByteUtils.equals(keyBytes, otherKey.keyBytes);
     }
 
-    /**
-     * @return the hash code of this key
-     */
     public int hashCode() {
         int result = 1;
         for (int i = 0; i < keyBytes.length; i++) {
@@ -85,5 +68,4 @@ public class CamelliaKey implements SecretKey {
 
         return result;
     }
-
 }

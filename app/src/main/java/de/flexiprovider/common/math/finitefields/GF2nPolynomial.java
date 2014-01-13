@@ -241,16 +241,7 @@ public class GF2nPolynomial {
         return getDegree() + coeff.hashCode();
     }
 
-    /**
-     * Adds the PolynomialGF2n <tt>b</tt> to <tt>this</tt> and returns the
-     * result in a new <tt>PolynomialGF2n</tt>.
-     *
-     * @param b -
-     *          the <tt>PolynomialGF2n</tt> to add
-     * @return <tt>this + b</tt>
-     * @throws DifferentFieldsException if <tt>this</tt> and <tt>b</tt> are not defined over
-     *                                  the same field.
-     */
+
     public final GF2nPolynomial add(GF2nPolynomial b)
             throws DifferentFieldsException {
         GF2nPolynomial result;
@@ -402,15 +393,6 @@ public class GF2nPolynomial {
         return result;
     }
 
-    /**
-     * Divides <i>this</i> by <i>b</i> and stores the result in a new
-     * PolynomialGF2n[2], quotient in result[0] and remainder in result[1].
-     *
-     * @param b the divisor
-     * @return the quotient and remainder of <i>this</i> / <i>b</i>
-     * @throws DifferentFieldsException if <tt>this</tt> and <tt>b</tt> are not defined over
-     *                                  the same field.
-     */
     public final GF2nPolynomial[] divide(GF2nPolynomial b)
             throws DifferentFieldsException, ArithmeticException {
         GF2nPolynomial[] result = new GF2nPolynomial[2];
@@ -461,15 +443,6 @@ public class GF2nPolynomial {
         return result[1];
     }
 
-    /**
-     * Divides <i>this</i> by <i>b</i> and stores the quotient in a new
-     * PolynomialGF2n.
-     *
-     * @param b the divisor
-     * @return the quotient <i>this</i> / <i>b</i>
-     * @throws DifferentFieldsException if <tt>this</tt> and <tt>b</tt> are not defined over
-     *                                  the same field.
-     */
     public final GF2nPolynomial quotient(GF2nPolynomial b)
             throws DifferentFieldsException, ArithmeticException {
         GF2nPolynomial[] result = new GF2nPolynomial[2];
@@ -477,17 +450,7 @@ public class GF2nPolynomial {
         return result[0];
     }
 
-    /**
-     * Computes the greatest common divisor of <i>this</i> and <i>g</i> and
-     * returns the result in a new PolynomialGF2n.
-     *
-     * @param g -
-     *          a GF2nPolynomial
-     * @return gcd(<i>this</i>, <i>g</i>)
-     * @throws DifferentFieldsException if the coefficients of <i>this</i> and <i>g</i> use
-     *                                  different fields
-     * @throws ArithmeticException      if coefficients are zero.
-     */
+
     public final GF2nPolynomial gcd(GF2nPolynomial g)
             throws DifferentFieldsException, ArithmeticException {
         GF2nPolynomial a = new GF2nPolynomial(this);

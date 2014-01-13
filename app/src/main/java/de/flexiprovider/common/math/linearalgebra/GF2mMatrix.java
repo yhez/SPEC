@@ -74,27 +74,6 @@ public class GF2mMatrix extends Matrix {
         }
     }
 
-    /**
-     * Copy constructor.
-     *
-     * @param other another {@link de.flexiprovider.common.math.linearalgebra.GF2mMatrix}
-     */
-    public GF2mMatrix(GF2mMatrix other) {
-        numRows = other.numRows;
-        numColumns = other.numColumns;
-        field = other.field;
-        matrix = new int[numRows][];
-        for (int i = 0; i < numRows; i++) {
-            matrix[i] = IntUtils.clone(other.matrix[i]);
-        }
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param field  a finite field GF(2^m)
-     * @param matrix the matrix as int array. Only the reference is copied.
-     */
     protected GF2mMatrix(GF2mField field, int[][] matrix) {
         this.field = field;
         this.matrix = matrix;
@@ -184,7 +163,6 @@ public class GF2mMatrix extends Matrix {
                         swapColumns(invMatrix, i, j);
                         // ... and quit searching
                         j = numRows;
-                        continue;
                     }
                 }
                 // if no non-zero element was found

@@ -440,11 +440,8 @@ public abstract class MerkleOTSSignature extends Signature {
             t++;
         }
 
-        if (counter1 < d) {
-            return false;
-        }
+        return counter1 >= d;
 
-        return true;
     }
 
     /**

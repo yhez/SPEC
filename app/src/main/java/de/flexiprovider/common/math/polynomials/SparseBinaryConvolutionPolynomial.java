@@ -1,53 +1,18 @@
 package de.flexiprovider.common.math.polynomials;
 
+import java.util.Arrays;
+
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.common.math.IntegerFunctions;
 import de.flexiprovider.common.util.BigEndianConversions;
 import de.flexiprovider.common.util.IntUtils;
 
-/**
- * This class represents sparse binary polynomials in the ring
- * <tt>Z(X)/(X^N-1)</tt>. The polynomials are stored as int arrays of the
- * degrees of the monomials with coefficient <tt>1</tt>.
- *
- * @author Martin Dring
- */
 public class SparseBinaryConvolutionPolynomial implements ConvolutionPolynomial {
 
-    /**
-     * The degree of the reduction polynomial
-     */
     int N;
 
-    /**
-     * The array of the degrees of the monomials with coefficient <tt>1</tt>
-     */
     int[] degrees;
 
-    /*
-     * Constructors
-     */
-
-    /**
-     * Create a sparse binary polynomial out of the given degree array
-     *
-     * @param N       the degree of the reduction polynomial
-     * @param degrees the array of the degrees of the monomials with coefficient
-     *                <tt>1</tt>
-     */
-    public SparseBinaryConvolutionPolynomial(final int N, final int[] degrees) {
-        this.N = N;
-        this.degrees = IntUtils.clone(degrees);
-        IntUtils.quicksort(this.degrees);
-    }
-
-    /**
-     * Create a sparse binary polynomial of degree less than <tt>N</tt>.
-     *
-     * @param N  the degree of the reduction polynomial
-     * @param d  the number of non-zero coefficients
-     * @param sr source of randomness to create the polynomial
-     */
     public SparseBinaryConvolutionPolynomial(final int N, final int d,
                                              SecureRandom sr) {
 
@@ -83,24 +48,6 @@ public class SparseBinaryConvolutionPolynomial implements ConvolutionPolynomial 
     }
 
     /**
-     * Construct a SparseBinaryConvolutionPolynomial out of the given
-     * BinaryConvolutionPolynomial.
-     *
-     * @param binPol the BinaryPolynomial
-     */
-    public SparseBinaryConvolutionPolynomial(BinaryConvolutionPolynomial binPol) {
-        this.N = binPol.N;
-        degrees = new int[binPol.numCoeffs()];
-        int index = degrees.length - 1;
-        for (int i = N - 1; i >= 0; i--) {
-            if (binPol.testCoefficient(i)) {
-                degrees[index] = i;
-                index--;
-            }
-        }
-    }
-
-    /**
      * Copy constructor.
      *
      * @param other another <tt>SparseBinaryPolynomial</tt>
@@ -122,38 +69,6 @@ public class SparseBinaryConvolutionPolynomial implements ConvolutionPolynomial 
     /*
      * Public methods
      */
-
-    /**
-     * Compute an array of bit pattern locations given a windows size according
-     * to Algorithm 2 of M.-K. Lee, J. W. Kim, J. E. Song, and K. Park, "Sliding
-     * Window Method for NTRU", LNCS 4521.
-     *
-     * @param w the window size
-     * @return an array [b_0, ... b_{w-1}] of bit pattern locations
-     */
-    int[][] getPatternLocations(int w) {
-
-        int[][] locations = new int[w][((degrees.length + 1) >> 1) + 1];
-        locations[0] = new int[degrees.length + 1];
-        int currentPos = degrees.length - 1;
-
-        while (currentPos > 0) {
-            int dist = degrees[currentPos] - degrees[currentPos - 1];
-            if (dist < w) {
-                locations[dist][locations[dist][0]++ + 1] = degrees[currentPos];
-                currentPos -= 2;
-            } else {
-                locations[0][locations[0][0]++ + 1] = degrees[currentPos];
-                currentPos--;
-            }
-        }
-
-        if (currentPos == 0) {
-            locations[0][locations[0][0]++ + 1] = degrees[0];
-        }
-
-        return locations;
-    }
 
     /**
      * Compute an array of bit pattern locations (minimal size).
@@ -200,18 +115,15 @@ public class SparseBinaryConvolutionPolynomial implements ConvolutionPolynomial 
 
         SparseBinaryConvolutionPolynomial otherPol = (SparseBinaryConvolutionPolynomial) other;
 
-        if ((N == otherPol.N) && IntUtils.equals(degrees, otherPol.degrees)) {
-            return true;
-        }
+        return (N == otherPol.N) && IntUtils.equals(degrees, otherPol.degrees);
 
-        return false;
     }
 
     /**
      * @return the hash code of this polynomial
      */
     public int hashCode() {
-        return N + degrees.hashCode();
+        return N + Arrays.hashCode(degrees);
     }
 
     /**

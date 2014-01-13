@@ -179,14 +179,11 @@ public class RSAPrivateCrtKey extends
 
         RSAPrivateCrtKey otherKey = (RSAPrivateCrtKey) other;
 
-        if (n.equals(otherKey.n) && p.equals(otherKey.p)
+        return n.equals(otherKey.n) && p.equals(otherKey.p)
                 && q.equals(otherKey.q) && d.equals(otherKey.d)
                 && e.equals(otherKey.e) && dP.equals(otherKey.dP)
-                && dQ.equals(otherKey.dQ) && crtCoeff.equals(otherKey.crtCoeff)) {
-            return true;
-        }
+                && dQ.equals(otherKey.dQ) && crtCoeff.equals(otherKey.crtCoeff);
 
-        return false;
     }
 
     /**

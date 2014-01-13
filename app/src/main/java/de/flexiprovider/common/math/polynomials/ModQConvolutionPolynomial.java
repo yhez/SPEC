@@ -1,7 +1,6 @@
 package de.flexiprovider.common.math.polynomials;
 
 import de.flexiprovider.common.math.IntegerFunctions;
-import de.flexiprovider.common.util.BigEndianConversions;
 import de.flexiprovider.common.util.IntUtils;
 
 /**
@@ -41,29 +40,6 @@ public class ModQConvolutionPolynomial implements ConvolutionPolynomial {
     /*
      * Constructors
      */
-
-    /**
-     * Construct the default polynomial (the zero polynomial <tt>f(x) = 0</tt>).
-     *
-     * @param N the degree of the reduction polynomial
-     * @param q the modulus
-     * @throws IllegalArgumentException if the parameters are invalid.
-     */
-    public ModQConvolutionPolynomial(int N, int q)
-            throws IllegalArgumentException {
-        if (N < 1 || q == 0 || q == 1) {
-            throw new IllegalArgumentException();
-        }
-
-        this.N = N;
-        if (q < 0) {
-            this.q = -q;
-        } else {
-            this.q = q;
-        }
-        degree = 0;
-        coefficients = new int[N];
-    }
 
     /**
      * Construct a polynomial of the given degree. The only non-zero coefficient
@@ -120,25 +96,6 @@ public class ModQConvolutionPolynomial implements ConvolutionPolynomial {
                 coefficients.length);
         reduceCoeffThis();
         computeDegree();
-    }
-
-    /**
-     * Construct a full form polynomial out of the given sparse binary
-     * polynomial, setting the non-zero coefficients to an integer <tt>p</tt>.
-     *
-     * @param other the sparse binary polynomial
-     * @param q     the modulus
-     * @param p     the value of the non-zero coefficients
-     */
-    public ModQConvolutionPolynomial(SparseBinaryConvolutionPolynomial other,
-                                     int q, int p) {
-        N = other.N;
-        this.q = q;
-        degree = other.degrees[other.degrees.length - 1];
-        coefficients = new int[N];
-        for (int i = other.degrees.length - 1; i >= 0; i--) {
-            coefficients[other.degrees[i]] = p;
-        }
     }
 
     /**
@@ -225,49 +182,6 @@ public class ModQConvolutionPolynomial implements ConvolutionPolynomial {
             coefficients[i] -= minuend.coefficients[i];
             if (coefficients[i] < 0) {
                 coefficients[i] += q;
-            }
-        }
-
-        computeDegree();
-    }
-
-    /**
-     * Multiply this polynomial with an integer.
-     *
-     * @param a the integer
-     * @return <tt>this * a</tt> (newly created)
-     */
-    public ModQConvolutionPolynomial multiplyInteger(int a) {
-        ModQConvolutionPolynomial result = new ModQConvolutionPolynomial(this);
-        result.multiplyIntegerThis(a);
-        return result;
-    }
-
-    /**
-     * Multiply this polynomial with an integer.
-     *
-     * @param a the integer
-     */
-    public void multiplyIntegerThis(int a) {
-        if (a % q == 0) {
-            // if a % q == 0, construct the zero polynomial
-            this.coefficients = new int[N];
-            this.degree = 0;
-            // and return
-            return;
-        }
-
-        // else, multiply and reduce
-        if (a == 2) {
-            for (int i = degree; i >= 0; i--) {
-                coefficients[i] <<= 1;
-                if (coefficients[i] >= q) {
-                    coefficients[i] -= q;
-                }
-            }
-        } else {
-            for (int i = degree; i >= 0; i--) {
-                coefficients[i] = (coefficients[i] * a) % q;
             }
         }
 
@@ -455,140 +369,6 @@ public class ModQConvolutionPolynomial implements ConvolutionPolynomial {
         computeDegree();
     }
 
-    /**
-     * Multiply this polynomial with the factor according to Algorithm 3 of
-     * M.-K. Lee, J. W. Kim, J. E. Song, and K. Park, "Sliding Window Method for
-     * NTRU", LNCS 4521.
-     *
-     * @param factor the factor
-     * @return <tt>this * factor</tt> (newly created)
-     * @throws ArithmeticException if this polynomial and the factor are not elements of the
-     *                             same ring.
-     */
-    public ModQConvolutionPolynomial multiplySlidingWindow(
-            BinaryConvolutionPolynomial factor) throws ArithmeticException {
-
-        if (N != factor.N) {
-            throw new ArithmeticException(
-                    "Polynomials are not defined over the same ring.");
-        }
-
-        int w = 5;
-
-        int[][] T = new int[w - 1][N];
-        for (int i = w - 1; i >= 1; i--) {
-            int index = i;
-            for (int j = 0; j < N; j++) {
-                T[i - 1][j] = coefficients[j] + coefficients[index++];
-                if (index == N) {
-                    index = 0;
-                }
-            }
-        }
-
-        int[] coeff = new int[N];
-
-        final int[][] b = factor.getPatternLocations(w);
-
-        for (int j = 0; j < b[0][0]; j++) {
-            int index = b[0][j + 1];
-            for (int k = 0; k < N; k++) {
-                coeff[index++] += coefficients[k];
-                if (index == N) {
-                    index = 0;
-                }
-            }
-        }
-
-        for (int i = w - 1; i >= 1; i--) {
-            int di = b[i][0];
-            for (int j = di - 1; j >= 0; j--) {
-                int index = b[i][j + 1];
-                for (int k = 0; k < N; k++) {
-                    coeff[index++] += T[i - 1][k];
-                    if (index == N) {
-                        index = 0;
-                    }
-                }
-            }
-        }
-
-        // create and return result polynomial
-        return new ModQConvolutionPolynomial(N, q, coeff);
-    }
-
-    /**
-     * Multiply this polynomial with the factor according to Algorithm 3 of
-     * M.-K. Lee, J. W. Kim, J. E. Song, and K. Park, "Sliding Window Method for
-     * NTRU", LNCS 4521.
-     *
-     * @param factor the factor
-     * @return <tt>this * factor</tt> (newly created)
-     * @throws ArithmeticException if this polynomial and the factor are not elements of the
-     *                             same ring.
-     */
-    public ModQConvolutionPolynomial multiplySlidingWindow(
-            SparseBinaryConvolutionPolynomial factor)
-            throws ArithmeticException {
-
-        if (N != factor.N) {
-            throw new ArithmeticException(
-                    "Polynomials are not defined over the same ring.");
-        }
-
-        int w = 5;
-
-        int[][] T = new int[w - 1][N];
-        for (int i = w - 1; i >= 1; i--) {
-            int index = i;
-            for (int j = 0; j < N; j++) {
-                T[i - 1][j] = coefficients[j] + coefficients[index++];
-                if (index == N) {
-                    index = 0;
-                }
-            }
-        }
-
-        int[] coeff = new int[N];
-
-        final int[][] b = factor.getPatternLocations(w);
-
-        for (int j = 0; j < b[0][0]; j++) {
-            int index = b[0][j + 1];
-            for (int k = 0; k < N; k++) {
-                coeff[index++] += coefficients[k];
-                if (index == N) {
-                    index = 0;
-                }
-            }
-        }
-
-        for (int i = w - 1; i >= 1; i--) {
-            int di = b[i][0];
-            for (int j = di - 1; j >= 0; j--) {
-                int index = b[i][j + 1];
-                for (int k = 0; k < N; k++) {
-                    coeff[index++] += T[i - 1][k];
-                    if (index == N) {
-                        index = 0;
-                    }
-                }
-            }
-        }
-
-        // create and return result polynomial
-        return new ModQConvolutionPolynomial(N, q, coeff);
-    }
-
-    /**
-     * Multiply this polynomial with a SparseBinaryConvolutionPolynomial making
-     * use of bit patterns of the binary polynomial.
-     *
-     * @param factor the factor
-     * @return <tt>this * factor</tt> (newly created)
-     * @throws ArithmeticException if this polynomial and the factor are not elements of the
-     *                             same ring.
-     */
     public ModQConvolutionPolynomial multiplyPatterns(
             SparseBinaryConvolutionPolynomial factor)
             throws ArithmeticException {
@@ -643,137 +423,6 @@ public class ModQConvolutionPolynomial implements ConvolutionPolynomial {
     }
 
     /**
-     * Multiply this polynomial with a ProductFormConvolutionPolynomial making
-     * use of bit patterns of the three binary polynomials constituting the
-     * product form polynomial.
-     *
-     * @param factor the factor
-     * @return <tt>this * factor</tt> (newly created)
-     * @throws ArithmeticException if this polynomial and the factor are not elements of the
-     *                             same ring.
-     */
-    public ModQConvolutionPolynomial multiplyPatterns(
-            ProductFormConvolutionPolynomial factor) throws ArithmeticException {
-
-        if (N != factor.N) {
-            throw new ArithmeticException(
-                    "Polynomials are not defined over the same ring.");
-        }
-
-        int[] coeff = new int[N];
-        int[] af1 = new int[N];
-        int[] af1f2 = new int[N];
-        int[] P = new int[N];
-
-        final int[][] L1 = factor.f1.getPatterns();
-        final int[][] L2 = factor.f2.getPatterns();
-        final int[][] L3 = factor.f3.getPatterns();
-        int df = L1.length;
-
-        for (int i = df - 1; i >= 1; i--) {
-            if (L1[i] != null || L3[i] != null) {
-                // compute this + this*x^i
-                int index = i;
-                for (int j = 0; j < N; j++) {
-                    P[j] = coefficients[j] + coefficients[index++];
-                    if (index == N) {
-                        index = 0;
-                    }
-                }
-
-                if (L1[i] != null) {
-                    // multiply using polynomial P computed above
-                    for (int j = L1[i][0] - 1; j >= 0; j--) {
-                        index = L1[i][j + 1];
-                        for (int k = 0; k < N; k++) {
-                            af1[index++] += P[k];
-                            if (index == N) {
-                                index = 0;
-                            }
-                        }
-                    }
-                }
-
-                if (L3[i] != null) {
-                    // multiply using polynomial P computed above
-                    for (int j = L3[i][0] - 1; j >= 0; j--) {
-                        index = L3[i][j + 1];
-                        for (int k = 0; k < N; k++) {
-                            coeff[index++] += P[k];
-                            if (index == N) {
-                                index = 0;
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
-
-        // treat possibly remaining single coefficients
-        if (L1[0] != null) {
-            int index = L1[0][0];
-            for (int k = 0; k < N; k++) {
-                af1[index++] += coefficients[k];
-                if (index == N) {
-                    index = 0;
-                }
-            }
-        }
-
-        if (L3[0] != null) {
-            int index = L3[0][0];
-            for (int k = 0; k < N; k++) {
-                coeff[index++] += coefficients[k];
-                if (index == N) {
-                    index = 0;
-                }
-            }
-        }
-
-        for (int i = df - 1; i >= 1; i--) {
-            if (L2[i] != null) {
-                // compute af1 + af1*x^i
-                int index = i;
-                for (int j = 0; j < N; j++) {
-                    P[j] = af1[j] + af1[index++];
-                    if (index == N) {
-                        index = 0;
-                    }
-                }
-
-                // multiply using polynomial P computed above
-                for (int j = L2[i][0] - 1; j >= 0; j--) {
-                    index = L2[i][j + 1];
-                    for (int k = 0; k < N; k++) {
-                        af1f2[index++] += P[k];
-                        if (index == N) {
-                            index = 0;
-                        }
-                    }
-                }
-
-            }
-        }
-
-        // treat possibly remaining single coefficient
-        if (L2[0] != null) {
-            int index = L2[0][0];
-            for (int k = 0; k < N; k++) {
-                af1f2[index++] += af1[k];
-                if (index == N) {
-                    index = 0;
-                }
-            }
-        }
-
-        coeff = add(af1f2, coeff);
-
-        // create and return result polynomial
-        return new ModQConvolutionPolynomial(N, q, coeff);
-    }
-
-    /**
      * Compute the inverse of this polynomial in the ring
      * <tt>(Z/qZ)[X]/(X^N-1)</tt>.
      *
@@ -791,168 +440,6 @@ public class ModQConvolutionPolynomial implements ConvolutionPolynomial {
     }
 
     /**
-     * Reduce the coefficients of this polynomial modulo an integer <tt>p</tt>
-     * into the interval <tt>[0, p)</tt>.
-     *
-     * @param p the modulus
-     * @return this polynomial with reduced coefficients (newly created)
-     */
-    public ModQConvolutionPolynomial reduceCoeffModP(final int p) {
-        ModQConvolutionPolynomial result = new ModQConvolutionPolynomial(this);
-        result.reduceCoeffModPThis(p);
-        return result;
-    }
-
-    /**
-     * Reduce the coefficients of this polynomial modulo an integer <tt>p</tt>
-     * into the interval <tt>[0, p)</tt>, overwriting this polynomial.
-     *
-     * @param p the modulus
-     */
-    public void reduceCoeffModPThis(final int p) {
-        if (p == 2) {
-            for (int i = degree; i >= 0; i--) {
-                coefficients[i] &= 1;
-            }
-        } else {
-            for (int i = degree; i >= 0; i--) {
-                coefficients[i] %= p;
-            }
-        }
-
-        computeDegree();
-    }
-
-    /**
-     * Shift the coefficients of this polynomial by an integer <tt>A</tt>.
-     *
-     * @param A the shift
-     */
-    public void shiftCoeffThis(int A) {
-        if (A != 0) {
-            for (int i = degree; i >= 0; i--) {
-                coefficients[i] += A;
-            }
-        }
-    }
-
-    /**
-     * Evaluate this polynomial at value <tt>1</tt>.
-     *
-     * @return <tt>this(1) mod q</tt>
-     */
-    public int evaluateAtOne() {
-        int result = coefficients[N - 1];
-        for (int i = N - 2; i >= 0; i--) {
-            result += coefficients[i];
-            if (result >= q) {
-                result -= q;
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Encode this polynomial as a byte array if it is an element of
-     * <tt>(Z/qZ)/(X^N-1)</tt>. This method corresponds to the RE2OSP
-     * primitive of IEEE P1363.1-D9.
-     *
-     * @return the encoded polynomial
-     */
-    public byte[] RE2OSP() {
-        int oLen = IntegerFunctions.ceilLog256(q - 1);
-        byte[] result = new byte[oLen * N];
-
-        for (int i = N - 1; i >= 0; i--) {
-            byte[] os = BigEndianConversions.I2OSP(coefficients[i], oLen);
-            System.arraycopy(os, 0, result, i * oLen, oLen);
-        }
-
-        return result;
-    }
-
-    /**
-     * Decode a byte array into a polynomial. This method corresponds to the
-     * OS2REP primitive of IEEE P1363.1-D9.
-     *
-     * @param N       the degree of the reduction polynomial
-     * @param q       the modulus
-     * @param encoded the encoded polynomial
-     * @return the decoded polynomial
-     * @throws IllegalArgumentException if the encoded polynomial has the wrong length.
-     */
-    public static ModQConvolutionPolynomial OS2REP(int N, int q, byte[] encoded)
-            throws IllegalArgumentException {
-
-        int oLen = IntegerFunctions.ceilLog256(q - 1);
-        if (encoded.length != oLen * N) {
-            throw new IllegalArgumentException(
-                    "Encoded polynomial has wrong length.");
-        }
-
-        ModQConvolutionPolynomial result = new ModQConvolutionPolynomial(N, q);
-
-        for (int i = 0; i < N; i++) {
-            result.coefficients[i] = BigEndianConversions.OS2IP(encoded, i
-                    * oLen, oLen);
-        }
-
-        result.computeDegree();
-
-        return result;
-    }
-
-    /**
-     * Encode a binary ring element as a byte array.
-     *
-     * @return the encoded polynomial
-     * @throws ArithmeticException if this polynomial is not a binary polynomial.
-     */
-    public byte[] BRE2OSP() throws ArithmeticException {
-        for (int i = N - 1; i >= 0; i--) {
-            if (coefficients[i] != 0 && coefficients[i] != 1) {
-                throw new ArithmeticException("Not a binary polynomial.");
-            }
-        }
-
-        byte[] result = new byte[(N + 7) >> 3];
-        for (int i = N - 1; i >= 0; i--) {
-            result[i >> 3] |= coefficients[i] << (i & 7);
-        }
-        return result;
-    }
-
-    /**
-     * Decode a byte array into a binary polynomial. This method corresponds to
-     * the OS2BREP primitive of IEEE P1363.1-D9.
-     *
-     * @param N       the degree of the reduction polynomial
-     * @param q       the modulus
-     * @param encoded the encoded binary polynomial
-     * @return the decoded polynomial
-     * @throws IllegalArgumentException if the encoded polynomial has the wrong length.
-     */
-    public static ModQConvolutionPolynomial OS2BREP(int N, int q, byte[] encoded)
-            throws IllegalArgumentException {
-
-        if (encoded.length > (N + 7) >>> 3) {
-            throw new IllegalArgumentException(
-                    "Encoded octet string has wrong length.");
-        }
-
-        ModQConvolutionPolynomial result = new ModQConvolutionPolynomial(N, q);
-
-        for (int i = N - 1; i >= 0; i--) {
-            result.coefficients[i] = (encoded[i / 8] >>> (i & 7)) & 1;
-        }
-
-        result.computeDegree();
-
-        return result;
-    }
-
-    /**
      * Compare this polynomial with the given object.
      *
      * @param other the other object
@@ -965,12 +452,9 @@ public class ModQConvolutionPolynomial implements ConvolutionPolynomial {
 
         ModQConvolutionPolynomial otherPol = (ModQConvolutionPolynomial) other;
 
-        if ((degree == otherPol.degree) && (q == otherPol.q)
-                && IntUtils.equals(coefficients, otherPol.coefficients)) {
-            return true;
-        }
+        return (degree == otherPol.degree) && (q == otherPol.q)
+                && IntUtils.equals(coefficients, otherPol.coefficients);
 
-        return false;
     }
 
     /**

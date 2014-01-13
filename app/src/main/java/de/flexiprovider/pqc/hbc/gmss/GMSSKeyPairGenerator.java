@@ -162,11 +162,6 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
     private GMSSRandom gmssRandom;
 
     /**
-     * The hash function used for the construction of the authentication trees
-     */
-    private MessageDigest messDigestTree;
-
-    /**
      * An array of the seeds for the PRGN (for main tree, and all current
      * subtrees)
      */
@@ -199,11 +194,6 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
     private int numLayer;
 
     /**
-     * Instance of GMSSParameterSpec
-     */
-    private GMSSParameterSpec gmssParameterSpec;
-
-    /**
      * Flag indicating if the class already has been initialized
      */
     private boolean initialized = false;
@@ -228,23 +218,16 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
      */
     private int[] K;
 
-    /**
-     * The standard constructor tries to generate the GMSS algorithm identifier
-     * with the corresponding OID.
-     * <p/>
-     *
-     * @param oidStr     string with the oid of the algorithm
-     * @param mdName     name of the message digest for the construction of the
-     *                   authentication trees
-     * @param mdProvName provider name of the message digest for the construction of
-     *                   the the authentication trees and for the OTS
-     */
+
     public GMSSKeyPairGenerator(String oidStr, String mdName, String mdProvName) {
         String errorMsg;
 
         CoreRegistry.registerAlgorithms();
         try {
-            messDigestTree = Registry.getMessageDigest(mdName);
+            /*
+      The hash function used for the construction of the authentication trees
+     */
+            MessageDigest messDigestTree = Registry.getMessageDigest(mdName);
             algNames[0] = mdName;
 
             // set mdLength
@@ -387,21 +370,12 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
         return (new KeyPair(publicKey, privateKey));
     }
 
-    /**
-     * calculates the authpath for tree in layer h which starts with seed[h]
-     * additionally computes the rootSignature of underlaying root
-     *
-     * @param currentStack stack used for the treehash instance created by this method
-     * @param lowerRoot    stores the root of the lower tree
-     * @param seeds        starting seeds
-     * @param h            actual layer
-     * @throws de.flexiprovider.api.exceptions.SignatureException if the OTS verifying goes wrong
-     */
+
     private GMSSRootCalc generateCurrentAuthpathAndRoot(byte[] lowerRoot,
                                                         Vector currentStack, byte[] seed, int h) throws SignatureException {
         byte[] help = new byte[mdLength];
 
-        byte[] OTSseed = new byte[mdLength];
+        byte[] OTSseed;
         OTSseed = gmssRandom.nextSeed(seed);
 
         WinternitzOTSignature ots;
@@ -456,17 +430,9 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
         return null;
     }
 
-    /**
-     * calculates the authpath and root for tree in layer h which starts with
-     * seed[h]
-     *
-     * @param nextStack stack used for the treehash instance created by this method
-     * @param seeds     starting seeds
-     * @param h         actual layer
-     */
     private GMSSRootCalc generateNextAuthpathAndRoot(Vector nextStack,
                                                      byte[] seed, int h) {
-        byte[] OTSseed = new byte[numLayer];
+        byte[] OTSseed;
         WinternitzOTSignature ots;
 
         // data structure that constructs the whole tree and stores
@@ -545,7 +511,7 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
         // call the initializer with the chosen parameters
         try {
             this.initialize(gps);
-        } catch (InvalidAlgorithmParameterException ae) {
+        } catch (InvalidAlgorithmParameterException ignored) {
         }
     }
 
@@ -579,7 +545,10 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
                     "in GMSSKeyPairGenerator: initialize: params is not "
                             + "an instance of GMSSParameterSpec");
         }
-        this.gmssParameterSpec = (GMSSParameterSpec) algParamSpec;
+        /*
+      Instance of GMSSParameterSpec
+     */
+        GMSSParameterSpec gmssParameterSpec = (GMSSParameterSpec) algParamSpec;
 
         // generate GMSSParameterset
         this.gmssPS = new GMSSParameterset(gmssParameterSpec.getNumOfLayers(),
@@ -623,7 +592,7 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
 
         try {
             this.initialize(gps);
-        } catch (InvalidAlgorithmParameterException ae) {
+        } catch (InvalidAlgorithmParameterException ignored) {
         }
     }
 }

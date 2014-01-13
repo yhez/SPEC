@@ -244,7 +244,6 @@ public class McEliecePointchevalCipher extends AsymmetricHybridCipher {
 
         int kDiv8 = k >> 3;
 
-        // generate random r of length k div 8 bytes
         byte[] r = new byte[kDiv8];
         sr.nextBytes(r);
 
@@ -269,7 +268,7 @@ public class McEliecePointchevalCipher extends AsymmetricHybridCipher {
                 z).getEncoded();
 
         // get PRNG object
-        SecureRandom sr0 = null;
+        SecureRandom sr0;
         try {
             sr0 = Registry.getSecureRandom(prngName);
         } catch (NoSuchAlgorithmException nsae) {
@@ -316,7 +315,7 @@ public class McEliecePointchevalCipher extends AsymmetricHybridCipher {
         GF2Vector z = c1Dec[1];
 
         // get PRNG object
-        SecureRandom sr0 = null;
+        SecureRandom sr0;
         try {
             sr0 = Registry.getSecureRandom(prngName);
         } catch (NoSuchAlgorithmException nsae) {

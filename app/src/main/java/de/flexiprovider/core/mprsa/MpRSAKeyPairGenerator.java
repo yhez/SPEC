@@ -122,14 +122,13 @@ public class MpRSAKeyPairGenerator extends KeyPairGenerator {
         FlexiBigInt[] otherPrime = new FlexiBigInt[k - 2];
 
         int bitsp = (keySize + 1) / k;
-        int bitsq = bitsp;
         int bitrn = keySize - (k - 1) * bitsp;
 
         do {
             p = new FlexiBigInt(bitsp, CERTAINTY, random);
 
             do {
-                q = new FlexiBigInt(bitsq, CERTAINTY, random);
+                q = new FlexiBigInt(bitsp, CERTAINTY, random);
             } while (p.equals(q));
 
             v = new Vector();

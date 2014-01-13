@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.core.kdf;
 
 import de.flexiprovider.api.KeyDerivation;
@@ -16,23 +8,6 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.md.SHA1;
 
-/**
- * KDF1 is a key derivation function descriped in IEEE 1363-2000. It is a more
- * general version of a key derivation function in ANSI X9.42.
- * <p/>
- * KDF1 can be used as follows:
- * <p/>
- * <pre>
- * KeyDerivation kdf = Registry.getKeyDerivation(&quot;KDF1&quot;);
- * kdf.init(secretKey.toByteArray());
- * kdf.setSharedInfo(byte[] sharedInfo);
- * byte[] derivedKey = kdf.doFinal(int keyDataLen);
- * </pre>
- *
- * @author Jochen Hechler
- * @author Marcus St�gbauer
- * @author Martin D�ring
- */
 public class KDF1 extends KeyDerivation {
 
     // the hash function

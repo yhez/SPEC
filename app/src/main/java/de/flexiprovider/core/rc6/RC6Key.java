@@ -63,10 +63,7 @@ public class RC6Key implements SecretKey {
      * @return the result of the comparison
      */
     public boolean equals(Object other) {
-        if (other == null || !(other instanceof RC6Key)) {
-            return false;
-        }
-        return ByteUtils.equals(keyBytes, ((RC6Key) other).keyBytes);
+        return !(other == null || !(other instanceof RC6Key)) && ByteUtils.equals(keyBytes, ((RC6Key) other).keyBytes);
     }
 
     /**

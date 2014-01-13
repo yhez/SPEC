@@ -1,5 +1,7 @@
 package de.flexiprovider.common.math.linearalgebra;
 
+import java.util.Arrays;
+
 import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.common.util.IntUtils;
@@ -382,16 +384,6 @@ public class GF2Matrix extends Matrix {
     }
 
     /**
-     * Return the row of this matrix with the given index.
-     *
-     * @param index the index
-     * @return the row of this matrix with the given index
-     */
-    public int[] getRow(int index) {
-        return matrix[index];
-    }
-
-    /**
      * Returns encoded matrix, i.e., this matrix in byte array form
      *
      * @return the encoded matrix
@@ -423,43 +415,6 @@ public class GF2Matrix extends Matrix {
         return enc;
     }
 
-
-    /**
-     * Returns the percentage of the number of "ones" in this matrix.
-     *
-     * @return the Hamming weight of this matrix (as a ratio).
-     */
-    public double getHammingWeight() {
-        double counter = 0.0;
-        double elementCounter = 0.0;
-        int rest = numColumns & 0x1f;
-        int d;
-        if (rest == 0) {
-            d = length;
-        } else {
-            d = length - 1;
-        }
-
-        for (int i = 0; i < numRows; i++) {
-
-            for (int j = 0; j < d; j++) {
-                int a = matrix[i][j];
-                for (int k = 0; k < 32; k++) {
-                    int b = (a >>> k) & 1;
-                    counter = counter + b;
-                    elementCounter = elementCounter + 1;
-                }
-            }
-            int a = matrix[i][length - 1];
-            for (int k = 0; k < rest; k++) {
-                int b = (a >>> k) & 1;
-                counter = counter + b;
-                elementCounter = elementCounter + 1;
-            }
-        }
-
-        return counter / elementCounter;
-    }
 
     /**
      * Check if this is the zero matrix (i.e., all entries are zero).
@@ -563,51 +518,6 @@ public class GF2Matrix extends Matrix {
     }
 
     /**
-     * Compute the full form matrix <tt>(Id | this)</tt> from this matrix in
-     * right compact form, where <tt>Id</tt> is the <tt>k x k</tt> identity
-     * matrix and <tt>k</tt> is the number of rows of this matrix.
-     *
-     * @return <tt>(Id | this)</tt>
-     */
-    public GF2Matrix extendRightCompactForm() {
-        GF2Matrix result = new GF2Matrix(numRows, numRows + numColumns);
-
-        int q = numRows >> 5;
-        int r = numRows & 0x1f;
-
-        for (int i = numRows - 1; i >= 0; i--) {
-            // store the identity in first columns
-            result.matrix[i][i >> 5] |= 1 << (i & 0x1f);
-
-            // copy this matrix to last columns
-
-            // if words have to be shifted
-            if (r != 0) {
-                int ind = q;
-                // process all but last word
-                for (int j = 0; j < length - 1; j++) {
-                    // obtain matrix word
-                    int mw = matrix[i][j];
-                    // shift to correct position
-                    result.matrix[i][ind++] |= mw << r;
-                    result.matrix[i][ind] |= mw >>> (32 - r);
-                }
-                // process last word
-                int mw = matrix[i][length - 1];
-                result.matrix[i][ind++] |= mw << r;
-                if (ind < result.length) {
-                    result.matrix[i][ind] |= mw >>> (32 - r);
-                }
-            } else {
-                // no shifting necessary
-                System.arraycopy(matrix[i], 0, result.matrix[i], q, length);
-            }
-        }
-
-        return result;
-    }
-
-    /**
      * Compute the transpose of this matrix.
      *
      * @return <tt>(this)<sup>T</sup></tt>
@@ -673,7 +583,6 @@ public class GF2Matrix extends Matrix {
                         swapRows(invMatrix, i, j);
                         // ... and quit searching
                         j = numRows;
-                        continue;
                     }
                 }
                 // if no non-zero element was found ...
@@ -693,28 +602,6 @@ public class GF2Matrix extends Matrix {
         }
 
         return new GF2Matrix(numColumns, invMatrix);
-    }
-
-    /**
-     * Compute the product of a permutation matrix (which is generated from an
-     * n-permutation) and this matrix.
-     *
-     * @param p the permutation
-     * @return {@link de.flexiprovider.common.math.linearalgebra.GF2Matrix} <tt>P*this</tt>
-     */
-    public Matrix leftMultiply(Permutation p) {
-        int[] pVec = p.getVector();
-        if (pVec.length != numRows) {
-            throw new ArithmeticException("length mismatch");
-        }
-
-        int[][] result = new int[numRows][];
-
-        for (int i = numRows - 1; i >= 0; i--) {
-            result[i] = IntUtils.clone(matrix[pVec[i]]);
-        }
-
-        return new GF2Matrix(numRows, result);
     }
 
     /**
@@ -989,7 +876,7 @@ public class GF2Matrix extends Matrix {
             int vInd = q;
             // if words have to be shifted
             if (r != 0) {
-                int vw = 0;
+                int vw;
                 // process all but last word
                 for (int j = 0; j < length - 1; j++) {
                     // shift to correct position
@@ -1059,7 +946,7 @@ public class GF2Matrix extends Matrix {
     public int hashCode() {
         int hash = (numRows * 31 + numColumns) * 31 + length;
         for (int i = 0; i < numRows; i++) {
-            hash = hash * 31 + matrix[i].hashCode();
+            hash = hash * 31 + Arrays.hashCode(matrix[i]);
         }
         return hash;
     }
@@ -1076,9 +963,9 @@ public class GF2Matrix extends Matrix {
             d = length - 1;
         }
 
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int i = 0; i < numRows; i++) {
-            buf.append(i + ": ");
+            buf.append(i).append(": ");
             for (int j = 0; j < d; j++) {
                 int a = matrix[i][j];
                 for (int k = 0; k < 32; k++) {

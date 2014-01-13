@@ -41,11 +41,6 @@ public class CMSSPublicKey extends PublicKey {
         this.masks = masks;
     }
 
-    /**
-     * Construct a new CMSS2 public key from the given key specification.
-     *
-     * @param keySpec a {@link CMSS2PublicKeySpec}
-     */
     protected CMSSPublicKey(CMSSPublicKeySpec keySpec) {
         this(keySpec.getOIDString(), keySpec.getPubKeyBytes(), keySpec
                 .getMasks());
@@ -80,10 +75,9 @@ public class CMSSPublicKey extends PublicKey {
      * @return a human readable form of the CMSS2 public key
      */
     public String toString() {
-        String out = "CMSS2 public key : " + ByteUtils.toHexString(keyBytes)
-                + "\n";
 
-        return out;
+        return "CMSS2 public key : " + ByteUtils.toHexString(keyBytes)
+                + "\n";
     }
 
     public boolean equals(Object obj) {
@@ -102,10 +96,7 @@ public class CMSSPublicKey extends PublicKey {
         value &= ByteUtils.equals(oKey.keyBytes, keyBytes);
 
         if (masks == null) {
-            if (oKey.getMasks() != null) {
-                return false;
-            }
-            return value;
+            return oKey.getMasks() == null && value;
 
         }
         if (oKey.getMasks() != null) {

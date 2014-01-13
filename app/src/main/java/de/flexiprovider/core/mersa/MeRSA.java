@@ -217,15 +217,14 @@ public class MeRSA extends AsymmetricBlockCipher {
         // + "- decryption error");
         // }
 
-        byte[] C = null;
-        byte[] EM = null;
-        byte[] M = input;
-        FlexiBigInt c = null;
-        FlexiBigInt m = null;
+        byte[] C;
+        byte[] EM;
+        FlexiBigInt c;
+        FlexiBigInt m;
 
         try {
             // 2) EME-OAEP encoding of message.
-            EM = PKCS1Operations.EME_OAEP_ENCODE(M, null, cipherTextSize, md,
+            EM = PKCS1Operations.EME_OAEP_ENCODE(input, null, cipherTextSize, md,
                     sr);
 
             // 3) RSA encryption:
@@ -281,10 +280,10 @@ public class MeRSA extends AsymmetricBlockCipher {
                     + "- decryption error");
         }
 
-        byte[] EM = null;
-        byte[] M = null;
+        byte[] EM;
+        byte[] M;
         FlexiBigInt c = PKCS1Operations.OS2IP(input);
-        FlexiBigInt m = null;
+        FlexiBigInt m;
 
         try {
             m = MeRSAOperations.MeRSADP(privKey, c);

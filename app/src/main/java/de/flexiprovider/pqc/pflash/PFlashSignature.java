@@ -17,50 +17,13 @@ import de.flexiprovider.common.math.finitefields.GF2nPolynomialField;
 import de.flexiprovider.common.math.linearalgebra.GF2mMatrix;
 import de.flexiprovider.common.math.linearalgebra.GF2mVector;
 
-/**
- * <p>
- * This class implements the pFLASH signature scheme.
- * It only works when the parameters are set to <br/>
- * q = 16, n = 96, &#945 = r = 32, s = 1.
- * </p>
- * <p>
- * With these values the length of the hash of the message, that should be signed,
- * must be 256 bits. For that reason we chose SHA-256 as the message digest.
- * </p>
- * <p>
- * The PFlashSignature can be used as follow:
- * </p>
- * <p><b> Signature generation</b></p>
- * <ol>
- * <li> get instance of PFlashSignature
- * <tt> Signature pflashSig = Registry.getSignature("pFLASH");</tt></li>
- * <li> initialize signing<br/>
- * <tt> pflashSig.initSign(privateKey, secureRandom);</tt></li>
- * <li> sign message<br/>
- * <tt> pflashSig.update(message.getBytes());<br/>
- * byte[] signature = pflashSign.sign();</tt></li>
- * </ol>
- * <p><b> Signature verification</b></p>
- * <ol>
- * <li> initialize verifying<br/>
- * <tt> pflashSign.initVerify(publicKey);</tt></li>
- * <li> verify the signature<br/>
- * <tt> pflashSign.update(message.getBytes());<br/>
- * boolean accepted = pflashSign.verify(signature);</tt></li>
- * </ol>
- *
- * @author Marian Hornschuch, Alexander Koller
- * @see PFlashKeyPairGenerator
- */
+
 public class PFlashSignature extends Signature {
 
     /**
      * OID of the algorithm
      */
     public static final String OID = "pFLASH";
-
-    // private key
-    private PFlashPrivateKey privateKey;
 
     // public key
     private PFlashPublicKey publicKey;
@@ -88,21 +51,6 @@ public class PFlashSignature extends Signature {
     // affine part of S,T
     private GF2mVector c_S, c_T;
 
-    private GF2Polynomial poly_384;
-
-    /**
-     * pFLASH Signature with SHA256<br/>
-     * <p>
-     * <b>The default values for the parameters are :</b><br/></p>
-     * <table border="1">
-     * <tr><td>degree of extension m</td><td>=</td><td>4</td></tr>
-     * <tr><td>field polynomial of GF(2<sup>m</sup>)</td><td>=</td><td>X<sup>4</sup> + X + 1</td></tr>
-     * <tr><td>extension degree of E/K</td><td>=</td><td>96</td></tr>
-     * <tr><td>&#945</td><td>=</td><td>32</td></tr>
-     * <tr><td>r</td><td>=</td><td>32</td></tr>
-     * <tr><td>s</td><td>=</td><td>1</td></tr>
-     * </table>
-     */
     public PFlashSignature() {
         q = 16;
         field_2m = new GF2mField(4, 19);
@@ -117,19 +65,12 @@ public class PFlashSignature extends Signature {
         }
     }
 
-    /**
-     * Initialize the signature algorithm for signing a message.
-     *
-     * @param key     the private key of the signer
-     * @param srandom a source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the key is not an instance of PFlashPrivateKey
-     */
     public void initSign(PrivateKey key, SecureRandom srandom)
             throws InvalidKeyException {
         if (!(key instanceof PFlashPrivateKey)) {
             throw new InvalidKeyException("unsupported type");
         }
-        privateKey = (PFlashPrivateKey) key;
+        PFlashPrivateKey privateKey = (PFlashPrivateKey) key;
 
         // check if OID stored in the key matches algorithm OID
         if (!(privateKey.getOIDString().equals(OID))) {
@@ -144,7 +85,7 @@ public class PFlashSignature extends Signature {
         c_S = privateKey.getC_S();
         m_T = privateKey.getM_T();
         c_T = privateKey.getC_T();
-        poly_384 = privateKey.getPoly_384();
+        GF2Polynomial poly_384 = privateKey.getPoly_384();
         field_2mn = new GF2nPolynomialField(384, poly_384);
     }
 
@@ -315,12 +256,6 @@ public class PFlashSignature extends Signature {
         return signature;
     }
 
-    /**
-     * Verfify a signature.
-     *
-     * @param signature the signature to be verified
-     * @return true if signature is valid, false otherwise
-     */
     public boolean verify(byte[] sigBytes) {
 
         byte[] zstrichBytes = new byte[n - r];
@@ -332,14 +267,9 @@ public class PFlashSignature extends Signature {
 
         for (int i = 0; i < sigBytes.length; i++) {
             pfpke = publicKey.getElement(i);
-            //hier m�sste statt null die MultiplikationsMatrix f�r GF(1&) rein
-            q_vec = multiplyMatrixVector(pfpke.getQ_Matrix(), null);
+            multiplyMatrixVector(pfpke.getQ_Matrix(), null);
             p_vec = pfpke.getP_Vector();
-            p = new GF2Polynomial(96, p_vec.getIntArrayForm());
-            /*
-             * GF2nPolynomialDarstellung q_vec + p + pfpke.getR();
-    		 * Ergebnis einsetzen in zstrichBytes[i]
-    		 */
+            new GF2Polynomial(96, p_vec.getIntArrayForm());
         }
 
         for (int i = 0; i < sigBytes.length; i++) {
@@ -370,17 +300,10 @@ public class PFlashSignature extends Signature {
         for (int i = 0; i < n; i++) {
             sumInt[i] = field_2m.add(vInt[i], wInt[i]);
         }
-        GF2mVector sum = new GF2mVector(field_2m, sumInt);
-        return sum;
+        return new GF2mVector(field_2m, sumInt);
     }
 
-    /**
-     * Multiply n&timesn GF2mMatrix with n-dimensional GF2mVector. (No checks)
-     *
-     * @param m Matrix
-     * @param v Vector
-     * @return Matrix*Vector
-     */
+
     private GF2mVector multiplyMatrixVector(GF2mMatrix m, GF2mVector v) {
         byte[] mBytes;
         int[] vInt;
@@ -394,7 +317,6 @@ public class PFlashSignature extends Signature {
                 resultInt[i] = field_2m.add(resultInt[i], field_2m.mult(tmp[j], vInt[j]));
             }
         }
-        GF2mVector result = new GF2mVector(field_2m, resultInt);
-        return result;
+        return new GF2mVector(field_2m, resultInt);
     }
 }

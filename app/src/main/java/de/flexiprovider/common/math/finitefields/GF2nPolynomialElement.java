@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.common.math.finitefields;
 
 import java.util.Random;
@@ -15,41 +7,13 @@ import de.flexiprovider.common.exceptions.DifferentFieldsException;
 import de.flexiprovider.common.exceptions.GFException;
 import de.flexiprovider.common.exceptions.NoSolutionException;
 import de.flexiprovider.common.math.FlexiBigInt;
-import de.flexiprovider.common.math.IntegerFunctions;
 
-/**
- * This class implements elements of finite binary fields <i>GF(2<sup>n</sup>)</i>
- * using polynomial representation. For more information on the arithmetic see
- * for example IEEE Standard 1363 or <a
- * href=http://www.certicom.com/research/online.html> Certicom online-tutorial</a>.
- *
- * @author Oliver Seiler
- * @see "GF2nField"
- * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialField
- * @see de.flexiprovider.common.math.finitefields.GF2nONBElement
- * @see de.flexiprovider.common.math.finitefields.GF2Polynomial
- */
+
 public class GF2nPolynomialElement extends GF2nElement {
-
-    // pre-computed Bitmask for fast masking, bitMask[a]=0x1 << a
-    private static final int[] bitMask = {0x00000001, 0x00000002, 0x00000004,
-            0x00000008, 0x00000010, 0x00000020, 0x00000040, 0x00000080,
-            0x00000100, 0x00000200, 0x00000400, 0x00000800, 0x00001000,
-            0x00002000, 0x00004000, 0x00008000, 0x00010000, 0x00020000,
-            0x00040000, 0x00080000, 0x00100000, 0x00200000, 0x00400000,
-            0x00800000, 0x01000000, 0x02000000, 0x04000000, 0x08000000,
-            0x10000000, 0x20000000, 0x40000000, 0x80000000, 0x00000000};
 
     // the used GF2Polynomial which stores the coefficients
     private GF2Polynomial polynomial;
 
-    /**
-     * Create a new random GF2nPolynomialElement using the given field and
-     * source of randomness.
-     *
-     * @param f    the GF2nField to use
-     * @param rand the source of randomness
-     */
     public GF2nPolynomialElement(GF2nPolynomialField f, Random rand) {
         mField = f;
         mDegree = mField.getDegree();
@@ -345,120 +309,10 @@ public class GF2nPolynomialElement extends GF2nElement {
         reduceThis();
     }
 
-    /**
-     * Compute the multiplicative inverse of this element.
-     *
-     * @return <tt>this<sup>-1</sup></tt> (newly created)
-     * @throws ArithmeticException if <tt>this</tt> is the zero element.
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#invertMAIA
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#invertEEA
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#invertSquare
-     */
     public GFElement invert() throws ArithmeticException {
         return invertMAIA();
     }
 
-    /**
-     * Calculates the multiplicative inverse of <i>this</i> and returns the
-     * result in a new GF2nPolynomialElement.
-     *
-     * @return <i>this</i>^(-1)
-     * @throws ArithmeticException if <i>this</i> equals zero
-     */
-    public GF2nPolynomialElement invertEEA() throws ArithmeticException {
-        if (isZero()) {
-            throw new ArithmeticException();
-        }
-        GF2Polynomial b = new GF2Polynomial(mDegree + 32, "ONE");
-        b.reduceN();
-        GF2Polynomial c = new GF2Polynomial(mDegree + 32);
-        c.reduceN();
-        GF2Polynomial u = getGF2Polynomial();
-        GF2Polynomial v = mField.getFieldPolynomial();
-        GF2Polynomial h;
-        int j;
-        u.reduceN();
-        while (!u.isOne()) {
-            u.reduceN();
-            v.reduceN();
-            j = u.getLength() - v.getLength();
-            if (j < 0) {
-                h = u;
-                u = v;
-                v = h;
-                h = b;
-                b = c;
-                c = h;
-                j = -j;
-                c.reduceN(); // this increases the performance
-            }
-            u.shiftLeftAddThis(v, j);
-            b.shiftLeftAddThis(c, j);
-        }
-        b.reduceN();
-        return new GF2nPolynomialElement((GF2nPolynomialField) mField, b);
-    }
-
-    /**
-     * Calculates the multiplicative inverse of <i>this</i> and returns the
-     * result in a new GF2nPolynomialElement.
-     *
-     * @return <i>this</i>^(-1)
-     * @throws ArithmeticException if <i>this</i> equals zero
-     */
-    public GF2nPolynomialElement invertSquare() throws ArithmeticException {
-        GF2nPolynomialElement n;
-        GF2nPolynomialElement u;
-        int i, j, k, b;
-
-        if (isZero()) {
-            throw new ArithmeticException();
-        }
-        // b = (n-1)
-        b = mField.getDegree() - 1;
-        // n = a
-        n = new GF2nPolynomialElement(this);
-        n.polynomial.expandN((mDegree << 1) + 32); // increase performance
-        n.polynomial.reduceN();
-        // k = 1
-        k = 1;
-
-        // for i = (r-1) downto 0 do, r=bitlength(b)
-        for (i = IntegerFunctions.floorLog(b) - 1; i >= 0; i--) {
-            // u = n
-            u = new GF2nPolynomialElement(n);
-            // for j = 1 to k do
-            for (j = 1; j <= k; j++) {
-                // u = u^2
-                u.squareThisPreCalc();
-            }
-            // n = nu
-            n.multiplyThisBy(u);
-            // k = 2k
-            k <<= 1;
-            // if b(i)==1
-            if ((b & bitMask[i]) != 0) {
-                // n = n^2 * b
-                n.squareThisPreCalc();
-                n.multiplyThisBy(this);
-                // k = k+1
-                k += 1;
-            }
-        }
-
-        // outpur n^2
-        n.squareThisPreCalc();
-        return n;
-    }
-
-    /**
-     * Calculates the multiplicative inverse of <i>this</i> using the modified
-     * almost inverse algorithm and returns the result in a new
-     * GF2nPolynomialElement.
-     *
-     * @return <i>this</i>^(-1)
-     * @throws ArithmeticException if <i>this</i> equals zero
-     */
     public GF2nPolynomialElement invertMAIA() throws ArithmeticException {
         if (isZero()) {
             throw new ArithmeticException();
@@ -508,25 +362,12 @@ public class GF2nPolynomialElement extends GF2nElement {
         return squarePreCalc();
     }
 
-    /**
-     * This method is used internally to map the square()-calls within
-     * GF2nPolynomialElement to one of the possible squaring methods.
-     */
+
     public void squareThis() {
         squareThisPreCalc();
     }
 
-    /**
-     * Squares this GF2nPolynomialElement using GF2nField's squaring matrix.
-     * This is supposed to be fast when using a polynomial (no tri- or
-     * pentanomial) as fieldpolynomial. Use squarePreCalc when using a tri- or
-     * pentanomial as fieldpolynomial instead.
-     *
-     * @return <tt>this<sup>2</sup></tt> (newly created)
-     * @see de.flexiprovider.common.math.finitefields.GF2Polynomial#vectorMult
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#squarePreCalc
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#squareBitwise
-     */
+
     public GF2nPolynomialElement squareMatrix() {
         GF2nPolynomialElement result = new GF2nPolynomialElement(this);
         result.squareThisMatrix();
@@ -534,16 +375,7 @@ public class GF2nPolynomialElement extends GF2nElement {
         return result;
     }
 
-    /**
-     * Squares this GF2nPolynomialElement using GF2nFields squaring matrix. This
-     * is supposed to be fast when using a polynomial (no tri- or pentanomial)
-     * as fieldpolynomial. Use squarePreCalc when using a tri- or pentanomial as
-     * fieldpolynomial instead.
-     *
-     * @see de.flexiprovider.common.math.finitefields.GF2Polynomial#vectorMult
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#squarePreCalc
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#squareBitwise
-     */
+
     public void squareThisMatrix() {
         GF2Polynomial result = new GF2Polynomial(mDegree);
         for (int i = 0; i < mDegree; i++) {
@@ -557,47 +389,7 @@ public class GF2nPolynomialElement extends GF2nElement {
         polynomial = result;
     }
 
-    /**
-     * Squares this GF2nPolynomialElement by shifting left its Bitstring and
-     * reducing. This is supposed to be the slowest method. Use squarePreCalc or
-     * squareMatrix instead.
-     *
-     * @return <tt>this<sup>2</sup></tt> (newly created)
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#squareMatrix
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#squarePreCalc
-     * @see de.flexiprovider.common.math.finitefields.GF2Polynomial#squareThisBitwise
-     */
-    public GF2nPolynomialElement squareBitwise() {
-        GF2nPolynomialElement result = new GF2nPolynomialElement(this);
-        result.squareThisBitwise();
-        result.reduceThis();
-        return result;
-    }
 
-    /**
-     * Squares this GF2nPolynomialElement by shifting left its Bitstring and
-     * reducing. This is supposed to be the slowest method. Use squarePreCalc or
-     * squareMatrix instead.
-     *
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#squareMatrix
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#squarePreCalc
-     * @see de.flexiprovider.common.math.finitefields.GF2Polynomial#squareThisBitwise
-     */
-    public void squareThisBitwise() {
-        polynomial.squareThisBitwise();
-        reduceThis();
-    }
-
-    /**
-     * Squares this GF2nPolynomialElement by using precalculated values and
-     * reducing. This is supposed to de fastest when using a trinomial or
-     * pentanomial as field polynomial. Use squareMatrix when using a ordinary
-     * polynomial as field polynomial.
-     *
-     * @return <tt>this<sup>2</sup></tt> (newly created)
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#squareMatrix
-     * @see de.flexiprovider.common.math.finitefields.GF2Polynomial#squareThisPreCalc
-     */
     public GF2nPolynomialElement squarePreCalc() {
         GF2nPolynomialElement result = new GF2nPolynomialElement(this);
         result.squareThisPreCalc();
@@ -605,15 +397,7 @@ public class GF2nPolynomialElement extends GF2nElement {
         return result;
     }
 
-    /**
-     * Squares this GF2nPolynomialElement by using precalculated values and
-     * reducing. This is supposed to de fastest when using a tri- or pentanomial
-     * as fieldpolynomial. Use squareMatrix when using a ordinary polynomial as
-     * fieldpolynomial.
-     *
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#squareMatrix
-     * @see de.flexiprovider.common.math.finitefields.GF2Polynomial#squareThisPreCalc
-     */
+
     public void squareThisPreCalc() {
         polynomial.squareThisPreCalc();
         reduceThis();
@@ -695,7 +479,6 @@ public class GF2nPolynomialElement extends GF2nElement {
             return halfTrace();
         }
 
-        // TODO this can be sped-up by precomputation of p and w's
         GF2nPolynomialElement z, w;
         do {
             // step 1.

@@ -63,10 +63,7 @@ public class ShacalKey implements SecretKey {
      * @return the result of the comparison
      */
     public boolean equals(Object other) {
-        if (other == null || !(other instanceof ShacalKey)) {
-            return false;
-        }
-        return ByteUtils.equals(keyBytes, ((ShacalKey) other).keyBytes);
+        return !(other == null || !(other instanceof ShacalKey)) && ByteUtils.equals(keyBytes, ((ShacalKey) other).keyBytes);
     }
 
     /**

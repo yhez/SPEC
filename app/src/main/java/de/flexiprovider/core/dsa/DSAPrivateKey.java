@@ -93,12 +93,10 @@ public class DSAPrivateKey extends
      */
     public String toString() {
 
-        String out = "private x: 0x" + x.toString(16) + "\n" + "p:         0x"
+        return "private x: 0x" + x.toString(16) + "\n" + "p:         0x"
                 + params.getPrimeP().toString(16) + "\n" + "q:         0x"
                 + params.getPrimeQ().toString(16) + "\n" + "g:         0x"
                 + params.getBaseG().toString(16) + "\n";
-
-        return out;
     }
 
     public boolean equals(Object obj) {

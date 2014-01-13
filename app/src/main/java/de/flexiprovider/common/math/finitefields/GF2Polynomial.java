@@ -284,7 +284,7 @@ public class GF2Polynomial {
         for (i = 0; i < ov; i++) {
             value[k - 1] |= (val[i] & 0x000000ff) << ((ov - 1 - i) << 3);
         }
-        int m = 0;
+        int m;
         for (i = 0; i <= (val.length - 4) >> 2; i++) {
             m = val.length - 1 - (i << 2);
             value[i] = (val[m]) & 0x000000ff;
@@ -315,36 +315,10 @@ public class GF2Polynomial {
     public Object clone() {
         return new GF2Polynomial(this);
     }
-
-    /**
-     * Returns the length of this GF2Polynomial. The length can be greater than
-     * the degree. To get the degree call reduceN() before calling getLength().
-     *
-     * @return the length of this GF2Polynomial
-     */
     public int getLength() {
         return len;
     }
 
-    /**
-     * Returns the value of this GF2Polynomial in an int[].
-     *
-     * @return the value of this GF2Polynomial in a new int[], LSB in int[0]
-     */
-    public int[] toIntegerArray() {
-        int[] result;
-        result = new int[blocks];
-        System.arraycopy(value, 0, result, 0, blocks);
-        return result;
-    }
-
-    /**
-     * Returns a string representing this GF2Polynomials value using hexadecimal
-     * or binary radix in MSB-first order.
-     *
-     * @param radix the radix to use (2 or 16, otherwise 2 is used)
-     * @return a String representing this GF2Polynomials value.
-     */
     public String toString(int radix) {
         final char[] HEX_CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
                 '9', 'a', 'b', 'c', 'd', 'e', 'f'};
@@ -353,7 +327,7 @@ public class GF2Polynomial {
                 "1101", "1110", "1111"};
         String res;
         int i;
-        res = new String();
+        res = "";
         if (radix == 16) {
             for (i = blocks - 1; i >= 0; i--) {
                 res += HEX_CHARS[(value[i] >>> 28) & 0x0f];
@@ -553,10 +527,7 @@ public class GF2Polynomial {
                 return false;
             }
         }
-        if (value[0] != 0x01) {
-            return false;
-        }
-        return true;
+        return value[0] == 0x01;
     }
 
     /**
@@ -620,35 +591,6 @@ public class GF2Polynomial {
     public GF2Polynomial increase() {
         GF2Polynomial result = new GF2Polynomial(this);
         result.increaseThis();
-        return result;
-    }
-
-    /**
-     * Multiplies this GF2Polynomial with <i>b</i> and returns the result in a
-     * new GF2Polynomial. This method does not reduce the result in GF(2^N).
-     * This method uses classic multiplication (schoolbook).
-     *
-     * @param b a GF2Polynomial
-     * @return a new GF2Polynomial (<i>this</i> * <i>b</i>)
-     */
-    public GF2Polynomial multiplyClassic(GF2Polynomial b) {
-        GF2Polynomial result = new GF2Polynomial(Math.max(len, b.len) << 1);
-        GF2Polynomial[] m = new GF2Polynomial[32];
-        int i, j;
-        m[0] = new GF2Polynomial(this);
-        for (i = 1; i <= 31; i++) {
-            m[i] = m[i - 1].shiftLeft();
-        }
-        for (i = 0; i < b.blocks; i++) {
-            for (j = 0; j <= 31; j++) {
-                if ((b.value[i] & bitMask[j]) != 0) {
-                    result.xorThisBy(m[j]);
-                }
-            }
-            for (j = 0; j <= 31; j++) {
-                m[j].shiftBlocksLeft();
-            }
-        }
         return result;
     }
 
@@ -1024,15 +966,6 @@ public class GF2Polynomial {
         return result;
     }
 
-    /**
-     * Returns a new GF2Polynomial containing the upper <i>k</i> bytes of this
-     * GF2Polynomial.
-     *
-     * @param k
-     * @return a new GF2Polynomial containing the upper <i>k</i> bytes of this
-     * GF2Polynomial
-     * @see de.flexiprovider.common.math.finitefields.GF2Polynomial#karaMult
-     */
     private GF2Polynomial upper(int k) {
         int j = Math.min(k, blocks - k);
         GF2Polynomial result = new GF2Polynomial(j << 5);
@@ -1042,32 +975,14 @@ public class GF2Polynomial {
         return result;
     }
 
-    /**
-     * Returns a new GF2Polynomial containing the lower <i>k</i> bytes of this
-     * GF2Polynomial.
-     *
-     * @param k
-     * @return a new GF2Polynomial containing the lower <i>k</i> bytes of this
-     * GF2Polynomial
-     * @see de.flexiprovider.common.math.finitefields.GF2Polynomial#karaMult
-     */
     private GF2Polynomial lower(int k) {
         GF2Polynomial result = new GF2Polynomial(k << 5);
         System.arraycopy(value, 0, result.value, 0, Math.min(k, blocks));
         return result;
     }
 
-    /**
-     * Returns the remainder of <i>this</i> divided by <i>g</i> in a new
-     * GF2Polynomial.
-     *
-     * @param g GF2Polynomial != 0
-     * @return a new GF2Polynomial (<i>this</i> % <i>g</i>)
-     * @throws PolynomialIsZeroException if <i>g</i> equals zero
-     */
     public GF2Polynomial remainder(GF2Polynomial g)
             throws PolynomialIsZeroException {
-    /* a div b = q / r */
         GF2Polynomial a = new GF2Polynomial(this);
         GF2Polynomial b = new GF2Polynomial(g);
         GF2Polynomial j;
@@ -1090,55 +1005,9 @@ public class GF2Polynomial {
         return a;
     }
 
-    /**
-     * Returns the absolute quotient of <i>this</i> divided by <i>g</i> in a
-     * new GF2Polynomial.
-     *
-     * @param g GF2Polynomial != 0
-     * @return a new GF2Polynomial |_ <i>this</i> / <i>g</i> _|
-     * @throws PolynomialIsZeroException if <i>g</i> equals zero
-     */
-    public GF2Polynomial quotient(GF2Polynomial g)
-            throws PolynomialIsZeroException {
-    /* a div b = q / r */
-        GF2Polynomial q = new GF2Polynomial(len);
-        GF2Polynomial a = new GF2Polynomial(this);
-        GF2Polynomial b = new GF2Polynomial(g);
-        GF2Polynomial j;
-        int i;
-        if (b.isZero()) {
-            throw new PolynomialIsZeroException();
-        }
-        a.reduceN();
-        b.reduceN();
-        if (a.len < b.len) {
-            return new GF2Polynomial(0);
-        }
-        i = a.len - b.len;
-        q.expandN(i + 1);
 
-        while (i >= 0) {
-            j = b.shiftLeft(i);
-            a.subtractFromThis(j);
-            a.reduceN();
-            q.xorBit(i);
-            i = a.len - b.len;
-        }
-
-        return q;
-    }
-
-    /**
-     * Divides <i>this</i> by <i>g</i> and returns the quotient and remainder
-     * in a new GF2Polynomial[2], quotient in [0], remainder in [1].
-     *
-     * @param g GF2Polynomial != 0
-     * @return a new GF2Polynomial[2] containing quotient and remainder
-     * @throws PolynomialIsZeroException if <i>g</i> equals zero
-     */
     public GF2Polynomial[] divide(GF2Polynomial g)
             throws PolynomialIsZeroException {
-	/* a div b = q / r */
         GF2Polynomial[] result = new GF2Polynomial[2];
         GF2Polynomial q = new GF2Polynomial(len);
         GF2Polynomial a = new GF2Polynomial(this);
@@ -1171,15 +1040,6 @@ public class GF2Polynomial {
         return result;
     }
 
-    /**
-     * Returns the greatest common divisor of <i>this</i> and <i>g</i> in a
-     * new GF2Polynomial.
-     *
-     * @param g GF2Polynomial != 0
-     * @return a new GF2Polynomial gcd(<i>this</i>,<i>g</i>)
-     * @throws ArithmeticException       if <i>this</i> and <i>g</i> both are equal to zero
-     * @throws PolynomialIsZeroException to be API-compliant (should never be thrown).
-     */
     public GF2Polynomial gcd(GF2Polynomial g) throws PolynomialIsZeroException {
         if (isZero() && g.isZero()) {
             throw new ArithmeticException("Both operands of gcd equal zero.");
@@ -1203,17 +1063,6 @@ public class GF2Polynomial {
         return a;
     }
 
-    /**
-     * Checks if <i>this</i> is irreducible, according to IEEE P1363, A.5.5,
-     * p103. <br />
-     * Note: The algorithm from IEEE P1363, A5.5 can be used to check a
-     * polynomial with coefficients in GF(2^r) for irreducibility. As this class
-     * only represents polynomials with coefficients in GF(2), the algorithm is
-     * adapted to the case r=1.
-     *
-     * @return true if <i>this</i> is irreducible
-     * @see "P1363, A.5.5, p103"
-     */
     public boolean isIrreducible() {
         if (isZero()) {
             return false;
@@ -1243,13 +1092,6 @@ public class GF2Polynomial {
         return true;
     }
 
-    /**
-     * Reduces this GF2Polynomial using the trinomial x^<i>m</i> + x^<i>tc</i> +
-     * 1.
-     *
-     * @param m  the degree of the used field
-     * @param tc degree of the middle x in the trinomial
-     */
     void reduceTrinomial(int m, int tc) {
         int i;
         int p0, p1;
@@ -1289,13 +1131,6 @@ public class GF2Polynomial {
         len = m;
     }
 
-    /**
-     * Reduces this GF2Polynomial using the pentanomial x^<i>m</i> + x^<i>pc[2]</i> +
-     * x^<i>pc[1]</i> + x^<i>pc[0]</i> + 1.
-     *
-     * @param m  the degree of the used field
-     * @param pc degrees of the middle x's in the pentanomial
-     */
     void reducePentanomial(int m, int[] pc) {
         int i;
         int p0, p1, p2, p3;
@@ -1343,10 +1178,6 @@ public class GF2Polynomial {
         len = m;
     }
 
-    /**
-     * Reduces len by finding the most significant bit set to one and reducing
-     * len and blocks.
-     */
     public void reduceN() {
         int i, j, h;
         i = blocks - 1;
@@ -1363,12 +1194,6 @@ public class GF2Polynomial {
         blocks = i + 1;
     }
 
-    /**
-     * Expands len and int[] value to <i>i</i>. This is useful before adding
-     * two GF2Polynomials of different size.
-     *
-     * @param i the intended length
-     */
     public void expandN(int i) {
         int k;
         int[] bs;
@@ -1395,13 +1220,6 @@ public class GF2Polynomial {
         value = bs;
     }
 
-    /**
-     * Squares this GF2Polynomial and expands it accordingly. This method does
-     * not reduce the result in GF(2^N). There exists a faster method for
-     * squaring in GF(2^N).
-     *
-     * @see GF2nPolynomialElement#square
-     */
     public void squareThisBitwise() {
         int i, h, j, k;
         if (isZero()) {
@@ -1427,11 +1245,6 @@ public class GF2Polynomial {
         blocks = result.length;
         len = (len << 1) - 1;
     }
-
-    /**
-     * Squares this GF2Polynomial by using precomputed values of squaringTable.
-     * This method does not reduce the result in GF(2^N).
-     */
     public void squareThisPreCalc() {
         int i;
         if (isZero()) {
@@ -1461,14 +1274,6 @@ public class GF2Polynomial {
         }
     }
 
-    /**
-     * Does a vector-multiplication modulo 2 and returns the result as boolean.
-     *
-     * @param b GF2Polynomial
-     * @return this x <i>b</i> as boolean (1->true, 0->false)
-     * @throws PolynomialsHaveDifferentLengthException if <i>this</i> and <i>b</i> have a different length and
-     *                                                 thus cannot be vector-multiplied
-     */
     public boolean vectorMult(GF2Polynomial b)
             throws PolynomialsHaveDifferentLengthException {
         int i;
@@ -1487,13 +1292,6 @@ public class GF2Polynomial {
         return result;
     }
 
-    /**
-     * Returns the bitwise exclusive-or of <i>this</i> and <i>b</i> in a new
-     * GF2Polynomial. <i>this</i> and <i>b</i> can be of different size.
-     *
-     * @param b GF2Polynomial
-     * @return a new GF2Polynomial (<i>this</i> ^ <i>b</i>)
-     */
     public GF2Polynomial xor(GF2Polynomial b) {
         int i;
         GF2Polynomial result;
@@ -1515,13 +1313,6 @@ public class GF2Polynomial {
         return result;
     }
 
-    /**
-     * Computes the bitwise exclusive-or of this GF2Polynomial and <i>b</i> and
-     * stores the result in this GF2Polynomial. <i>b</i> can be of different
-     * size.
-     *
-     * @param b GF2Polynomial
-     */
     public void xorThisBy(GF2Polynomial b) {
         int i;
         for (i = 0; i < Math.min(blocks, b.blocks); i++) {
@@ -1531,12 +1322,6 @@ public class GF2Polynomial {
         // restore them to zero:
         zeroUnusedBits();
     }
-
-    /**
-     * If {@link #len} is not a multiple of the block size (32), some extra bits
-     * of the last block might have been modified during a blockwise operation.
-     * This method compensates for that by restoring these "extra" bits to zero.
-     */
     private void zeroUnusedBits() {
         if ((len & 0x1f) != 0) {
             value[blocks - 1] &= reverseRightMask[len & 0x1f];
@@ -1557,29 +1342,7 @@ public class GF2Polynomial {
             return;
         }
         value[i >>> 5] |= bitMask[i & 0x1f];
-        return;
     }
-
-    /**
-     * Returns the bit at position <i>i</i>.
-     *
-     * @param i int
-     * @return the bit at position <i>i</i> if <i>i</i> is a valid position, 0
-     * otherwise.
-     */
-    public int getBit(int i) {
-        if (i < 0 || i > (len - 1)) {
-            return 0;
-        }
-        return ((value[i >>> 5] & bitMask[i & 0x1f]) != 0) ? 1 : 0;
-    }
-
-    /**
-     * Resets the bit at position <i>i</i>.
-     *
-     * @param i int
-     * @throws BitDoesNotExistException if (<i>i</i> < 0) || (<i>i</i> > (len - 1))
-     */
     public void resetBit(int i) throws BitDoesNotExistException {
         if (i < 0 || i > (len - 1)) {
             throw new BitDoesNotExistException();
@@ -1589,13 +1352,6 @@ public class GF2Polynomial {
         }
         value[i >>> 5] &= ~bitMask[i & 0x1f];
     }
-
-    /**
-     * Xors the bit at position <i>i</i>.
-     *
-     * @param i int
-     * @throws BitDoesNotExistException if (<i>i</i> < 0) || (<i>i</i> > (len - 1))
-     */
     public void xorBit(int i) throws BitDoesNotExistException {
         if (i < 0 || i > (len - 1)) {
             throw new BitDoesNotExistException();
@@ -1605,26 +1361,9 @@ public class GF2Polynomial {
         }
         value[i >>> 5] ^= bitMask[i & 0x1f];
     }
-
-    /**
-     * Tests the bit at position <i>i</i>.
-     *
-     * @param i the position of the bit to be tested
-     * @return true if the bit at position <i>i</i> is set (a(<i>i</i>) ==
-     * 1). False if (<i>i</i> < 0) || (<i>i</i> > (len - 1))
-     */
     public boolean testBit(int i) {
-        if (i < 0 || i > (len - 1)) {
-            return false;
-        }
-        return (value[i >>> 5] & bitMask[i & 0x1f]) != 0;
+        return !(i < 0 || i > (len - 1)) && (value[i >>> 5] & bitMask[i & 0x1f]) != 0;
     }
-
-    /**
-     * Returns this GF2Polynomial shift-left by 1 in a new GF2Polynomial.
-     *
-     * @return a new GF2Polynomial (this << 1)
-     */
     public GF2Polynomial shiftLeft() {
         GF2Polynomial result = new GF2Polynomial(len + 1, value);
         int i;
@@ -1635,49 +1374,7 @@ public class GF2Polynomial {
         result.value[0] <<= 1;
         return result;
     }
-
-    /**
-     * Shifts-left this by one and enlarges the size of value if necesary.
-     */
-    public void shiftLeftThis() {
-        /** @todo This is untested. */
-        int i;
-        if ((len & 0x1f) == 0) { // check if blocks increases
-            len += 1;
-            blocks += 1;
-            if (blocks > value.length) { // enlarge value
-                int[] bs = new int[blocks];
-                System.arraycopy(value, 0, bs, 0, value.length);
-                value = null;
-                value = bs;
-            }
-            for (i = blocks - 1; i >= 1; i--) {
-                value[i] |= value[i - 1] >>> 31;
-                value[i - 1] <<= 1;
-            }
-        } else {
-            len += 1;
-            for (i = blocks - 1; i >= 1; i--) {
-                value[i] <<= 1;
-                value[i] |= value[i - 1] >>> 31;
-            }
-            value[0] <<= 1;
-        }
-    }
-
-    /**
-     * Returns this GF2Polynomial shift-left by <i>k</i> in a new
-     * GF2Polynomial.
-     *
-     * @param k int
-     * @return a new GF2Polynomial (this << <i>k</i>)
-     */
     public GF2Polynomial shiftLeft(int k) {
-        // Variant 2, requiring a modified shiftBlocksLeft(k)
-        // In case of modification, consider a rename to doShiftBlocksLeft()
-        // with an explicit note that this method assumes that the polynomial
-        // has already been resized. Or consider doing things inline.
-        // Construct the resulting polynomial of appropriate length:
         GF2Polynomial result = new GF2Polynomial(len + k, value);
         // Shift left as many multiples of the block size as possible:
         if (k >= 32) {
@@ -1695,14 +1392,6 @@ public class GF2Polynomial {
         return result;
     }
 
-    /**
-     * Shifts left b and adds the result to Its a fast version of
-     * <tt>this = add(b.shl(k));</tt>
-     *
-     * @param b GF2Polynomial to shift and add to this
-     * @param k the amount to shift
-     * @see GF2nPolynomialElement#invertEEA
-     */
     public void shiftLeftAddThis(GF2Polynomial b, int k) {
         if (k == 0) {
             addToThis(b);
@@ -1719,36 +1408,6 @@ public class GF2Polynomial {
         }
     }
 
-    /**
-     * Shifts-left this GF2Polynomial's value blockwise 1 block resulting in a
-     * shift-left by 32.
-     *
-     * @see de.flexiprovider.common.math.finitefields.GF2Polynomial#multiply
-     */
-    void shiftBlocksLeft() {
-        blocks += 1;
-        len += 32;
-        if (blocks <= value.length) {
-            int i;
-            for (i = blocks - 1; i >= 1; i--) {
-                value[i] = value[i - 1];
-            }
-            value[0] = 0x00;
-        } else {
-            int[] result = new int[blocks];
-            System.arraycopy(value, 0, result, 1, blocks - 1);
-            value = null;
-            value = result;
-        }
-    }
-
-    /**
-     * Shifts left this GF2Polynomial's value blockwise <i>b</i> blocks
-     * resulting in a shift-left by b*32. This method assumes that {@link #len}
-     * and {@link #blocks} have already been updated to reflect the final state.
-     *
-     * @param b shift amount (in blocks)
-     */
     private void doShiftBlocksLeft(int b) {
         if (blocks <= value.length) {
             int i;
@@ -1764,26 +1423,6 @@ public class GF2Polynomial {
             value = null;
             value = result;
         }
-    }
-
-    /**
-     * Returns this GF2Polynomial shift-right by 1 in a new GF2Polynomial.
-     *
-     * @return a new GF2Polynomial (this << 1)
-     */
-    public GF2Polynomial shiftRight() {
-        GF2Polynomial result = new GF2Polynomial(len - 1);
-        int i;
-        System.arraycopy(value, 0, result.value, 0, result.blocks);
-        for (i = 0; i <= result.blocks - 2; i++) {
-            result.value[i] >>>= 1;
-            result.value[i] |= result.value[i + 1] << 31;
-        }
-        result.value[result.blocks - 1] >>>= 1;
-        if (result.blocks < blocks) {
-            result.value[result.blocks - 1] |= value[result.blocks] << 31;
-        }
-        return result;
     }
 
     /**

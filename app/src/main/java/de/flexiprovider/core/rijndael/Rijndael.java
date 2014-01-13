@@ -33,9 +33,6 @@ public class Rijndael extends BlockCipher {
      */
     public static final String ALG_NAME = "Rijndael";
 
-    /**
-     * The algorithm name returned by {@link getName()}.
-     */
     protected String algName;
 
     /**
@@ -1198,7 +1195,6 @@ public class Rijndael extends BlockCipher {
                 d3 = a3;
             }
 
-            // convert ints to output bytes plus last transformation round
             i = numRounds * blockSize;
             output[outOff++] = (byte) (S[(d0 >>> 24) & 0xff] ^ (K[i] >>> 24));
             output[outOff++] = (byte) (S[(d1 >>> 16) & 0xff] ^ (K[i] >>> 16));
@@ -1263,7 +1259,6 @@ public class Rijndael extends BlockCipher {
                     d5 = a5;
                 }
 
-                // convert ints to output bytes plus last transformation round
                 i = numRounds * blockSize;
                 output[outOff++] = (byte) (S[(d0 >>> 24) & 0xff] ^ (K[i] >>> 24));
                 output[outOff++] = (byte) (S[(d1 >>> 16) & 0xff] ^ (K[i] >>> 16));
@@ -1348,7 +1343,6 @@ public class Rijndael extends BlockCipher {
                         d7 = a7;
                     }
 
-                    // convert ints to output bytes plus last transformation round
                     i = numRounds * blockSize;
                     output[outOff++] = (byte) (S[(d0 >>> 24) & 0xff] ^ (K[i] >>> 24));
                     output[outOff++] = (byte) (S[(d1 >>> 16) & 0xff] ^ (K[i] >>> 16));
@@ -1439,7 +1433,6 @@ public class Rijndael extends BlockCipher {
                 d3 = a3;
             }
 
-            // convert ints to output bytes plus last transformation round
             i = numRounds * blockSize;
             output[outOff++] = (byte) (Si[(d0 >>> 24) & 0xff] ^ (Ki[i] >>> 24));
             output[outOff++] = (byte) (Si[(d3 >>> 16) & 0xff] ^ (Ki[i] >>> 16));
@@ -1504,7 +1497,6 @@ public class Rijndael extends BlockCipher {
                     d5 = a5;
                 }
 
-                // convert ints to output bytes plus last transformation round
                 i = numRounds * blockSize;
                 output[outOff++] = (byte) (Si[(d0 >>> 24) & 0xff] ^ (Ki[i] >>> 24));
                 output[outOff++] = (byte) (Si[(d5 >>> 16) & 0xff] ^ (Ki[i] >>> 16));
@@ -1589,7 +1581,6 @@ public class Rijndael extends BlockCipher {
                         d7 = a7;
                     }
 
-                    // convert ints to output bytes plus last transformation round
                     i = numRounds * blockSize;
                     output[outOff++] = (byte) (Si[(d0 >>> 24) & 0xff] ^ (Ki[i] >>> 24));
                     output[outOff++] = (byte) (Si[(d7 >>> 16) & 0xff] ^ (Ki[i] >>> 16));

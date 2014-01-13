@@ -11,15 +11,6 @@ import de.flexiprovider.api.keys.PrivateKey;
 import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.common.util.ByteUtils;
 
-/**
- * This class implements a CMSS private key and is usually initiated by the
- * {@link CMSSKeyPairGenerator}.
- *
- * @author Elena Klintsevich
- * @author Martin D�ring
- * @see CMSSKeyPairGenerator
- * @see CMSSPrivateKeySpec
- */
 public class CMSSPrivateKey extends PrivateKey {
 
     // the OID of the algorithm
@@ -40,9 +31,6 @@ public class CMSSPrivateKey extends PrivateKey {
     // array of 3 seeds for the main tree, current subtree and next subtree
     private byte[][] seeds = new byte[3][];
 
-    // the size of the seed used for key pair generation
-    private int seedSize;
-
     // array of 3 authentication paths for the main tree, current subtree and
     // next subtree
     private BDSAuthPath[] authPath;
@@ -58,19 +46,6 @@ public class CMSSPrivateKey extends PrivateKey {
     // the masks for spr-cmss
     private byte[][][] masks;
 
-    /**
-     * Construct a new CMSS2 private key.
-     *
-     * @param oid               the OID of the algorithm
-     * @param indexMain         main tree index
-     * @param indexSub          subtree index
-     * @param heightOfTrees     height of trees
-     * @param seeds             array of seeds for the key generation
-     * @param authPath          array of authentication paths
-     * @param subtreeRootSig    the one-time signature of the root of the current subtree
-     * @param maintreeOTSPubKey the one-time public key used to verify the rootSignature of
-     *                          the subtree
-     */
     protected CMSSPrivateKey(String oid, int indexMain, int indexSub,
                              int heightOfTrees, byte[][] seeds, BDSAuthPath[] authPath,
                              int activeSubtree, byte[] subtreeRootSig,
@@ -83,7 +58,6 @@ public class CMSSPrivateKey extends PrivateKey {
         numLeafs = 1 << heightOfTrees;
 
         this.seeds = seeds;
-        seedSize = seeds[0].length;
 
         this.authPath = authPath;
         this.activeSubtree = activeSubtree;
@@ -94,11 +68,6 @@ public class CMSSPrivateKey extends PrivateKey {
         this.masks = masks;
     }
 
-    /**
-     * Construct a new CMSS2 private key from the given key specification.
-     *
-     * @param keySpec a {@link CMSS2PrivateKeySpec}
-     */
     protected CMSSPrivateKey(CMSSPrivateKeySpec keySpec) {
         this(keySpec.getOIDString(), keySpec.getIndexMain(), keySpec
                 .getIndexSub(), keySpec.getHeightOfTrees(), keySpec.getSeeds(),
@@ -107,17 +76,7 @@ public class CMSSPrivateKey extends PrivateKey {
                 .getMaintreeOTSVerificationKey(), keySpec.getMasks());
     }
 
-    /**
-     * Update the private key components.
-     *
-     * @param indexMain         main tree index
-     * @param indexSub          subtree index
-     * @param seeds             array of seeds for the key generation
-     * @param authPaths         array of authentication paths
-     * @param subtreeRootSig    the one-time signature of the root of the current subtree
-     * @param maintreeOTSPubKey the one-time public key used to verify the rootSignature of
-     *                          the subtree
-     */
+
     protected void update(int indexMain, int indexSub, byte[][] seeds,
                           BDSAuthPath[] authPath, int activeSubtree, byte[] subtreeRootSig,
                           byte[] maintreeOTSVerificationKey) {
@@ -156,13 +115,6 @@ public class CMSSPrivateKey extends PrivateKey {
      */
     protected int getNumLeafs() {
         return numLeafs;
-    }
-
-    /**
-     * @return the size of the seed used for key pair generation
-     */
-    protected int getSeedSize() {
-        return seedSize;
     }
 
     /**
@@ -313,10 +265,7 @@ public class CMSSPrivateKey extends PrivateKey {
                 otherKey.maintreeOTSVerificationKey);
 
         if (masks == null) {
-            if (otherKey.getMasks() != null) {
-                return false;
-            }
-            return result;
+            return otherKey.getMasks() == null && result;
         }
         if (otherKey.getMasks() != null) {
             result &= ByteUtils.equals(masks, otherKey.getMasks());

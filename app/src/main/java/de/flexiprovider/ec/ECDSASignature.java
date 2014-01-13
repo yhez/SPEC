@@ -260,21 +260,12 @@ public abstract class ECDSASignature extends Signature {
         mG = mParams.getG();
         w = 5;
         // only for GF(p):
-        // mOddPowers = ScalarMult.precomputationDOS(mG, 1 << (w - 1));
         mOddPowers = ScalarMult.precomputationCMO(mG, w + 1, 0);
         md.reset();
         mSecureRandom = (random != null) ? random : Registry.getSecureRandom();
     }
 
-    /**
-     * Initializes this object for verification. If this method is called again
-     * with a different argument, it negates the effect of this call.
-     *
-     * @param publicKey the public key of the identity whose signature is going to
-     *                  be verified.
-     * @throws InvalidKeyException If <tt>publicKey</tt> is an invalid key (invalid
-     *                             encoding, wrong length, uninitialized, etc).
-     */
+
     public void initVerify(PublicKey publicKey) throws InvalidKeyException {
 
         if (!(publicKey instanceof ECPublicKey)) {

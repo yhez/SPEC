@@ -64,11 +64,8 @@ public class ECSecretKey implements SecretKey {
     }
 
     public boolean equals(Object other) {
-        if (!(other instanceof ECSecretKey)) {
-            return false;
-        }
+        return other instanceof ECSecretKey && mS.equals(((ECSecretKey) other).mS);
 
-        return mS.equals(((ECSecretKey) other).mS);
     }
 
     public int hashCode() {

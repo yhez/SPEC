@@ -137,10 +137,6 @@ public final class FlexiBigInt {
         return new FlexiBigInt(bigInt.not());
     }
 
-    public FlexiBigInt andNot(FlexiBigInt val) {
-        return new FlexiBigInt(bigInt.andNot(val.bigInt));
-    }
-
     public boolean testBit(int n) {
         return bigInt.testBit(n);
     }
@@ -151,10 +147,6 @@ public final class FlexiBigInt {
 
     public FlexiBigInt clearBit(int n) {
         return new FlexiBigInt(bigInt.clearBit(n));
-    }
-
-    public FlexiBigInt flipBit(int n) {
-        return new FlexiBigInt(bigInt.flipBit(n));
     }
 
     public int getLowestSetBit() {
@@ -186,10 +178,7 @@ public final class FlexiBigInt {
     }
 
     public boolean equals(Object other) {
-        if (!(other instanceof FlexiBigInt)) {
-            return false;
-        }
-        return bigInt.equals(((FlexiBigInt) other).bigInt);
+        return other instanceof FlexiBigInt && bigInt.equals(((FlexiBigInt) other).bigInt);
     }
 
     public int hashCode() {
@@ -216,11 +205,4 @@ public final class FlexiBigInt {
         return bigInt.longValue();
     }
 
-    public float floatValue() {
-        return bigInt.floatValue();
-    }
-
-    public double doubleValue() {
-        return bigInt.doubleValue();
-    }
 }

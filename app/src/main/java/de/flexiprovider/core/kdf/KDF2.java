@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.core.kdf;
 
 import de.flexiprovider.api.KeyDerivation;
@@ -18,23 +10,6 @@ import de.flexiprovider.common.util.BigEndianConversions;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.md.SHA1;
 
-/**
- * KDF2 is a key derivation function descriped in IEEE 1363a-2004. It is based
- * on the constructions given in ANSI X9.42:2001 and X9.63.
- * <p/>
- * KDF2 can be used as follows:
- * <p/>
- * <pre>
- * KeyDerivation kdf = Registry.getKeyDerivation(&quot;KDF2&quot;);
- * kdf.init(secretKey.toByteArray());
- * kdf.setSharedInfo(sharedInfo.toByteArray());
- * byte[] derivedKey = kdf.doFinal(int keyDataLen);
- * </pre>
- *
- * @author Jochen Hechler
- * @author Marcus St�gbauer
- * @author Martin D�ring
- */
 public class KDF2 extends KeyDerivation {
 
     // the hash function

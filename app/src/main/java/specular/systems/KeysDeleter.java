@@ -20,7 +20,7 @@ public class KeysDeleter {
                         try {
                             wait(15000);
                             delete();
-                        } catch (InterruptedException e) {
+                        } catch (InterruptedException ignored) {
                         }
                     }
                 }
