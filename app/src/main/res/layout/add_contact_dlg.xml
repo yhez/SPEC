@@ -9,6 +9,7 @@
     android:padding="@dimen/default_gap">
 
     <TextView
+        android:textColor="@color/spec_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/new_contact_to_add" />
@@ -59,7 +60,9 @@
     </RelativeLayout>
 
     <CheckBox
+        android:button="@drawable/check_box"
         android:checked="false"
+        android:textColor="@color/spec_black"
         android:id="@+id/check_box_update"
         android:visibility="gone"
         android:text="@string/contact_with_same_email_exist"

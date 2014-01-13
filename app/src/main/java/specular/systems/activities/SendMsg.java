@@ -54,7 +54,8 @@ public class SendMsg extends Activity {
         }
         uris = FilesManagement.getFilesToSend(this);
         long id = getIntent().getLongExtra("contactId", -1);
-        if (id != -1)
+        boolean group = getIntent().getBooleanExtra("group",false);
+        if (id != -1||group)
             contact = ContactsDataSource.contactsDataSource.findContact(id);
         else
             contact = null;

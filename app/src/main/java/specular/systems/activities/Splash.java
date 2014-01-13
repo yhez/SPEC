@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import specular.systems.ContactCard;
 import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
+import specular.systems.FileParser;
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
@@ -165,10 +166,10 @@ public class Splash extends Activity {
                 t.show();
                 finish();
             } else {
-                qrp = new ContactCard(this, data);
-                if (qrp.getPublicKey() != null) {
-                    StaticVariables.fileContactCard = qrp;
-                } else {
+                int typeFile = FileParser.getType(data);
+                if(typeFile== FileParser.CONTACT_CARD)
+                    StaticVariables.fileContactCard = new ContactCard(this, data);
+                else if(typeFile==-1){
                     StaticVariables.message = data;
                 }
                 go();

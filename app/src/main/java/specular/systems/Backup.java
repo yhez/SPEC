@@ -25,16 +25,14 @@ public class Backup {
             size += contacts[b].length;
         }
 
-        byte[] finalResult = new byte[size];
+        byte[] finalResult = new byte[size+1];
         System.arraycopy(my_details, 0, finalResult, 0, my_details.length);
         int location = my_details.length;
         for (int b = 0; b < contacts.length; b++) {
             System.arraycopy(contacts[b], 0, finalResult, location, contacts[b].length);
             location += contacts[b].length;
         }
-        //byte[] encrypytedData = CryptMethods.encrypt(finalResult,null,CryptMethods.getPublic());
-        //FilesManagement.saveBackupFile(encrypytedData);
-        //show dialog with the option to upload the file to some place
+        finalResult[finalResult.length-1]=(byte)FileParser.getFlag(FileParser.ENCRYPTED_BACKUP);
         return finalResult;
     }
 

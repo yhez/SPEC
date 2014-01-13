@@ -41,6 +41,7 @@ public final class FilesManagement {
     private final static int QR_NAME_SEND = R.string.file_name_qr_msg;
     private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
     private final static int FILE_NAME_BACKUP = R.string.file_name_Backup_msg;
+    private final static int FILE_NAME_GROUP =R.string.file_name_group;
     private final static String PUBLIC_KEY = "public_key", PRIVATE_KEY = "private_key", NAME = "name", EMAIL = "email";
     private static final String FILE = "file://";
     private static Bitmap myQRPublicKey;
@@ -172,19 +173,6 @@ public final class FilesManagement {
         return true;
     }
 
-    private static boolean saveFileToSend(Activity a, byte[] data) {
-        try {
-            FileOutputStream fos = a.openFileOutput(a.getString(
-                    FILE_NAME_SEND), Context.MODE_WORLD_READABLE);
-            fos.write(data);
-            fos.close();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     private static boolean saveFileToSend(Activity a, String fileName, byte[] fileData) {
         try {
             FileOutputStream fos = a.openFileOutput(fileName, Context.MODE_WORLD_READABLE);
@@ -199,16 +187,29 @@ public final class FilesManagement {
 
     // ORI : added new function to reuse old code
     public static boolean createBackupFileToSend(Activity a, byte[] fileData) {
+        new File(a.getFilesDir(),a.getString(FILE_NAME_BACKUP)).delete();
+        new File(a.getFilesDir(),a.getString(FILE_NAME_GROUP)).delete();
+        new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
+        new File(a.getFilesDir(), a.getString(FILE_NAME_SEND)).delete();
         return saveFileToSend(a, a.getString(FILE_NAME_BACKUP), fileData);
+    }
+    public static boolean createGroupFileToSend(Activity a, byte[] fileData){
+        new File(a.getFilesDir(),a.getString(FILE_NAME_BACKUP)).delete();
+        new File(a.getFilesDir(),a.getString(FILE_NAME_GROUP)).delete();
+        new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
+        new File(a.getFilesDir(), a.getString(FILE_NAME_SEND)).delete();
+        return saveFileToSend(a,a.getString(FILE_NAME_GROUP),fileData);
     }
 
     // ORI : took out the createfiletosend logic to savefiletosend function
     public static boolean createFilesToSend(Activity a, boolean qr, byte[] data) {
+        new File(a.getFilesDir(),a.getString(FILE_NAME_BACKUP)).delete();
+        new File(a.getFilesDir(),a.getString(FILE_NAME_GROUP)).delete();
+        new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
+        new File(a.getFilesDir(), a.getString(FILE_NAME_SEND)).delete();
         boolean qrSuccess = true, fileSuccess;
         if (qr)
             qrSuccess = saveQRToSend(a);
-        else
-            new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
         fileSuccess = saveFileToSend(a, a.getString(FILE_NAME_SEND), data);
         return qrSuccess || fileSuccess;
     }
@@ -217,7 +218,14 @@ public final class FilesManagement {
         try {
             File root = a.getFilesDir();
             ArrayList<Uri> uris = new ArrayList<Uri>(2);
-            uris.add(Uri.parse(FILE + new File(root, a.getString(FILE_NAME_SEND))));
+            if(new File(root, a.getString(FILE_NAME_SEND)).exists()){
+                uris.add(Uri.parse(FILE+new File(root, a.getString(FILE_NAME_SEND))));
+            }
+            else if(new File(root, a.getString(FILE_NAME_BACKUP)).exists()){
+                uris.add(Uri.parse(FILE+new File(root, a.getString(FILE_NAME_BACKUP))));
+            }else {
+                uris.add(Uri.parse(FILE+new File(root, a.getString(FILE_NAME_GROUP))));
+            }
             File f = new File(root, a.getString(QR_NAME_SEND));
             if (f.exists())
                 uris.add(Uri.parse(FILE + f));

@@ -16,6 +16,7 @@ import specular.systems.Group;
 import specular.systems.MySimpleArrayAdapter;
 import specular.systems.R;
 import specular.systems.StaticVariables;
+import specular.systems.Visual;
 import specular.systems.activities.SendMsg;
 
 
@@ -33,10 +34,12 @@ public class InviteToGroup extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Contact c = StaticVariables.fullList.get(i);
-                byte[] b = CryptMethods.encrypyt(g.getLightGroupToShare(),c.getPublicKey());
-                FilesManagement.createFilesToSend(getActivity(),false,b);
+                byte[] b = CryptMethods.encrypyt(g.getGroupToShare(),c.getPublicKey());
+                byte[] bb = Visual.bin2hex(b).getBytes();
+                FilesManagement.createGroupFileToSend(getActivity(),bb);
                 InviteToGroup.this.getDialog().cancel();
                 Intent intent = new Intent(getActivity(), SendMsg.class);
+                intent.putExtra("group",true);
                 intent.putExtra("contactId", c.getId());
                 startActivity(intent);
             }

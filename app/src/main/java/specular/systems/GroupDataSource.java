@@ -35,6 +35,7 @@ public class GroupDataSource {
         values.put(MySQLiteHelper.COLUMN_PUBLIC_KEY, group.getPublicKey());
         values.put(MySQLiteHelper.COLUMN_SESSION, group.getMentor());
         values.put(MySQLiteHelper.COLUMN_DEFAULT_APP, "");
+        values.put(MySQLiteHelper.COLUMN_PRIVATE_KEY,group.getPrivateKey());
         String[] own = group.getOwnerDetails();
         values.put(MySQLiteHelper.OWNER_NAME,own[0]);
         values.put(MySQLiteHelper.OWNER_EMAIL,own[1]);
@@ -46,7 +47,7 @@ public class GroupDataSource {
         long l = database.insert(MySQLiteHelper.TABLE_GROUP, null,
                 values);
         dbHelper.close();
-        //todo update user list
+        GroupsAdapter.addCont(a,group);
         return l;
     }
 

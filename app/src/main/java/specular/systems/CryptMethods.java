@@ -147,14 +147,14 @@ public class CryptMethods {
         }
     }
 
-    public static void decrypt(String encryptedMessage) {
+    public static int decrypt(String encryptedMessage) {
         if (encryptedMessage == null) {
             Log.d("null", "null message");
-            return;
+            return -1;
         }
         if (!privateExist()) {
             Log.e("no private", "message");
-            return;
+            return -1;
         }
         if (notInit) {
             addProviders();
@@ -167,18 +167,32 @@ public class CryptMethods {
             cipher.init(Cipher.DECRYPT_MODE, mPtK, iesParams);
             byte[] rawMsg = Visual.hex2bin(encryptedMessage);
             byte[] decryptedBytes = cipher.doFinal(rawMsg);
-            MessageFormat.decryptedMsg = new MessageFormat(decryptedBytes);
-            if (MessageFormat.decryptedMsg.getPublicKey() == null) {
-                MessageFormat.decryptedMsg = null;
-                LightMessage.decryptedLightMsg = new LightMessage(decryptedBytes);
-            } else
-                LightMessage.decryptedLightMsg = null;
             StaticVariables.encrypted_msg_size = encryptedMessage.length();
             StaticVariables.orig_msg_size = decryptedBytes.length;
+            MessageFormat.decryptedMsg=null;
+            LightMessage.decryptedLightMsg=null;
+            int result=FileParser.getType(decryptedBytes);
+            switch (result){
+                case FileParser.ENCRYPTED_MSG:
+                    MessageFormat.decryptedMsg = new MessageFormat(decryptedBytes);
+                    return result;
+                case FileParser.ENCRYPTED_QR_MSG:
+                    LightMessage.decryptedLightMsg = new LightMessage(decryptedBytes);
+                    return result;
+                case FileParser.ENCRYPTED_BACKUP:
+                    Log.w("backup data",new String(decryptedBytes));
+                    return result;
+                case FileParser.ENCRYPTED_GROUP:
+                    Log.w("group",new String(decryptedBytes));
+                    return result;
+                default:
+                    return result;
+            }
         } catch (Exception e) {
             MessageFormat.decryptedMsg = null;
             LightMessage.decryptedLightMsg = null;
             e.printStackTrace();
+            return -1;
         }
     }
 

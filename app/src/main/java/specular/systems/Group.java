@@ -70,8 +70,9 @@ public class Group {
     public Group(String rawData) {
 
     }
-    public byte[] getLightGroupToShare(){
-        String s = name+"\n"+session+"\n"+locationForMessages+"\n"+
+    public byte[] getGroupToShare(){
+        String s = name+"\n"+session+"\n"+locationForMessages+"\n"+publicKey+"\nowner_details\n"
+                +ownerName+"\n"+ownerEmail+"\n"+ownerPublicKey+"\n"+
                 (dontAllowNewMembers?"private_group\n":"")+(noPrivateOnDevice?"nfc_required\n":""+"private_key");
         byte[] strLength;
         try {
@@ -79,19 +80,16 @@ public class Group {
         } catch (Exception e) {
             strLength = s.getBytes();
         }
-        byte[] data = new byte[strLength.length+privateKey.length];
+        byte[] data = new byte[strLength.length+privateKey.length+1];
         int a;
         for(a=0;a<strLength.length;a++){
             data[a]=strLength[a];
         }
-        for(;a<data.length;a++){
+        for(;a<privateKey.length;a++){
             data[a]=privateKey[a-strLength.length];
         }
+        data[data.length-1]=(byte)FileParser.getFlag(FileParser.ENCRYPTED_GROUP);
         return data;
-    }
-
-    public void encrypt() {
-
     }
     public boolean getLimitNFC(){
         return noPrivateOnDevice;
@@ -102,7 +100,7 @@ public class Group {
     public String getGroupName() {
         return name;
     }
-
+    public byte[] getPrivateKey(){return privateKey;}
     public String getPublicKey() {
         return publicKey;
     }

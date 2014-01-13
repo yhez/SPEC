@@ -66,7 +66,7 @@ public class LightMessage {
             e.printStackTrace();
         }
         //light message contains short time stamp + msg + short hash
-        byte[] fm = new byte[sentTime.length() + msgContent.length + 2 + (hash != null ? (hash.length() + 1) : 0)];
+        byte[] fm = new byte[sentTime.length() + msgContent.length + 2 + (hash != null ? (hash.length() + 2) : 0)];
         int index = 0;
         for (int a = 0; a < sentTime.length(); a++)
             fm[index++] = (byte) sentTime.charAt(a);
@@ -77,6 +77,9 @@ public class LightMessage {
         }
         fm[index++] = '\n';
         for (byte aMsgContent : msgContent) fm[index++] = aMsgContent;
+        if(hash!=null){
+            fm[fm.length-1]=(byte)FileParser.getFlag(FileParser.ENCRYPTED_QR_MSG);
+        }
         return fm;
     }
 

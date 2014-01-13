@@ -1,7 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:alpha="1"
+    android:alpha="0"
     android:background="@android:color/white"
     android:orientation="vertical">
 
@@ -150,11 +150,6 @@
                     android:src="@drawable/delete" />
             </LinearLayout>
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/spec_blue" />
 
         <LinearLayout
             android:id="@+id/group_details"

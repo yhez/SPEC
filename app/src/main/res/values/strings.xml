@@ -243,6 +243,7 @@
     <string name="group_contacts">Choose group contacts</string>
     <string name="create_group">START</string>
     <string name="default_app_click_to_remove">default app\nclick to remove</string>
+    <string name="file_name_group">PrivateGroup.SPEC</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>

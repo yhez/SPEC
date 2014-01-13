@@ -45,9 +45,9 @@ public class MessageFormat {
             msgContent = "";
             for (int a = 7; a < data.length; a++)
                 msgContent += data[a] + (a + 1 == data.length ? "" : "\n");
-            if (raw.length > loc + 6) {
-                fileContent = new byte[raw.length - (loc + 6)];
-                for (int c = loc + 6, d = 0; c < raw.length; c++, d++) {
+            if (raw.length > loc + 7) {
+                fileContent = new byte[raw.length - (loc + 7)];
+                for (int c = loc + 6, d = 0; c < raw.length-1; c++, d++) {
                     fileContent[d] = raw[c];
                 }
             }
@@ -122,7 +122,7 @@ public class MessageFormat {
         }
         byte[] fm = new byte[name.length + email.length() + publicKey.length()
                 + hash.length() + session.length() + sentTime.length() + fileName.length
-                + msgContent.length + (fileContent != null ? fileContent.length : 0) + 13];
+                + msgContent.length + (fileContent != null ? fileContent.length : 0) + 14];
         int b = 0;
         for (int a = 0; a < name.length; b++, a++)
             fm[b] = name[a];
@@ -159,6 +159,7 @@ public class MessageFormat {
         if (fileContent != null)
             for (int a = 0; a < fileContent.length; b++, a++)
                 fm[b] = fileContent[a];
+        fm[fm.length-1]=(byte)FileParser.getFlag(FileParser.ENCRYPTED_MSG);
         return fm;
     }
 

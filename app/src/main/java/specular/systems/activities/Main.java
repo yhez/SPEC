@@ -59,6 +59,8 @@ import specular.systems.CustomExceptionHandler;
 import specular.systems.Dialogs.AddContactDlg;
 import specular.systems.Dialogs.ContactQR;
 import specular.systems.Dialogs.DeleteContactDialog;
+import specular.systems.Dialogs.DialogAddGroup;
+import specular.systems.Dialogs.DialogRestore;
 import specular.systems.Dialogs.ExplainDialog;
 import specular.systems.Dialogs.GenerateKeys;
 import specular.systems.Dialogs.GroupCreate;
@@ -69,6 +71,7 @@ import specular.systems.Dialogs.Response;
 import specular.systems.Dialogs.ShareContactDlg;
 import specular.systems.Dialogs.ShareCustomDialog;
 import specular.systems.Dialogs.TurnNFCOn;
+import specular.systems.FileParser;
 import specular.systems.FilesManagement;
 import specular.systems.FragmentManagement;
 import specular.systems.Group;
@@ -89,7 +92,8 @@ import zxing.WriterException;
 
 public class Main extends FragmentActivity {
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2,
-            DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_FOCUS = 76;
+            DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_FOCUS = 76,
+            RESTORE=45,ADD_GROUP=46;
     public static Main main;
     public static boolean exit = false;
     private boolean loadingFile = false;
@@ -166,8 +170,13 @@ public class Main extends FragmentActivity {
                     t.setText(R.string.bad_data);
                     t.show();
                     break;
-                case 779:
-                    mDrawerLayout.closeDrawer(mDrawerList);
+                case RESTORE:
+                    DialogRestore dr = new DialogRestore();
+                    dr.show(getFragmentManager(),"dr");
+                    break;
+                case ADD_GROUP:
+                    DialogAddGroup dag = new DialogAddGroup();
+                    dag.show(getFragmentManager(),"dag");
                     break;
             }
         }
@@ -874,22 +883,6 @@ public class Main extends FragmentActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commitAllowingStateLoss();
         if (mDrawerLayout.isDrawerOpen(mDrawerList))
             mDrawerLayout.closeDrawer(mDrawerList);
-        /*if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (!fragment.isAdded())
-                        synchronized (this) {
-                            try {
-                                wait(15);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    hndl.sendEmptyMessage(779);
-                }
-            }).start();
-        }*/
         exit = false;
         View vf = getCurrentFocus();
         if (vf != null) {
@@ -1041,11 +1034,17 @@ public class Main extends FragmentActivity {
                 @Override
                 public void run() {
                     FragmentManagement.currentLayout = 0;
-                    CryptMethods.decrypt(msg != null ? msg : StaticVariables.message);
+                    int result = CryptMethods.decrypt(msg != null ? msg : StaticVariables.message);
                     getIntent().removeExtra("message");
                     FilesManagement.deleteTempDecryptedMSG(Main.this);
                     StaticVariables.message = null;
-                    hndl.sendEmptyMessage(DECRYPT_SCREEN);
+                    if(result== FileParser.ENCRYPTED_MSG||result==FileParser.ENCRYPTED_QR_MSG||result==-1)
+                        hndl.sendEmptyMessage(DECRYPT_SCREEN);
+                    else if(result==FileParser.ENCRYPTED_BACKUP){
+                       hndl.sendEmptyMessage(RESTORE);
+                    }else if(result==FileParser.ENCRYPTED_GROUP){
+                        hndl.sendEmptyMessage(ADD_GROUP);
+                    }
                     prgd.cancel();
                 }
             }).start();

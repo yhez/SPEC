@@ -41,7 +41,7 @@ public class AddContactDlg extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         //pcc = StaticVariables.fileContactCard;
         //StaticVariables.fileContactCard = null;
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.dialogTransparent);
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
         // Inflate and set the layout for the dialog

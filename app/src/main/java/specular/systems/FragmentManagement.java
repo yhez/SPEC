@@ -811,9 +811,8 @@ public class FragmentManagement extends Fragment {
         }
         Visual.setAllFonts(getActivity(), (ViewGroup) rootView);
         //todo for some reason this font doesn't act properly in android 4.4
-        //if(StaticVariables.currentLayout==me)
-        //    ((TextView)rootView.findViewById(R.id.me_public)).setTypeface(FilesManagement.getOld(getActivity()));
-        rootView.animate().setDuration(500).alpha(1).start();
+        if(!(currentLayout==encrypt))
+            rootView.animate().setDuration(500).alpha(1).start();
         Main.main.invalidateOptionsMenu();
         return rootView;
     }
