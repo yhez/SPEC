@@ -10,129 +10,36 @@ import de.flexiprovider.common.math.IntegerFunctions;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.pqc.hbc.PRNG;
 
-/**
- * This class implements key pair generation and signature generation of the
- * BiBa one-time signature scheme. The class can be used by the CMSS classes.
- */
 public class BiBaOTS implements OTS {
 
-    /**
-     * Default value for the collision size.
-     */
-    private final int DEFAULT_COLLISION_SIZE = 11;
-
-    /**
-     * Default value for the number of seals.
-     */
-    private final int DEFAULT_NUMBER_OF_SEALS = 1024;
-
-    /**
-     * Default value for the number of bins.
-     */
-    private final int DEFAULT_NUMBER_OF_BINS = 260;
-
-    /**
-     * Default value for the length of a seal (in bytes).
-     */
-    // private final int DEFAULT_SEAL_LENGTH = 4;
-    /**
-     * The hash function used by the OTS
-     */
     private MessageDigest md;
 
-    /**
-     * The RNG used for key pair generation
-     */
     private PRNG rng;
 
-    /**
-     * The lengths of the message digest.
-     */
     private int mdSize;
 
-    /**
-     * The private key bytes
-     */
     private byte[][] privKeyBytes;
 
-    /**
-     * The verification key bytes
-     */
     private byte[] pubKeyBytes;
 
-    /**
-     * The number of seals which form a signature.
-     */
     private int collisionSize;
 
-    /**
-     * The number of bins which the seal hash values are sorted into.
-     */
     private int numberOfBins;
 
-    /**
-     * The number of seals (pseudo-random numbers) in the private.
-     */
     private int numberOfSeals;
 
-    /**
-     * The length of one seal in bytes.
-     */
     private int sealLength;
 
-    /**
-     * Variable indicating whether the OTS has been initialized.
-     */
     private boolean initialized;
 
-    /**
-     * Constructor. Initializes the BiBaOTS with standard values for
-     * collisionSize, numberOfBins, numberOfseals and sealLength
-     */
     public BiBaOTS() {
-        collisionSize = DEFAULT_COLLISION_SIZE;
-        numberOfBins = DEFAULT_NUMBER_OF_BINS;
-        numberOfSeals = DEFAULT_NUMBER_OF_SEALS;
+        collisionSize = 11;
+        numberOfBins = 260;
+        numberOfSeals = 1024;
         sealLength = 0; // will be initialized later
         initialized = false;
     }
 
-    /**
-     * Initialize the BiBaOTS with desired parameters. If one parameter is null
-     * then the standard value for this parameter will be used.
-     *
-     * @param collisionSize The collision size (or the number of seals which form a
-     *                      signature).
-     * @param numberOfBins  Number of bins on which the seals are to be spread.
-     * @param numberOfSeals Number of seals (determines the length of the keys).
-     * @param sealLength    The length of a seal in bytes. Has impact on the length of
-     *                      signature and private key.
-     */
-    public BiBaOTS(Integer collisionSize, Integer numberOfBins,
-                   Integer numberOfSeals, Integer sealLength) {
-
-        this.collisionSize = collisionSize == null ? DEFAULT_COLLISION_SIZE
-                : collisionSize.intValue();
-
-        this.numberOfBins = numberOfBins == null ? DEFAULT_NUMBER_OF_BINS
-                : numberOfBins.intValue();
-
-        this.numberOfSeals = numberOfSeals == null ? DEFAULT_NUMBER_OF_SEALS
-                : numberOfSeals.intValue();
-
-        // if parameter for sealLength is null then sealLength will be
-        // initialized later
-        this.sealLength = sealLength == null ? 0 : numberOfSeals.intValue();
-
-        initialized = false;
-    }
-
-    /**
-     * Initializes the OTS.
-     *
-     * @param md  the hash function for the OTS
-     * @param rng the name of the PRNG used for key pair generation
-     */
     public void init(MessageDigest md, PRNG rng) {
         this.md = md;
         this.rng = rng;
@@ -145,40 +52,20 @@ public class BiBaOTS implements OTS {
         initialized = true;
     }
 
-    /**
-     * Indicates whether the signature scheme supports the computation of the
-     * verification key out of the signature.
-     *
-     * @return false. BiBaOTS can not compute the verification key out of the
-     * signature.
-     */
     public boolean canComputeVerificationKeyFromSignature() {
         return false;
     }
 
-    /**
-     * BiBaOTS can not compute the verification key out of the signature.
-     *
-     * @return null.
-     */
     public byte[] computeVerificationKey(byte[] bytes, byte[] sigBytes) {
         return null;
     }
 
-    /**
-     * Generates an OTS key pair using the given seed and the message digest and
-     * PRNG specified via {@link #init(de.flexiprovider.api.MessageDigest, PRNG)}.
-     *
-     * @param seed the seed for the PRGN
-     */
+
     public void generateKeyPair(byte[] seed) {
         generateSignatureKey(seed);
         generateVerificationKey();
     }
 
-    /**
-     * Generates the private key and stores it in the privKeyBytes variable.
-     */
     public void generateSignatureKey(byte[] seed) {
         if (!initialized) {
             System.err.println("OTS has not been initialized yet");
@@ -187,13 +74,13 @@ public class BiBaOTS implements OTS {
         privKeyBytes = new byte[numberOfSeals][sealLength];
         // hash table to check for equal seals
         HashSet sealTable = new HashSet();
-        byte[] temp = null; // store key bytes temporary
-        Integer arrayHash = null; // hashCode() of the temp key Array
+        byte[] temp; // store key bytes temporary
+        Integer arrayHash; // hashCode() of the temp key Array
         for (int i = 0; i < numberOfSeals; i++) {
             // create seals
             temp = new byte[sealLength];
             System.arraycopy(rng.nextSeed(seed), 0, temp, 0, sealLength);
-            arrayHash = new Integer(ByteUtils.deepHashCode(temp));
+            arrayHash = Integer.valueOf(ByteUtils.deepHashCode(temp));
             // if seal already exists skip it and create a new one
             if (!sealTable.add(arrayHash)) {
                 i--;
@@ -203,10 +90,6 @@ public class BiBaOTS implements OTS {
         }
 
     }
-
-    /**
-     * Generates the public key and stores it in the pubKeyBytes variable.
-     */
     public void generateVerificationKey() {
         if (!initialized) {
             System.err.println("OTS has not been initialized yet");
@@ -227,30 +110,16 @@ public class BiBaOTS implements OTS {
         }
     }
 
-    /**
-     * BiBaOTS has not a constant signature length. The signature length depends
-     * on the counter used for the signature generation. Usually is
-     * signatureSize = collisionSize * sealLength + 1. This size is not
-     * guaranteed but extremely probable when the standard parameters are used.
-     *
-     * @return (The most probable) Signature size in bytes.
-     */
     public int getSignatureLength() {
         // FIXME: this length cannot be guaranteed, but fixed length is needed
         // by cmss. what to do?
         return collisionSize * sealLength + 1;
     }
 
-    /**
-     * @return The verification OTS key as byte array.
-     */
     public byte[] getVerificationKey() {
         return pubKeyBytes;
     }
 
-    /**
-     * @return the length of the verification key (number of bytes).
-     */
     public int getVerificationKeyLength() {
         // if (pubKeyBytes == null)
         // return 0;
@@ -258,23 +127,16 @@ public class BiBaOTS implements OTS {
         return numberOfSeals * sealLength;
     }
 
-    /**
-     * Generates a BiBa One Time Signature for the message according to the
-     * previously specified parameters.
-     *
-     * @param The message to sign.
-     * @return The BiBaOTS for the message.
-     */
     public byte[] sign(byte[] message) {
 
         // create variables needed during calculation
         FlexiBigInt counter = new FlexiBigInt("0");
         boolean collisionFound = false;
-        byte[] hash = new byte[mdSize];
+        byte[] hash;
         byte[] signature = null;
         MessageDigest familyDigest;
         try {
-            familyDigest = (MessageDigest) md.getClass().newInstance();
+            familyDigest = md.getClass().newInstance();
         } catch (InstantiationException e) {
             familyDigest = null;
             e.printStackTrace();
@@ -290,7 +152,7 @@ public class BiBaOTS implements OTS {
         Integer bin;
         Hashtable findCollisions;
         Vector vect;
-        byte[] counterBytes = null, tempArray;
+        byte[] counterBytes, tempArray;
 
         md.reset();
         while (!collisionFound) {
@@ -318,18 +180,18 @@ public class BiBaOTS implements OTS {
             // for all hash values...
             for (int i = 0; i < privKeyBytes.length && !collisionFound; i++) {
                 // calculate bin number
-                bin = new Integer(calcBin(sealHashes[i]));
+                bin = Integer.valueOf(calcBin(sealHashes[i]));
 
                 // for each bin which contains seals create an vector and put
                 // the current seal in it
                 if (findCollisions.get(bin) != null) {
                     vect = (Vector) findCollisions.get(bin);
-                    vect.addElement(new Integer(i));
+                    vect.addElement(Integer.valueOf(i));
                     findCollisions.put(bin, vect);
                 } else {
                     // vect = new Vector<Integer>();
                     vect = new Vector();
-                    vect.addElement(new Integer(i));
+                    vect.addElement(Integer.valueOf(i));
                     findCollisions.put(bin, vect);
                 }
 
@@ -350,7 +212,7 @@ public class BiBaOTS implements OTS {
                 counterBytes = counter.toByteArray();
                 signature = new byte[collisionSize * sealLength
                         + counterBytes.length];
-                vect = (Vector) findCollisions.get(new Integer(binIndex));
+                vect = (Vector) findCollisions.get(Integer.valueOf(binIndex));
                 for (int i = 0; i < collisionSize; i++) {
                     tempArray = new byte[sealLength];
                     tempArray = privKeyBytes[((Integer) vect.elementAt(i))
@@ -371,16 +233,6 @@ public class BiBaOTS implements OTS {
 
     }
 
-    /**
-     * Verifies if a signature is valid for the specified message using the
-     * specified verification key.
-     *
-     * @param mBytes The message whose signature is about to be verified as byte
-     *               array.
-     * @param sBytes The signature for the message as byte array.
-     * @param pBytes The corresponding verification key as byte array.
-     * @return true if the signature is valid, else false.
-     */
     public boolean verify(byte[] mBytes, byte[] sBytes, byte[] pBytes) {
         // Check the parameters
         if (mBytes == null || sBytes == null || pBytes == null
@@ -393,8 +245,8 @@ public class BiBaOTS implements OTS {
         MessageDigest sealDigest = null;
         MessageDigest familyDigest = null;
         try {
-            familyDigest = (MessageDigest) md.getClass().newInstance();
-            sealDigest = (MessageDigest) md.getClass().newInstance();
+            familyDigest = md.getClass().newInstance();
+            sealDigest = md.getClass().newInstance();
         } catch (InstantiationException e) {
 
             e.printStackTrace();
@@ -431,7 +283,7 @@ public class BiBaOTS implements OTS {
         }
 
         // calculate hash value of the message and counter
-        byte[] hash = new byte[mdSize];
+        byte[] hash;
         md.update(mBytes);
         // counter
         int counterLength = sBytes.length - collisionSize * sealLength;
@@ -467,28 +319,15 @@ public class BiBaOTS implements OTS {
         return true;
     }
 
-    /**
-     * Calculates the bin number a given seal falls into.
-     *
-     * @param seal The seal as byte array.
-     * @return The bin number as int.
-     */
+
     private int calcBin(byte[] seal) {
         int binbytes = (int) Math
                 .ceil(Math.log(numberOfBins) / Math.log(2) / 8);
         FlexiBigInt binNumber = IntegerFunctions.octetsToInteger(seal,
                 seal.length - binbytes, binbytes);
-        int binNr = binNumber.intValue() % numberOfBins;
-        return binNr;
+        return binNumber.intValue() % numberOfBins;
     }
 
-    /**
-     * Checks if a given byte array (the seal) is part of another byte array
-     * (the key).
-     *
-     * @param sealHash The seal to check
-     * @return true, if seal is part of the key.
-     */
     private boolean isPartOfKey(byte[] sealHash) {
         byte[] temp = new byte[mdSize];
         for (int i = 0; i < pubKeyBytes.length; i += mdSize) {

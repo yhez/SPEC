@@ -244,6 +244,14 @@
     <string name="create_group">START</string>
     <string name="default_app_click_to_remove">default app\nclick to remove</string>
     <string name="file_name_group">PrivateGroup.SPEC</string>
+    <string name="connecting_to_camera">Connecting to camera</string>
+    <string name="force_nfc">force nfc</string>
+    <string name="limited_group">limit group</string>
+    <string name="group_owmer_detailes_title">owner details</string>
+    <string name="invite_not_available">invitation disabled</string>
+    <string name="nfc_is_required">NFC required</string>
+    <string name="invite_to_the_group">invite a friend to the group</string>
+    <string name="add_group_owner_to_contact">add owner to your contacts</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>

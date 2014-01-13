@@ -37,14 +37,14 @@
     <CheckBox
         android:id="@+id/force"
         android:button="@drawable/check_box"
-        android:text="force nfc"
+        android:text="@string/force_nfc"
         android:layout_width="wrap_content"
         android:textColor="@color/spec_black"
         android:layout_height="wrap_content" />
     <CheckBox
         android:id="@+id/open"
         android:button="@drawable/check_box"
-        android:text="limit group"
+        android:text="@string/limited_group"
         android:textColor="@color/spec_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
