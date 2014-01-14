@@ -15,7 +15,7 @@ import de.flexiprovider.common.util.ASN1Tools;
 
 /**
  * This class implements a McEliece private key and is usually instantiated by
- * the {@link McElieceKeyPairGenerator} or {@link de.flexiprovider.pqc.ecc.mceliece.McElieceKeyFactory}.
+ * the {@link McElieceKeyPairGenerator} or {@link McElieceKeyFactory}.
  *
  * @author Elena Klintsevich
  */
@@ -80,7 +80,7 @@ public class McEliecePrivateKey extends PrivateKey {
     }
 
     /**
-     * Constructor (used by the {@link de.flexiprovider.pqc.ecc.mceliece.McElieceKeyFactory}).
+     * Constructor (used by the {@link McElieceKeyFactory}).
      *
      * @param keySpec a {@link McEliecePrivateKeySpec}
      */

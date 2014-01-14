@@ -101,7 +101,7 @@ public class RijndaelKeyGenerator extends SecretKeyGenerator {
     /**
      * Generate a Rijndael key.
      *
-     * @return the generated {@link de.flexiprovider.core.rijndael.RijndaelKey}
+     * @return the generated {@link RijndaelKey}
      */
     public SecretKey generateKey() {
         if (!initialized) {

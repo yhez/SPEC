@@ -8,7 +8,7 @@ import de.flexiprovider.common.math.linearalgebra.GF2Matrix;
  *
  * @author Elena Klintsevich
  * @author Martin D�ring
- * @see de.flexiprovider.pqc.ecc.mceliece.McElieceCCA2PublicKey
+ * @see McElieceCCA2PublicKey
  */
 public class McElieceCCA2PublicKeySpec implements KeySpec {
 
@@ -35,7 +35,7 @@ public class McElieceCCA2PublicKeySpec implements KeySpec {
     }
 
     /**
-     * Constructor (used by {@link de.flexiprovider.pqc.ecc.mceliece.McElieceKeyFactory}).
+     * Constructor (used by {@link McElieceKeyFactory}).
      *
      * @param n         length of the code
      * @param t         error correction capability of the code

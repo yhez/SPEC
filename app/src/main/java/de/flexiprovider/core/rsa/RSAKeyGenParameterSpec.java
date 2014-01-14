@@ -5,7 +5,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
 import my.BigInteger;
 
 /**
- * This class specifies parameters used by the {@link de.flexiprovider.core.rsa.RSAKeyPairGenerator}.
+ * This class specifies parameters used by the {@link RSAKeyPairGenerator}.
  *
  * @author Martin D�ring
  */

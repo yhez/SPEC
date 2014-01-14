@@ -10,7 +10,7 @@ import de.flexiprovider.common.math.linearalgebra.Permutation;
  * This class provides a specification for a Niederreiter private key.
  *
  * @author Elena Klintsevich
- * @see NiederreiterPrivateKey
+ * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKey
  * @see de.flexiprovider.api.keys.KeySpec
  */
 public class NiederreiterPrivateKeySpec implements KeySpec {
@@ -75,7 +75,7 @@ public class NiederreiterPrivateKeySpec implements KeySpec {
     }
 
     /**
-     * Constructor, used by {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterKeyFactory}.
+     * Constructor, used by {@link NiederreiterKeyFactory}.
      *
      * @param m            extension degree of the field
      * @param k            dimension of the code

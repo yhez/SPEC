@@ -4,7 +4,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class specifies parameters used for initializing the
- * {@link de.flexiprovider.core.serpent.SerpentKeyGenerator}. The parameters consist of the key size in bits.
+ * {@link SerpentKeyGenerator}. The parameters consist of the key size in bits.
  * Values for the key size are 128, 192, and 256 bits, with the default being
  * 128 bits.
  *

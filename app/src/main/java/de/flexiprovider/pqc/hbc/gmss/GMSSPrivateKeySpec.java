@@ -8,7 +8,7 @@ import de.flexiprovider.api.keys.KeySpec;
  * This class provides a specification for a GMSS private key.
  *
  * @author Michael Schneider, Sebastian Blume;
- * @see GMSSPrivateKey
+ * @see de.flexiprovider.pqc.hbc.gmss.GMSSPrivateKey
  */
 public class GMSSPrivateKeySpec implements KeySpec {
 

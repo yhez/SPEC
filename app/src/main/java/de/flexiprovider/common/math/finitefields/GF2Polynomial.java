@@ -24,7 +24,7 @@ import de.flexiprovider.common.util.IntUtils;
  *
  * @author Oliver Seiler
  * @see GF2nPolynomialElement
- * @see de.flexiprovider.common.math.finitefields.GF2nField
+ * @see GF2nField
  */
 public class GF2Polynomial {
 

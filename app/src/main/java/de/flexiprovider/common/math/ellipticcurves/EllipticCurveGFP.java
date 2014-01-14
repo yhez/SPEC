@@ -22,7 +22,7 @@ import de.flexiprovider.common.math.finitefields.GFPElement;
  * <tt>mB</tt>, respectively.
  *
  * @author Birgit Henhapl
- * @see de.flexiprovider.common.math.ellipticcurves.EllipticCurve
+ * @see EllipticCurve
  */
 public class EllipticCurveGFP extends EllipticCurve {
 

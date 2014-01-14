@@ -44,8 +44,8 @@ public class LMOTSKeyPairGenerator extends KeyPairGenerator {
     }
 
     /**
-     * Generates an LMOTS key pair, consisting of an {@link de.flexiprovider.pqc.ots.lm.LMOTSPublicKey} and
-     * an {@link de.flexiprovider.pqc.ots.lm.LMOTSPrivateKey}.
+     * Generates an LMOTS key pair, consisting of an {@link LMOTSPublicKey} and
+     * an {@link LMOTSPrivateKey}.
      *
      * @return the generated key pair
      */
@@ -85,7 +85,7 @@ public class LMOTSKeyPairGenerator extends KeyPairGenerator {
      * @param params   the parameters
      * @param javaRand the source of randomness
      * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are not an instance of
-     *                                                                            {@link de.flexiprovider.pqc.ots.lm.LMOTSParameterSpec}.
+     *                                                                            {@link LMOTSParameterSpec}.
      */
     public void initialize(AlgorithmParameterSpec params,
                            SecureRandom javaRand)
@@ -105,7 +105,7 @@ public class LMOTSKeyPairGenerator extends KeyPairGenerator {
     }
 
     /**
-     * (NOT USED! SEE {@link de.flexiprovider.pqc.ots.lm.LMOTSParameterSpec}) Initialize the key pair
+     * (NOT USED! SEE {@link LMOTSParameterSpec}) Initialize the key pair
      * generator with the given seed size and source of randomness.
      *
      * @param keysize  the seed size in bits

@@ -4,7 +4,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class specifies parameters used for initializing the
- * {@link de.flexiprovider.nf.iq.iqgq.IQGQParameterGenerator}. The parameters consist of the bit length of
+ * {@link IQGQParameterGenerator}. The parameters consist of the bit length of
  * the discriminant.
  *
  * @author Martin D�ring

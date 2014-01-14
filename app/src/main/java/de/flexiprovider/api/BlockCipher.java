@@ -225,7 +225,7 @@ public abstract class BlockCipher extends Cipher {
      * requires any random bytes (e.g., for parameter generation), it will get
      * them from random.
      * <p/>
-     * Note that when a {@link de.flexiprovider.api.BlockCipher} object is initialized, it loses all
+     * Note that when a {@link BlockCipher} object is initialized, it loses all
      * previously-acquired state. In other words, initializing a Cipher is
      * equivalent to creating a new instance of that Cipher and initializing it
      *
@@ -256,7 +256,7 @@ public abstract class BlockCipher extends Cipher {
      * requires any random bytes (e.g., for parameter generation), it will get
      * them from random and they will be stored in the class variable rndBytes.
      * <p/>
-     * Note that when a {@link de.flexiprovider.api.BlockCipher} object is initialized, it loses all
+     * Note that when a {@link BlockCipher} object is initialized, it loses all
      * previously-acquired state. In other words, initializing a Cipher is
      * equivalent to creating a new instance of that Cipher and initializing it
      *
@@ -336,7 +336,7 @@ public abstract class BlockCipher extends Cipher {
      * requires any random bytes (e.g., for parameter generation), it will get
      * them from random.
      * <p/>
-     * Note that when a {@link de.flexiprovider.api.BlockCipher} object is initialized, it loses all
+     * Note that when a {@link BlockCipher} object is initialized, it loses all
      * previously-acquired state. In other words, initializing a Cipher is
      * equivalent to creating a new instance of that Cipher and initializing it.
      *
@@ -368,7 +368,7 @@ public abstract class BlockCipher extends Cipher {
      * requires any random bytes (e.g., for parameter generation), it will get
      * them from random.
      * <p/>
-     * Note that when a {@link de.flexiprovider.api.BlockCipher} object is initialized, it loses all
+     * Note that when a {@link BlockCipher} object is initialized, it loses all
      * previously-acquired state. In other words, initializing a Cipher is
      * equivalent to creating a new instance of that Cipher and initializing it.
      *

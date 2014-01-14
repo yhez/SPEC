@@ -36,7 +36,7 @@ public class DESedeKey implements SecretKey {
     /**
      * Return the name of the algorithm the key is used for.
      *
-     * @return {@link de.flexiprovider.core.desede.DESede.algName}
+     * @return {@link DESede.algName}
      */
     public String getAlgorithm() {
         return DESede.ALG_NAME;

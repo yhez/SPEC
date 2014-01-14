@@ -81,7 +81,7 @@ public class RainbowPrivateKey extends PrivateKey {
     }
 
     /**
-     * Constructor (used by the {@link de.flexiprovider.pqc.rainbow.RainbowKeyFactory}).
+     * Constructor (used by the {@link RainbowKeyFactory}).
      *
      * @param keySpec a {@link RainbowPrivateKeySpec}
      */

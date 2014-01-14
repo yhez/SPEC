@@ -4,7 +4,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class specifies parameters used for initializing the
- * {@link de.flexiprovider.core.pbe.PBEKeyGenerator}. The parameters consist of the key size in bytes.
+ * {@link PBEKeyGenerator}. The parameters consist of the key size in bytes.
  * The default key size is 16 bytes.
  *
  * @author Martin D�ring

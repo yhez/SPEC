@@ -4,7 +4,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class specifies parameters for the RSASSA-PSS signature algorithm
- * (implemented by {@link de.flexiprovider.core.rsa.RSASignaturePSS}). The parameters consist of the OIDs
+ * (implemented by {@link RSASignaturePSS}). The parameters consist of the OIDs
  * of a hash function and a mask generation function, a salt length, and a
  * trailer field value.
  * <p/>

@@ -68,7 +68,7 @@ public class Misty1KeyGenerator extends SecretKeyGenerator {
     /**
      * Generate a Misty1 key.
      *
-     * @return the generated {@link de.flexiprovider.core.misty1.Misty1Key}
+     * @return the generated {@link Misty1Key}
      */
     public SecretKey generateKey() {
         if (!initialized) {

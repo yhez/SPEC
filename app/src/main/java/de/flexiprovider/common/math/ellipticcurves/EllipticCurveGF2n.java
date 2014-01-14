@@ -22,8 +22,8 @@ import de.flexiprovider.common.math.finitefields.GF2nField;
  * and <tt>mB</tt>.
  *
  * @author Birgit Henhapl
- * @see de.flexiprovider.common.math.ellipticcurves.EllipticCurve
- * @see de.flexiprovider.common.math.ellipticcurves.Point
+ * @see EllipticCurve
+ * @see Point
  */
 public class EllipticCurveGF2n extends EllipticCurve {
 

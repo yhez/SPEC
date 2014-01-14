@@ -101,7 +101,7 @@ public class TwofishKeyGenerator extends SecretKeyGenerator {
     /**
      * Generate a Twofish key.
      *
-     * @return the generated {@link de.flexiprovider.core.twofish.TwofishKey}
+     * @return the generated {@link TwofishKey}
      */
     public SecretKey generateKey() {
         if (!initialized) {

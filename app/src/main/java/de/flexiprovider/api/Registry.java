@@ -303,7 +303,7 @@ public abstract class Registry {
      * Return an instance of the specified mode.
      *
      * @param modeName the name of the mode
-     * @return a new {@link de.flexiprovider.api.Mode} object implementing the chosen algorithm
+     * @return a new {@link Mode} object implementing the chosen algorithm
      * @throws de.flexiprovider.api.exceptions.NoSuchModeException if the mode cannot be found.
      */
     protected static Mode getMode(String modeName)
@@ -343,7 +343,7 @@ public abstract class Registry {
      * Return an instance of the specified message authentication code (MAC).
      *
      * @param algName the name of the MAC
-     * @return a new {@link de.flexiprovider.api.Mac} object implementing the chosen algorithm
+     * @return a new {@link Mac} object implementing the chosen algorithm
      * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the MAC cannot be found.
      */
     public static Mac getMAC(String algName)

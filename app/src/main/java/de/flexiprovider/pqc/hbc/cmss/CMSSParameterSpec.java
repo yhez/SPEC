@@ -4,12 +4,12 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class provides a specification for the CMSS parameters that are used by
- * the {@link CMSSKeyPairGenerator} and {@link de.flexiprovider.pqc.hbc.cmss.CMSSSignature} classes.
+ * the {@link CMSSKeyPairGenerator} and {@link CMSSSignature} classes.
  *
  * @author Elena Klintsevich
  * @author Martin D�ring
  * @see CMSSKeyPairGenerator
- * @see de.flexiprovider.pqc.hbc.cmss.CMSSSignature
+ * @see CMSSSignature
  * @see de.flexiprovider.api.parameters.AlgorithmParameterSpec
  */
 public class CMSSParameterSpec implements AlgorithmParameterSpec {

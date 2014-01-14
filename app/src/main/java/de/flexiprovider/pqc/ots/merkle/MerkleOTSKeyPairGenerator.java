@@ -21,7 +21,7 @@ import de.flexiprovider.core.md.SHA512;
  * generator is initiated before with a seed that can be set with the integer
  * value startValue. The public key is a 2-dimensional byte array with the hash
  * values of the private key. A key pair consists of a
- * {@link de.flexiprovider.pqc.ots.merkle.MerkleOTSPublicKey} and a {@link de.flexiprovider.pqc.ots.merkle.MerkleOTSPrivateKey}.
+ * {@link MerkleOTSPublicKey} and a {@link MerkleOTSPrivateKey}.
  * <p/>
  * A MerkleOTS key pair can be generated as follows:
  * <p/>
@@ -36,8 +36,8 @@ import de.flexiprovider.core.md.SHA512;
  * </pre>
  *
  * @author Klintsevich Elena
- * @see de.flexiprovider.pqc.ots.merkle.MerkleOTSPrivateKey
- * @see de.flexiprovider.pqc.ots.merkle.MerkleOTSPublicKey
+ * @see MerkleOTSPrivateKey
+ * @see MerkleOTSPublicKey
  */
 public class MerkleOTSKeyPairGenerator extends KeyPairGenerator {
 
@@ -210,8 +210,8 @@ public class MerkleOTSKeyPairGenerator extends KeyPairGenerator {
     }
 
     /**
-     * Generate a MerkleOTS key pair, consisting of a {@link de.flexiprovider.pqc.ots.merkle.MerkleOTSPublicKey}
-     * and a {@link de.flexiprovider.pqc.ots.merkle.MerkleOTSPrivateKey}.
+     * Generate a MerkleOTS key pair, consisting of a {@link MerkleOTSPublicKey}
+     * and a {@link MerkleOTSPrivateKey}.
      *
      * @return the generated key pair
      */

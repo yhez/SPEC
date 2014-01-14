@@ -4,7 +4,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class specifies parameters used for initializing the
- * {@link de.flexiprovider.common.mode.ModeParameterGenerator}. The parameters consist of the byte length of
+ * {@link ModeParameterGenerator}. The parameters consist of the byte length of
  * the initialization vector.
  *
  * @author Martin D�ring

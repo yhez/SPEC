@@ -6,7 +6,7 @@ import de.flexiprovider.common.math.quadraticfields.QuadraticIdeal;
 
 /**
  * This class specifies parameters for the IQDSA signature algorithm
- * (implemented by {@link de.flexiprovider.nf.iq.iqdsa.IQDSASignature}.
+ * (implemented by {@link IQDSASignature}.
  *
  * @author Ralf-P. Weinmann
  */

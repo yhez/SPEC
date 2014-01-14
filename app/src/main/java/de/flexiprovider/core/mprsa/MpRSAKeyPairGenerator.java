@@ -108,7 +108,7 @@ public class MpRSAKeyPairGenerator extends KeyPairGenerator {
 
     /**
      * Generate a new multi-prime RSA key pair, consisting of an
-     * {@link de.flexiprovider.core.mprsa.MpRSAPrivateKey} and an {@link de.flexiprovider.core.rsa.RSAPublicKey}.
+     * {@link MpRSAPrivateKey} and an {@link de.flexiprovider.core.rsa.RSAPublicKey}.
      *
      * @return the generated key pair
      */

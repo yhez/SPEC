@@ -71,7 +71,7 @@ public class ECurvesOIDRegistry extends AbstractOIDRegistry {
     /**
      * Return the prefix that is prepended to strings in the mapping returned by
      * {@link #getOIDMap} in order to form the fully qualified class name. This
-     * method is not used for {@link de.flexiprovider.ec.asn1.ECurvesOIDRegistry} since only class
+     * method is not used for {@link ECurvesOIDRegistry} since only class
      * objects are stored in the mapping.
      *
      * @return the prefix of class names in the mapping

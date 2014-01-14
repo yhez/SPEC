@@ -126,7 +126,7 @@ public class DSAKeyFactory extends
      * @param keySpec the key specification.
      * @return the public DSA key.
      * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     * @see DSAPublicKey
+     * @see de.flexiprovider.core.dsa.DSAPublicKey
      */
     public PublicKey generatePublic(KeySpec keySpec)
             throws InvalidKeySpecException {

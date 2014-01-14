@@ -54,7 +54,7 @@ public class RC2KeyFactory extends SecretKeyFactory {
     /**
      * Return a key specification of the given key object in the requested
      * format. The format has to be equal to or a superclass of
-     * {@link de.flexiprovider.api.keys.SecretKeySpec}. The key has to be an instance of {@link de.flexiprovider.core.rc2.RC2Key}.
+     * {@link de.flexiprovider.api.keys.SecretKeySpec}. The key has to be an instance of {@link RC2Key}.
      *
      * @param key     the key
      * @param keySpec the requested format in which the key material shall be
@@ -82,11 +82,11 @@ public class RC2KeyFactory extends SecretKeyFactory {
     /**
      * Translate an RC2 key object, whose provider may be unknown or potentially
      * untrusted, into a corresponding key object of this key factory.
-     * Currently, only {@link de.flexiprovider.core.rc2.RC2Key} is supported as source format.
+     * Currently, only {@link RC2Key} is supported as source format.
      *
      * @param key the source key
      * @return the translated key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the given key is not an instance of {@link de.flexiprovider.core.rc2.RC2Key}
+     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the given key is not an instance of {@link RC2Key}
      */
     public SecretKey translateKey(SecretKey key) throws InvalidKeyException {
         if (!(key instanceof RC2Key)) {

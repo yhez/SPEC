@@ -223,7 +223,7 @@ public abstract class LMOTSSignature extends Signature {
     }
 
     /**
-     * Hashes the LMOTS Signature as specified in {@link de.flexiprovider.pqc.ots.lm.LMOTSSignature}
+     * Hashes the LMOTS Signature as specified in {@link LMOTSSignature}
      *
      * @return Returns the {@link GFP32Polynomial} of the hashed Signature
      */

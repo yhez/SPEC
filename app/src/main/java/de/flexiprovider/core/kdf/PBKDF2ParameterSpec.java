@@ -13,7 +13,7 @@ import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.mac.HMac;
 
 /**
- * This class represents parameters for the {@link de.flexiprovider.core.kdf.PBKDF2} key derivation
+ * This class represents parameters for the {@link PBKDF2} key derivation
  * function (OID 1.2.840.113549.2.7) used for passphrase based encryption.
  *
  * @author Thomas Wahrenbruch

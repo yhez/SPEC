@@ -8,7 +8,7 @@ import de.flexiprovider.common.util.IntUtils;
  * with small <i>m</i> (1< m <32).
  *
  * @author Elena Klintsevich
- * @see de.flexiprovider.common.math.linearalgebra.Matrix
+ * @see Matrix
  */
 public class GF2mMatrix extends Matrix {
 

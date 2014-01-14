@@ -13,7 +13,7 @@ import de.flexiprovider.common.util.LittleEndianConversions;
  *
  * @author Elena Klintsevich
  * @author Andrei Pyshkin
- * @see de.flexiprovider.common.math.linearalgebra.Vector
+ * @see Vector
  */
 public class GF2Vector extends Vector {
 
@@ -123,7 +123,7 @@ public class GF2Vector extends Vector {
     /**
      * Copy constructor.
      *
-     * @param other another {@link de.flexiprovider.common.math.linearalgebra.GF2Vector}
+     * @param other another {@link GF2Vector}
      */
     public GF2Vector(GF2Vector other) {
         this.length = other.length;
@@ -131,7 +131,7 @@ public class GF2Vector extends Vector {
     }
 
     /**
-     * Construct a new {@link de.flexiprovider.common.math.linearalgebra.GF2Vector} of the given length and with the given
+     * Construct a new {@link GF2Vector} of the given length and with the given
      * element array. The array is not changed and only a reference to the array
      * is stored. No length checking is performed either.
      *
@@ -299,7 +299,7 @@ public class GF2Vector extends Vector {
      * indices given by the set <tt>setJ</tt>.
      *
      * @param setJ the set of indices of elements to extract
-     * @return the new {@link de.flexiprovider.common.math.linearalgebra.GF2Vector}
+     * @return the new {@link GF2Vector}
      * <tt>[this_setJ[0], this_setJ[1], ..., this_setJ[#setJ-1]]</tt>
      */
     public GF2Vector extractVector(int[] setJ) {
@@ -325,7 +325,7 @@ public class GF2Vector extends Vector {
      * vector.
      *
      * @param k the number of elements to extract
-     * @return a new {@link de.flexiprovider.common.math.linearalgebra.GF2Vector} consisting of the first <tt>k</tt>
+     * @return a new {@link GF2Vector} consisting of the first <tt>k</tt>
      * elements of this vector
      */
     public GF2Vector extractLeftVector(int k) {
@@ -355,7 +355,7 @@ public class GF2Vector extends Vector {
      * vector.
      *
      * @param k the number of elements to extract
-     * @return a new {@link de.flexiprovider.common.math.linearalgebra.GF2Vector} consisting of the last <tt>k</tt>
+     * @return a new {@link GF2Vector} consisting of the last <tt>k</tt>
      * elements of this vector
      */
     public GF2Vector extractRightVector(int k) {

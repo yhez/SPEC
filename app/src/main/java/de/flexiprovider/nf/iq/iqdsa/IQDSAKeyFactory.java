@@ -29,7 +29,7 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
  * This class provides the translation between key specifications ({@link IQDSAPrivateKeySpec}
  * or {@link IQDSAPublicKeySpec}), DER-encoded ASN.1 representations ({@link X509EncodedKeySpec}
  * or {@link PKCS8EncodedKeySpec}), and keys ({@link IQDSAPrivateKey} or
- * {@link de.flexiprovider.nf.iq.iqdsa.IQDSAPublicKey}).
+ * {@link IQDSAPublicKey}).
  *
  * @author Birgit Henhapl
  * @author Michele Boivin
@@ -218,7 +218,7 @@ public class IQDSAKeyFactory extends KeyFactory {
      * Translates a key object, whose provider may be unknown or potentially
      * untrusted, into a corresponding key object of this key factory.
      * Currently, only the following key types are supported:
-     * {@link de.flexiprovider.nf.iq.iqdsa.IQDSAPublicKey}, {@link IQDSAPrivateKey}.
+     * {@link IQDSAPublicKey}, {@link IQDSAPrivateKey}.
      *
      * @param key the key whose provider is unknown or untrusted
      * @return the translated key

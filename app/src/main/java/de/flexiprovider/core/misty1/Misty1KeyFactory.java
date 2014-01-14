@@ -58,7 +58,7 @@ public final class Misty1KeyFactory extends SecretKeyFactory {
     /**
      * Return a key specification of the given key object in the requested
      * format. The format has to be equal to or a superclass of
-     * {@link de.flexiprovider.api.keys.SecretKeySpec}. The key has to be an instance of {@link de.flexiprovider.core.misty1.Misty1Key}
+     * {@link de.flexiprovider.api.keys.SecretKeySpec}. The key has to be an instance of {@link Misty1Key}
      * .
      *
      * @param key     the key

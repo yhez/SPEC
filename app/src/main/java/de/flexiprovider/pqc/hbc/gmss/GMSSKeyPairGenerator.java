@@ -54,9 +54,9 @@ import de.flexiprovider.core.CoreRegistry;
  * <code>kpg.initialize(parameterset);</code><br/>
  *
  * @author Michael Schneider, Sebastian Blume
- * @see de.flexiprovider.pqc.hbc.gmss.GMSSSignature
- * @see de.flexiprovider.pqc.hbc.gmss.GMSSPrivateKey
- * @see de.flexiprovider.pqc.hbc.gmss.GMSSPublicKey
+ * @see GMSSSignature
+ * @see GMSSPrivateKey
+ * @see GMSSPublicKey
  */
 public class GMSSKeyPairGenerator extends KeyPairGenerator {
     /*
@@ -250,8 +250,8 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
      * GMSSPublicKey, the private key is an instance of GMSSPrivateKey.
      *
      * @return Key pair containing a GMSSPublicKey and a GMSSPrivateKey
-     * @see GMSSPrivateKey
-     * @see GMSSPublicKey
+     * @see de.flexiprovider.pqc.hbc.gmss.GMSSPrivateKey
+     * @see de.flexiprovider.pqc.hbc.gmss.GMSSPublicKey
      */
     public KeyPair genKeyPair() {
         if (!initialized)
@@ -521,7 +521,7 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
      * @param algParamSpec an instance of <a
      *                     href="GMSSParameterSpec.html">GMSSParameterSpec</a>
      * @param secureRandom not used in GMSS
-     * @see GMSSParameterSpec
+     * @see de.flexiprovider.pqc.hbc.gmss.GMSSParameterSpec
      */
 
     public void initialize(AlgorithmParameterSpec algParamSpec,
@@ -535,7 +535,7 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
      *
      * @param algParamSpec an instance of <a
      *                     href="GMSSParameterSpec.html">GMSSParameterSpec</a>
-     * @see GMSSParameterSpec
+     * @see de.flexiprovider.pqc.hbc.gmss.GMSSParameterSpec
      */
     public void initialize(AlgorithmParameterSpec algParamSpec)
             throws InvalidAlgorithmParameterException {

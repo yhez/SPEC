@@ -23,7 +23,7 @@ import de.flexiprovider.common.util.LittleEndianConversions;
  * .kuleuven.ac.be/~bosselae/ripemd160.html"></a>.
  *
  * @author Elena Klintsevitch
- * @see de.flexiprovider.core.md.RIPEMD160
+ * @see RIPEMD160
  */
 public final class RIPEMD256 extends MDFamilyDigest {
 

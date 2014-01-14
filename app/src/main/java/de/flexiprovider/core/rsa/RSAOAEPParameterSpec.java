@@ -12,7 +12,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class specifies parameters for RSA-OAEP (implemented by
- * {@link de.flexiprovider.core.rsa.RSA_PKCS1_v2_1}). The parameters consist of the OIDs of a hash
+ * {@link RSA_PKCS1_v2_1}). The parameters consist of the OIDs of a hash
  * function, mask generation function, and PSource algorithm.
  * <p/>
  * The default hash function is SHA1 (1.3.14.3.2.26). The only supported mask

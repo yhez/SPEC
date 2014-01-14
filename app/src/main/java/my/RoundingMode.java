@@ -134,7 +134,7 @@ public enum RoundingMode {
 
     /**
      * Returns the {@code RoundingMode} object corresponding to a
-     * legacy integer rounding mode constant in {@link BigDecimal}.
+     * legacy integer rounding mode constant in {@link my.BigDecimal}.
      *
      * @param rm legacy integer rounding mode to convert
      * @return {@code RoundingMode} corresponding to the given integer.

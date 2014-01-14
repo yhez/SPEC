@@ -199,7 +199,7 @@ public class GFP64Polynomial {
      * also compares SecureRandom, but since that class has no default equals
      * operator, this method is useless (for now)
      *
-     * @param gfp the {@link de.flexiprovider.common.math.polynomials.GFP64Polynomial} to compare to.
+     * @param gfp the {@link GFP64Polynomial} to compare to.
      * @return
      */
     private boolean fullEquals(GFP64Polynomial gfp) {

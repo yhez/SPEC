@@ -108,8 +108,8 @@ public class DSAKeyPairGenerator extends
     }
 
     /**
-     * Generate a key pair, containing a {@link de.flexiprovider.core.dsa.DSAPublicKey} and a
-     * {@link de.flexiprovider.core.dsa.DSAPrivateKey}.
+     * Generate a key pair, containing a {@link DSAPublicKey} and a
+     * {@link DSAPrivateKey}.
      *
      * @return the generated key pair
      */

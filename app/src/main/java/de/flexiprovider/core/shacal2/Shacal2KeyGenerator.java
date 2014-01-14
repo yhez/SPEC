@@ -101,7 +101,7 @@ public class Shacal2KeyGenerator extends SecretKeyGenerator {
     /**
      * Generate a Shacal2 key.
      *
-     * @return the generated {@link de.flexiprovider.core.shacal2.Shacal2Key}
+     * @return the generated {@link Shacal2Key}
      */
     public SecretKey generateKey() {
         if (!initialized) {

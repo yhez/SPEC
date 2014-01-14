@@ -50,7 +50,7 @@ public class RSAKeyFactory extends
      * @param keySpec the key specification
      * @return the public RSA key
      * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     * @see RSAPublicKey
+     * @see de.flexiprovider.core.rsa.RSAPublicKey
      */
     public PublicKey generatePublic(KeySpec keySpec)
             throws InvalidKeySpecException {
@@ -325,7 +325,7 @@ public class RSAKeyFactory extends
     /**
      * Translates a key into a form known by the FlexiProvider. Currently the
      * following "source" keys are supported: {@link RSAPrivateCrtKey},
-     * {@link RSAPrivateKey}, [@link MpRSAPrivateKey}, {@link de.flexiprovider.core.rsa.RSAPublicKey}.
+     * {@link RSAPrivateKey}, [@link MpRSAPrivateKey}, {@link RSAPublicKey}.
      *
      * @param key the key
      * @return a key of a known key type

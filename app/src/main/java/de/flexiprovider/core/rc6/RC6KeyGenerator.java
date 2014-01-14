@@ -100,7 +100,7 @@ public class RC6KeyGenerator extends SecretKeyGenerator {
     /**
      * Generate an RC6 key.
      *
-     * @return the generated {@link de.flexiprovider.core.rc6.RC6Key}
+     * @return the generated {@link RC6Key}
      */
     public SecretKey generateKey() {
         if (!initialized) {

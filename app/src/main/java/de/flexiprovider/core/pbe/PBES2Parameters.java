@@ -21,7 +21,7 @@ import de.flexiprovider.pki.AlgorithmIdentifier;
 
 /**
  * This class represents the parameters for the
- * {@link PBES2 passphrase based encryption scheme 2}.
+ * {@link de.flexiprovider.core.pbe.PBES2 passphrase based encryption scheme 2}.
  *
  * @author Thomas Wahrenbruch
  */

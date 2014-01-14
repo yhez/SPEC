@@ -8,13 +8,13 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 /**
  * This class provides a specification for the parameters of the CCA2-secure
  * variants of the McEliece PKCS that are used with
- * {@link de.flexiprovider.pqc.ecc.mceliece.McElieceFujisakiCipher}, {@link de.flexiprovider.pqc.ecc.mceliece.McElieceKobaraImaiCipher}, and
+ * {@link McElieceFujisakiCipher}, {@link McElieceKobaraImaiCipher}, and
  * {@link McEliecePointchevalCipher}.
  *
  * @author Elena Klintsevich
  * @author Martin D�ring
- * @see de.flexiprovider.pqc.ecc.mceliece.McElieceFujisakiCipher
- * @see de.flexiprovider.pqc.ecc.mceliece.McElieceKobaraImaiCipher
+ * @see McElieceFujisakiCipher
+ * @see McElieceKobaraImaiCipher
  * @see McEliecePointchevalCipher
  */
 public class McElieceCCA2ParameterSpec implements AlgorithmParameterSpec {

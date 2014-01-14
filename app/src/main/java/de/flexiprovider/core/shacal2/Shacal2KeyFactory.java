@@ -58,7 +58,7 @@ public final class Shacal2KeyFactory extends SecretKeyFactory {
      * Return a key specification of the given key object in the requested
      * format. The format has to be equal to or a superclass of
      * {@link de.flexiprovider.api.keys.SecretKeySpec}. The key has to be an instance of
-     * {@link de.flexiprovider.core.shacal2.Shacal2Key}.
+     * {@link Shacal2Key}.
      *
      * @param key     the key
      * @param keySpec the requested format in which the key material shall be

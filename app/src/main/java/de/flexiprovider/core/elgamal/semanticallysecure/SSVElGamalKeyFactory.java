@@ -32,7 +32,7 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
  *
  * @author Thomas Wahrenbruch
  * @author Roberto Samarone dos Santos Ara�jo
- * @see de.flexiprovider.core.elgamal.semanticallysecure.SSVElGamal
+ * @see SSVElGamal
  */
 public class SSVElGamalKeyFactory extends KeyFactory {
 
@@ -110,7 +110,7 @@ public class SSVElGamalKeyFactory extends KeyFactory {
      * @param keySpec the key specification
      * @return the public SSVElGamal key
      * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     * @see de.flexiprovider.core.elgamal.semanticallysecure.SSVElGamalPublicKey
+     * @see SSVElGamalPublicKey
      * @see SSVElGamalPublicKeySpec
      */
     public PublicKey generatePublic(KeySpec keySpec)
@@ -177,7 +177,7 @@ public class SSVElGamalKeyFactory extends KeyFactory {
      * @return the specification of the ElGamal key
      * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the specification is not supported.
      * @see SSVElGamalPrivateKey
-     * @see de.flexiprovider.core.elgamal.semanticallysecure.SSVElGamalPublicKey
+     * @see SSVElGamalPublicKey
      * @see SSVElGamalPrivateKeySpec
      * @see SSVElGamalPublicKeySpec
      */

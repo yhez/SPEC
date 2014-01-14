@@ -19,12 +19,12 @@ import de.flexiprovider.core.desede.DESede;
 import de.flexiprovider.core.desede.DESede.DESede_CBC;
 
 /**
- * This class implements the {@link de.flexiprovider.common.ies.IES} algorithm parameters.
+ * This class implements the {@link IES} algorithm parameters.
  *
  * @author Marcus St&ouml;gbauer
  * @author Hristo Indzhov
  * @author Martin D�ring
- * @see de.flexiprovider.common.ies.IES
+ * @see IES
  */
 public class IESParameterSpec implements AlgorithmParameterSpec {
 

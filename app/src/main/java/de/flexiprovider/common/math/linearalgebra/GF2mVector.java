@@ -6,7 +6,7 @@ import de.flexiprovider.common.util.IntUtils;
 /**
  * This class implements vectors over the finite field
  * <tt>GF(2<sup>m</sup>)</tt> for small <tt>m</tt> (i.e.,
- * <tt>1&lt;m&lt;32</tt>). It extends the abstract class {@link de.flexiprovider.common.math.linearalgebra.Vector}.
+ * <tt>1&lt;m&lt;32</tt>). It extends the abstract class {@link Vector}.
  *
  * @author Elena Klintsevich
  * @author Andrei Pyshkin

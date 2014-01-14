@@ -148,7 +148,7 @@ public class RainbowKeyFactory extends de.flexiprovider.api.keys.KeyFactory {
 
     /**
      * Converts, if possible, a key specification into a
-     * {@link de.flexiprovider.pqc.rainbow.RainbowPublicKey}. Currently, the following key specifications are
+     * {@link RainbowPublicKey}. Currently, the following key specifications are
      * supported: {@link RainbowParameterSpec}, {@link de.flexiprovider.pki.X509EncodedKeySpec}.
      * <p/>
      * <p/>
@@ -253,7 +253,7 @@ public class RainbowKeyFactory extends de.flexiprovider.api.keys.KeyFactory {
      * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the key type or key specification is not supported.
      * @see de.flexiprovider.pqc.rainbow.RainbowPrivateKey
      * @see de.flexiprovider.pqc.rainbow.RainbowPrivateKeySpec
-     * @see RainbowPublicKey
+     * @see de.flexiprovider.pqc.rainbow.RainbowPublicKey
      * @see de.flexiprovider.pqc.rainbow.RainbowPublicKeySpec
      */
     public final KeySpec getKeySpec(Key key, Class keySpec)

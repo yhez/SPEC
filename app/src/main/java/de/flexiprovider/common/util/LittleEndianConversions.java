@@ -4,7 +4,7 @@ package de.flexiprovider.common.util;
  * This is a utility class containing data type conversions using little-endian
  * byte order.
  *
- * @see de.flexiprovider.common.util.BigEndianConversions
+ * @see BigEndianConversions
  */
 public final class LittleEndianConversions {
 

@@ -21,8 +21,8 @@ import de.flexiprovider.common.math.FlexiBigInt;
  *
  * @author Birgit Henhapl
  * @author Martin D�ring
- * @see de.flexiprovider.common.math.finitefields.GF2nField
- * @see de.flexiprovider.common.math.finitefields.GF2nElement
+ * @see GF2nField
+ * @see GF2nElement
  */
 public class GF2nONBElement extends GF2nElement {
 

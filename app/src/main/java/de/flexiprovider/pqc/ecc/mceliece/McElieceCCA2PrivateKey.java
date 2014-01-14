@@ -15,7 +15,7 @@ import de.flexiprovider.common.util.ASN1Tools;
 
 /**
  * This class implements a McEliece CCA2 private key and is usually instantiated
- * by the {@link McElieceCCA2KeyPairGenerator} or {@link de.flexiprovider.pqc.ecc.mceliece.McElieceCCA2KeyFactory}.
+ * by the {@link McElieceCCA2KeyPairGenerator} or {@link McElieceCCA2KeyFactory}.
  *
  * @author Elena Klintsevich
  * @author Martin D�ring
@@ -69,7 +69,7 @@ public class McElieceCCA2PrivateKey extends PrivateKey {
     }
 
     /**
-     * Constructor (used by the {@link de.flexiprovider.pqc.ecc.mceliece.McElieceCCA2KeyFactory}).
+     * Constructor (used by the {@link McElieceCCA2KeyFactory}).
      *
      * @param keySpec a {@link McElieceCCA2PrivateKeySpec}
      */

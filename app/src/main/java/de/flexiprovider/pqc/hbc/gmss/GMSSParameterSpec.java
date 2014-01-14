@@ -8,7 +8,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
  *
  * @author Sebastian Blume, Michael Schneider
  * @see GMSSKeyPairGenerator
- * @see de.flexiprovider.pqc.hbc.gmss.GMSSSignature
+ * @see GMSSSignature
  */
 public class GMSSParameterSpec implements AlgorithmParameterSpec {
 

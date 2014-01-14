@@ -18,7 +18,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
  * This class specifies an ElGamal private key.
  *
  * @author Thomas Wahrenbruch
- * @see de.flexiprovider.core.elgamal.ElGamalKeyFactory
+ * @see ElGamalKeyFactory
  */
 public class ElGamalPrivateKeySpec implements KeySpec {
 

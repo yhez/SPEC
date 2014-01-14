@@ -129,7 +129,7 @@ public class DSAParameterGenerator extends AlgorithmParameterGenerator {
      * Generate DSA algorithm parameters.
      *
      * @return the generated DSA parameters
-     * @see de.flexiprovider.core.dsa.DSAParameterSpec
+     * @see DSAParameterSpec
      */
     public AlgorithmParameterSpec generateParameters() {
         if (!initialized) {

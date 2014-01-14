@@ -97,7 +97,7 @@ public class RC5KeyGenerator extends SecretKeyGenerator {
     /**
      * Generate an RC5 key.
      *
-     * @return the generated {@link de.flexiprovider.core.rc5.RC5Key}
+     * @return the generated {@link RC5Key}
      */
     public SecretKey generateKey() {
         if (!initialized) {

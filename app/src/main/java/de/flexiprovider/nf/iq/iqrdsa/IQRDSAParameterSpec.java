@@ -5,7 +5,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
 
 /**
  * This class specifies parameters for the IQRDSA signature algorithm
- * (implemented by {@link de.flexiprovider.nf.iq.iqrdsa.IQRDSASignature}).
+ * (implemented by {@link IQRDSASignature}).
  *
  * @author Ralf-P. Weinmann
  */

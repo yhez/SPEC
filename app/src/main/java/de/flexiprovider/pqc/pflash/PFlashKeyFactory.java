@@ -135,7 +135,7 @@ public class PFlashKeyFactory extends KeyFactory {
      * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the key type or key specification is not supported.
      * @see {@link PFlashPrivateKey}
      * @see {@link PFlashPrivateKeySpec}
-     * @see {@link de.flexiprovider.pqc.pflash.PFlashPublicKey}
+     * @see {@link PFlashPublicKey}
      * @see {@link PFlashPublicKeySpec}
      */
     public KeySpec getKeySpec(Key key, Class keySpec)

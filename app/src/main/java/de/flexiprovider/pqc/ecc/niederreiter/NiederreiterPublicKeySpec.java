@@ -7,7 +7,7 @@ import de.flexiprovider.common.math.linearalgebra.GF2Matrix;
  * This class provides a specification for a Niederreiter public key.
  *
  * @author Elena Klintsevich
- * @see NiederreiterPublicKey
+ * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKey
  * @see de.flexiprovider.api.keys.KeySpec
  */
 public class NiederreiterPublicKeySpec implements KeySpec {
@@ -35,7 +35,7 @@ public class NiederreiterPublicKeySpec implements KeySpec {
     }
 
     /**
-     * Constructor, used by {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterKeyFactory}.
+     * Constructor, used by {@link NiederreiterKeyFactory}.
      *
      * @param n    length of the code
      * @param t    error correction capability of the code

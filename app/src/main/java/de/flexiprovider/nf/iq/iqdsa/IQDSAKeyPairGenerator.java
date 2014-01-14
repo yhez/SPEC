@@ -13,7 +13,7 @@ import de.flexiprovider.common.math.quadraticfields.QuadraticIdeal;
 
 /**
  * This class is used to generate key pairs for the IQDSA signature algorithm
- * (implemented by {@link de.flexiprovider.nf.iq.iqdsa.IQDSASignature}.
+ * (implemented by {@link IQDSASignature}.
  *
  * @author Ralf-P. Weinmann
  */
@@ -34,7 +34,7 @@ public class IQDSAKeyPairGenerator extends KeyPairGenerator {
 
     /**
      * Initialize the IQDSA key pair generator with the specified parameters
-     * (supposed to be an instance of {@link de.flexiprovider.nf.iq.iqdsa.IQDSAParameterSpec}) and source of
+     * (supposed to be an instance of {@link IQDSAParameterSpec}) and source of
      * randomness. If no parameters are specified, new parameters are generated
      * for the {@link IQDSAParamGenParameterSpec#DEFAULT_SIZE default size}
      * using the {@link IQDSAParameterGenerator}.
@@ -42,7 +42,7 @@ public class IQDSAKeyPairGenerator extends KeyPairGenerator {
      * @param params the parameters
      * @param random the source of randomness
      * @throws InvalidAlgorithmParameterException if the parameters are not an instance of
-     *                                            {@link de.flexiprovider.nf.iq.iqdsa.IQDSAParameterSpec}.
+     *                                            {@link IQDSAParameterSpec}.
      */
     public void initialize(AlgorithmParameterSpec params, SecureRandom random)
             throws InvalidAlgorithmParameterException {
@@ -98,8 +98,8 @@ public class IQDSAKeyPairGenerator extends KeyPairGenerator {
     }
 
     /**
-     * Generate an IQDSA key pair, consisting of an {@link de.flexiprovider.nf.iq.iqdsa.IQDSAPublicKey} and
-     * an {@link de.flexiprovider.nf.iq.iqdsa.IQDSAPrivateKey}.
+     * Generate an IQDSA key pair, consisting of an {@link IQDSAPublicKey} and
+     * an {@link IQDSAPrivateKey}.
      *
      * @return the generated key pair
      */

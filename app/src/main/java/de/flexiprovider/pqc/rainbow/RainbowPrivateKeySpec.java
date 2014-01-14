@@ -9,7 +9,7 @@ import de.flexiprovider.pqc.rainbow.util.RainbowUtil;
  * @author Patrick Neugebauer
  * @author Marius Senftleben
  * @author Tsvetoslava Vateva
- * @see RainbowPrivateKey
+ * @see de.flexiprovider.pqc.rainbow.RainbowPrivateKey
  * @see de.flexiprovider.api.keys.KeySpec
  */
 public class RainbowPrivateKeySpec implements KeySpec {
@@ -69,7 +69,7 @@ public class RainbowPrivateKeySpec implements KeySpec {
     }
 
     /**
-     * Constructor used by the {@link de.flexiprovider.pqc.rainbow.RainbowKeyFactory}. It constructs internal
+     * Constructor used by the {@link RainbowKeyFactory}. It constructs internal
      * data types out of these bytes got from ASN.1 decoding.
      *
      * @param oid         the OID of the algorithm

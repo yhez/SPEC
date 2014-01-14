@@ -12,7 +12,7 @@ import de.flexiprovider.common.math.linearalgebra.Permutation;
  *
  * @author Elena Klintsevich
  * @author Martin D�ring
- * @see de.flexiprovider.common.math.codingtheory.GF2mField
+ * @see GF2mField
  * @see PolynomialGF2mSmallM
  */
 public final class GoppaCode {
@@ -28,7 +28,7 @@ public final class GoppaCode {
      * This class is a container for two instances of {@link GF2Matrix} and one
      * instance of {@link Permutation}. It is used to hold the systematic form
      * <tt>S*H*P = (Id|M)</tt> of the check matrix <tt>H</tt> as returned by
-     * {@link de.flexiprovider.common.math.codingtheory.GoppaCode#computeSystematicForm(GF2Matrix, de.flexiprovider.api.SecureRandom)}.
+     * {@link GoppaCode#computeSystematicForm(GF2Matrix, de.flexiprovider.api.SecureRandom)}.
      *
      * @author Elena Klintsevich
      * @see GF2Matrix

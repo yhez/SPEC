@@ -3,7 +3,7 @@ package de.flexiprovider.core.rprimersa;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
- * This class specifies parameters used by the {@link de.flexiprovider.core.rprimersa.RprimeRSAKeyPairGenerator}.
+ * This class specifies parameters used by the {@link RprimeRSAKeyPairGenerator}.
  *
  * @author Paul Nguentcheu
  * @author Martin D�ring

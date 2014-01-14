@@ -4,8 +4,8 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.ByteUtils;
 
 /**
- * This class specifies parameters used by the {@link de.flexiprovider.core.kdf.KDF1}, {@link de.flexiprovider.core.kdf.KDF2}, and
- * {@link de.flexiprovider.core.kdf.X963} key derivation functions. The parameters consist of a byte array
+ * This class specifies parameters used by the {@link KDF1}, {@link KDF2}, and
+ * {@link X963} key derivation functions. The parameters consist of a byte array
  * containing shared information.
  *
  * @author Martin D�ring

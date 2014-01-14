@@ -101,7 +101,7 @@ public class SerpentKeyGenerator extends SecretKeyGenerator {
     /**
      * Generate a Serpent key.
      *
-     * @return the generated {@link de.flexiprovider.core.serpent.SerpentKey}
+     * @return the generated {@link SerpentKey}
      */
     public SecretKey generateKey() {
         if (!initialized) {

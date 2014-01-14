@@ -5,7 +5,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class specifies parameters used for initializing the
- * {@link de.flexiprovider.core.elgamal.ElGamalKeyPairGenerator}. The parameters consist of the bit length of
+ * {@link ElGamalKeyPairGenerator}. The parameters consist of the bit length of
  * the prime <tt>p</tt>. The default bit length is 1024 bits.
  *
  * @author Martin D�ring

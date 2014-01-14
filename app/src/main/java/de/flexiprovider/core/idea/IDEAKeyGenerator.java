@@ -69,7 +69,7 @@ public class IDEAKeyGenerator extends SecretKeyGenerator {
     /**
      * Generate an IDEA key.
      *
-     * @return the generated {@link de.flexiprovider.core.idea.IDEAKey}
+     * @return the generated {@link IDEAKey}
      */
     public SecretKey generateKey() {
         if (!initialized) {

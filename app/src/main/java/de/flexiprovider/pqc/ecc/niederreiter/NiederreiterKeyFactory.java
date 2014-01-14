@@ -25,7 +25,7 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
  * @author Martin D�ring
  * @see NiederreiterPrivateKey
  * @see NiederreiterPrivateKeySpec
- * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKey
+ * @see NiederreiterPublicKey
  * @see NiederreiterPublicKeySpec
  */
 public class NiederreiterKeyFactory extends KeyFactory {
@@ -43,7 +43,7 @@ public class NiederreiterKeyFactory extends KeyFactory {
      * @param keySpec the key specification
      * @return the public Niederreiter key
      * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     * @see NiederreiterPublicKey
+     * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKey
      * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKeySpec
      */
     public PublicKey generatePublic(KeySpec keySpec)
@@ -182,7 +182,7 @@ public class NiederreiterKeyFactory extends KeyFactory {
      * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the key type or key specification is not supported.
      * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKey
      * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKeySpec
-     * @see NiederreiterPublicKey
+     * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKey
      * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKeySpec
      */
     public KeySpec getKeySpec(Key key, Class keySpec)

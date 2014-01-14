@@ -105,7 +105,7 @@ public abstract class AsymmetricHybridCipher extends Cipher {
 
     /**
      * Initialize the cipher for encryption by forwarding it to
-     * {@link #initEncrypt(de.flexiprovider.api.keys.Key, de.flexiprovider.api.parameters.AlgorithmParameterSpec, de.flexiprovider.api.SecureRandom)}.
+     * {@link #initEncrypt(de.flexiprovider.api.keys.Key, de.flexiprovider.api.parameters.AlgorithmParameterSpec, SecureRandom)}.
      * <p/>
      * If this cipher requires any algorithm parameters that cannot be derived
      * from the given key, the underlying cipher implementation is supposed to
@@ -131,7 +131,7 @@ public abstract class AsymmetricHybridCipher extends Cipher {
 
     /**
      * Initialize this cipher for encryption by forwarding it to
-     * {@link #initEncrypt(de.flexiprovider.api.keys.Key, de.flexiprovider.api.parameters.AlgorithmParameterSpec, de.flexiprovider.api.SecureRandom)}.
+     * {@link #initEncrypt(de.flexiprovider.api.keys.Key, de.flexiprovider.api.parameters.AlgorithmParameterSpec, SecureRandom)}.
      * <p/>
      * If this cipher requires any algorithm parameters that cannot be derived
      * from the given key, the underlying cipher implementation is supposed to

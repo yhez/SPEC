@@ -18,7 +18,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
  * @author Birgit Henhapl
  * @author Martin D�ring
  * @see GF2nElement
- * @see de.flexiprovider.common.math.finitefields.GFPElement
+ * @see GFPElement
  */
 public class GFPElement implements GFElement {
 

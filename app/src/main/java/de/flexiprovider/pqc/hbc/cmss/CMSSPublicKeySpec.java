@@ -6,7 +6,7 @@ import de.flexiprovider.api.keys.KeySpec;
  * This class provides a specification for a CMSS public key.
  *
  * @author Elena Klintsevich
- * @see CMSSPublicKey
+ * @see de.flexiprovider.pqc.hbc.cmss.CMSSPublicKey
  * @see de.flexiprovider.api.keys.KeySpec
  */
 public class CMSSPublicKeySpec implements KeySpec {

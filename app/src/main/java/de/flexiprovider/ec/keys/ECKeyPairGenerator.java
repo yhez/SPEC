@@ -30,8 +30,8 @@ import de.flexiprovider.ec.parameters.CurveRegistry;
  * <i>public key</i> is defined to be <nobr><i>W = s * G</i></nobr>.
  *
  * @author Birgit Henhapl
- * @see de.flexiprovider.ec.keys.ECPublicKey
- * @see de.flexiprovider.ec.keys.ECPrivateKey
+ * @see ECPublicKey
+ * @see ECPrivateKey
  */
 public class ECKeyPairGenerator extends KeyPairGenerator {
 
@@ -135,8 +135,8 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
      *
      * @return the generated EC key pair
      * @see CurveParams
-     * @see de.flexiprovider.ec.keys.ECPublicKey
-     * @see de.flexiprovider.ec.keys.ECPrivateKey
+     * @see ECPublicKey
+     * @see ECPrivateKey
      */
     public KeyPair genKeyPair() {
         if (!initialized) {

@@ -21,7 +21,7 @@ public abstract class AlgorithmParameterGenerator extends
     protected final java.security.AlgorithmParameters engineGenerateParameters() {
 
         /**
-         * JCA adapter class, used to translate from {@link de.flexiprovider.api.parameters.AlgorithmParameters}
+         * JCA adapter class, used to translate from {@link AlgorithmParameters}
          * to {@link java.security.AlgorithmParameters}.
          */
         final class JCAAlgorithmParameters extends
@@ -88,7 +88,7 @@ public abstract class AlgorithmParameterGenerator extends
     // ****************************************************
 
     /**
-     * @return an instance of the {@link de.flexiprovider.api.parameters.AlgorithmParameters} class
+     * @return an instance of the {@link AlgorithmParameters} class
      * corresponding to the generated parameters
      */
     protected abstract AlgorithmParameters getAlgorithmParameters();

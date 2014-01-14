@@ -183,8 +183,8 @@ public abstract class GF2nField {
      * according to <tt>basis</tt>
      * @throws DifferentFieldsException if <tt>elem</tt> cannot be converted according to
      *                                  <tt>basis</tt>.
-     * @see de.flexiprovider.common.math.finitefields.GF2nField#computeCOBMatrix
-     * @see de.flexiprovider.common.math.finitefields.GF2nField#getRandomRoot
+     * @see GF2nField#computeCOBMatrix
+     * @see GF2nField#getRandomRoot
      * @see GF2nPolynomial
      * @see "P1363 A.7 p109ff"
      */

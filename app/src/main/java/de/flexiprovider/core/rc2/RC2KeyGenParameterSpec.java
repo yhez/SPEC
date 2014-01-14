@@ -4,7 +4,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class specifies parameters used for initializing the
- * {@link de.flexiprovider.core.rc2.RC2KeyGenerator}. The parameters consist of the key size in bits.
+ * {@link RC2KeyGenerator}. The parameters consist of the key size in bits.
  *
  * @author Martin D�ring
  */

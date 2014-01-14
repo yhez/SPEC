@@ -19,7 +19,7 @@ import de.flexiprovider.common.math.IntegerFunctions;
 
 /**
  * This class is used to generate key pairs for the ElGamal encryption algorithm
- * (implemented by {@link de.flexiprovider.core.elgamal.ElGamal}). It can be initialized with the bit length
+ * (implemented by {@link ElGamal}). It can be initialized with the bit length
  * of the prime <tt>p</tt>. The default bit length of the prime <tt>p</tt>
  * is 1024 bits.
  *
@@ -106,8 +106,8 @@ public class ElGamalKeyPairGenerator extends KeyPairGenerator {
     }
 
     /**
-     * Generate a key pair, containing an {@link de.flexiprovider.core.elgamal.ElGamalPublicKey} and an
-     * {@link de.flexiprovider.core.elgamal.ElGamalPrivateKey}.
+     * Generate a key pair, containing an {@link ElGamalPublicKey} and an
+     * {@link ElGamalPrivateKey}.
      * <p/>
      * The prime <tt>p</tt> is always of the form <tt>2*q+1</tt>. The
      * algorithm generates a prime number <tt>q</tt> and computes

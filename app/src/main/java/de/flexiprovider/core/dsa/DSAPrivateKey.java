@@ -49,7 +49,7 @@ public class DSAPrivateKey extends
 
     /**
      * Construct a DSA private key from the given key specification (used by the
-     * {@link de.flexiprovider.core.dsa.DSAKeyFactory}).
+     * {@link DSAKeyFactory}).
      *
      * @param keySpec the key specification
      */

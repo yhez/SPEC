@@ -18,7 +18,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
  *
  * @author Thomas Wahrenbruch
  * @author Roberto Samarone dos Santos Ara�jo
- * @see de.flexiprovider.core.elgamal.semanticallysecure.SSVElGamalKeyFactory
+ * @see SSVElGamalKeyFactory
  */
 public class SSVElGamalPrivateKeySpec implements KeySpec {
 

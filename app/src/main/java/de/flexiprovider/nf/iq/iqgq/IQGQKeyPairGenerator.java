@@ -13,7 +13,7 @@ import de.flexiprovider.common.math.quadraticfields.QuadraticIdeal;
 
 /**
  * This class is used to generate key pairs for the IQGQ signature algorithm
- * (implemented by {@link de.flexiprovider.nf.iq.iqgq.IQGQSignature}.
+ * (implemented by {@link IQGQSignature}.
  *
  * @author Ralf-P. Weinmann
  */
@@ -34,7 +34,7 @@ public class IQGQKeyPairGenerator extends KeyPairGenerator {
 
     /**
      * Initialize the IQGQ key pair generator with the specified parameters
-     * (supposed to be an instance of {@link de.flexiprovider.nf.iq.iqgq.IQGQParameterSpec}) and source of
+     * (supposed to be an instance of {@link IQGQParameterSpec}) and source of
      * randomness. If no parameters are specified, new parameters are generated
      * for the {@link IQGQParamGenParameterSpec#DEFAULT_SIZE default size} using
      * the {@link IQGQParameterGenerator}.
@@ -42,7 +42,7 @@ public class IQGQKeyPairGenerator extends KeyPairGenerator {
      * @param params the parameters
      * @param random the source of randomness
      * @throws InvalidAlgorithmParameterException if the parameters are not an instance of
-     *                                            {@link de.flexiprovider.nf.iq.iqgq.IQGQParameterSpec}.
+     *                                            {@link IQGQParameterSpec}.
      */
     public void initialize(AlgorithmParameterSpec params, SecureRandom random)
             throws InvalidAlgorithmParameterException {
@@ -97,8 +97,8 @@ public class IQGQKeyPairGenerator extends KeyPairGenerator {
     }
 
     /**
-     * Generate an IQGQ key pair, consisting of an {@link de.flexiprovider.nf.iq.iqgq.IQGQPublicKey} and an
-     * {@link de.flexiprovider.nf.iq.iqgq.IQGQPrivateKey}.
+     * Generate an IQGQ key pair, consisting of an {@link IQGQPublicKey} and an
+     * {@link IQGQPrivateKey}.
      *
      * @return the generated key pair
      */

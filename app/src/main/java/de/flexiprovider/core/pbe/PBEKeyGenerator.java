@@ -20,7 +20,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
  * The key generator for PBEKeys.
  *
  * @author Thomas Wahrenbruch
- * @see PBEKey
+ * @see de.flexiprovider.core.pbe.PBEKey
  */
 public class PBEKeyGenerator extends SecretKeyGenerator {
 
@@ -98,7 +98,7 @@ public class PBEKeyGenerator extends SecretKeyGenerator {
     /**
      * Generate a new PBEKey.
      *
-     * @return the generated {@link de.flexiprovider.core.pbe.PBEKey}
+     * @return the generated {@link PBEKey}
      */
     public SecretKey generateKey() {
         if (!initialized) {

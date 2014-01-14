@@ -5,7 +5,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
 
 /**
  * This class specifies parameters for the IQGQ signature algorithm (implemented
- * by {@link de.flexiprovider.nf.iq.iqgq.IQGQSignature}.
+ * by {@link IQGQSignature}.
  *
  * @author Ralf-P. Weinmann
  */

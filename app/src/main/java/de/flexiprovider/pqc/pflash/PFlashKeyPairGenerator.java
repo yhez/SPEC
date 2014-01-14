@@ -77,7 +77,7 @@ public class PFlashKeyPairGenerator extends KeyPairGenerator {
 
     /**
      * Generate a pFLASH key pair, consisting of a
-     * {@link de.flexiprovider.pqc.pflash.PFlashPublicKey} and a {@link de.flexiprovider.pqc.pflash.PFlashPrivateKey}.
+     * {@link PFlashPublicKey} and a {@link PFlashPrivateKey}.
      *
      * @return the generated key pair
      * @see de.flexiprovider.api.keys.KeyPair

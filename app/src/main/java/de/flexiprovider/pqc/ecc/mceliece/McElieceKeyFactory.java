@@ -25,7 +25,7 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
  * @author Martin D�ring
  * @see McEliecePrivateKey
  * @see McEliecePrivateKeySpec
- * @see de.flexiprovider.pqc.ecc.mceliece.McEliecePublicKey
+ * @see McEliecePublicKey
  * @see McEliecePublicKeySpec
  */
 public class McElieceKeyFactory extends KeyFactory {
@@ -37,7 +37,7 @@ public class McElieceKeyFactory extends KeyFactory {
 
     /**
      * Converts, if possible, a key specification into a
-     * {@link de.flexiprovider.pqc.ecc.mceliece.McEliecePublicKey}. Currently, the following key specifications
+     * {@link McEliecePublicKey}. Currently, the following key specifications
      * are supported: {@link McEliecePublicKeySpec}, {@link de.flexiprovider.pki.X509EncodedKeySpec}.
      *
      * @param keySpec the key specification
@@ -188,7 +188,7 @@ public class McElieceKeyFactory extends KeyFactory {
      *                                                                 supported.
      * @see McEliecePrivateKey
      * @see McEliecePrivateKeySpec
-     * @see de.flexiprovider.pqc.ecc.mceliece.McEliecePublicKey
+     * @see McEliecePublicKey
      * @see McEliecePublicKeySpec
      */
     public KeySpec getKeySpec(Key key, Class keySpec)
@@ -223,7 +223,7 @@ public class McElieceKeyFactory extends KeyFactory {
     /**
      * Translates a key into a form known by the FlexiProvider. Currently, only
      * the following "source" keys are supported: {@link McEliecePrivateKey},
-     * {@link de.flexiprovider.pqc.ecc.mceliece.McEliecePublicKey}.
+     * {@link McEliecePublicKey}.
      *
      * @param key the key
      * @return a key of a known key type

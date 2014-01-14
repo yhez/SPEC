@@ -94,7 +94,7 @@ public class ModeParameterGenerator extends AlgorithmParameterGenerator {
      * during initialization.
      *
      * @return the generated IV encapsulated in an instance of
-     * {@link de.flexiprovider.common.mode.ModeParameterSpec}
+     * {@link ModeParameterSpec}
      */
     public AlgorithmParameterSpec generateParameters() {
         if (!initialized) {

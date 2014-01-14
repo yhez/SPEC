@@ -19,7 +19,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
  * This class extends the KeyPairGenerator class. The key generation follows the
  * PKCS#1 standard. The algorithm strength translates directly to the bit length
  * of the modulus <tt>n = p*q</tt>. A key pair consists of an
- * {@link de.flexiprovider.core.rsa.RSAPublicKey} and an {@link de.flexiprovider.core.rsa.RSAPrivateCrtKey}. The default bit length
+ * {@link RSAPublicKey} and an {@link RSAPrivateCrtKey}. The default bit length
  * of <tt>n</tt> is 1024.
  *
  * @author Thomas Wahrenbruch
@@ -106,8 +106,8 @@ public final class RSAKeyPairGenerator extends
     /**
      * Generate an RSA key pair.
      *
-     * @return the key pair, consisting of an {@link de.flexiprovider.core.rsa.RSAPrivateCrtKey} and an
-     * {@link de.flexiprovider.core.rsa.RSAPublicKey}
+     * @return the key pair, consisting of an {@link RSAPrivateCrtKey} and an
+     * {@link RSAPublicKey}
      */
     public KeyPair genKeyPair() {
         if (!initialized) {

@@ -99,7 +99,7 @@ public class MARSKeyGenerator extends SecretKeyGenerator {
     /**
      * Generate a MARS key.
      *
-     * @return the generated {@link de.flexiprovider.core.mars.MARSKey}
+     * @return the generated {@link MARSKey}
      */
     public SecretKey generateKey() {
         if (!initialized) {

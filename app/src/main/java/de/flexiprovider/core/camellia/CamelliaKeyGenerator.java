@@ -99,7 +99,7 @@ public class CamelliaKeyGenerator extends SecretKeyGenerator {
     /**
      * Generate a Camellia key.
      *
-     * @return the generated {@link de.flexiprovider.core.camellia.CamelliaKey}
+     * @return the generated {@link CamelliaKey}
      */
     public SecretKey generateKey() {
         if (!initialized) {

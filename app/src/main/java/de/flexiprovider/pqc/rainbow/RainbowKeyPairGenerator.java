@@ -17,8 +17,6 @@ public class RainbowKeyPairGenerator extends KeyPairGenerator {
     private SecureRandom sr;
     private RainbowParameterSpec rainbowParams;
 
-    private String oid = "1.3.6.1.4.1.8301.3.1.3.5.3.2";
-
     private short[][] A1; // matrix of the lin. affine map L1(n-v1 x n-v1 matrix)
     private short[][] A1inv; // inverted A1
     private short[] b1; // translation element of the lin.affine map L1
@@ -50,6 +48,7 @@ public class RainbowKeyPairGenerator extends KeyPairGenerator {
         keygen();
 
 		/* now marshall them to PrivateKey */
+        String oid = "1.3.6.1.4.1.8301.3.1.3.5.3.2";
         privKey = new RainbowPrivateKey(oid, A1inv, b1, A2inv, b2, vi, layers);
 
 

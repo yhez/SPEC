@@ -8,7 +8,7 @@ import de.flexiprovider.api.exceptions.InvalidParameterException;
  *
  * @author Sebastian Blume, Michael Schneider
  * @see de.flexiprovider.pqc.hbc.gmss.GMSSKeyPairGenerator
- * @see GMSSSignature
+ * @see de.flexiprovider.pqc.hbc.gmss.GMSSSignature
  */
 public class GMSSParameterset {
 

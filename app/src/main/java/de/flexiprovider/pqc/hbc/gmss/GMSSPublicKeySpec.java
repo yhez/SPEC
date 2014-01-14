@@ -6,7 +6,7 @@ import de.flexiprovider.api.keys.KeySpec;
  * This class provides a specification for a GMSS public key.
  *
  * @author Sebastian Blume
- * @see GMSSPublicKey
+ * @see de.flexiprovider.pqc.hbc.gmss.GMSSPublicKey
  */
 public class GMSSPublicKeySpec implements KeySpec {
 

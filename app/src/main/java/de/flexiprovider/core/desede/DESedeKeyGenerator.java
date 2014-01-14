@@ -63,7 +63,7 @@ public class DESedeKeyGenerator extends SecretKeyGenerator {
     /**
      * Generate a DESede key.
      *
-     * @return the generated {@link de.flexiprovider.core.desede.DESedeKey}
+     * @return the generated {@link DESedeKey}
      */
     public SecretKey generateKey() {
         if (!initialized) {

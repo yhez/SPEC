@@ -11,7 +11,7 @@ import de.flexiprovider.common.math.linearalgebra.Permutation;
  *
  * @author Elena Klintsevich
  * @author Martin D�ring
- * @see de.flexiprovider.pqc.ecc.mceliece.McElieceCCA2PrivateKey
+ * @see McElieceCCA2PrivateKey
  */
 public class McElieceCCA2PrivateKeySpec implements KeySpec {
 
@@ -61,7 +61,7 @@ public class McElieceCCA2PrivateKeySpec implements KeySpec {
     }
 
     /**
-     * Constructor used by the {@link de.flexiprovider.pqc.ecc.mceliece.McElieceKeyFactory}.
+     * Constructor used by the {@link McElieceKeyFactory}.
      *
      * @param n            the length of the code
      * @param k            the dimension of the code

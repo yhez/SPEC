@@ -92,7 +92,7 @@ public class NiederreiterCFSSignature extends Signature {
      * @param key    the private key of the signer
      * @param random a source of randomness (not used)
      * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the key is not an instance of
-     *                                                             {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKey}.
+     *                                                             {@link NiederreiterPrivateKey}.
      */
     public void initSign(PrivateKey key, SecureRandom random)
             throws InvalidKeyException {

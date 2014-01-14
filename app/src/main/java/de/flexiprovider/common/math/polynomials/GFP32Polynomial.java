@@ -39,10 +39,10 @@ public class GFP32Polynomial {
     private SecureRandom generator;
 
     /**
-     * Constructor for decoding a previously encoded {@link de.flexiprovider.common.math.polynomials.GFP32Polynomial}
+     * Constructor for decoding a previously encoded {@link GFP32Polynomial}
      * using the getEncoded() method
      *
-     * @param encoded the byte array containing the encoded {@link de.flexiprovider.common.math.polynomials.GFP32Polynomial}
+     * @param encoded the byte array containing the encoded {@link GFP32Polynomial}
      * @throws java.io.IOException
      * @throws codec.asn1.ASN1Exception
      */
@@ -187,7 +187,7 @@ public class GFP32Polynomial {
      * also compares SecureRandom, but since that class has no default equals
      * operator, this method is useless (for now)
      *
-     * @param gfp the {@link de.flexiprovider.common.math.polynomials.GFP32Polynomial} to compare to.
+     * @param gfp the {@link GFP32Polynomial} to compare to.
      * @return
      */
     private boolean fullEquals(GFP32Polynomial gfp) {

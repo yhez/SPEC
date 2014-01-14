@@ -5,7 +5,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class specifies parameters used for initializing the
- * {@link de.flexiprovider.core.dsa.DSAParameterGenerator}. The parameters consist of the bit size of the
+ * {@link DSAParameterGenerator}. The parameters consist of the bit size of the
  * prime <tt>p</tt>.
  *
  * @author Martin D�ring

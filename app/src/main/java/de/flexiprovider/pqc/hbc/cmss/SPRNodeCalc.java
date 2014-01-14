@@ -8,7 +8,7 @@ import de.flexiprovider.api.MessageDigest;
 import de.flexiprovider.common.util.ByteUtils;
 
 /**
- * This class provides an implementation of the {@link de.flexiprovider.pqc.hbc.cmss.NodeCalc} interface,
+ * This class provides an implementation of the {@link NodeCalc} interface,
  * which calculates nodes in a way, that the use of SPR Hash Functions is
  * secure.
  */
@@ -18,7 +18,7 @@ public class SPRNodeCalc implements NodeCalc {
     private int otsMdSize;
 
     /**
-     * Constructs a new {@link de.flexiprovider.pqc.hbc.cmss.SPRNodeCalc} object, that uses the given
+     * Constructs a new {@link SPRNodeCalc} object, that uses the given
      * {@link de.flexiprovider.api.MessageDigest} and <code>masks</code> to calculate the nodes.
      * The size of the {@link de.flexiprovider.api.MessageDigest}, that the OTS uses, is necessary
      * to calculate the leafs properly.

@@ -22,7 +22,7 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
  *
  * @author Elena Klintsevich
  * @see MerkleOTSPrivateKey
- * @see de.flexiprovider.pqc.ots.merkle.MerkleOTSPublicKey
+ * @see MerkleOTSPublicKey
  */
 public class MerkleOTSKeyFactory extends KeyFactory {
 
@@ -33,13 +33,13 @@ public class MerkleOTSKeyFactory extends KeyFactory {
 
     /**
      * Converts, if possible, a key specification into a
-     * {@link de.flexiprovider.pqc.ots.merkle.MerkleOTSPublicKey}. Currently, the following key specifications
+     * {@link MerkleOTSPublicKey}. Currently, the following key specifications
      * are supported: {@link MerkleOTSPublicKeySpec}.
      *
      * @param keySpec the key specification
      * @return a public Merkle OTS key
      * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     * @see de.flexiprovider.pqc.ots.merkle.MerkleOTSPublicKey
+     * @see MerkleOTSPublicKey
      */
     public PublicKey generatePublic(KeySpec keySpec)
             throws InvalidKeySpecException {
@@ -158,7 +158,7 @@ public class MerkleOTSKeyFactory extends KeyFactory {
      * @return OTSKeySpec the specification of the MerkleOTS key.
      * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the specification is not supported.
      * @see MerkleOTSPrivateKey
-     * @see de.flexiprovider.pqc.ots.merkle.MerkleOTSPublicKey
+     * @see MerkleOTSPublicKey
      */
     public KeySpec getKeySpec(Key key, Class spec)
             throws InvalidKeySpecException {

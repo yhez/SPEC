@@ -9,7 +9,7 @@ package de.flexiprovider.common.math.codingtheory;
  * Integer is used.
  *
  * @author Elena Klintsevich
- * @see de.flexiprovider.common.math.codingtheory.GF2mField
+ * @see GF2mField
  */
 public final class PolynomialRingGF2 {
 

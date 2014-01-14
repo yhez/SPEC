@@ -97,7 +97,7 @@ public class RC2KeyGenerator extends
     /**
      * Generate an RC2 key.
      *
-     * @return the generated {@link de.flexiprovider.core.rc2.RC2Key}
+     * @return the generated {@link RC2Key}
      */
     public SecretKey generateKey() {
         if (!initialized) {

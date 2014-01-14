@@ -155,7 +155,7 @@ public class HMacKeyGenerator extends SecretKeyGenerator {
     /**
      * Generate an HMac key.
      *
-     * @return the generated {@link de.flexiprovider.core.mac.HMacKey}
+     * @return the generated {@link HMacKey}
      */
     public SecretKey generateKey() {
         if (!initialized) {

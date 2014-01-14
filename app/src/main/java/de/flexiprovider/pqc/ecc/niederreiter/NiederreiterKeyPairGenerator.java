@@ -34,8 +34,8 @@ import de.flexiprovider.pqc.ecc.ECCKeyGenParameterSpec;
  * The public key is (t, n, H), the private key is (m,k,field polynomial,Goppa
  * polynomial,S,P).
  * <p/>
- * A key pair consists of a {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKey} and a
- * {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKey}.
+ * A key pair consists of a {@link NiederreiterPublicKey} and a
+ * {@link NiederreiterPrivateKey}.
  * <p/>
  * The default parameters are (m, t) = (11, 50).
  * <p/>
@@ -144,10 +144,10 @@ public class NiederreiterKeyPairGenerator extends KeyPairGenerator {
     /**
      * Generate a key pair.
      *
-     * @return the key pair, consisting of a {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKey} and
-     * a {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKey}.
-     * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKey
-     * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKey
+     * @return the key pair, consisting of a {@link NiederreiterPrivateKey} and
+     * a {@link NiederreiterPublicKey}.
+     * @see NiederreiterPrivateKey
+     * @see NiederreiterPublicKey
      */
     public KeyPair genKeyPair() {
         if (!initialized) {

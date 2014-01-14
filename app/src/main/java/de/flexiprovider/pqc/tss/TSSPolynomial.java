@@ -188,7 +188,7 @@ public class TSSPolynomial {
      * also compares SecureRandom, but since that class has no default equals
      * operator, this method is useless (for now)
      *
-     * @param gfp the {@link de.flexiprovider.pqc.tss.TSSPolynomial} to compare to.
+     * @param gfp the {@link TSSPolynomial} to compare to.
      * @return
      */
     private boolean fullEquals(TSSPolynomial gfp) {

@@ -113,7 +113,7 @@ public abstract class KeyPairGenerator extends
      * KeyPairGenerator interface, algorithm-specific defaults will be used.
      * This will generate a new key pair every time it is called.
      *
-     * @return a newly generated {@link de.flexiprovider.api.keys.KeyPair}
+     * @return a newly generated {@link KeyPair}
      */
     public abstract KeyPair genKeyPair();
 

@@ -7,7 +7,7 @@ import de.flexiprovider.common.math.codingtheory.GF2mField;
 /**
  * <p>
  * This class provides the specification of the parameters used by the
- * {@link de.flexiprovider.pqc.pflash.PFlashKeyPairGenerator}.
+ * {@link PFlashKeyPairGenerator}.
  * </p>
  * <p/>
  * <b>The default values for the parameters are :</b><br/>

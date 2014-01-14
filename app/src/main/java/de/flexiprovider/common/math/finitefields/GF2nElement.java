@@ -146,7 +146,7 @@ public abstract class GF2nElement implements GFElement {
 
     /**
      * Compute the square root of this element and return the result in a new
-     * {@link de.flexiprovider.common.math.finitefields.GF2nElement}.
+     * {@link GF2nElement}.
      *
      * @return <tt>this<sup>1/2</sup></tt> (newly created)
      */

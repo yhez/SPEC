@@ -110,7 +110,7 @@ public class IQDSAParameterGenerator extends AlgorithmParameterGenerator {
      * Generate IQDSA algorithm parameters.
      *
      * @return the generated IQDSA parameters
-     * @see de.flexiprovider.nf.iq.iqdsa.IQDSAParameterSpec
+     * @see IQDSAParameterSpec
      */
     public AlgorithmParameterSpec generateParameters() {
         if (!initialized) {

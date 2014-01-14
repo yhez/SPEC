@@ -107,7 +107,7 @@ public class IQGQParameterGenerator extends AlgorithmParameterGenerator {
      * Generate IQGQ algorithm parameters.
      *
      * @return the generated IQGQ parameters
-     * @see de.flexiprovider.nf.iq.iqgq.IQGQParameterSpec
+     * @see IQGQParameterSpec
      */
     public AlgorithmParameterSpec generateParameters() {
         if (!initialized) {

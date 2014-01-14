@@ -147,12 +147,12 @@ public class McElieceKeyPairGenerator extends KeyPairGenerator {
 
     /**
      * Generate a McEliece key pair. The public key is an instance of
-     * {@link de.flexiprovider.pqc.ecc.mceliece.McEliecePublicKey}, the private key is an instance of
-     * {@link de.flexiprovider.pqc.ecc.mceliece.McEliecePrivateKey}.
+     * {@link McEliecePublicKey}, the private key is an instance of
+     * {@link McEliecePrivateKey}.
      *
      * @return the McEliece key pair
-     * @see de.flexiprovider.pqc.ecc.mceliece.McEliecePublicKey
-     * @see de.flexiprovider.pqc.ecc.mceliece.McEliecePrivateKey
+     * @see McEliecePublicKey
+     * @see McEliecePrivateKey
      */
     public KeyPair genKeyPair() {
 

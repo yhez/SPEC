@@ -31,7 +31,7 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
  * form that can be used with the FlexiCoreProvider.
  *
  * @author Thomas Wahrenbruch
- * @see de.flexiprovider.core.elgamal.ElGamal
+ * @see ElGamal
  */
 public class ElGamalKeyFactory extends KeyFactory {
 
@@ -106,7 +106,7 @@ public class ElGamalKeyFactory extends KeyFactory {
      * @param keySpec the key specification
      * @return the public ElGamal key
      * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     * @see ElGamalPublicKey
+     * @see de.flexiprovider.core.elgamal.ElGamalPublicKey
      * @see de.flexiprovider.core.elgamal.ElGamalPublicKeySpec
      */
     public PublicKey generatePublic(KeySpec keySpec)
@@ -166,7 +166,7 @@ public class ElGamalKeyFactory extends KeyFactory {
      * @return the specification of the ElGamal key
      * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the specification is not supported.
      * @see de.flexiprovider.core.elgamal.ElGamalPrivateKey
-     * @see ElGamalPublicKey
+     * @see de.flexiprovider.core.elgamal.ElGamalPublicKey
      * @see de.flexiprovider.core.elgamal.ElGamalPrivateKeySpec
      * @see de.flexiprovider.core.elgamal.ElGamalPublicKeySpec
      */

@@ -14,7 +14,7 @@ import de.flexiprovider.common.exceptions.DifferentFieldsException;
  * This class implements polynomials over GF2nElements.
  *
  * @author Oliver Seiler
- * @see de.flexiprovider.common.math.finitefields.GF2nElement
+ * @see GF2nElement
  */
 
 public class GF2nPolynomial {

@@ -4,7 +4,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.core.rsa.RSAKeyGenParameterSpec;
 
 /**
- * This class specifies parameters used by the {@link de.flexiprovider.core.mersa.MeRSAKeyPairGenerator}.
+ * This class specifies parameters used by the {@link MeRSAKeyPairGenerator}.
  *
  * @author Paul Nguentcheu
  * @author Martin D�ring

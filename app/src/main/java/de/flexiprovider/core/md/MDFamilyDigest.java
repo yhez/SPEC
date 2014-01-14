@@ -13,8 +13,8 @@ import de.flexiprovider.api.MessageDigest;
 import de.flexiprovider.common.util.LittleEndianConversions;
 
 /**
- * This class is the base class for all message digests of the MD family ({@link de.flexiprovider.core.md.MD4},
- * {@link de.flexiprovider.core.md.MD5}, {@link de.flexiprovider.core.md.RIPEMD128}, ...).
+ * This class is the base class for all message digests of the MD family ({@link MD4},
+ * {@link MD5}, {@link RIPEMD128}, ...).
  *
  * @author Martin D�ring
  */

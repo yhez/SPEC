@@ -21,7 +21,7 @@ import de.flexiprovider.common.exceptions.PolynomialIsNotIrreducibleException;
  * this field.
  *
  * @author Oliver Seiler
- * @see de.flexiprovider.common.math.finitefields.GF2nField
+ * @see GF2nField
  * @see GF2nPolynomialElement
  */
 public class GF2nPolynomialField extends GF2nField {

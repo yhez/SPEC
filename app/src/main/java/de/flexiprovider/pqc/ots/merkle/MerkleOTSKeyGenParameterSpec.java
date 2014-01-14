@@ -10,7 +10,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class provides the specification of the parameters used by the
- * {@link de.flexiprovider.pqc.ots.merkle.MerkleOTSKeyPairGenerator}.
+ * {@link MerkleOTSKeyPairGenerator}.
  *
  * @author Elena Klintsevich
  */

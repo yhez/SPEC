@@ -9,8 +9,8 @@ import my.BigInteger;
  * defined in NIST's FIPS-186.
  *
  * @see java.security.Signature
- * @see de.flexiprovider.core.dsa.interfaces.DSAKey
- * @see de.flexiprovider.core.dsa.interfaces.DSAPublicKey
+ * @see DSAKey
+ * @see DSAPublicKey
  */
 public abstract class DSAPrivateKey extends PrivateKey implements DSAKey,
         java.security.interfaces.DSAPrivateKey {

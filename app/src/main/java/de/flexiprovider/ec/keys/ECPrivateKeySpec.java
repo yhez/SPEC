@@ -20,7 +20,7 @@ import de.flexiprovider.ec.parameters.CurveParams;
  * @author Michele Boivin
  * @see de.flexiprovider.api.keys.Key
  * @see de.flexiprovider.api.keys.KeySpec
- * @see ECPublicKeySpec
+ * @see de.flexiprovider.ec.keys.ECPublicKeySpec
  * @see de.flexiprovider.common.math.ellipticcurves.Point
  * @see CurveParams
  */

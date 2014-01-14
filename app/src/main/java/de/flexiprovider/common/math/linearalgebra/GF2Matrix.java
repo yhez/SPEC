@@ -101,7 +101,7 @@ public class GF2Matrix extends Matrix {
      * Create an nxn matrix of the given type.
      *
      * @param n            the number of rows (and columns)
-     * @param typeOfMatrix the martix type (see {@link de.flexiprovider.common.math.linearalgebra.Matrix} for predefined
+     * @param typeOfMatrix the martix type (see {@link Matrix} for predefined
      *                     constants)
      */
     public GF2Matrix(int n, char typeOfMatrix) {
@@ -150,7 +150,7 @@ public class GF2Matrix extends Matrix {
     /**
      * Copy constructor.
      *
-     * @param a another {@link de.flexiprovider.common.math.linearalgebra.GF2Matrix}
+     * @param a another {@link GF2Matrix}
      */
     public GF2Matrix(GF2Matrix a) {
         numColumns = a.getNumColumns();
@@ -782,7 +782,7 @@ public class GF2Matrix extends Matrix {
      * generated from an n-permutation.
      *
      * @param p the permutation
-     * @return {@link de.flexiprovider.common.math.linearalgebra.GF2Matrix} <tt>this*P</tt>
+     * @return {@link GF2Matrix} <tt>this*P</tt>
      */
     public Matrix rightMultiply(Permutation p) {
 

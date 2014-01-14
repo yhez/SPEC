@@ -102,7 +102,7 @@ public class SAFERPlusPlusKeyGenerator extends SecretKeyGenerator {
     /**
      * Generate a SAFER++ key.
      *
-     * @return the generated {@link de.flexiprovider.core.saferplusplus.SAFERPlusPlusKey}
+     * @return the generated {@link SAFERPlusPlusKey}
      */
     public SecretKey generateKey() {
         if (!initialized) {

@@ -16,7 +16,7 @@ import de.flexiprovider.common.util.ASN1Tools;
  *
  * @author Elena Klintsevich
  * @see NiederreiterKeyPairGenerator
- * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKey
+ * @see NiederreiterPublicKey
  */
 public class NiederreiterPublicKey extends PublicKey {
 

@@ -24,7 +24,7 @@ import de.flexiprovider.common.math.IntegerFunctions;
  *
  * @author Birgit Henhapl
  * @author Oliver Seiler
- * @see de.flexiprovider.common.math.finitefields.GF2nField
+ * @see GF2nField
  * @see GF2nONBElement
  */
 public class GF2nONBField extends GF2nField {

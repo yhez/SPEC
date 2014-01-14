@@ -19,7 +19,7 @@ import de.flexiprovider.common.util.ASN1Tools;
  *
  * @author Elena Klintsevich
  * @see NiederreiterKeyPairGenerator
- * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPrivateKey
+ * @see NiederreiterPrivateKey
  */
 public class NiederreiterPrivateKey extends PrivateKey {
 
@@ -83,7 +83,7 @@ public class NiederreiterPrivateKey extends PrivateKey {
     }
 
     /**
-     * Constructor, used by {@link de.flexiprovider.pqc.ecc.niederreiter.NiederreiterKeyFactory}.
+     * Constructor, used by {@link NiederreiterKeyFactory}.
      *
      * @param keySpec a {@link NiederreiterPrivateKeySpec}
      */

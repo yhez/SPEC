@@ -10,8 +10,8 @@ import de.flexiprovider.common.util.IntUtils;
  *
  * @author Elena Klintsevich
  * @author Martin D�ring
- * @see de.flexiprovider.common.math.codingtheory.GF2mField
- * @see de.flexiprovider.common.math.codingtheory.PolynomialRingGF2m
+ * @see GF2mField
+ * @see PolynomialRingGF2m
  */
 public class PolynomialGF2mSmallM {
 
@@ -29,7 +29,7 @@ public class PolynomialGF2mSmallM {
      * For the polynomial representation the map f: R->Z*,
      * <tt>poly(X) -> [coef_0, coef_1, ...]</tt> is used, where
      * <tt>coef_i</tt> is the <tt>i</tt>th coefficient of the polynomial
-     * represented as int (see {@link de.flexiprovider.common.math.codingtheory.GF2mField}). The polynomials are stored
+     * represented as int (see {@link GF2mField}). The polynomials are stored
      * as int arrays.
      */
     private int[] coefficients;
@@ -40,7 +40,7 @@ public class PolynomialGF2mSmallM {
 
     /**
      * Constant used for polynomial construction (see constructor
-     * {@link #PolynomialGF2mSmallM(de.flexiprovider.common.math.codingtheory.GF2mField, int, char, de.flexiprovider.api.SecureRandom)}).
+     * {@link #PolynomialGF2mSmallM(GF2mField, int, char, de.flexiprovider.api.SecureRandom)}).
      */
     public static final char RANDOM_IRREDUCIBLE_POLYNOMIAL = 'I';
 
@@ -176,7 +176,7 @@ public class PolynomialGF2mSmallM {
     /**
      * Copy constructor.
      *
-     * @param other another {@link de.flexiprovider.common.math.codingtheory.PolynomialGF2mSmallM}
+     * @param other another {@link PolynomialGF2mSmallM}
      */
     public PolynomialGF2mSmallM(PolynomialGF2mSmallM other) {
         // field needs not to be cloned since it is immutable

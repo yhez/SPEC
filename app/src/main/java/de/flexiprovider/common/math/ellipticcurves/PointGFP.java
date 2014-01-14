@@ -24,7 +24,7 @@ import de.flexiprovider.common.util.FlexiBigIntUtils;
  *
  * @author Birgit Henhapl
  * @see EllipticCurveGFP
- * @see de.flexiprovider.common.math.ellipticcurves.PointGFP
+ * @see PointGFP
  */
 public class PointGFP extends Point {
 

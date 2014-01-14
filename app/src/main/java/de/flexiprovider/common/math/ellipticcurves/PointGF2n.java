@@ -37,12 +37,12 @@ import de.flexiprovider.common.math.finitefields.GFElement;
  * with x = X/Z<SUP>2</SUP> and y = Y/Z<SUP>3</SUP>.
  * <p/>
  * For the formulas of the projective addition and doubling
- * {@link #add(de.flexiprovider.common.math.ellipticcurves.Point) add} and {@link #multiplyBy2 multiplyBy2}, respectively.
+ * {@link #add(Point) add} and {@link #multiplyBy2 multiplyBy2}, respectively.
  *
  * @author Birgit Henhapl
  * @author Vangelis Karatsiolis
  * @see de.flexiprovider.common.math.ellipticcurves.EllipticCurveGF2n
- * @see Point
+ * @see de.flexiprovider.common.math.ellipticcurves.Point
  * @see de.flexiprovider.common.math.finitefields.GF2nField
  * @see de.flexiprovider.common.math.finitefields.GF2nElement
  */

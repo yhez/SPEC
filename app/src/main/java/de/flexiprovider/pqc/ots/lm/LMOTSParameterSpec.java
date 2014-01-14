@@ -120,7 +120,7 @@ public class LMOTSParameterSpec implements AlgorithmParameterSpec {
 
     /**
      * @param a a vector of {@link GFP32Polynomial} needed to instantiate a
-     *          hash function ({@link de.flexiprovider.pqc.ots.lm.LMOTSHash})
+     *          hash function ({@link LMOTSHash})
      */
     public void setHFunction(Vector a) {
         hFunction = new LMOTSHash(a);

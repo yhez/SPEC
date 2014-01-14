@@ -145,7 +145,7 @@ public class GMSSKeyFactory extends KeyFactory {
      * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the specification is not supported
      * @see de.flexiprovider.pqc.hbc.gmss.GMSSPrivateKey
      * @see de.flexiprovider.pqc.hbc.gmss.GMSSPrivateKeySpec
-     * @see GMSSPublicKey
+     * @see de.flexiprovider.pqc.hbc.gmss.GMSSPublicKey
      * @see de.flexiprovider.pqc.hbc.gmss.GMSSPublicKeySpec
      */
     public KeySpec getKeySpec(Key key, Class spec)

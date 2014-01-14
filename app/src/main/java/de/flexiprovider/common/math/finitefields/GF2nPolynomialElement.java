@@ -356,7 +356,7 @@ public class GF2nPolynomialElement extends GF2nElement {
      * GF2nPolynomialElement to one of the possible squaring methods.
      *
      * @return <tt>this<sup>2</sup></tt> (newly created)
-     * @see de.flexiprovider.common.math.finitefields.GF2nPolynomialElement#squarePreCalc
+     * @see GF2nPolynomialElement#squarePreCalc
      */
     public GF2nElement square() {
         return squarePreCalc();
@@ -437,7 +437,7 @@ public class GF2nPolynomialElement extends GF2nElement {
 
     /**
      * Compute the square root of this element and return the result in a new
-     * {@link de.flexiprovider.common.math.finitefields.GF2nPolynomialElement}.
+     * {@link GF2nPolynomialElement}.
      *
      * @return <tt>this<sup>1/2</sup></tt> (newly created)
      */
@@ -552,8 +552,8 @@ public class GF2nPolynomialElement extends GF2nElement {
     /**
      * Reduces this GF2nPolynomialElement modulo the field-polynomial.
      *
-     * @see de.flexiprovider.common.math.finitefields.GF2Polynomial#reduceTrinomial
-     * @see de.flexiprovider.common.math.finitefields.GF2Polynomial#reducePentanomial
+     * @see GF2Polynomial#reduceTrinomial
+     * @see GF2Polynomial#reducePentanomial
      */
     private void reduceThis() {
         if (polynomial.getLength() > mDegree) { // really reduce ?

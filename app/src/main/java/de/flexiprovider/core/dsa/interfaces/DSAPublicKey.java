@@ -10,7 +10,7 @@ import my.BigInteger;
  *
  * @see java.security.Signature
  * @see de.flexiprovider.api.keys.PublicKey
- * @see de.flexiprovider.core.dsa.interfaces.DSAKey
+ * @see DSAKey
  * @see DSAPrivateKey
  */
 public abstract class DSAPublicKey extends PublicKey implements DSAKey,

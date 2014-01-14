@@ -3,7 +3,7 @@ package de.flexiprovider.core.rbrsa;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
- * This class specifies parameters used by the {@link de.flexiprovider.core.rbrsa.RbRSAKeyPairGenerator}.
+ * This class specifies parameters used by the {@link RbRSAKeyPairGenerator}.
  *
  * @author Paul Nguentcheu
  * @author Martin D�ring

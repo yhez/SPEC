@@ -30,7 +30,7 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
  * This class provides the translation between key specifications ({@link IQGQPrivateKeySpec}
  * or {@link IQGQPublicKeySpec}), DER-encoded ASN.1 representations ({@link X509EncodedKeySpec}
  * or {@link PKCS8EncodedKeySpec}), and keys ({@link IQGQPrivateKey} or
- * {@link de.flexiprovider.nf.iq.iqgq.IQGQPublicKey}).
+ * {@link IQGQPublicKey}).
  *
  * @author Birgit Henhapl
  * @author Michele Boivin
@@ -237,7 +237,7 @@ public class IQGQKeyFactory extends KeyFactory {
      * Translates a key object, whose provider may be unknown or potentially
      * untrusted, into a corresponding key object of this key factory.
      * Currently, only the following key types are supported:
-     * {@link de.flexiprovider.nf.iq.iqgq.IQGQPublicKey}, {@link IQGQPrivateKey}.
+     * {@link IQGQPublicKey}, {@link IQGQPrivateKey}.
      *
      * @param key the key whose provider is unknown or untrusted
      * @return the translated key

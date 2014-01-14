@@ -54,7 +54,7 @@ public class RC5KeyFactory extends SecretKeyFactory {
     /**
      * Return a key specification of the given key object in the requested
      * format. The format has to be equal to or a superclass of
-     * {@link de.flexiprovider.api.keys.SecretKeySpec}. The key has to be an instance of {@link de.flexiprovider.core.rc5.RC5Key}.
+     * {@link de.flexiprovider.api.keys.SecretKeySpec}. The key has to be an instance of {@link RC5Key}.
      *
      * @param key     the key
      * @param keySpec the requested format in which the key material shall be

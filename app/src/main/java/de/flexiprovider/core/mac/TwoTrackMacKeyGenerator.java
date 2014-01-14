@@ -69,7 +69,7 @@ public class TwoTrackMacKeyGenerator extends SecretKeyGenerator {
     /**
      * Generate a TwoTrackMac key.
      *
-     * @return the generated {@link de.flexiprovider.core.mac.TwoTrackMacKey}
+     * @return the generated {@link TwoTrackMacKey}
      */
     public SecretKey generateKey() {
         if (!initialized) {

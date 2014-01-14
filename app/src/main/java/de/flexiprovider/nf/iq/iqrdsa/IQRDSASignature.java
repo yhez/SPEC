@@ -208,7 +208,7 @@ public abstract class IQRDSASignature extends Signature {
      * Initialized engine for verification process
      *
      * @param key public key to be used for verification
-     * @throws InvalidKeyException if the key is not an instance of {@link de.flexiprovider.nf.iq.iqrdsa.IQRDSAPublicKey}.
+     * @throws InvalidKeyException if the key is not an instance of {@link IQRDSAPublicKey}.
      * @see #verify(byte [])
      */
     public void initVerify(PublicKey key) throws InvalidKeyException {

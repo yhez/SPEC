@@ -6,7 +6,7 @@ package de.flexiprovider.common.math.polynomials;
  * <tt>f2</tt>, and <tt>f3</tt> are sparse binary polynomials.
  * <p/>
  * The fields have package visibility so that they can be accessed by
- * {@link ModQConvolutionPolynomial}.
+ * {@link de.flexiprovider.common.math.polynomials.ModQConvolutionPolynomial}.
  *
  * @author Martin D�ring
  * @see de.flexiprovider.common.math.polynomials.SparseBinaryConvolutionPolynomial

@@ -12,7 +12,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 /**
  * This class specifies parameters used for initializing the
- * {@link de.flexiprovider.core.mars.MARSKeyGenerator}. The parameters consist of the key size in bits.
+ * {@link MARSKeyGenerator}. The parameters consist of the key size in bits.
  * Values for the key are 128, 192, 256, 320, 384, and 448 bits, with the
  * default being 128 bits.
  *
