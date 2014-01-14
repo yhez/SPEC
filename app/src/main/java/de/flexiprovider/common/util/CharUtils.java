@@ -53,7 +53,7 @@ public final class CharUtils {
         int length = out.length * 2;
         byte[] ret = new byte[length + 2];
 
-        int j = 0;
+        int j;
         for (int i = 0; i < out.length; i++) {
             j = i * 2;
             ret[j] = 0;

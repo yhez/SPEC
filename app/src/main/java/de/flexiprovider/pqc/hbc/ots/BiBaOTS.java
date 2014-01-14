@@ -80,7 +80,7 @@ public class BiBaOTS implements OTS {
             // create seals
             temp = new byte[sealLength];
             System.arraycopy(rng.nextSeed(seed), 0, temp, 0, sealLength);
-            arrayHash = Integer.valueOf(ByteUtils.deepHashCode(temp));
+            arrayHash = ByteUtils.deepHashCode(temp);
             // if seal already exists skip it and create a new one
             if (!sealTable.add(arrayHash)) {
                 i--;
@@ -180,18 +180,18 @@ public class BiBaOTS implements OTS {
             // for all hash values...
             for (int i = 0; i < privKeyBytes.length && !collisionFound; i++) {
                 // calculate bin number
-                bin = Integer.valueOf(calcBin(sealHashes[i]));
+                bin = calcBin(sealHashes[i]);
 
                 // for each bin which contains seals create an vector and put
                 // the current seal in it
                 if (findCollisions.get(bin) != null) {
                     vect = (Vector) findCollisions.get(bin);
-                    vect.addElement(Integer.valueOf(i));
+                    vect.addElement(i);
                     findCollisions.put(bin, vect);
                 } else {
                     // vect = new Vector<Integer>();
                     vect = new Vector();
-                    vect.addElement(Integer.valueOf(i));
+                    vect.addElement(i);
                     findCollisions.put(bin, vect);
                 }
 
@@ -199,7 +199,7 @@ public class BiBaOTS implements OTS {
                 // collisions -> signature is found
                 if (vect.size() == collisionSize) {
                     collisionFound = true;
-                    binIndex = bin.intValue();
+                    binIndex = bin;
                 }
             }
 
@@ -215,8 +215,7 @@ public class BiBaOTS implements OTS {
                 vect = (Vector) findCollisions.get(Integer.valueOf(binIndex));
                 for (int i = 0; i < collisionSize; i++) {
                     tempArray = new byte[sealLength];
-                    tempArray = privKeyBytes[((Integer) vect.elementAt(i))
-                            .intValue()];
+                    tempArray = privKeyBytes[(Integer) vect.elementAt(i)];
 
                     for (int j = 0; j < sealLength; j++)
                         signature[i * sealLength + j] = tempArray[j];

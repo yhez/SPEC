@@ -16,18 +16,18 @@
 
 package zxing.qrcode.detector;
 
-import zxing.DecodeHintType;
-import zxing.NotFoundException;
-import zxing.ResultPoint;
-import zxing.ResultPointCallback;
-import zxing.common.BitMatrix;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+
+import zxing.DecodeHintType;
+import zxing.NotFoundException;
+import zxing.ResultPoint;
+import zxing.ResultPointCallback;
+import zxing.common.BitMatrix;
 
 /**
  * <p>This class attempts to find finder patterns in a QR Code. Finder patterns are the square
@@ -50,16 +50,7 @@ public class FinderPatternFinder {
   private final int[] crossCheckStateCount;
   private final ResultPointCallback resultPointCallback;
 
-  /**
-   * <p>Creates a finder that will search the image for three finder patterns.</p>
-   *
-   * @param image image to search
-   */
-  public FinderPatternFinder(BitMatrix image) {
-    this(image, null);
-  }
-
-  public FinderPatternFinder(BitMatrix image, ResultPointCallback resultPointCallback) {
+    public FinderPatternFinder(BitMatrix image, ResultPointCallback resultPointCallback) {
     this.image = image;
     this.possibleCenters = new ArrayList<FinderPattern>();
     this.crossCheckStateCount = new int[5];
@@ -70,11 +61,7 @@ public class FinderPatternFinder {
     return image;
   }
 
-  protected final List<FinderPattern> getPossibleCenters() {
-    return possibleCenters;
-  }
-
-  final FinderPatternInfo find(Map<DecodeHintType,?> hints) throws NotFoundException {
+    final FinderPatternInfo find(Map<DecodeHintType,?> hints) throws NotFoundException {
     boolean tryHarder = hints != null && hints.containsKey(DecodeHintType.TRY_HARDER);
     int maxI = image.getHeight();
     int maxJ = image.getWidth();
@@ -472,10 +459,6 @@ public class FinderPatternFinder {
     if (confirmedCount < 3) {
       return false;
     }
-    // OK, we have at least 3 confirmed centers, but, it's possible that one is a "false positive"
-    // and that we need to keep looking. We detect this by asking if the estimated module sizes
-    // vary too much. We arbitrarily say that when the total deviation from average exceeds
-    // 5% of the total module size estimates, it's too much.
     float average = totalModuleSize / (float) max;
     float totalDeviation = 0.0f;
     for (FinderPattern pattern : possibleCenters) {

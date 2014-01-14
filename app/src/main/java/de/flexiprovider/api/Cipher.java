@@ -104,7 +104,7 @@ public abstract class Cipher extends javax.crypto.CipherSpi {
             return;
         }
 
-        java.security.spec.AlgorithmParameterSpec paramSpec = null;
+        java.security.spec.AlgorithmParameterSpec paramSpec;
         try {
             paramSpec = algParams.getParameterSpec(Registry
                     .getAlgParamSpecClass(algParams.getAlgorithm()));

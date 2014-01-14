@@ -377,9 +377,6 @@ public class FORK256 extends MessageDigest {
         a = tmp;
     }
 
-    /**
-     * F function
-     */
     private static int F(int x) {
         return x + (((x << 7) | (x >>> 25)) ^ ((x << 22) | (x >>> 10)));
     }

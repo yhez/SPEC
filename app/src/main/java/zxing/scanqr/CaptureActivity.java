@@ -16,10 +16,8 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import java.io.IOException;
-import java.util.Collection;
 
 import specular.systems.R;
-import zxing.BarcodeFormat;
 import zxing.Result;
 import zxing.scanqr.camera.CameraManager;
 
@@ -66,7 +64,6 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
     private boolean hasSurface;
-    private Collection<BarcodeFormat> decodeFormats;
     private String characterSet;
     private InactivityTimer inactivityTimer;
 

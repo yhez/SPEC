@@ -369,8 +369,7 @@ public class BDSAuthPath {
         }
     }
 
-    // TODO
-    public boolean equals(BDSAuthPath otherAuth) {
+    public boolean equals() {
         return true;
     }
 

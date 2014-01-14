@@ -218,38 +218,19 @@ public class GF2nONBElement extends GF2nElement {
         mPol = new long[mLength];
         assign(gf2n.getElement());
     }
-
-    /**
-     * Create a new GF2nONBElement by cloning this GF2nPolynomialElement.
-     *
-     * @return a copy of this element
-     */
     public Object clone() {
         return new GF2nONBElement(this);
     }
 
-    /**
-     * Create the zero element.
-     *
-     * @param gf2n the finite field
-     * @return the zero element in the given finite field
-     */
+
     public static GF2nONBElement ZERO(GF2nONBField gf2n) {
         long[] polynomial = new long[gf2n.getONBLength()];
         return new GF2nONBElement(gf2n, polynomial);
     }
 
-    /**
-     * Create the one element.
-     *
-     * @param gf2n the finite field
-     * @return the one element in the given finite field
-     */
     public static GF2nONBElement ONE(GF2nONBField gf2n) {
         int mLength = gf2n.getONBLength();
         long[] polynomial = new long[mLength];
-
-        // fill mDegree coefficients with one's
         for (int i = 0; i < mLength - 1; i++) {
             polynomial[i] = 0xffffffffffffffffL;
         }
@@ -258,54 +239,25 @@ public class GF2nONBElement extends GF2nElement {
         return new GF2nONBElement(gf2n, polynomial);
     }
 
-    // /////////////////////////////////////////////////////////////////////
-    // assignments
-    // /////////////////////////////////////////////////////////////////////
-
-    /**
-     * assigns to this element the zero element
-     */
     void assignZero() {
         mPol = new long[mLength];
     }
 
-    /**
-     * assigns to this element the one element
-     */
     void assignOne() {
-        // fill mDegree coefficients with one's
         for (int i = 0; i < mLength - 1; i++) {
             mPol[i] = 0xffffffffffffffffL;
         }
         mPol[mLength - 1] = mMaxmask[mBit - 1];
     }
 
-    /**
-     * assigns to this element the value <tt>val</tt>.
-     *
-     * @param val the value represented by a FlexiBigInt
-     */
     private void assign(FlexiBigInt val) {
         assign(val.toByteArray());
     }
 
-    /**
-     * assigns to this element the value <tt>val</tt>.
-     *
-     * @param val the value in ONB representation
-     */
     private void assign(long[] val) {
         System.arraycopy(val, 0, mPol, 0, mLength);
     }
 
-    /**
-     * assigns to this element the value <tt>val</tt>. First: inverting the
-     * order of val into reversed[]. That means: reversed[0] = val[length - 1],
-     * ..., reversed[reversed.length - 1] = val[0]. Second: mPol[0] = sum{i = 0,
-     * ... 7} (val[i]<<(i*8)) .... mPol[1] = sum{i = 8, ... 15} (val[i]<<(i*8))
-     *
-     * @param val the value in ONB representation
-     */
     private void assign(byte[] val) {
         int j;
         mPol = new long[mLength];
@@ -314,55 +266,32 @@ public class GF2nONBElement extends GF2nElement {
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // comparison
-    // /////////////////////////////////////////////////////////////////
-
-    /**
-     * Checks whether this element is zero.
-     *
-     * @return <tt>true</tt> if <tt>this</tt> is the zero element
-     */
     public boolean isZero() {
 
         boolean result = true;
 
         for (int i = 0; i < mLength && result; i++) {
-            result = result && ((mPol[i] & 0xFFFFFFFFFFFFFFFFL) == 0);
+            result = result && ((mPol[i]) == 0);
         }
 
         return result;
     }
 
-    /**
-     * Checks whether this element is one.
-     *
-     * @return <tt>true</tt> if <tt>this</tt> is the one element
-     */
     public boolean isOne() {
 
         boolean result = true;
 
         for (int i = 0; i < mLength - 1 && result; i++) {
-            result = result
-                    && ((mPol[i] & 0xFFFFFFFFFFFFFFFFL) == 0xFFFFFFFFFFFFFFFFL);
+            result = ((mPol[i]) == 0xFFFFFFFFFFFFFFFFL);
         }
 
         if (result) {
-            result = result
-                    && ((mPol[mLength - 1] & mMaxmask[mBit - 1]) == mMaxmask[mBit - 1]);
+            result = ((mPol[(mLength - 1)] & mMaxmask[(mBit - 1)]) == mMaxmask[(mBit - 1)]);
         }
 
         return result;
     }
 
-    /**
-     * Compare this element with another object.
-     *
-     * @param other the other object
-     * @return <tt>true</tt> if the two objects are equal, <tt>false</tt>
-     * otherwise
-     */
     public boolean equals(Object other) {
         if (other == null || !(other instanceof GF2nONBElement)) {
             return false;
@@ -379,37 +308,13 @@ public class GF2nONBElement extends GF2nElement {
         return true;
     }
 
-    /**
-     * @return the hash code of this element
-     */
     public int hashCode() {
         return mPol.hashCode();
     }
-
-    // /////////////////////////////////////////////////////////////////////
-    // access
-    // /////////////////////////////////////////////////////////////////////
-
-    /**
-     * Returns whether the highest bit of the bit representation is set
-     *
-     * @return true, if the highest bit of mPol is set, false, otherwise
-     */
     public boolean testRightmostBit() {
-        // due to the reverse bit order (compared to 1363) this method returns
-        // the value of the leftmost bit
         return (mPol[mLength - 1] & mBitmask[mBit - 1]) != 0L;
     }
 
-    /**
-     * Checks whether the indexed bit of the bit representation is set. Warning:
-     * GF2nONBElement currently stores its bits in reverse order (compared to
-     * 1363) !!!
-     *
-     * @param index the index of the bit to test
-     * @return <tt>true</tt> if the indexed bit of mPol is set, <tt>false</tt>
-     * otherwise.
-     */
     boolean testBit(int index) {
         if (index < 0 || index > mDegree) {
             return false;
@@ -418,9 +323,7 @@ public class GF2nONBElement extends GF2nElement {
         return test != 0x0L;
     }
 
-    /**
-     * @return this element in its ONB representation
-     */
+
     private long[] getElement() {
 
         long[] result = new long[mPol.length];
@@ -429,12 +332,6 @@ public class GF2nONBElement extends GF2nElement {
         return result;
     }
 
-    /**
-     * Returns the ONB representation of this element. The Bit-Order is
-     * exchanged (according to 1363)!
-     *
-     * @return this element in its representation and reverse bit-order
-     */
     private long[] getElementReverseOrder() {
         long[] result = new long[mPol.length];
         for (int i = 0; i < mDegree; i++) {
@@ -445,37 +342,16 @@ public class GF2nONBElement extends GF2nElement {
         return result;
     }
 
-    /**
-     * Reverses the bit-order in this element(according to 1363). This is a
-     * hack!
-     */
     void reverseOrder() {
         mPol = getElementReverseOrder();
     }
 
-    // /////////////////////////////////////////////////////////////////////
-    // arithmetic
-    // /////////////////////////////////////////////////////////////////////
-
-    /**
-     * Compute the sum of this element and <tt>addend</tt>.
-     *
-     * @param addend the addend
-     * @return <tt>this + other</tt> (newly created)
-     * @throws DifferentFieldsException if the elements are of different fields.
-     */
     public GFElement add(GFElement addend) throws DifferentFieldsException {
         GF2nONBElement result = new GF2nONBElement(this);
         result.addToThis(addend);
         return result;
     }
 
-    /**
-     * Compute <tt>this + addend</tt> (overwrite <tt>this</tt>).
-     *
-     * @param addend the addend
-     * @throws DifferentFieldsException if the elements are of different fields.
-     */
     public void addToThis(GFElement addend) throws DifferentFieldsException {
         if (!(addend instanceof GF2nONBElement)) {
             throw new DifferentFieldsException();
@@ -489,43 +365,26 @@ public class GF2nONBElement extends GF2nElement {
         }
     }
 
-    /**
-     * returns <tt>this</tt> element + 1.
-     *
-     * @return <tt>this</tt> + 1
-     */
+
     public GF2nElement increase() {
         GF2nONBElement result = new GF2nONBElement(this);
         result.increaseThis();
         return result;
     }
 
-    /**
-     * increases <tt>this</tt> element.
-     */
+
     public void increaseThis() {
         addToThis(ONE((GF2nONBField) mField));
     }
 
-    /**
-     * Compute the product of this element and <tt>factor</tt>.
-     *
-     * @param factor the factor
-     * @return <tt>this * factor</tt> (newly created)
-     * @throws DifferentFieldsException if the elements are of different fields.
-     */
+
     public GFElement multiply(GFElement factor) throws DifferentFieldsException {
         GF2nONBElement result = new GF2nONBElement(this);
         result.multiplyThisBy(factor);
         return result;
     }
 
-    /**
-     * Compute <tt>this * factor</tt> (overwrite <tt>this</tt>).
-     *
-     * @param factor the factor
-     * @throws DifferentFieldsException if the elements are of different fields.
-     */
+
     public void multiplyThisBy(GFElement factor)
             throws DifferentFieldsException {
 
@@ -557,31 +416,18 @@ public class GF2nONBElement extends GF2nElement {
 
             boolean old, now;
 
-            // the product c of a and b (a*b = c) is calculated in mDegree
-            // cicles
-            // in every cicle one coefficient of c is calculated and stored
-            // k indicates the coefficient
-            //
             for (int k = 0; k < mDegree; k++) {
 
                 s = 0;
 
                 for (int i = 0; i < mDegree; i++) {
 
-                    // fielda = i / MAXLONG
-                    //
                     fielda = mIBY64[i];
 
-                    // bita = i % MAXLONG
-                    //
                     bita = i & (MAXLONG - 1);
 
-                    // fieldb = m[i][0] / MAXLONG
-                    //
                     fieldb = mIBY64[m[i][0]];
 
-                    // bitb = m[i][0] % MAXLONG
-                    //
                     bitb = m[i][0] & (MAXLONG - 1);
 
                     if ((a[fielda] & mBitmask[bita]) != 0) {
@@ -592,12 +438,8 @@ public class GF2nONBElement extends GF2nElement {
 
                         if (m[i][1] != -1) {
 
-                            // fieldb = m[i][1] / MAXLONG
-                            //
                             fieldb = mIBY64[m[i][1]];
 
-                            // bitb = m[i][1] % MAXLONG
-                            //
                             bitb = m[i][1] & (MAXLONG - 1);
 
                             if ((b[fieldb] & mBitmask[bitb]) != 0) {
@@ -614,13 +456,9 @@ public class GF2nONBElement extends GF2nElement {
                     c[fielda] ^= mBitmask[bita];
                 }
 
-                // Circular shift of x and y one bit to the right,
-                // respectively.
 
                 if (mLength > 1) {
 
-                    // Shift x.
-                    //
                     old = (a[degf] & 1) == 1;
 
                     for (int i = degf - 1; i >= 0; i--) {
@@ -681,20 +519,12 @@ public class GF2nONBElement extends GF2nElement {
         }
     }
 
-    /**
-     * returns <tt>this</tt> element to the power of 2.
-     *
-     * @return <tt>this</tt><sup>2</sup>
-     */
     public GF2nElement square() {
         GF2nONBElement result = new GF2nONBElement(this);
         result.squareThis();
         return result;
     }
 
-    /**
-     * squares <tt>this</tt> element.
-     */
     public void squareThis() {
 
         long[] pol = getElement();
@@ -702,8 +532,6 @@ public class GF2nONBElement extends GF2nElement {
         int f = mLength - 1;
         int b = mBit - 1;
 
-        // Shift the coefficients one bit to the left.
-        //
         long TWOTOMAXLONGM1 = mBitmask[MAXLONG - 1];
         boolean old, now;
 
@@ -728,9 +556,6 @@ public class GF2nONBElement extends GF2nElement {
         if (old) {
             pol[f] ^= 1;
         }
-
-        // Set the bit with index mDegree to zero.
-        //
         if (now) {
             pol[f] ^= mBitmask[b + 1];
         }
@@ -738,12 +563,6 @@ public class GF2nONBElement extends GF2nElement {
         assign(pol);
     }
 
-    /**
-     * Compute the multiplicative inverse of this element.
-     *
-     * @return <tt>this<sup>-1</sup></tt> (newly created)
-     * @throws ArithmeticException if <tt>this</tt> is the zero element.
-     */
     public GFElement invert() throws ArithmeticException {
         GF2nONBElement result = new GF2nONBElement(this);
         result.invertThis();
@@ -895,7 +714,7 @@ public class GF2nONBElement extends GF2nElement {
 
         long[] p = new long[mLength];
         long z = 0L;
-        int j = 1;
+        int j;
         for (int i = 0; i < mLength - 1; i++) {
 
             for (j = 1; j < MAXLONG; j++) {

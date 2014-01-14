@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.api;
 
 import java.lang.reflect.Method;
@@ -25,86 +17,25 @@ import de.flexiprovider.common.mode.ModeParameterSpec;
 import de.flexiprovider.common.mode.OFB;
 import de.flexiprovider.common.util.JavaSecureRandomWrapper;
 
-/**
- * The BlockCipher class extends CipherSpi and handles the creation of
- * PaddingScheme, BlockCipher and Mode. An instance of this class will be
- * created by the Cipher.getInstance(String)-mechanism of the Cipher class.
- * <p/>
- * BlockCipher ensures that a Mode and a PaddingsScheme are created, even if the
- * user has set no preferences. For this to work, BlockCipher requires version
- * 1.3 of the mode class that can handle a getInstance()-call without arguments
- * to return a default Mode or Padding.
- * <p/>
- * BlockCipher will acknowledge only <b>one</b> call of engineSetMode() and
- * engineSetPadding() to ensure that these settings aren't changed while
- * encrypting.
- *
- * @author Christoph Sesterhenn, Christoph Ender
- * @author Ralf-Philipp Weinmann
- * @author Martin D�ring, Johannes M�ller
- */
+
 public abstract class BlockCipher extends Cipher {
 
-    /**
-     * The reference to the mode class.
-     */
+
     private Mode mode;
 
-    /**
-     * The reference to the padding scheme.
-     */
     private PaddingScheme paddingScheme;
 
-    /**
-     * AlgorithmParameterSpec
-     */
     private AlgorithmParameterSpec paramSpec;
 
-    /**
-     * This buffer holds the outsize left by an update operation
-     */
+
     private byte[] buffer = null;
 
-    /**
-     * the block size of the mode
-     */
     private int modeBlockSize;
 
-    /**
-     * Used to check if an initialization method has been called.
-     */
     private boolean initialized = false;
 
-    /**
-     * the source of randomness, if necessary
-     */
     protected SecureRandom random;
 
-    // ****************************************************
-    // JCA adapter methods
-    // ****************************************************
-
-    /**
-     * Initialize this cipher object with proper key and algorithm parameters,
-     * and some random seed. Before a cipher object is ready for data
-     * processing, it has to be initialized according to the desired
-     * cryptographic operation, which is specified by the opmode parameter
-     * (either ENCRYPT_MODE or DECCRYPT_MODE). e.g.
-     * cipher_obj.init(Cipher.ENCRYPT_MODE, key, alg_params, random_seed); The
-     * Cipher init will call the proper CipherSpi engineInit method. Note: If
-     * the Mode needs an initialization vector, a try to retrieve it from the
-     * AlgorithmParametersSpec is made.
-     *
-     * @param opmode    the operation mode for which this cipher is used
-     *                  (ENCRYPT_MODE or DECRYPT_MODE)
-     * @param key       the key
-     * @param paramSpec the algorithm parameters
-     * @param javaRand  the random seed
-     * @throws java.security.InvalidKeyException                if the key is inappropriate for initializing this block
-     *                                                          cipher.
-     * @throws java.security.InvalidAlgorithmParameterException if the parameters are inappropriate for initializing this
-     *                                                          block cipher.
-     */
     protected final void engineInit(int opmode, java.security.Key key,
                                     java.security.spec.AlgorithmParameterSpec paramSpec,
                                     java.security.SecureRandom javaRand)
@@ -125,10 +56,6 @@ public abstract class BlockCipher extends Cipher {
         } else if (paramSpec instanceof javax.crypto.spec.IvParameterSpec) {
             modeParams = new ModeParameterSpec(
                     (javax.crypto.spec.IvParameterSpec) paramSpec);
-            cipherParams = null;
-
-        } else if (paramSpec instanceof ModeParameterSpec) {
-            modeParams = (ModeParameterSpec) paramSpec;
             cipherParams = null;
 
         } else {
@@ -344,77 +271,22 @@ public abstract class BlockCipher extends Cipher {
             throws InvalidKeyException, InvalidParameterException {
 
         try {
-            initEncrypt(key, (ModeParameterSpec) null,
-                    (AlgorithmParameterSpec) null, random);
+            initEncrypt(key, null,
+                    null, random);
         } catch (InvalidAlgorithmParameterException e) {
             throw new InvalidParameterException(
                     "This cipher needs algorithm parameters for initialization (cannot be null).");
         }
     }
 
-    /**
-     * Initialize this cipher with a key, a set of algorithm parameters, and a
-     * source of randomness for encryption.
-     * <p/>
-     * If this cipher requires any algorithm parameters and paramSpec is null,
-     * the underlying cipher implementation is supposed to generate the required
-     * parameters itself (using provider-specific default or random values) if
-     * it is being initialized for encryption, and raise an
-     * InvalidAlgorithmParameterException if it is being initialized for
-     * decryption. The generated parameters can be retrieved using
-     * engineGetParameters or engineGetIV (if the parameter is an IV).
-     * <p/>
-     * If this cipher (including its underlying feedback or padding scheme)
-     * requires any random bytes (e.g., for parameter generation), it will get
-     * them from random.
-     * <p/>
-     * Note that when a {@link de.flexiprovider.api.BlockCipher} object is initialized, it loses all
-     * previously-acquired state. In other words, initializing a Cipher is
-     * equivalent to creating a new instance of that Cipher and initializing it.
-     *
-     * @param key          the encryption key
-     * @param cipherParams the cipher parameters
-     * @param random       the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the given key is inappropriate for initializing this
-     *                                                                            block cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are inappropriate for initializing this
-     *                                                                            block cipher.
-     */
+
     public final void initEncrypt(Key key, AlgorithmParameterSpec cipherParams,
                                   SecureRandom random) throws InvalidKeyException,
             InvalidAlgorithmParameterException {
         initEncrypt(key, null, cipherParams, random);
     }
 
-    /**
-     * Initialize this cipher with a key, a set of algorithm parameters, and a
-     * source of randomness for encryption.
-     * <p/>
-     * If this cipher requires any algorithm parameters and paramSpec is null,
-     * the underlying cipher implementation is supposed to generate the required
-     * parameters itself (using provider-specific default or random values) if
-     * it is being initialized for encryption, and raise an
-     * InvalidAlgorithmParameterException if it is being initialized for
-     * decryption. The generated parameters can be retrieved using
-     * engineGetParameters or engineGetIV (if the parameter is an IV).
-     * <p/>
-     * If this cipher (including its underlying feedback or padding scheme)
-     * requires any random bytes (e.g., for parameter generation), it will get
-     * them from random.
-     * <p/>
-     * Note that when a {@link de.flexiprovider.api.BlockCipher} object is initialized, it loses all
-     * previously-acquired state. In other words, initializing a Cipher is
-     * equivalent to creating a new instance of that Cipher and initializing it.
-     *
-     * @param key          the encryption key
-     * @param modeParams   the mode parameters
-     * @param cipherParams the cipher parameters
-     * @param random       the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the given key is inappropriate for initializing this
-     *                                                                            block cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are inappropriate for initializing this
-     *                                                                            block cipher.
-     */
+
     public final void initEncrypt(Key key, ModeParameterSpec modeParams,
                                   AlgorithmParameterSpec cipherParams, SecureRandom random)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
@@ -437,36 +309,11 @@ public abstract class BlockCipher extends Cipher {
         initialized = true;
     }
 
-    /**
-     * Initialize this cipher with a key and a source of randomness for
-     * decryption.
-     * <p/>
-     * If this cipher requires any algorithm parameters that cannot be derived
-     * from the given key, the underlying cipher implementation is supposed to
-     * generate the required parameters itself (using provider-specific default
-     * or random values) if it is being initialized for encryption, and raise an
-     * InvalidKeyException if it is being initialized for decryption. The
-     * generated parameters can be retrieved using engineGetParameters or
-     * engineGetIV (if the parameter is an IV).
-     * <p/>
-     * If this cipher (including its underlying feedback or padding scheme)
-     * requires any random bytes (e.g., for parameter generation), it will get
-     * them from random.
-     * <p/>
-     * Note that when a {@link de.flexiprovider.api.BlockCipher} object is initialized, it loses all
-     * previously-acquired state. In other words, initializing a Cipher is
-     * equivalent to creating a new instance of that Cipher and initializing it
-     *
-     * @param key the encryption key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException       if the given key is inappropriate for initializing this
-     *                                                                   cipher
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterException if the parameters are
-     */
     public final void initDecrypt(Key key) throws InvalidKeyException,
             InvalidParameterException {
         try {
-            initDecrypt(key, (ModeParameterSpec) null,
-                    (AlgorithmParameterSpec) null);
+            initDecrypt(key, null,
+                    null);
         } catch (InvalidAlgorithmParameterException e) {
             throw new InvalidParameterException(
                     "This cipher needs algorithm parameters for initialization (cannot be null).");
@@ -685,7 +532,6 @@ public abstract class BlockCipher extends Cipher {
         if (opMode == ENCRYPT_MODE) {
             int padLen = paddingScheme.padLength(bufLen);
             if (padLen == 0) {
-                // FIXME: also need this for CFB!
                 if (!this.mode.getClass().equals(OFB.class))
                     return update;
             }
@@ -696,7 +542,6 @@ public abstract class BlockCipher extends Cipher {
             mode.nextChunkEncrypt(output, updLen, output, updLen);
         } else if (opMode == DECRYPT_MODE) {
             // if (bufLen != modeBlockSize) {
-            // FIXME: also need this for CFB!
             if (bufLen != modeBlockSize && !this.mode.getClass().equals(OFB.class)) {
                 throw new IllegalBlockSizeException(
                         "ciphertext length is not a multiple of block size");

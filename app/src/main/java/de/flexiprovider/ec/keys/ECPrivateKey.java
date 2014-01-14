@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.ec.keys;
 
 import codec.asn1.ASN1Integer;
@@ -21,37 +12,14 @@ import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.ec.parameters.CurveParams;
 import de.flexiprovider.ec.parameters.ECParameters;
 
-/**
- * The interface to an EC <i>private key</i>. The private key is an integer
- * <i>s</i> in the range [1, r - 1], where <i>r</i> is a prime and part of the
- * DomainParameters (see {@link CurveParams}).
- *
- * @author Birgit Henhapl
- * @author Michele Boivin
- * @see de.flexiprovider.ec.keys.ECPublicKey
- */
+
 public class ECPrivateKey extends PrivateKey {
 
     // the private key s, 1 < s < r.
     private FlexiBigInt mS;
 
-    // the EC domain parameters
     private CurveParams mParams;
 
-    /**
-     * Inner class providing the ECDSA ASN.1 private key structure.
-     * <p/>
-     * The ASN.1 definition of the key structure is
-     * <p/>
-     * <pre>
-     *  ASN1ECPrivateKey ::= SEQUENCE {
-     *   version        INTEGER,              -- this version is 1
-     *   privateKey     OCTET STRING,
-     *   parameters [0] Parameters OPTIONAL,
-     *   publicKey  [1] BITSTRING OPTIONAL
-     * }
-     * </pre>
-     */
     private static class ECASN1PrivateKey extends ASN1Sequence {
 
         private ASN1Integer version;
@@ -70,74 +38,31 @@ public class ECPrivateKey extends PrivateKey {
             return privKey;
         }
     }
-
-    /**
-     * Generate a new ECPrivateKey with the specified parameters.
-     *
-     * @param s      the FlexiBigInt that represents the private key
-     * @param params the parameters
-     */
     protected ECPrivateKey(FlexiBigInt s, CurveParams params) {
         mS = s;
         mParams = params;
     }
 
-    /**
-     * Construct an ECPrivateKey out of the given key specification.
-     *
-     * @param keySpec the key specification
-     */
+
     protected ECPrivateKey(ECPrivateKeySpec keySpec) {
         this(keySpec.getS(), keySpec.getParams());
     }
 
-    /**
-     * @return the private key s
-     */
+
     public FlexiBigInt getS() {
         return mS;
     }
 
-    /**
-     * @return the name of the algorithm
-     */
     public String getAlgorithm() {
         return "EC";
     }
-
-    /**
-     * This method returns this private key s with its corresponding
-     * ECParameterSpec as String. The format is:<br>
-     * s = ...<br>
-     * q = ...<br>
-     * a = ...<br>
-     * b = ...<br>
-     * G = (x<sub>G</sub>, y<sub>G</sub>)<br>
-     * r = ...<br>
-     * k = ...<br>
-     *
-     * @return the private key and its corresponding ecparameters as String
-     * @see CurveParams
-     */
     public String toString() {
         return "s = " + mS.toString(16) + "\n" + mParams.toString();
     }
-
-    /**
-     * Returns the corresponding ecdomain parameters.
-     *
-     * @return the corresponding ecdomain parameters.
-     */
     public CurveParams getParams() {
         return mParams;
     }
 
-    /**
-     * Compare this private key with another object.
-     *
-     * @param obj another object
-     * @return the result of the comparison
-     */
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof ECPrivateKey)) {
             return false;
@@ -162,10 +87,6 @@ public class ECPrivateKey extends PrivateKey {
         return new ASN1ObjectIdentifier(ECKeyFactory.OID);
     }
 
-    /**
-     * @return the algorithm parameters to encode in the SubjectPublicKeyInfo
-     * structure
-     */
     protected ASN1Type getAlgParams() {
         // get the OID of the parameters
         ASN1Type algParams = mParams.getOID();
@@ -185,14 +106,10 @@ public class ECPrivateKey extends PrivateKey {
         return algParams;
     }
 
-    /**
-     * @return the keyData to encode in the SubjectPublicKeyInfo structure
-     */
     protected byte[] getKeyData() {
         byte[] keyBytes = mS.toByteArray();
         ECASN1PrivateKey keyData = new ECASN1PrivateKey(1, new ASN1OctetString(
                 keyBytes));
         return ASN1Tools.derEncode(keyData);
     }
-
 }

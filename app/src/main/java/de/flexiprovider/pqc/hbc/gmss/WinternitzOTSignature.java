@@ -43,11 +43,6 @@ public class WinternitzOTSignature {
     private int w;
 
     /**
-     * The source of randomness for OTS private key generation
-     */
-    private GMSSRandom gmssRandom;
-
-    /**
      * Sizes of the message and the checksum, both
      */
     private int messagesize, checksumsize;
@@ -75,7 +70,10 @@ public class WinternitzOTSignature {
                     + name[1]);
         }
 
-        gmssRandom = new GMSSRandom(messDigestOTS);
+        /*
+      The source of randomness for OTS private key generation
+     */
+        GMSSRandom gmssRandom = new GMSSRandom(messDigestOTS);
 
         // calulate keysize for private and public key and also the help
         // array
@@ -123,7 +121,7 @@ public class WinternitzOTSignature {
     public byte[] getPublicKey() {
         byte[] helppubKey = new byte[keysize * mdsize];
 
-        byte[] help = new byte[mdsize];
+        byte[] help;
         int two_power_t = 1 << w;
 
         for (int i = 0; i < keysize; i++) {
@@ -148,10 +146,10 @@ public class WinternitzOTSignature {
     public byte[] getSignature(byte[] message) throws SignatureException {
         byte[] sign = new byte[keysize * mdsize];
         // byte [] message; // message m as input
-        byte[] hash = new byte[mdsize]; // hash of message m
+        byte[] hash; // hash of message m
         int counter = 0;
         int c = 0;
-        int test = 0;
+        int test;
         // create hash of message m
         messDigestOTS.update(message);
         hash = messDigestOTS.digest();

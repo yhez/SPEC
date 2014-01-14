@@ -218,7 +218,7 @@ public final class ByteUtils {
      */
     public static String toHexString(byte[] input, String prefix,
                                      String seperator) {
-        String result = new String(prefix);
+        String result = prefix;
         for (int i = 0; i < input.length; i++) {
             result += HEX_CHARS[(input[i] >>> 4) & 0x0f];
             result += HEX_CHARS[(input[i]) & 0x0f];
@@ -268,14 +268,6 @@ public final class ByteUtils {
         return out;
     }
 
-    /**
-     * Concatenate two byte arrays. No null checks are performed.
-     *
-     * @param x1 the first array
-     * @param x2 the second array
-     * @return (x2||x1) (little-endian order, i.e. x1 is at lower memory
-     * addresses)
-     */
     public static byte[] concatenate(byte[] x1, byte[] x2) {
         byte[] result = new byte[x1.length + x2.length];
 
@@ -338,33 +330,6 @@ public final class ByteUtils {
     public static byte[] subArray(byte[] input, int start, int end) {
         byte[] result = new byte[end - start];
         System.arraycopy(input, start, result, 0, end - start);
-        return result;
-    }
-
-    /**
-     * Generate a subarray of a given byte array.
-     *
-     * @param input the input byte array
-     * @param start the start index
-     * @return a subarray of <tt>input</tt>, ranging from <tt>start</tt> to
-     * the end of the array
-     */
-    public static byte[] subArray(byte[] input, int start) {
-        return subArray(input, start, input.length);
-    }
-
-    /**
-     * Rewrite a byte array as a char array
-     *
-     * @param input -
-     *              the byte array
-     * @return char array
-     */
-    public static char[] toCharArray(byte[] input) {
-        char[] result = new char[input.length];
-        for (int i = 0; i < input.length; i++) {
-            result[i] = (char) input[i];
-        }
         return result;
     }
 

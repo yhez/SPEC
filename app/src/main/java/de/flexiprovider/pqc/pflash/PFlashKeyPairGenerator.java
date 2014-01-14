@@ -29,7 +29,7 @@ public class PFlashKeyPairGenerator extends KeyPairGenerator {
     // dimension of K^n
     private int n;
 
-    private int alpha, r, s;
+    private int r;
 
     // the source of randomness
     private SecureRandom srandom;
@@ -37,12 +37,6 @@ public class PFlashKeyPairGenerator extends KeyPairGenerator {
     // flag indicating whether the key pair generator has been initialized
     private boolean initialized = false;
 
-    /**
-     * Initialize the key pair generator. (not supported)
-     *
-     * @param keysize
-     * @param srandom
-     */
     public void initialize(int keysize, SecureRandom srandom) {
     }
 
@@ -65,9 +59,7 @@ public class PFlashKeyPairGenerator extends KeyPairGenerator {
         field = pflashParamSpec.getField();
         m = field.getDegree();
         n = pflashParamSpec.getN();
-        alpha = pflashParamSpec.getAlpha();
         r = pflashParamSpec.getR();
-        s = pflashParamSpec.getS();
 
         initialized = true;
     }

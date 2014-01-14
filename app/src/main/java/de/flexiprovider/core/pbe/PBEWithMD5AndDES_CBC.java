@@ -42,7 +42,6 @@ public class PBEWithMD5AndDES_CBC extends PBES1 {
      */
     public static final String OID = "1.2.840.113549.1.5.3";
 
-    // SecretKeyFactory for the tranformation DESKeySpec -> DESKey
     private SecretKeyFactory desKeyFactory;
 
     /**
@@ -146,7 +145,6 @@ public class PBEWithMD5AndDES_CBC extends PBES1 {
         // generate a new DESede key spec
         DESedeKeySpec desKeySpec = new DESedeKeySpec(desBytes);
 
-        // convert the DESedeKeySpec into a DESKey
         SecretKey desKey;
         try {
             desKey = desKeyFactory.generateSecret(desKeySpec);
@@ -159,7 +157,7 @@ public class PBEWithMD5AndDES_CBC extends PBES1 {
         ModeParameterSpec modeParams = new ModeParameterSpec(keyBytes, 8, 8);
 
         // initialize the DESede cipher
-        cipher.initEncrypt(desKey, modeParams, (AlgorithmParameterSpec) null,
+        cipher.initEncrypt(desKey, modeParams, null,
                 random);
     }
 
@@ -235,7 +233,7 @@ public class PBEWithMD5AndDES_CBC extends PBES1 {
         ModeParameterSpec modeParams = new ModeParameterSpec(keyBytes, 8, 8);
 
         // initialize the DESede cipher
-        cipher.initDecrypt(desKey, modeParams, (AlgorithmParameterSpec) null);
+        cipher.initDecrypt(desKey, modeParams, null);
     }
 
 }

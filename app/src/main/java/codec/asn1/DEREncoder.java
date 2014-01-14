@@ -12,15 +12,13 @@ public class DEREncoder extends AbstractEncoder {
     private int[] stack_;
     private int sp_;
 
-    private boolean strict = false;
-
 
     public DEREncoder(OutputStream out) {
         super(out);
     }
 
     public boolean isStrict() {
-        return this.strict;
+        return false;
     }
 
 

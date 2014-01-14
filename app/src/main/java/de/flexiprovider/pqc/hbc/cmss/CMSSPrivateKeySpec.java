@@ -27,16 +27,6 @@ public class CMSSPrivateKeySpec implements KeySpec {
 
     private byte[][][] masks;
 
-    /**
-     * @param oid            the OID of the algorithm
-     * @param indexMain      main tree index
-     * @param indexSub       subtree index
-     * @param heightOfTrees  height of trees
-     * @param seeds          seed for generate next OTSKey of Merkle tree and next
-     *                       Merkle tree
-     * @param auth           authentication paths
-     * @param subtreeRootSig the one-time signature of the root of the current subtree
-     */
     public CMSSPrivateKeySpec(String oid, int indexMain, int indexSub,
                               int heightOfTrees, byte[][] seeds, BDSAuthPath[] authPath,
                               int activeSubtree, byte[] subtreeRootSig,

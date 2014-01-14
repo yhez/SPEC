@@ -34,15 +34,10 @@ public class WinternitzPRFOTS implements OTS {
     // the verification key bytes
     private byte[] pubKeyBytes;
 
-    private boolean canComputeVerificationKeyFromSignature = true;
-
     // // the default bit security
     // private static final int DEFAULT_BIT_SECURITY = 80;
 
     private static final int NOT_SET = -1;
-
-    // the desired bit security
-    private int bitSecurity = NOT_SET;
 
     /**
      * Constructor.
@@ -54,17 +49,6 @@ public class WinternitzPRFOTS implements OTS {
         // this.bitSecurity = DEFAULT_BIT_SECURITY;
     }
 
-    /**
-     * Constructor.
-     *
-     * @param w           the Winternitz parameter
-     * @param bitSecurity the desired bit security
-     */
-    public WinternitzPRFOTS(int w, int bitSecurity) {
-        this.w = w;
-        this.bitSecurity = bitSecurity;
-    }
-
     /*
      * (non-Javadoc)
      *
@@ -72,7 +56,7 @@ public class WinternitzPRFOTS implements OTS {
      * de.flexiprovider.pqc.hbc.ots.OTS#canComputeVerificationKeyFromSignature()
      */
     public boolean canComputeVerificationKeyFromSignature() {
-        return canComputeVerificationKeyFromSignature;
+        return true;
     }
 
     /**
@@ -82,6 +66,7 @@ public class WinternitzPRFOTS implements OTS {
      * @return the needed length of the message digest
      */
     private int getNeededMdSize() {
+        int bitSecurity = NOT_SET;
         if (bitSecurity == NOT_SET || bitSecurity >= getMaxBitSecurity()) {
             return externMdSize;
         }

@@ -10,29 +10,15 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.pqc.rainbow.util.ComputeInField;
 import de.flexiprovider.pqc.rainbow.util.GF2Field;
 
-/**
- * This class extends the KeyPairGenerator in the FlexiProvider_API. It is used
- * as a generator for the private and public key of the Rainbow Signature
- * Scheme.
- * <p/>
- * Detailed information about the key generation is to be found in the paper of
- * Jintai Ding, Dieter Schmidt: Rainbow, a New Multivariable Polynomial
- * Signature Scheme. ACNS 2005: 164-175 (http://dx.doi.org/10.1007/11496137_12)
- *
- * @author Patrick Neugebauer
- * @author Marius Senftleben
- * @author Tsvetoslava Vateva
- */
+
 public class RainbowKeyPairGenerator extends KeyPairGenerator {
 
     private boolean initialized = false;
     private SecureRandom sr;
     private RainbowParameterSpec rainbowParams;
 
-    // the OID string of the algorithm
     private String oid = "1.3.6.1.4.1.8301.3.1.3.5.3.2";
 
-    /* linear affine map L1: */
     private short[][] A1; // matrix of the lin. affine map L1(n-v1 x n-v1 matrix)
     private short[][] A1inv; // inverted A1
     private short[] b1; // translation element of the lin.affine map L1
@@ -52,12 +38,6 @@ public class RainbowKeyPairGenerator extends KeyPairGenerator {
     private short[][] pub_singular; // singular coefficients
     private short[] pub_scalar; // scalars
 
-    /**
-     * This function generates a Rainbow key pair, consisting of a
-     * {@link de.flexiprovider.pqc.rainbow.RainbowPublicKey} and a {@link de.flexiprovider.pqc.rainbow.RainbowPrivateKey}.
-     *
-     * @return the generated key pair
-     */
     public KeyPair genKeyPair() {
         RainbowPrivateKey privKey;
         RainbowPublicKey pubKey;
@@ -79,13 +59,6 @@ public class RainbowKeyPairGenerator extends KeyPairGenerator {
         return new KeyPair(pubKey, privKey);
     }
 
-    /**
-     * This function is used for initialization of the {@link de.flexiprovider.pqc.rainbow.RainbowKeyPairGenerator}
-     * making use of {@link RanbowParameterSpec}.
-     *
-     * @param params
-     * @param random source of randomness
-     */
     public void initialize(AlgorithmParameterSpec params, SecureRandom random)
             throws InvalidAlgorithmParameterException {
         /* params */
@@ -108,12 +81,6 @@ public class RainbowKeyPairGenerator extends KeyPairGenerator {
         this.initialized = true;
     }
 
-    /**
-     * This function initializes the key pair generator with the given key size.
-     *
-     * @param keySize
-     * @param random  the source of randomness
-     */
     public void initialize(int keysize, SecureRandom random)
             throws InvalidParameterException {
         RainbowParameterSpec rbParams = new RainbowParameterSpec();
@@ -254,12 +221,12 @@ public class RainbowKeyPairGenerator extends KeyPairGenerator {
         short[] coeff_eta;
 
         // Needed for counters;
-        int oils = 0;
-        int vins = 0;
+        int oils;
+        int vins;
         int crnt_row = 0; // current row (polynomial)
 
-        short vect_tmp[] = new short[vars]; // vector tmp;
-        short sclr_tmp = 0;
+        short vect_tmp[]; // vector tmp;
+        short sclr_tmp;
 
         // Composition of F and L2: Insert L2 = A2*x+b2 in F
         for (int l = 0; l < this.layers.length; l++) {
@@ -384,7 +351,7 @@ public class RainbowKeyPairGenerator extends KeyPairGenerator {
         int n = coeff_quadratic_to_compact[0].length;
         int entries = n * (n + 1) / 2;// the small gauss
         this.pub_quadratic = new short[polynomials][entries];
-        int offset = 0;
+        int offset;
 
         for (int p = 0; p < polynomials; p++) {
             offset = 0;

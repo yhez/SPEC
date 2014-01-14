@@ -1,5 +1,7 @@
 package zxing.qrcode.decoder;
 
+import java.util.Map;
+
 import zxing.ChecksumException;
 import zxing.DecodeHintType;
 import zxing.FormatException;
@@ -8,8 +10,6 @@ import zxing.common.DecoderResult;
 import zxing.common.reedsolomon.GenericGF;
 import zxing.common.reedsolomon.ReedSolomonDecoder;
 import zxing.common.reedsolomon.ReedSolomonException;
-
-import java.util.Map;
 
 /**
  * <p>The main class which implements QR Code decoding -- as opposed to locating and extracting
@@ -69,15 +69,11 @@ public final class Decoder {
 
     // Construct a parser and read version, error-correction level
     BitMatrixParser parser = new BitMatrixParser(bits);
-    FormatException fe = null;
-    ChecksumException ce = null;
-    try {
+      try {
       return decode(parser, hints);
-    } catch (FormatException e) {
-      fe = e;
-    } catch (ChecksumException e) {
-      ce = e;
-    }
+    } catch (FormatException ignored) {
+    } catch (ChecksumException ignored) {
+      }
 
       // Revert the bit matrix
       parser.remask();

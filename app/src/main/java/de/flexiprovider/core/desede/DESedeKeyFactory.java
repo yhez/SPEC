@@ -15,17 +15,7 @@ import de.flexiprovider.api.keys.KeySpec;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.keys.SecretKeySpec;
 
-/**
- * This class represents a factory for secret keys. This class is used to
- * convert DESede keys into a format usable by the FlexiProvider. Currently this
- * class can only convert from a KeySpec into a Key. The supported KeySpec class
- * is DESedeKeySpec.
- * <p/>
- * This class should not be instantiated directly, instead use the
- * java.security.KeyFactory interface.
- *
- * @author Norbert Trummel , Sylvain Franke
- */
+
 public class DESedeKeyFactory extends
         de.flexiprovider.core.desede.interfaces.DESedeKeyFactory {
 

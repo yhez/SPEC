@@ -397,8 +397,8 @@ public abstract class TwoTrackMac extends Mac {
         for (int i = 0; i < 14; i++) {
             x[i] = LittleEndianConversions.OS2IP(buffer, 4 * i);
         }
-        x[14] = (int) (len & 0xffffffff); // add length
-        x[15] = (int) ((len >>> 32) & 0xffffffff);
+        x[14] = (int) (len); // add length
+        x[15] = (int) ((len >>> 32));
         last_step = true;
         processBlock();
     }

@@ -30,15 +30,6 @@ public class CMSSParameterSpec implements AlgorithmParameterSpec {
     }
 
     /**
-     * Constructor. Sets <tt>seedSize = 20</tt>.
-     *
-     * @param heightOfTrees the height of the authentication trees
-     */
-    public CMSSParameterSpec(int heightOfTrees) {
-        this(heightOfTrees, 20);
-    }
-
-    /**
      * Constructor.
      *
      * @param heightOfTrees the height of the authentication trees

@@ -642,7 +642,7 @@ public final class Tiger extends MessageDigest {
             x[i] = LittleEndianConversions.OS2LIP(buffer, i << 3);
 
         }
-        x[x.length - 1] = len & 0xffffffffffffffffL; // add length
+        x[x.length - 1] = len; // add length
 
         processBlock();
     }

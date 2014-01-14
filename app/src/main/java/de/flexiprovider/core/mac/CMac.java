@@ -160,7 +160,7 @@ public class CMac extends Mac {
     protected CMac(BlockCipher blockCipher) {
         cipher = blockCipher;
         try {
-            keyExpansionCipher = (BlockCipher) blockCipher.getClass()
+            keyExpansionCipher = blockCipher.getClass()
                     .newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -268,18 +268,12 @@ public class CMac extends Mac {
 
         cipher.initEncrypt(key, params, sr);
         keyExpansionCipher.initEncrypt(key, params, sr);
-        keySchedule(key.getEncoded());
+        keySchedule();
         cipher1Input = new ByteArrayOutputStream();
         macLength = cipher.getBlockSize();
     }
 
-    /**
-     * This method implements the CMac Key expansion. The subkeys K1 and K2 are
-     * stored in the variables <TT>K1, K2</TT>.
-     *
-     * @param key - the byte array containing the key.
-     */
-    public void keySchedule(byte[] key) {
+    public void keySchedule() {
         blockSize = cipher.getBlockSize();
         int MSB = 0;
         int R = (blockSize == 8) ? R64 : R128;

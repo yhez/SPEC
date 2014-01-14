@@ -164,9 +164,6 @@ public abstract class LMOTSSignature extends Signature {
     /* messageDigest used to hash the message */
     private MessageDigest md;
 
-    /* message to be signed */
-    private byte[] message;
-
     private GFP32Polynomial msgPoly;
 
     /* the hash function */
@@ -252,13 +249,6 @@ public abstract class LMOTSSignature extends Signature {
 
     }
 
-    /**
-     * Initialize the signature algorithm for verifying a signature.
-     *
-     * @param pubKey the public key of the signer.
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the public key is not an instance of
-     *                                                             {@link de.flexiprovider.pqc.ots.lm.LMOTSPublicKey}.
-     */
     public void initVerify(PublicKey pubKey) throws InvalidKeyException {
         if (pubKey.getClass().equals(LMOTSPublicKey.class)) {
             this.pubKey = (LMOTSPublicKey) pubKey;
@@ -275,7 +265,7 @@ public abstract class LMOTSSignature extends Signature {
         }
 
         int[] poly = new int[b.length * 8];
-        String bitString = "";
+        String bitString;
         bitString = ByteUtils.toBinaryString(b);
         bitString = StringUtils.filterSpaces(bitString);
 
@@ -294,12 +284,6 @@ public abstract class LMOTSSignature extends Signature {
         // msgPoly.print();
     }
 
-    /**
-     * Initialize this signature engine with the specified parameter set
-     *
-     * @param params the parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException
-     */
     public void setParameters(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
 
@@ -332,13 +316,8 @@ public abstract class LMOTSSignature extends Signature {
 
     }
 
-    /**
-     * Sign a message.
-     *
-     * @return the signature.
-     */
     public byte[] sign() {
-        message = md.digest();
+        byte[] message = md.digest();
 
         msgPoly = parseToGFP(message);
         // msgPoly.print();
@@ -356,34 +335,16 @@ public abstract class LMOTSSignature extends Signature {
         return new GFPVectorSerial(result).getArrayRepresentation();
     }
 
-    /**
-     * Feed a message byte to the message digest.
-     *
-     * @param input the message byte
-     * @throws de.flexiprovider.api.exceptions.SignatureException
-     */
     public void update(byte input) {
         md.update(input);
     }
 
-    /**
-     * Feed an array of message bytes to the message digest.
-     *
-     * @param input the array of message bytes
-     * @param inOff index of message start
-     * @param inLen number of message bytes
-     */
+
     public void update(byte[] input, int inOff, int inLen) {
         md.update(input, inOff, inLen);
     }
 
-    /**
-     * Verifies the supplied Signature
-     *
-     * @param signature the Signature byte array
-     * @return True if the Signature is valid, false otherwise.
-     * @throws de.flexiprovider.api.exceptions.SignatureException if the Verification fails
-     */
+
     public boolean verify(byte[] signature) throws SignatureException {
         if (hashSignature(signature).equals(calcHashedSignature())) {
             Vector signatureVector = new GFPVectorSerial(signature)

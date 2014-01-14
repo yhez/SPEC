@@ -146,8 +146,8 @@ public abstract class MDFamilyDigest extends MessageDigest {
         }
 
         // add length
-        x[14] = (int) (len & 0xffffffff);
-        x[15] = (int) ((len >>> 32) & 0xffffffff);
+        x[14] = (int) (len);
+        x[15] = (int) ((len >>> 32));
 
         processBlock();
     }

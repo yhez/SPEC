@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.core.mersa;
 
 import de.flexiprovider.api.Registry;
@@ -17,20 +9,8 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.core.rsa.RSAPublicKey;
 
-/**
- * This class is used to generate key pairs for the multi-exponent RSA
- * algorithms. It can be initialized with an instance of
- * {@link MeRSAKeyGenParameterSpec} or with the bit length of the modulus
- * <tt>n</tt>. The default bit length of the modulus is 1024.
- *
- * @author Erik Dahmen
- * @author Paul Nguentcheu
- * @author Martin D�ring
- */
-public class MeRSAKeyPairGenerator extends KeyPairGenerator {
 
-    // the certainty that the generated numbers are prime
-    private final int CERTAINTY = 80;
+public class MeRSAKeyPairGenerator extends KeyPairGenerator {
 
     private static final FlexiBigInt TWO = FlexiBigInt.valueOf(2);
 
@@ -123,6 +103,7 @@ public class MeRSAKeyPairGenerator extends KeyPairGenerator {
 
         FlexiBigInt p, q, n;
         do {
+            int CERTAINTY = 80;
             p = new FlexiBigInt(pBitSize, CERTAINTY, random);
             do {
                 q = new FlexiBigInt(qBitSize, CERTAINTY, random);

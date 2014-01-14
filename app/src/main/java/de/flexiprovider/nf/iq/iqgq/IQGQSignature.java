@@ -21,20 +21,7 @@ import de.flexiprovider.common.math.quadraticfields.IQEncodingException;
 import de.flexiprovider.common.math.quadraticfields.QuadraticIdeal;
 import de.flexiprovider.common.util.ASN1Tools;
 
-/**
- * The <tt>IQGQSignature</tt> class implements core parts of the IQGQ
- * algorithm, namely the signature and the verification process.
- * <p/>
- * Signature is generated as follow
- * <p/>
- * The signature of the message M is S = (s, rho, lambda)
- * <p/>
- * <p/>
- * Verification of a given signature only succeeds if the following equation is
- * fulfilled:
- *
- * @author Ralf-P. Weinmann
- */
+
 public abstract class IQGQSignature extends Signature {
     private MessageDigest md;
 
@@ -42,7 +29,7 @@ public abstract class IQGQSignature extends Signature {
 
     private FlexiBigInt exponent;
 
-    private QuadraticIdeal theta, alpha;
+    private QuadraticIdeal alpha;
 
     // array of precomputed powers of theta used to speed up signing
     private QuadraticIdeal[] powersOfTheta = null;
@@ -132,11 +119,7 @@ public abstract class IQGQSignature extends Signature {
         }
     }
 
-    /**
-     * Constructor. Set the message digest.
-     *
-     * @param md the message digest
-     */
+
     protected IQGQSignature(MessageDigest md) {
         this.md = md;
     }
@@ -160,7 +143,7 @@ public abstract class IQGQSignature extends Signature {
 
         classGroup = new IQClassGroup(privKey.getParams().getDiscriminant(),
                 prng);
-        theta = privKey.getTheta();
+        QuadraticIdeal theta = privKey.getTheta();
         exponent = privKey.getExponent();
 
         // precompute powers of theta
@@ -168,13 +151,7 @@ public abstract class IQGQSignature extends Signature {
                 .getDigestLength() << 3) + 1);
     }
 
-    /**
-     * Initialized engine for verification process
-     *
-     * @param key public key to be used for verification
-     * @throws InvalidKeyException if the key is not an instance of {@link de.flexiprovider.nf.iq.iqgq.IQGQPublicKey}.
-     * @see #verify(byte [])
-     */
+
     public void initVerify(PublicKey key) throws InvalidKeyException {
         md.reset();
         if (!(key instanceof IQGQPublicKey)) {
@@ -196,34 +173,12 @@ public abstract class IQGQSignature extends Signature {
         md.update(b);
     }
 
-    /**
-     * Updates the data to be signed or verified, using the specified array of
-     * bytes, starting at the specified offset.
-     *
-     * @param b   the byte array
-     * @param off the offset to start from in the array of bytes
-     * @param len the number of bytes to use, starting at offset
-     */
+
     public void update(byte[] b, int off, int len) {
         md.update(b, off, len > 0 ? len : 0);
     }
 
-    /**
-     * Calculates the digest value for a given octet string
-     *
-     * @param m array containing the data to be hashed
-     * @return the digest value represented as an octet string
-     */
-    protected byte[] makeDigest(byte[] m) {
-        return md.digest(m);
-    }
 
-    /**
-     * Generates an ASN.1 encoded object representing the signature of the data
-     * bytes digested by the message digest algorithm thus far.
-     *
-     * @return signature of the data fed into the engine thus far
-     */
     public byte[] sign() {
         QuadraticIdeal sigma, tau, chi;
         FlexiBigInt l;

@@ -161,7 +161,7 @@ public final class PolynomialRingGF2 {
             p1 ^= q1 << (degree(p1) - degree(q1));
         }
 
-        int result = (int) (p1 & 0xffffffff);
+        int result = (int) (p1);
         while (degree(result) >= degree(q)) {
             result ^= q << (degree(result) - degree(q));
         }

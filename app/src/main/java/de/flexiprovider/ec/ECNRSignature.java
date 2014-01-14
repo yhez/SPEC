@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.ec;
 
 import java.io.IOException;
@@ -27,7 +18,6 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.common.math.ellipticcurves.PointGF2n;
-import de.flexiprovider.common.math.ellipticcurves.PointGFP;
 import de.flexiprovider.common.math.ellipticcurves.ScalarMult;
 import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.common.util.FlexiBigIntUtils;
@@ -36,25 +26,7 @@ import de.flexiprovider.ec.keys.ECPrivateKey;
 import de.flexiprovider.ec.keys.ECPublicKey;
 import de.flexiprovider.ec.parameters.CurveParams;
 
-/**
- * This Signature class is used to provide applications the functionality of the
- * digital signature algorithm ECNR. Digital signatures are used for
- * authentication and integrity assurance of digital data.
- * <p/>
- * A Signature object can be used to generate and verify digital signatures.
- * This specific signature ECNR is based on the discrete logarithm problem in a
- * group of points of an elliptic curve over a primefield <i>GF(q)</i>, where q
- * is the prime and GF is a common synonym for a galois field. For a description
- * of the signing and verifying procedure see the documentation of this <a href =
- * package-summary.html>package</a>.
- *
- * @author Birgit Henhapl
- * @author Oliver Seiler
- * @author Martin D�ring
- * @see de.flexiprovider.ec.keys.ECPublicKey
- * @see de.flexiprovider.ec.keys.ECPrivateKey
- * @see de.flexiprovider.ec.parameters.CurveParams
- */
+
 public class ECNRSignature extends Signature {
 
     private SecureRandom mSecureRandom;
@@ -82,22 +54,7 @@ public class ECNRSignature extends Signature {
     // bitlength of mR
     private int rLength;
 
-    private FlexiBigInt u = FlexiBigInt.ZERO;
 
-    private Point V;
-
-    /**
-     * Inner class providing the ECNR ASN.1 signature structure.
-     * <p/>
-     * The ASN.1 signature structure is defined as follows:
-     * <p/>
-     * <pre>
-     *  ECNRSignature ::= SEQUENCE{
-     *    r  INTEGER,
-     *    s  INTEGER
-     * }
-     * </pre>
-     */
     private static class ECNRASN1Signature extends ASN1Sequence {
 
         // the value r
@@ -122,39 +79,20 @@ public class ECNRSignature extends Signature {
             add(s);
         }
 
-        /**
-         * @return the value r
-         */
         public FlexiBigInt getR() {
             return ASN1Tools.getFlexiBigInt(r);
         }
 
-        /**
-         * @return the value s
-         */
         public FlexiBigInt getS() {
             return ASN1Tools.getFlexiBigInt(s);
         }
     }
 
-    /**
-     * Construct a blank ECNR object. It must be initialized before being usable
-     * for signing or verifying.
-     */
     public ECNRSignature() {
         md = new SHA1();
     }
 
-    /**
-     * Initializes this signature object with the specified private key and
-     * source of randomness for signing operations.
-     *
-     * @param privateKey the private key of the identity whose signature is going
-     *                   to be signed.
-     * @param random     the source of randomness
-     * @throws InvalidKeyException If <tt>privateKey</tt> is an invalid key (invalid
-     *                             encoding, wrong length, uninitialized, etc).
-     */
+
     public void initSign(PrivateKey privateKey, SecureRandom random)
             throws InvalidKeyException {
         if (!(privateKey instanceof ECPrivateKey)) {
@@ -176,15 +114,7 @@ public class ECNRSignature extends Signature {
         }
     }
 
-    /**
-     * Initializes this object for verification. If this method is called again
-     * with a different argument, it negates the effect of this call.
-     *
-     * @param publicKey the public key of the identity whose signature is going to
-     *                  be verified.
-     * @throws InvalidKeyException If <tt>publicKey</tt> is an invalid key (invalid
-     *                             encoding, wrong length, uninitialized, etc).
-     */
+
     public void initVerify(PublicKey publicKey) throws InvalidKeyException {
         if (!(publicKey instanceof ECPublicKey)) {
             throw new InvalidKeyException(
@@ -198,14 +128,7 @@ public class ECNRSignature extends Signature {
         md.reset();
     }
 
-    /**
-     * Initialize the signature with the specified parameters. The parameters
-     * have to be an instance of (a subtype of) {@link de.flexiprovider.ec.parameters.CurveParams}.
-     *
-     * @param params the parameters
-     * @throws InvalidParameterException if the given parameters are not an instance of (a subtype
-     *                                   of) {@link de.flexiprovider.ec.parameters.CurveParams}.
-     */
+
     public void setParameters(AlgorithmParameterSpec params)
             throws InvalidParameterException {
         if (!(params instanceof CurveParams)) {
@@ -214,11 +137,6 @@ public class ECNRSignature extends Signature {
         mParams = (CurveParams) params;
     }
 
-    /**
-     * Returns the signature bytes of all the data updated so far.
-     *
-     * @return the signature bytes of the signing operation's result.
-     */
     public byte[] sign() {
         byte[] hash = md.digest();
         FlexiBigInt f = new FlexiBigInt(1, hash);
@@ -234,6 +152,7 @@ public class ECNRSignature extends Signature {
         // generate a one-time key pair (u,V)
         // gcd(d, r) = 1
         // 1 < u < r -1 and gcd(u, r) = 1
+        FlexiBigInt u = FlexiBigInt.ZERO;
         do {
             u = new FlexiBigInt(rLength, mSecureRandom);
         } while ((u.compareTo(FlexiBigInt.ONE) < 0) || // u < 1
@@ -241,13 +160,13 @@ public class ECNRSignature extends Signature {
                 (u.gcd(mR).compareTo(FlexiBigInt.ONE) != 0)); // gcd(u, r) !=
         // 1
 
-        V = ScalarMult.eval_SquareMultiply(ScalarMult.determineNaf(u, 4),
+        Point v = ScalarMult.eval_SquareMultiply(ScalarMult.determineNaf(u, 4),
                 mOddPowers);
 
         if (mG instanceof PointGF2n) {
-            i = ((PointGF2n) V).getXAffin().toFlexiBigInt();
+            i = v.getXAffin().toFlexiBigInt();
         } else {
-            i = ((PointGFP) V).getXAffin().toFlexiBigInt();
+            i = v.getXAffin().toFlexiBigInt();
         }
 
         // c=i+f mod r
@@ -265,7 +184,7 @@ public class ECNRSignature extends Signature {
             // != 1
             // V=uG
             // V = mG.multiply(u);
-            V = ScalarMult.eval_SquareMultiply(ScalarMult.determineNaf(u, 4),
+            v = ScalarMult.eval_SquareMultiply(ScalarMult.determineNaf(u, 4),
                     mOddPowers);
             // c = x(v)
             // c = i+f mod r
@@ -354,9 +273,9 @@ public class ECNRSignature extends Signature {
         // i = xP
         FlexiBigInt i;
         if (P instanceof PointGF2n) {
-            i = ((PointGF2n) P).getXAffin().toFlexiBigInt();
+            i = P.getXAffin().toFlexiBigInt();
         } else {
-            i = ((PointGFP) P).getXAffin().toFlexiBigInt();
+            i = P.getXAffin().toFlexiBigInt();
         }
         // f = c-i mod (r)
         FlexiBigInt f = c.subtract(i).mod(mR);

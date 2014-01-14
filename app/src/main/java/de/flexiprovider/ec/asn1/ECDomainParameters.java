@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.ec.asn1;
 
 import codec.asn1.ASN1Integer;
@@ -15,28 +6,7 @@ import codec.asn1.ASN1Sequence;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.util.ASN1Tools;
 
-/**
- * This class represents an <tt>ECParameters</tt> ASN.1 structure as defined by
- * ANSi X9.62-1998.
- * <p/>
- * The ASN.1 definition of this structure is
- * <p/>
- * <pre>
- * ECParameters ::= SEQUENCE {
- *   version      INTEGER,
- *   fieldID      FieldID{{FieldTypes}},
- *   curve        Curve,
- *   base         ECPoint,
- *   order        INTEGER,
- *   cofactor     INTEGER OPTIONAL,
- * }
- *
- * ECPoint ::= OCTET STRING;
- * </pre>
- *
- * @author Michele Boivin
- * @author Martin Dring
- */
+
 public class ECDomainParameters extends ASN1Sequence {
 
     /**
@@ -59,16 +29,7 @@ public class ECDomainParameters extends ASN1Sequence {
         add(cofactor);
     }
 
-    /**
-     * Constructor with the optional cofactor.
-     *
-     * @param fieldId   defines the finite field over which the elliptic curve is
-     *                  defined
-     * @param curve     specifies the coefficients of the curve and an optional seed
-     * @param basePoint specifies the base point G on the elliptic curve
-     * @param order     specifies the order n of the base point
-     * @param cofactor  the integer <tt>h = #E(GF(q))/n</tt>
-     */
+
     public ECDomainParameters(FieldId fieldId, Curve curve,
                               ASN1OctetString basePoint, ASN1Integer order, ASN1Integer cofactor) {
         super(6);

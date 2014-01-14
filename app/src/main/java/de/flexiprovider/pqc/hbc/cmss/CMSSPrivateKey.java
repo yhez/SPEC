@@ -256,9 +256,9 @@ public class CMSSPrivateKey extends PrivateKey {
         result &= indexMain == otherKey.indexMain;
         result &= indexSub == otherKey.indexSub;
         result &= ByteUtils.equals(seeds, otherKey.seeds);
-        result &= authPath[0].equals(otherKey.authPath[0]);
-        result &= authPath[1].equals(otherKey.authPath[1]);
-        result &= authPath[2].equals(otherKey.authPath[2]);
+        result &= authPath[0].equals();
+        result &= authPath[1].equals();
+        result &= authPath[2].equals();
         result &= activeSubtree == otherKey.activeSubtree;
         result &= ByteUtils.equals(subtreeRootSig, otherKey.subtreeRootSig);
         result &= ByteUtils.equals(maintreeOTSVerificationKey,

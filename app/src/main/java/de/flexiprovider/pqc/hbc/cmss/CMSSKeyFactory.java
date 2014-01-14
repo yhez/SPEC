@@ -2,7 +2,6 @@ package de.flexiprovider.pqc.hbc.cmss;
 
 import codec.CorruptedCodeException;
 import codec.asn1.ASN1Integer;
-import codec.asn1.ASN1ObjectIdentifier;
 import codec.asn1.ASN1OctetString;
 import codec.asn1.ASN1Sequence;
 import codec.pkcs8.PrivateKeyInfo;
@@ -18,33 +17,12 @@ import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
-/**
- * This class transforms CMSS2 keys and CMSS2 key specifications into a form
- * that can be used with the FlexiPQCProvider.
- *
- * @author Elena Klintsevich
- * @see de.flexiprovider.pqc.hbc.cmss2.CMSSPrivateKey
- * @see de.flexiprovider.pqc.hbc.cmss2.CMSSPrivateKeySpec
- * @see de.flexiprovider.pqc.hbc.cmss2.CMSSPublicKey
- * @see de.flexiprovider.pqc.hbc.cmss2.CMSSPublicKeySpec
- * @see de.flexiprovider.api.keys.KeyFactory
- */
 public class CMSSKeyFactory extends KeyFactory {
 
-    /**
-     * The OID of CMSS2
-     */
+
     public static final String OID = "1.3.6.1.4.1.8301.3.1.3.2";
 
-    /**
-     * Converts, if possible, a key specification into a CMSSPublicKey.
-     * Currently, the following key specifications are supported:
-     * CMSSPublicKeySpec, X509EncodedKeySpec.
-     *
-     * @param keySpec the key specification
-     * @return a CMSS2 public key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     */
+
     public final PublicKey generatePublic(KeySpec keySpec)
             throws InvalidKeySpecException {
         if (keySpec instanceof CMSSPublicKeySpec) {
@@ -67,7 +45,7 @@ public class CMSSKeyFactory extends KeyFactory {
                 ASN1Sequence pubKey = (ASN1Sequence) spki.getDecodedRawKey();
 
                 // decode oidString
-                String oidString = ((ASN1ObjectIdentifier) pubKey.get(0))
+                String oidString = pubKey.get(0)
                         .toString();
 
                 // decode public key bytes
@@ -101,17 +79,6 @@ public class CMSSKeyFactory extends KeyFactory {
                 + keySpec + ".");
     }
 
-    /**
-     * Converts, if possible, a key specification into a CMSSPrivateKey.
-     * Currently the following key specs are supported: CMSSPrivateKeySpec.
-     *
-     * @param keySpec -
-     *                the key specification
-     * @return a CMSS2 private key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     * @see de.flexiprovider.pqc.hbc.cmss2.CMSSPrivateKey
-     * @see de.flexiprovider.pqc.hbc.cmss2.CMSSPrivateKeySpec
-     */
     public final PrivateKey generatePrivate(KeySpec keySpec)
             throws InvalidKeySpecException {
         if (keySpec instanceof CMSSPrivateKeySpec) {
@@ -135,7 +102,7 @@ public class CMSSKeyFactory extends KeyFactory {
                 ASN1Sequence privKey = (ASN1Sequence) pki.getDecodedRawKey();
 
                 // decode oidString
-                String oidString = ((ASN1ObjectIdentifier) privKey.get(0))
+                String oidString = privKey.get(0)
                         .toString();
 
                 // decode <indexMain>
@@ -204,23 +171,6 @@ public class CMSSKeyFactory extends KeyFactory {
                 + keySpec + ".");
     }
 
-    /**
-     * Converts a given key into a key specification, if possible. Currently the
-     * following specs are supported:
-     * <ul>
-     * <li> for CMSSPublicKey: X509EncodedKeySpec, CMSSPublicKeySpec
-     * <li> for CMSSPrivateKey: PKCS8EncodedKeySpec, CMSSPrivateKeySpec
-     * </ul>
-     *
-     * @param key     the key
-     * @param keySpec the key specification
-     * @return the specification of the CMSS2 key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the key type or key specification is not supported.
-     * @see de.flexiprovider.pqc.hbc.cmss2.CMSSPrivateKey
-     * @see de.flexiprovider.pqc.hbc.cmss2.CMSSPrivateKeySpec
-     * @see de.flexiprovider.pqc.hbc.cmss2.CMSSPublicKey
-     * @see de.flexiprovider.pqc.hbc.cmss2.CMSSPublicKeySpec
-     */
     public final KeySpec getKeySpec(Key key, Class keySpec)
             throws InvalidKeySpecException {
         if (key instanceof CMSSPrivateKey) {

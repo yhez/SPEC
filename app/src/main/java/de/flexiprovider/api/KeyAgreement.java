@@ -15,19 +15,6 @@ import de.flexiprovider.common.util.JavaSecureRandomWrapper;
 
 public abstract class KeyAgreement extends KeyAgreementSpi {
 
-    // ****************************************************
-    // JCA adapter methods
-    // ****************************************************
-
-    /**
-     * JCA adapter for FlexiAPI method init(): initialize this
-     * <tt>KeyAgreementSpi</tt> with a key and a source of randomness.
-     *
-     * @param key      the secret key of the party initializing the key agreement
-     * @param javaRand the source of randomness
-     * @throws java.security.InvalidKeyException if the key is invalid.
-     * @throws RuntimeException                  if parameters are required for initialization.
-     */
     protected final void engineInit(java.security.Key key,
                                     java.security.SecureRandom javaRand)
             throws java.security.InvalidKeyException {
@@ -38,7 +25,7 @@ public abstract class KeyAgreement extends KeyAgreementSpi {
 
         try {
             SecureRandom flexiRand = new JavaSecureRandomWrapper(javaRand);
-            init((PrivateKey) key, (AlgorithmParameterSpec) null, flexiRand);
+            init((PrivateKey) key, null, flexiRand);
         } catch (InvalidAlgorithmParameterException e) {
             throw new RuntimeException("algorithm parameters required");
         }

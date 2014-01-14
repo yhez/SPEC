@@ -88,8 +88,6 @@ public class McElieceKobaraImaiCipher extends AsymmetricHybridCipher {
 
     private String prngName;
 
-    private int helpLen;
-
     /**
      * The McEliece main parameters
      */
@@ -215,7 +213,7 @@ public class McElieceKobaraImaiCipher extends AsymmetricHybridCipher {
         k = pubKey.getK();
         t = pubKey.getT();
 
-        helpLen = (IntegerFunctions.binomial(n, t).bitLength() - 1) >> 3;
+        int helpLen = (IntegerFunctions.binomial(n, t).bitLength() - 1) >> 3;
         helpLen += (k >> 3) - md.getDigestLength() - PUBLIC_CONSTANT.length;
 
         buf = new ByteArrayOutputStream();
@@ -287,7 +285,7 @@ public class McElieceKobaraImaiCipher extends AsymmetricHybridCipher {
         sr.nextBytes(r);
 
         // get PRNG object
-        SecureRandom sr0 = null;
+        SecureRandom sr0;
         try {
             sr0 = Registry.getSecureRandom(prngName);
         } catch (NoSuchAlgorithmException nsae) {
@@ -428,7 +426,7 @@ public class McElieceKobaraImaiCipher extends AsymmetricHybridCipher {
         }
 
         // get PRNG object
-        SecureRandom sr0 = null;
+        SecureRandom sr0;
         try {
             sr0 = Registry.getSecureRandom(prngName);
         } catch (NoSuchAlgorithmException nsae) {

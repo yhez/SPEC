@@ -245,70 +245,7 @@ public final class ScalarMult {
         return P;
     }
 
-    /**
-     * If k = 0 and w != 0 this method precomputes all odd points 3P, 5P,
-     * 7P,..., (2<sup>w-1</sup> -1)P in affine coordinates, whereas P = point.
-     * <p/>
-     * If k != 0 and w = 0 this method precomputes all odd points 3P, 5P,
-     * 7P,..., (2k-1)P in affine coordinates, whereas P = point.
-     * <p/>
-     * This method computes these points with the algorithm thas was proposed in
-     * <i> Cohen, H., Miyaji, A., and Ono, T. Efficient Elliptic Curve
-     * Exponentiation Using Mixed Coordinates. 1998</i>
-     * <p/>
-     * The elements of the returned array are as followed: <br>
-     * <br>
-     * <table border="0">
-     * <tr>
-     * <td><b>w != 0, k = 0</b></td>
-     * <td>&#160;&#160;</td>
-     * <td><b>w = 0, k != 0</b></td>
-     * <td>&#160;&#160;</td>
-     * <td><b>w != 0, k != 0</b></td>
-     * </tr>
-     * <tr></tr>
-     * <tr>
-     * <td>array[0] = P</td>
-     * <td>&#160;&#160;</td>
-     * <td>array[0] = P</td>
-     * <td>&#160;&#160;</td>
-     * <td>array[0] = P</td>
-     * </tr>
-     * <tr>
-     * <td>array[1] = 3P</td>
-     * <td>&#160;&#160;</td>
-     * <td>array[1] = 3P</td>
-     * <td>&#160;&#160;</td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>array[2] = 5P</td>
-     * <td>&#160;&#160;</td>
-     * <td>array[2] = 5P</td>
-     * <td>&#160;&#160;</td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>...</td>
-     * <td>&#160;&#160;</td>
-     * <td>...</td>
-     * <td>&#160;&#160;</td>
-     * <td></td>
-     * </tr>
-     * <tr>
-     * <td>array[(2<sup>w-2</sup>)-1] = (2<sup>w-1</sup> -1)P</td>
-     * <td>&#160;&#160;</td>
-     * <td>array[k-1] = (2k-1)P</td>
-     * <td>&#160;&#160;</td>
-     * <td></td>
-     * </tr>
-     * </table>
-     *
-     * @param p the point of the scalar multiplication
-     * @param w window size
-     * @return Returns an array with the precomputed points in affine
-     * coordinates
-     */
+
     public static Point[] precomputationCMO(PointGF2n p, int w) {
         w = w - 1;
         final int length = 1 << (w - 1);

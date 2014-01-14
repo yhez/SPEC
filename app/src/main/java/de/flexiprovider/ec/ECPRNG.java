@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.ec;
 
 import de.flexiprovider.api.SecureRandom;
@@ -17,19 +9,7 @@ import de.flexiprovider.common.math.ellipticcurves.ScalarMult;
 import de.flexiprovider.common.math.finitefields.GFPElement;
 import de.flexiprovider.common.util.SeedGenerator;
 
-/**
- * This class implements a pseudorandom number generator as proposed by Kaliski.
- * Its security bases on the elliptic curve discrete logarithm problem. For
- * details, we refer to the ICICS 2002 paper of H. Baier.
- * <p/>
- * The curve parameters are stored in a file named 'curve_parameters'. This file
- * has to be stored in the same directory as the Java-class containing the
- * main(...)-method . The validity of the parameters is not checked!!! Thus the
- * user is responsible for a good choice.
- *
- * @author Harald Baier
- * @see EllipticCurveGFP
- */
+
 public class ECPRNG extends SecureRandom {
 
     // parameters used by the PRNG
@@ -46,12 +26,8 @@ public class ECPRNG extends SecureRandom {
     private static final String gxtw = "366500700833382456097277943560492718018620012876";
     private static final String gytw = "386244879790635939190694479506736774122111430939";
 
-    private SeedGenerator seedGenerator;
-
     // to store if ECPRNG is seeded
     private boolean mIsSeeded = false;
-
-    private byte mCurrentByte;
 
     private int mSeedLength;
 
@@ -61,20 +37,8 @@ public class ECPRNG extends SecureRandom {
     // = ( mP - 1 )/2
     private FlexiBigInt mP_minus_1_half;
 
-    // quadratic non-residue modulo mP for twisted curves
-    private FlexiBigInt mGamma;
-
     // inverse of mGamma mod mP
     private FlexiBigInt mGammaInverse;
-
-    // elliptic curve of prime order
-    private EllipticCurveGFP mE;
-
-    // twist of mE over \F_p
-    private EllipticCurveGFP mE_tw;
-
-    // the base point mG on mE of order mR
-    private PointGFP mG;
 
     // array of multiples of mG
     private PointGFP[] mGArray;
@@ -85,11 +49,6 @@ public class ECPRNG extends SecureRandom {
     // = ( mR - 1 )/2
     private FlexiBigInt mR_minus_1_half;
 
-    private int bitLengthR;
-
-    // base point in E_tw(\F_p)
-    private PointGFP mG_tw;
-
     // array of multiples of mG_tw
     private PointGFP[] mG_twArray;
 
@@ -99,33 +58,16 @@ public class ECPRNG extends SecureRandom {
     // = ( mR_tw - 1 )/2
     private FlexiBigInt mR_tw_minus_1_half;
 
-    private int bitLengthR_tw;
-
     // the current multiple of mG
     private PointGFP mPoint;
 
-    // the (affine) x-coordinate of mPoint
-    private FlexiBigInt mX;
-
-    // the (affine) y-coordinate of mPoint
-    private FlexiBigInt mY;
-
     // the value s of the paper
     private FlexiBigInt mS;
-
-    // the value of s - r
-    private FlexiBigInt mS_minus_mR;
 
     // a temporary variable
     private FlexiBigInt tmp;
 
     // variables for computing the current byte
-
-    // the local byte
-    private byte mLocalByte;
-
-    // the bitmask to manipulate mLocalByte
-    private byte mBitmask;
 
     /**
      * Constructor.
@@ -135,7 +77,7 @@ public class ECPRNG extends SecureRandom {
     public ECPRNG() throws InvalidPointException {
 
         // generate the seed generator object
-        seedGenerator = new SeedGenerator();
+        SeedGenerator seedGenerator = new SeedGenerator();
 
         // initialize the prime field
         mP = new FlexiBigInt(p);
@@ -144,33 +86,33 @@ public class ECPRNG extends SecureRandom {
         mR = new FlexiBigInt(r);
 
         // initialize the elliptic curve
-        mE = new EllipticCurveGFP(new GFPElement(new FlexiBigInt(a), mP),
+        EllipticCurveGFP mE = new EllipticCurveGFP(new GFPElement(new FlexiBigInt(a), mP),
                 new GFPElement(new FlexiBigInt(b), mP), mP);
 
         // initialize the base point G on E
-        mG = new PointGFP(new GFPElement(new FlexiBigInt(gx), mP),
+        PointGFP mG = new PointGFP(new GFPElement(new FlexiBigInt(gx), mP),
                 new GFPElement(new FlexiBigInt(gy), mP), mE);
 
         // initialize the quadratic non-residue mGamma
-        mGamma = new FlexiBigInt(gamma);
+        FlexiBigInt mGamma = new FlexiBigInt(gamma);
 
         // initialize the order r^tw of G^tw
         mR_tw = new FlexiBigInt(rtw);
 
         // initialize the elliptic curve E^tw
-        mE_tw = new EllipticCurveGFP(new GFPElement(new FlexiBigInt(atw), mP),
+        EllipticCurveGFP mE_tw = new EllipticCurveGFP(new GFPElement(new FlexiBigInt(atw), mP),
                 new GFPElement(new FlexiBigInt(btw), mP), mP);
 
         // initialize the base point G^tw on E^tw
-        mG_tw = new PointGFP(new GFPElement(new FlexiBigInt(gxtw), mP),
+        PointGFP mG_tw = new PointGFP(new GFPElement(new FlexiBigInt(gxtw), mP),
                 new GFPElement(new FlexiBigInt(gytw), mP), mE_tw);
 
         // compute mGammaInverse
         mGammaInverse = mGamma.modInverse(mP);
 
         // compute bitlengths of mR and mR_tw
-        bitLengthR = mR.bitLength();
-        bitLengthR_tw = mR_tw.bitLength();
+        int bitLengthR = mR.bitLength();
+        int bitLengthR_tw = mR_tw.bitLength();
 
         // compute (mP - 1)/2
         mP_minus_1_half = mP.subtract(FlexiBigInt.ONE);
@@ -230,12 +172,6 @@ public class ECPRNG extends SecureRandom {
         mIsSeeded = true;
     }
 
-    /**
-     * Computes the required random bytes.
-     *
-     * @param randomBytes -
-     * the output array
-     */
     static long counter = 0;
 
     public void nextBytes(byte[] randomBytes) {
@@ -291,9 +227,9 @@ public class ECPRNG extends SecureRandom {
         // initialize tmp with the current state mS = s
         tmp = new FlexiBigInt(s.toString());
         // mLocalByte stores the result; initialized with 0
-        mLocalByte = 0;
+        byte mLocalByte = 0;
         // mBitmask stores the current bit to set
-        mBitmask = 1;
+        byte mBitmask = 1;
 
         for (int i = 0; i < 8; i++) {
             // set the current bit
@@ -313,6 +249,7 @@ public class ECPRNG extends SecureRandom {
 
     // the function phi() is explained in the paper
     private byte phi() {
+        byte mCurrentByte;
         if (mS.equals(FlexiBigInt.ZERO)) {
 
             // the current byte is equal to 0
@@ -326,9 +263,12 @@ public class ECPRNG extends SecureRandom {
         }
 
         // mS is positive and smaller than mR
+        FlexiBigInt mX;
+        FlexiBigInt mY;
         if ((mS.compareTo(mR)) == -1) {
             // compute the current byte
-            mCurrentByte = computeB(mS, mR, mR_minus_1_half);
+            byte mCurrentByte1;
+            mCurrentByte1 = computeB(mS, mR, mR_minus_1_half);
 
             // set mPoint <-- mS * mG
             mPoint = (PointGFP) ScalarMult.eval_SquareMultiply(ScalarMult
@@ -345,23 +285,24 @@ public class ECPRNG extends SecureRandom {
                 mS = mS.add(FlexiBigInt.ONE);
             }
 
-            return mCurrentByte;
+            return mCurrentByte1;
         }
 
         // mS is equal to mR
         if (mS.equals(mR)) {
 
             // The current byte is the equal to 0
-            mCurrentByte = 0;
+            byte mCurrentByte1;
+            mCurrentByte1 = 0;
 
             // The point mPoint is equal to O in E_tw(\F_p)
             mS = mP.shiftLeft(1); // mS = 2*mP + 1
             mS.add(FlexiBigInt.ONE);
 
-            return mCurrentByte;
+            return mCurrentByte1;
         }
         // mS_minus_mR = mS - mR
-        mS_minus_mR = mS.subtract(mR);
+        FlexiBigInt mS_minus_mR = mS.subtract(mR);
 
         // compute the current byte
         mCurrentByte = computeB(mS_minus_mR, mR_tw, mR_tw_minus_1_half);

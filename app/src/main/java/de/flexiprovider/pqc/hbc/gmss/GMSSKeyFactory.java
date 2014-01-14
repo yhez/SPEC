@@ -17,33 +17,12 @@ import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
-/**
- * This class transforms GMSS keys and GMSS key specifications into a form that
- * can be used with the FlexiPQCProvider.
- *
- * @author Sebastian Blume, Michael Schneider
- * @see de.flexiprovider.pqc.hbc.gmss.GMSSPrivateKey
- * @see de.flexiprovider.pqc.hbc.gmss.GMSSPrivateKeySpec
- * @see GMSSPublicKey
- * @see de.flexiprovider.pqc.hbc.gmss.GMSSPublicKeySpec
- */
+
 public class GMSSKeyFactory extends KeyFactory {
 
-    /**
-     * The GMSS OID.
-     */
     public static final String OID = "1.3.6.1.4.1.8301.3.1.3.3";
 
-    /**
-     * Converts, if possible, a key specification into a GMSSPublicKey.
-     * Currently the following key specs are supported: GMSSPublicKeySpec,
-     * X509EncodedKeySpec.
-     * <p/>
-     *
-     * @param keySpec the key specification
-     * @return A GMSS public key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported
-     */
+
     public PublicKey generatePublic(KeySpec keySpec)
             throws InvalidKeySpecException {
         if (keySpec instanceof GMSSPublicKeySpec) {

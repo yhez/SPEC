@@ -1,7 +1,6 @@
 package de.flexiprovider.pqc.ots.merkle;
 
 import codec.CorruptedCodeException;
-import codec.asn1.ASN1ObjectIdentifier;
 import codec.asn1.ASN1OctetString;
 import codec.asn1.ASN1Sequence;
 import codec.pkcs8.PrivateKeyInfo;
@@ -67,7 +66,7 @@ public class MerkleOTSKeyFactory extends KeyFactory {
                 ASN1Sequence pubKey = (ASN1Sequence) spki.getDecodedRawKey();
 
                 // decode oidString
-                String oidString = ((ASN1ObjectIdentifier) pubKey.get(0))
+                String oidString = pubKey.get(0)
                         .toString();
 
                 // decode public key bytes
@@ -124,7 +123,7 @@ public class MerkleOTSKeyFactory extends KeyFactory {
                 ASN1Sequence privKey = (ASN1Sequence) pki.getDecodedRawKey();
 
                 // decode oidString
-                String oidString = ((ASN1ObjectIdentifier) privKey.get(0))
+                String oidString = privKey.get(0)
                         .toString();
 
                 // decode private key bytes

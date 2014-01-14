@@ -77,104 +77,11 @@ public final class BitArray implements Cloneable {
     bits[i / 32] |= 1 << (i & 0x1F);
   }
 
-  /**
-   * Flips bit i.
-   *
-   * @param i bit to set
-   */
-  public void flip(int i) {
-    bits[i / 32] ^= 1 << (i & 0x1F);
-  }
-
-  /**
-   * @param from first bit to check
-   * @return index of first bit that is set, starting from the given index, or size if none are set
-   *  at or beyond this given index
-   * @see #getNextUnset(int)
-   */
-  public int getNextSet(int from) {
-    if (from >= size) {
-      return size;
-    }
-    int bitsOffset = from / 32;
-    int currentBits = bits[bitsOffset];
-    // mask off lesser bits first
-    currentBits &= ~((1 << (from & 0x1F)) - 1);
-    while (currentBits == 0) {
-      if (++bitsOffset == bits.length) {
-        return size;
-      }
-      currentBits = bits[bitsOffset];
-    }
-    int result = (bitsOffset * 32) + Integer.numberOfTrailingZeros(currentBits);
-    return result > size ? size : result;
-  }
-
-  /**
-   * @see #getNextSet(int)
-   */
-  public int getNextUnset(int from) {
-    if (from >= size) {
-      return size;
-    }
-    int bitsOffset = from / 32;
-    int currentBits = ~bits[bitsOffset];
-    // mask off lesser bits first
-    currentBits &= ~((1 << (from & 0x1F)) - 1);
-    while (currentBits == 0) {
-      if (++bitsOffset == bits.length) {
-        return size;
-      }
-      currentBits = ~bits[bitsOffset];
-    }
-    int result = (bitsOffset * 32) + Integer.numberOfTrailingZeros(currentBits);
-    return result > size ? size : result;
-  }
-
-  /**
-   * Sets a block of 32 bits, starting at bit i.
-   *
-   * @param i first bit to set
-   * @param newBits the new value of the next 32 bits. Note again that the least-significant bit
-   * corresponds to bit i, the next-least-significant to i+1, and so on.
-   */
   public void setBulk(int i, int newBits) {
     bits[i / 32] = newBits;
   }
 
-  /**
-   * Sets a range of bits.
-   *
-   * @param start start of range, inclusive.
-   * @param end end of range, exclusive
-   */
-  public void setRange(int start, int end) {
-    if (end < start) {
-      throw new IllegalArgumentException();
-    }
-    if (end == start) {
-      return;
-    }
-    end--; // will be easier to treat this as the last actually set bit -- inclusive
-    int firstInt = start / 32;
-    int lastInt = end / 32;
-    for (int i = firstInt; i <= lastInt; i++) {
-      int firstBit = i > firstInt ? 0 : start & 0x1F;
-      int lastBit = i < lastInt ? 31 : end & 0x1F;
-      int mask;
-      if (firstBit == 0 && lastBit == 31) {
-        mask = -1;
-      } else {
-        mask = 0;
-        for (int j = firstBit; j <= lastBit; j++) {
-          mask |= 1 << j;
-        }
-      }
-      bits[i] |= mask;
-    }
-  }
-
-  /**
+    /**
    * Clears all bits (sets to false).
    */
   public void clear() {
@@ -184,48 +91,7 @@ public final class BitArray implements Cloneable {
     }
   }
 
-  /**
-   * Efficient method to check if a range of bits is set, or not set.
-   *
-   * @param start start of range, inclusive.
-   * @param end end of range, exclusive
-   * @param value if true, checks that bits in range are set, otherwise checks that they are not set
-   * @return true iff all bits are set or not set in range, according to value argument
-   * @throws IllegalArgumentException if end is less than or equal to start
-   */
-  public boolean isRange(int start, int end, boolean value) {
-    if (end < start) {
-      throw new IllegalArgumentException();
-    }
-    if (end == start) {
-      return true; // empty range matches
-    }
-    end--; // will be easier to treat this as the last actually set bit -- inclusive
-    int firstInt = start / 32;
-    int lastInt = end / 32;
-    for (int i = firstInt; i <= lastInt; i++) {
-      int firstBit = i > firstInt ? 0 : start & 0x1F;
-      int lastBit = i < lastInt ? 31 : end & 0x1F;
-      int mask;
-      if (firstBit == 0 && lastBit == 31) {
-        mask = -1;
-      } else {
-        mask = 0;
-        for (int j = firstBit; j <= lastBit; j++) {
-          mask |= 1 << j;
-        }
-      }
-
-      // Return false if we're looking for 1s and the masked bits[i] isn't all 1s (that is,
-      // equals the mask, or we're looking for 0s and the masked portion is not all 0s
-      if ((bits[i] & mask) != (value ? mask : 0)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  public void appendBit(boolean bit) {
+    public void appendBit(boolean bit) {
     ensureCapacity(size + 1);
     if (bit) {
       bits[size / 32] |= 1 << (size & 0x1F);

@@ -1,20 +1,6 @@
-/*
- * Copyright 2007 ZXing authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package zxing.qrcode.detector;
+
+import java.util.Map;
 
 import zxing.DecodeHintType;
 import zxing.FormatException;
@@ -28,14 +14,6 @@ import zxing.common.PerspectiveTransform;
 import zxing.common.detector.MathUtils;
 import zxing.qrcode.decoder.Version;
 
-import java.util.Map;
-
-/**
- * <p>Encapsulates logic that can detect a QR Code in an image, even if the QR Code
- * is rotated or skewed, or partially obscured.</p>
- *
- * @author Sean Owen
- */
 public class Detector {
 
   private final BitMatrix image;
@@ -49,21 +27,7 @@ public class Detector {
     return image;
   }
 
-  protected final ResultPointCallback getResultPointCallback() {
-    return resultPointCallback;
-  }
-
-  /**
-   * <p>Detects a QR Code in an image, simply.</p>
-   *
-   * @return {@link DetectorResult} encapsulating results of detecting a QR Code
-   * @throws zxing.NotFoundException if no QR Code can be found
-   */
-  public DetectorResult detect() throws NotFoundException, FormatException {
-    return detect(null);
-  }
-
-  /**
+    /**
    * <p>Detects a QR Code in an image, simply.</p>
    *
    * @param hints optional hints to detector

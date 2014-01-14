@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.ec.parameters;
 
 import java.io.IOException;
@@ -52,17 +43,7 @@ import de.flexiprovider.ec.parameters.CurveParams.CurveParamsGF2nPentanomial;
 import de.flexiprovider.ec.parameters.CurveParams.CurveParamsGF2nTrinomial;
 import de.flexiprovider.ec.parameters.CurveParams.CurveParamsGFP;
 
-/**
- * This class specifies the EC Domain Parameters for the standard <a href =
- * "http://grouper.ieee.org/groups/1363/">IEEE 1363</a> . For further
- * information, please consult the package description of <a href =
- * "package-summary.html">de.flexiprovider.ec.ecparameters</a>, <a href =
- * "../ecdsa/package-summary.html">de.flexiprovider.ec.ecdsa</a>, <a href =
- * "../ecnr/package-summary.html">de.flexiprovider.ec.ecnr</a>, or <a href =
- * "../ecdh/package-summary.html">de.flexiprovider.ec.ecdh</a>.
- *
- * @author Birgit Henhapl
- */
+
 public class ECParameters extends AlgorithmParameters {
 
     /**
@@ -73,15 +54,7 @@ public class ECParameters extends AlgorithmParameters {
     // the EC domain parameters
     private CurveParams curveParams;
 
-    /**
-     * Initialize this parameters object using the given parameter
-     * specification. The parameter specification has to be an instance of
-     * {@link de.flexiprovider.ec.parameters.CurveParams}.
-     *
-     * @param params the parameter specification
-     * @throws InvalidParameterSpecException if the parameter specification is <tt>null</tt> or of
-     *                                       an unsupported type.
-     */
+
     public void init(AlgorithmParameterSpec params)
             throws InvalidParameterSpecException {
 
@@ -111,7 +84,7 @@ public class ECParameters extends AlgorithmParameters {
         if (type instanceof ASN1ObjectIdentifier) {
             try {
                 AlgorithmParameterSpec curveParams = Registry
-                        .getAlgParamSpec(((ASN1ObjectIdentifier) type)
+                        .getAlgParamSpec(type
                                 .toString());
                 init(curveParams);
             } catch (InvalidAlgorithmParameterException iape) {
@@ -125,7 +98,7 @@ public class ECParameters extends AlgorithmParameters {
         } else if (type instanceof ECDomainParameters) {
 
             ECDomainParameters asn1params = (ECDomainParameters) type;
-            ASN1Type fieldParam = null;
+            ASN1Type fieldParam;
             try {
                 fieldParam = asn1params.getFieldId().getField().getInnerType();
             } catch (ResolverException re) {
@@ -171,7 +144,7 @@ public class ECParameters extends AlgorithmParameters {
                     polBytes[n >> 5] |= 1 << (n & 0x1f);
                     GF2Polynomial fieldPoly = new GF2Polynomial(n + 1, polBytes);
 
-                    GF2nPolynomialField polyField = null;
+                    GF2nPolynomialField polyField;
                     try {
                         polyField = new GF2nPolynomialField(n, fieldPoly);
                     } catch (PolynomialIsNotIrreducibleException PINIExc) {
@@ -202,7 +175,7 @@ public class ECParameters extends AlgorithmParameters {
                     polBytes[n >> 5] |= 1 << (n & 0x1f);
                     GF2Polynomial fieldPoly = new GF2Polynomial(n + 1, polBytes);
 
-                    GF2nPolynomialField polyField = null;
+                    GF2nPolynomialField polyField;
                     try {
                         polyField = new GF2nPolynomialField(n, fieldPoly);
                     } catch (PolynomialIsNotIrreducibleException PINIExc) {
@@ -329,7 +302,7 @@ public class ECParameters extends AlgorithmParameters {
         // The optional cofactor of the basepoint.
         ASN1Integer aK = new ASN1Integer(curveParams.getK());
 
-        FieldId aFieldID = null;
+        FieldId aFieldID;
 
         if (curveParams instanceof CurveParamsGFP) {
             PrimeField aPF = new PrimeField(curveParams.getQ());

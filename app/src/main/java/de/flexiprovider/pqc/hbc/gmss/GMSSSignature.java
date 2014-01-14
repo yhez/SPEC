@@ -17,236 +17,90 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.CoreRegistry;
 
-/**
- * This class implements the GMSS signature scheme. The class extends the
- * SignatureSpi class.
- * <p/>
- * The GMSSSignature can be used as follows:
- * <p/>
- * <b>Signature generation:</b>
- * <p/>
- * 1. generate KeySpec from encoded GMSS private key:<br/>
- * <code>KeySpec privateKeySpec = new PKCS8EncodedKeySpec(encPrivateKey);</code><br/>
- * 2. get instance of GMSS key factory:<br/>
- * <code>KeyFactory keyFactory = KeyFactory.getInstance("GMSS","FlexiPQC");</code><br/>
- * 3. decode GMSS private key:<br/>
- * <code>PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);</code><br/>
- * 4. get instance of a GMSS signature:<br/> <code>Signature cmmsSig =
- * Signature.getInstance("GMSSwithSHA1","FlexiPQC");</code><br/>
- * 5. initialize signing:<br/> <code>gmssSig.initSign(privateKey);</code><br/>
- * 6. sign message:<br/> <code>gmssSig.update(message.getBytes());<br/>
- * signature = gmssSig.sign();<br/>
- * return signature;</code>
- * <p/>
- * <b>Signature verification:</b>
- * <p/>
- * 1. generate KeySpec from encoded GMSS public key:<br/>
- * <code>KeySpec publicKeySpec = new X509EncodedKeySpec(encPublicKey);</code><br/>
- * 2. decode GMSS public key:<br/>
- * <code>PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);</code><br/>
- * 3. initialize verifying:<br/> <code>gmssSig.initVerify(publicKey);</code><br/>
- * 4. Verify the signature:<br/> <code>gmssSig.update(message.getBytes());<br/>
- * return gmssSig.verify(signature);</code>
- *
- * @author Michael Schneider, Sebastian Blume
- * @see GMSSKeyPairGenerator
- */
+
 public class GMSSSignature extends Signature {
-    /*
-     * Inner classes providing concrete implementations of MerkleOTSSignature
-     * with a variety of message digests.
-     */
 
-    // //////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * GMSSSignature with SHA1 message digest
-     */
     public static class GMSSwithSHA1 extends GMSSSignature {
 
-        /**
-         * The OID of the algorithm.
-         */
         public static final String OID = GMSSKeyPairGenerator.GMSSwithSHA1.OID;
 
-        /**
-         * Constructor.
-         */
         public GMSSwithSHA1() {
-            super(OID, "SHA1", "FlexiCore");
+            super("SHA1", "FlexiCore");
         }
     }
 
-    /**
-     * GMSSSignature with SHA224 message digest
-     */
     public static class GMSSwithSHA224 extends GMSSSignature {
 
-        /**
-         * The OID of the algorithm.
-         */
+
         public static final String OID = GMSSKeyPairGenerator.GMSSwithSHA224.OID;
 
-        /**
-         * Constructor.
-         */
         public GMSSwithSHA224() {
-            super(OID, "SHA224", "FlexiCore");
+            super("SHA224", "FlexiCore");
         }
     }
 
-    /**
-     * GMSSSignature with SHA256 message digest
-     */
     public static class GMSSwithSHA256 extends GMSSSignature {
 
-        /**
-         * The OID of the algorithm.
-         */
         public static final String OID = GMSSKeyPairGenerator.GMSSwithSHA256.OID;
 
-        /**
-         * Constructor.
-         */
         public GMSSwithSHA256() {
-            super(OID, "SHA256", "FlexiCore");
+            super("SHA256", "FlexiCore");
         }
     }
 
-    /**
-     * GMSSSignature with SHA384 message digest
-     */
     public static class GMSSwithSHA384 extends GMSSSignature {
 
-        /**
-         * The OID of the algorithm.
-         */
+
         public static final String OID = GMSSKeyPairGenerator.GMSSwithSHA384.OID;
 
-        /**
-         * Constructor.
-         */
+
         public GMSSwithSHA384() {
-            super(OID, "SHA384", "FlexiCore");
+            super("SHA384", "FlexiCore");
         }
     }
 
-    /**
-     * GMSSSignature with SHA512 message digest
-     */
     public static class GMSSwithSHA512 extends GMSSSignature {
 
-        /**
-         * The OID of the algorithm.
-         */
+
         public static final String OID = GMSSKeyPairGenerator.GMSSwithSHA512.OID;
 
-        /**
-         * Constructor.
-         */
         public GMSSwithSHA512() {
-            super(OID, "SHA512", "FlexiCore");
+            super("SHA512", "FlexiCore");
         }
     }
 
-    // //////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Instance of GMSSParameterSpec
-     */
-    private GMSSParameterSpec gmssParameterSpec;
-
-    /**
-     * Instance of GMSSUtilities
-     */
     private GMSSUtilities gmssUtil = new GMSSUtilities();
 
-    /**
-     * The GMSS private key
-     */
-    private GMSSPrivateKey gmssPrivateKey;
-
-    /**
-     * The GMSS public key
-     */
-    private GMSSPublicKey gmssPublicKey;
-
-    /**
-     * The raw GMSS public key
-     */
     private byte[] pubKeyBytes;
 
-    /**
-     * Hash function for the construction of the authentication trees
-     */
     private MessageDigest messDigestTrees;
 
-    /**
-     * The length of the hash function output
-     */
     private int mdLength;
 
-    /**
-     * The number of tree layers
-     */
+
     private int numLayer;
 
-    /**
-     * The hash function used by the OTS
-     */
     private MessageDigest messDigestOTS;
 
-    /**
-     * An instance of the Winternitz one-time signature
-     */
     private WinternitzOTSignature ots;
 
-    /**
-     * Array of strings containing the name of the hash function used by the OTS
-     * and the corresponding provider name
-     */
     private String[] algNames = new String[2];
 
-    /**
-     * The current main tree and subtree indices
-     */
+
     private int[] index;
 
-    /**
-     * Array of the authentication paths for the current trees of all layers
-     */
     private byte[][][] currentAuthPaths;
 
-    /**
-     * The one-time signature of the roots of the current subtrees
-     */
     private byte[][] subtreeRootSig;
 
-    /**
-     * The ByteArrayOutputStream holding the messages
-     */
     private ByteArrayOutputStream baos;
 
-    /**
-     * The GMSSParameterset
-     */
     private GMSSParameterset gmssPS;
 
-    /**
-     * The PRNG
-     */
     private GMSSRandom gmssRandom;
 
-    /**
-     * The standard constructor tries to generate the MerkleTree Algorithm
-     * identifier with the corresponding OID.
-     *
-     * @param oidStr     string with the oid of the algorithm
-     * @param mdName     name of the message digest for the authentication trees
-     * @param mdProvName provider name of the message digest for the authentication
-     *                   trees
-     */
-    public GMSSSignature(String oidStr, String mdName, String mdProvName) {
+    public GMSSSignature(String mdName, String mdProvName) {
         algNames[0] = mdName;
         algNames[1] = mdProvName;
         CoreRegistry.registerAlgorithms();
@@ -265,34 +119,16 @@ public class GMSSSignature extends Signature {
 
     }
 
-    /**
-     * Feeds a message byte to the message digest.
-     *
-     * @param data array of message bytes
-     * @throws de.flexiprovider.api.exceptions.SignatureException if the signature object is not initialized correctly.
-     */
     public void update(byte data) throws SignatureException {
         baos.write(data);
     }
 
-    /**
-     * Feeds message bytes to the message digest.
-     *
-     * @param data   array of message bytes
-     * @param offset index of message start
-     * @param length number of message bytes
-     * @throws de.flexiprovider.api.exceptions.SignatureException if the signature object is not initialized correctly.
-     */
 
     public void update(byte[] data, int offset, int length)
             throws SignatureException {
         baos.write(data, offset, length);
     }
 
-    /**
-     * This method returns the date contained in the ByteArrayOutputStream
-     * closes the stream
-     */
     private byte[] getData() {
         byte[] data = baos.toByteArray();
 
@@ -305,38 +141,20 @@ public class GMSSSignature extends Signature {
         return data;
     }
 
-    /**
-     * This method creates a ByteArrayOutputStream
-     */
     private void initValues() {
 
-	/*
-     * int logValue = merkleOperations.lookupLog(digestLength)+4;
-	 * logValue/=8; logValue++; keySize = (digestLength+3*logValue)<<2;
-	 * helpSize = digestLength;
-	 */
 
         baos = new ByteArrayOutputStream();
 
     }
 
-    /**
-     * Initializes the signature algorithm for signing a message.
-     * <p/>
-     *
-     * @param privateKey the private key of the signer.
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the key is not an instance of OTSPrivateKey.
-     */
     public void initSign(PrivateKey privateKey, SecureRandom sr)
             throws InvalidKeyException {
         if (privateKey instanceof GMSSPrivateKey) {
             messDigestTrees.reset();
             initValues();
-            // set private key and take from it ots key, auth, tree and key
-            // counter, rootSign
-            gmssPrivateKey = (GMSSPrivateKey) privateKey;
+            GMSSPrivateKey gmssPrivateKey = (GMSSPrivateKey) privateKey;
 
-            // check if last signature has been generated
             if (gmssPrivateKey.getIndex(0) >= gmssPrivateKey.getNumLeafs(0)) {
                 throw new RuntimeException(
                         "No more signatures can be generated");
@@ -349,7 +167,7 @@ public class GMSSSignature extends Signature {
 
             // get OTS Instance of lowest layer
             byte[] seed = gmssPrivateKey.getCurrentSeeds()[numLayer - 1];
-            byte[] OTSSeed = new byte[mdLength];
+            byte[] OTSSeed;
             byte[] dummy = new byte[mdLength];
             System.arraycopy(seed, 0, dummy, 0, mdLength);
             OTSSeed = gmssRandom.nextSeed(dummy); // secureRandom.nextBytes(currentSeeds[currentSeeds.length-1]);secureRandom.nextBytes(OTSseed);
@@ -390,17 +208,10 @@ public class GMSSSignature extends Signature {
             throw new InvalidKeyException("Key is not a GMSSPrivateKey.");
     }
 
-    /**
-     * Signs a message.
-     * <p/>
-     *
-     * @return the signature.
-     * @throws de.flexiprovider.api.exceptions.SignatureException if the signature is not initialized properly.
-     */
     public byte[] sign() throws SignatureException {
 
         byte[] message;
-        byte[] otsSig = new byte[mdLength];
+        byte[] otsSig;
         byte[] authPathBytes;
         byte[] indexBytes;
 
@@ -490,7 +301,7 @@ public class GMSSSignature extends Signature {
         if (publicKey instanceof GMSSPublicKey) {
             messDigestTrees.reset();
 
-            gmssPublicKey = (GMSSPublicKey) publicKey;
+            GMSSPublicKey gmssPublicKey = (GMSSPublicKey) publicKey;
             pubKeyBytes = gmssPublicKey.getPublicKeyBytes();
             gmssPS = gmssPublicKey.getParameterset();
             // get numLayer
@@ -501,13 +312,6 @@ public class GMSSSignature extends Signature {
             throw new InvalidKeyException("Key is not a GMSSPublicKey");
     }
 
-    /**
-     * Verifies a signature.
-     *
-     * @param signature the signature to be verified.
-     * @return <code>TRUE</code> if the signature is correct,
-     * <code>FALSE</code> otherwise
-     */
     public boolean verify(byte[] signature) throws SignatureException {
 
         boolean success = false;
@@ -601,12 +405,7 @@ public class GMSSSignature extends Signature {
         return success;
     }
 
-    /**
-     * Sets the parameters for GMSSSignature
-     *
-     * @param algParamSpec parameter specification for MerkleTree.
-     * @see de.flexiprovider.pqc.hbc.gmss.GMSSParameterSpec
-     */
+
     public void setParameters(AlgorithmParameterSpec algParamSpec)
             throws InvalidAlgorithmParameterException {
         if (algParamSpec == null) {
@@ -618,7 +417,6 @@ public class GMSSSignature extends Signature {
                     "in GMSSSignature: initialize: params is not "
                             + "an instance of GMSSParameterSpec");
         }
-        this.gmssParameterSpec = (GMSSParameterSpec) algParamSpec;
     }
 
 }

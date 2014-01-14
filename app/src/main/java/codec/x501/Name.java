@@ -60,22 +60,10 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
     public static final int UTF8_ENCODING = ASN1.TAG_UTF8STRING;
 
     /**
-     * flag that determines, how the Name class shall behave, either as usual
-     * with a default encoding or forcing all Name using classes to use the new
-     * constructor.
-     */
-    protected static final boolean allowDefaultEncoding_ = true;
-
-    /**
      * Determines in what kind of encoding all Name objects will be encoded as
      * long as no special constructors are used. Default is UTF8 Encoding.
      */
     protected static int defaultEncoding_ = PRINTABLE_ENCODING;
-
-    /**
-     * defines the encoding of the current Name Object
-     */
-    private int currentEncoding_ = defaultEncoding_;
 
     /**
      * The (uppercase) acronyms of the default attributes allowed in this Name
@@ -106,51 +94,21 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
      */
     protected HashMap a2oid_;
 
-    /**
-     * Mapping from OID to acronyms.
-     */
+
     protected HashMap oid2a_;
 
-    /**
-     * The cached string representation.
-     */
+
     private String name_;
 
-    /**
-     * The cached reverse string representation.
-     */
     private String rname_;
 
-    /**
-     * The temporary list of AVAs that is collected during DER decoding.
-     */
     List tmp_;
-
-    /**
-     * This constructor calls the initASN1Structure() method, do create an empty
-     * structure for a Relative Distinguished Name object. Used incase one wants
-     * to use the clone function for Name.
-     */
     public Name() {
         super(8);
         initMaps();
     }
 
-    /**
-     * This constructor parses the given String according to <a
-     * href="http://sunsite.auc.dk/RFC/">RFC2253</a> and builds the internal
-     * ASN.1 representation of it in big-endian order (most significant
-     * attribute first). This is the order used for encoding the name.
-     * <p/>
-     * <p/>
-     * Any names parsed with instances of this class remain in the order they
-     * were encoded in order not to invalidate any digital signatures on the
-     * encoded representation when writing the encoded instance back to some
-     * output stream.
-     *
-     * @param rfc2253String String of RFC2253 representation.
-     * @deprecated
-     */
+
     public Name(String rfc2253String) throws BadNameException {
         this(rfc2253String, -1);
     }
@@ -179,13 +137,12 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         initMaps();
 
         if (encType == -1) {
-            currentEncoding_ = defaultEncoding_;
+            int currentEncoding_ = defaultEncoding_;
         } else {
             if (encType != UTF8_ENCODING && encType != T61_ENCODING
                     && encType != PRINTABLE_ENCODING && encType != IA5_ENCODING) {
                 throw new BadNameException("Unknown EncodingType: " + encType);
             }
-            currentEncoding_ = encType;
         }
 
         p = new RFC2253Parser();
@@ -242,6 +199,10 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
                         || entry.getKey().equalsIgnoreCase("SERIALNUMBER")) {
                     seq.add(new ASN1PrintableString(val));
                 } else {
+                    /*
+      defines the encoding of the current Name Object
+     */
+                    int currentEncoding_ = defaultEncoding_;
                     switch (currentEncoding_) {
                         case (ASN1.TAG_UTF8STRING):
                             seq.add(new ASN1UTF8String(val));
@@ -341,22 +302,10 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         return result;
     }
 
-    /**
-     * Returns the String representation. This implementation simply calles
-     * {@link #getName getName}.
-     *
-     * @return The String representation.
-     */
     public String toString() {
         return getName();
     }
 
-    /**
-     * This method returns the name of this principal. The order is
-     * little-endian (least significant attribute first).
-     *
-     * @return Name of this principal
-     */
     public String getName() {
         StringBuffer buf;
         Iterator it;
@@ -461,20 +410,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         return list;
     }
 
-    /**
-     * Resolves AttributeValueAssertions for the component RDNs of this Name.
-     * This method is for internal use only. Do not call it or bad things will
-     * happen. You have been warned.
-     * <p/>
-     * <p/>
-     * This method basically registers the AVAs of the RDNs so that the internal
-     * Open Types can be discarded after decoding. This makes some objects
-     * available for garbage collection that are not required anymore.
-     *
-     * @param caller The calling RDN.
-     * @return The AVA instance that is added to the calling RDN in the decoding
-     * process.
-     */
+
     public ASN1Type resolve(ASN1Type caller) {
         if (caller == null) {
             throw new NullPointerException("caller");
@@ -523,23 +459,10 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
 
             seq.set(1, o);
         }
-	/*
-	 * We don't need the temporary list anymore.
-	 */
         tmp_ = null;
     }
 
-    /**
-     * This method adds the given object to this Name if it is a valid RDN (a
-     * set with enclosed sequences with an OID and non null attribute value
-     * each).
-     *
-     * @param o The RDN to add.
-     * @return <code>true</code>. This method accepts multiple elements which
-     * are the same, and adheres to the contract of add(Object) for
-     * collections.
-     * @throws IllegalArgumentException if the given object is not a valid RDN.
-     */
+
     public boolean add(ASN1Set o) {
         ASN1Sequence seq;
         Iterator it;
@@ -575,26 +498,13 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
                         "illegal or no attribute value");
             }
         }
-	/*
-	 * Finally, we can add the RDN.
-	 */
         super.add(set);
 
         return true;
     }
-
-    /**
-     * This method returns a new set of AttributeValueAssertions (AVA).
-     *
-     * @return The new instance to decode.
-     */
     public ASN1Type newElement() {
         ASN1SetOf set;
 
-	/*
-	 * Here, we add this instance as the resolver of the ASN1SetOf. Upon the
-	 * 'resolve' callback, the AVAs are added to the respective RDNs.
-	 */
         set = new ASN1SetOf(this, 1);
         super.add(set);
 

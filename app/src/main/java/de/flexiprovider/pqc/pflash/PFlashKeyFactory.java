@@ -16,17 +16,7 @@ import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
-/**
- * This class is able to transform pFLASH keys and pFLASH key specifications
- * into a form that can be used with the FlexiPQCProvider.
- *
- * @author Marian Hornschuch, Alexander Koller
- * @see {@link PFlashPrivateKey}
- * @see {@link PFlashPrivateKeySpec}
- * @see {@link de.flexiprovider.pqc.pflash.PFlashPublicKey}
- * @see {@link PFlashPubicKeySpec}
- * @see {@link de.flexiprovider.api.keys.KeyFactory}
- */
+
 public class PFlashKeyFactory extends KeyFactory {
 
     /**
@@ -34,17 +24,7 @@ public class PFlashKeyFactory extends KeyFactory {
      */
     public static final String OID = "1.3.6.1.4.1.8301.3.1.3.5.3.3";
 
-    /**
-     * Converts, if possible, a key specification into a {@link de.flexiprovider.pqc.pflash.PFlashPublicKey}.
-     * Currently, the following key specifications are supported:
-     * {@link PFlashPublicKeySpec}.
-     *
-     * @param keySpec the key specification
-     * @return the public pFLASH key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     * @see {@link de.flexiprovider.pqc.pflash.PFlashPublicKey}
-     * @see {@link PFlashPublicKeySpec}
-     */
+
     public PublicKey generatePublic(KeySpec keySpec)
             throws InvalidKeySpecException {
         if (keySpec instanceof PFlashPublicKeySpec) {
@@ -67,9 +47,7 @@ public class PFlashKeyFactory extends KeyFactory {
                 // build and return the actual key
                 ASN1Sequence publicKey = (ASN1Sequence) spki.getDecodedRawKey();
 
-                // decode FIXME: pubBytes
 
-                //return new PFlashPublicKey(FIXME);
             } catch (CorruptedCodeException cce) {
                 throw new InvalidKeySpecException(
                         "Unable to decode X509EncodedKeySpec.");
@@ -174,8 +152,6 @@ public class PFlashKeyFactory extends KeyFactory {
             if (X509EncodedKeySpec.class.isAssignableFrom(keySpec)) {
                 return new X509EncodedKeySpec(key.getEncoded());
             } else if (PFlashPublicKeySpec.class.isAssignableFrom(keySpec)) {
-                PFlashPublicKey publicKey = (PFlashPublicKey) key;
-                //return new PFlashPublicKeySpec(publicKey.get FIXME: KEYBYES);
             }
         } else {
             throw new InvalidKeySpecException("Unsupported key type: "

@@ -195,18 +195,6 @@ class MutableBigInteger {
     }
 
     /**
-     * If this MutableBigInteger cannot hold len words, increase the size
-     * of the value array to len words.
-     */
-    private void ensureCapacity(int len) {
-        if (value.length < len) {
-            value = new int[len];
-            offset = 0;
-            intLen = len;
-        }
-    }
-
-    /**
      * Convert this MutableBigInteger into an int array with no leading
      * zeros, of a length that is equal to this MutableBigInteger's intLen.
      */
@@ -215,15 +203,6 @@ class MutableBigInteger {
         for (int i = 0; i < intLen; i++)
             result[i] = value[offset + i];
         return result;
-    }
-
-    /**
-     * Sets the int at index+offset in this MutableBigInteger to val.
-     * This does not get inlined on all platforms so it is not used
-     * as often as originally intended.
-     */
-    void setInt(int index, int val) {
-        value[offset + index] = val;
     }
 
     /**
@@ -245,19 +224,6 @@ class MutableBigInteger {
         if (value.length < len)
             value = new int[len];
         System.arraycopy(src.value, src.offset, value, 0, len);
-        intLen = len;
-        offset = 0;
-    }
-
-    /**
-     * Sets this MutableBigInteger's value array to a copy of the specified
-     * array. The intLen is set to the length of the specified array.
-     */
-    void copyValue(int[] val) {
-        int len = val.length;
-        if (value.length < len)
-            value = new int[len];
-        System.arraycopy(val, 0, value, 0, len);
         intLen = len;
         offset = 0;
     }
@@ -287,7 +253,7 @@ class MutableBigInteger {
      * Returns true iff this MutableBigInteger is odd.
      */
     boolean isOdd() {
-        return isZero() ? false : ((value[offset + intLen - 1] & 1) == 1);
+        return !isZero() && ((value[offset + intLen - 1] & 1) == 1);
     }
 
 

@@ -1,7 +1,6 @@
 
 package zxing.common;
 
-import zxing.Binarizer;
 import zxing.LuminanceSource;
 import zxing.NotFoundException;
 
@@ -56,12 +55,7 @@ public final class HybridBinarizer extends GlobalHistogramBinarizer {
     return matrix;
   }
 
-  @Override
-  public Binarizer createBinarizer(LuminanceSource source) {
-    return new HybridBinarizer(source);
-  }
-
-  /**
+    /**
    * For each block in the image, calculate the average black point using a 5x5 grid
    * of the blocks around it. Also handles the corner cases (fractional blocks are computed based
    * on the last pixels in the row/column which are also used in the previous block).

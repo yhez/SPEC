@@ -20,10 +20,7 @@ import de.flexiprovider.ec.keys.ECPublicKey;
 import de.flexiprovider.ec.keys.ECPublicKeySpec;
 import de.flexiprovider.ec.parameters.CurveParams;
 
-/**
- * ECIES (Elliptic Curve Integrated Encryption Scheme) extends the basic IES
- * implementation.
- */
+
 public class ECIES extends IES {
 
     /**
@@ -33,15 +30,7 @@ public class ECIES extends IES {
         return "ECIES";
     }
 
-    /**
-     * Return the key size of the given key object in bits. Checks whether the
-     * key object is an instance of <tt>ECPublicKey</tt> or
-     * <tt>ECPrivateKey</tt>.
-     *
-     * @param key the key object
-     * @return the key size of the given key object.
-     * @throws InvalidKeyException if key is invalid.
-     */
+
     public int getKeySize(Key key) throws InvalidKeyException {
         if (key instanceof ECPrivateKey) {
             return ((ECPrivateKey) key).getParams().getQ().bitLength();

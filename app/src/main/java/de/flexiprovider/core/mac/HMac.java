@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.mac;
 
 import de.flexiprovider.api.Mac;
@@ -15,17 +6,7 @@ import de.flexiprovider.api.exceptions.InvalidKeyException;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-/**
- * This class extends the MAC class for providing the functionality of the
- * HMAC(Keyed-Hashing for Message Authentication) algorithm, as specified in <a
- * href="http://rfc.net/rfc2104.html">RFC 2104</a>.
- * <p/>
- * Any application dealing with MAC computation uses the "getInstance"-method of
- * the MAC class for creating a MAC object.
- * <p/>
- * The FlexiProvider supports HMAC computation based on SHA1, MD5, and RIPEMD160
- * hash algorithms.
- */
+
 public class HMac extends Mac {
 
     /*
@@ -152,57 +133,30 @@ public class HMac extends Mac {
 
     private int L, B;
 
-    private byte[] macKey;
-
-    private byte[] ipadKey;
-
     private byte[] opadKey;
 
     private MessageDigest md;
 
-    /**
-     * Creates a new HMac for the specified hash algorithm.
-     * <p/>
-     * This constructor is called by every subclass for specifying the
-     * particular hash algorithm to be used for HMac computation.
-     *
-     * @param md        the hash algorithm to use.
-     * @param blockSize TODO
-     */
+
     HMac(MessageDigest md, int blockSize) {
         this.md = md;
         L = md.getDigestLength();
         B = blockSize;
     }
 
-    /**
-     * @return the length of the calculated MAC value in bytes
-     */
     public int getMacLength() {
         return L;
     }
 
-    /**
-     * Initialize this MAC object with the given key and algorithm parameters
-     * (not used).
-     *
-     * @param key    the MAC key
-     * @param params the algorithm parameters (not used)
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the key is not an instance of {@link HMacKey}.
-     */
     public void init(SecretKey key, AlgorithmParameterSpec params)
             throws InvalidKeyException {
 
-        // TODO: the PKCS#12 routines of the FhG codec call init() with a
-        // PBEKey to calculate an iterated MAC with salt.
         if (!(key instanceof HMacKey)) {
             throw new InvalidKeyException("unsupported type");
         }
 
-        byte[] keyBytes = ((HMacKey) key).getEncoded();
-        macKey = new byte[B];
-        // If the key is too short, it has to be filled up with zeroes. If it is
-        // too long, it has to be hashed.
+        byte[] keyBytes = key.getEncoded();
+        byte[] macKey = new byte[B];
         if (keyBytes.length <= B) {
             System.arraycopy(keyBytes, 0, macKey, 0, keyBytes.length);
         } else {
@@ -212,7 +166,7 @@ public class HMac extends Mac {
         }
 
         // initialize ipadKey and opadKey
-        ipadKey = new byte[B];
+        byte[] ipadKey = new byte[B];
         opadKey = new byte[B];
         for (int i = B - 1; i >= 0; i--) {
             ipadKey[i] = (byte) (macKey[i] ^ IPAD_BYTE);

@@ -1592,16 +1592,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
     }
 
 
-    public BigInteger andNot(BigInteger val) {
-        int[] result = new int[Math.max(intLength(), val.intLength())];
-        for (int i = 0; i < result.length; i++)
-            result[i] = (getInt(result.length - i - 1)
-                    & ~val.getInt(result.length - i - 1));
-
-        return valueOf(result);
-    }
-
-
     // Single Bit Operations
 
 
@@ -1645,20 +1635,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
     }
 
 
-    public BigInteger flipBit(int n) {
-        if (n < 0)
-            throw new ArithmeticException("Negative bit address");
-
-        int intNum = n >>> 5;
-        int[] result = new int[Math.max(intLength(), intNum + 2)];
-
-        for (int i = 0; i < result.length; i++)
-            result[result.length - i - 1] = getInt(i);
-
-        result[result.length - intNum - 1] ^= (1 << (n & 31));
-
-        return valueOf(result);
-    }
     public int getLowestSetBit() {
         @SuppressWarnings("deprecation") int lsb = lowestSetBit - 2;
         if (lsb == -2) {  // lowestSetBit not initialized yet
@@ -2098,11 +2074,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
 
     private int intLength() {
         return (bitLength() >>> 5) + 1;
-    }
-
-    /* Returns sign bit */
-    private int signBit() {
-        return signum < 0 ? 1 : 0;
     }
 
     /* Returns an int of sign bits */

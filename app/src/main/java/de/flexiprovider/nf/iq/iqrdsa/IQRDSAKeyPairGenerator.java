@@ -22,8 +22,6 @@ public class IQRDSAKeyPairGenerator extends KeyPairGenerator {
 
     private IQRDSAParameterSpec params;
 
-    private FlexiBigInt discriminant;
-
     private FlexiBigInt modulus;
 
     private IQClassGroup classGroup;
@@ -62,7 +60,7 @@ public class IQRDSAKeyPairGenerator extends KeyPairGenerator {
         }
         this.params = (IQRDSAParameterSpec) params;
 
-        discriminant = this.params.getDiscriminant();
+        FlexiBigInt discriminant = this.params.getDiscriminant();
         classGroup = new IQClassGroup(discriminant);
         modulus = this.params.getModulus();
 

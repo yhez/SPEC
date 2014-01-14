@@ -6,20 +6,11 @@ import de.flexiprovider.common.math.finitefields.GF2Polynomial;
 import de.flexiprovider.common.math.linearalgebra.GF2mMatrix;
 import de.flexiprovider.common.math.linearalgebra.GF2mVector;
 
-/**
- * This class provides a specification for a pFLASH private key.
- *
- * @author Marian Hornschuch, Alexander Koller
- * @see de.flexiprovider.pqc.pflash.PFlashPrivateKey
- * @see de.flexiprovider.api.keys.KeySpec
- */
+
 public class PFlashPrivateKeySpec implements KeySpec {
 
     // the OID of the algorithm
     private String oid;
-
-    // GF(2^4) with field polynomial X^4+X+1 
-    private final GF2mField field = new GF2mField(4, 19);
 
     // map S = M_S + c_S
     private GF2mMatrix m_S;
@@ -45,6 +36,7 @@ public class PFlashPrivateKeySpec implements KeySpec {
 
     protected PFlashPrivateKeySpec(byte[] m_S, byte[] c_S,
                                    byte[] m_T, byte[] c_T, byte[] poly_384) {
+        GF2mField field = new GF2mField(4, 19);
         this.m_S = new GF2mMatrix(field, m_S);
         this.c_S = new GF2mVector(field, c_S);
         this.m_T = new GF2mMatrix(field, m_T);

@@ -46,15 +46,6 @@ public final class ReedSolomonDecoder {
     this.field = field;
   }
 
-  /**
-   * <p>Decodes given set of received codewords, which include both data and error-correction
-   * codewords. Really, this means it uses Reed-Solomon to detect and correct errors, in-place,
-   * in the input.</p>
-   *
-   * @param received data and error-correction codewords
-   * @param twoS number of error-correction codewords available
-   * @throws ReedSolomonException if decoding fails for any reason
-   */
   public void decode(int[] received, int twoS) throws ReedSolomonException {
     GenericGFPoly poly = new GenericGFPoly(field, received);
     int[] syndromeCoefficients = new int[twoS];

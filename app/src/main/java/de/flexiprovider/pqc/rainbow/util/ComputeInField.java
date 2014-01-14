@@ -165,7 +165,7 @@ public class ComputeInField {
 
         //the number of columns in the global A where the tmp results are stored
         int length;
-        short tmp = 0;
+        short tmp;
 
         //the function is used in inverse() - A should have 2 times more columns than rows
         if (usedForInverse) {
@@ -211,7 +211,7 @@ public class ComputeInField {
      * @throws RuntimeException in case a multiplicative inverse of 0 is needed
      */
     private void computeZerosAbove() throws RuntimeException {
-        short tmp = 0;
+        short tmp;
         for (int k = A.length - 1; k > 0; k--) { // the fixed row
             for (int i = k - 1; i >= 0; i--) { // rows
                 short factor1 = A[i][k];
@@ -272,36 +272,6 @@ public class ComputeInField {
 
 
     /**
-     * This function multiplies two given matrices.
-     * If the given matrices cannot be multiplied due
-     * to different sizes, an exception is thrown.
-     *
-     * @param M1 -the 1st matrix
-     * @param M2 -the 2nd matrix
-     * @return A = M1*M2
-     * @throws RuntimeException in case the given matrices cannot be multiplied
-     *                          due to different dimensions.
-     */
-    public short[][] multiplyMatrix(short[][] M1, short[][] M2)
-            throws RuntimeException {
-
-        if (M1[0].length != M2.length) {
-            throw new RuntimeException("Multiplication is not possible!");
-        }
-        short tmp = 0;
-        A = new short[M1.length][M2[0].length];
-        for (int i = 0; i < M1.length; i++) {
-            for (int j = 0; j < M2.length; j++) {
-                for (int k = 0; k < M2[0].length; k++) {
-                    tmp = GF2Field.multElem(M1[i][j], M2[j][k]);
-                    A[i][k] = GF2Field.addElem(A[i][k], tmp);
-                }
-            }
-        }
-        return A;
-    }
-
-    /**
      * This function multiplies a given matrix with a one-dimensional array.
      * <p/>
      * An exception is thrown, if the number of columns in the matrix and
@@ -316,7 +286,7 @@ public class ComputeInField {
         if (M1[0].length != m.length) {
             throw new RuntimeException("Multiplication is not possible!");
         }
-        short tmp = 0;
+        short tmp;
         short[] B = new short[M1.length];
         for (int i = 0; i < M1.length; i++) {
             for (int j = 0; j < m.length; j++) {

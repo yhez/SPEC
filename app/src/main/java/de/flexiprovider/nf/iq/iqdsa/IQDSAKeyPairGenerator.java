@@ -21,8 +21,6 @@ public class IQDSAKeyPairGenerator extends KeyPairGenerator {
 
     private IQDSAParameterSpec params;
 
-    private FlexiBigInt discriminant;
-
     private QuadraticIdeal gamma;
 
     private IQClassGroup classGroup;
@@ -62,7 +60,7 @@ public class IQDSAKeyPairGenerator extends KeyPairGenerator {
         }
         this.params = (IQDSAParameterSpec) params;
 
-        discriminant = this.params.getDiscriminant();
+        FlexiBigInt discriminant = this.params.getDiscriminant();
         classGroup = new IQClassGroup(discriminant);
         gamma = this.params.getGamma();
 

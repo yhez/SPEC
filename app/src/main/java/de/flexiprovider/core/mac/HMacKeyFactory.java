@@ -38,7 +38,7 @@ public class HMacKeyFactory extends SecretKeyFactory {
             throw new InvalidKeySpecException("unsupported spec type");
         }
 
-        return new SecretKeySpec(((HMacKey) key).getEncoded(), "Hmac");
+        return new SecretKeySpec(key.getEncoded(), "Hmac");
     }
 
     public SecretKey translateKey(SecretKey key) throws InvalidKeyException {

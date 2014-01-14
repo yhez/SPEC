@@ -31,20 +31,11 @@ public final class DecoderResult {
   private final String text;
   private final List<byte[]> byteSegments;
   private final String ecLevel;
-  private Integer errorsCorrected;
-  private Integer erasures;
-  private Object other;
+    private Object other;
   private final int structuredAppendParity;
   private final int structuredAppendSequenceNumber;
 
-  public DecoderResult(byte[] rawBytes,
-                       String text,
-                       List<byte[]> byteSegments,
-                       String ecLevel) {
-    this(rawBytes, text, byteSegments, ecLevel, -1, -1);
-  }
-
-  public DecoderResult(byte[] rawBytes,
+    public DecoderResult(byte[] rawBytes,
                        String text,
                        List<byte[]> byteSegments,
                        String ecLevel,
@@ -74,23 +65,7 @@ public final class DecoderResult {
     return ecLevel;
   }
 
-  public Integer getErrorsCorrected() {
-    return errorsCorrected;
-  }
-
-  public void setErrorsCorrected(Integer errorsCorrected) {
-    this.errorsCorrected = errorsCorrected;
-  }
-
-  public Integer getErasures() {
-    return erasures;
-  }
-
-  public void setErasures(Integer erasures) {
-    this.erasures = erasures;
-  }
-  
-  public Object getOther() {
+    public Object getOther() {
     return other;
   }
 

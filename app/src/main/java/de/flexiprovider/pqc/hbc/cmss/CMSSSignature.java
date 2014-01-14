@@ -881,9 +881,8 @@ public class CMSSSignature extends Signature {
             mainNc = new CRNodeCalc(md);
         }
 
-        int K = 2;
         if (heightOfTrees % 2 != 0)
-            K += 1;
+            ;
         authPath[0].setup(md, ots, rng, mainNc);
         authPath[1].setup(md, ots, rng, subNc);
         authPath[2].setup(md, ots, rng, subNc);

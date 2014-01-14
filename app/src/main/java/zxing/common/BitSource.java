@@ -39,21 +39,7 @@ public final class BitSource {
     this.bytes = bytes;
   }
 
-  /**
-   * @return index of next bit in current byte which would be read by the next call to {@link #readBits(int)}.
-   */
-  public int getBitOffset() {
-    return bitOffset;
-  }
-
-  /**
-   * @return index of next byte in input byte array which would be read by the next call to {@link #readBits(int)}.
-   */
-  public int getByteOffset() {
-    return byteOffset;
-  }
-
-  /**
+    /**
    * @param numBits number of bits to read
    * @return int representing the bits read. The bits will appear as the least-significant
    *         bits of the int

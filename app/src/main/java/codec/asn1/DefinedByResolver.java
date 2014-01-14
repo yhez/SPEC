@@ -13,14 +13,6 @@ public class DefinedByResolver implements Resolver {
         oid_ = oid;
     }
 
-    public DefinedByResolver(ASN1ObjectIdentifier oid) {
-        if (oid == null)
-            throw new NullPointerException("OID is null!");
-
-        registry_ = OIDRegistry.getGlobalOIDRegistry();
-        oid_ = oid;
-    }
-
 
     public ASN1Type resolve(ASN1Type caller) throws ResolverException {
         ASN1Type t;

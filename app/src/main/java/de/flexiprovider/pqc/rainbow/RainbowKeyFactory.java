@@ -2,7 +2,6 @@ package de.flexiprovider.pqc.rainbow;
 
 import codec.CorruptedCodeException;
 import codec.asn1.ASN1Integer;
-import codec.asn1.ASN1ObjectIdentifier;
 import codec.asn1.ASN1OctetString;
 import codec.asn1.ASN1Sequence;
 import codec.asn1.ASN1Type;
@@ -19,18 +18,7 @@ import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
-/**
- * This class transforms Rainbow keys and Rainbow key specifications into a form
- * that can be used with the FlexiPQCProvider.
- *
- * @author Patrick Neugebauer
- * @author Marius Senftleben
- * @author Tsvetoslava Vateva
- * @see RainbowPublicKey
- * @see de.flexiprovider.pqc.rainbow.RainbowPublicKeySpec
- * @see de.flexiprovider.pqc.rainbow.RainbowPrivateKey
- * @see de.flexiprovider.pqc.rainbow.RainbowPrivatekeySpec
- */
+
 public class RainbowKeyFactory extends de.flexiprovider.api.keys.KeyFactory {
 
     /**
@@ -38,41 +26,7 @@ public class RainbowKeyFactory extends de.flexiprovider.api.keys.KeyFactory {
      */
     public static final String OID = "1.3.6.1.4.1.8301.3.1.3.5.3.2";
 
-    /**
-     * Converts, if possible, a key specification into a
-     * {@link RainbowPrivateKey}. Currently, the following key specifications
-     * are supported: {@link RainbowParameterSpec}, {@link de.flexiprovider.pki.PKCS8EncodedKeySpec}.
-     * <p/>
-     * <p/>
-     * <p/>
-     * The ASN.1 definition of the key structure is
-     * <p/>
-     * <pre>
-     *   RainbowPrivateKey ::= SEQUENCE {
-     *     oid        OBJECT IDENTIFIER         -- OID identifying the algorithm
-     *     A1inv      SEQUENCE OF OCTET STRING  -- inversed matrix of L1
-     *     b1         OCTET STRING              -- translation vector of L1
-     *     A2inv      SEQUENCE OF OCTET STRING  -- inversed matrix of L2
-     *     b2         OCTET STRING              -- translation vector of L2
-     *     vi         OCTET STRING              -- num of elmts in each Set S
-     *     layers     SEQUENCE OF Layer         -- layers of F
-     *   }
-     *
-     *   Layer             ::= SEQUENCE OF Poly
-     *   Poly              ::= SEQUENCE {
-     *     alpha      SEQUENCE OF OCTET STRING
-     *     beta       SEQUENCE OF OCTET STRING
-     *     gamma      OCTET STRING
-     *     eta        OCTET
-     *   }
-     * </pre>
-     * <p/>
-     * <p/>
-     *
-     * @param keySpec the key specification
-     * @return the Rainbow private key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     */
+
     public PrivateKey generatePrivate(KeySpec keySpec)
             throws InvalidKeySpecException {
         if (keySpec instanceof RainbowPrivateKeySpec) {
@@ -98,7 +52,7 @@ public class RainbowKeyFactory extends de.flexiprovider.api.keys.KeyFactory {
                 ASN1Sequence privKey = (ASN1Sequence) innerType;
 
                 // decode oidString (but we don't need it right now)
-                String oidString = ((ASN1ObjectIdentifier) privKey.get(0))
+                String oidString = privKey.get(0)
                         .toString();
 
                 // decode <A1inv>
@@ -243,7 +197,7 @@ public class RainbowKeyFactory extends de.flexiprovider.api.keys.KeyFactory {
                 ASN1Sequence pubKey = (ASN1Sequence) innerType;
 
                 // decode oidString (but we don't need it right now)
-                String oidString = ((ASN1ObjectIdentifier) pubKey.get(0))
+                String oidString = pubKey.get(0)
                         .toString();
 
                 // decode <docLength>

@@ -10,7 +10,6 @@ public final class ASN1 {
     public static final int TAG_NULL = 5;
     public static final int TAG_OID = 6;
     public static final int TAG_REAL = 9;
-    public static final int TAG_ENUMERATED = 10;
     public static final int TAG_UTF8STRING = 12;
     public static final int TAG_SEQUENCE = 16;
     public static final int TAG_SET = 17;
