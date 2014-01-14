@@ -23,7 +23,7 @@
  * questions.
  */
 
-package my;
+package de.flexiprovider.my;
 
 /**
  * A class used to represent multiprecision integers that makes efficient

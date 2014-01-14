@@ -147,7 +147,9 @@ public class CryptMethods {
         }
     }
 
-    public static int decrypt(String encryptedMessage) {
+    public static int decrypt(String encryptedMessage,byte[] key) {
+        MessageFormat.decryptedMsg=null;
+        LightMessage.decryptedLightMsg=null;
         if (encryptedMessage == null) {
             Log.d("null", "null message");
             return -1;
@@ -156,69 +158,46 @@ public class CryptMethods {
             Log.e("no private", "message");
             return -1;
         }
-        if (notInit) {
-            addProviders();
-            notInit = false;
-        }
-        try {
-            IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",
-                    "HmacSHA1", null, null);
-            Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
-            cipher.init(Cipher.DECRYPT_MODE, mPtK, iesParams);
-            byte[] rawMsg = Visual.hex2bin(encryptedMessage);
-            byte[] decryptedBytes = cipher.doFinal(rawMsg);
-            StaticVariables.encrypted_msg_size = encryptedMessage.length();
-            StaticVariables.orig_msg_size = decryptedBytes.length;
-            MessageFormat.decryptedMsg=null;
-            LightMessage.decryptedLightMsg=null;
-            int result=FileParser.getType(decryptedBytes);
-            switch (result){
-                case FileParser.ENCRYPTED_MSG:
-                    MessageFormat.decryptedMsg = new MessageFormat(decryptedBytes);
-                    return result;
-                case FileParser.ENCRYPTED_QR_MSG:
-                    LightMessage.decryptedLightMsg = new LightMessage(decryptedBytes);
-                    return result;
-                case FileParser.ENCRYPTED_BACKUP:
-                    Log.w("backup data",new String(decryptedBytes));
-                    return result;
-                case FileParser.ENCRYPTED_GROUP:
-                    Log.w("group",new String(decryptedBytes));
-                    return result;
-                default:
-                    return result;
-            }
-        } catch (Exception e) {
-            MessageFormat.decryptedMsg = null;
-            LightMessage.decryptedLightMsg = null;
-            e.printStackTrace();
+        byte[] rawMsg = Visual.hex2bin(encryptedMessage);
+
+        byte[] decryptedBytes;
+        if(key==null)
+            decryptedBytes = decrypt(rawMsg);
+        else
+            decryptedBytes =decrypt(rawMsg,key);
+        if(decryptedBytes==null){
             return -1;
+        }
+        StaticVariables.encrypted_msg_size = encryptedMessage.length();
+        StaticVariables.orig_msg_size = decryptedBytes.length;
+        int result=FileParser.getType(decryptedBytes);
+        switch (result){
+            case FileParser.ENCRYPTED_MSG:
+                MessageFormat.decryptedMsg = new MessageFormat(decryptedBytes);
+                return result;
+            case FileParser.ENCRYPTED_QR_MSG:
+                LightMessage.decryptedLightMsg = new LightMessage(decryptedBytes);
+                return result;
+            case FileParser.ENCRYPTED_BACKUP:
+                Log.w("backup data",new String(decryptedBytes));
+                return result;
+            case FileParser.ENCRYPTED_GROUP:
+                Log.w("group",new String(decryptedBytes));
+                return result;
+            default:
+                return result;
         }
     }
 
     public static String encrypt(final byte[] msg, final byte[] light, final String friendPublicKey) {
-        if (notInit) {
-            addProviders();
-            notInit = false;
-        }
-        try {
-            PublicKey frndPbK = KeyFactory.getInstance("ECIES", "FlexiEC")
-                    .generatePublic(new X509EncodedKeySpec(Visual.hex2bin(friendPublicKey)));
-            Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
-            IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",
-                    "HmacSHA1", null, null);
-            cipher.init(Cipher.ENCRYPT_MODE, frndPbK, iesParams);
             if (light != null)
-                StaticVariables.encryptedLight = Visual.bin2hex(cipher.doFinal(light));
-            encryptedMsgToSend = Visual.bin2hex(cipher.doFinal(msg));
+                StaticVariables.encryptedLight = Visual.bin2hex(encrypt(light, friendPublicKey));
+            encryptedMsgToSend = Visual.bin2hex(encrypt(msg, friendPublicKey));
             return encryptedMsgToSend;
-        } catch (Exception ignore) {
-            ignore.printStackTrace();
-            return null;
-        }
+
     }
 
-    public static byte[] encrypyt(byte[] b,String publicKey){
+    public static byte[] encrypt(byte[] b, String publicKey){
         if (notInit) {
             addProviders();
             notInit = false;
@@ -233,6 +212,30 @@ public class CryptMethods {
             return cipher.doFinal(b);
         } catch (Exception ignore) {
             ignore.printStackTrace();
+            return null;
+        }
+    }
+    public static byte[] decrypt(byte[] raw){
+        return decrypt(raw,null);
+    }
+    public static byte[] decrypt(byte[] data,byte[] key){
+        if (notInit) {
+            addProviders();
+            notInit = false;
+        }
+        try {
+            IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",
+                    "HmacSHA1", null, null);
+            Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
+            if(key==null)
+                cipher.init(Cipher.DECRYPT_MODE, mPtK, iesParams);
+            else{
+                cipher.init(Cipher.DECRYPT_MODE, formatPrivate(key), iesParams);
+                Log.e("pvt",new String(key));
+            }
+            return cipher.doFinal(data);
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

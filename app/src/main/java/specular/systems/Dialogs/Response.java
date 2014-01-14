@@ -21,6 +21,8 @@ import specular.systems.ContactsDataSource;
 import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
 import specular.systems.FragmentManagement;
+import specular.systems.Group;
+import specular.systems.GroupDataSource;
 import specular.systems.LightMessage;
 import specular.systems.MessageFormat;
 import specular.systems.R;
@@ -30,6 +32,7 @@ import specular.systems.activities.SendMsg;
 
 public class Response extends DialogFragment {
     Contact contact;
+    Group group;
     Toast t;
 
     @Override
@@ -45,8 +48,14 @@ public class Response extends DialogFragment {
         builder.setView(v);
         final CheckBox cb = (CheckBox) v.findViewById(R.id.quote);
         if (FragmentManagement.currentLayout == R.layout.edit_contact) {
-            contact = ContactsDataSource.contactsDataSource.findContact(Long.parseLong(
-                    ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));
+            if (getActivity().findViewById(R.id.group_details).getVisibility() == View.VISIBLE) {
+                group = GroupDataSource.groupDataSource.findGroup(Long
+                        .valueOf(((TextView) getActivity().findViewById(R.id.contact_id))
+                                .getText().toString()));
+            }else{
+                contact = ContactsDataSource.contactsDataSource.findContact(Long.parseLong(
+                        ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));
+            }
         } else if (FragmentManagement.currentLayout == R.layout.decrypted_msg) {
             contact = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
             if (StaticVariables.msg_content != null && StaticVariables.msg_content.length() > 0) {
@@ -107,8 +116,9 @@ public class Response extends DialogFragment {
                 else {
                     msgContent = "";
                 }
+                String sss = contact!=null?contact.getSession():group.getMentor();
                 final MessageFormat msg = new MessageFormat(null, CryptMethods.getMyDetails(getActivity()), "", userInput + msgContent
-                        , contact.getSession());
+                        , sss);
                 final LightMessage lightMessage = new LightMessage(userInput + msgContent);
                 final ProgressDlg prgd = new ProgressDlg(getActivity(), R.string.encrypting);
                 prgd.setCancelable(false);
@@ -117,12 +127,12 @@ public class Response extends DialogFragment {
                     @Override
                     public void run() {
                         byte[] data = CryptMethods.encrypt(msg.getFormatedMsg(), lightMessage.getFormatedMsg(),
-                                contact.getPublicKey()).getBytes();
+                                contact!=null?contact.getPublicKey():group.getPublicKey()).getBytes();
                         boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR, data);
                         prgd.cancel();
                         if (success) {
                             Intent intent = new Intent(getActivity(), SendMsg.class);
-                            intent.putExtra("contactId", contact.getId());
+                            intent.putExtra("contactId", contact!=null?contact.getId():group.getId());
                             startActivity(intent);
                         } else {
                             t.setText(R.string.failed_to_create_files_to_send);

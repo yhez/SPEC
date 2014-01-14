@@ -1,10 +1,10 @@
-package my;
+package de.flexiprovider.my;
 
 
 import java.util.Arrays;
 
-import static my.BigDecimal.INFLATED;
-import static my.BigInteger.LONG_MASK;
+import static de.flexiprovider.my.BigDecimal.INFLATED;
+import static de.flexiprovider.my.BigInteger.LONG_MASK;
 
 class MutableBigInteger {
 

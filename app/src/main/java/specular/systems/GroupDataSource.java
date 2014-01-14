@@ -68,41 +68,6 @@ public class GroupDataSource {
         }
     }
 
-    public void updateDB(long id, String groupName, String email,
-                         String publicKey, String session) {
-        ContentValues cv = new ContentValues();
-        if (groupName != null)
-            cv.put(MySQLiteHelper.COLUMN_GROUP_NAME, groupName);
-        if (email != null)
-            cv.put(MySQLiteHelper.COLUMN_ADDRESS, email);
-        if (publicKey != null)
-            cv.put(MySQLiteHelper.COLUMN_PUBLIC_KEY, publicKey);
-        if (session != null)
-            cv.put(MySQLiteHelper.COLUMN_SESSION, session);
-        database = dbHelper.getWritableDatabase();
-        database.update(MySQLiteHelper.TABLE_GROUP, cv, "_id " + "=" + id, null);
-        database.close();
-    }
-
-    public void updateDB(long id, long last, int received) {
-        ContentValues cv = new ContentValues();
-        if (last > 0)
-            cv.put(MySQLiteHelper.COLUMN_LAST_MSG, last);
-        if (received > 0)
-            cv.put(MySQLiteHelper.MSG_RECEIVED, received);
-        database = dbHelper.getWritableDatabase();
-        database.update(MySQLiteHelper.TABLE_GROUP, cv, "_id " + "=" + id, null);
-        database.close();
-    }
-
-    public void updateDB(long id, int sent) {
-        ContentValues cv = new ContentValues();
-        cv.put(MySQLiteHelper.MSG_I_SEND, sent);
-        database = dbHelper.getWritableDatabase();
-        database.update(MySQLiteHelper.TABLE_GROUP, cv, "_id " + "=" + id, null);
-        database.close();
-    }
-
 
     public List<Group> getAllGroups() {
         database = dbHelper.getReadableDatabase();
@@ -114,7 +79,7 @@ public class GroupDataSource {
             Group group = new Group(cursor.getLong(0), cursor.getString(1)
                     , cursor.getString(2), cursor.getString(3)
                     , cursor.getString(4),cursor.getBlob(5)
-                    , cursor.getInt(6)==0, cursor.getInt(7)==0,cursor.getString(8)
+                    , cursor.getInt(6)==1, cursor.getInt(7)==1,cursor.getString(8)
                     ,cursor.getString(9),cursor.getString(10),cursor.getString(11));
             groups.add(group);
             cursor.moveToNext();

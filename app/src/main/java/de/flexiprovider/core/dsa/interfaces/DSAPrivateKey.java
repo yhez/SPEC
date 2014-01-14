@@ -2,7 +2,7 @@ package de.flexiprovider.core.dsa.interfaces;
 
 import de.flexiprovider.api.keys.PrivateKey;
 import de.flexiprovider.common.math.FlexiBigInt;
-import my.BigInteger;
+import de.flexiprovider.my.BigInteger;
 
 /**
  * The interface to a DSA private key. DSA (Digital Signature Algorithm) is

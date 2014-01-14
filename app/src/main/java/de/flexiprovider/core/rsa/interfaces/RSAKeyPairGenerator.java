@@ -4,7 +4,7 @@ import de.flexiprovider.api.keys.KeyPairGenerator;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.core.rsa.RSAKeyGenParameterSpec;
-import my.BigInteger;
+import de.flexiprovider.my.BigInteger;
 
 /**
  * Translation interface between

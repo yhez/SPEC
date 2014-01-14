@@ -2,7 +2,7 @@ package de.flexiprovider.core.rsa;
 
 import de.flexiprovider.api.keys.KeySpec;
 import de.flexiprovider.common.math.FlexiBigInt;
-import my.BigInteger;
+import de.flexiprovider.my.BigInteger;
 
 public final class RSAPublicKeySpec extends java.security.spec.RSAPublicKeySpec
         implements KeySpec {

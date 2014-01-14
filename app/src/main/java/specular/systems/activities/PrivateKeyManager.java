@@ -274,7 +274,7 @@ public class PrivateKeyManager extends Activity {
                 case R.id.p_button3:
                     Intent i = new Intent(this, StartScan.class);
                     i.putExtra("type", StartScan.PRIVATE);
-                    startActivityForResult(i, 0);
+                    startActivityForResult(i, Main.SCAN_PRIVATE);
                     break;
                 case R.id.p_button4:
                     try {

@@ -1,7 +1,7 @@
 package de.flexiprovider.core.rsa;
 
 import de.flexiprovider.common.math.FlexiBigInt;
-import my.BigInteger;
+import de.flexiprovider.my.BigInteger;
 
 public class RSAPrivateKeySpec extends java.security.spec.RSAPrivateKeySpec
         implements RSAPrivKeySpecInterface {

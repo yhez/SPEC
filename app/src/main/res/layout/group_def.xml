@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
         <EditText
-            android:background="@android:color/white"
+            android:background="@drawable/edit_text"
             android:id="@+id/session"
             android:textColor="@color/spec_black"
             android:imeOptions="flagNavigateNext"
@@ -18,7 +18,7 @@
             android:layout_height="wrap_content" />
 
         <EditText
-            android:background="@android:color/white"
+            android:background="@drawable/edit_text"
             android:textColor="@color/spec_black"
             android:id="@+id/name"
             android:nextFocusDown="@id/email"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content" />
 
         <EditText
-            android:background="@android:color/white"
+            android:background="@drawable/edit_text"
             android:textColor="@color/spec_black"
             android:id="@+id/email"
             android:imeOptions="flagNoEnterAction"

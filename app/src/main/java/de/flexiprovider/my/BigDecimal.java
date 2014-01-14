@@ -1,8 +1,8 @@
-package my;
+package de.flexiprovider.my;
 
 import java.util.Arrays;
 
-import static my.BigInteger.LONG_MASK;
+import static de.flexiprovider.my.BigInteger.LONG_MASK;
 
 public class BigDecimal extends Number implements Comparable<BigDecimal> {
 

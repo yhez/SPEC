@@ -13,7 +13,6 @@ import zxing.WriterException;
 public class Group {
     private long id;
     public static List<Group> list;
-    private byte[] encryptedGroup;
     private String defaultAPP;
     private String ownerName;
     private String ownerEmail;
@@ -24,7 +23,6 @@ public class Group {
     private String session;
     private String publicKey;
     private boolean dontAllowNewMembers;
-    private String encryptedPrivateFileNameForGroup;
     private byte[] privateKey;
 
     //creates new from nothing
@@ -34,7 +32,7 @@ public class Group {
         this.name = name;
         this.locationForMessages = locationForMessages;
         this.session = groupMentor;
-        this.privateKey = privateKey;
+        this.privateKey = CryptMethods.encrypt(privateKey, CryptMethods.getPublic());
         this.publicKey = publicKey;
         this.dontAllowNewMembers = dontAllowNewMembers;
         String[] details = CryptMethods.getMyDetails(a);
@@ -49,7 +47,7 @@ public class Group {
     }
 
     //getting a group from db
-    public Group(long id, String name, String locationForMessages, String groupMentor, String publicKey,byte[] privatek,
+    public Group(long id, String name, String locationForMessages, String groupMentor, String publicKey,byte[] encryptedPrivateKey,
                  boolean noPrivateOnDevice, boolean dontAllowNewMembers,
                  String ownerName, String ownerEmail, String ownerPublicKey,String defaultApp) {
         this.noPrivateOnDevice = noPrivateOnDevice;
@@ -57,7 +55,7 @@ public class Group {
         this.name = name;
         this.locationForMessages = locationForMessages;
         this.session = groupMentor;
-        this.privateKey=privatek;
+        this.privateKey=CryptMethods.decrypt(encryptedPrivateKey);
         this.publicKey = publicKey;
         this.ownerName = ownerName;
         this.ownerEmail = ownerEmail;
@@ -68,7 +66,7 @@ public class Group {
 
     //getting a group from an encrypted file
     public Group(String rawData) {
-
+        //todo
     }
     public byte[] getGroupToShare(){
         String s = name+"\n"+session+"\n"+locationForMessages+"\n"+publicKey+"\nowner_details\n"
@@ -133,9 +131,6 @@ public class Group {
         return session;
     }
 
-    public Contact getOwnerContact() {
-        return ContactsDataSource.contactsDataSource.findContactByKey(ownerPublicKey);
-    }
 
     public String[] getOwnerDetails() {
         return new String[]{ownerName, ownerEmail, ownerPublicKey};

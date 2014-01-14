@@ -2,7 +2,7 @@ package de.flexiprovider.core.rsa.interfaces;
 
 import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.common.math.FlexiBigInt;
-import my.BigInteger;
+import de.flexiprovider.my.BigInteger;
 
 public abstract class RSAPublicKey extends PublicKey implements RSAKey,
         java.security.interfaces.RSAPublicKey {

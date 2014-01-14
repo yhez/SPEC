@@ -38,8 +38,8 @@ public class RSAPrivateCrtKeySpec extends
     public RSAPrivateCrtKeySpec(FlexiBigInt n, FlexiBigInt e, FlexiBigInt d,
                                 FlexiBigInt p, FlexiBigInt q, FlexiBigInt dP, FlexiBigInt dQ,
                                 FlexiBigInt crtCoeff) {
-        super(my.BigInteger.get(n.bigInt), my.BigInteger.get(e.bigInt), my.BigInteger.get(d.bigInt), my.BigInteger.get(p.bigInt), my.BigInteger.get(q.bigInt), my.BigInteger.get(dP.bigInt),
-                my.BigInteger.get(dQ.bigInt), my.BigInteger.get(crtCoeff.bigInt));
+        super(de.flexiprovider.my.BigInteger.get(n.bigInt), de.flexiprovider.my.BigInteger.get(e.bigInt), de.flexiprovider.my.BigInteger.get(d.bigInt), de.flexiprovider.my.BigInteger.get(p.bigInt), de.flexiprovider.my.BigInteger.get(q.bigInt), de.flexiprovider.my.BigInteger.get(dP.bigInt),
+                de.flexiprovider.my.BigInteger.get(dQ.bigInt), de.flexiprovider.my.BigInteger.get(crtCoeff.bigInt));
     }
 
     /**
@@ -88,14 +88,14 @@ public class RSAPrivateCrtKeySpec extends
      * @return the private exponent d mod (q-1)
      */
     public FlexiBigInt getDq() {
-        return new FlexiBigInt(new my.BigInteger(getPrimeExponentQ()));
+        return new FlexiBigInt(new de.flexiprovider.my.BigInteger(getPrimeExponentQ()));
     }
 
     /**
      * @return the CRT coefficient
      */
     public FlexiBigInt getCRTCoeff() {
-        return new FlexiBigInt(new my.BigInteger(getCrtCoefficient()));
+        return new FlexiBigInt(new de.flexiprovider.my.BigInteger(getCrtCoefficient()));
     }
 
 }

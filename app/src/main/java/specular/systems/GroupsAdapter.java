@@ -1,6 +1,7 @@
 package specular.systems;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,17 +21,17 @@ import java.util.Comparator;
 import java.util.List;
 
 import specular.systems.activities.Main;
+import specular.systems.activities.StartScan;
 
 import static specular.systems.R.layout.edit_contact;
 
 public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
-    public static final int EDIT = 1, SIMPLE = 2;
     private static GroupsAdapter adapter;
     private static List<Group> list;
     int type;
     private Activity a;
 
-    public GroupsAdapter(Activity a, int type) {
+    public GroupsAdapter(Activity a) {
         super(a, R.layout.list_row, list);
         this.a = a;
         this.type = type;
@@ -120,17 +121,24 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = a.getLayoutInflater();
         View rowView;
-        if (type == EDIT)
-            rowView = inflater.inflate(R.layout.list_row, parent, false);
-        else
-            rowView = inflater.inflate(R.layout.simple_list_row, parent, false);
+        rowView = inflater.inflate(R.layout.list_row, parent, false);
         final Group c = list.get(position);
         TextView name = (TextView) rowView.findViewById(R.id.first_line);
+        View bt = rowView.findViewById(R.id.scan);
+        bt.setVisibility(View.VISIBLE);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(a, StartScan.class);
+                i.putExtra("type",StartScan.MESSAGE);
+                i.putExtra("id",c.getId());
+                a.startActivityForResult(i,Main.SCAN_FOR_GROUP);
+            }
+        });
         TextView email = (TextView) rowView.findViewById(R.id.sec_line);
         final ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         TextView id = (TextView) rowView.findViewById(R.id.id_contact);
         id.setText("" + c.getId());
-        if (type == EDIT) {
             rowView.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -152,7 +160,6 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
                     Main.main.contactChosen(false,c.getId());
                 }
             });
-        }
         new Thread(new Runnable() {
             public void run() {
                 final Bitmap bitmap = c.getPhoto();

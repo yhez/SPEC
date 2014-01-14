@@ -23,7 +23,7 @@
  * questions.
  */
 
-package my;
+package de.flexiprovider.my;
 
 
 /**

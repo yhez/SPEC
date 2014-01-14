@@ -2,7 +2,7 @@ package de.flexiprovider.core.rsa;
 
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.math.FlexiBigInt;
-import my.BigInteger;
+import de.flexiprovider.my.BigInteger;
 
 /**
  * This class specifies parameters used by the {@link RSAKeyPairGenerator}.

@@ -2,7 +2,7 @@ package de.flexiprovider.core.dsa;
 
 import de.flexiprovider.api.keys.KeySpec;
 import de.flexiprovider.common.math.FlexiBigInt;
-import my.BigInteger;
+import de.flexiprovider.my.BigInteger;
 
 /**
  * This class specifies a DSA private key with its associated parameters.

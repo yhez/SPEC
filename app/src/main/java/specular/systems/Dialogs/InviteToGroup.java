@@ -34,7 +34,7 @@ public class InviteToGroup extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Contact c = StaticVariables.fullList.get(i);
-                byte[] b = CryptMethods.encrypyt(g.getGroupToShare(),c.getPublicKey());
+                byte[] b = CryptMethods.encrypt(g.getGroupToShare(), c.getPublicKey());
                 byte[] bb = Visual.bin2hex(b).getBytes();
                 FilesManagement.createGroupFileToSend(getActivity(),bb);
                 InviteToGroup.this.getDialog().cancel();

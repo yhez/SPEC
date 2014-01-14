@@ -27,7 +27,7 @@
  * Portions Copyright IBM Corporation, 1997, 2001. All Rights Reserved.
  */
 
-package my;
+package de.flexiprovider.my;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -37,7 +37,7 @@ import java.io.StreamCorruptedException;
 /**
  * Immutable objects which encapsulate the context settings which
  * describe certain rules for numerical operators, such as those
- * implemented by the {@link my.BigDecimal} class.
+ * implemented by the {@link de.flexiprovider.my.BigDecimal} class.
  * <p/>
  * <p>The base-independent settings are:
  * <ol>
@@ -52,7 +52,7 @@ import java.io.StreamCorruptedException;
  *
  * @author Mike Cowlishaw
  * @author Joseph D. Darcy
- * @see my.BigDecimal
+ * @see de.flexiprovider.my.BigDecimal
  * @see RoundingMode
  * @since 1.5
  */

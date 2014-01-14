@@ -26,7 +26,7 @@
 /*
  * Portions Copyright IBM Corporation, 2001. All Rights Reserved.
  */
-package my;
+package de.flexiprovider.my;
 
 
 public enum RoundingMode {
@@ -134,7 +134,7 @@ public enum RoundingMode {
 
     /**
      * Returns the {@code RoundingMode} object corresponding to a
-     * legacy integer rounding mode constant in {@link my.BigDecimal}.
+     * legacy integer rounding mode constant in {@link de.flexiprovider.my.BigDecimal}.
      *
      * @param rm legacy integer rounding mode to convert
      * @return {@code RoundingMode} corresponding to the given integer.

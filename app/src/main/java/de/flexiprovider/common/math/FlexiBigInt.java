@@ -1,7 +1,7 @@
 package de.flexiprovider.common.math;
 
 import de.flexiprovider.api.SecureRandom;
-import my.BigInteger;
+import de.flexiprovider.my.BigInteger;
 
 public final class FlexiBigInt {
 

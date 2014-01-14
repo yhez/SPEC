@@ -1,4 +1,4 @@
-package my;
+package de.flexiprovider.my;
 
 import android.util.Log;
 
