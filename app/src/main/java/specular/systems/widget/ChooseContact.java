@@ -25,7 +25,6 @@ import specular.systems.ContactsDataSource;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.MySimpleArrayAdapter;
 import specular.systems.R;
-import specular.systems.StaticVariables;
 import specular.systems.Visual;
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
@@ -50,7 +49,7 @@ public class ChooseContact extends Activity {
             ListView lv = new ListView(this);
             MySimpleArrayAdapter sl = new MySimpleArrayAdapter(this,MySimpleArrayAdapter.SIMPLE);
             //todo add filter
-            if (StaticVariables.fullList.isEmpty()) {
+            if (ContactsDataSource.fullList.isEmpty()) {
                 Toast t = Toast.makeText(this, R.string.widget_add_contact_list_empty, Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                 t.show();

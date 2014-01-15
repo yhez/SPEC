@@ -49,24 +49,24 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
             ListView lv = (ListView) rootView.findViewById(R.id.list);
             if (currentLayout == CONTACTS) {
                 rootView.setId(CONTACTS);
-                if (StaticVariables.fullList.size() == 0) {
+                lv.setAdapter(new MySimpleArrayAdapter(getActivity(),MySimpleArrayAdapter.EDIT));
+                MySimpleArrayAdapter.showOriginal();
+                if (ContactsDataSource.fullList.size() == 0) {
                     tv.setVisibility(View.VISIBLE);
                     lv.setVisibility(View.GONE);
                 } else {
-                    lv.setAdapter(new MySimpleArrayAdapter(getActivity(),MySimpleArrayAdapter.EDIT));
-                    MySimpleArrayAdapter.showOriginal();
                     lv.setVisibility(View.VISIBLE);
                     tv.setVisibility(View.GONE);
                 }
             } else if (currentLayout == GROUPS) {
                 rootView.setId(GROUPS);
-                if(StaticVariables.fullListG.size()==0){
+                lv.setAdapter(new GroupsAdapter(getActivity()));
+                GroupsAdapter.showOriginal();
+                if(GroupDataSource.fullListG.size()==0){
                     tv.setText(R.string.there_is_no_groups);
                     tv.setVisibility(View.VISIBLE);
                     lv.setVisibility(View.GONE);
                 }else{
-                    lv.setAdapter(new GroupsAdapter(getActivity()));
-                    GroupsAdapter.showOriginal();
                     lv.setVisibility(View.VISIBLE);
                     tv.setVisibility(View.GONE);
                 }

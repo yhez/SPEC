@@ -28,11 +28,11 @@ public class MessageFormat {
             return;
         byte[] b = new byte[loc];
         System.arraycopy(raw, 0, b, 0, b.length);
-        String data[] = new String[0];
+        String data[];
         try {
             data = new String(b, "UTF-8").split("\n");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            data = new String(b).split("\n");
         }
         if (!(data.length < 6)) {
             name = data[0];

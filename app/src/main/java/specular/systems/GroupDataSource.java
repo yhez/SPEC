@@ -12,6 +12,7 @@ import java.util.List;
 
 public class GroupDataSource {
     public static GroupDataSource groupDataSource;
+    public static List<Group> fullListG;
     private final String[] allColumns = {MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_GROUP_NAME, MySQLiteHelper.COLUMN_ADDRESS,
             MySQLiteHelper.COLUMN_SESSION, MySQLiteHelper.COLUMN_PUBLIC_KEY,
@@ -54,8 +55,8 @@ public class GroupDataSource {
     public void deleteGroup(Activity aa, Group group) {
         long id = group.getId();
         int position = -1;
-        for (int a = 0; a < StaticVariables.fullList.size(); a++)
-            if (group.getPublicKey().equals(StaticVariables.fullList.get(a).getPublicKey())) {
+        for (int a = 0; a < fullListG.size(); a++)
+            if (group.getPublicKey().equals(fullListG.get(a).getPublicKey())) {
                 position = a;
                 break;
             }
@@ -64,7 +65,7 @@ public class GroupDataSource {
                 + " = " + id, null);
         dbHelper.close();
         if (!(position < 0)) {
-            MySimpleArrayAdapter.removeCont(aa, position);
+            GroupsAdapter.removeCont(aa, position);
         }
     }
 
@@ -105,14 +106,37 @@ public class GroupDataSource {
     }
     public Group findGroup(long id) {
         //trying find on lost before going to db
-        if (StaticVariables.fullList != null)
-            for (Group c : StaticVariables.fullListG)
+        if (GroupDataSource.fullListG != null)
+            for (Group c : fullListG)
                 if (c.getId() == id)
                     return c;
         database = dbHelper.getReadableDatabase();
         Cursor cursor = database.query(MySQLiteHelper.TABLE_GROUP,
                 allColumns, MySQLiteHelper.COLUMN_ID + " = " + id, null, null,
                 null, null);
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            Group c = new Group(cursor.getLong(0), cursor.getString(1)
+                    , cursor.getString(2), cursor.getString(3)
+                    , cursor.getString(4),cursor.getBlob(5)
+                    , cursor.getInt(6)==0, cursor.getInt(7)==0,cursor.getString(8)
+                    ,cursor.getString(9),cursor.getString(10),cursor.getString(11));
+            dbHelper.close();
+            return c;
+        }
+        dbHelper.close();
+        return null;
+    }
+    public Group findGroupByPublic(String publicKey) {
+        //trying find on lost before going to db
+        if (GroupDataSource.fullListG != null)
+            for (Group c : fullListG)
+                if (c.getPublicKey().equals(publicKey))
+                    return c;
+        database = dbHelper.getReadableDatabase();
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_GROUP,
+                allColumns, MySQLiteHelper.COLUMN_PUBLIC_KEY +  " = '" + publicKey
+                + "' ", null, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             Group c = new Group(cursor.getLong(0), cursor.getString(1)

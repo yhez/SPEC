@@ -36,11 +36,11 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
         this.a = a;
         this.type = type;
         adapter = this;
-        if (StaticVariables.fullListG == null) {
+        if (GroupDataSource.fullListG == null) {
             GroupDataSource.groupDataSource = new GroupDataSource(a);
-            StaticVariables.fullListG = GroupDataSource.groupDataSource.getAllGroups();
+            GroupDataSource.fullListG = GroupDataSource.groupDataSource.getAllGroups();
         }
-        list = StaticVariables.fullListG;
+        list = GroupDataSource.fullListG;
     }
 
     public static GroupsAdapter getAdapter() {
@@ -48,30 +48,30 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
     }
 
     public static void updateCont(Activity aa, Group c) {
-        for (int a = 0; a < StaticVariables.fullListG.size(); a++)
-            if (StaticVariables.fullListG.get(a).getId() == c.getId()) {
-                StaticVariables.fullListG.remove(a);
+        for (int a = 0; a < GroupDataSource.fullListG.size(); a++)
+            if (GroupDataSource.fullListG.get(a).getId() == c.getId()) {
+                GroupDataSource.fullListG.remove(a);
                 break;
             }
-        StaticVariables.fullListG.add(c);
+        GroupDataSource.fullListG.add(c);
         if (adapter != null)
             refreshList(aa);
     }
 
     public static void removeCont(Activity a, int index) {
-        StaticVariables.fullListG.remove(index);
+        GroupDataSource.fullListG.remove(index);
         if (adapter != null)
             refreshList(a);
     }
 
     public static void addCont(Activity a, Group c) {
-        StaticVariables.fullListG.add(c);
+        GroupDataSource.fullListG.add(c);
         if (adapter != null)
             refreshList(a);
     }
 
     private static void refreshList(Activity a) {
-        list = StaticVariables.fullListG;
+        list = GroupDataSource.fullListG;
         Collections.sort(list, new Comparator<Group>() {
             @Override
             public int compare(Group contact, Group contact2) {
@@ -80,14 +80,14 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
             }
         });
         if (FragmentManagement.currentLayout == R.layout.encrypt) {
-            View v = a.findViewById(R.id.list);
+            View v = a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.list);
             if (v != null)
-                if (StaticVariables.fullListG.size() > 0) {
+                if (GroupDataSource.fullListG.size() > 0) {
                     v.setVisibility(View.VISIBLE);
-                    a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
+                    a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts).setVisibility(View.GONE);
                 } else {
                     v.setVisibility(View.GONE);
-                    a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+                    a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
                 }
             if (adapter != null)
                 adapter.notifyDataSetChanged();
@@ -95,8 +95,8 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
     }
 
     public static void showOriginal() {
-        if (list != StaticVariables.fullListG) {
-            list = StaticVariables.fullListG;
+        if (list != GroupDataSource.fullListG) {
+            list = GroupDataSource.fullListG;
             if (adapter != null)
                 adapter.notifyDataSetChanged();
         }
@@ -199,10 +199,10 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
                 FilterResults results = new FilterResults();
                 ArrayList<Group> FilteredArrayNames = new ArrayList<Group>();
                 constraint = constraint.toString().toLowerCase();
-                for (int i = 0; i < StaticVariables.fullListG.size(); i++) {
-                    String dataNames = StaticVariables.fullListG.get(i).getEmail() + StaticVariables.fullListG.get(i).getGroupName();
+                for (int i = 0; i < GroupDataSource.fullListG.size(); i++) {
+                    String dataNames = GroupDataSource.fullListG.get(i).getEmail() + GroupDataSource.fullListG.get(i).getGroupName();
                     if (dataNames.toLowerCase().contains(constraint.toString())) {
-                        FilteredArrayNames.add(StaticVariables.fullListG.get(i));
+                        FilteredArrayNames.add(GroupDataSource.fullListG.get(i));
                     }
                 }
                 results.values = FilteredArrayNames;

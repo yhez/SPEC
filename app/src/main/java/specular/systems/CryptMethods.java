@@ -182,7 +182,7 @@ public class CryptMethods {
                 Log.w("backup data",new String(decryptedBytes));
                 return result;
             case FileParser.ENCRYPTED_GROUP:
-                Log.w("group",new String(decryptedBytes));
+                StaticVariables.decryptedGrouop=decryptedBytes;
                 return result;
             default:
                 return result;

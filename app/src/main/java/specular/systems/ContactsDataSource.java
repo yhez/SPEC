@@ -13,6 +13,8 @@ import java.util.List;
 public class ContactsDataSource {
     //form main
     public static ContactsDataSource contactsDataSource;
+    //the complete list
+    public static List<Contact> fullList;
     private final String[] allColumns = {MySQLiteHelper.COLUMN_ID,
             MySQLiteHelper.COLUMN_CONTACT_NAME, MySQLiteHelper.COLUMN_EMAIL,
             MySQLiteHelper.COLUMN_CONTACT_ADDED_DATE, MySQLiteHelper.COLUMN_LAST_MSG,
@@ -52,8 +54,8 @@ public class ContactsDataSource {
     public void deleteContact(Activity aa, Contact contact) {
         long id = contact.getId();
         int position = -1;
-        for (int a = 0; a < StaticVariables.fullList.size(); a++)
-            if (contact.getPublicKey().equals(StaticVariables.fullList.get(a).getPublicKey())) {
+        for (int a = 0; a < fullList.size(); a++)
+            if (contact.getPublicKey().equals(fullList.get(a).getPublicKey())) {
                 position = a;
                 break;
             }
@@ -103,8 +105,8 @@ public class ContactsDataSource {
 
     public Contact findContact(long id) {
         //trying find on lost before going to db
-        if (StaticVariables.fullList != null)
-            for (Contact c : StaticVariables.fullList)
+        if (fullList != null)
+            for (Contact c : fullList)
                 if (c.getId() == id)
                     return c;
         database = dbHelper.getReadableDatabase();

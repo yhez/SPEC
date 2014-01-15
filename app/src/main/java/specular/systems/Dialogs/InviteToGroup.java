@@ -10,12 +10,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import specular.systems.Contact;
+import specular.systems.ContactsDataSource;
 import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
 import specular.systems.Group;
 import specular.systems.MySimpleArrayAdapter;
 import specular.systems.R;
-import specular.systems.StaticVariables;
 import specular.systems.Visual;
 import specular.systems.activities.SendMsg;
 
@@ -33,7 +33,7 @@ public class InviteToGroup extends DialogFragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Contact c = StaticVariables.fullList.get(i);
+                Contact c = ContactsDataSource.fullList.get(i);
                 byte[] b = CryptMethods.encrypt(g.getGroupToShare(), c.getPublicKey());
                 byte[] bb = Visual.bin2hex(b).getBytes();
                 FilesManagement.createGroupFileToSend(getActivity(),bb);

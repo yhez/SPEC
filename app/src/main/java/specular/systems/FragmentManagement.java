@@ -59,6 +59,7 @@ import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 public class FragmentManagement extends Fragment {
+    public static int currentPage=0;
     public static int currentLayout = -1;
     final Thread checkHash = new Thread(new Runnable() {
         @Override
@@ -562,6 +563,7 @@ public class FragmentManagement extends Fragment {
                 ViewPager vp = (ViewPager) rootView.findViewById(R.id.pager);
                 ContactsGroup cg = new ContactsGroup(Main.main.getSupportFragmentManager());
                 vp.setAdapter(cg);
+                vp.setCurrentItem(currentPage);
                 vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(int i, float v, int i2) {
@@ -570,6 +572,7 @@ public class FragmentManagement extends Fragment {
 
                     @Override
                     public void onPageSelected(int i) {
+                        currentPage=i;
                         getActivity().invalidateOptionsMenu();
                         StaticVariables.luc.showIfNeeded(getActivity(), null);
                     }

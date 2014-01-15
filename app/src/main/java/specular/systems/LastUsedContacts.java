@@ -31,9 +31,9 @@ public class LastUsedContacts {
                 num[c] = Integer.parseInt(t[c].split("-")[1]);
             for (int c = 0; c < t.length && c < NUM_LASTS; c++) {
                 long lg = Long.parseLong(t[c].split("-")[0]);
-                for (int b = 0; b < StaticVariables.fullList.size(); b++) {
-                    if (StaticVariables.fullList.get(b).getId() == lg) {
-                        lasts[c] = StaticVariables.fullList.get(b);
+                for (int b = 0; b < ContactsDataSource.fullList.size(); b++) {
+                    if (ContactsDataSource.fullList.get(b).getId() == lg) {
+                        lasts[c] = ContactsDataSource.fullList.get(b);
                         ids[c] = lg;
                         break;
                     }
@@ -53,7 +53,7 @@ public class LastUsedContacts {
     public void showIfNeeded(Activity a, View v) {
         TextView tv = (TextView)a.findViewById(R.id.contact_id_to_send);
         ViewPager vp = (ViewPager) a.findViewById(R.id.pager);
-        if (StaticVariables.fullList.size() < StaticVariables.minContactSize
+        if (ContactsDataSource.fullList.size() < StaticVariables.minContactSize
                 || lasts.length == 0 || lasts[0] == null
                 || (tv!=null&&tv.getText().toString().length()!=0)
                 || (vp!=null&&vp.getCurrentItem()==ContactsGroup.GROUPS)) {

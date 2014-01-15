@@ -5,14 +5,13 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.graphics.Bitmap;
 
-import java.util.List;
+import java.io.UnsupportedEncodingException;
 
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
 public class Group {
     private long id;
-    public static List<Group> list;
     private String defaultAPP;
     private String ownerName;
     private String ownerEmail;
@@ -43,7 +42,6 @@ public class Group {
         if(GroupDataSource.groupDataSource==null)
             GroupDataSource.groupDataSource = new GroupDataSource(a);
         this.id = GroupDataSource.groupDataSource.createGroup(a, this);
-        StaticVariables.fullListG.add(this);
     }
 
     //getting a group from db
@@ -65,13 +63,53 @@ public class Group {
     }
 
     //getting a group from an encrypted file
-    public Group(String rawData) {
-        //todo
+    public Group(byte[] rawData) {
+        int loc = rawData.length-1;
+        while (loc > 2) {
+            if (rawData[loc]=='y'&&rawData[loc-1]=='e'&&rawData[loc-2]=='K') {
+                break;
+            }
+            loc--;
+        }
+        byte[] b = new byte[loc-1];
+        System.arraycopy(rawData, 0, b, 0, b.length);
+        privateKey=new byte[rawData.length-loc-1];
+        System.arraycopy(rawData, loc+1, privateKey, 0, privateKey.length-1);
+        String strings[];
+        try {
+            strings = new String(b, "UTF-8").split("\n");
+        } catch (UnsupportedEncodingException e) {
+            strings = new String(b).split("\n");
+        }
+        name=strings[0];
+        session=strings[1];
+        locationForMessages=strings[2];
+        publicKey=strings[3];
+        ownerName=strings[4];
+        ownerEmail=strings[5];
+        ownerPublicKey=strings[6];
+        dontAllowNewMembers=strings[7].equals("v");
+        noPrivateOnDevice = strings[8].equals("v");
+        defaultAPP="";
+    }
+    public Group(Activity a,Group g){
+        name=g.name;
+        noPrivateOnDevice=g.noPrivateOnDevice;
+        privateKey=g.privateKey;
+        publicKey=g.publicKey;
+        session=g.session;
+        ownerEmail=g.ownerEmail;
+        ownerPublicKey=g.ownerPublicKey;
+        ownerName=g.ownerName;
+        dontAllowNewMembers=g.dontAllowNewMembers;
+        defaultAPP=g.defaultAPP;
+        locationForMessages=g.locationForMessages;
+        id = GroupDataSource.groupDataSource.createGroup(a,this);
     }
     public byte[] getGroupToShare(){
-        String s = name+"\n"+session+"\n"+locationForMessages+"\n"+publicKey+"\nowner_details\n"
+        String s = name+"\n"+session+"\n"+locationForMessages+"\n"+publicKey+"\n"
                 +ownerName+"\n"+ownerEmail+"\n"+ownerPublicKey+"\n"+
-                (dontAllowNewMembers?"private_group\n":"")+(noPrivateOnDevice?"nfc_required\n":""+"private_key");
+                (dontAllowNewMembers?"v":"x")+"\n"+(noPrivateOnDevice?"v":"x")+"\n"+"pvtKey";
         byte[] strLength;
         try {
             strLength = s.getBytes("UTF-8");
@@ -83,8 +121,8 @@ public class Group {
         for(a=0;a<strLength.length;a++){
             data[a]=strLength[a];
         }
-        for(;a<privateKey.length;a++){
-            data[a]=privateKey[a-strLength.length];
+        for(int b=0;b<privateKey.length;b++,a++){
+            data[a]=privateKey[b];
         }
         data[data.length-1]=(byte)FileParser.getFlag(FileParser.ENCRYPTED_GROUP);
         return data;

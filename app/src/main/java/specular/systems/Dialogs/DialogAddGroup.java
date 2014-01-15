@@ -5,8 +5,13 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.widget.Toast;
 
+import specular.systems.Group;
+import specular.systems.GroupDataSource;
 import specular.systems.R;
+import specular.systems.StaticVariables;
 
 
 public class DialogAddGroup extends DialogFragment {
@@ -22,8 +27,14 @@ public class DialogAddGroup extends DialogFragment {
                 }).setPositiveButton("OK",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                NotImplemented ni = new NotImplemented();
-                ni.show(getFragmentManager(),"ni");
+                Group g = new Group(StaticVariables.decryptedGrouop);
+                Group d = GroupDataSource.groupDataSource.findGroupByPublic(g.getPublicKey());
+                if(d!=null){
+                    Toast t = Toast.makeText(getActivity(),"group with the same session already exist",Toast.LENGTH_SHORT);
+                    t.setGravity(Gravity.CENTER,0,0);
+                    t.show();
+                }else
+                    new Group(getActivity(),g);
             }
         });
         return builder.create();

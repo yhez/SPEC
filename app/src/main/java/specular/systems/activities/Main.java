@@ -175,6 +175,8 @@ public class Main extends FragmentActivity {
                     dr.show(getFragmentManager(),"dr");
                     break;
                 case ADD_GROUP:
+                    FragmentManagement.currentPage=1;
+                    selectItem(1, R.layout.encrypt, null);
                     DialogAddGroup dag = new DialogAddGroup();
                     dag.show(getFragmentManager(),"dag");
                     break;
@@ -532,13 +534,13 @@ public class Main extends FragmentActivity {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
         fragmentManager = getSupportFragmentManager();
-        if (StaticVariables.fullList == null) {
+        if (ContactsDataSource.fullList == null) {
             ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
-            StaticVariables.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
+            ContactsDataSource.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
         }
-        if (StaticVariables.fullListG == null) {
+        if (GroupDataSource.fullListG == null) {
             GroupDataSource.groupDataSource = new GroupDataSource(this);
-            StaticVariables.fullListG = GroupDataSource.groupDataSource.getAllGroups();
+            GroupDataSource.fullListG = GroupDataSource.groupDataSource.getAllGroups();
         }
         t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
         t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
@@ -782,7 +784,7 @@ public class Main extends FragmentActivity {
             if (FragmentManagement.currentLayout == R.layout.encrypt) {
                 ViewPager vp = (ViewPager) findViewById(R.id.pager);
                 if (vp.getCurrentItem() == 0) {
-                    if (StaticVariables.fullList == null || StaticVariables.fullList.size() == 0) {
+                    if (ContactsDataSource.fullList == null || ContactsDataSource.fullList.size() == 0) {
                         mi.setVisible(false);
                         mi3.setVisible(false);
                     } else {
@@ -801,7 +803,7 @@ public class Main extends FragmentActivity {
                             mi3.setVisible(false);
                     }
                 } else {
-                    if (StaticVariables.fullListG == null || StaticVariables.fullListG.size() == 0) {
+                    if (GroupDataSource.fullListG == null || GroupDataSource.fullListG.size() == 0) {
                         mi.setVisible(false);
                     } else {
                         TextView tv = (TextView) findViewById(R.id.contact_id_to_send);
@@ -995,7 +997,7 @@ public class Main extends FragmentActivity {
         switch (status) {
             case BOTH:
                 layouts = allLayouts;
-                if (StaticVariables.fullList.size() > 3)
+                if (ContactsDataSource.fullList.size() > 3)
                     defaultScreen = R.layout.encrypt;
                 else
                     defaultScreen = R.layout.me;
@@ -1011,7 +1013,7 @@ public class Main extends FragmentActivity {
                         || StaticVariables.fileContactCard != null) {
                     selectItem(0, R.layout.wait_nfc_decrypt, getString(R.string.tab_nfc_title));
                 } else {
-                    if (StaticVariables.fullList.size() > 3) {
+                    if (ContactsDataSource.fullList.size() > 3) {
                         defaultScreen = R.layout.encrypt;
                         selectItem(0, defaultScreen, null);
                     } else {
@@ -1077,6 +1079,7 @@ public class Main extends FragmentActivity {
             getIntent().setData(null);
             return true;
         } else if (StaticVariables.fileContactCard != null) {
+            FragmentManagement.currentPage=0;
             selectItem(0, R.layout.encrypt, null);
             Contact c = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.fileContactCard.getPublicKey());
             if (c == null) {
@@ -1485,6 +1488,7 @@ public class Main extends FragmentActivity {
         }
         final View root = findViewById(contact ? ContactsGroup.CONTACTS : ContactsGroup.GROUPS);
         root.findViewById(R.id.list).setVisibility(View.GONE);
+        root.findViewById(R.id.no_contacts).setVisibility(View.GONE);
         final View cont = root.findViewById(R.id.en_contact);
         cont.setVisibility(View.VISIBLE);
         id.setText(contactID + "");
