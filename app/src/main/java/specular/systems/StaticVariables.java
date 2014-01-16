@@ -34,5 +34,6 @@ public class StaticVariables {
     public static long orig_msg_size, encrypted_msg_size;
     public static String encryptedLight;
     public static File path;
-    public static byte[] decryptedGrouop;
+    public static byte[] decryptedGroup;
+    public static byte[] decryptedBackup;
 }

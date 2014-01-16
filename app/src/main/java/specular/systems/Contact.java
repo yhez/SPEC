@@ -35,6 +35,18 @@ public class Contact {
             this.id = ContactsDataSource.contactsDataSource.createContact(a, this);
         }
     }
+    public Contact(Activity a,Contact c){
+        contactName = c.contactName;
+        publicKey = c.publicKey;
+        email = c.email;
+        session = c.getSession();
+        added = c.added;
+        last = c.last;
+        received = c.received;
+        sent = c.sent;
+        cn=null;
+        id = ContactsDataSource.contactsDataSource.createContact(a, this);
+    }
 
     //create contact after pulling out from db
     public Contact(long id, String contactName, String email, int added, long last, int sent, int received, String publicKey,

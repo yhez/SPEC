@@ -179,10 +179,11 @@ public class CryptMethods {
                 LightMessage.decryptedLightMsg = new LightMessage(decryptedBytes);
                 return result;
             case FileParser.ENCRYPTED_BACKUP:
+                StaticVariables.decryptedBackup=decryptedBytes;
                 Log.w("backup data",new String(decryptedBytes));
                 return result;
             case FileParser.ENCRYPTED_GROUP:
-                StaticVariables.decryptedGrouop=decryptedBytes;
+                StaticVariables.decryptedGroup =decryptedBytes;
                 return result;
             default:
                 return result;

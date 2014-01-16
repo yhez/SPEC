@@ -27,7 +27,7 @@ public class DialogAddGroup extends DialogFragment {
                 }).setPositiveButton("OK",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Group g = new Group(StaticVariables.decryptedGrouop);
+                Group g = new Group(StaticVariables.decryptedGroup);
                 Group d = GroupDataSource.groupDataSource.findGroupByPublic(g.getPublicKey());
                 if(d!=null){
                     Toast t = Toast.makeText(getActivity(),"group with the same session already exist",Toast.LENGTH_SHORT);
