@@ -270,7 +270,7 @@ public class IDEA extends BlockCipher {
         decr = new int[keyLength];
         int j = 0;
 
-        decr[6 * rounds + 0] = mulInv(encr[j++]);
+        decr[(6 * rounds)] = mulInv(encr[j++]);
         decr[6 * rounds + 1] = -encr[j++];
         decr[6 * rounds + 2] = -encr[j++];
         decr[6 * rounds + 3] = mulInv(encr[j++]);
@@ -278,7 +278,7 @@ public class IDEA extends BlockCipher {
         for (int i = 6 * (rounds - 1); i >= 0; i -= 6) {
             decr[i + 4] = encr[j++];
             decr[i + 5] = encr[j++];
-            decr[i + 0] = mulInv(encr[j++]);
+            decr[i] = mulInv(encr[j++]);
             if (i > 0) {
                 decr[i + 2] = -encr[j++];
                 decr[i + 1] = -encr[j++];

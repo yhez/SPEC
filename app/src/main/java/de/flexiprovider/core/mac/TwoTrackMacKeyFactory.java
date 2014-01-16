@@ -38,7 +38,7 @@ public class TwoTrackMacKeyFactory extends SecretKeyFactory {
             throw new InvalidKeySpecException("unsupported spec type");
         }
 
-        return new SecretKeySpec(((TwoTrackMacKey) key).getEncoded(),
+        return new SecretKeySpec(key.getEncoded(),
                 "TwoTrackMac");
     }
 

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.ec.keys;
 
 import codec.asn1.ASN1OctetString;
@@ -35,51 +26,13 @@ import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.PKITools;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
-/**
- * Key factories are used to convert keys (opaque cryptographic keys of type
- * Key) into key specifications (transparent representations of the underlying
- * key material), and vice versa. <BR>
- * <p/>
- * Key factories are bi-directional. That is, they allow you to build an opaque
- * key object from a given key specification (key material), or to retrieve the
- * underlying key material of a key object in a suitable format.<BR>
- * <p/>
- * This class provides the translation between a key specification (<tt>ECPrivateKeySpec</tt>
- * or <tt>ECPublicKeySpec</tt> or an ASN.1 / DER- representation, in this case
- * a PKCS8EncodedKeySpec or a X509EncodedKeySpec) and an <tt>ECPrivateKey</tt>
- * or an <tt>ECPublicKey</tt>-object.
- *
- * @author Birgit Henhapl
- * @author Michele Boivin
- * @see "java.security.Key"
- * @see "java.security.KeyFactory"
- * @see "java.security.spec.KeySpec"
- * @see "java.security.spec.X509EncodedKeySpec"
- * @see de.flexiprovider.ec.keys.ECPrivateKeySpec
- * @see de.flexiprovider.common.math.ellipticcurves.Point
- * @see CurveParams
- */
+
 public class ECKeyFactory extends KeyFactory {
 
-    /**
-     * The OID for ECDSA public keys (also used for ECDSA private keys).
-     * <p/>
-     * <pre>
-     *   id-publicKeyType   OBJECT IDENTIFIER ::= { ansi-X9-62 keyType(2) }
-     *   id-ecPublicKeyType OBJECT IDENTIFIER ::= { id-publicKeyType 1 }
-     * </pre>
-     */
+
     public static final String OID = "1.2.840.10045.2.1";
 
-    /**
-     * Generates a private key object from the provided key specification (key
-     * material).
-     *
-     * @param keySpec the specification (key material) of the private key
-     * @return the private key
-     * @throws InvalidKeySpecException if the given key specification is inappropriate for this
-     *                                 key factory to produce a private key.
-     */
+
     public PrivateKey generatePrivate(KeySpec keySpec)
             throws InvalidKeySpecException {
 
@@ -184,7 +137,7 @@ public class ECKeyFactory extends KeyFactory {
                 EllipticCurve mE = ecParamSpec.getE();
 
                 // make a point out of the byte array
-                Point mW = null;
+                Point mW;
                 if (mE instanceof EllipticCurveGFP) {
                     mW = new PointGFP(pubKeyBytes, (EllipticCurveGFP) mE);
                 } else if (mE instanceof EllipticCurveGF2n) {
@@ -207,23 +160,7 @@ public class ECKeyFactory extends KeyFactory {
                 + keySpec + ".");
     }
 
-    /**
-     * Returns a specification (key material) of the given key object.
-     * <tt>keySpec</tt> identifies the specification class in which the key
-     * material should be returned. It could, for example, be
-     * <tt>ECPublicKeySpec.class</tt>, to indicate that the key material
-     * should be returned in an instance of the <tt>ECPublicKeySpec</tt>
-     * class.
-     *
-     * @param key     the key
-     * @param keySpec the specification class in which the key material should
-     *                be returned
-     * @return the underlying key specification (key material) in an instance of
-     * the requested specification class
-     * @throws InvalidKeySpecException if the requested key specification is inappropriate for
-     *                                 the given key, or the given key cannot be dealt with
-     *                                 (e.g., the given key has an unrecognized format).
-     */
+
     public KeySpec getKeySpec(Key key, Class keySpec)
             throws InvalidKeySpecException {
 
@@ -232,7 +169,7 @@ public class ECKeyFactory extends KeyFactory {
                 return new X509EncodedKeySpec(key.getEncoded());
             } else if (ECPublicKeySpec.class.isAssignableFrom(keySpec)) {
                 ECPublicKey pubKey = (ECPublicKey) key;
-                Point w = null;
+                Point w;
                 try {
                     w = pubKey.getW();
                 } catch (InvalidKeyException e) {

@@ -51,18 +51,6 @@ public class GMSSParameterSpec implements AlgorithmParameterSpec {
     }
 
     /**
-     * The constructor
-     *
-     * @param gmssParSet an instance of GMSSParameterset
-     */
-    public GMSSParameterSpec(GMSSParameterset gmssParSet) {
-        this.numberOfLayers = gmssParSet.getNumOfLayers();
-        this.heightOfTrees = gmssParSet.getHeightOfTrees();
-        this.winternitzParameter = gmssParSet.getWinternitzParameter();
-        this.K = gmssParSet.getK();
-    }
-
-    /**
      * Returns the number of layers of the authentication trees.
      *
      * @return The number of layers of the authentication trees.

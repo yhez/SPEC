@@ -193,10 +193,6 @@ public class RijndaelParameters extends AlgorithmParameters {
      * @return a formatted string describing the parameters
      */
     public String toString() {
-        StringBuffer buf = new StringBuffer();
-        buf.append("RijndaelParameters (block size " + blockSize + ")");
-        buf.append("(IV " + ByteUtils.toHexString(iv) + ")");
-
-        return buf.toString();
+        return ("RijndaelParameters (block size " + blockSize + ")") + "(IV " + ByteUtils.toHexString(iv) + ")";
     }
 }

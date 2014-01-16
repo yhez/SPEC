@@ -47,14 +47,6 @@ abstract class DataMask {
 
   private DataMask() {
   }
-
-  /**
-   * <p>Implementations of this method reverse the data masking process applied to a QR Code and
-   * make its bits ready to read.</p>
-   *
-   * @param bits representation of QR Code bits
-   * @param dimension dimension of QR Code, represented by bits, being unmasked
-   */
   final void unmaskBitMatrix(BitMatrix bits, int dimension) {
     for (int i = 0; i < dimension; i++) {
       for (int j = 0; j < dimension; j++) {

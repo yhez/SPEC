@@ -59,11 +59,6 @@ public abstract class GF2nElement implements GFElement {
      */
     abstract void assignZero();
 
-    /**
-     * Assigns the value 1 to this element.
-     */
-    abstract void assignOne();
-
     // /////////////////////////////////////////////////////////////////////
     // access
     // /////////////////////////////////////////////////////////////////////

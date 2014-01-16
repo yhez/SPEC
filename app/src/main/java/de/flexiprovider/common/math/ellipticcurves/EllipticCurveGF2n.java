@@ -11,7 +11,6 @@ package de.flexiprovider.common.math.ellipticcurves;
 
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.finitefields.GF2nElement;
-import de.flexiprovider.common.math.finitefields.GF2nField;
 
 /**
  * This class provides features for elliptic curves over finite fields with
@@ -44,34 +43,6 @@ public class EllipticCurveGF2n extends EllipticCurve {
      */
     public EllipticCurveGF2n(GF2nElement a, GF2nElement b, int deg) {
         super(a, b, (FlexiBigInt.ONE).shiftLeft(deg));
-    }
-
-    /**
-     * Constructs an elliptic curve E with the specified parameters <tt>a</tt>
-     * and <tt>b</tt> in short Weierstrass normal form in projective
-     * representation over the field with the specified size.
-     *
-     * @param a curve parameter a
-     * @param b curve parameter b
-     * @param q size of the underlying field
-     * @see de.flexiprovider.common.math.finitefields.GF2nElement
-     */
-    public EllipticCurveGF2n(GF2nElement a, GF2nElement b, FlexiBigInt q) {
-        super(a, b, q);
-    }
-
-    /**
-     * Constructs an elliptic curve E with the specified parameters <tt>a</tt>
-     * and <tt>b</tt> in short Weierstrass normal form in projective
-     * representation over the given field.
-     *
-     * @param a    curve parameter a
-     * @param b    curve parameter b
-     * @param gf2n the underlying field
-     * @see de.flexiprovider.common.math.finitefields.GF2nElement
-     */
-    public EllipticCurveGF2n(GF2nElement a, GF2nElement b, GF2nField gf2n) {
-        super(a, b, (FlexiBigInt.ONE).shiftLeft(gf2n.getDegree()));
     }
 
     // ////////////////////////////////////////////////////////////////////

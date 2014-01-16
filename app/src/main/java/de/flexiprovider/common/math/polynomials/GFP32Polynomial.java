@@ -93,16 +93,7 @@ public class GFP32Polynomial {
         generator = Registry.getSecureRandom();
     }
 
-    /**
-     * Special Constructor without a Polynomial parameter but with a Secure
-     * Random generator. This Constructor can only be used for methods which do
-     * not require a Polynomial to be present, such as generatePoly()
-     *
-     * @param f   the modulo Polynomial of the Ring
-     * @param p   the modulo "prime" of the Ring
-     * @param gen a predefined secure Random Number Generator
-     */
-    public GFP32Polynomial(int[] f, int p, SecureRandom gen) {
+    public GFP32Polynomial(int[] f, int p) {
         this.f = f;
         degree = f.length - 1;
         this.p = p;
@@ -184,29 +175,6 @@ public class GFP32Polynomial {
     }
 
     /**
-     * also compares SecureRandom, but since that class has no default equals
-     * operator, this method is useless (for now)
-     *
-     * @param gfp the {@link GFP32Polynomial} to compare to.
-     * @return
-     */
-    private boolean fullEquals(GFP32Polynomial gfp) {
-        return ((p == gfp.getP()) && IntUtils.equals(f, gfp.getF())
-                && IntUtils.equals(poly, gfp.getPoly()) && generator.equals(gfp
-                .getRandomizer()));
-    }
-
-    /**
-     * Generates a random Polynomial, complying to the specification of this
-     * Ring
-     *
-     * @return the randomly generated Polynomial
-     */
-    public GFP32Polynomial generatePoly() {
-        return generatePoly(0);
-    }
-
-    /**
      * Generates a random Polynomial with the specified limit, denoting the
      * maximum Value of entries in this Polynomial.
      *
@@ -277,10 +245,6 @@ public class GFP32Polynomial {
         return poly;
     }
 
-    public SecureRandom getRandomizer() {
-        return generator;
-    }
-
     private int[] mod(int[] poly) {
         for (int i = poly.length; i > 0; i--) {
             if (poly[i - 1] < 0) {
@@ -343,16 +307,6 @@ public class GFP32Polynomial {
         }
 
         return result;
-    }
-
-    /**
-     * Multiplies the given Polynomial to this Polynomial and sets this
-     * Polynomial to the Result
-     *
-     * @param gfp the Polynomial to be multiplied
-     */
-    public void multiplyToThis(GFP32Polynomial gfp) {
-        poly = multiply(gfp).getPoly();
     }
 
     public boolean paramEqual(GFP32Polynomial gfp) {

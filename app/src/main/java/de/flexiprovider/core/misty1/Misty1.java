@@ -198,7 +198,7 @@ public class Misty1 extends BlockCipher {
     protected final void singleBlockEncrypt(byte[] input, int inOff,
                                             byte[] output, int outOff) {
 
-        int D0 = BigEndianConversions.OS2IP(input, 0 + inOff);
+        int D0 = BigEndianConversions.OS2IP(input, inOff);
         int D1 = BigEndianConversions.OS2IP(input, 4 + inOff);
 
         // 0 round

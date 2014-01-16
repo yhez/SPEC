@@ -1,7 +1,5 @@
 package de.flexiprovider.common.util;
 
-import de.flexiprovider.common.math.FlexiBigInt;
-
 public final class IntUtils {
 
     /**
@@ -110,43 +108,6 @@ public final class IntUtils {
         return index;
     }
 
-    /**
-     * Generates a subarray of a given int array.
-     *
-     * @param input -
-     *              the input int array
-     * @param start -
-     *              the start index
-     * @param end   -
-     *              the end index
-     * @return a subarray of <tt>input</tt>, ranging from <tt>start</tt> to
-     * <tt>end</tt>
-     */
-    public static int[] subArray(final int[] input, final int start,
-                                 final int end) {
-        int[] result = new int[end - start];
-        System.arraycopy(input, start, result, 0, end - start);
-        return result;
-    }
-
-    /**
-     * Convert an int array to a {@link de.flexiprovider.common.math.FlexiBigInt} array.
-     *
-     * @param input the int array
-     * @return the {@link de.flexiprovider.common.math.FlexiBigInt} array
-     */
-    public static FlexiBigInt[] toFlexiBigIntArray(int[] input) {
-        FlexiBigInt[] result = new FlexiBigInt[input.length];
-        for (int i = 0; i < input.length; i++) {
-            result[i] = FlexiBigInt.valueOf(input[i]);
-        }
-        return result;
-    }
-
-    /**
-     * @param input an int array
-     * @return a human readable form of the given int array
-     */
     public static String toString(int[] input) {
         String result = "";
         for (int i = 0; i < input.length; i++) {
@@ -155,10 +116,6 @@ public final class IntUtils {
         return result;
     }
 
-    /**
-     * @param input an int arary
-     * @return the int array as hex string
-     */
     public static String toHexString(int[] input) {
         return ByteUtils.toHexString(BigEndianConversions.toByteArray(input));
     }

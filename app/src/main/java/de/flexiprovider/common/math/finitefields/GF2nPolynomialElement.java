@@ -21,12 +21,7 @@ public class GF2nPolynomialElement extends GF2nElement {
         randomize(rand);
     }
 
-    /**
-     * Creates a new GF2nPolynomialElement using the given field and Bitstring.
-     *
-     * @param f  the GF2nPolynomialField to use
-     * @param bs the desired value as Bitstring
-     */
+
     public GF2nPolynomialElement(GF2nPolynomialField f, GF2Polynomial bs) {
         mField = f;
         mDegree = mField.getDegree();
@@ -121,13 +116,6 @@ public class GF2nPolynomialElement extends GF2nElement {
         GF2Polynomial polynomial = new GF2Polynomial(f.getDegree(),
                 new int[]{1});
         return new GF2nPolynomialElement(f, polynomial);
-    }
-
-    /**
-     * Assigns the value 'one' to this Polynomial.
-     */
-    void assignOne() {
-        polynomial.assignOne();
     }
 
     /**

@@ -4,19 +4,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.TextView;
 
-import zxing.Result;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import specular.systems.R;
 import specular.systems.activities.Splash;
+import zxing.Result;
 import zxing.scanqr.CaptureActivity;
 
-/**
- * Created by yehezkelk on 12/11/13.
- */
+
 public class WidgetScanActivity extends CaptureActivity {
 
     @Override

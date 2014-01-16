@@ -667,7 +667,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
 
                 i++;
             }
-            nameTable.put(key, Integer.valueOf(order));
+            nameTable.put(key, order);
 
             if (!entry.hasSibling()) {
                 order = order + 1;

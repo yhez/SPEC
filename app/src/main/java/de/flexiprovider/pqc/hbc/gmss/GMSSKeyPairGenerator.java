@@ -13,51 +13,7 @@ import de.flexiprovider.api.keys.KeyPairGenerator;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.core.CoreRegistry;
 
-/**
- * This class implements key pair generation of the generalized Merkle signature
- * scheme (GMSS). The class extends the KeyPairGeneratorSpi class.
- * <p/>
- * The GMSSKeyPairGenerator can be used as follows:
- * <p/>
- * 1. get instance of GMSS key pair generator:<br/>
- * <code>KeyPairGenerator kpg =
- * KeyPairGenerator.getInstance("GMSSwithSHA1",
- * "FlexiPQC");</code><br/>
- * 2. initialize the KPG with the desired Parameterset<br/>
- * <code>kpg.initialize(parameterset);</code><br/>
- * 3. create GMSS key pair:<br/>
- * <code>KeyPair keyPair = kpg.generateKeyPair();</code><br/>
- * 4. get the encoded private and public keys from the key pair:<br/>
- * <code>encodedPublicKey = keyPair.getPublic().getEncoded();<br/>
- * encodedPrivateKey = keyPair.getPrivate().getEncoded();</code>
- * <p/>
- * <p/>
- * The key pair generator can be initialized with an integer value as well. For
- * this purpose call <code>kpg.initialize(keySize);</code>. The integer
- * <code>keySize</code> determindes the number of signatures that can be
- * created. A value less than 10 creates 2^10 signatures, between 11 and 20
- * creates 2^20 and a keySize greater than 20 creates 2^40 signatures.
- * <p/>
- * <p/>
- * To generate an own parameterSpec for the use with GMSS use the following:
- * <p/>
- * <p/>
- * 1. define int arrays of the desired parameters (defh for the height of the
- * single layers of the GMSS tree, w for the Winternitz parameters for each
- * layer, K for the parameter for the AuthPath computation)<br/>
- * <code> int[] defh = {10, 10, 10, 10};</code><br/>
- * <code> int[] defw = {9, 9, 9, 3};</code><br/>
- * <code> int[] defk = {2, 2, 2, 2};</code><br/>
- * 2. create a parameterspec<br/>
- * <code> gps = new GMSSParameterSpec(defh.length, defh, defw, defk);</code><br/>
- * 3. initialize the KPG with the desired Parameterset<br/>
- * <code>kpg.initialize(parameterset);</code><br/>
- *
- * @author Michael Schneider, Sebastian Blume
- * @see GMSSSignature
- * @see GMSSPrivateKey
- * @see GMSSPublicKey
- */
+
 public class GMSSKeyPairGenerator extends KeyPairGenerator {
     /*
      * Inner classes providing concrete implementations of GMSSKeyPairGenerator
@@ -78,7 +34,7 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
          * Constructor.
          */
         public GMSSwithSHA1() {
-            super(OID, "SHA1", "FlexiCore");
+            super("SHA1", "FlexiCore");
         }
     }
 
@@ -96,7 +52,7 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
          * Constructor.
          */
         public GMSSwithSHA224() {
-            super(OID, "SHA224", "FlexiCore");
+            super("SHA224", "FlexiCore");
         }
     }
 
@@ -114,7 +70,7 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
          * Constructor.
          */
         public GMSSwithSHA256() {
-            super(OID, "SHA256", "FlexiCore");
+            super("SHA256", "FlexiCore");
         }
     }
 
@@ -132,7 +88,7 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
          * Constructor.
          */
         public GMSSwithSHA384() {
-            super(OID, "SHA384", "FlexiCore");
+            super("SHA384", "FlexiCore");
         }
     }
 
@@ -150,7 +106,7 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
          * Constructor.
          */
         public GMSSwithSHA512() {
-            super(OID, "SHA512", "FlexiCore");
+            super("SHA512", "FlexiCore");
         }
     }
 
@@ -219,7 +175,7 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
     private int[] K;
 
 
-    public GMSSKeyPairGenerator(String oidStr, String mdName, String mdProvName) {
+    public GMSSKeyPairGenerator(String mdName, String mdProvName) {
         String errorMsg;
 
         CoreRegistry.registerAlgorithms();
@@ -373,7 +329,7 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
 
     private GMSSRootCalc generateCurrentAuthpathAndRoot(byte[] lowerRoot,
                                                         Vector currentStack, byte[] seed, int h) throws SignatureException {
-        byte[] help = new byte[mdLength];
+        byte[] help;
 
         byte[] OTSseed;
         OTSseed = gmssRandom.nextSeed(seed);
@@ -515,14 +471,7 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
         }
     }
 
-    /**
-     * Initalizes the key pair generator using a parameter set as input
-     *
-     * @param algParamSpec an instance of <a
-     *                     href="GMSSParameterSpec.html">GMSSParameterSpec</a>
-     * @param secureRandom not used in GMSS
-     * @see de.flexiprovider.pqc.hbc.gmss.GMSSParameterSpec
-     */
+
 
     public void initialize(AlgorithmParameterSpec algParamSpec,
                            SecureRandom secureRandom)
@@ -530,13 +479,6 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
         this.initialize(algParamSpec);
     }
 
-    /**
-     * Initalizes the key pair generator using a parameter set as input
-     *
-     * @param algParamSpec an instance of <a
-     *                     href="GMSSParameterSpec.html">GMSSParameterSpec</a>
-     * @see de.flexiprovider.pqc.hbc.gmss.GMSSParameterSpec
-     */
     public void initialize(AlgorithmParameterSpec algParamSpec)
             throws InvalidAlgorithmParameterException {
 
@@ -545,9 +487,6 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
                     "in GMSSKeyPairGenerator: initialize: params is not "
                             + "an instance of GMSSParameterSpec");
         }
-        /*
-      Instance of GMSSParameterSpec
-     */
         GMSSParameterSpec gmssParameterSpec = (GMSSParameterSpec) algParamSpec;
 
         // generate GMSSParameterset

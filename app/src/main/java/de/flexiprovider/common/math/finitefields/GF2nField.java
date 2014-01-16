@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.common.math.finitefields;
 
 import java.util.Vector;
@@ -13,16 +5,7 @@ import java.util.Vector;
 import de.flexiprovider.common.exceptions.BitDoesNotExistException;
 import de.flexiprovider.common.exceptions.DifferentFieldsException;
 
-/**
- * This abstract class defines the finite field <i>GF(2<sup>n</sup>)</i>. It
- * holds the extension degree <i>n</i>, the characteristic, the irreducible
- * fieldpolynomial and conversion matrices. GF2nField is implemented by the
- * classes GF2nPolynomialField and GF2nONBField.
- *
- * @author Oliver Seiler
- * @see GF2nONBField
- * @see GF2nPolynomialField
- */
+
 public abstract class GF2nField {
 
     /**
@@ -212,7 +195,6 @@ public abstract class GF2nField {
 
         GF2nElement elemCopy = (GF2nElement) elem.clone();
         if (elemCopy instanceof GF2nONBElement) {
-            // remember: ONB treats its bits in reverse order
             ((GF2nONBElement) elemCopy).reverseOrder();
         }
         GF2Polynomial bs = new GF2Polynomial(mDegree, elemCopy.toFlexiBigInt());
@@ -229,7 +211,6 @@ public abstract class GF2nField {
         } else if (basis instanceof GF2nONBField) {
             GF2nONBElement res = new GF2nONBElement((GF2nONBField) basis,
                     result.toFlexiBigInt());
-            // TODO Remember: ONB treats its Bits in reverse order !!!
             res.reverseOrder();
             return res;
         } else {

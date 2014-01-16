@@ -245,7 +245,7 @@ public class MARS extends BlockCipher {
 
         for (i = 0; i < n; i++) {
             offset = i << 2;
-            T[i] = (key[offset + 0] & 255) | ((key[offset + 1] & 255) << 8)
+            T[i] = (key[offset] & 255) | ((key[offset + 1] & 255) << 8)
                     | ((key[offset + 2] & 255) << 16)
                     | ((key[offset + 3] & 255) << 24);
         }
@@ -362,7 +362,7 @@ public class MARS extends BlockCipher {
 
 		/* converting input bytes to INT */
 
-        d0 = (in[inoffset + 0] & 255) | ((in[inoffset + 1] & 255) << 8)
+        d0 = (in[inoffset] & 255) | ((in[inoffset + 1] & 255) << 8)
                 | ((in[inoffset + 2] & 255) << 16)
                 | ((in[inoffset + 3] & 255) << 24);
         d1 = (in[inoffset + 4] & 255) | ((in[inoffset + 5] & 255) << 8)
@@ -460,7 +460,7 @@ public class MARS extends BlockCipher {
 
 		/* converting INT to output bytes */
 
-        out[outoffset + 0] = (byte) d0;
+        out[outoffset] = (byte) d0;
         out[outoffset + 1] = (byte) (d0 >> 8);
         out[outoffset + 2] = (byte) (d0 >> 16);
         out[outoffset + 3] = (byte) (d0 >> 24);
@@ -500,7 +500,7 @@ public class MARS extends BlockCipher {
 
 		/* converting input bytes to INT */
 
-        d0 = (in[inoffset + 0] & 255) | ((in[inoffset + 1] & 255) << 8)
+        d0 = (in[inoffset] & 255) | ((in[inoffset + 1] & 255) << 8)
                 | ((in[inoffset + 2] & 255) << 16)
                 | ((in[inoffset + 3] & 255) << 24);
         d1 = (in[inoffset + 4] & 255) | ((in[inoffset + 5] & 255) << 8)
@@ -601,7 +601,7 @@ public class MARS extends BlockCipher {
 
 		/* converting INT to output bytes */
 
-        out[outoffset + 0] = (byte) d0;
+        out[outoffset] = (byte) d0;
         out[outoffset + 1] = (byte) (d0 >> 8);
         out[outoffset + 2] = (byte) (d0 >> 16);
         out[outoffset + 3] = (byte) (d0 >> 24);

@@ -34,7 +34,6 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
     public GroupsAdapter(Activity a) {
         super(a, R.layout.list_row, list);
         this.a = a;
-        this.type = type;
         adapter = this;
         if (GroupDataSource.fullListG == null) {
             GroupDataSource.groupDataSource = new GroupDataSource(a);

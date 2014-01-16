@@ -2,7 +2,6 @@ package de.flexiprovider.pqc.tss;
 
 import java.util.Vector;
 
-import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 public class TSSParameterSpec implements AlgorithmParameterSpec {
@@ -32,7 +31,7 @@ public class TSSParameterSpec implements AlgorithmParameterSpec {
         long[] f = new long[n + 1];
         f[n] = 1;
         f[0] = 1;
-        gfp = new TSSPolynomial(f, p, Registry.getSecureRandom());
+        gfp = new TSSPolynomial(f, p);
 
         for (int i = 0; i < m; i++) {
             s.setElementAt(gfp.generatePoly(2, true), i);
@@ -49,8 +48,7 @@ public class TSSParameterSpec implements AlgorithmParameterSpec {
         long[] f = new long[n + 1];
         f[n] = 1;
         f[0] = 1;
-        TSSPolynomial generator = new TSSPolynomial(f, p, Registry
-                .getSecureRandom());
+        TSSPolynomial generator = new TSSPolynomial(f, p);
 
         for (int i = 0; i < m; i++) {
             result.addElement(generator.generatePoly());

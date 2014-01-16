@@ -61,22 +61,6 @@ public class LMOTSParameterSpec implements AlgorithmParameterSpec {
     }
 
     /**
-     * Construct new LMOTS parameters from the given parameters.
-     *
-     * @param f   irreducible polynomial specified on page 10 in the paper
-     * @param phi this parameter depends on f and is described on page 7 in the
-     *            paper
-     */
-    public LMOTSParameterSpec(int[] f, int phi) {
-        this.f = f;
-        this.phi = phi;
-
-        degree = f.length - 1;
-        m = IntegerFunctions.ceilLog(degree);
-        p = IntegerFunctions.pow(degree * phi, 3);
-    }
-
-    /**
      * @return returns the degree of f
      */
     public int getDegree() {

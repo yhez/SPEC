@@ -34,8 +34,7 @@ public class LMOTSKeyPairGenerator extends KeyPairGenerator {
 
 
     private Vector generateMPoly(int limit) {
-        GFP32Polynomial gfp = new GFP32Polynomial(f, p, Registry
-                .getSecureRandom());
+        GFP32Polynomial gfp = new GFP32Polynomial(f, p);
         Vector v = new Vector();
         for (int i = m; i > 0; i--) {
             v.addElement(gfp.generatePoly(limit));

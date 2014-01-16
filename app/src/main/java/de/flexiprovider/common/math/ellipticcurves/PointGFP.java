@@ -2,9 +2,6 @@ package de.flexiprovider.common.math.ellipticcurves;
 
 //import java.math.BigInteger;
 
-import java.util.Random;
-
-import de.flexiprovider.api.Registry;
 import de.flexiprovider.common.exceptions.DifferentCurvesException;
 import de.flexiprovider.common.exceptions.DifferentFieldsException;
 import de.flexiprovider.common.exceptions.InvalidFormatException;
@@ -85,60 +82,7 @@ public class PointGFP extends Point {
         assignZero();
     }
 
-    /**
-     * Construct a random point on the specified elliptic curve using the given
-     * source of randomness.
-     *
-     * @param E    EllipticCurveGFP is the elliptic curve this point lies on
-     * @param rand the source of randomness
-     */
-    public PointGFP(EllipticCurveGFP E, Random rand) {
 
-        mE = E;
-        mP = E.getQ();
-        mA = (GFPElement) E.getA();
-        mB = (GFPElement) E.getB();
-
-        // find random point
-        final GFPElement minusOne = new GFPElement(FlexiBigInt.ONE.negate(), E
-                .getQ());
-        mY = minusOne;
-        GFElement y2 = null;
-        GFElement x = null;
-
-        while (mY.equals(minusOne)) {
-            FlexiBigInt value = new FlexiBigInt(mP.bitLength(), Registry
-                    .getSecureRandom());
-            mX = new GFPElement(value, mP);
-            y2 = mA.multiply(mX);
-            x = mX.multiply(mX);
-            x.multiplyThisBy(mX);
-            y2.addToThis(x.add(mB));
-            try {
-                value = IntegerFunctions.ressol(y2.toFlexiBigInt(), mP);
-                mY = new GFPElement(value, mP);
-            } catch (NoQuadraticResidueException NQRExc) {
-                mY = minusOne;
-            }
-        }
-        mZ = GFPElement.ONE(mP);
-        mZ2 = GFPElement.ONE(mP);
-        mZ3 = GFPElement.ONE(mP);
-        mAZ4 = mA;
-    }
-
-    /**
-     * Constructs point with specified parameters. This method throws an
-     * <tt>InvalidPointException</tt>, if (<tt>x</tt>, <tt>y</tt>,
-     * <tt>z</tt>) is not on curve <tt>E</tt>.
-     *
-     * @param x x-coordinate
-     * @param y y-coordinate
-     * @param E EllipticCurveGFP is the elliptic curve this point lies on
-     * @throws InvalidPointException    if the specified point is not on the curve.
-     * @throws DifferentFieldsException if <tt>x</tt> and <tt>y</tt> are defined over
-     *                                  different fields.
-     */
     public PointGFP(GFPElement x, GFPElement y, EllipticCurveGFP E)
             throws InvalidPointException, DifferentFieldsException {
 
@@ -155,19 +99,7 @@ public class PointGFP extends Point {
         mAZ4 = null;
     }
 
-    /**
-     * Constructs point with specified parameters. This method throws an
-     * <tt>InvalidPointException</tt>, if (<tt>x</tt>, <tt>y</tt>,
-     * <tt>z</tt>) is not on curve <tt>E</tt>.
-     *
-     * @param x x-coordinate
-     * @param y y-coordinate
-     * @param z z-coordinate
-     * @param E the elliptic curve this point lies on
-     * @throws InvalidPointException    if the specified point is not on the curve.
-     * @throws DifferentFieldsException if <tt>x</tt>, <tt>y</tt>, and <tt>z</tt> are
-     *                                  defined over different fields.
-     */
+
     public PointGFP(GFPElement x, GFPElement y, GFPElement z, EllipticCurveGFP E)
             throws InvalidPointException, DifferentFieldsException {
 
@@ -654,10 +586,10 @@ public class PointGFP extends Point {
         GFElement oZ2 = otherPoint.mZ2;
         GFElement oZ3 = otherPoint.mZ3;
 
-        GFElement U1 = null;
-        GFElement U2 = null;
-        GFElement S1 = null;
-        GFElement S2 = null;
+        GFElement U1;
+        GFElement U2;
+        GFElement S1;
+        GFElement S2;
 
         if (oZ.isOne()) {
 

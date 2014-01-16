@@ -4,25 +4,7 @@ import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.pqc.rainbow.util.GF2Field;
 import de.flexiprovider.pqc.rainbow.util.RainbowUtil;
 
-/**
- * This class represents a layer of the Rainbow Oil- and Vinegar Map. Each Layer
- * consists of oi polynomials with their coefficients, generated at random.
- * <p/>
- * To sign a document, we solve a LES (linear equation system) for each layer in
- * order to find the oil variables of that layer and to be able to use the
- * variables to compute the signature. This functionality is implemented in the
- * RainbowSignature-class, by the aid of the private key.
- * <p/>
- * Each layer is a part of the private key.
- * <p/>
- * More information about the layer can be found in the paper of Jintai Ding,
- * Dieter Schmidt: Rainbow, a New Multivariable Polynomial Signature Scheme.
- * ACNS 2005: 164-175 (http://dx.doi.org/10.1007/11496137_12)
- *
- * @author Patrick Neugebauer
- * @author Marius Senftleben
- * @author Tsvetoslava Vateva
- */
+
 public class Layer {
 
     private int layerIndex; // num-th layer
@@ -61,25 +43,6 @@ public class Layer {
         this.coeff_eta = new short[this.oi];
     }
 
-    /**
-     * Constructor only used for printout of default examples
-     *
-     * @param coeff_alpha alpha-coefficients in the polynomials of this layer
-     * @param coeff_beta  beta-coefficients in the polynomials of this layer
-     * @param coeff_gamma gamma-coefficients in the polynomials of this layer
-     * @param coeff_eta   eta-coefficients in the polynomials of this layer
-     */
-    public Layer(short[][][] coeff_alpha, short[][][] coeff_beta,
-                 short[][] coeff_gamma, short[] coeff_eta) {
-        this.layerIndex = coeff_alpha.length; // <-- why?
-        this.vi = coeff_beta[0].length;
-        // this.viNext = viNext;
-        this.oi = coeff_alpha[0].length;
-        this.coeff_alpha = coeff_alpha;
-        this.coeff_beta = coeff_beta;
-        this.coeff_gamma = coeff_gamma;
-        this.coeff_eta = coeff_eta;
-    }
     /**
      * Constructor.
      *
@@ -171,7 +134,7 @@ public class Layer {
      */
     protected short[][] plugInVinegars(short[] x) {
         // temporary variable needed for the multiplication
-        short tmpMult = 0;
+        short tmpMult;
         // coeff: 1st index = which polynomial, 2nd index=which variable
         short[][] coeff = new short[oi][oi + 1]; // gets returned
         // free coefficient per polynomial
@@ -310,20 +273,14 @@ public class Layer {
         return coeff_eta;
     }
 
-    /**
-     * This function compares this Layer with another object.
-     *
-     * @param other the other object
-     * @return the result of the comparison
-     */
     public boolean equals(Object other) {
         if (other == null || !(other instanceof Layer)) {
             return false;
         }
         Layer otherLayer = (Layer) other;
 
-        boolean eq = true;
-        eq &= layerIndex == otherLayer.getLayerIndex();
+        boolean eq;
+        eq = layerIndex == otherLayer.getLayerIndex();
         eq &= vi == otherLayer.getVi();
         eq &= viNext == otherLayer.getViNext();
         eq &= oi == otherLayer.getOi();

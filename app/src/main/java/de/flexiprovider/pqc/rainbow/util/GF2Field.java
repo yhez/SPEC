@@ -107,27 +107,5 @@ public class GF2Field {
         }
     }
 
-    /**
-     * This function returns the values of exps-lookup table which correspond to
-     * the input
-     *
-     * @param x the index in the lookup table exps
-     * @return exps-value, corresponding to the input
-     */
-    public static short getExp(short x) {
-        return exps[x];
-    }
-
-    /**
-     * This function returns the values of logs-lookup table which correspond to
-     * the input
-     *
-     * @param x the index in the lookup table logs
-     * @return logs-value, corresponding to the input
-     */
-    public static short getLog(short x) {
-        return logs[x];
-    }
-
 
 }

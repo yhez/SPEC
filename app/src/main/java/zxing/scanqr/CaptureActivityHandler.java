@@ -52,7 +52,7 @@ public final class CaptureActivityHandler extends Handler {
         } else if (message.what == R.id.decode_failed) {
             // We're decoding as fast as possible, so when one decode fails, start another.
             state = State.PREVIEW;
-            cameraManager.requestPreviewFrame(decodeThread.getHandler());
+            cameraManager.requestPreviewFrame(decodeThread.getHandler(),R.id.decode);
         } else if (message.what == R.id.return_scan_result) {
             activity.setResult(Activity.RESULT_OK, (Intent) message.obj);
             activity.finish();
@@ -81,7 +81,7 @@ public final class CaptureActivityHandler extends Handler {
     private void restartPreviewAndDecode() {
         if (state == State.SUCCESS) {
             state = State.PREVIEW;
-            cameraManager.requestPreviewFrame(decodeThread.getHandler());
+            cameraManager.requestPreviewFrame(decodeThread.getHandler(),R.id.decode);
             cameraManager.requestAutoFocus(this);
             activity.drawViewfinder();
         }

@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.common.math.finitefields;
 
 import java.util.Random;
@@ -17,15 +9,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.IntegerFunctions;
 import de.flexiprovider.common.util.IntUtils;
 
-/**
- * This class stores very long strings of bits and does some basic arithmetics.
- * It is used by <tt>GF2nField</tt>, <tt>GF2nPolynomialField</tt> and
- * <tt>GFnPolynomialElement</tt>.
- *
- * @author Oliver Seiler
- * @see GF2nPolynomialElement
- * @see GF2nField
- */
+
 public class GF2Polynomial {
 
     // number of bits stored in this GF2Polynomial
@@ -1220,31 +1204,6 @@ public class GF2Polynomial {
         value = bs;
     }
 
-    public void squareThisBitwise() {
-        int i, h, j, k;
-        if (isZero()) {
-            return;
-        }
-        int[] result = new int[blocks << 1];
-        for (i = blocks - 1; i >= 0; i--) {
-            h = value[i];
-            j = 0x00000001;
-            for (k = 0; k < 16; k++) {
-                if ((h & 0x01) != 0) {
-                    result[i << 1] |= j;
-                }
-                if ((h & 0x00010000) != 0) {
-                    result[(i << 1) + 1] |= j;
-                }
-                j <<= 2;
-                h >>>= 1;
-            }
-        }
-        value = null;
-        value = result;
-        blocks = result.length;
-        len = (len << 1) - 1;
-    }
     public void squareThisPreCalc() {
         int i;
         if (isZero()) {

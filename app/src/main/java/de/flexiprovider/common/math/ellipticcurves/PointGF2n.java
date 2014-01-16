@@ -99,59 +99,7 @@ public class PointGF2n extends Point {
         assignZero();
     }
 
-    public PointGF2n(EllipticCurveGF2n E, Random rand) {
-        mE = E;
-        mP = E.getQ();
-        mA = (GF2nElement) E.getA();
-        mAIsZero = mA.isZero();
-        mB = (GF2nElement) E.getB();
-        mGF2n = mA.getField();
-        mDeg = mGF2n.getDegree();
-        setGF2nFieldType();
 
-        GF2nElement right;
-        do {
-            do {
-                mX = createRandomGF2nElement(mGF2n, rand);
-            } while (mX.isZero());
-
-            // right = x^3 + a*x^2 + b
-            mY = mX.square();
-            right = (GF2nElement) mA.multiply(mY);
-            right.addToThis(mB);
-            right.addToThis(mY.multiply(mX));
-
-            // y = x^(-2)
-            mY = (GF2nElement) mY.invert();
-
-            // right = x^(-2) * (x^3 + a*x^2 + b) ->
-            // (y/x)^2 + (y/x) = (x^3 + a*x^2 + b)/x^2 ->
-            // z^2 + z = (x^3 + a*x^2 + b)/x^2
-            right.multiplyThisBy(mY);
-
-            // while not found (right.trace() != 0)
-        } while (right.trace() != 0);
-
-        mY = right.solveQuadraticEquation();
-        if (mY.testRightmostBit()) {
-            mY.increaseThis();
-        }
-        mY.multiplyThisBy(mX);
-        mZ = createGF2nOneElement(mGF2n);
-    }
-
-    /**
-     * Constructs point with specified parameters. This method throws an
-     * <tt>InvalidPointException</tt>, if (<tt>x</tt>, <tt>y</tt>) is
-     * not on curve <tt>E</tt>.
-     *
-     * @param x x-coordinate
-     * @param y y-coordinate
-     * @param E EllipticCurveGF2n is the elliptic curve this point lies on
-     * @throws InvalidPointException    if the specified point is not on the curve.
-     * @throws DifferentFieldsException if <tt>x</tt> and <tt>y</tt> are defined over
-     *                                  different fields.
-     */
     public PointGF2n(GF2nElement x, GF2nElement y, EllipticCurveGF2n E)
             throws InvalidPointException, DifferentFieldsException {
 
@@ -169,24 +117,6 @@ public class PointGF2n extends Point {
         mZ = createGF2nOneElement(mGF2n);
     }
 
-
-    public PointGF2n(GF2nElement x, GF2nElement y, GF2nElement z,
-                     EllipticCurveGF2n E) throws InvalidPointException,
-            DifferentFieldsException {
-
-        mE = E;
-        mP = E.getQ();
-        mA = (GF2nElement) E.getA();
-        mAIsZero = mA.isZero();
-        mB = (GF2nElement) E.getB();
-        mGF2n = mA.getField();
-        mDeg = mGF2n.getDegree();
-        setGF2nFieldType();
-
-        mX = (GF2nElement) x.clone();
-        mY = (GF2nElement) y.clone();
-        mZ = (GF2nElement) z.clone();
-    }
 
     /**
      * Constructs a new point. The information is packed in the given byte array
@@ -340,16 +270,13 @@ public class PointGF2n extends Point {
             return mX.equals(otherPoint.mX) && mY.equals(otherPoint.mY);
         }
 
-        boolean result = true;
+        boolean result;
 
         if (mZ.isOne()) {
-            // z2 = ((PointGF2n)other).mZ^2
             GFElement z2 = otherPoint.mZ.square();
 
-            // mX*z2 = ((PointGF2n)other).mX ?
-            result = result && otherPoint.mX.equals(mX.multiply(z2));
+            result = otherPoint.mX.equals(mX.multiply(z2));
 
-            // z2 = ((PointGF2n)other).mZ^3
             z2.multiplyThisBy(otherPoint.mZ);
 
             // mY*z2 = P mY?
@@ -359,13 +286,11 @@ public class PointGF2n extends Point {
             // z1 = mZ^2
             GFElement z1 = mZ.square();
 
-            // ((PointGF2n)other).mX*z1 = mX ?
-            result = result && mX.equals(otherPoint.mX.multiply(z1));
+            result = mX.equals(otherPoint.mX.multiply(z1));
 
             // z1 = mZ^3
             z1.multiplyThisBy(mZ);
 
-            // ((PointGF2n)other).mY*z1 = mY?
             //
             result = result && mY.equals(otherPoint.mY.multiply(z1));
 
@@ -373,19 +298,15 @@ public class PointGF2n extends Point {
             // z1 = mZ^2
             GFElement z1 = mZ.square();
 
-            // z2 = ((PointGF2n)other).mZ^2
             GFElement z2 = otherPoint.mZ.square();
 
-            // mX*((PointGF2n)other).mZ^2 = ((PointGF2n)other).mX*mZ^2 ?
             result = mX.multiply(z2).equals(otherPoint.mX.multiply(z1));
 
             // z1 = mZ^3
             z1.multiplyThisBy(mZ);
 
-            // z2 = ((PointGF2n)other).mZ^3
             z2.multiplyThisBy(otherPoint.mZ);
 
-            // mX*((PointGF2n)other).mZ^2 = ((PointGF2n)other).mX*mZ^2 ?
             result = result
                     && mY.multiply(z2).equals(otherPoint.mY.multiply(z1));
 
@@ -940,7 +861,6 @@ public class PointGF2n extends Point {
     }
 
     /**
-     * Negates this PointGF2n.
      */
     public void negateThis() {
         if (!isZero()) {

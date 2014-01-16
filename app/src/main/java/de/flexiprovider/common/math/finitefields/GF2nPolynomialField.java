@@ -44,47 +44,6 @@ public class GF2nPolynomialField extends GF2nField {
     private int[] pc = new int[3];
 
     /**
-     * constructs an instance of the finite field with 2<sup>deg</sup>
-     * elements and characteristic 2.
-     *
-     * @param deg the extention degree of this field
-     */
-    public GF2nPolynomialField(int deg) {
-        if (deg < 3) {
-            throw new IllegalArgumentException("k must be at least 3");
-        }
-        mDegree = deg;
-        computeFieldPolynomial();
-        computeSquaringMatrix();
-        fields = new Vector();
-        matrices = new Vector();
-    }
-
-    /**
-     * constructs an instance of the finite field with 2<sup>deg</sup>
-     * elements and characteristic 2.
-     *
-     * @param deg  the degree of this field
-     * @param file true if you want to read the field polynomial from the
-     *             file false if you want to use a random fielpolynomial
-     *             (this can take very long for huge degrees)
-     */
-    public GF2nPolynomialField(int deg, boolean file) {
-        if (deg < 3) {
-            throw new IllegalArgumentException("k must be at least 3");
-        }
-        mDegree = deg;
-        if (file) {
-            computeFieldPolynomial();
-        } else {
-            computeFieldPolynomial2();
-        }
-        computeSquaringMatrix();
-        fields = new Vector();
-        matrices = new Vector();
-    }
-
-    /**
      * Creates a new GF2nField of degree <i>i</i> and uses the given
      * <i>polynomial</i> as field polynomial. The <i>polynomial</i> is checked
      * whether it is irreducible. This can take some time if <i>i</i> is huge!
@@ -178,17 +137,6 @@ public class GF2nPolynomialField extends GF2nField {
         int[] result = new int[3];
         System.arraycopy(pc, 0, result, 0, 3);
         return result;
-    }
-
-    /**
-     * Return row vector i of the squaring matrix.
-     *
-     * @param i the index of the row vector to return
-     * @return a copy of squaringMatrix[i]
-     * @see GF2nPolynomialElement#squareMatrix
-     */
-    public GF2Polynomial getSquaringVector(int i) {
-        return new GF2Polynomial(squaringMatrix[i]);
     }
 
     /**
@@ -296,7 +244,6 @@ public class GF2nPolynomialField extends GF2nField {
             // convert horizontal gamma matrix by vertical Bitstrings
             for (i = 0; i < mDegree; i++) {
                 for (j = 0; j < mDegree; j++) {
-                    // TODO remember: ONB treats its Bits in reverse order !!!
                     if (gamma[i].testBit(mDegree - j - 1)) {
                         COBMatrix[mDegree - j - 1].setBit(mDegree - i - 1);
                     }
@@ -365,19 +312,6 @@ public class GF2nPolynomialField extends GF2nField {
     }
 
     /**
-     * Computes the field polynomial. This can take a long time for big degrees.
-     */
-    protected void computeFieldPolynomial2() {
-        if (testTrinomials()) {
-            return;
-        }
-        if (testPentanomials()) {
-            return;
-        }
-        testRandom();
-    }
-
-    /**
      * Tests all trinomials of degree (n+1) until a irreducible is found and
      * stores the result in <i>field polynomial</i>. Returns false if no
      * irreducible trinomial exists in GF(2^n). This can take very long for huge
@@ -386,9 +320,8 @@ public class GF2nPolynomialField extends GF2nField {
      * @return true if an irreducible trinomial is found
      */
     private boolean testTrinomials() {
-        int i, l;
+        int i;
         boolean done = false;
-        l = 0;
 
         fieldPolynomial = new GF2Polynomial(mDegree + 1);
         fieldPolynomial.setBit(0);
@@ -396,7 +329,6 @@ public class GF2nPolynomialField extends GF2nField {
         for (i = 1; (i < mDegree) && !done; i++) {
             fieldPolynomial.setBit(i);
             done = fieldPolynomial.isIrreducible();
-            l++;
             if (done) {
                 isTrinomial = true;
                 tc = i;
@@ -418,9 +350,8 @@ public class GF2nPolynomialField extends GF2nField {
      * @return true if an irreducible pentanomial is found
      */
     private boolean testPentanomials() {
-        int i, j, k, l;
+        int i, j, k;
         boolean done = false;
-        l = 0;
 
         fieldPolynomial = new GF2Polynomial(mDegree + 1);
         fieldPolynomial.setBit(0);
@@ -434,7 +365,6 @@ public class GF2nPolynomialField extends GF2nField {
                     if (((mDegree & 1) != 0) | ((i & 1) != 0) | ((j & 1) != 0)
                             | ((k & 1) != 0)) {
                         done = fieldPolynomial.isIrreducible();
-                        l++;
                         if (done) {
                             isPentanomial = true;
                             pc[0] = i;
@@ -461,13 +391,10 @@ public class GF2nPolynomialField extends GF2nField {
      * @return true
      */
     private boolean testRandom() {
-        int l;
         boolean done = false;
 
         fieldPolynomial = new GF2Polynomial(mDegree + 1);
-        l = 0;
         while (!done) {
-            l++;
             fieldPolynomial.randomize();
             fieldPolynomial.setBit(mDegree);
             fieldPolynomial.setBit(0);

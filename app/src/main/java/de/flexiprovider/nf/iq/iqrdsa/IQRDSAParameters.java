@@ -52,16 +52,6 @@ public class IQRDSAParameters extends AlgorithmParameters {
             add(modulus);
         }
 
-        public IQRDSAASN1Parameters(ASN1Integer discriminant,
-                                    ASN1Integer modulus) {
-            super(3);
-            this.discriminant = discriminant;
-            this.modulus = modulus;
-            add(version);
-            add(this.discriminant);
-            add(modulus);
-        }
-
         public IQRDSAASN1Parameters(FlexiBigInt discriminant,
                                     FlexiBigInt modulus) {
             super(3);
@@ -70,10 +60,6 @@ public class IQRDSAParameters extends AlgorithmParameters {
             add(version);
             add(this.discriminant);
             add(this.modulus);
-        }
-
-        public IQRDSAASN1Parameters(IQRDSAParameterSpec params) {
-            this(params.getDiscriminant(), params.getModulus());
         }
 
         public FlexiBigInt getDiscriminant() {

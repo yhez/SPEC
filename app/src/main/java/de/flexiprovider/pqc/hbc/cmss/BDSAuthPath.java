@@ -364,9 +364,7 @@ public class BDSAuthPath {
             tmpStack[i] = ByteUtils.clone(otherAuth.tmpStack[i]);
         }
 
-        for (int i = 0; i < params.length; i++) {
-            params[i] = otherAuth.params[i];
-        }
+        System.arraycopy(otherAuth.params, 0, params, 0, params.length);
     }
 
     public boolean equals() {

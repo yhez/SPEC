@@ -387,9 +387,7 @@ public class GF2nPolynomial {
         }
         GF2nPolynomial result = new GF2nPolynomial(size + amount, coeff[0]);
         result.assignZeroToElements();
-        for (int i = 0; i < size; i++) {
-            result.coeff[i + amount] = coeff[i];
-        }
+        System.arraycopy(coeff, 0, result.coeff, amount, size);
         return result;
     }
 
@@ -438,14 +436,14 @@ public class GF2nPolynomial {
      */
     public final GF2nPolynomial remainder(GF2nPolynomial b)
             throws DifferentFieldsException, ArithmeticException {
-        GF2nPolynomial[] result = new GF2nPolynomial[2];
+        GF2nPolynomial[] result;
         result = divide(b);
         return result[1];
     }
 
     public final GF2nPolynomial quotient(GF2nPolynomial b)
             throws DifferentFieldsException, ArithmeticException {
-        GF2nPolynomial[] result = new GF2nPolynomial[2];
+        GF2nPolynomial[] result;
         result = divide(b);
         return result[0];
     }

@@ -813,6 +813,8 @@ public class Main extends FragmentActivity {
                                     mi3.setIcon(R.drawable.after_attached);
                                 else
                                     mi3.setIcon(R.drawable.attachment);
+                            }else{
+                                mi3.setVisible(false);
                             }
                         }
                     }

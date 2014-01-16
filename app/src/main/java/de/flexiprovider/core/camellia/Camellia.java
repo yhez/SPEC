@@ -510,7 +510,7 @@ public class Camellia extends BlockCipher {
 
         if (n == 128) {
             for (i = 0; i < 26; i += 2) {
-                rotBlock(u, KIDX1[i + 0], KSFT1[i + 0], u, 16);
+                rotBlock(u, KIDX1[i], KSFT1[i], u, 16);
                 rotBlock(u, KIDX1[i + 1], KSFT1[i + 1], u, 18);
                 toByteArray(u, 16, expandedKey, i << 3);
             }
@@ -524,7 +524,7 @@ public class Camellia extends BlockCipher {
             toIntArray(t, 48, u, 12);
 
             for (i = 0; i < 34; i += 2) {
-                rotBlock(u, KIDX2[i + 0], KSFT2[i + 0], u, 16);
+                rotBlock(u, KIDX2[i], KSFT2[i], u, 16);
                 rotBlock(u, KIDX2[i + 1], KSFT2[i + 1], u, 18);
                 toByteArray(u, 16, expandedKey, i << 3);
             }
@@ -581,7 +581,7 @@ public class Camellia extends BlockCipher {
             camelliaFLlayer(output, outOff, expandedKey, 192, expandedKey, 200);
 
             for (i = 0; i < 3; i++) {
-                camelliaFeistel(output, outOff + 0, expandedKey,
+                camelliaFeistel(output, outOff, expandedKey,
                         208 + (i << 4), output, outOff + 8);
                 camelliaFeistel(output, outOff + 8, expandedKey,
                         216 + (i << 4), output, outOff);

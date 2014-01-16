@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Gravity;
 import android.webkit.MimeTypeMap;
 import android.widget.TextView;

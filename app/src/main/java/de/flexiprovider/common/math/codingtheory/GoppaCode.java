@@ -76,52 +76,6 @@ public final class GoppaCode {
     }
 
     /**
-     * This class is a container for an instance of {@link GF2Matrix} and one
-     * int[]. It is used to hold a generator matrix and the set of indices such
-     * that the submatrix of the generator matrix consisting of the specified
-     * columns is the identity.
-     *
-     * @author Elena Klintsevich
-     * @see GF2Matrix
-     * @see Permutation
-     */
-    public static class MatrixSet {
-
-        private GF2Matrix g;
-
-        private int[] setJ;
-
-        /**
-         * Construct a new {@link de.flexiprovider.common.math.codingtheory.GoppaCode.MatrixSet} container with the given
-         * parameters.
-         *
-         * @param g    the generator matrix
-         * @param setJ the set of indices such that the submatrix of the
-         *             generator matrix consisting of the specified columns
-         *             is the identity
-         */
-        public MatrixSet(GF2Matrix g, int[] setJ) {
-            this.g = g;
-            this.setJ = setJ;
-        }
-
-        /**
-         * @return the generator matrix
-         */
-        public GF2Matrix getG() {
-            return g;
-        }
-
-        /**
-         * @return the set of indices such that the submatrix of the generator
-         * matrix consisting of the specified columns is the identity
-         */
-        public int[] getSetJ() {
-            return setJ;
-        }
-    }
-
-    /**
      * Construct the check matrix of a Goppa code in canonical form from the
      * irreducible Goppa polynomial over the finite field
      * <tt>GF(2<sup>m</sup>)</tt>.

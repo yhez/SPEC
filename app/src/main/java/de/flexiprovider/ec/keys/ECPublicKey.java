@@ -79,17 +79,6 @@ public class ECPublicKey extends PublicKey {
     }
 
     /**
-     * @return the uncompressed encoding of the public point W
-     */
-    public byte[] getEncodedW() {
-        if (mEncodedW != null) {
-            return mEncodedW;
-        }
-
-        return mW.EC2OSP(Point.ENCODING_TYPE_UNCOMPRESSED);
-    }
-
-    /**
      * This method returns the corresponding ECParameterSpec.
      *
      * @return the corresponding ECParameterSpec.
@@ -127,14 +116,14 @@ public class ECPublicKey extends PublicKey {
      * @see CurveParams
      */
     public String toString() {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         if (mEncodedW != null) {
             result.append("W= (encoded)\n");
             result.append(ByteUtils.toHexString(mEncodedW, "0x", ""));
         } else {
-            result.append("W =\n" + mW.toString());
+            result.append("W =\n").append(mW.toString());
             if (mParams != null) {
-                result.append("\n" + mParams.toString());
+                result.append("\n").append(mParams.toString());
             }
         }
         return result.toString();

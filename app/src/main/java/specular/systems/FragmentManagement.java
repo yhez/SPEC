@@ -759,9 +759,7 @@ public class FragmentManagement extends Fragment {
                             startActivity(intent);
                         } else if (f.isDirectory()) {
                             files.clear();
-                            for (String s : f.list()) {
-                                files.add(s);
-                            }
+                            Collections.addAll(files, f.list());
                             StaticVariables.path = new File(StaticVariables.path, fname);
                             adapter.notifyDataSetChanged();
                         }

@@ -192,7 +192,7 @@ public class GF2mVector extends Vector {
      * @return a human readable form of this vector
      */
     public String toString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int i = 0; i < vector.length; i++) {
             for (int j = 0; j < field.getDegree(); j++) {
                 int r = j & 0x1f;

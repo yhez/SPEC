@@ -157,10 +157,6 @@ public final class FlexiBigInt {
         return bigInt.bitLength();
     }
 
-    public int bitCount() {
-        return bigInt.bitCount();
-    }
-
     public boolean isProbablePrime(int certainty) {
         return bigInt.isProbablePrime(certainty);
     }

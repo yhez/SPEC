@@ -1,6 +1,5 @@
 package de.flexiprovider.common.math.polynomials;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Vector;
@@ -9,7 +8,6 @@ import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1Integer;
 import codec.asn1.ASN1Sequence;
 import codec.asn1.ASN1SequenceOf;
-import codec.asn1.DERDecoder;
 import codec.asn1.DEREncoder;
 import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.SecureRandom;
@@ -33,51 +31,11 @@ public class GFP64Polynomial {
 
     private long[] f;
     private long[] poly;
-    private int degree;
 
     private long p;
 
     private SecureRandom generator;
 
-    /**
-     * Constructor for decoding a previously encoded {@link GFPPolynomial} using
-     * the getEncoded() method
-     *
-     * @param encoded the byte array containing the encoded {@link GFPPolynomial}
-     * @throws java.io.IOException
-     * @throws codec.asn1.ASN1Exception
-     */
-    public GFP64Polynomial(byte[] encoded) throws ASN1Exception, IOException {
-        ByteArrayInputStream in = new ByteArrayInputStream(encoded);
-        DERDecoder decoder = new DERDecoder(in);
-        ASN1Sequence gfpSequence = new ASN1Sequence(3);
-        gfpSequence.add(new ASN1SequenceOf(ASN1Integer.class));
-        gfpSequence.add(new ASN1Integer());
-        gfpSequence.add(new ASN1SequenceOf(ASN1Integer.class));
-        gfpSequence.decode(decoder);
-        in.close();
-
-        ASN1SequenceOf asn1F = (ASN1SequenceOf) gfpSequence.get(0);
-        ASN1Integer asn1P = (ASN1Integer) gfpSequence.get(1);
-        ASN1SequenceOf asn1Poly = (ASN1SequenceOf) gfpSequence.get(2);
-
-        long[] poly = new long[asn1Poly.size()];
-        for (int i = poly.length - 1; i >= 0; i--) {
-            poly[i] = ASN1Tools.getFlexiBigInt((ASN1Integer) asn1Poly.get(i))
-                    .intValue();
-        }
-        this.poly = poly;
-        long[] f = new long[asn1F.size()];
-        degree = f.length - 1;
-        for (int i = degree; i >= 0; i--) {
-            f[i] = ASN1Tools.getFlexiBigInt((ASN1Integer) asn1F.get(i))
-                    .intValue();
-        }
-        this.f = f;
-        p = ASN1Tools.getFlexiBigInt(asn1P).intValue();
-
-        generator = Registry.getSecureRandom();
-    }
 
     /**
      * Standard Constructor for generating a new GFPPolynomial
@@ -88,25 +46,8 @@ public class GFP64Polynomial {
      */
     public GFP64Polynomial(long[] f, long p, long[] poly) {
         this.f = f;
-        degree = f.length - 1;
         this.p = p;
         this.poly = reduce(poly);
-        generator = Registry.getSecureRandom();
-    }
-
-    /**
-     * Special Constructor without a Polynomial parameter but with a Secure
-     * Random generator. This Constructor can only be used for methods which do
-     * not require a Polynomial to be present, such as generatePoly()
-     *
-     * @param f   the modulo Polynomial of the Ring
-     * @param p   the modulo "prime" of the Ring
-     * @param gen a predefined secure Random Number Generator
-     */
-    public GFP64Polynomial(long[] f, long p, SecureRandom gen) {
-        this.f = f;
-        degree = f.length - 1;
-        this.p = p;
         generator = Registry.getSecureRandom();
     }
 
@@ -195,60 +136,6 @@ public class GFP64Polynomial {
         return false;
     }
 
-    /**
-     * also compares SecureRandom, but since that class has no default equals
-     * operator, this method is useless (for now)
-     *
-     * @param gfp the {@link GFP64Polynomial} to compare to.
-     * @return
-     */
-    private boolean fullEquals(GFP64Polynomial gfp) {
-        return p == gfp.getP() && arrEqual(f, gfp.getF())
-                && arrEqual(poly, gfp.getPoly())
-                && generator.equals(gfp.getRandomizer());
-    }
-
-    /**
-     * Generates a random Polynomial, complying to the specification of this
-     * Ring
-     *
-     * @return the randomly generated Polynomial
-     */
-    public GFP64Polynomial generatePoly() {
-        return generatePoly(0);
-    }
-
-    /**
-     * Generates a random Polynomial with the specified limit, denoting the
-     * maximum Value of entries in this Polynomial.
-     *
-     * @param limit the limit to be used for modulo in the generated Polynomial.
-     *              Only used if the supplied number is lower than p, otherwise p
-     *              is used.
-     * @return the randomly generated Polynomial
-     */
-    public GFP64Polynomial generatePoly(long limit) {
-        return generatePoly(limit, false);
-    }
-
-    public GFP64Polynomial generatePoly(long limit, boolean negative) {
-        if (limit == 0 || limit > p) {
-            limit = p;
-        }
-        long[] resPoly = new long[degree];
-        for (int i = degree; i > 0; i--) {
-            if (negative) {
-                resPoly[i - 1] = nextLong(limit * 2 - 1);
-            } else {
-                resPoly[i - 1] = nextLong(limit);
-            }
-        }
-        if (negative) {
-            return new GFP64Polynomial(f, p, compress(resPoly, limit * 2 - 1));
-        }
-        return new GFP64Polynomial(f, p, reduceZeros(resPoly));
-    }
-
     public byte[] getEncoded() throws ASN1Exception, IOException {
         // TODO use ASN.1
         ASN1Sequence gfpSequence = new ASN1Sequence(3);
@@ -290,10 +177,6 @@ public class GFP64Polynomial {
         return poly;
     }
 
-    public SecureRandom getRandomizer() {
-        return generator;
-    }
-
     private long[] mod(long[] poly) {
         for (int i = poly.length; i > 0; i--) {
             if (poly[i - 1] < 0) {
@@ -303,10 +186,6 @@ public class GFP64Polynomial {
             }
         }
         return poly;
-    }
-
-    private long modMultiply(long p, long q) {
-        return 0;
     }
 
     /**
@@ -363,23 +242,6 @@ public class GFP64Polynomial {
         }
 
         return result;
-    }
-
-    /**
-     * Multiplies the given Polynomial to this Polynomial and sets this
-     * Polynomial to the Result
-     *
-     * @param gfp the Polynomial to be multiplied
-     */
-    public void multiplyToThis(GFP64Polynomial gfp) {
-        poly = multiply(gfp).getPoly();
-    }
-
-    private long nextLong(long limit) {
-        if (limit > Integer.MAX_VALUE) {
-            return (generator.nextInt() * generator.nextInt()) % limit;
-        }
-        return generator.nextInt((int) limit);
     }
 
     public boolean paramEqual(GFP64Polynomial gfp) {

@@ -16,8 +16,8 @@ public final class CameraManager {
 
     private static final int MIN_FRAME_WIDTH = 240;
     private static final int MIN_FRAME_HEIGHT = 240;
-    private static final int MAX_FRAME_WIDTH = 600;
-    private static final int MAX_FRAME_HEIGHT = 400;
+    private static final int MAX_FRAME_WIDTH = 1200; // = 5/8 * 1920
+    private static final int MAX_FRAME_HEIGHT = 675; // = 5/8 * 1080
 
     private final CameraConfigurationManager configManager;
     private Camera camera;
@@ -27,14 +27,9 @@ public final class CameraManager {
     private boolean previewing;
     private int requestedFramingRectWidth;
     private int requestedFramingRectHeight;
-    /**
-     * Preview frames are delivered here, which we pass on to the registered handler. Make sure to
-     * clear the handler so it will only receive one message.
-     */
+
     private final PreviewCallback previewCallback;
-    /**
-     * Autofocus callbacks arrive here, and are dispatched to the Handler which requested them.
-     */
+
     private final AutoFocusCallback autoFocusCallback;
 
     public CameraManager(Context context) {
@@ -46,13 +41,6 @@ public final class CameraManager {
     public void onF(boolean b) {
         configManager.setTorch(camera, b);
     }
-
-    /**
-     * Opens the camera driver and initializes the hardware parameters.
-     *
-     * @param holder The surface object which the camera will draw preview_direct_msg frames into.
-     * @throws IOException Indicates the camera driver failed to open.
-     */
     public void openDriver(SurfaceHolder holder) throws IOException {
         Camera theCamera = camera;
         if (theCamera == null) {
@@ -75,10 +63,6 @@ public final class CameraManager {
         }
         configManager.setDesiredCameraParameters(theCamera);
     }
-
-    /**
-     * Closes the camera driver if still in use.
-     */
     public void closeDriver() {
         if (camera != null) {
             camera.release();
@@ -89,10 +73,6 @@ public final class CameraManager {
             framingRectInPreview = null;
         }
     }
-
-    /**
-     * Asks the camera hardware to begin drawing preview_direct_msg frames to the screen.
-     */
     public void startPreview() {
         Camera theCamera = camera;
         if (theCamera != null && !previewing) {
@@ -100,10 +80,6 @@ public final class CameraManager {
             previewing = true;
         }
     }
-
-    /**
-     * Tells the camera to stop drawing preview_direct_msg frames.
-     */
     public void stopPreview() {
         if (camera != null && previewing) {
             camera.stopPreview();
@@ -112,27 +88,13 @@ public final class CameraManager {
             previewing = false;
         }
     }
-
-    /**
-     * A single preview_direct_msg frame will be returned to the handler supplied. The data will arrive as byte[]
-     * in the message.obj field, with width and height encoded as message.arg1 and message.arg2,
-     * respectively.
-     *
-     * @param handler The handler to send the message to.
-     */
-    public void requestPreviewFrame(Handler handler) {
+    public synchronized void requestPreviewFrame(Handler handler, int message) {
         Camera theCamera = camera;
         if (theCamera != null && previewing) {
-            previewCallback.setHandler(handler, R.id.decode);
+            previewCallback.setHandler(handler, message);
             theCamera.setOneShotPreviewCallback(previewCallback);
         }
     }
-
-    /**
-     * Asks the camera hardware to perform an autofocus.
-     *
-     * @param handler The Handler to notify when the autofocus completes.
-     */
     public void requestAutoFocus(Handler handler) {
         if (camera != null && previewing) {
             autoFocusCallback.setHandler(handler, R.id.auto_focus);
@@ -144,31 +106,21 @@ public final class CameraManager {
         }
     }
 
-    /**
-     * Calculates the framing rect which the UI should draw to show the user where to place the
-     * barcode. This target helps with alignment as well as forces the user to hold the device
-     * far enough away to ensure the image will be in focus.
-     *
-     * @return The rectangle to draw on screen in window coordinates.
-     */
-    public Rect getFramingRect() {
+
+    public synchronized Rect getFramingRect() {
         if (framingRect == null) {
             if (camera == null) {
                 return null;
             }
             Point screenResolution = configManager.getScreenResolution();
-            int width = screenResolution.x * 3 / 4;
-            if (width < MIN_FRAME_WIDTH) {
-                width = MIN_FRAME_WIDTH;
-            } else if (width > MAX_FRAME_WIDTH) {
-                width = MAX_FRAME_WIDTH;
+            if (screenResolution == null) {
+                // Called early, before init even finished
+                return null;
             }
-            int height = screenResolution.y * 3 / 4;
-            if (height < MIN_FRAME_HEIGHT) {
-                height = MIN_FRAME_HEIGHT;
-            } else if (height > MAX_FRAME_HEIGHT) {
-                height = MAX_FRAME_HEIGHT;
-            }
+
+            int width = findDesiredDimensionInRange(screenResolution.x, MIN_FRAME_WIDTH, MAX_FRAME_WIDTH);
+            int height = findDesiredDimensionInRange(screenResolution.y, MIN_FRAME_HEIGHT, MAX_FRAME_HEIGHT);
+
             int leftOffset = (screenResolution.x - width) / 2;
             int topOffset = (screenResolution.y - height) / 2;
             framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
@@ -176,11 +128,19 @@ public final class CameraManager {
         return framingRect;
     }
 
-    /**
-     * Like {@link #getFramingRect} but coordinates are in terms of the preview_direct_msg frame,
-     * not UI / screen.
-     */
-    public Rect getFramingRectInPreview() {
+    private static int findDesiredDimensionInRange(int resolution, int hardMin, int hardMax) {
+        int dim = 5 * resolution / 8; // Target 5/8 of each dimension
+        if (dim < hardMin) {
+            return hardMin;
+        }
+        if (dim > hardMax) {
+            return hardMax;
+        }
+        return dim;
+    }
+
+
+    public synchronized Rect getFramingRectInPreview() {
         if (framingRectInPreview == null) {
             Rect framingRect = getFramingRect();
             if (framingRect == null) {
@@ -189,6 +149,10 @@ public final class CameraManager {
             Rect rect = new Rect(framingRect);
             Point cameraResolution = configManager.getCameraResolution();
             Point screenResolution = configManager.getScreenResolution();
+            if (cameraResolution == null || screenResolution == null) {
+                // Called early, before init even finished
+                return null;
+            }
             rect.left = rect.left * cameraResolution.x / screenResolution.x;
             rect.right = rect.right * cameraResolution.x / screenResolution.x;
             rect.top = rect.top * cameraResolution.y / screenResolution.y;
@@ -198,13 +162,6 @@ public final class CameraManager {
         return framingRectInPreview;
     }
 
-    /**
-     * Allows third party apps to specify the scanning rectangle dimensions, rather than determine
-     * them automatically based on screen resolution.
-     *
-     * @param width  The width in pixels to scan.
-     * @param height The height in pixels to scan.
-     */
     public void setManualFramingRect(int width, int height) {
         if (initialized) {
             Point screenResolution = configManager.getScreenResolution();
@@ -224,15 +181,7 @@ public final class CameraManager {
         }
     }
 
-    /**
-     * A factory method to build the appropriate LuminanceSource object based on the format
-     * of the preview_direct_msg buffers, as described by Camera.Parameters.
-     *
-     * @param data   A preview_direct_msg frame.
-     * @param width  The width of the image.
-     * @param height The height of the image.
-     * @return A PlanarYUVLuminanceSource instance.
-     */
+
     public PlanarYUVLuminanceSource buildLuminanceSource(byte[] data, int width, int height) {
         Rect rect = getFramingRectInPreview();
         if (rect == null) {
@@ -240,7 +189,7 @@ public final class CameraManager {
         }
         // Go ahead and assume it's YUV rather than die.
         return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top,
-                rect.width(), rect.height());
+                rect.width(), rect.height(), false);
     }
 
 }

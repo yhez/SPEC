@@ -168,17 +168,7 @@ public abstract class FlexiProvider extends Provider {
         }
     }
 
-    /**
-     * Assign an OID for the reverse mapping (OID -> algorithm name) to an
-     * algorithm. Check whether the algorithm the OID is assigned to is
-     * registered.
-     *
-     * @param type    the algorithm type
-     * @param algName the algorithm name
-     * @param oid     the OID used for reverse mapping
-     * @throws de.flexiprovider.api.exceptions.RegistrationException if the algorithm the OID is assigned to is not
-     *                                                               registered.
-     */
+
     protected void addReverseOID(int type, String algName, String oid)
             throws RegistrationException {
         // get prefix
@@ -194,7 +184,6 @@ public abstract class FlexiProvider extends Provider {
             throw new RegistrationException("no such algorithm: " + algName);
         }
 
-        // register reverse OID alias
         put("Alg.Alias." + prefix + "OID." + oid, algName);
     }
 

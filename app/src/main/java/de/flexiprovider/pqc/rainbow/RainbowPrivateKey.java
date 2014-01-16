@@ -58,17 +58,7 @@ public class RainbowPrivateKey extends PrivateKey {
     private int[] vi;
 
 
-    /**
-     * Constructor (used by the {@link RainbowKeyPairGenerator}).
-     *
-     * @param oid
-     * @param A1inv
-     * @param b1
-     * @param A2inv
-     * @param b2
-     * @param vi
-     * @param layers
-     */
+
     protected RainbowPrivateKey(String oid, short[][] A1inv, short[] b1, short[][] A2inv,
                                 short[] b2, int[] vi, Layer[] layers) {
         this.oid = oid;
@@ -156,7 +146,7 @@ public class RainbowPrivateKey extends PrivateKey {
         }
         RainbowPrivateKey otherKey = (RainbowPrivateKey) other;
 
-        boolean eq = true;
+        boolean eq;
         // compare using shortcut rule ( && instead of &)
         eq = oid.equals(otherKey.oid);
         eq = eq && RainbowUtil.equals(A1inv, otherKey.getA1inv());
@@ -202,34 +192,6 @@ public class RainbowPrivateKey extends PrivateKey {
         return new ASN1ObjectIdentifier(RainbowKeyFactory.OID);
     }
 
-    /**
-     * Return the key data to encode in the SubjectPublicKeyInfo structure.
-     * <p/>
-     * The ASN.1 definition of the key structure is
-     * <p/>
-     * <pre>
-     *   RainbowPrivateKey ::= SEQUENCE {
-     *     oid        OBJECT IDENTIFIER         -- OID identifying the algorithm
-     *     A1inv      SEQUENCE OF OCTET STRING  -- inversed matrix of L1
-     *     b1         OCTET STRING              -- translation vector of L1
-     *     A2inv      SEQUENCE OF OCTET STRING  -- inversed matrix of L2
-     *     b2         OCTET STRING              -- translation vector of L2
-     *     vi         OCTET STRING              -- num of elmts in each Set S
-     *     layers     SEQUENCE OF Layer         -- layers of F
-     *   }
-     *
-     *   Layer             ::= SEQUENCE OF Poly
-     *
-     *   Poly              ::= SEQUENCE {
-     *     alpha      SEQUENCE OF OCTET STRING
-     *     beta       SEQUENCE OF OCTET STRING
-     *     gamma      OCTET STRING
-     *     eta        INTEGER
-     *   }
-     * </pre>
-     *
-     * @return the key data to encode in the SubjectPublicKeyInfo structure
-     */
     protected byte[] getKeyData() {
         ASN1Sequence keyData = new ASN1Sequence();
 

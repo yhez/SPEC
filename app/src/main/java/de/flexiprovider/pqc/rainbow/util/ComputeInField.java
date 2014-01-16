@@ -56,9 +56,7 @@ public class ComputeInField {
 
             /** copy B into the global matrix A **/
             for (int i = 0; i < B.length; i++) { // rows
-                for (int j = 0; j < B[0].length; j++) { // cols
-                    A[i][j] = B[i][j];
-                }
+                System.arraycopy(B[i], 0, A[i], 0, B[0].length);
             }
 
             /** copy the vector b into the global A **/
@@ -103,10 +101,7 @@ public class ComputeInField {
 
             /** prepare: Copy coef and the identity matrix into the global A. **/
             for (int i = 0; i < coef.length; i++) {
-                for (int j = 0; j < coef.length; j++) {
-                    //copy the input matrix coef into A
-                    A[i][j] = coef[i][j];
-                }
+                System.arraycopy(coef[i], 0, A[i], 0, coef.length);
                 // copy the identity matrix into A.
                 for (int j = coef.length; j < 2 * coef.length; j++) {
                     A[i][j] = 0;
@@ -132,9 +127,7 @@ public class ComputeInField {
             // copy the result (the second half of A) in the matrix inverse.
             inverse = new short[A.length][A.length];
             for (int i = 0; i < A.length; i++) {
-                for (int j = A.length; j < 2 * A.length; j++) {
-                    inverse[i][j - A.length] = A[i][j];
-                }
+                System.arraycopy(A[i], A.length, inverse[i], A.length - A.length, 2 * A.length - A.length);
             }
             return inverse;
 

@@ -109,7 +109,7 @@ class Treehash {
 
         this.heightOfNodes = new Vector();
         for (int i = 0; i < tailLength; i++) {
-            this.heightOfNodes.addElement(Integer.valueOf(statInt[6 + i]));
+            this.heightOfNodes.addElement(statInt[6 + i]);
         }
 
         // decode statByte
@@ -240,7 +240,7 @@ class Treehash {
 
             // push the new node on the stack
             this.tailStack.addElement(help);
-            this.heightOfNodes.addElement(Integer.valueOf(helpHeight));
+            this.heightOfNodes.addElement(helpHeight);
             this.tailLength++;
 
             // finally check whether the top node on stack and the first node

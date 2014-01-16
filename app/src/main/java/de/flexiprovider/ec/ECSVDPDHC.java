@@ -96,12 +96,12 @@ public class ECSVDPDHC extends KeyAgreement {
      * Initializes this <tt>ECSVDPDHC</tt> with a key and some random
      * information which is not being used here.
      *
+     *
      * @param key    is the secret key of the party initializing ECSVDPDHC
-     * @param random contains some random information that are randomly ignored
      * @throws InvalidKeyException if <tt>key</tt> is no instance of <tt>
      *                             ECPrivateKey</tt>
      */
-    public void init(PrivateKey key, SecureRandom random)
+    public void init(PrivateKey key)
             throws InvalidKeyException {
         if (!(key instanceof ECPrivateKey)) {
             throw new InvalidKeyException("unsupported type");
@@ -124,7 +124,7 @@ public class ECSVDPDHC extends KeyAgreement {
      */
     public SecretKey generateSecret(String algorithm)
             throws NoSuchAlgorithmException {
-        SecretKey secr = null;
+        SecretKey secr;
         if (!(algorithm.equals("ECDH"))) {
             throw new NoSuchAlgorithmException(algorithm + " is not supported");
         }
@@ -155,7 +155,7 @@ public class ECSVDPDHC extends KeyAgreement {
      */
     public int generateSecret(byte[] sharedSecret, int offset)
             throws ShortBufferException {
-        ECSecretKey secr = null;
+        ECSecretKey secr;
         try {
             secr = secretGenerator();
         } catch (InvalidKeyException ex) {
@@ -184,7 +184,7 @@ public class ECSVDPDHC extends KeyAgreement {
      * is not in DoPhase
      */
     public byte[] generateSecret() {
-        ECSecretKey secr = null;
+        ECSecretKey secr;
 
         try {
             secr = secretGenerator();

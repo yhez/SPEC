@@ -16,6 +16,11 @@
 
 package zxing.qrcode.encoder;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+
 import zxing.EncodeHintType;
 import zxing.WriterException;
 import zxing.common.BitArray;
@@ -25,11 +30,6 @@ import zxing.common.reedsolomon.ReedSolomonEncoder;
 import zxing.qrcode.decoder.ErrorCorrectionLevel;
 import zxing.qrcode.decoder.Mode;
 import zxing.qrcode.decoder.Version;
-
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
 
 /**
  * @author satorux@google.com (Satoru Takabayashi) - creator
@@ -61,17 +61,6 @@ public final class Encoder {
         + MaskUtil.applyMaskPenaltyRule4(matrix);
   }
 
-  /**
-   *  Encode "bytes" with the error correction level "ecLevel". The encoding mode will be chosen
-   * internally by chooseMode(). On success, store the result in "qrCode".
-   *
-   * We recommend you to use QRCode.EC_LEVEL_L (the lowest level) for
-   * "getECLevel" since our primary use is to show QR code on desktop screens. We don't need very
-   * strong error correction for this purpose.
-   *
-   * Note that there is no way to encode bytes in MODE_KANJI. We might want to add EncodeWithMode()
-   * with which clients can specify the encoding mode. For now, we don't need the functionality.
-   */
   public static QRCode encode(String content, ErrorCorrectionLevel ecLevel) throws WriterException {
     return encode(content, ecLevel, null);
   }
@@ -176,11 +165,7 @@ public final class Encoder {
     return -1;
   }
 
-  public static Mode chooseMode(String content) {
-    return chooseMode(content, null);
-  }
-
-  /**
+    /**
    * Choose the best mode by examining the content. Note that 'encoding' is used as a hint;
    * if it is Shift_JIS, and the input is only double-byte Kanji, then we return {@link zxing.qrcode.decoder.Mode#KANJI}.
    */

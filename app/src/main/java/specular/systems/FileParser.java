@@ -1,8 +1,6 @@
 package specular.systems;
 
-/**
- * Created by yehezkelk on 1/13/14.
- */
+
 public class FileParser {
     public static final int
             ENCRYPTED_GROUP=0,

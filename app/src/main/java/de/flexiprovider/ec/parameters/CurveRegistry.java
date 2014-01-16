@@ -1654,49 +1654,49 @@ public final class CurveRegistry {
      */
     static {
         defaultParamsMap = new Hashtable();
-        defaultParamsMap.put(Integer.valueOf(112), "secp112r1");
-        defaultParamsMap.put(Integer.valueOf(128), "secp128r1");
-        defaultParamsMap.put(Integer.valueOf(160), "brainpoolP160r1");
-        defaultParamsMap.put(Integer.valueOf(170), "primeCurve2");
-        defaultParamsMap.put(Integer.valueOf(180), "primeCurve3");
-        defaultParamsMap.put(Integer.valueOf(190), "primeCurve4");
-        defaultParamsMap.put(Integer.valueOf(192), "brainpoolP192r1");
-        defaultParamsMap.put(Integer.valueOf(200), "primeCurve5");
-        defaultParamsMap.put(Integer.valueOf(210), "primeCurve6");
-        defaultParamsMap.put(Integer.valueOf(220), "primeCurve7");
-        defaultParamsMap.put(Integer.valueOf(224), "brainpoolP224r1");
-        defaultParamsMap.put(Integer.valueOf(230), "primeCurve9");
-        defaultParamsMap.put(Integer.valueOf(239), "prime239v1");
-        defaultParamsMap.put(Integer.valueOf(240), "primeCurve10");
-        defaultParamsMap.put(Integer.valueOf(250), "primeCurve11");
-        defaultParamsMap.put(Integer.valueOf(256), "brainpoolP256r1");
-        defaultParamsMap.put(Integer.valueOf(260), "primeCurve12");
-        defaultParamsMap.put(Integer.valueOf(270), "primeCurve13");
-        defaultParamsMap.put(Integer.valueOf(280), "primeCurve14");
-        defaultParamsMap.put(Integer.valueOf(290), "primeCurve15");
-        defaultParamsMap.put(Integer.valueOf(300), "primeCurve16");
-        defaultParamsMap.put(Integer.valueOf(310), "primeCurve17");
-        defaultParamsMap.put(Integer.valueOf(320), "brainpoolP320r1");
-        defaultParamsMap.put(Integer.valueOf(330), "primeCurve19");
-        defaultParamsMap.put(Integer.valueOf(340), "primeCurve20");
-        defaultParamsMap.put(Integer.valueOf(350), "primeCurve21");
-        defaultParamsMap.put(Integer.valueOf(360), "primeCurve22");
-        defaultParamsMap.put(Integer.valueOf(370), "primeCurve23");
-        defaultParamsMap.put(Integer.valueOf(380), "primeCurve24");
-        defaultParamsMap.put(Integer.valueOf(384), "brainpoolP384r1");
-        defaultParamsMap.put(Integer.valueOf(390), "primeCurve26");
-        defaultParamsMap.put(Integer.valueOf(400), "primeCurve27");
-        defaultParamsMap.put(Integer.valueOf(410), "primeCurve28");
-        defaultParamsMap.put(Integer.valueOf(420), "primeCurve29");
-        defaultParamsMap.put(Integer.valueOf(430), "primeCurve30");
-        defaultParamsMap.put(Integer.valueOf(440), "primeCurve31");
-        defaultParamsMap.put(Integer.valueOf(450), "primeCurve32");
-        defaultParamsMap.put(Integer.valueOf(460), "primeCurve33");
-        defaultParamsMap.put(Integer.valueOf(470), "primeCurve34");
-        defaultParamsMap.put(Integer.valueOf(480), "primeCurve35");
-        defaultParamsMap.put(Integer.valueOf(490), "primeCurve36");
-        defaultParamsMap.put(Integer.valueOf(500), "primeCurve37");
-        defaultParamsMap.put(Integer.valueOf(512), "brainpoolP512r1");
+        defaultParamsMap.put(112, "secp112r1");
+        defaultParamsMap.put(128, "secp128r1");
+        defaultParamsMap.put(160, "brainpoolP160r1");
+        defaultParamsMap.put(170, "primeCurve2");
+        defaultParamsMap.put(180, "primeCurve3");
+        defaultParamsMap.put(190, "primeCurve4");
+        defaultParamsMap.put(192, "brainpoolP192r1");
+        defaultParamsMap.put(200, "primeCurve5");
+        defaultParamsMap.put(210, "primeCurve6");
+        defaultParamsMap.put(220, "primeCurve7");
+        defaultParamsMap.put(224, "brainpoolP224r1");
+        defaultParamsMap.put(230, "primeCurve9");
+        defaultParamsMap.put(239, "prime239v1");
+        defaultParamsMap.put(240, "primeCurve10");
+        defaultParamsMap.put(250, "primeCurve11");
+        defaultParamsMap.put(256, "brainpoolP256r1");
+        defaultParamsMap.put(260, "primeCurve12");
+        defaultParamsMap.put(270, "primeCurve13");
+        defaultParamsMap.put(280, "primeCurve14");
+        defaultParamsMap.put(290, "primeCurve15");
+        defaultParamsMap.put(300, "primeCurve16");
+        defaultParamsMap.put(310, "primeCurve17");
+        defaultParamsMap.put(320, "brainpoolP320r1");
+        defaultParamsMap.put(330, "primeCurve19");
+        defaultParamsMap.put(340, "primeCurve20");
+        defaultParamsMap.put(350, "primeCurve21");
+        defaultParamsMap.put(360, "primeCurve22");
+        defaultParamsMap.put(370, "primeCurve23");
+        defaultParamsMap.put(380, "primeCurve24");
+        defaultParamsMap.put(384, "brainpoolP384r1");
+        defaultParamsMap.put(390, "primeCurve26");
+        defaultParamsMap.put(400, "primeCurve27");
+        defaultParamsMap.put(410, "primeCurve28");
+        defaultParamsMap.put(420, "primeCurve29");
+        defaultParamsMap.put(430, "primeCurve30");
+        defaultParamsMap.put(440, "primeCurve31");
+        defaultParamsMap.put(450, "primeCurve32");
+        defaultParamsMap.put(460, "primeCurve33");
+        defaultParamsMap.put(470, "primeCurve34");
+        defaultParamsMap.put(480, "primeCurve35");
+        defaultParamsMap.put(490, "primeCurve36");
+        defaultParamsMap.put(500, "primeCurve37");
+        defaultParamsMap.put(512, "brainpoolP512r1");
     }
     private CurveRegistry() {
         // empty
@@ -1713,7 +1713,7 @@ public final class CurveRegistry {
                     "No default parameters exist for key size '" + keySize
                             + "'.");
         }
-        return (String) defaultParamsMap.get(Integer.valueOf(size));
+        return (String) defaultParamsMap.get(size);
     }
 
 }

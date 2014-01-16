@@ -33,12 +33,7 @@ public final class BitArray implements Cloneable {
     this.bits = new int[1];
   }
 
-  public BitArray(int size) {
-    this.size = size;
-    this.bits = makeArray(size);
-  }
-
-  // For testing only
+    // For testing only
   BitArray(int[] bits, int size) {
     this.bits = bits;
     this.size = size;
@@ -75,10 +70,6 @@ public final class BitArray implements Cloneable {
    */
   public void set(int i) {
     bits[i / 32] |= 1 << (i & 0x1F);
-  }
-
-  public void setBulk(int i, int newBits) {
-    bits[i / 32] = newBits;
   }
 
     /**
@@ -162,43 +153,7 @@ public final class BitArray implements Cloneable {
     return bits;
   }
 
-  /**
-   * Reverses all bits in the array.
-   */
-  public void reverse() {
-    int[] newBits = new int[bits.length];
-    // reverse all int's first
-    int len = ((size-1) / 32);
-    int oldBitsLen = len + 1;
-    for (int i = 0; i < oldBitsLen; i++) {
-      long x = (long) bits[i];
-      x = ((x >>  1) & 0x55555555L) | ((x & 0x55555555L) <<  1);
-      x = ((x >>  2) & 0x33333333L) | ((x & 0x33333333L) <<  2);
-      x = ((x >>  4) & 0x0f0f0f0fL) | ((x & 0x0f0f0f0fL) <<  4);
-      x = ((x >>  8) & 0x00ff00ffL) | ((x & 0x00ff00ffL) <<  8);
-      x = ((x >> 16) & 0x0000ffffL) | ((x & 0x0000ffffL) << 16);
-      newBits[len - i] = (int) x;
-    }
-    // now correct the int's if the bit size isn't a multiple of 32
-    if (size != oldBitsLen * 32) {
-      int leftOffset = oldBitsLen * 32 - size;
-      int mask = 1;
-      for (int i = 0; i < 31 - leftOffset; i++) {
-        mask = (mask << 1) | 1;
-      }
-      int currentInt = (newBits[0] >> leftOffset) & mask;
-      for (int i = 1; i < oldBitsLen; i++) {
-        int nextInt = newBits[i];
-        currentInt |= nextInt << (32 - leftOffset);
-        newBits[i - 1] = currentInt;
-        currentInt = (nextInt >> leftOffset) & mask;
-      }
-      newBits[oldBitsLen - 1] = currentInt;
-    }
-    bits = newBits;
-  }
-
-  private static int[] makeArray(int size) {
+    private static int[] makeArray(int size) {
     return new int[(size + 31) / 32];
   }
 

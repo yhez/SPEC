@@ -29,9 +29,7 @@ import specular.systems.StaticVariables;
 import specular.systems.Visual;
 import specular.systems.activities.SendMsg;
 
-/**
- * Created by yehezkelk on 12/9/13.
- */
+
 public class QuickMsg extends Activity {
     @Override
     public void onCreate(Bundle b) {

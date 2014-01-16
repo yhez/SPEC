@@ -357,9 +357,7 @@ public class SAFERPlus extends BlockCipher {
         // bytes and this extra byte contains the
         // bitwise sum as a parity-byte
 
-        for (int i = 0; i < 16; i++) {
-            subKeys[0][i] = userKey[i]; // the first subkey is the userkey
-        }
+        System.arraycopy(userKey, 0, subKeys[0], 0, 16);
         for (int i = 0; i < length - 1; i++) {
             keyReg[i] = userKey[i]; // fill the keyregister initially with
             // the userkey

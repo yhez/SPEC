@@ -276,7 +276,7 @@ public abstract class Registry {
             paddingName = modePadding.substring(endIndex + 1);
 
             // if even more information is provided, transformation is invalid
-            if (paddingName.indexOf("/") != -1) {
+            if (paddingName.contains("/")) {
                 throw new NoSuchAlgorithmException(
                         "Badly formed transformation: only 'algorithm' "
                                 + "or 'algorithm/mode/padding' allowed.");

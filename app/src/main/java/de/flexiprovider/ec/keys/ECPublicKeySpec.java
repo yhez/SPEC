@@ -103,23 +103,6 @@ public final class ECPublicKeySpec implements KeySpec {
         }
     }
 
-    /**
-     * Copy constructor.
-     *
-     * @param other another ECPublicKeySpec
-     */
-    public ECPublicKeySpec(ECPublicKeySpec other) {
-        if (other.mW != null) {
-            mW = (Point) other.mW.clone();
-        }
-
-        if (other.mEncodedW != null) {
-            mEncodedW = ByteUtils.clone(other.mEncodedW);
-        }
-
-        mParams = other.mParams;
-    }
-
     // //////////////////////////////////////////////////////////////
     // access //
     // //////////////////////////////////////////////////////////////

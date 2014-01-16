@@ -69,57 +69,18 @@ public abstract class AsymmetricHybridCipher extends Cipher {
         return 0;
     }
 
-    /**
-     * Return the parameters used with this cipher.
-     * <p/>
-     * The returned parameters may be the same that were used to initialize this
-     * cipher, or may contain the default set of parameters or a set of randomly
-     * generated parameters used by the underlying cipher implementation
-     * (provided that the underlying cipher implementation uses a default set of
-     * parameters or creates new parameters if it needs parameters but was not
-     * initialized with any).
-     *
-     * @return the parameters used with this cipher, or <tt>null</tt> if this
-     * cipher does not use any parameters.
-     */
+
     public final AlgorithmParameterSpec getParameters() {
         return paramSpec;
     }
 
-    /**
-     * Return the length in bytes that an output buffer would need to be in
-     * order to hold the result of the next update or doFinal operation, given
-     * the input length <tt>inLen</tt> (in bytes). This call takes into
-     * account any unprocessed (buffered) data from a previous update call, and
-     * padding. The actual output length of the next update() or doFinal() call
-     * may be smaller than the length returned by this method.
-     *
-     * @param inLen the length of the input
-     * @return the length of the output of the next <tt>update()</tt> or
-     * <tt>doFinal()</tt> call
-     */
+
     public final int getOutputSize(int inLen) {
         return opMode == ENCRYPT_MODE ? encryptOutputSize(inLen)
                 : decryptOutputSize(inLen);
     }
 
-    /**
-     * Initialize the cipher for encryption by forwarding it to
-     * {@link #initEncrypt(de.flexiprovider.api.keys.Key, de.flexiprovider.api.parameters.AlgorithmParameterSpec, SecureRandom)}.
-     * <p/>
-     * If this cipher requires any algorithm parameters that cannot be derived
-     * from the given key, the underlying cipher implementation is supposed to
-     * generate the required parameters itself (using provider-specific default
-     * or random values) if it is being initialized for encryption, and raise an
-     * InvalidKeyException if it is being initialized for decryption. The
-     * generated parameters can be retrieved using {@link #getParameters()}.
-     *
-     * @param key the encryption key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException       if the given key is inappropriate for initializing this
-     *                                                                   cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterException if this cipher needs algorithm parameters for
-     *                                                                   initialization and cannot generate parameters itself.
-     */
+
     public final void initEncrypt(Key key) throws InvalidKeyException {
         try {
             initEncrypt(key, null, Registry.getSecureRandom());
@@ -129,24 +90,7 @@ public abstract class AsymmetricHybridCipher extends Cipher {
         }
     }
 
-    /**
-     * Initialize this cipher for encryption by forwarding it to
-     * {@link #initEncrypt(de.flexiprovider.api.keys.Key, de.flexiprovider.api.parameters.AlgorithmParameterSpec, SecureRandom)}.
-     * <p/>
-     * If this cipher requires any algorithm parameters that cannot be derived
-     * from the given key, the underlying cipher implementation is supposed to
-     * generate the required parameters itself (using provider-specific default
-     * or random values) if it is being initialized for encryption, and raise an
-     * InvalidKeyException if it is being initialized for decryption. The
-     * generated parameters can be retrieved using {@link #getParameters()}.
-     *
-     * @param key    the encryption key
-     * @param random the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException       if the given key is inappropriate for initializing this
-     *                                                                   cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterException if this cipher needs algorithm parameters for
-     *                                                                   initialization and cannot generate parameters itself.
-     */
+
     public final void initEncrypt(Key key, SecureRandom random)
             throws InvalidKeyException {
         try {
@@ -157,19 +101,7 @@ public abstract class AsymmetricHybridCipher extends Cipher {
         }
     }
 
-    /**
-     * Initialize the cipher for encryption by forwarding it to initEncrypt(Key,
-     * FlexiSecureRandom, AlgorithmParameterSpec).
-     *
-     * @param key    the encryption key
-     * @param params the algorithm parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the given key is inappropriate for initializing this
-     *                                                                            cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the given algorithm parameters are inappropriate for
-     *                                                                            this cipher, or if this cipher is initialized with
-     *                                                                            <tt>null</tt> parameters and cannot generate parameters
-     *                                                                            itself.
-     */
+
     public final void initEncrypt(Key key, AlgorithmParameterSpec params)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
         initEncrypt(key, params, Registry.getSecureRandom());

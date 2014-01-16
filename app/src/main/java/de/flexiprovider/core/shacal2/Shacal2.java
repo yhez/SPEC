@@ -112,9 +112,7 @@ public class Shacal2 extends BlockCipher {
 
         if ((n == 128) || (n == 192) || (n == 256) || (n == 320) || (n == 384)
                 || (n == 448)) {
-            for (int i = 0; i < n >> 3; i++) {
-                buffer[i] = key[i];
-            }
+            System.arraycopy(key, 0, buffer, 0, (n >> 3));
             for (int i = n >> 3; i < 64; i++) {
                 buffer[i] = 0;
             }
@@ -209,7 +207,7 @@ public class Shacal2 extends BlockCipher {
         int T1, T2, tmp;
         int a, b, c, d, e, f, g, h;
 
-        a = BigEndianConversions.OS2IP(input, 0 + inOff);
+        a = BigEndianConversions.OS2IP(input, inOff);
         b = BigEndianConversions.OS2IP(input, 4 + inOff);
         c = BigEndianConversions.OS2IP(input, 8 + inOff);
         d = BigEndianConversions.OS2IP(input, 12 + inOff);
@@ -373,7 +371,7 @@ public class Shacal2 extends BlockCipher {
         // tmp = h - T2(a, b, c); d = d - tmp; h = tmp - T1(e, f, g, K[ 0], W[
         // 0]);
 
-        BigEndianConversions.I2OSP(a, output, 0 + outOff);
+        BigEndianConversions.I2OSP(a, output, outOff);
         BigEndianConversions.I2OSP(b, output, 4 + outOff);
         BigEndianConversions.I2OSP(c, output, 8 + outOff);
         BigEndianConversions.I2OSP(d, output, 12 + outOff);
@@ -403,7 +401,7 @@ public class Shacal2 extends BlockCipher {
 
 		/* steb a */
 
-        a = BigEndianConversions.OS2IP(input, 0 + inOff);
+        a = BigEndianConversions.OS2IP(input, inOff);
         b = BigEndianConversions.OS2IP(input, 4 + inOff);
         c = BigEndianConversions.OS2IP(input, 8 + inOff);
         d = BigEndianConversions.OS2IP(input, 12 + inOff);
@@ -432,7 +430,7 @@ public class Shacal2 extends BlockCipher {
 
 		/* step c */
 
-        BigEndianConversions.I2OSP(a, output, 0 + outOff);
+        BigEndianConversions.I2OSP(a, output, outOff);
         BigEndianConversions.I2OSP(b, output, 4 + outOff);
         BigEndianConversions.I2OSP(c, output, 8 + outOff);
         BigEndianConversions.I2OSP(d, output, 12 + outOff);

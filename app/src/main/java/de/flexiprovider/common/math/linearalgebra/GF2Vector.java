@@ -216,21 +216,6 @@ public class GF2Vector extends Vector {
     }
 
     /**
-     * Return the value of the bit of this vector at the specified index.
-     *
-     * @param index the index
-     * @return the value of the bit (0 or 1)
-     */
-    public int getBit(int index) {
-        if (index >= length) {
-            throw new IndexOutOfBoundsException();
-        }
-        int q = index >> 5;
-        int r = index & 0x1f;
-        return (v[q] & (1 << r)) >>> r;
-    }
-
-    /**
      * Set the coefficient at the given index to 1. If the index is out of
      * bounds, do nothing.
      *
@@ -289,62 +274,6 @@ public class GF2Vector extends Vector {
             if (e != 0) {
                 result.v[i >> 5] |= 1 << (i & 0x1f);
             }
-        }
-
-        return result;
-    }
-
-    /**
-     * Return a new vector consisting of the elements of this vector with the
-     * indices given by the set <tt>setJ</tt>.
-     *
-     * @param setJ the set of indices of elements to extract
-     * @return the new {@link GF2Vector}
-     * <tt>[this_setJ[0], this_setJ[1], ..., this_setJ[#setJ-1]]</tt>
-     */
-    public GF2Vector extractVector(int[] setJ) {
-        int k = setJ.length;
-        if (setJ[k - 1] > length) {
-            throw new ArithmeticException("invalid index set");
-        }
-
-        GF2Vector result = new GF2Vector(k);
-
-        for (int i = 0; i < k; i++) {
-            int e = v[setJ[i] >> 5] & (1 << (setJ[i] & 0x1f));
-            if (e != 0) {
-                result.v[i >> 5] |= 1 << (i & 0x1f);
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Return a new vector consisting of the first <tt>k</tt> elements of this
-     * vector.
-     *
-     * @param k the number of elements to extract
-     * @return a new {@link GF2Vector} consisting of the first <tt>k</tt>
-     * elements of this vector
-     */
-    public GF2Vector extractLeftVector(int k) {
-        if (k > length) {
-            throw new ArithmeticException("invalid length");
-        }
-
-        if (k == length) {
-            return new GF2Vector(this);
-        }
-
-        GF2Vector result = new GF2Vector(k);
-
-        int q = k >> 5;
-        int r = k & 0x1f;
-
-        System.arraycopy(v, 0, result.v, 0, q);
-        if (r != 0) {
-            result.v[q] = v[q] & ((1 << r) - 1);
         }
 
         return result;
@@ -453,7 +382,7 @@ public class GF2Vector extends Vector {
      * @return a human readable form of this vector
      */
     public String toString() {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int i = 0; i < length; i++) {
             if ((i != 0) && ((i & 0x1f) == 0)) {
                 buf.append(' ');

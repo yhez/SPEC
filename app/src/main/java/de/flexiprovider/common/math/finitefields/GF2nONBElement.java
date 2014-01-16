@@ -243,13 +243,6 @@ public class GF2nONBElement extends GF2nElement {
         mPol = new long[mLength];
     }
 
-    void assignOne() {
-        for (int i = 0; i < mLength - 1; i++) {
-            mPol[i] = 0xffffffffffffffffL;
-        }
-        mPol[mLength - 1] = mMaxmask[mBit - 1];
-    }
-
     private void assign(FlexiBigInt val) {
         assign(val.toByteArray());
     }
@@ -271,7 +264,7 @@ public class GF2nONBElement extends GF2nElement {
         boolean result = true;
 
         for (int i = 0; i < mLength && result; i++) {
-            result = result && ((mPol[i]) == 0);
+            result = ((mPol[i]) == 0);
         }
 
         return result;
@@ -826,19 +819,11 @@ public class GF2nONBElement extends GF2nElement {
      * @return this element as FlexiBigInt
      */
     public FlexiBigInt toFlexiBigInt() {
-        /** @todo this method does not reverse the bit-order as it should!!! */
 
         return new FlexiBigInt(1, toByteArray());
     }
 
-    /**
-     * Returns this element as byte array. The conversion is <a href =
-     * "http://grouper.ieee.org/groups/1363/">P1363</a>-conform.
-     *
-     * @return this element as byte array
-     */
     public byte[] toByteArray() {
-        /** @todo this method does not reverse the bit-order as it should!!! */
 
         int k = ((mDegree - 1) >> 3) + 1;
         byte[] result = new byte[k];

@@ -91,9 +91,7 @@ public class Shacal extends BlockCipher {
 
         if ((n == 128) || (n == 192) || (n == 256) || (n == 320) || (n == 384)
                 || (n == 448)) {
-            for (int i = 0; i < n >> 3; i++) {
-                buffer[i] = key[i];
-            }
+            System.arraycopy(key, 0, buffer, 0, (n >> 3));
             for (int i = n >> 3; i < 64; i++) {
                 buffer[i] = 0;
             }

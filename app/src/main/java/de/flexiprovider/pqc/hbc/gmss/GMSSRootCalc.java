@@ -125,14 +125,12 @@ class GMSSRootCalc {
         int tailLength = statInt[7];
 
         this.index = new int[heightOfTree];
-        for (int i = 0; i < heightOfTree; i++) {
-            this.index[i] = statInt[8 + i];
-        }
+        System.arraycopy(statInt, 8, this.index, 0, heightOfTree);
 
         this.heightOfNodes = new Vector();
         for (int i = 0; i < tailLength; i++) {
-            this.heightOfNodes.addElement(Integer.valueOf(statInt[8 + heightOfTree
-                    + i]));
+            this.heightOfNodes.addElement(statInt[8 + heightOfTree
+                    + i]);
         }
 
         // decode statByte
@@ -271,7 +269,7 @@ class GMSSRootCalc {
         // if first update to this tree is made
         if (index[0] == 0) {
             tailStack.addElement(leaf);
-            heightOfNodes.addElement(Integer.valueOf(0));
+            heightOfNodes.addElement(0);
         } else {
 
             byte[] help = new byte[mdLength];
@@ -327,7 +325,7 @@ class GMSSRootCalc {
             }
             // push help element to the stack
             tailStack.addElement(help);
-            heightOfNodes.addElement(Integer.valueOf(helpHeight));
+            heightOfNodes.addElement(helpHeight);
 
             // is the root calculation finished?
             if (helpHeight == heightOfTree) {

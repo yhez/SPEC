@@ -673,7 +673,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
 
         int xIndex = x.length;
         int yIndex = y.length;
-        int result[] = new int[xIndex];
+        int[] result = new int[xIndex];
         long sum = 0;
 
         // Add common parts of both numbers
@@ -965,14 +965,12 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
         } else { // Array must be resized
             if (nBits <= (32 - bitsInHighWord)) {
                 int result[] = new int[nInts + len];
-                for (int i = 0; i < len; i++)
-                    result[i] = a[i];
+                System.arraycopy(a, 0, result, 0, len);
                 primitiveLeftShift(result, result.length, nBits);
                 return result;
             } else {
                 int result[] = new int[nInts + len + 1];
-                for (int i = 0; i < len; i++)
-                    result[i] = a[i];
+                System.arraycopy(a, 0, result, 0, len);
                 primitiveRightShift(result, result.length, 32 - nBits);
                 return result;
             }
@@ -1153,8 +1151,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
         if (table[0].length < modLen) {
             int offset = modLen - table[0].length;
             int[] t2 = new int[modLen];
-            for (int i = 0; i < table[0].length; i++)
-                t2[i + offset] = table[0][i];
+            System.arraycopy(table[0], 0, t2, offset, table[0].length);
             table[0] = t2;
         }
 
@@ -1164,8 +1161,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
 
         // Set t to high half of b
         int[] t = new int[modLen];
-        for (int i = 0; i < modLen; i++)
-            t[i] = b[i];
+        System.arraycopy(b, 0, t, 0, modLen);
 
         // Fill in the table with odd powers of the base
         for (int i = 1; i < tblmask; i++) {
@@ -1266,14 +1262,12 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
 
         // Convert result out of Montgomery form and return
         int[] t2 = new int[2 * modLen];
-        for (int i = 0; i < modLen; i++)
-            t2[i + modLen] = b[i];
+        System.arraycopy(b, 0, t2, modLen, modLen);
 
         b = montReduce(t2, mod, modLen, inv);
 
         t2 = new int[modLen];
-        for (int i = 0; i < modLen; i++)
-            t2[i] = b[i];
+        System.arraycopy(b, 0, t2, 0, modLen);
 
         return new BigInteger(1, t2);
     }
@@ -1405,8 +1399,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
         // Copy remaining ints of mag
         int numInts = (p + 31) >>> 5;
         int[] mag = new int[numInts];
-        for (int i = 0; i < numInts; i++)
-            mag[i] = this.mag[i + (this.mag.length - numInts)];
+        System.arraycopy(this.mag, (this.mag.length - numInts), mag, 0, numInts);
 
         // Mask out any excess bits
         int excessBits = (numInts << 5) - p;
@@ -1461,8 +1454,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
 
         if (nBits == 0) {
             newMag = new int[magLen + nInts];
-            for (int i = 0; i < magLen; i++)
-                newMag[i] = mag[i];
+            System.arraycopy(mag, 0, newMag, 0, magLen);
         } else {
             int i = 0;
             int nBits2 = 32 - nBits;
@@ -1506,8 +1498,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
         if (nBits == 0) {
             int newMagLen = magLen - nInts;
             newMag = new int[newMagLen];
-            for (int i = 0; i < newMagLen; i++)
-                newMag[i] = mag[i];
+            System.arraycopy(mag, 0, newMag, 0, newMagLen);
         } else {
             int i = 0;
             int highBits = mag[0] >>> nBits;

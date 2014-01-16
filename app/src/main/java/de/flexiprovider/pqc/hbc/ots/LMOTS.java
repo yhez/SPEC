@@ -28,7 +28,6 @@ public class LMOTS implements OTS {
      * Constructor.
      */
     public LMOTS() {
-        //pS = new LMOTSParameterSpec(256);
     }
 
     public boolean canComputeVerificationKeyFromSignature() {
@@ -100,80 +99,7 @@ public class LMOTS implements OTS {
         } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         }
-/*		if (md.getClass().equals(SHA1.class)) {
-            try {
-				pS = new LMOTSParameterSpec(256);
-				lmots = new LMOTSSignature.SHA1();
-				lmots.setParameters(pS);
-			} catch (InvalidAlgorithmParameterException e) {
-				e.printStackTrace();
-			}
-		} else if (md.getClass().equals(SHA224.class)) {
-			try {
-				pS = new LMOTSParameterSpec(256);
-				lmots = new LMOTSSignature.SHA224();
-				lmots.setParameters(pS);
-			} catch (InvalidAlgorithmParameterException e) {
-				e.printStackTrace();
-			}
-		} else if (md.getClass().equals(SHA256.class)) {
-			try {
-				pS = new LMOTSParameterSpec(260);
-				lmots = new LMOTSSignature.SHA256();
-				lmots.setParameters(pS);
-			} catch (InvalidAlgorithmParameterException e) {
-				e.printStackTrace();
-			}
-		} else if (md.getClass().equals(SHA384.class)) {
-			try {
-				pS = new LMOTSParameterSpec(390);
-				lmots = new LMOTSSignature.SHA384();
-				lmots.setParameters(pS);
-			} catch (InvalidAlgorithmParameterException e) {
-				e.printStackTrace();
-			}
-		} else if (md.getClass().equals(SHA512.class)) {
-			try {
-				pS = new LMOTSParameterSpec(520);
-				lmots = new LMOTSSignature.SHA512();
-				lmots.setParameters(pS);
-			} catch (InvalidAlgorithmParameterException e) {
-				e.printStackTrace();
-			}
-		} else if (md.getClass().equals(RIPEMD128.class)) {
-			try {
-				pS = new LMOTSParameterSpec(140);
-				lmots = new LMOTSSignature.RIPEMD128();
-				lmots.setParameters(pS);
-			} catch (InvalidAlgorithmParameterException e) {
-				e.printStackTrace();
-			}
-		} else if (md.getClass().equals(RIPEMD160.class)) {
-			try {
-				pS = new LMOTSParameterSpec(260);
-				lmots = new LMOTSSignature.RIPEMD160();
-				lmots.setParameters(pS);
-			} catch (InvalidAlgorithmParameterException e) {
-				e.printStackTrace();
-			}
-		} else if (md.getClass().equals(RIPEMD256.class)) {
-			try {
-				pS = new LMOTSParameterSpec(260);
-				lmots = new LMOTSSignature.RIPEMD256();
-				lmots.setParameters(pS);
-			} catch (InvalidAlgorithmParameterException e) {
-				e.printStackTrace();
-			}
-		} else if (md.getClass().equals(RIPEMD320.class)) {
-			try {
-				pS = new LMOTSParameterSpec(512);
-				lmots = new LMOTSSignature.RIPEMD320();
-				lmots.setParameters(pS);
-			} catch (InvalidAlgorithmParameterException e) {
-				e.printStackTrace();
-			}
-		}
-*/
+
     }
 
     public byte[] sign(byte[] bytes) {

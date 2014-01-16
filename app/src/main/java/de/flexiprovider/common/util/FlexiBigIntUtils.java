@@ -46,58 +46,6 @@ public final class FlexiBigIntUtils {
     }
 
     /**
-     * Generates a subarray of a given FlexiBigInt array.
-     *
-     * @param input -
-     *              the input FlexiBigInt array
-     * @param start -
-     *              the start index
-     * @param end   -
-     *              the end index
-     * @return a subarray of <tt>input</tt>, ranging from <tt>start</tt> to
-     * <tt>end</tt>
-     */
-    public static FlexiBigInt[] subArray(FlexiBigInt[] input, int start, int end) {
-        FlexiBigInt[] result = new FlexiBigInt[end - start];
-        System.arraycopy(input, start, result, 0, end - start);
-        return result;
-    }
-
-    /**
-     * Converts a FlexiBigInt array into an integer array
-     *
-     * @param input -
-     *              the FlexiBigInt array
-     * @return the integer array
-     */
-    public static int[] toIntArray(FlexiBigInt[] input) {
-        int[] result = new int[input.length];
-        for (int i = 0; i < input.length; i++) {
-            result[i] = input[i].intValue();
-        }
-        return result;
-    }
-
-    /**
-     * Converts a FlexiBigInt array into an integer array, reducing all
-     * FlexiBigInts mod q.
-     *
-     * @param q     -
-     *              the modulus
-     * @param input -
-     *              the FlexiBigInt array
-     * @return the integer array
-     */
-    public static int[] toIntArrayModQ(int q, FlexiBigInt[] input) {
-        FlexiBigInt bq = FlexiBigInt.valueOf(q);
-        int[] result = new int[input.length];
-        for (int i = 0; i < input.length; i++) {
-            result[i] = input[i].mod(bq).intValue();
-        }
-        return result;
-    }
-
-    /**
      * Return the value of <tt>big</tt> as a byte array. Although FlexiBigInt
      * has such a method, it uses an extra bit to indicate the sign of the
      * number. For elliptic curve cryptography, the numbers usually are

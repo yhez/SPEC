@@ -102,42 +102,6 @@ public class ECCKeyGenParameterSpec implements AlgorithmParameterSpec {
     }
 
     /**
-     * Constructor.
-     *
-     * @param m    degree of the finite field GF(2^m)
-     * @param t    error correction capability of the code
-     * @param poly the field polynomial
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterException if <tt>m &lt; 1</tt> or <tt>m &gt; 32</tt> or
-     *                                                                   <tt>t &lt; 0</tt> or <tt>t &gt; n</tt> or
-     *                                                                   <tt>poly</tt> is not an irreducible field polynomial.
-     */
-    public ECCKeyGenParameterSpec(int m, int t, int poly)
-            throws InvalidParameterException {
-        this.m = m;
-        if (m < 1) {
-            throw new InvalidParameterException("m must be positive");
-        }
-        if (m > 32) {
-            throw new InvalidParameterException(" m is too large");
-        }
-        this.n = 1 << m;
-        this.t = t;
-        if (t < 0) {
-            throw new InvalidParameterException("t must be positive");
-        }
-        if (t > n) {
-            throw new InvalidParameterException("t must be less than n = 2^m");
-        }
-        if ((PolynomialRingGF2.degree(poly) == m)
-                && (PolynomialRingGF2.isIrreducible(poly))) {
-            this.fieldPoly = poly;
-        } else {
-            throw new InvalidParameterException(
-                    "polynomial is not a field polynomial for GF(2^m)");
-        }
-    }
-
-    /**
      * @return the extension degree of the finite field GF(2^m)
      */
     public int getM() {

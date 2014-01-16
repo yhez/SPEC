@@ -299,38 +299,14 @@ public class GF2nONBField extends GF2nField {
         }
     }
 
-    /**
-     * Compute the inverse of a matrix <tt>a</tt>.
-     *
-     * @param a the matrix
-     * @return <tt>a<sup>-1</sup></tt>
-     */
-    int[][] invMatrix(int[][] a) {
-
-        int[][] A = new int[mDegree][mDegree];
-        A = a;
-        int[][] inv = new int[mDegree][mDegree];
-
-        for (int i = 0; i < mDegree; i++) {
-            inv[i][i] = 1;
-        }
-
-        for (int i = 0; i < mDegree; i++) {
-            for (int j = i; j < mDegree; j++) {
-                A[mDegree - 1 - i][j] = A[i][i];
-            }
-        }
-        return null;
-    }
-
     private void computeType() throws NoSuchBasisException {
         if ((mDegree & 7) == 0) {
             throw new NoSuchBasisException(
                     "The extension degree is divisible by 8!");
         }
         // checking for the type
-        int s = 0;
-        int k = 0;
+        int s;
+        int k;
         mType = 1;
         for (int d = 0; d != 1; mType++) {
             s = mType * mDegree + 1;

@@ -728,13 +728,7 @@ public class SWIFFTX {
             omegaPowers[i] = (omegaPowers[i - 1] * OMEGA) % FIELD_SIZE;
     }
 
-    /**
-     * Reverses a bit-string.
-     * <p/>
-     * Parameters: - index: the input index to reverse. Is of size LOGN bits.
-     * <p/>
-     * Returns: - The index value with bits reversed.
-     */
+
     private static int bitReverse(int index) {
         int reversed = 0, bit;
 
@@ -751,12 +745,6 @@ public class SWIFFTX {
         CalcOmegaPowers();
     }
 
-    /**
-     * Calculates Discrete Fourier Transform.
-     * <p/>
-     * Parameters: - input: the input. Assumed to be reversed. - output: the
-     * result.
-     */
     private static int[] dFT(int[] input) {
         int k, i;
         int[] output = new int[N];
@@ -802,7 +790,7 @@ public class SWIFFTX {
         for (j = 0; j < m; ++j, inputi += 8, inputa += 64) {
             int[] inputBits = new int[N];
             int[] reversedInputBits = new int[N];
-            int[] dft = new int[N];
+            int[] dft;
 
             for (i = 0; i < N; ++i) {
                 inputBits[i] = (input[(i / 8) + inputi] >> (i % 8)) & 1;
@@ -834,8 +822,8 @@ public class SWIFFTX {
         // change:
         for (i = 0; i < 8; ++i) {
             // create the array for TranslateToBase:
-            int t = 0;
-            int[] TranslateToBaseOutputArray = new int[9];
+            int t;
+            int[] TranslateToBaseOutputArray;
             TranslateToBaseOutputArray = translateToBase256(result, (8 * i));
             // put TranslateToBaseOutputArray in the result-Array and carry-Bit:
             for (t = 0; t < 8; ++t) {
@@ -864,18 +852,18 @@ public class SWIFFTX {
      * (512 bit).
      */
     private static int[] computeSingleSWIFFTX(int input[], boolean doSmooth) {
-        int[] output = new int[SWIFFTX_OUTPUT_BLOCK_SIZE];
+        int[] output;
         int i;
         int[] intermediate = new int[N * 3 + 8];
         int carry0, carry1, carry2;
 
-        int[] IntermediateHelper = new int[65];
+        int[] IntermediateHelper;
 
         // Do the three SWIFFTS while remembering the three carry bytes (each
         // carry byte gets
         // overriden by the following SWIFFT):
 
-        int t = 0;
+        int t;
         IntermediateHelper = computeSingleSWIFFT(input, M, As, 0);
         for (t = 0; t < 64; ++t) {
             intermediate[t] = IntermediateHelper[t];
@@ -968,11 +956,11 @@ public class SWIFFTX {
      * adds to the Array value toAdd mod 256 and returns it
      */
     private static int[] addToCurrInBase256(int[] value, int toAdd) {
-        int remainder = 0;
+        int remainder;
         int i;
         int[] currValueInBase256 = new int[8];
         int currIndex = 7;
-        int temp = 0;
+        int temp;
 
         do {
             remainder = toAdd % 256;
@@ -992,16 +980,9 @@ public class SWIFFTX {
         return value;
     }
 
-    /**
-     * Initializes a hashState with the intended hash length of this particular
-     * instantiation. Additionally, any data independent setup is performed.
-     * <p/>
-     * Parameters: - state: a structure that holds the hashState information -
-     * hashbitlen: an integer value that indicates the length of the hash output
-     * in bits.
-     */
+
     private static void init(int hashbitlen) {
-        int i = 0;
+        int i;
         switch (hashbitlen) {
             case 224:
                 // Initializes h_0 in HAIFA:
@@ -1050,11 +1031,11 @@ public class SWIFFTX {
      * the input data to be hashed
      */
     private static void update(int[] intdata, int databitlen) {
-        int i = 0;
+        int i;
         int intdataiter = 0;
         // The size of input in bytes after putting the remaining data from
         // previous invocation.
-        int sizeOfInputAfterRemaining = 0;
+        int sizeOfInputAfterRemaining;
         // The input block to compression function of SWIFFTX:
         int[] currInputBlock = new int[SWIFFTX_INPUT_BLOCK_SIZE];
         // Whether we handled a single block.
@@ -1306,7 +1287,7 @@ public class SWIFFTX {
             intdata[i] = data[i];
         }
 
-        int[] hashval = new int[65];
+        int[] hashval;
 
         // The pointer to the current place in the input we take into the
         // compression function.

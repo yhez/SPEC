@@ -16,12 +16,12 @@
 
 package zxing.qrcode.detector;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import zxing.NotFoundException;
 import zxing.ResultPointCallback;
 import zxing.common.BitMatrix;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>This class attempts to find alignment patterns in a QR Code. Alignment patterns look like finder
@@ -49,16 +49,7 @@ final class AlignmentPatternFinder {
   private final int[] crossCheckStateCount;
   private final ResultPointCallback resultPointCallback;
 
-  /**
-   * <p>Creates a finder that will look in a portion of the whole image.</p>
-   *
-   * @param image image to search
-   * @param startX left column from which to start searching
-   * @param startY top row from which to start searching
-   * @param width width of region to search
-   * @param height height of region to search
-   * @param moduleSize estimated module size so far
-   */
+
   AlignmentPatternFinder(BitMatrix image,
                          int startX,
                          int startY,
@@ -77,13 +68,7 @@ final class AlignmentPatternFinder {
     this.resultPointCallback = resultPointCallback;
   }
 
-  /**
-   * <p>This method attempts to find the bottom-right alignment pattern in the image. It is a bit messy since
-   * it's pretty performance-critical and so is written to be fast foremost.</p>
-   *
-   * @return {@link zxing.qrcode.detector.AlignmentPattern} if found
-   * @throws zxing.NotFoundException if not found
-   */
+
   AlignmentPattern find() throws NotFoundException {
     int startX = this.startX;
     int height = this.height;
