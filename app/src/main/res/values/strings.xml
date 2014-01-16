@@ -81,7 +81,7 @@
     <string name="hash_title">Crypto Hash Info:</string>
     <string name="hash_explain">The main application of secure cryptographic hashes is verification of message integrity - determining whether any changes have been made to a message or a file. SPEC verifies that your messages are secure and complete. WE FIGHT DATA TAMPERING 24/7.</string>
     <string name="what_is_hash">What is a Crypto Hash?</string>
-    <string name="hash_what_we_did">we using high standards of hashing by using SHA-256 algorithm</string>
+    <string name="hash_what_we_did">Using SHA-256 Algorithm</string>
     <string name="hash_qr_what_we_did">to make the hash small we used xor of the entire bytes(divided for 4 bytes packets) that create an integer.\nby encrypting this integer inside the message we making it secure</string>
 
     <string name="reject_changes">You must have a Private Key in order to make changes.</string>
@@ -233,11 +233,11 @@
     <string name="time_created">Message time-stamp:\n</string>
     <string name="not_valid_change">Change not valid (length, format).</string>
     <string name="make_it_default">Make default?</string>
-    <string name="there_is_no_groups">No groups yet</string>
+    <string name="there_is_no_groups">No groups yet.</string>
     <string name="no_support_print">Your device does not support direct printing.</string>
     <string name="private_scan_explain">Place Private QR Key within the box to scan.</string>
     <string name="private_key_loaded_from_qr">Key loaded successfully.</string>
-    <string name="group_mentor_hint">Group slogan</string>
+    <string name="group_mentor_hint">Group Slogan</string>
     <string name="group_name_hint">Group Name</string>
     <string name="group_location_for_messages_hint">Group Address</string>
     <string name="group_contacts">Choose group contacts</string>
