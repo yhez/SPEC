@@ -230,10 +230,8 @@ public class CryptMethods {
             Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
             if(key==null)
                 cipher.init(Cipher.DECRYPT_MODE, mPtK, iesParams);
-            else{
+            else
                 cipher.init(Cipher.DECRYPT_MODE, formatPrivate(key), iesParams);
-                Log.e("pvt",new String(key));
-            }
             return cipher.doFinal(data);
         } catch (Exception e) {
             e.printStackTrace();

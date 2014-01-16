@@ -431,9 +431,9 @@ public class FragmentManagement extends Fragment {
                             .setText(currContact.getEmail());
                     String sessions;
                     if (CryptMethods.privateExist())
-                        sessions = Session.toShow(currContact.getSession());
+                        sessions = Session.toShow(getActivity(),currContact.getSession());
                     else
-                        sessions = Session.toHide();
+                        sessions = Session.toHide(getActivity());
                     ((TextView) rootView.findViewById(R.id.contact_session))
                             .setText(sessions);
                     ImageButton ibb = (ImageButton) rootView.findViewById(R.id.contact_picture);
@@ -609,10 +609,12 @@ public class FragmentManagement extends Fragment {
                         bt.setImageResource(choosedContact ? R.drawable.ic_send_holo_light : R.drawable.ic_send_disabled_holo_light);
                         if (num == 0) {
                             tv.setVisibility(View.GONE);
+                            getActivity().invalidateOptionsMenu();
                             bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
                             StaticVariables.readyToSend = false;
                         } else {
                             tv.setVisibility(View.VISIBLE);
+                            getActivity().invalidateOptionsMenu();
                             if (num > 0) {
                                 if (choosedContact) {
                                     StaticVariables.readyToSend = true;
@@ -620,6 +622,7 @@ public class FragmentManagement extends Fragment {
                                 }
                                 if (num == 1) {
                                     tv.setVisibility(View.VISIBLE);
+                                    getActivity().invalidateOptionsMenu();
                                     tv.setText(StaticVariables.MSG_LIMIT_FOR_QR - num + "");
                                 } else if (num <= StaticVariables.MSG_LIMIT_FOR_QR) {
                                     tv.setText(StaticVariables.MSG_LIMIT_FOR_QR - num + "");

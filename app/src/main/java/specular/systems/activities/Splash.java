@@ -1,6 +1,7 @@
 package specular.systems.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,7 +9,10 @@ import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.Gravity;
 import android.webkit.MimeTypeMap;
 import android.widget.TextView;
@@ -50,7 +54,14 @@ public class Splash extends Activity {
             startActivity(intent);
         }
     });
-    private Toast t = null;
+    private final Handler hndl = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            Toast t = Toast.makeText(Splash.this,R.string.failed,Toast.LENGTH_SHORT);
+            t.setGravity(Gravity.CENTER,0,0);
+            t.show();
+        }
+    };
 
     @Override
     public void onBackPressed() {
@@ -62,7 +73,7 @@ public class Splash extends Activity {
         if (newUser) {
             setContentView(R.layout.splash);
             ((TextView) findViewById(R.id.company)).setTypeface(FilesManagement.getOs(this));
-            findViewById(R.id.splash).animate().setDuration(TIME_FOR_SPLASH).alpha(1).start();
+            findViewById(android.R.id.content).animate().setDuration(TIME_FOR_SPLASH).alpha(1).start();
             waitForSplash.start();
         } else {
             FilesManagement.getKeysFromSDCard(this);
@@ -94,8 +105,6 @@ public class Splash extends Activity {
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
-        t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
-        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         Intent thisIntent = getIntent();
         if (thisIntent == null) {
             go();
@@ -108,15 +117,13 @@ public class Splash extends Activity {
         } else if (thisIntent.getData() == null) {
             go();
         } else {
-            ContactCard qrp;
             //todo how is it possible? but some how it works for big google drive files
             Uri uri = getIntent().getData();
             if (uri == null) {
                 uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
             }
             if (uri == null) {
-                t.setText(R.string.failed);
-                t.show();
+                hndl.sendEmptyMessage(0);
                 finish();
                 return;
             }
@@ -137,44 +144,50 @@ public class Splash extends Activity {
                 startActivity(intent);
                 return;
             }
-            String data = null;
-            try {
-                ContentResolver cr = getBaseContext().getContentResolver();
-                InputStream is;
-                is = cr.openInputStream(uri);
-                StringBuilder buf = new StringBuilder();
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(is));
-                String str;
-                try {
-                    while ((str = reader.readLine()) != null) {
-                        buf.append(str).append("\n");
+            final Uri ur = uri;
+            final ProgressDialog pd = new ProgressDialog(this,R.style.dialogTransparent);
+            pd.setTitle("loading file");
+            pd.setMessage("loading file");
+            pd.setCancelable(false);
+            pd.show();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    String data = null;
+                    try {
+                        ContentResolver cr = getBaseContext().getContentResolver();
+                        InputStream is = cr.openInputStream(ur);
+                        try {
+                            StringBuilder buf = new StringBuilder();
+                            BufferedReader reader = new BufferedReader(
+                                    new InputStreamReader(is));
+                            String str;
+                            while ((str = reader.readLine()) != null) {
+                                buf.append(str).append("\n");
+                            }
+                            buf.deleteCharAt(buf.length() - 1);
+                            data = buf.toString();
+                            pd.cancel();
+                            reader.close();
+                            is.close();
+                        } catch (IOException ignored) {
+                        }
+                    } catch (FileNotFoundException ignored) {
                     }
-
-                    is.close();
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    if (data == null) {
+                        hndl.sendEmptyMessage(0);
+                        finish();
+                    } else {
+                        int typeFile = FileParser.getType(data);
+                        if(typeFile== FileParser.CONTACT_CARD)
+                            StaticVariables.fileContactCard = new ContactCard(Splash.this, data);
+                        else if(typeFile==-1){
+                            StaticVariables.message = data;
+                        }
+                        go();
+                    }
                 }
-                buf.deleteCharAt(buf.length() - 1);
-                data = buf.toString();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            if (data == null) {
-                t.setText(R.string.failed);
-                t.show();
-                finish();
-            } else {
-                int typeFile = FileParser.getType(data);
-                if(typeFile== FileParser.CONTACT_CARD)
-                    StaticVariables.fileContactCard = new ContactCard(this, data);
-                else if(typeFile==-1){
-                    StaticVariables.message = data;
-                }
-                go();
-            }
-
+            }).start();
         }
     }
 

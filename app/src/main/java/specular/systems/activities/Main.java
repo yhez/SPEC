@@ -93,7 +93,7 @@ import zxing.WriterException;
 public class Main extends FragmentActivity {
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2,
             DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_FOCUS = 76,
-            RESTORE=45,ADD_GROUP=46;
+            RESTORE = 45, ADD_GROUP = 46;
     public static Main main;
     public static boolean exit = false;
     private boolean loadingFile = false;
@@ -172,18 +172,18 @@ public class Main extends FragmentActivity {
                     break;
                 case RESTORE:
                     DialogRestore dr = new DialogRestore();
-                    dr.show(getFragmentManager(),"dr");
+                    dr.show(getFragmentManager(), "dr");
                     break;
                 case ADD_GROUP:
-                    FragmentManagement.currentPage=1;
+                    FragmentManagement.currentPage = 1;
                     selectItem(1, R.layout.encrypt, null);
                     DialogAddGroup dag = new DialogAddGroup();
-                    dag.show(getFragmentManager(),"dag");
+                    dag.show(getFragmentManager(), "dag");
                     break;
             }
         }
     };
-    public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1,SCAN_FOR_GROUP=2,SCAN_PRIVATE=3,SCAN_CONTACT=4;
+    public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_FOR_GROUP = 2, SCAN_PRIVATE = 3, SCAN_CONTACT = 4;
     public Handler handler;
     boolean msgSended = false;
     Thread addFile;
@@ -225,7 +225,7 @@ public class Main extends FragmentActivity {
     }
 
     void encryptManager() {
-        if(contact!=null)
+        if (contact != null)
             StaticVariables.luc.change(this, contact);
         final ProgressDlg prgd = new ProgressDlg(this, R.string.encrypting);
         prgd.setCancelable(false);
@@ -236,11 +236,11 @@ public class Main extends FragmentActivity {
                 LightMessage lMsg = null;
                 if (StaticVariables.fileContent == null)
                     lMsg = new LightMessage(userInput);
-                String sss = contact!=null?contact.getSession():group.getMentor();
+                String sss = contact != null ? contact.getSession() : group.getMentor();
                 MessageFormat msg = new MessageFormat(StaticVariables.fileContent, CryptMethods.getMyDetails(Main.this), fileName, userInput,
                         sss);
                 byte[] data = CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
-                        contact!=null?contact.getPublicKey():group.getPublicKey()).getBytes();
+                        contact != null ? contact.getPublicKey() : group.getPublicKey()).getBytes();
                 sendMessage(data);
                 prgd.cancel();
                 msgSended = true;
@@ -323,38 +323,38 @@ public class Main extends FragmentActivity {
                 switch (StaticVariables.flag_session) {
                     case Session.KNOWN:
                         msg = getString(R.string.session_ok_explain)
-                                + Session.toShow(StaticVariables.session);
+                                + Session.toShow(this, StaticVariables.session);
                         break;
                     case Session.DONT_TRUST:
                         contact = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
                         msg = getString(R.string.dont_trust_session_explain)
-                                + Session.toShow(contact.getSession()) + "\n"
+                                + Session.toShow(this, contact.getSession()) + "\n"
                                 + "other's session is:\n"
-                                + Session.toShow(StaticVariables.session);
+                                + Session.toShow(this, StaticVariables.session);
                         break;
                     case Session.JUST_KNOWN:
                         msg = getString(R.string.new_session_trust_created)
-                                + Session.toShow(StaticVariables.session);
+                                + Session.toShow(this, StaticVariables.session);
                         break;
                     case Session.AGAIN:
                         msg = getString(R.string.session_try_again)
-                                + Session.toShow(StaticVariables.session);
+                                + Session.toShow(this, StaticVariables.session);
                         break;
                     case Session.RESET_SESSION:
                         msg = getString(R.string.session_reset)
-                                + Session.toShow(StaticVariables.session);
+                                + Session.toShow(this, StaticVariables.session);
                         break;
                     case Session.UNKNOWN:
                         msg = getString(R.string.unknown_session_explain)
-                                + Session.toShow(StaticVariables.session);
+                                + Session.toShow(this, StaticVariables.session);
                         break;
 
                     case Session.UPDATED:
                         msg = getString(R.string.session_updated)
-                                + Session.toShow(StaticVariables.session);
+                                + Session.toShow(this, StaticVariables.session);
                         break;
                     default:
-                        msg = Session.toShow(StaticVariables.session);
+                        msg = Session.toShow(this, StaticVariables.session);
                 }
                 ExplainDialog edl = new ExplainDialog(this, ExplainDialog.SESSION, msg);
                 edl.show(getFragmentManager(), "session");
@@ -433,28 +433,28 @@ public class Main extends FragmentActivity {
                 intent.setData(null);
             } else {
                 String result = intent.getStringExtra("barcode");
-                    switch (requestCode) {
-                        case SCAN_MESSAGE:
-                            getIntent().putExtra("message", result);
+                switch (requestCode) {
+                    case SCAN_MESSAGE:
+                        getIntent().putExtra("message", result);
+                        setUpViews();
+                        break;
+                    case SCAN_CONTACT:
+                        StaticVariables.fileContactCard = new ContactCard(this, result);
+                        if (StaticVariables.fileContactCard.getPublicKey() != null) {
                             setUpViews();
-                            break;
-                        case SCAN_CONTACT:
-                            StaticVariables.fileContactCard = new ContactCard(this, result);
-                            if (StaticVariables.fileContactCard.getPublicKey() != null) {
-                                setUpViews();
-                            } else {
-                                hndl.sendEmptyMessage(551);
-                            }
-                            break;
-                        case SCAN_FOR_GROUP:
-                            getIntent().putExtra("message", result);
-                            getIntent().putExtra("id",intent.getLongExtra("id",-1));
-                            setUpViews();
-                            break;
-                        case SCAN_PRIVATE:
-                            t.setText("keys have been loaded to phone but not yet saved you can choose now to save them on nfc\nor you can decrypt the message you want, and not save it at all");
-                            t.show();
-                            break;
+                        } else {
+                            hndl.sendEmptyMessage(551);
+                        }
+                        break;
+                    case SCAN_FOR_GROUP:
+                        getIntent().putExtra("message", result);
+                        getIntent().putExtra("id", intent.getLongExtra("id", -1));
+                        setUpViews();
+                        break;
+                    case SCAN_PRIVATE:
+                        t.setText("keys have been loaded to phone but not yet saved you can choose now to save them on nfc\nor you can decrypt the message you want, and not save it at all");
+                        t.show();
+                        break;
 
                 }
             }
@@ -486,8 +486,8 @@ public class Main extends FragmentActivity {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
                     long id = Long.parseLong(((TextView) findViewById(R.id.contact_id_to_send)).getText().toString());
-                    if(findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).getVisibility()==View.VISIBLE)
-                        group=GroupDataSource.groupDataSource.findGroup(id);
+                    if (findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).getVisibility() == View.VISIBLE)
+                        group = GroupDataSource.groupDataSource.findGroup(id);
                     else
                         contact = ContactsDataSource.contactsDataSource.findContact(id);
                     encryptManager();
@@ -731,10 +731,10 @@ public class Main extends FragmentActivity {
 
                 @Override
                 public boolean onQueryTextChange(String s) {
-                    if(((ViewPager)findViewById(R.id.pager)).getCurrentItem()==0){
+                    if (((ViewPager) findViewById(R.id.pager)).getCurrentItem() == 0) {
                         MySimpleArrayAdapter.getAdapter().updateViewAfterFilter(Main.this);
                         MySimpleArrayAdapter.getAdapter().getFilter().filter(s);
-                    }else{
+                    } else {
                         GroupsAdapter.getAdapter().updateViewAfterFilter(Main.this);
                         GroupsAdapter.getAdapter().getFilter().filter(s);
                     }
@@ -782,41 +782,68 @@ public class Main extends FragmentActivity {
             mi2.setVisible(!drawerOpen);
             mi3.setVisible(!drawerOpen);
             if (FragmentManagement.currentLayout == R.layout.encrypt) {
+                TextView tv = (TextView) findViewById(R.id.contact_id_to_send);
                 ViewPager vp = (ViewPager) findViewById(R.id.pager);
                 if (vp.getCurrentItem() == 0) {
                     if (ContactsDataSource.fullList == null || ContactsDataSource.fullList.size() == 0) {
                         mi.setVisible(false);
                         mi3.setVisible(false);
                     } else {
-                        TextView tv = (TextView) findViewById(R.id.contact_id_to_send);
-                        if (tv != null && tv.getText().toString().length() != 0
-                                && findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).getVisibility() == View.GONE) {
-                            mi.setVisible(false);
-                            mi2.setVisible(false);
-                            if (loadingFile)
-                                mi3.setIcon(android.R.drawable.ic_menu_upload);
-                            else if (StaticVariables.fileContent != null)
-                                mi3.setIcon(R.drawable.after_attached);
-                            else
-                                mi3.setIcon(R.drawable.attachment);
-                        } else
-                            mi3.setVisible(false);
+                        if (tv != null && tv.getText().toString().length() != 0) {
+                            if (findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).getVisibility() == View.GONE) {
+                                mi.setVisible(false);
+                                mi2.setVisible(false);
+                                if (loadingFile)
+                                    mi3.setIcon(android.R.drawable.ic_menu_upload);
+                                else if (StaticVariables.fileContent != null)
+                                    mi3.setIcon(R.drawable.after_attached);
+                                else
+                                    mi3.setIcon(R.drawable.attachment);
+                            } else
+                                mi3.setVisible(false);
+                        } else {
+                            if ((StaticVariables.currentText != null && StaticVariables.currentText.length() > 0)
+                                    || (StaticVariables.fileContent != null && StaticVariables.fileContent.length > 0)
+                                    || loadingFile) {
+                                mi.setVisible(false);
+                                mi2.setVisible(false);
+                                if (loadingFile)
+                                    mi3.setIcon(android.R.drawable.ic_menu_upload);
+                                else if (StaticVariables.fileContent != null)
+                                    mi3.setIcon(R.drawable.after_attached);
+                                else
+                                    mi3.setIcon(R.drawable.attachment);
+                            }
+                        }
                     }
                 } else {
                     if (GroupDataSource.fullListG == null || GroupDataSource.fullListG.size() == 0) {
                         mi.setVisible(false);
                     } else {
-                        TextView tv = (TextView) findViewById(R.id.contact_id_to_send);
-                        if (tv != null && tv.getText().toString().length() != 0
-                                && findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).getVisibility() == View.GONE) {
-                            mi.setVisible(false);
-                            mi2.setVisible(false);
-                            if (loadingFile)
-                                mi3.setIcon(android.R.drawable.ic_menu_upload);
-                            else if (StaticVariables.fileContent != null)
-                                mi3.setIcon(R.drawable.after_attached);
-                            else
-                                mi3.setIcon(R.drawable.attachment);
+                        if (tv != null && tv.getText().toString().length() != 0) {
+                            if (findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).getVisibility() == View.GONE) {
+                                mi.setVisible(false);
+                                mi2.setVisible(false);
+                                if (loadingFile)
+                                    mi3.setIcon(android.R.drawable.ic_menu_upload);
+                                else if (StaticVariables.fileContent != null)
+                                    mi3.setIcon(R.drawable.after_attached);
+                                else
+                                    mi3.setIcon(R.drawable.attachment);
+                            }
+                        } else {
+                            if ((StaticVariables.currentText != null && StaticVariables.currentText.length() > 0)
+                                    || (StaticVariables.fileContent != null && StaticVariables.fileContent.length > 0)
+                                    || loadingFile) {
+                                mi.setVisible(false);
+                                mi2.setVisible(false);
+                                if (loadingFile)
+                                    mi3.setIcon(android.R.drawable.ic_menu_upload);
+                                else if (StaticVariables.fileContent != null)
+                                    mi3.setIcon(R.drawable.after_attached);
+                                else
+                                    mi3.setIcon(R.drawable.attachment);
+                            }
                         }
                     }
                 }
@@ -1055,22 +1082,22 @@ public class Main extends FragmentActivity {
                     FragmentManagement.currentLayout = 0;
                     int result;
                     byte[] key = null;
-                    long a = getIntent().getLongExtra("id",-1);
-                    if(a!=-1){
+                    long a = getIntent().getLongExtra("id", -1);
+                    if (a != -1) {
                         Group g = GroupDataSource.groupDataSource.findGroup(a);
-                        if(g!=null){
-                            key= g.getPrivateKey();
+                        if (g != null) {
+                            key = g.getPrivateKey();
                         }
                     }
-                    result=CryptMethods.decrypt((msg != null ? msg : StaticVariables.message),key);
+                    result = CryptMethods.decrypt((msg != null ? msg : StaticVariables.message), key);
                     getIntent().removeExtra("message");
                     FilesManagement.deleteTempDecryptedMSG(Main.this);
                     StaticVariables.message = null;
-                    if(result== FileParser.ENCRYPTED_MSG||result==FileParser.ENCRYPTED_QR_MSG||result==-1)
+                    if (result == FileParser.ENCRYPTED_MSG || result == FileParser.ENCRYPTED_QR_MSG || result == -1)
                         hndl.sendEmptyMessage(DECRYPT_SCREEN);
-                    else if(result==FileParser.ENCRYPTED_BACKUP){
-                       hndl.sendEmptyMessage(RESTORE);
-                    }else if(result==FileParser.ENCRYPTED_GROUP){
+                    else if (result == FileParser.ENCRYPTED_BACKUP) {
+                        hndl.sendEmptyMessage(RESTORE);
+                    } else if (result == FileParser.ENCRYPTED_GROUP) {
                         hndl.sendEmptyMessage(ADD_GROUP);
                     }
                     prgd.cancel();
@@ -1079,7 +1106,7 @@ public class Main extends FragmentActivity {
             getIntent().setData(null);
             return true;
         } else if (StaticVariables.fileContactCard != null) {
-            FragmentManagement.currentPage=0;
+            FragmentManagement.currentPage = 0;
             selectItem(0, R.layout.encrypt, null);
             Contact c = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.fileContactCard.getPublicKey());
             if (c == null) {
@@ -1136,6 +1163,7 @@ public class Main extends FragmentActivity {
                 case R.layout.encrypt:
                     TextView contactChosen = (TextView) findViewById(R.id.contact_id_to_send);
                     EditText etMessage = (EditText) findViewById(R.id.message);
+                    TextView fileLength = (TextView)findViewById(R.id.file_content_length);
                     boolean clearedSomething = false;
                     if (etMessage.getText().length() > 0) {
                         clearedSomething = true;
@@ -1148,10 +1176,10 @@ public class Main extends FragmentActivity {
                         contactChosen.setText("");
                         findViewById(R.id.list).setVisibility(View.VISIBLE);
                         StaticVariables.luc.showIfNeeded(this, null);
-                        invalidateOptionsMenu();
                     }
                     if (StaticVariables.fileContent != null) {
                         clearedSomething = true;
+                        fileLength.setText("");
                         StaticVariables.fileContent = null;
                     }
                     if (addFile != null && addFile.isAlive()) {
@@ -1165,6 +1193,8 @@ public class Main extends FragmentActivity {
                         new prepareToExit();
                     else if (!clearedSomething)
                         setUpViews();
+                    else
+                        invalidateOptionsMenu();
                     break;
                 case R.layout.decrypted_msg:
                     if (StaticVariables.flag_msg) {
@@ -1248,7 +1278,7 @@ public class Main extends FragmentActivity {
         if (success) {
             hndl.sendEmptyMessage(CLEAR_FOCUS);
             Intent intent = new Intent(this, SendMsg.class);
-            intent.putExtra("contactId", contact!=null?contact.getId():group.getId());
+            intent.putExtra("contactId", contact != null ? contact.getId() : group.getId());
             startActivity(intent);
         } else {
             Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
@@ -1298,7 +1328,6 @@ public class Main extends FragmentActivity {
             KeysDeleter.keysDeleted = false;
         } else {
             KeysDeleter.stop();
-            return;
         }
         int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         if (newkeys != KeysDeleter.oldStatus) {
@@ -1308,11 +1337,13 @@ public class Main extends FragmentActivity {
             msgSended = false;
         }
         //this is for when coming to the app from share
-        if (FragmentManagement.currentLayout == R.layout.encrypt) {
-            Uri uri = getIntent().getParcelableExtra("specattach");
-            getIntent().setData(null);
-            if (uri != null)
-                attachFile(uri);
+
+        Uri uri = getIntent().getParcelableExtra("specattach");
+        getIntent().setData(null);
+        if (uri != null) {
+            if (FragmentManagement.currentLayout != R.layout.encrypt)
+                selectItem(-1, R.layout.encrypt, null);
+            attachFile(uri);
         }
     }
 
@@ -1395,13 +1426,13 @@ public class Main extends FragmentActivity {
                         .findGroup(Long.parseLong(((TextView) findViewById(R.id.contact_id))
                                 .getText().toString()));
                 InviteToGroup ing = new InviteToGroup(grp);
-                ing.show(getFragmentManager(),"ing");
+                ing.show(getFragmentManager(), "ing");
                 break;
             case R.id.add_to_contact:
-                String pbk = ((TextView)findViewById(R.id.public_)).getText().toString();
-                String name = ((TextView)findViewById(R.id.name)).getText().toString();
-                String email = ((TextView)findViewById(R.id.email)).getText().toString();
-                StaticVariables.fileContactCard = new ContactCard(this,pbk,email,name);
+                String pbk = ((TextView) findViewById(R.id.public_)).getText().toString();
+                String name = ((TextView) findViewById(R.id.name)).getText().toString();
+                String email = ((TextView) findViewById(R.id.email)).getText().toString();
+                StaticVariables.fileContactCard = new ContactCard(this, pbk, email, name);
                 openByFile();
                 break;
         }

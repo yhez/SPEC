@@ -154,21 +154,21 @@ public class Session {
         return new Session(a[0] + DIVIDER + b[0], a[1] + DIVIDER + b[1], a[2] + DIVIDER + b[2], flag);
     }
 
-    public static String toHide() {
-        return "session words: "
-                + "-xxx xxx-"
-                + "  secret sign: "
-                + "-x-";
+    public static String toHide(Activity a) {
+        return a.getString(R.string.session_words)+" "
+                + a.getString(R.string.hide_session_words)
+                + a.getString(R.string.secret_sign) + " "
+                + a.getString(R.string.hide_secret_sign);
     }
 
-    public static String toShow(String session) {
+    public static String toShow(Activity a,String session) {
         String[] ses = session.split(" ");
-        return "session words: " + ses[0].replace(DIVIDER, "-")
-                + " " + ses[1].replace(DIVIDER, "-")
-                + "  secret sign: " + ses[2].replace(DIVIDER, "-")
-                + (ses.length > 3 ? "\nsession status: "
-                + (ses[3].equals(FLAG_SESSION_VERIFIED) ? "session has verified" :
-                (ses[3].equals(FLAG_SESSION_JUST_ADDED) ? "contact just added" : "you sent your session, but didn\'t got it back yet")) : "");
+        return a.getString(R.string.session_words) +" "+ ses[0].replace(DIVIDER, "-")
+                + " " + ses[1].replace(DIVIDER, "-") +" "
+                + a.getString(R.string.secret_sign) +" " + ses[2].replace(DIVIDER, "-") + "\n"
+                + (ses.length > 3 ? a.getString(R.string.session_status) +"\n"
+                + (ses[3].equals(FLAG_SESSION_VERIFIED) ? a.getString(R.string.session_verified) :
+                (ses[3].equals(FLAG_SESSION_JUST_ADDED) ? a.getString(R.string.just_added) : a.getString(R.string.sent_but_not_recieved))) : "");
     }
 
     public static void updateFlag(Activity a, Contact contact) {

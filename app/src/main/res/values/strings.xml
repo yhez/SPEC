@@ -215,7 +215,7 @@
     <string name="send_report_title">Send Error Report</string>
     <string name="choose_contact_for_widget">Choose Contact:</string>
     <string name="import_export_manage">Backup My SPEC</string>
-    <string name="move_key_to_nfc_and_such">Private Key Manager</string>
+    <string name="move_key_to_nfc_and_such">Manage Private Key</string>
     <string name="sync_keys_between_devices">Device Sync</string>
     <string name="generator_menu_title">Generating Keys&#8230;</string>
     <string name="save_keys_menu_title">Save Keys</string>
@@ -252,6 +252,14 @@
     <string name="nfc_is_required">NFC required</string>
     <string name="invite_to_the_group">invite a friend to the group</string>
     <string name="add_group_owner_to_contact">add owner to your contacts</string>
+    <string name="session_words">session words:</string>
+    <string name="secret_sign">secret sign:</string>
+    <string name="session_status">session status:</string>
+    <string name="session_verified">session has verified</string>
+    <string name="just_added">contact just added</string>
+    <string name="sent_but_not_recieved">you sent your session, but didn\'t got it back yet</string>
+    <string name="hide_session_words">-xxx xxx-</string>
+    <string name="hide_secret_sign">-x-</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>

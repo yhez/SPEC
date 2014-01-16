@@ -58,6 +58,7 @@
             android:background="@color/spec_blue" />
 
         <Button
+            android:padding="@dimen/default_gap"
             android:id="@+id/button3"
             android:onClick="onClickManage"
             style="?android:attr/buttonBarButtonStyle"
