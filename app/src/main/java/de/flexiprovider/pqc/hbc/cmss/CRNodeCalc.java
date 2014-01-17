@@ -9,12 +9,7 @@ import de.flexiprovider.api.MessageDigest;
 public class CRNodeCalc implements NodeCalc {
     private MessageDigest md;
 
-    /**
-     * Constructs a new {@link CRNodeCalc} object, that uses the given
-     * {@link de.flexiprovider.api.MessageDigest} to calculate the nodes.
-     *
-     * @param md the {@link de.flexiprovider.api.MessageDigest} to use
-     */
+
     public CRNodeCalc(MessageDigest md) {
         this.md = md;
     }

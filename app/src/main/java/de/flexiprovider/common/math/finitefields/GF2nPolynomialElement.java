@@ -266,20 +266,6 @@ public class GF2nPolynomialElement extends GF2nElement {
     }
 
 
-    public void squareThisMatrix() {
-        GF2Polynomial result = new GF2Polynomial(mDegree);
-        for (int i = 0; i < mDegree; i++) {
-            if (polynomial
-                    .vectorMult(((GF2nPolynomialField) mField).squaringMatrix[mDegree
-                            - i - 1])) {
-                result.setBit(i);
-
-            }
-        }
-        polynomial = result;
-    }
-
-
     public GF2nPolynomialElement squarePreCalc() {
         GF2nPolynomialElement result = new GF2nPolynomialElement(this);
         result.squareThisPreCalc();

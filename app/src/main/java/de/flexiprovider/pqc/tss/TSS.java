@@ -20,18 +20,6 @@ import de.flexiprovider.common.math.IntegerFunctions;
 public abstract class TSS extends Signature {
 
     /**
-     * TSS with RIPEMD160
-     */
-    public static class RIPEMD160 extends TSS {
-        /**
-         * Constructor.
-         */
-        public RIPEMD160() {
-            super(new de.flexiprovider.core.md.RIPEMD160());
-        }
-    }
-
-    /**
      * TSS with SHA1
      */
     public static class SHA1 extends TSS {
@@ -345,19 +333,6 @@ public abstract class TSS extends Signature {
                     + (time2.getTime() - time1.getTime()) + " ms.");
         } while (!checkBound(z, gBound));
         System.out.println("Match found.");
-        // System.out.println("*******************************************");
-        // System.out.println("h(e*s) = ");
-        // hashFunction.calculatHash(e.multiply(privKey.getKey())).print();
-        // System.out.println("h(s) * e  = ");
-        // hashFunction.calculatHash(privKey.getKey()).multiply(e).print();
-        // System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-        //
-        // globalBrutal = hashFunction.calculatHash(y);
-        //
-        // System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-        // hashFunction.calculatHash(addGFPVector(privKey.getKey(), y)).print();
-        // hashFunction.calculatHash(privKey.getKey()).add(hashFunction.calculatHash(y)).print();
-        // System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
         return parse2TSSByte(z, e);
     }
 

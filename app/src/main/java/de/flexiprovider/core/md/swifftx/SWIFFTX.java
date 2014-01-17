@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.md.swifftx;
 
 
@@ -1267,7 +1258,7 @@ public class SWIFFTX {
      */
     static int[] hash(int hashbitlen, byte[] data, int databitlen) {
         // cast char-array to int-array
-        int i = 0;
+        int i;
         int[] intdata = new int[data.length];
         for (i = 0; i < data.length; ++i) {
             intdata[i] = data[i];

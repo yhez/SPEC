@@ -42,15 +42,6 @@ public class IQDSAKeyFactory extends KeyFactory {
      */
     public static final String OID = "1.3.6.1.4.1.8301.3.1.1.1";
 
-    /**
-     * Generates a private key object from the provided key specification (key
-     * material).
-     *
-     * @param keySpec the specification (key material) of the private key
-     * @return the private key
-     * @throws InvalidKeySpecException if the given key specification is inappropriate for this
-     *                                 key factory to produce a private key.
-     */
     public PrivateKey generatePrivate(KeySpec keySpec)
             throws InvalidKeySpecException {
 
@@ -214,16 +205,6 @@ public class IQDSAKeyFactory extends KeyFactory {
         throw new InvalidKeySpecException("unsupported key type");
     }
 
-    /**
-     * Translates a key object, whose provider may be unknown or potentially
-     * untrusted, into a corresponding key object of this key factory.
-     * Currently, only the following key types are supported:
-     * {@link IQDSAPublicKey}, {@link IQDSAPrivateKey}.
-     *
-     * @param key the key whose provider is unknown or untrusted
-     * @return the translated key
-     * @throws InvalidKeyException if the given key cannot be processed by this key factory.
-     */
     public Key translateKey(Key key) throws InvalidKeyException {
         if ((key instanceof IQDSAPublicKey) || (key instanceof IQDSAPrivateKey)) {
             return key;

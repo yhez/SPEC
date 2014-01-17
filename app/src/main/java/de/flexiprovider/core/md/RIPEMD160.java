@@ -9,24 +9,7 @@ package de.flexiprovider.core.md;
 
 import de.flexiprovider.common.util.LittleEndianConversions;
 
-/**
- * This class implements the RIPEMD-160 message digest algorithm according to
- * the Handbook of Applied Cryptography, Menezes, van Oorschot, Vanstone, CRC
- * Press, 1997, algorithm 9.55
- * <p/>
- * <p/>
- * The algorithm has been invented by Hans Dobbertin, and further information
- * concerning the RIPEMD message digest family can be found at <a
- * href="http://www.esat.kuleuven.ac.be/~bosselae/ripemd160.html">
- * www.esat.kuleuven.ac.be/~bosselae/ripemd160.html</a>.
- * <p/>
- * <p/>
- * The efficiency of this implementation has been tested on a AMD K6-III, 450
- * MHz, running Windows 98 SE, using jdk 1.2.2. The hashing rate is about 38
- * MBits / second.
- *
- * @author Oliver Seiler
- */
+
 public final class RIPEMD160 extends MDFamilyDigest {
 
     /**
@@ -34,9 +17,6 @@ public final class RIPEMD160 extends MDFamilyDigest {
      */
     public static final String ALG_NAME = "RIPEMD160";
 
-    /**
-     * The OID of RIPEMD160 (defined by Teletrust).
-     */
     public static final String OID = "1.3.36.3.2.1";
 
     // magic constants for initialization

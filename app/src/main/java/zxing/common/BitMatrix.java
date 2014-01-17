@@ -76,14 +76,6 @@ public final class BitMatrix implements Cloneable {
     }
   }
 
-  /**
-   * <p>Sets a square region of the bit matrix to true.</p>
-   *
-   * @param left The horizontal position to begin at (inclusive)
-   * @param top The vertical position to begin at (inclusive)
-   * @param width The width of the region
-   * @param height The height of the region
-   */
   public void setRegion(int left, int top, int width, int height) {
     if (top < 0 || left < 0) {
       throw new IllegalArgumentException("Left and top must be nonnegative");

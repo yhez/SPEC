@@ -15,27 +15,11 @@ public final class LittleEndianConversions {
         // empty
     }
 
-    /**
-     * Convert an octet string of length 4 to an integer. No length checking is
-     * performed.
-     *
-     * @param input the byte array holding the octet string
-     * @return an integer representing the octet string <tt>input</tt>
-     * @throws ArithmeticException if the length of the given octet string is larger than 4.
-     */
     public static int OS2IP(byte[] input) {
         return ((input[0] & 0xff)) | ((input[1] & 0xff) << 8)
                 | ((input[2] & 0xff) << 16) | ((input[3] & 0xff)) << 24;
     }
 
-    /**
-     * Convert an byte array of length 4 beginning at <tt>offset</tt> into an
-     * integer.
-     *
-     * @param input the byte array
-     * @param inOff the offset into the byte array
-     * @return the resulting integer
-     */
     public static int OS2IP(byte[] input, int inOff) {
         int result = input[inOff++] & 0xff;
         result |= (input[inOff++] & 0xff) << 8;
@@ -44,15 +28,6 @@ public final class LittleEndianConversions {
         return result;
     }
 
-    /**
-     * Convert a byte array of the given length beginning at <tt>offset</tt>
-     * into an integer.
-     *
-     * @param input the byte array
-     * @param inOff the offset into the byte array
-     * @param inLen the length of the encoding
-     * @return the resulting integer
-     */
     public static int OS2IP(byte[] input, int inOff, int inLen) {
         int result = 0;
         for (int i = inLen - 1; i >= 0; i--) {
@@ -61,14 +36,6 @@ public final class LittleEndianConversions {
         return result;
     }
 
-    /**
-     * Convert a byte array of length 8 beginning at <tt>inOff</tt> into a
-     * long integer.
-     *
-     * @param input the byte array
-     * @param inOff the offset into the byte array
-     * @return the resulting long integer
-     */
     public static long OS2LIP(byte[] input, int inOff) {
         long result = input[inOff++] & 0xff;
         result |= (input[inOff++] & 0xff) << 8;
@@ -81,12 +48,6 @@ public final class LittleEndianConversions {
         return result;
     }
 
-    /**
-     * Convert an integer to an octet string of length 4.
-     *
-     * @param x the integer to convert
-     * @return the converted integer
-     */
     public static byte[] I2OSP(int x) {
         byte[] result = new byte[4];
         result[0] = (byte) x;
@@ -96,13 +57,6 @@ public final class LittleEndianConversions {
         return result;
     }
 
-    /**
-     * Convert an integer into a byte array beginning at the specified offset.
-     *
-     * @param value  the integer to convert
-     * @param output the byte array to hold the result
-     * @param outOff the integer offset into the byte array
-     */
     public static void I2OSP(int value, byte[] output, int outOff) {
         output[outOff++] = (byte) value;
         output[outOff++] = (byte) (value >>> 8);
@@ -110,16 +64,7 @@ public final class LittleEndianConversions {
         output[outOff] = (byte) (value >>> 24);
     }
 
-    /**
-     * Convert an integer to a byte array beginning at the specified offset. No
-     * length checking is performed (i.e., if the integer cannot be encoded with
-     * <tt>length</tt> octets, it is truncated).
-     *
-     * @param value  the integer to convert
-     * @param output the byte array to hold the result
-     * @param outOff the integer offset into the byte array
-     * @param outLen the length of the encoding
-     */
+
     public static void I2OSP(int value, byte[] output, int outOff, int outLen) {
         for (int i = outLen - 1; i >= 0; i--) {
             output[outOff + i] = (byte) (value >>> (8 * i));

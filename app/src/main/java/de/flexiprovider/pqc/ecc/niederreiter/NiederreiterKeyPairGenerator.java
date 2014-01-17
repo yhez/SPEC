@@ -16,46 +16,7 @@ import de.flexiprovider.common.math.linearalgebra.GF2Matrix;
 import de.flexiprovider.common.math.linearalgebra.Permutation;
 import de.flexiprovider.pqc.ecc.ECCKeyGenParameterSpec;
 
-/**
- * This class implements key pair generation of the Niederreiter public-key
- * cryptosystem (Niederreiter PKCS). It class extends the
- * {@link de.flexiprovider.api.keys.KeyPairGenerator} class.
- * <p/>
- * Given the parameters m and t or the key size n, the algorithm generates the
- * following matrices:
- * <ul>
- * <li>H' - k x n check matrix of a binary irreducible (n,k) Goppa code GC
- * which can correct up to t errors where n = 2^m and k is chosen maximal</li>
- * <li>S - k x k a random binary non-singular matrix</li>
- * <li>P - n x n a random peremutation matrix</li>
- * </ul>
- * Then, compute the k x n matrix H = SH'P.
- * <p/>
- * The public key is (t, n, H), the private key is (m,k,field polynomial,Goppa
- * polynomial,S,P).
- * <p/>
- * A key pair consists of a {@link NiederreiterPublicKey} and a
- * {@link NiederreiterPrivateKey}.
- * <p/>
- * The default parameters are (m, t) = (11, 50).
- * <p/>
- * The Niederreiter key pair generator can be used as follows:
- * <p/>
- * 1. get instance of NiederreiterPKC key pair generator:<br/>
- * <tt>KeyPairGenerator kpg =
- * KeyPairGenerator.getInstance("Niederreiter","FlexiPQC");</tt><br/>
- * 2. initialize the KPG with the key size n:<br/> <tt>kpg.initialize(n);</tt><br/>
- * or with the parameters m and t: <br/> <tt>kpg.initialize(m,t);</tt><br/>
- * 3. create McElicePKC key pair:<br/>
- * <tt>KeyPair keyPair = kpg.generateKeyPair();</tt><br/> 4. get the encoded
- * private and public keys from the key pair:<br/>
- * <tt>encodedPublicKey = keyPair.getPublic().getEncoded();<br/>
- * encodedPrivateKey = keyPair.getPrivate().getEncoded();</tt>
- *
- * @author Elena Klintsevich
- * @author Martin D�ring
- * @see ECCKeyGenParameterSpec
- */
+
 public class NiederreiterKeyPairGenerator extends KeyPairGenerator {
 
     // the extension degree of the finite field GF(2^m)

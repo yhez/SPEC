@@ -33,15 +33,6 @@ public class GMSSParameterSpec implements AlgorithmParameterSpec {
      */
     private int[] K;
 
-    /**
-     * The constructor for the parameters of the GMSSKeyPairGenerator.
-     * <p/>
-     *
-     * @param layers              the number of authentication tree layers
-     * @param heightOfTrees       the height of the authentication trees
-     * @param winternitzParameter the Winternitz Parameter 'w' of each layer
-     * @param K                   parameter for authpath computation
-     */
     public GMSSParameterSpec(int layers, int[] heightOfTrees,
                              int[] winternitzParameter, int[] K) {
         this.numberOfLayers = layers;

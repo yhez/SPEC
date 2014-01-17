@@ -11,9 +11,6 @@ import de.flexiprovider.core.rsa.RSAPrivateCrtKey;
 
 public class MeRSAPrivateKey extends RSAPrivateCrtKey {
 
-    /**
-     * The exponent k.
-     */
     private FlexiBigInt k;
 
 
@@ -28,11 +25,6 @@ public class MeRSAPrivateKey extends RSAPrivateCrtKey {
         this.crtCoeff = crtCoeff;
     }
 
-    /**
-     * Construct an MeRSAPrivateKey out of the given key specification.
-     *
-     * @param keySpec the key specification
-     */
     protected MeRSAPrivateKey(MeRSAPrivateKeySpec keySpec) {
         this(keySpec.getN(), keySpec.getE(), keySpec.getD(), keySpec.getP(),
                 keySpec.getQ(), keySpec.getDp(), keySpec.getDq(), keySpec

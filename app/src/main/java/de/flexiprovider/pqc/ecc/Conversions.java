@@ -18,17 +18,6 @@ public final class Conversions {
     private Conversions() {
         // empty
     }
-
-    /**
-     * Encode a number between 0 and (n|t) (binomial coefficient) into a binary
-     * vector of length n with weight t. The number is given as a byte array.
-     * Only the first s bits are used, where s = floor[log(n|t)].
-     *
-     * @param n integer
-     * @param t integer
-     * @param m the message as a byte array
-     * @return the encoded message as {@link GF2Vector}
-     */
     public static GF2Vector encode(final int n, final int t, final byte[] m) {
         if (n < t) {
             throw new IllegalArgumentException("n < t");
@@ -109,93 +98,6 @@ public final class Conversions {
         }
 
         return FlexiBigIntUtils.toMinimalByteArray(d);
-    }
-
-    /**
-     * Compute a message representative of a message given as a vector of length
-     * <tt>n</tt> bit and of hamming weight <tt>t</tt>. The result is a
-     * byte array of length <tt>(s+7)/8</tt>, where
-     * <tt>s = floor[log(n|t)]</tt>.
-     *
-     * @param n integer
-     * @param t integer
-     * @param m the message vector as a byte array
-     * @return a message representative for <tt>m</tt>
-     */
-    public static byte[] signConversion(int n, int t, byte[] m) {
-        if (n < t) {
-            throw new IllegalArgumentException("n < t");
-        }
-
-        FlexiBigInt bc = IntegerFunctions.binomial(n, t);
-        // finds s = floor[log(binomial(n,t))]
-        int s = bc.bitLength() - 1;
-        // s = sq*8 + sr;
-        int sq = s >> 3;
-        int sr = s & 7;
-        if (sr == 0) {
-            sq--;
-            sr = 8;
-        }
-
-        // n = nq*8+nr;
-        int nq = n >> 3;
-        int nr = n & 7;
-        if (nr == 0) {
-            nq--;
-            nr = 8;
-        }
-        // take s bit from m
-        byte[] data = new byte[nq + 1];
-        if (m.length < data.length) {
-            System.arraycopy(m, 0, data, 0, m.length);
-            for (int i = m.length; i < data.length; i++) {
-                data[i] = 0;
-            }
-        } else {
-            System.arraycopy(m, 0, data, 0, nq);
-            int h = (1 << nr) - 1;
-            data[nq] = (byte) (h & m[nq]);
-        }
-
-        FlexiBigInt d = FlexiBigInt.ZERO;
-        int nn = n;
-        int tt = t;
-        for (int i = 0; i < n; i++) {
-            bc = (bc.multiply(new FlexiBigInt(Integer.toString(nn - tt))))
-                    .divide(new FlexiBigInt(Integer.toString(nn)));
-            nn--;
-
-            int q = i >>> 3;
-            int r = i & 7;
-            r = 1 << r;
-            byte e = (byte) (r & data[q]);
-            if (e != 0) {
-                d = d.add(bc);
-                tt--;
-                if (nn == tt) {
-                    bc = FlexiBigInt.ONE;
-                } else {
-                    bc = (bc
-                            .multiply(new FlexiBigInt(Integer.toString(tt + 1))))
-                            .divide(new FlexiBigInt(Integer.toString(nn - tt)));
-                }
-            }
-        }
-
-        byte[] result = new byte[sq + 1];
-        byte[] help = d.toByteArray();
-        if (help.length < result.length) {
-            System.arraycopy(help, 0, result, 0, help.length);
-            for (int i = help.length; i < result.length; i++) {
-                result[i] = 0;
-            }
-        } else {
-            System.arraycopy(help, 0, result, 0, sq);
-            result[sq] = (byte) (((1 << sr) - 1) & help[sq]);
-        }
-
-        return result;
     }
 
 }

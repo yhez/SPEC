@@ -14,16 +14,6 @@ import de.flexiprovider.common.math.quadraticfields.IQEncodingException;
 import de.flexiprovider.common.math.quadraticfields.QuadraticIdeal;
 import de.flexiprovider.common.util.ASN1Tools;
 
-/**
- * This class is used as an opaque representation of cryptographic parameters.
- * <p/>
- * A transparent parameter specification is obtained from an
- * <tt>AlgorithmParameters</tt> object via a call to <tt>getParameterSpec</tt>,
- * and a byte encoding of the parameters is obtained via a call to
- * <tt>getEncoded</tt>.
- *
- * @author Ralf-P. Weinmann
- */
 public class IQDSAParameters extends AlgorithmParameters {
 
     private FlexiBigInt discriminant;
@@ -177,16 +167,6 @@ public class IQDSAParameters extends AlgorithmParameters {
         }
     }
 
-    /**
-     * Returns the parameters encoded in the specified scheme. If
-     * <tt>format</tt> is null, the primary encoding format for parameters is
-     * used. The primary encoding format is ASN.1
-     *
-     * @param format the name of the encoding format.
-     * @return the parameters encoded using the specified encoding scheme.
-     * @throws java.io.IOException on encoding errors, or if this parameter object has not
-     *                             been initialized.
-     */
     public byte[] getEncoded(String format) throws IOException {
         if (format == null || format.equals("ASN.1")) {
             return getEncoded();
@@ -195,18 +175,6 @@ public class IQDSAParameters extends AlgorithmParameters {
                 + "\" not supported.");
     }
 
-    /**
-     * Returns a (transparent) specification of this parameter object.
-     * <tt>paramSpec</tt> identifies the specification class in which the
-     * parameters should be returned.
-     *
-     * @param paramSpec the specification class in which the parameters should be
-     *                  returned
-     * @return the parameter specification
-     * @throws InvalidParameterSpecException if the requested parameter specification is inappropriate
-     *                                       for this parameter object, or if this parameter object
-     *                                       has not been initialized.
-     */
     public AlgorithmParameterSpec getParameterSpec(Class paramSpec)
             throws InvalidParameterSpecException {
         if (!paramSpec.isAssignableFrom(IQDSAParameterSpec.class)) {

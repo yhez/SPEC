@@ -16,19 +16,6 @@ import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.common.util.IntUtils;
 
-/**
- * An Element of this class represents a Polynomial within a GFP Ring Structure.
- * <p/>
- * The Structure is defined by the modulo Function and the large "prime" p. This
- * Class has methods for multiplying, adding and reducing Polynomials.
- * <p/>
- * This Class has been developed mainly for the LMOTS Signature scheme, so the
- * available methods may not be a complete Implementation of the methods that
- * may be required or expected on Ring Arithmetic and some of the implemented
- * Methods are intended only for use of the LMOTS Signature scheme. Such as the
- * ability to create random Polynomials within this Ring Structure with a custom
- * modulo limit or Multiplication of a Polynomial with a Vector of Polynomials.
- */
 public class GFP32Polynomial {
 
     private int[] f;
@@ -38,14 +25,7 @@ public class GFP32Polynomial {
 
     private SecureRandom generator;
 
-    /**
-     * Constructor for decoding a previously encoded {@link GFP32Polynomial}
-     * using the getEncoded() method
-     *
-     * @param encoded the byte array containing the encoded {@link GFP32Polynomial}
-     * @throws java.io.IOException
-     * @throws codec.asn1.ASN1Exception
-     */
+
     public GFP32Polynomial(byte[] encoded) throws ASN1Exception, IOException {
         ByteArrayInputStream in = new ByteArrayInputStream(encoded);
         DERDecoder decoder = new DERDecoder(in);
@@ -78,13 +58,6 @@ public class GFP32Polynomial {
         generator = Registry.getSecureRandom();
     }
 
-    /**
-     * Standard Constructor for generating a new GFPPolynomial
-     *
-     * @param f    the modulo Polynomial of the Ring
-     * @param p    the modulo "prime" of the Ring
-     * @param poly the Polynomial an int array, most significant entry is right
-     */
     public GFP32Polynomial(int[] f, int p, int[] poly) {
         this.f = f;
         degree = f.length - 1;
@@ -100,12 +73,6 @@ public class GFP32Polynomial {
         generator = Registry.getSecureRandom();
     }
 
-    /**
-     * adds the given Polynomial to this Polynomial and returns the result
-     *
-     * @param gfp the Polynomial to be added
-     * @return the Addition of the two Polynomials
-     */
     public GFP32Polynomial add(GFP32Polynomial gfp) {
         if (!paramEqual(gfp)) {
             return null;
@@ -129,12 +96,6 @@ public class GFP32Polynomial {
         return new GFP32Polynomial(f, p, reduce(result));
     }
 
-    /**
-     * Adds the supplied Polynomial to this Polynomial and sets this Polynomial
-     * as the result
-     *
-     * @param gfp the Polynomial to be added
-     */
     public void addToThis(GFP32Polynomial gfp) {
         poly = add(gfp).getPoly();
     }
@@ -152,14 +113,6 @@ public class GFP32Polynomial {
         return a;
     }
 
-    /**
-     * Subtracts p from every entry in this polynomial with a value greater p/2.
-     * <p/>
-     * This Function is used for calculating the correct Norm of a Polynomial,
-     * since the Norm uses the absolute Value for determining the Maximum
-     *
-     * @return the compressed polynomial
-     */
     public int[] compressThis() {
         return compress(poly);
     }
@@ -174,15 +127,6 @@ public class GFP32Polynomial {
                 .equals(compressThis(), otherPol.compressThis()));
     }
 
-    /**
-     * Generates a random Polynomial with the specified limit, denoting the
-     * maximum Value of entries in this Polynomial.
-     *
-     * @param limit the limit to be used for modulo in the generated Polynomial.
-     *              Only used if the supplied number is lower than p, otherwise p
-     *              is used.
-     * @return the randomly generated Polynomial
-     */
     public GFP32Polynomial generatePoly(int limit) {
         return generatePoly(limit, false);
     }
@@ -284,18 +228,6 @@ public class GFP32Polynomial {
         return new GFP32Polynomial(f, p, reduce(result));
     }
 
-    /**
-     * multiplies this Polynomial with a Vector of Polynomials and returns the
-     * Result
-     * <p/>
-     * Multiplication with a Vector is designed as follows:
-     * <p/>
-     * Vector � = (a1, a2, ... , am), Polynomial p � * p = (a1*p, a2*p, ...
-     * , am * p)
-     *
-     * @param k the Vector of Polynomials to be multiplied
-     * @return the Vector of the Product
-     */
     public Vector multiply(Vector k) {
         Vector result = new Vector();
         result.setSize(k.size());
@@ -402,20 +334,4 @@ public class GFP32Polynomial {
     public void subtractFromThis(GFP32Polynomial gfp) {
         poly = subtract(gfp).getPoly();
     }
-
-    // public static void main(String[] args) throws ASN1Exception, IOException
-    // {
-    // GFPPolynomial gfp = new GFPPolynomial(new int[]{5, 0, 0, 0, 0, 0, 0, 0,
-    // 1}, 19, new int[]{2, 5, 7, 12, 239, 124, 12312, 123, 23, 5325, 6322,
-    // 12322});
-    // byte[] testArr = gfp.getEncoded();
-    //
-    // System.out.println(new FlexiBigInt(testArr));
-    // GFPPolynomial gfp2 = new GFPPolynomial(testArr);
-    // gfp.print();
-    // gfp2.print();
-    // if (gfp.equals(gfp2)) {
-    // System.out.println("YAHOOOOO");
-    // }
-    // }
 }

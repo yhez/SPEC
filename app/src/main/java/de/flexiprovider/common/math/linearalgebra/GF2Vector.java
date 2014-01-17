@@ -35,12 +35,6 @@ public class GF2Vector extends Vector {
         v = new int[(length + 31) >> 5];
     }
 
-    /**
-     * Construct a random GF2Vector of the given length.
-     *
-     * @param length the length of the vector
-     * @param sr     the source of randomness
-     */
     public GF2Vector(int length, SecureRandom sr) {
         this.length = length;
 
@@ -60,45 +54,6 @@ public class GF2Vector extends Vector {
         }
     }
 
-    /**
-     * Construct a random GF2Vector of the given length with the specified
-     * number of non-zero coefficients.
-     *
-     * @param length the length of the vector
-     * @param t      the number of non-zero coefficients
-     * @param sr     the source of randomness
-     */
-    public GF2Vector(int length, int t, SecureRandom sr) {
-        if (t > length) {
-            throw new ArithmeticException(
-                    "The hamming weight is greater than the length of vector.");
-        }
-        this.length = length;
-
-        int size = (length + 31) >> 5;
-        v = new int[size];
-
-        int[] help = new int[length];
-        for (int i = 0; i < length; i++) {
-            help[i] = i;
-        }
-
-        int m = length;
-        for (int i = 0; i < t; i++) {
-            int j = sr.nextInt(m);
-            setBit(help[j]);
-            m--;
-            help[j] = help[m];
-        }
-    }
-
-    /**
-     * Construct a GF2Vector of the given length and with elements from the
-     * given array. The array is copied and unused bits are masked out.
-     *
-     * @param length the length of the vector
-     * @param v      the element array
-     */
     public GF2Vector(int length, int[] v) {
         if (length < 0) {
             throw new ArithmeticException("negative length");
@@ -142,15 +97,6 @@ public class GF2Vector extends Vector {
         this.v = v;
         this.length = length;
     }
-
-    /**
-     * Construct a new GF2Vector with the given length out of the encoded
-     * vector.
-     *
-     * @param length the length of the vector
-     * @param encVec the encoded vector
-     * @return the decoded vector
-     */
     public static GF2Vector OS2VP(int length, byte[] encVec) {
         if (length < 0) {
             throw new ArithmeticException("negative length");
@@ -164,30 +110,14 @@ public class GF2Vector extends Vector {
 
         return new GF2Vector(length, LittleEndianConversions.toIntArray(encVec));
     }
-
-    /**
-     * Encode this vector as byte array.
-     *
-     * @return the encoded vector
-     */
     public byte[] getEncoded() {
         int byteLen = (length + 7) >> 3;
         return LittleEndianConversions.toByteArray(v, byteLen);
     }
-
-    /**
-     * @return the int array representation of this vector
-     */
     public int[] getVecArray() {
         return v;
     }
 
-    /**
-     * Return the Hamming weight of this vector, i.e., compute the number of
-     * units of this vector.
-     *
-     * @return the Hamming weight of this vector
-     */
     public int getHammingWeight() {
         int weight = 0;
         for (int i = 0; i < v.length; i++) {
@@ -227,15 +157,6 @@ public class GF2Vector extends Vector {
         }
         v[index >> 5] |= 1 << (index & 0x1f);
     }
-
-    /**
-     * Adds another GF2Vector to this vector.
-     *
-     * @param other another GF2Vector
-     * @return <tt>this + other</tt>
-     * @throws ArithmeticException if the other vector is not a GF2Vector or has another
-     *                             length.
-     */
     public Vector add(Vector other) {
         if (!(other instanceof GF2Vector)) {
             throw new ArithmeticException("vector is not defined over GF(2)");
@@ -353,12 +274,6 @@ public class GF2Vector extends Vector {
         return new GF2mVector(field, result);
     }
 
-    /**
-     * Check if the given object is equal to this vector.
-     *
-     * @param other vector
-     * @return the result of the comparison
-     */
     public boolean equals(Object other) {
 
         if (!(other instanceof GF2Vector)) {
@@ -368,19 +283,12 @@ public class GF2Vector extends Vector {
 
         return (length == otherVec.length) && IntUtils.equals(v, otherVec.v);
     }
-
-    /**
-     * @return the hash code of this vector
-     */
     public int hashCode() {
         int hash = length;
         hash = hash * 31 + v.hashCode();
         return hash;
     }
 
-    /**
-     * @return a human readable form of this vector
-     */
     public String toString() {
         StringBuilder buf = new StringBuilder();
         for (int i = 0; i < length; i++) {

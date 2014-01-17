@@ -137,9 +137,7 @@ class GMSSRootCalc {
         this.root = statByte[0];
 
         this.AuthPath = new byte[heightOfTree][mdLength];
-        for (int i = 0; i < heightOfTree; i++) {
-            this.AuthPath[i] = statByte[1 + i];
-        }
+        System.arraycopy(statByte, 1, this.AuthPath, 0, heightOfTree);
 
         this.tailStack = new Vector();
         for (int i = 0; i < tailLength; i++) {
@@ -418,9 +416,7 @@ class GMSSRootCalc {
                 .getDigestLength()];
         statByte[0] = root;
 
-        for (int i = 0; i < heightOfTree; i++) {
-            statByte[1 + i] = AuthPath[i];
-        }
+        System.arraycopy(AuthPath, 0, statByte, 1, heightOfTree);
         for (int i = 0; i < tailLength; i++) {
             statByte[1 + heightOfTree + i] = (byte[]) tailStack.elementAt(i);
         }
@@ -457,9 +453,7 @@ class GMSSRootCalc {
             statInt[6] = 0;
         statInt[7] = tailLength;
 
-        for (int i = 0; i < heightOfTree; i++) {
-            statInt[8 + i] = index[i];
-        }
+        System.arraycopy(index, 0, statInt, 8, heightOfTree);
         for (int i = 0; i < tailLength; i++) {
             statInt[8 + heightOfTree + i] = (Integer) heightOfNodes
                     .elementAt(i);

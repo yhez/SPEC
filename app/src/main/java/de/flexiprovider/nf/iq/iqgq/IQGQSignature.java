@@ -84,14 +84,6 @@ public abstract class IQGQSignature extends Signature {
 
     }
 
-    /*
-     * Inner classes providing concrete implementations of IQGQ with various
-     * message digests.
-     */
-
-    /**
-     * IQGQ with SHA1 message digest.
-     */
     public static class SHA1 extends IQGQSignature {
 
         /**
@@ -104,34 +96,11 @@ public abstract class IQGQSignature extends Signature {
         }
     }
 
-    /**
-     * IQGQ with RIPEMD160 message digest.
-     */
-    public static class RIPEMD160 extends IQGQSignature {
-
-        /**
-         * The OID of IQGQwithRIPEMD160.
-         */
-        public static final String OID = "1.3.6.1.4.1.8301.3.1.1.6";
-
-        public RIPEMD160() {
-            super(new de.flexiprovider.core.md.RIPEMD160());
-        }
-    }
-
 
     protected IQGQSignature(MessageDigest md) {
         this.md = md;
     }
 
-    /**
-     * Initializes engine for signing.
-     *
-     * @param key  private key to be used for signing
-     * @param prng source of randomness
-     * @throws InvalidKeyException if the key is not an instance of {@link IQGQPrivateKey}.
-     * @see #sign()
-     */
     public void initSign(PrivateKey key, SecureRandom prng)
             throws InvalidKeyException {
         md.reset();

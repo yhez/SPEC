@@ -14,19 +14,7 @@ import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.util.ASN1Tools;
 
-/**
- * An Element of this class represents a Polynomial within a GFP Ring Structure.
- * <p/>
- * The Structure is defined by the modulo Function and the large "prime" p. This
- * Class has methods for multiplying, adding and reducing Polynomials.
- * <p/>
- * This Class has been developed mainly for the LMOTS Signature scheme, so the
- * available methods may not be a complete Implementation of the methods that
- * may be required or expected on Ring Arithmetic and some of the implemented
- * Methods are intended only for use of the LMOTS Signature scheme. Such as the
- * ability to create random Polynomials within this Ring Structure with a custom
- * modulo limit or Multiplication of a Polynomial with a Vector of Polynomials.
- */
+
 public class GFP64Polynomial {
 
     private long[] f;
@@ -157,12 +145,6 @@ public class GFP64Polynomial {
         return poly;
     }
 
-    /**
-     * multiplies the given Polynomial to this Polynomial and returns the Result
-     *
-     * @param gfp the Polynomial to be multiplied
-     * @return the Product of the two Polynomials
-     */
     public GFP64Polynomial multiply(GFP64Polynomial gfp) {
         if (!paramEqual(gfp)) {
             return null;
@@ -222,15 +204,6 @@ public class GFP64Polynomial {
         return result;
     }
 
-    /**
-     * This Methods reduces a Polynomial in long array representation, with the
-     * most significant value rightmost. This means that the supplied Polynomial
-     * will be calculated modulo the Ring Polynomial f and the remainder is
-     * returned.
-     *
-     * @param z The supplied Polynomial to be reduced
-     * @return the remainder of the reduced Polynomial
-     */
     private long[] reduce(long[] z) {
         z = reduceZeros(mod(z));
         if (z.length < f.length) {

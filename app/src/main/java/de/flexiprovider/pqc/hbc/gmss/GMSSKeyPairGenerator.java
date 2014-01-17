@@ -20,96 +20,6 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
 	 * with a variety of message digests.
 	 */
 
-    /**
-     * GMSSKeyPairGenerator with SHA1
-     */
-    public static class GMSSwithSHA1 extends GMSSKeyPairGenerator {
-
-        /**
-         * The OID of the algorithm.
-         */
-        public static final String OID = GMSSKeyFactory.OID + ".1";
-
-        /**
-         * Constructor.
-         */
-        public GMSSwithSHA1() {
-            super("SHA1", "FlexiCore");
-        }
-    }
-
-    /**
-     * GMSSKeyPairGenerator with SHA224
-     */
-    public static class GMSSwithSHA224 extends GMSSKeyPairGenerator {
-
-        /**
-         * The OID of the algorithm.
-         */
-        public static final String OID = GMSSKeyFactory.OID + ".2";
-
-        /**
-         * Constructor.
-         */
-        public GMSSwithSHA224() {
-            super("SHA224", "FlexiCore");
-        }
-    }
-
-    /**
-     * GMSSKeyPairGenerator with SHA256
-     */
-    public static class GMSSwithSHA256 extends GMSSKeyPairGenerator {
-
-        /**
-         * The OID of the algorithm.
-         */
-        public static final String OID = GMSSKeyFactory.OID + ".3";
-
-        /**
-         * Constructor.
-         */
-        public GMSSwithSHA256() {
-            super("SHA256", "FlexiCore");
-        }
-    }
-
-    /**
-     * GMSSKeyPairGenerator with SHA384
-     */
-    public static class GMSSwithSHA384 extends GMSSKeyPairGenerator {
-
-        /**
-         * The OID of the algorithm.
-         */
-        public static final String OID = GMSSKeyFactory.OID + ".4";
-
-        /**
-         * Constructor.
-         */
-        public GMSSwithSHA384() {
-            super("SHA384", "FlexiCore");
-        }
-    }
-
-    /**
-     * GMSSKeyPairGenerator with SHA512
-     */
-    public static class GMSSwithSHA512 extends GMSSKeyPairGenerator {
-
-        /**
-         * The OID of the algorithm.
-         */
-        public static final String OID = GMSSKeyFactory.OID + ".5";
-
-        /**
-         * Constructor.
-         */
-        public GMSSwithSHA512() {
-            super("SHA512", "FlexiCore");
-        }
-    }
-
     // //////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -133,10 +43,6 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
      */
     private byte[][] currentRootSigs;
 
-    /**
-     * An array of strings containing the name of the hash function used to
-     * construct the authentication trees and used by the OTS
-     */
     private String[] algNames = new String[2];
 
     /**

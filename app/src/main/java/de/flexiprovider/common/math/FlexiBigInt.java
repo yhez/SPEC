@@ -145,14 +145,6 @@ public final class FlexiBigInt {
         return new FlexiBigInt(bigInt.setBit(n));
     }
 
-    public FlexiBigInt clearBit(int n) {
-        return new FlexiBigInt(bigInt.clearBit(n));
-    }
-
-    public int getLowestSetBit() {
-        return bigInt.getLowestSetBit();
-    }
-
     public int bitLength() {
         return bigInt.bitLength();
     }

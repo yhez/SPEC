@@ -22,15 +22,6 @@ public class FIPS_186_2_PRNG implements PRNG {
         this.md = md;
     }
 
-    /**
-     * Compute the next seed value, return a random byte array, and update the
-     * seed to the next value.
-     *
-     * @param outSeed byte array in which
-     *                <tt>(1 + inSeed + RAND) mod 2<sup>n</sup>n</tt> will
-     *                be stored
-     * @return byte array containing <tt>H(inSeed)</tt>
-     */
     public byte[] nextSeed(byte[] outSeed) {
 
         // byte array value "1"
@@ -47,12 +38,6 @@ public class FIPS_186_2_PRNG implements PRNG {
         return rand;
     }
 
-    /**
-     * Add two values given as byte arrays.
-     *
-     * @param a the first value
-     * @param b the second value
-     */
     private static void add(byte[] a, byte[] b) {
         byte carry = 0;
         for (int i = 0; i < a.length; i++) {

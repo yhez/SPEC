@@ -45,20 +45,7 @@ public abstract class IQDSASignature extends Signature {
     // array of precomputed powers of gamma used to speed up signing
     private QuadraticIdeal[] powersOfGamma;
 
-    /**
-     * Inner class providing the IQDSA ASN.1 signature structure.
-     * <p/>
-     * The ASN.1 signature structure is defined as follows:
-     * <p/>
-     * <pre>
-     * IQDSA-Signature ::= SEQUENCE {
-     *   Quadratic-Ideal rho,
-     *   INTEGER s
-     * }
-     *
-     * Quadratic-Ideal ::= OCTET STRING
-     * </pre>
-     */
+
     private static class IQDSAASN1Signature extends ASN1Sequence {
 
         private ASN1OctetString rho;
@@ -116,21 +103,6 @@ public abstract class IQDSASignature extends Signature {
     }
 
     /**
-     * IQDSA with RIPEMD160 message digest.
-     */
-    public static class RIPEMD160 extends IQDSASignature {
-
-        /**
-         * The OID of IQDSAwithRIPEMD160.
-         */
-        public static final String OID = "1.3.6.1.4.1.8301.3.1.1.3";
-
-        public RIPEMD160() {
-            super(new de.flexiprovider.core.md.RIPEMD160());
-        }
-    }
-
-    /**
      * Constructor. Set the message digest.
      *
      * @param md the message digest
@@ -139,14 +111,6 @@ public abstract class IQDSASignature extends Signature {
         this.md = md;
     }
 
-    /**
-     * Initializes engine for signing.
-     *
-     * @param key  private key to be used for signing
-     * @param prng source of randomness
-     * @throws InvalidKeyException if the key is not an instance of {@link IQDSAPrivateKey}.
-     * @see #sign()
-     */
     public void initSign(PrivateKey key, SecureRandom prng)
             throws InvalidKeyException {
         md.reset();

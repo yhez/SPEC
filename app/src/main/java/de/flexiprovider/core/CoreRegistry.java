@@ -354,7 +354,6 @@ public abstract class CoreRegistry extends Registry {
                 new String[]{"SHA512withRSA", "SHA512/RSA",
                         RSASignaturePKCS1v15.SHA512.OID});
 
-        // RSA-SSA signature with RIPEMD160
         add(SIGNATURE, RSASignaturePKCS1v15.RIPEMD160.class, new String[]{
                 "RIPEMD160withRSA", "RIPEMD160/RSA",
                 RSASignaturePKCS1v15.RIPEMD160.OID});

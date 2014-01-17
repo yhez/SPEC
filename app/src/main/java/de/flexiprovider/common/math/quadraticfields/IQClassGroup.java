@@ -28,34 +28,13 @@ public class IQClassGroup {
 
     private FlexiBigInt discriminant;
 
-    /**
-     * Constructor.
-     *
-     * @param discriminant discriminant of class group
-     * @param prng         instance of a pseudo-random number generator
-     */
     public IQClassGroup(FlexiBigInt discriminant, SecureRandom prng) {
         this.prng = (prng == null) ? Registry.getSecureRandom() : prng;
         this.discriminant = discriminant;
     }
-
-    /**
-     * Constructor.
-     *
-     * @param discriminant discriminant of class group
-     */
     public IQClassGroup(FlexiBigInt discriminant) {
         this(discriminant, null);
     }
-
-    /**
-     * Constructor.
-     *
-     * @param bits              length of the binary expansion of the discriminant
-     * @param primeDiscriminant flag to indicate whether the absolute value of the
-     *                          discriminant has to be a prime or not
-     * @param prng              instance of pseudo-random number generator
-     */
     public IQClassGroup(int bits, boolean primeDiscriminant, SecureRandom prng) {
         this.prng = (prng == null) ? Registry.getSecureRandom() : prng;
 
@@ -74,22 +53,6 @@ public class IQClassGroup {
         discriminant = discriminant.negate();
     }
 
-    /**
-     * Constructor.
-     *
-     * @param bits              length of the binary expension of the discriminant
-     * @param primeDiscriminant flag to indicate whether the absolute value of the
-     *                          discriminant has to be a prime or not
-     */
-    public IQClassGroup(int bits, boolean primeDiscriminant) {
-        this(bits, primeDiscriminant, null);
-    }
-
-    /**
-     * Query discriminant of an <tt>IQClassGroup</tt> object.
-     *
-     * @return discriminant of class group
-     */
     public FlexiBigInt getDiscriminant() {
         return discriminant;
     }

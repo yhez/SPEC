@@ -11,16 +11,6 @@ import de.flexiprovider.api.parameters.AlgorithmParameters;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.util.ASN1Tools;
 
-/**
- * This class is used as an opaque representation of cryptographic parameters.
- * <p/>
- * A transparent parameter specification is obtained from an
- * <tt>AlgorithmParameters</tt> object via a call to <tt>getParameterSpec</tt>,
- * and a byte encoding of the parameters is obtained via a call to
- * <tt>getEncoded</tt>.
- *
- * @author Ralf-P. Weinmann
- */
 public class IQGQParameters extends AlgorithmParameters {
 
     // the discriminant of the class group

@@ -42,12 +42,6 @@ public class LMOTSKeyPairGenerator extends KeyPairGenerator {
         return v;
     }
 
-    /**
-     * Generates an LMOTS key pair, consisting of an {@link LMOTSPublicKey} and
-     * an {@link LMOTSPrivateKey}.
-     *
-     * @return the generated key pair
-     */
     public KeyPair genKeyPair() {
 
         // STEP 4:

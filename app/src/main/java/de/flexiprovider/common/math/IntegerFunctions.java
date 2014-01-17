@@ -247,14 +247,6 @@ public final class IntegerFunctions {
         }
         return a.shiftLeft(1).add(b).divide(b.shiftLeft(1));
     }
-
-    /**
-     * Compute the smallest integer that is greater than or equal to the
-     * logarithm to the base 2 of the given integer.
-     *
-     * @param a the integer
-     * @return ceil[log(a)]
-     */
     public static int ceilLog(int a) {
         int log = 0;
         int i = 1;
@@ -264,14 +256,6 @@ public final class IntegerFunctions {
         }
         return log;
     }
-
-    /**
-     * Compute <tt>ceil(log_256 n)</tt>, the number of bytes needed to encode
-     * the integer <tt>n</tt>.
-     *
-     * @param n the integer
-     * @return the number of bytes needed to encode <tt>n</tt>
-     */
     public static int ceilLog256(int n) {
         if (n == 0) {
             return 1;
@@ -790,14 +774,6 @@ public final class IntegerFunctions {
         }
         return g;
     }
-
-    /**
-     * calculate the logarithm to the base 2.
-     *
-     * @param x any double value
-     * @return log_2(x)
-     * @deprecated use MathFunctions.log(double) instead
-     */
     public static double log(double x) {
         if (x > 0 && x < 1) {
             double d = 1 / x;
@@ -817,14 +793,6 @@ public final class IntegerFunctions {
         rem = logBKM(rem);
         return tmp + rem;
     }
-
-    /**
-     * calculate the logarithm to the base 2.
-     *
-     * @param x any long value >=1
-     * @return log_2(x)
-     * @deprecated use MathFunctions.log(long) instead
-     */
     public static double log(long x) {
         int tmp = floorLog(FlexiBigInt.valueOf(x));
         long tmp2 = 1 << tmp;
@@ -833,13 +801,6 @@ public final class IntegerFunctions {
         return tmp + rem;
     }
 
-    /**
-     * BKM Algorithm to calculate logarithms to the base 2.
-     *
-     * @param arg a double value with 1<= arg<= 4.768462058
-     * @return log_2(arg)
-     * @deprecated use MathFunctions.logBKM(double) instead
-     */
     private static double logBKM(double arg) {
         double ae[] = // A_e[k] = log_2 (1 + 0.5^k)
                 {

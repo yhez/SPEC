@@ -106,16 +106,6 @@ public abstract class Matrix {
     public abstract Matrix rightMultiply(Permutation p);
 
     /**
-     * Compute the product of a vector and this matrix. If the length of the
-     * vector is greater than the number of rows of this matrix, the matrix is
-     * multiplied by each m-bit part of the vector.
-     *
-     * @param vector a vector
-     * @return <tt>vector * this</tt> (newly created)
-     */
-    public abstract Vector leftMultiply(Vector vector);
-
-    /**
      * Compute the product of this matrix and a vector.
      *
      * @param vector a vector

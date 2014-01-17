@@ -251,11 +251,7 @@ public class PolynomialGF2mSmallM {
         return coefficients[index];
     }
 
-    /**
-     * Returns encoded polynomial, i.e., this polynomial in byte array form
-     *
-     * @return the encoded polynomial
-     */
+
     public byte[] getEncoded() {
         int d = 8;
         int count = 1;
@@ -275,13 +271,6 @@ public class PolynomialGF2mSmallM {
         return res;
     }
 
-    /**
-     * Evaluate this polynomial <tt>p</tt> at a value <tt>e</tt> (in
-     * <tt>GF(2^m)</tt>) with the Horner scheme.
-     *
-     * @param e the element of the finite field GF(2^m)
-     * @return <tt>this(e)</tt>
-     */
     public int evaluateAt(int e) {
         int result = coefficients[degree];
         for (int i = degree - 1; i >= 0; i--) {
@@ -290,12 +279,6 @@ public class PolynomialGF2mSmallM {
         return result;
     }
 
-    /**
-     * Compute the sum of this polynomial and the given polynomial.
-     *
-     * @param addend the addend
-     * @return <tt>this + a</tt> (newly created)
-     */
     public PolynomialGF2mSmallM add(PolynomialGF2mSmallM addend) {
         int[] resultCoeff = add(coefficients, addend.coefficients);
         return new PolynomialGF2mSmallM(field, resultCoeff);
@@ -310,15 +293,6 @@ public class PolynomialGF2mSmallM {
         coefficients = add(coefficients, addend.coefficients);
         computeDegree();
     }
-
-    /**
-     * Compute the sum of two polynomials a and b over the finite field
-     * <tt>GF(2^m)</tt>.
-     *
-     * @param a the first polynomial
-     * @param b the second polynomial
-     * @return a + b
-     */
     private int[] add(int[] a, int[] b) {
         int[] result, addend;
         if (a.length < b.length) {

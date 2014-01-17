@@ -35,17 +35,7 @@ public class NiederreiterKeyFactory extends KeyFactory {
      */
     public static final String OID = "1.3.6.1.4.1.8301.3.1.3.4.3";
 
-    /**
-     * Converts, if possible, a key specification into a NiederreiterPublicKey.
-     * Currently, the following key specifications are supported:
-     * NiederreiterPublicKeySpec.
-     *
-     * @param keySpec the key specification
-     * @return the public Niederreiter key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKey
-     * @see de.flexiprovider.pqc.ecc.niederreiter.NiederreiterPublicKeySpec
-     */
+
     public PublicKey generatePublic(KeySpec keySpec)
             throws InvalidKeySpecException {
         if (keySpec instanceof NiederreiterPublicKeySpec) {

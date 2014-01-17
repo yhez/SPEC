@@ -18,16 +18,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.core.elgamal.ElGamalKeyFactory;
 
-/**
- * This class implements the PrivateKey interface. It is normally instantiated
- * from SSVElGamalKeyPairGenerator. An SSVElGamal private key consists of a
- * modulus p (a prime), a generator of (Zp/Z)* the pbulic value A =
- * g<sup>a</sup> mod p and the private exponent a.
- *
- * @author Thomas Wahrenbruch
- * @author Roberto Samarone dos Santos Arajo
- * @see SSVElGamalKeyPairGenerator
- */
+
 public class SSVElGamalPrivateKey extends PrivateKey {
 
     /**

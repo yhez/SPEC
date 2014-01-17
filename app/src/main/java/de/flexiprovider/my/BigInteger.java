@@ -1608,22 +1608,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
     }
 
 
-    public BigInteger clearBit(int n) {
-        if (n < 0)
-            throw new ArithmeticException("Negative bit address");
-
-        int intNum = n >>> 5;
-        int[] result = new int[Math.max(intLength(), ((n + 1) >>> 5) + 1)];
-
-        for (int i = 0; i < result.length; i++)
-            result[result.length - i - 1] = getInt(i);
-
-        result[result.length - intNum - 1] &= ~(1 << (n & 31));
-
-        return valueOf(result);
-    }
-
-
     public int getLowestSetBit() {
         @SuppressWarnings("deprecation") int lsb = lowestSetBit - 2;
         if (lsb == -2) {  // lowestSetBit not initialized yet

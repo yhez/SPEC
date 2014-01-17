@@ -14,19 +14,7 @@ import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.util.ASN1Tools;
 
-/**
- * An Element of this class represents a Polynomial within a GFP Ring Structure.
- * <p/>
- * The Structure is defined by the modulo Function and the large "prime" p. This
- * Class has methods for multiplying, adding and reducing Polynomials.
- * <p/>
- * This Class has been developed mainly for the LMOTS Signature scheme, so the
- * available methods may not be a complete Implementation of the methods that
- * may be required or expected on Ring Arithmetic and some of the implemented
- * Methods are intended only for use of the LMOTS Signature scheme. Such as the
- * ability to create random Polynomials within this Ring Structure with a custom
- * modulo limit or Multiplication of a Polynomial with a Vector of Polynomials.
- */
+
 public class TSSPolynomial {
 
     private long[] f;
@@ -37,13 +25,6 @@ public class TSSPolynomial {
 
     private SecureRandom generator;
 
-    /**
-     * Standard Constructor for generating a new GFPPolynomial
-     *
-     * @param f    the modulo Polynomial of the Ring
-     * @param p    the modulo "prime" of the Ring
-     * @param poly the Polynomial an long array, most significant entry is right
-     */
     public TSSPolynomial(long[] f, long p, long[] poly) {
         this.f = f;
         degree = f.length - 1;
@@ -59,12 +40,6 @@ public class TSSPolynomial {
         generator = Registry.getSecureRandom();
     }
 
-    /**
-     * adds the given Polynomial to this Polynomial and returns the result
-     *
-     * @param gfp the Polynomial to be added
-     * @return the Addition of the two Polynomials
-     */
     public TSSPolynomial add(TSSPolynomial gfp) {
         if (!paramEqual(gfp)) {
             return null;

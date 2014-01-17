@@ -36,7 +36,7 @@ public class GMSSRandom {
             one[i] = 0;
         }
         // RAND <-- H(SEEDin)
-        byte[] rand = new byte[outseed.length];
+        byte[] rand;
         messDigestTree.update(outseed);
         rand = messDigestTree.digest();
 

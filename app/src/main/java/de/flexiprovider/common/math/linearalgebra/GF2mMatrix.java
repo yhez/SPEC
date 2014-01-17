@@ -235,10 +235,6 @@ public class GF2mMatrix extends Matrix {
         throw new RuntimeException("Not implemented.");
     }
 
-    public Vector leftMultiply(Vector vector) {
-        throw new RuntimeException("Not implemented.");
-    }
-
     public Vector rightMultiply(Vector vector) {
         throw new RuntimeException("Not implemented.");
     }

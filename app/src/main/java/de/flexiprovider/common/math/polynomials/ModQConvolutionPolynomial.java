@@ -569,14 +569,6 @@ public class ModQConvolutionPolynomial implements ConvolutionPolynomial {
         return result;
     }
 
-    /**
-     * Compute the product of two polynomials, given as arrays of their
-     * coefficients.
-     *
-     * @param a the first polynomial
-     * @param b the second polynomial
-     * @return a * b (newly created)
-     */
     private int[] multiply(int[] a, int[] b) {
         int[] result = new int[N];
 
@@ -593,14 +585,7 @@ public class ModQConvolutionPolynomial implements ConvolutionPolynomial {
         return result;
     }
 
-    /**
-     * Compute the extended Euclidean algorithm of this polynomial and
-     * <tt>X^N-1</tt>. Return <tt>d=gcd(this, X^N-1)</tt> and <tt>u</tt>
-     * such that <tt>this*u=d mod X^N-1</tt>.
-     *
-     * @return <tt>ModQPolynomial[] {d,u}</tt>, where
-     * <tt>d=gcd(this, X^N-1)</tt> and <tt>this*u=d mod X^N-1</tt>
-     */
+
     private ModQConvolutionPolynomial[] extGCD() {
 
         // create the unit polynomial

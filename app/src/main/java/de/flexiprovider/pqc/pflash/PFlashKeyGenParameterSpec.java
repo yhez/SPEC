@@ -4,24 +4,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.math.IntegerFunctions;
 import de.flexiprovider.common.math.codingtheory.GF2mField;
 
-/**
- * <p>
- * This class provides the specification of the parameters used by the
- * {@link PFlashKeyPairGenerator}.
- * </p>
- * <p/>
- * <b>The default values for the parameters are :</b><br/>
- * <table border="1">
- * <tr><td>degree of extension m</td><td>=</td><td>4</td></tr>
- * <tr><td>field polynomial of GF(2<sup>m</sup>)</td><td>=</td><td>X<sup>4</sup> + X + 1</td></tr>
- * <tr><td>extension degree of E/K</td><td>=</td><td>96</td></tr>
- * <tr><td>&#945</td><td>=</td><td>32</td></tr>
- * <tr><td>r</td><td>=</td><td>32</td></tr>
- * <tr><td>s</td><td>=</td><td>1</td></tr>
- * </table>
- *
- * @author Marian Hornschuch, Alexander Koller
- */
+
 public class PFlashKeyGenParameterSpec implements AlgorithmParameterSpec {
 
     /**

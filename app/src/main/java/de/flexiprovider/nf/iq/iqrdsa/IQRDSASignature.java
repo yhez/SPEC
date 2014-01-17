@@ -147,21 +147,6 @@ public abstract class IQRDSASignature extends Signature {
     }
 
     /**
-     * IQRDSA with RIPEMD160 message digest.
-     */
-    public static class RIPEMD160 extends IQRDSASignature {
-
-        /**
-         * The OID of IQRDSAwithRIPEMD160.
-         */
-        public static final String OID = "1.3.6.1.4.1.8301.3.1.1.9";
-
-        public RIPEMD160() {
-            super(new de.flexiprovider.core.md.RIPEMD160());
-        }
-    }
-
-    /**
      * Constructor. Set the message digest.
      *
      * @param md the message digest
