@@ -239,15 +239,15 @@
     <string name="private_key_loaded_from_qr">Key loaded successfully.</string>
     <string name="group_mentor_hint">Group Slogan</string>
     <string name="group_name_hint">Group Name</string>
-    <string name="group_location_for_messages_hint">Group Address</string>
+    <string name="group_location_for_messages_hint">Group Email</string>
     <string name="group_contacts">Choose group contacts</string>
     <string name="create_group">START</string>
     <string name="default_app_click_to_remove">default app\nclick to remove</string>
     <string name="file_name_group">PrivateGroup.SPEC</string>
-    <string name="connecting_to_camera">Connecting to camera</string>
-    <string name="force_nfc">force nfc</string>
-    <string name="limited_group">limit group</string>
-    <string name="group_owmer_detailes_title">owner details</string>
+    <string name="connecting_to_camera">1 second please, connecting...</string>
+    <string name="force_nfc">Force NFC</string>
+    <string name="limited_group">Limit Group Size</string>
+    <string name="group_owmer_detailes_title">Group Owner Details:</string>
     <string name="invite_not_available">invitation disabled</string>
     <string name="nfc_is_required">NFC required</string>
     <string name="invite_to_the_group">invite a friend to the group</string>
@@ -255,9 +255,9 @@
     <string name="session_words">session words:</string>
     <string name="secret_sign">secret sign:</string>
     <string name="session_status">session status:</string>
-    <string name="session_verified">session has verified</string>
-    <string name="just_added">contact just added</string>
-    <string name="sent_but_not_recieved">you sent your session, but didn\'t got it back yet</string>
+    <string name="session_verified">session has been verified.</string>
+    <string name="just_added">contact just added.</string>
+    <string name="sent_but_not_recieved">you sent your session, but didn\'t get one back yet from contact.</string>
     <string name="hide_session_words">-xxx xxx-</string>
     <string name="hide_secret_sign">-x-</string>
 
