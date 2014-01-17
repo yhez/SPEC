@@ -1090,7 +1090,8 @@ public class Main extends FragmentActivity {
                     if (a != -1) {
                         Group g = GroupDataSource.groupDataSource.findGroup(a);
                         if (g != null) {
-                            key = g.getPrivateKey();
+                            //todo clean memory
+                            key = CryptMethods.decrypt(g.getPrivateKey());
                         }
                     }
                     result = CryptMethods.decrypt((msg != null ? msg : StaticVariables.message), key);

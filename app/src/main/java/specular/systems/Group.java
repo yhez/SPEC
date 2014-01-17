@@ -53,7 +53,7 @@ public class Group {
         this.name = name;
         this.locationForMessages = locationForMessages;
         this.session = groupMentor;
-        this.privateKey=CryptMethods.decrypt(encryptedPrivateKey);
+        this.privateKey=encryptedPrivateKey;
         this.publicKey = publicKey;
         this.ownerName = ownerName;
         this.ownerEmail = ownerEmail;
@@ -95,7 +95,7 @@ public class Group {
     public Group(Activity a,Group g){
         name=g.name;
         noPrivateOnDevice=g.noPrivateOnDevice;
-        privateKey=g.privateKey;
+        privateKey=CryptMethods.encrypt(g.privateKey,CryptMethods.getPublic());
         publicKey=g.publicKey;
         session=g.session;
         ownerEmail=g.ownerEmail;
@@ -116,11 +116,13 @@ public class Group {
         } catch (Exception e) {
             strLength = s.getBytes();
         }
+        byte[] privateKey = CryptMethods.decrypt(this.privateKey);
         byte[] data = new byte[strLength.length+privateKey.length+1];
         int a;
         for(a=0;a<strLength.length;a++){
             data[a]=strLength[a];
         }
+        //todo clean memory
         for(int b=0;b<privateKey.length;b++,a++){
             data[a]=privateKey[b];
         }
