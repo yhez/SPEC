@@ -231,7 +231,7 @@ public abstract class TSS extends Signature {
     public void initSign(PrivateKey privKey,
                          de.flexiprovider.api.SecureRandom random)
             throws InvalidKeyException {
-        if (privKey.getClass().equals(TSSPrivateKey.class)) {
+        if (((Object)privKey).getClass().equals(TSSPrivateKey.class)) {
             this.privKey = (TSSPrivateKey) privKey;
         } else {
             throw new InvalidKeyException();
@@ -239,7 +239,7 @@ public abstract class TSS extends Signature {
     }
 
     public void initVerify(PublicKey pubKey) throws InvalidKeyException {
-        if (pubKey.getClass().equals(TSSPublicKey.class)) {
+        if (((Object)pubKey).getClass().equals(TSSPublicKey.class)) {
             this.pubKey = (TSSPublicKey) pubKey;
         } else {
             throw new InvalidKeyException();

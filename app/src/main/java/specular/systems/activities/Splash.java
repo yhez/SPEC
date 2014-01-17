@@ -44,7 +44,7 @@ public class Splash extends Activity {
         public void run() {
             synchronized (this) {
                 try {
-                    wait(TIME_FOR_SPLASH);
+                    ((Object)this).wait(TIME_FOR_SPLASH);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

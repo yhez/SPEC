@@ -7,11 +7,7 @@ public abstract class GridSampler {
   private static GridSampler gridSampler = new DefaultGridSampler();
 
 
-  public static void setGridSampler(GridSampler newGridSampler) {
-    gridSampler = newGridSampler;
-  }
-
-  public static GridSampler getInstance() {
+    public static GridSampler getInstance() {
     return gridSampler;
   }
 

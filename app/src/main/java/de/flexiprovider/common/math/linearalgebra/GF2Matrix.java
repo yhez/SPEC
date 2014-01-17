@@ -370,13 +370,6 @@ public class GF2Matrix extends Matrix {
     }
 
     /**
-     * @return the array keeping the matrix elements
-     */
-    public int[][] getIntArray() {
-        return matrix;
-    }
-
-    /**
      * @return the length of each array representing a row of this matrix
      */
     public int getLength() {

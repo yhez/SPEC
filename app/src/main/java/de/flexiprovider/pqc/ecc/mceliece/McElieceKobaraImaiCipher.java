@@ -17,50 +17,7 @@ import de.flexiprovider.common.math.linearalgebra.GF2Vector;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.pqc.ecc.Conversions;
 
-/**
- * This class implements the Kobara/Imai conversion of the McEliecePKCS. This is
- * a conversion of the McEliecePKCS which is CCA2-secure. For details, see D.
- * Engelbert, R. Overbeck, A. Schmidt, "A summary of the development of the
- * McEliece Cryptosystem", technical report.
- * <p/>
- * This class extends the <a href="javax.crypto.CipherSpi">CipherSpi</a> class.
- * <p/>
- * The Kobara/Imai conversion can be used as follows:
- * <p/>
- * To encrypt a message, the following steps have to be performed:
- * <p/>
- * <pre>
- * // setup
- * KeyPairGenerator kpg = KeyPairGenerator.getInstance(&quot;McEliece&quot;, &quot;FlexiPQC&quot;);
- * KeyPair keys = kpg.generateKeyPair();
- * McElieceCCA2PublicKey pubK = (McElieceCCA2PublicKey) keys.getPublic();
- * McElieceCCA2PrivateKey privK = (McElieceCCA2PrivateKey) keys.getPrivate();
- * SecureRandom sr = Registry.getSecureRandom();
- * Cipher cipher = Cipher.getInstance(&quot;McElieceKobaraImaiConversion&quot;);
- *
- * // the string to encrypt and decrypt
- * String m = &quot;This is a test for the Fujisaki conversion of the McEliecePKCS.&quot;;
- * byte[] mBytes = m.getBytes();
- *
- * // initialize cipher in encrypt mode
- * cipher.init(Cipher.ENCRYPT_MODE, pubK, sr);
- *
- * // encrypt
- * byte[] cBytes = cipher.doFinal(mBytes);
- * </pre>
- * <p/>
- * To decrypt, the following steps have to be performed (using setup from
- * above):
- * <p/>
- * <pre>
- * // initialize cipher in decrypt mode
- * cipher.init(Cipher.DECRYPT_MODE, privK);
- *
- * // decrypt
- * byte[] decBytes = cipher.doFinal(cBytes);
- * String newM = new String(decBytes);
- * </pre>
- */
+
 public class McElieceKobaraImaiCipher extends AsymmetricHybridCipher {
 
     /**

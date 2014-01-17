@@ -155,7 +155,7 @@ public final class GoppaCode {
         GF2Matrix hp, sInv;
         GF2Matrix s = null;
         Permutation p;
-        boolean found = false;
+        boolean found;
 
         do {
             p = new Permutation(n, sr);

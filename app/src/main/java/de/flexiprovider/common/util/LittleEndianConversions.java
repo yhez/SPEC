@@ -77,7 +77,7 @@ public final class LittleEndianConversions {
         result |= ((long) input[inOff++] & 0xff) << 32;
         result |= ((long) input[inOff++] & 0xff) << 40;
         result |= ((long) input[inOff++] & 0xff) << 48;
-        result |= ((long) input[inOff++] & 0xff) << 56;
+        result |= ((long) input[inOff] & 0xff) << 56;
         return result;
     }
 
@@ -107,7 +107,7 @@ public final class LittleEndianConversions {
         output[outOff++] = (byte) value;
         output[outOff++] = (byte) (value >>> 8);
         output[outOff++] = (byte) (value >>> 16);
-        output[outOff++] = (byte) (value >>> 24);
+        output[outOff] = (byte) (value >>> 24);
     }
 
     /**

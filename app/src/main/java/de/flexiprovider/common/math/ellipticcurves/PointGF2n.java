@@ -8,8 +8,6 @@
  */
 package de.flexiprovider.common.math.ellipticcurves;
 
-import java.util.Random;
-
 import de.flexiprovider.common.exceptions.DifferentCurvesException;
 import de.flexiprovider.common.exceptions.DifferentFieldsException;
 import de.flexiprovider.common.exceptions.InvalidFormatException;
@@ -1034,13 +1032,6 @@ public class PointGF2n extends Point {
             return GF2nONBElement.ONE((GF2nONBField) gf2n);
         }
         return GF2nPolynomialElement.ONE((GF2nPolynomialField) gf2n);
-    }
-
-    private GF2nElement createRandomGF2nElement(GF2nField gf2n, Random rand) {
-        if (isGF2nONBField) {
-            return new GF2nONBElement((GF2nONBField) gf2n, rand);
-        }
-        return new GF2nPolynomialElement((GF2nPolynomialField) gf2n, rand);
     }
 
     private GF2nElement createGF2nElement(byte[] value) {

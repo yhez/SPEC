@@ -204,13 +204,6 @@ public abstract class IQRDSASignature extends Signature {
         this.random = prng != null ? prng : Registry.getSecureRandom();
     }
 
-    /**
-     * Initialized engine for verification process
-     *
-     * @param key public key to be used for verification
-     * @throws InvalidKeyException if the key is not an instance of {@link IQRDSAPublicKey}.
-     * @see #verify(byte [])
-     */
     public void initVerify(PublicKey key) throws InvalidKeyException {
         md.reset();
 
@@ -245,16 +238,6 @@ public abstract class IQRDSASignature extends Signature {
      */
     public void update(byte[] b, int off, int len) {
         md.update(b, off, len > 0 ? len : 0);
-    }
-
-    /**
-     * Calculates the digest value for a given octet string
-     *
-     * @param m array containing the data to be hashed
-     * @return the digest value represented as an octet string
-     */
-    protected byte[] makeDigest(byte[] m) {
-        return md.digest(m);
     }
 
     /**

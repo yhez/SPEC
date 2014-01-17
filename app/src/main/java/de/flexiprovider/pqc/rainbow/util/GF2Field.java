@@ -1,19 +1,5 @@
 package de.flexiprovider.pqc.rainbow.util;
 
-/**
- * This class provides the basic operations like addition, multiplication and
- * finding the multiplicative inverse of an element in GF2^8.
- * <p/>
- * The operations are implemented using the irreducible polynomial
- * 1+x^2+x^3+x^6+x^8 ( 1 0100 1101 = 0x14d )
- * <p/>
- * This class makes use of lookup tables(exps and logs) for implementing the
- * operations in order to increase the efficiency of Rainbow.
- *
- * @author Patrick Neugebauer
- * @author Marius Senftleben
- * @author Tsvetoslava Vateva
- */
 public class GF2Field {
 
     public static final int MASK = 0xff;
@@ -65,13 +51,6 @@ public class GF2Field {
             180, 11, 127, 81, 21, 67, 145, 16, 113, 187, 238, 191, 133, 200,
             161};
 
-    /**
-     * This function calculates the sum of two elements as an operation in GF2^8
-     *
-     * @param x the first element that is to be added
-     * @param y the second element that should be add
-     * @return the sum of the two elements x and y in GF2^8
-     */
     public static short addElem(short x, short y) {
         return (short) (x ^ y);
     }

@@ -57,7 +57,7 @@ public class ECPrivateKey extends PrivateKey {
         return "EC";
     }
     public String toString() {
-        return "s = " + mS.toString(16) + "\n" + mParams.toString();
+        return "s = " + mS.toString(16) + "\n" + ((Object)mParams).toString();
     }
     public CurveParams getParams() {
         return mParams;

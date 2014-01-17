@@ -188,7 +188,7 @@ public abstract class LMOTSSignature extends Signature {
 
     public void initSign(PrivateKey privKey, SecureRandom random)
             throws InvalidKeyException {
-        if (privKey.getClass().equals(LMOTSPrivateKey.class)) {
+        if (((Object)privKey).getClass().equals(LMOTSPrivateKey.class)) {
             this.privKey = (LMOTSPrivateKey) privKey;
         } else {
             throw new InvalidKeyException();
@@ -197,7 +197,7 @@ public abstract class LMOTSSignature extends Signature {
     }
 
     public void initVerify(PublicKey pubKey) throws InvalidKeyException {
-        if (pubKey.getClass().equals(LMOTSPublicKey.class)) {
+        if (((Object)pubKey).getClass().equals(LMOTSPublicKey.class)) {
             this.pubKey = (LMOTSPublicKey) pubKey;
             hFunc = ((LMOTSPublicKey) pubKey).getHashFunction();
         } else {

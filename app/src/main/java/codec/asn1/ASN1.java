@@ -16,8 +16,6 @@ public final class ASN1 {
     public static final int TAG_PRINTABLESTRING = 19;
     public static final int TAG_T61STRING = 20;
     public static final int TAG_IA5STRING = 22;
-    public static final int TAG_UTCTIME = 23;
-    public static final int TAG_GENERALIZEDTIME = 24;
     public static final int TAG_VISIBLESTRING = 26;
     public static final int TAG_MASK = 0x1f;
     public static final int TAG_LONGFORM = 0x1f;

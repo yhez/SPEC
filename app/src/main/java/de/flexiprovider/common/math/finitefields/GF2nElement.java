@@ -1,29 +1,9 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universit�t Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- */
 package de.flexiprovider.common.math.finitefields;
 
 import de.flexiprovider.common.exceptions.DifferentFieldsException;
 import de.flexiprovider.common.exceptions.NoSolutionException;
 
-/**
- * This abstract class implements an element of the finite field <i>GF(2)<sup>n
- * </sup></i> in either <i>optimal normal basis</i> representation (<i>ONB</i>)
- * or in <i>polynomial</i> representation. It is extended by the classes <a
- * href = GF2nONBElement.html><tt> GF2nONBElement</tt></a> and <a href =
- * GF2nPolynomialElement.html> <tt>GF2nPolynomialElement</tt> </a>.
- *
- * @author Birgit Henhapl
- * @author Martin D�ring
- * @author Oliver Seiler
- * @see GF2nPolynomialElement
- * @see GF2nONBElement
- * @see GF2nONBField
- */
+
 public abstract class GF2nElement implements GFElement {
 
     // /////////////////////////////////////////////////////////////////////

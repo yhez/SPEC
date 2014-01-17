@@ -17,22 +17,8 @@ abstract public class ASN1Time extends ASN1VisibleString {
     protected Date date_;
 
 
-    public Date getDate() {
-        return (Date) date_.clone();
-    }
-
-
     public long getTime() {
         return date_.getTime();
-    }
-
-    public void setDate(Date date) {
-        if (date == null) {
-            throw new NullPointerException("date");
-        }
-        date_ = (Date) date.clone();
-
-        setString0(toString(date_));
     }
 
 

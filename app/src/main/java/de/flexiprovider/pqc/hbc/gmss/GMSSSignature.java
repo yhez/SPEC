@@ -20,55 +20,6 @@ import de.flexiprovider.core.CoreRegistry;
 
 public class GMSSSignature extends Signature {
 
-    public static class GMSSwithSHA1 extends GMSSSignature {
-
-        public static final String OID = GMSSKeyPairGenerator.GMSSwithSHA1.OID;
-
-        public GMSSwithSHA1() {
-            super("SHA1", "FlexiCore");
-        }
-    }
-
-    public static class GMSSwithSHA224 extends GMSSSignature {
-
-
-        public static final String OID = GMSSKeyPairGenerator.GMSSwithSHA224.OID;
-
-        public GMSSwithSHA224() {
-            super("SHA224", "FlexiCore");
-        }
-    }
-
-    public static class GMSSwithSHA256 extends GMSSSignature {
-
-        public static final String OID = GMSSKeyPairGenerator.GMSSwithSHA256.OID;
-
-        public GMSSwithSHA256() {
-            super("SHA256", "FlexiCore");
-        }
-    }
-
-    public static class GMSSwithSHA384 extends GMSSSignature {
-
-
-        public static final String OID = GMSSKeyPairGenerator.GMSSwithSHA384.OID;
-
-
-        public GMSSwithSHA384() {
-            super("SHA384", "FlexiCore");
-        }
-    }
-
-    public static class GMSSwithSHA512 extends GMSSSignature {
-
-
-        public static final String OID = GMSSKeyPairGenerator.GMSSwithSHA512.OID;
-
-        public GMSSwithSHA512() {
-            super("SHA512", "FlexiCore");
-        }
-    }
-
 
     private GMSSUtilities gmssUtil = new GMSSUtilities();
 

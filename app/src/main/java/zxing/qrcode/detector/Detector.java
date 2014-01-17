@@ -27,14 +27,7 @@ public class Detector {
     return image;
   }
 
-    /**
-   * <p>Detects a QR Code in an image, simply.</p>
-   *
-   * @param hints optional hints to detector
-   * @return {@link zxing.NotFoundException} encapsulating results of detecting a QR Code
-   * @throws zxing.NotFoundException if QR Code cannot be found
-   * @throws FormatException if a QR Code cannot be decoded
-   */
+
   public final DetectorResult detect(Map<DecodeHintType,?> hints) throws NotFoundException, FormatException {
 
     resultPointCallback = hints == null ? null :

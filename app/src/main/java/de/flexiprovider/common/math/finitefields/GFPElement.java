@@ -11,15 +11,6 @@ package de.flexiprovider.common.math.finitefields;
 import de.flexiprovider.common.exceptions.DifferentFieldsException;
 import de.flexiprovider.common.math.FlexiBigInt;
 
-/**
- * This class implements an element of the finite field GF(p), where p is a
- * large prime.
- *
- * @author Birgit Henhapl
- * @author Martin D�ring
- * @see GF2nElement
- * @see GFPElement
- */
 public class GFPElement implements GFElement {
 
     private FlexiBigInt mValue;

@@ -36,7 +36,7 @@ public class TurnNFCOn extends DialogFragment {
                         while (Main.saveKeys.isAlive())
                             synchronized (this) {
                                 try {
-                                    wait(100);
+                                    ((Object)this).wait(100);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }

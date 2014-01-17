@@ -14,11 +14,6 @@ public class GMSSRandom {
      */
     private MessageDigest messDigestTree;
 
-    /**
-     * Constructor
-     *
-     * @param messDigestTree
-     */
     public GMSSRandom(MessageDigest messDigestTree) {
 
         this.messDigestTree = messDigestTree;

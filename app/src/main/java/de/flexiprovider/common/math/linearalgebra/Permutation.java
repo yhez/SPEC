@@ -144,23 +144,6 @@ public class Permutation {
     }
 
     /**
-     * Compute the product of this permutation and another permutation.
-     *
-     * @param p the other permutation
-     * @return <tt>this * p</tt>
-     */
-    public Permutation rightMultiply(Permutation p) {
-        if (p.perm.length != perm.length) {
-            throw new IllegalArgumentException("length mismatch");
-        }
-        Permutation result = new Permutation(perm.length);
-        for (int i = perm.length - 1; i >= 0; i--) {
-            result.perm[i] = perm[p.perm[i]];
-        }
-        return result;
-    }
-
-    /**
      * checks if given object is equal to this permutation.
      * <p/>
      * The method returns false whenever the given object is not permutation.

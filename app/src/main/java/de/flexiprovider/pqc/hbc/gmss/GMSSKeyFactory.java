@@ -130,24 +130,7 @@ public class GMSSKeyFactory extends KeyFactory {
         throw new InvalidKeySpecException("Unknown KeySpec type.");
     }
 
-    /**
-     * Converts a given key into a key specification, if possible. Currently the
-     * following specs are supported:
-     * <ul>
-     * <li> for GMSSPublicKey: X509EncodedKeySpec, GMSSPublicKeySpec
-     * <li> for GMSSPrivateKey: PKCS8EncodedKeySpec, GMSSPrivateKeySpec
-     * </ul>
-     * <p/>
-     *
-     * @param key  the key
-     * @param spec the class of which type the returned class should be
-     * @return The specification of the GMSS key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the specification is not supported
-     * @see de.flexiprovider.pqc.hbc.gmss.GMSSPrivateKey
-     * @see de.flexiprovider.pqc.hbc.gmss.GMSSPrivateKeySpec
-     * @see de.flexiprovider.pqc.hbc.gmss.GMSSPublicKey
-     * @see de.flexiprovider.pqc.hbc.gmss.GMSSPublicKeySpec
-     */
+
     public KeySpec getKeySpec(Key key, Class spec)
             throws InvalidKeySpecException {
         if (key instanceof GMSSPrivateKey) {

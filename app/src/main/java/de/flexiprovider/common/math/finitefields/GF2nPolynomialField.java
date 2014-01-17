@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.common.math.finitefields;
 
 import java.util.Random;
@@ -14,16 +6,6 @@ import java.util.Vector;
 import de.flexiprovider.common.exceptions.GFException;
 import de.flexiprovider.common.exceptions.PolynomialIsNotIrreducibleException;
 
-/**
- * This class implements the abstract class <tt>GF2nField</tt> for polynomial
- * representation. It computes the field polynomial and the squaring matrix.
- * GF2nField is used by GF2nPolynomialElement which implements the elements of
- * this field.
- *
- * @author Oliver Seiler
- * @see GF2nField
- * @see GF2nPolynomialElement
- */
 public class GF2nPolynomialField extends GF2nField {
 
     /**

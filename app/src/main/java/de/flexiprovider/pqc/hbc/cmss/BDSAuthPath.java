@@ -678,30 +678,7 @@ class Treehash {
         return result;
     }
 
-    /**
-     * Return the data to encode the treehash instance in SubjectPublicKeyInfo
-     * structure.
-     * <p/>
-     * The ASN.1 definition of treehash
-     * <p/>
-     * <pre>
-     *    TREEHASH ::= SEQUENCE {
-     *      node                          NODE                        -- node stored by this instance
-     *      seed                          OCTET STRING                -- seed to compute next leaf
-     *      currentHeight                 INTEGER                     -- height of lowest tailnode stored by this instance
-     *      targetHeight                  INTEGER                     -- height of authentication node computed by this instance
-     *      nodesOnStack                  INTEGER                     -- number of nodes stored on stack by this instance
-     *    }
-     *
-     *    NODE ::= SEQUENCE {
-     *      value                         OCTET STRING                -- node value
-     *      height                        INTEGER                     -- height of node in tree
-     *    }
-     *
-     * </pre>
-     *
-     * @return the keyData to encode in the SubjectPublicKeyInfo structure
-     */
+
     public ASN1Sequence getASN1() {
         ASN1Sequence treehashData = new ASN1Sequence();
 
@@ -815,27 +792,6 @@ class Stack {
         }
         return result;
     }
-
-    /**
-     * Return the data to encode the stack in SubjectPublicKeyInfo structure.
-     * <p/>
-     * The ASN.1 definition of STACK
-     * <p/>
-     * <pre>
-     *    STACK ::= SEQUENCE {
-     *      tailnodes                     SEQUENCE OF NODE            -- tailnodes
-     *      index                         INTEGER                     -- index of top node on stack
-     *    }
-     *
-     *    NODE ::= SEQUENCE {
-     *      value                         OCTET STRING                -- node value
-     *      height                        INTEGER                     -- height of node in tree
-     *    }
-     *
-     * </pre>
-     *
-     * @return the keyData to encode in the SubjectPublicKeyInfo structure
-     */
     public ASN1Sequence getASN1() {
 
         ASN1Sequence stackData = new ASN1Sequence();

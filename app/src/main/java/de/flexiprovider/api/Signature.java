@@ -189,68 +189,22 @@ public abstract class Signature extends java.security.SignatureSpi {
     public abstract void update(byte[] input, int inOff, int inLen)
             throws SignatureException;
 
-    /**
-     * Return the signature of all the data updated so far.
-     *
-     * @return the signature
-     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly.
-     */
     public abstract byte[] sign() throws SignatureException;
 
-    /**
-     * Update the data to be signed and return the signature of all the data
-     * updated so far.
-     *
-     * @param input the data byte array
-     * @return the signature
-     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly.
-     */
+
     public final byte[] sign(byte[] input) throws SignatureException {
         update(input);
         return sign();
     }
-
-    /**
-     * Verify the passed-in signature of the specified message.
-     *
-     * @param signature the signature
-     * @return <tt>true</tt> if the signature is valid, <tt>false</tt>
-     * otherwise.
-     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly or the
-     *                                                            passed-in signature is improperly encoded or of the wrong
-     *                                                            type.
-     */
     public abstract boolean verify(byte[] signature) throws SignatureException;
 
-    /**
-     * Update the data to be verified and verify the passed-in signature.
-     *
-     * @param input     the data byte array
-     * @param signature the signature
-     * @return <tt>true</tt> if the signature is valid, <tt>false</tt>
-     * otherwise.
-     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly or the
-     *                                                            passed-in signature is improperly encoded or of the wrong
-     *                                                            type.
-     */
     public final boolean verify(byte[] input, byte[] signature)
             throws SignatureException {
         update(input);
         return verify(signature);
     }
 
-    /**
-     * Verify the passed-in signature.
-     *
-     * @param signature the signature
-     * @param sigOff    the offset where the signature starts
-     * @param sigLen    the length of the signature
-     * @return <tt>true</tt> if the signature is valid, <tt>false</tt>
-     * otherwise.
-     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly or the
-     *                                                            passed-in signature is improperly encoded or of the wrong
-     *                                                            type.
-     */
+
     public final boolean verify(byte[] signature, int sigOff, int sigLen)
             throws SignatureException {
         byte[] sig = new byte[sigLen];
@@ -258,19 +212,6 @@ public abstract class Signature extends java.security.SignatureSpi {
         return verify(sig);
     }
 
-    /**
-     * Update the data to be verified and verify the passed-in signature.
-     *
-     * @param input     the data byte array
-     * @param signature the signature
-     * @param sigOff    the offset where the signature starts
-     * @param sigLen    the length of the signature
-     * @return <tt>true</tt> if the signature is valid, <tt>false</tt>
-     * otherwise.
-     * @throws de.flexiprovider.api.exceptions.SignatureException if the engine is not initialized properly or the
-     *                                                            passed-in signature is improperly encoded or of the wrong
-     *                                                            type.
-     */
     public final boolean verify(byte[] input, byte[] signature, int sigOff,
                                 int sigLen) throws SignatureException {
         update(input);
