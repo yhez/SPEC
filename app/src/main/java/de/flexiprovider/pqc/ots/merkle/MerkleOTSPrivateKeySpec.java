@@ -2,14 +2,7 @@ package de.flexiprovider.pqc.ots.merkle;
 
 import de.flexiprovider.api.keys.KeySpec;
 
-/**
- * This class provides a specification for a MerkleOTS key.
- *
- * @author Klintsevich Elena
- * @see de.flexiprovider.pqc.ots.merkle.MerkleOTSPrivateKey
- * @see de.flexiprovider.pqc.ots.merkle.MerkleOTSPublicKey
- * @see de.flexiprovider.api.keys.KeySpec
- */
+
 public class MerkleOTSPrivateKeySpec implements KeySpec {
 
     // the OID of the algorithm

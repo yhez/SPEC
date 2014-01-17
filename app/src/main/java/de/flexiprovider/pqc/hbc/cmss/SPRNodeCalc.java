@@ -17,16 +17,7 @@ public class SPRNodeCalc implements NodeCalc {
     private byte[][][] masks;
     private int otsMdSize;
 
-    /**
-     * Constructs a new {@link SPRNodeCalc} object, that uses the given
-     * {@link de.flexiprovider.api.MessageDigest} and <code>masks</code> to calculate the nodes.
-     * The size of the {@link de.flexiprovider.api.MessageDigest}, that the OTS uses, is necessary
-     * to calculate the leafs properly.
-     *
-     * @param md
-     * @param masks
-     * @param otsMdSize
-     */
+
     public SPRNodeCalc(MessageDigest md, byte[][][] masks, int otsMdSize) {
         this.md = md;
         this.masks = masks;

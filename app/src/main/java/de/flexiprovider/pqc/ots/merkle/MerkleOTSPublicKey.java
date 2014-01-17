@@ -10,12 +10,7 @@ import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.common.util.ByteUtils;
 
-/**
- * This class implements the MerkleOTS public key.
- *
- * @author Elena Klintsevich
- * @see MerkleOTSKeyPairGenerator
- */
+
 public class MerkleOTSPublicKey extends PublicKey {
 
     // the OID of the algorithm
@@ -24,26 +19,11 @@ public class MerkleOTSPublicKey extends PublicKey {
     // the key bytes
     private byte[][] keyBytes;
 
-    /**
-     * Construct a new MerkleOTS public key.
-     *
-     * @param oid      the OID of the algorithm
-     * @param keyBytes the key bytes
-     */
     protected MerkleOTSPublicKey(String oid, byte[][] keyBytes) {
         this.oid = oid;
         this.keyBytes = keyBytes;
     }
 
-    /**
-     * Construct a new MerkleOTS public key from the given key specification.
-     *
-     * @param keySpec a {@link MerkleOTSPublicKeySpec}
-     */
-    protected MerkleOTSPublicKey(MerkleOTSPublicKeySpec keySpec) {
-        this(keySpec.getOIDString(), keySpec.getKeyBytes());
-
-    }
 
     /**
      * @return the OID of the algorithm

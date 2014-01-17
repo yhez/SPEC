@@ -3,15 +3,6 @@ package de.flexiprovider.pqc.rainbow;
 import de.flexiprovider.api.keys.KeySpec;
 import de.flexiprovider.pqc.rainbow.util.RainbowUtil;
 
-/**
- * This class provides a specification for a RainbowSignature private key.
- *
- * @author Patrick Neugebauer
- * @author Marius Senftleben
- * @author Tsvetoslava Vateva
- * @see de.flexiprovider.pqc.rainbow.RainbowPrivateKey
- * @see de.flexiprovider.api.keys.KeySpec
- */
 public class RainbowPrivateKeySpec implements KeySpec {
 
     // the OID of the algorithm

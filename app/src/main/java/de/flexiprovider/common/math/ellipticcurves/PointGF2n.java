@@ -658,50 +658,6 @@ public class PointGF2n extends Point {
     }
 
     /**
-     * Adds in affine coordinates to this point the point <code>other</code>.
-     *
-     * @param other point to add to this point
-     * @return <code>this</code> + <code>other</code> in affine coordinates
-     * @throws DifferentCurvesException when <code>other</code> is defined over another
-     *                                  curve
-     */
-    public Point addAffine(Point other) {
-        PointGF2n p = (PointGF2n) this.getAffin();
-        PointGF2n o = (PointGF2n) other.getAffin();
-
-        if (isZero()) {
-            return new PointGF2n(o);
-        }
-
-        if (o.isZero()) {
-            return new PointGF2n(p);
-        }
-
-        GF2nElement pX = p.mX;
-        GF2nElement pY = p.mY;
-        GF2nElement oX = o.mX;
-        GF2nElement oY = o.mY;
-
-        // P == other -> double(P)
-        if ((pX.equals(oX)) && (pY.equals(oY))) {
-            return p.multiplyBy2Affine();
-        }
-
-        GF2nElement tmp = (GF2nElement) pY.add(oY);
-        GF2nElement lambda = (GF2nElement) pX.add(oX).invert();
-        lambda = (GF2nElement) lambda.multiply(tmp);
-
-        GF2nElement x = (GF2nElement) lambda.square().add(lambda);
-        x = (GF2nElement) x.add(pX).add(oX)
-                .add(mE.getA());
-
-        GF2nElement y = (GF2nElement) pX.add(x).multiply(lambda);
-        y = (GF2nElement) y.add(x).add(pY);
-
-        return new PointGF2n(x, y, (EllipticCurveGF2n) mE);
-    }
-
-    /**
      * Doubles this point. <br>
      * input : <tt>(X<sub>1</sub>, Y<sub>1</sub>, Z<sub>1</sub>)</tt><br>
      * output: <tt>2*(X<sub>1</sub>, Y<sub>1</sub>, Z<sub>1</sub>)

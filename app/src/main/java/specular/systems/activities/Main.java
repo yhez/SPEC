@@ -821,6 +821,8 @@ public class Main extends FragmentActivity {
                 } else {
                     if (GroupDataSource.fullListG == null || GroupDataSource.fullListG.size() == 0) {
                         mi.setVisible(false);
+                    }else if(ContactsDataSource.fullList==null||ContactsDataSource.fullList.size()==0){
+                        mi3.setVisible(false);
                     } else {
                         if (tv != null && tv.getText().toString().length() != 0) {
                             if (findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).getVisibility() == View.GONE) {
@@ -1139,7 +1141,7 @@ public class Main extends FragmentActivity {
                 public void run() {
                     synchronized (this) {
                         try {
-                            wait(2000);
+                            ((Object)this).wait(2000);
                             exit = false;
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -1483,7 +1485,7 @@ public class Main extends FragmentActivity {
                         hndl.sendEmptyMessage(PROGRESS);
                         synchronized (this) {
                             try {
-                                wait(10);
+                                ((Object)this).wait(10);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }

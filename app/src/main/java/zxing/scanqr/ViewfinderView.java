@@ -9,12 +9,11 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
-import zxing.ResultPoint;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import specular.systems.R;
+import zxing.ResultPoint;
 import zxing.scanqr.camera.CameraManager;
 
 final class ViewfinderView extends View {

@@ -22,14 +22,6 @@ public class NoSuchBasisException extends GFException {
     private static final String diagnostic = "This extension field does not have a normal basis";
 
     /**
-     * Default constructor. Calls the parent-constructor with the message "This
-     * extension field does not have a normal basis"
-     */
-    public NoSuchBasisException() {
-        super(diagnostic);
-    }
-
-    /**
      * Calls the parent-constructor with the message "This extension field does
      * not have a normal basis: <em>detail</em>"
      *

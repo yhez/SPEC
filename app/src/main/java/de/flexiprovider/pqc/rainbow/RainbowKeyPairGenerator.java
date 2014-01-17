@@ -15,7 +15,6 @@ public class RainbowKeyPairGenerator extends KeyPairGenerator {
 
     private boolean initialized = false;
     private SecureRandom sr;
-    private RainbowParameterSpec rainbowParams;
 
     private short[][] A1; // matrix of the lin. affine map L1(n-v1 x n-v1 matrix)
     private short[][] A1inv; // inverted A1
@@ -62,10 +61,11 @@ public class RainbowKeyPairGenerator extends KeyPairGenerator {
             throws InvalidAlgorithmParameterException {
         /* params */
 
+        RainbowParameterSpec rainbowParams1 = null;
         if (params == null) {
-            this.rainbowParams = new RainbowParameterSpec();
+            RainbowParameterSpec rainbowParams = new RainbowParameterSpec();
         } else if (params instanceof RainbowParameterSpec) {
-            this.rainbowParams = (RainbowParameterSpec) params;
+            rainbowParams1 = (RainbowParameterSpec) params;
         } else {
             throw new InvalidAlgorithmParameterException("unsupported type");
         }
@@ -74,8 +74,8 @@ public class RainbowKeyPairGenerator extends KeyPairGenerator {
         this.sr = (random == null) ? Registry.getSecureRandom() : random;
 
 		/* unmarshalling: */
-        this.vi = this.rainbowParams.getVi();
-        this.numOfLayers = this.rainbowParams.getNumOfLayers();
+        this.vi = rainbowParams1.getVi();
+        this.numOfLayers = rainbowParams1.getNumOfLayers();
 
         this.initialized = true;
     }

@@ -182,15 +182,6 @@ public class WinternitzOTS implements OTS {
         return true;
     }
 
-    /**
-     * split a binary string into 'num' blocks with length 'bitLength' and
-     * interpret each block as an integer.
-     *
-     * @param sb   the binary string
-     * @param num  number of blocks
-     * @param step the length of each block
-     * @return an array of integers
-     */
     private int[] parseBinaryString(BitSet s, int bitLength) {
         int block = bitLength % w, num = bitLength / w;
 

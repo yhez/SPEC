@@ -16,61 +16,14 @@ import de.flexiprovider.common.math.polynomials.GFP32Polynomial;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.common.util.StringUtils;
 
-/**
- * This Class is used for generating and verifying Signatures according to the
- * LMOTS Signature Scheme defined in the Paper "Asymptotically Efficient
- * Lattice-Based Digital Signatures" by Vadim Lyubashevsky and Daniele
- * Micciancio.
- * <p/>
- * See Page 10 and 11 of the Paper for the algorithm step by step.
- */
 public abstract class LMOTSSignature extends Signature {
 
-    /**
-     * LMOTS Signature with RIPEMD128
-     */
-    public static class RIPEMD128 extends LMOTSSignature {
-        /**
-         * Constructor.
-         */
-        public RIPEMD128() {
-            super(new de.flexiprovider.core.md.RIPEMD128());
-        }
-    }
-
-    /**
-     * LMOTS Signature with RIPEMD160
-     */
     public static class RIPEMD160 extends LMOTSSignature {
         /**
          * Constructor.
          */
         public RIPEMD160() {
             super(new de.flexiprovider.core.md.RIPEMD160());
-        }
-    }
-
-    /**
-     * LMOTS Signature with RIPEMD256
-     */
-    public static class RIPEMD256 extends LMOTSSignature {
-        /**
-         * Constructor.
-         */
-        public RIPEMD256() {
-            super(new de.flexiprovider.core.md.RIPEMD256());
-        }
-    }
-
-    /**
-     * LMOTS Signature with RIPEMD320
-     */
-    public static class RIPEMD320 extends LMOTSSignature {
-        /**
-         * Constructor.
-         */
-        public RIPEMD320() {
-            super(new de.flexiprovider.core.md.RIPEMD320());
         }
     }
 
@@ -232,13 +185,7 @@ public abstract class LMOTSSignature extends Signature {
         return hFunc.calculatHash(sig);
     }
 
-    /**
-     * Initialize the signature algorithm for signing a message.
-     *
-     * @param privKey the private key of the signer
-     * @param random  a source of randomness (not used)
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the key is not an instance of {@link LMOTSPrivateKey}.
-     */
+
     public void initSign(PrivateKey privKey, SecureRandom random)
             throws InvalidKeyException {
         if (privKey.getClass().equals(LMOTSPrivateKey.class)) {

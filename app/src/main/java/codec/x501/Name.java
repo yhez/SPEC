@@ -100,8 +100,6 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
 
     private String name_;
 
-    private String rname_;
-
     List tmp_;
     public Name() {
         super(8);
@@ -113,15 +111,6 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         this(rfc2253String, -1);
     }
 
-    /**
-     * special constructor, that overrides the global EncodingType. To use, if
-     * during the runtime mixed encodingtypes are needed.
-     *
-     * @param rfc2253String String of RFC2253 representation.
-     * @param encType       The encoding type for strings. If <code>-1</code>, the
-     *                      default encoding is used.
-     * @throws BadNameException
-     */
     public Name(String rfc2253String, int encType) throws BadNameException {
         super(8);
 
@@ -136,9 +125,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
 
         initMaps();
 
-        if (encType == -1) {
-            int currentEncoding_ = defaultEncoding_;
-        } else {
+        if (!(encType == -1)){
             if (encType != UTF8_ENCODING && encType != T61_ENCODING
                     && encType != PRINTABLE_ENCODING && encType != IA5_ENCODING) {
                 throw new BadNameException("Unknown EncodingType: " + encType);

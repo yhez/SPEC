@@ -83,19 +83,7 @@ public final class PerspectiveTransform {
     }
   }
 
-  /** Convenience method, not optimized for performance. */
-  public void transformPoints(float[] xValues, float[] yValues) {
-    int n = xValues.length;
-    for (int i = 0; i < n; i ++) {
-      float x = xValues[i];
-      float y = yValues[i];
-      float denominator = a13 * x + a23 * y + a33;
-      xValues[i] = (a11 * x + a21 * y + a31) / denominator;
-      yValues[i] = (a12 * x + a22 * y + a32) / denominator;
-    }
-  }
-
-  public static PerspectiveTransform squareToQuadrilateral(float x0, float y0,
+    public static PerspectiveTransform squareToQuadrilateral(float x0, float y0,
                                                            float x1, float y1,
                                                            float x2, float y2,
                                                            float x3, float y3) {

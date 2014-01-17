@@ -16,26 +16,10 @@ public class MeRSAPrivateKey extends RSAPrivateCrtKey {
      */
     private FlexiBigInt k;
 
-    /**
-     * The number e<sup><font size="-2">-1</font></sup> mod p.
-     */
+
     private FlexiBigInt eInvP;
 
-    /**
-     * Generate a new MeRSA private key.
-     *
-     * @param n        the number n = p*q;
-     * @param e        the public exponent e.
-     * @param d        the private exponent d.
-     * @param p        the prime p.
-     * @param q        the prime q.
-     * @param dP       the number d mod (p-1).
-     * @param dQ       the number d mod (q-1).
-     * @param crtCoeff the coefficient for MeRSA decryption with the CRT.
-     * @param k        the exponent k.
-     * @param eInvP    the inverse of the public exponent modulo p.
-     * @see MeRSAKeyPairGenerator
-     */
+
     protected MeRSAPrivateKey(FlexiBigInt n, FlexiBigInt e, FlexiBigInt d,
                               FlexiBigInt p, FlexiBigInt q, FlexiBigInt dP, FlexiBigInt dQ,
                               FlexiBigInt crtCoeff, FlexiBigInt k, FlexiBigInt eInvP) {

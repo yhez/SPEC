@@ -7,7 +7,6 @@ import de.flexiprovider.common.math.ellipticcurves.EllipticCurveGFP;
 import de.flexiprovider.common.math.ellipticcurves.PointGFP;
 import de.flexiprovider.common.math.ellipticcurves.ScalarMult;
 import de.flexiprovider.common.math.finitefields.GFPElement;
-import de.flexiprovider.common.util.SeedGenerator;
 
 
 public class ECPRNG extends SecureRandom {
@@ -77,7 +76,6 @@ public class ECPRNG extends SecureRandom {
     public ECPRNG() throws InvalidPointException {
 
         // generate the seed generator object
-        SeedGenerator seedGenerator = new SeedGenerator();
 
         // initialize the prime field
         mP = new FlexiBigInt(p);
@@ -158,7 +156,6 @@ public class ECPRNG extends SecureRandom {
         }
         java.security.SecureRandom sr = new java.security.SecureRandom();
         return sr.generateSeed(numBytes);
-//	return this.generateSeed(numBytes);
     }
 
     /**

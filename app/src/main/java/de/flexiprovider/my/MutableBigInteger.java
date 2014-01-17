@@ -200,7 +200,7 @@ class MutableBigInteger {
      */
     int[] toIntArray() {
         int[] result = new int[intLen];
-        System.arraycopy(value, offset + 0, result, 0, intLen);
+        System.arraycopy(value, offset, result, 0, intLen);
         return result;
     }
 
@@ -317,7 +317,7 @@ class MutableBigInteger {
         if (value.length < newLen) {
             // The array must grow
             int[] result = new int[newLen];
-            System.arraycopy(value, offset + 0, result, 0, intLen);
+            System.arraycopy(value, offset, result, 0, intLen);
             setValue(result, newLen);
         } else if (value.length - offset >= newLen) {
             // Use space on right
@@ -325,7 +325,7 @@ class MutableBigInteger {
                 value[offset + intLen + i] = 0;
         } else {
             // Must use space on left
-            System.arraycopy(value, offset + 0, value, 0, intLen);
+            System.arraycopy(value, offset, value, 0, intLen);
             for (int i = intLen; i < newLen; i++)
                 value[i] = 0;
             offset = 0;

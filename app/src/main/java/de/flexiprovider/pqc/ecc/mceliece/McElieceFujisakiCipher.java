@@ -264,7 +264,7 @@ public class McElieceFujisakiCipher extends AsymmetricHybridCipher {
                 .getEncoded();
 
         // get PRNG object
-        SecureRandom sr0 = null;
+        SecureRandom sr0;
         try {
             sr0 = Registry.getSecureRandom(prngName);
         } catch (NoSuchAlgorithmException nsae) {
@@ -307,7 +307,7 @@ public class McElieceFujisakiCipher extends AsymmetricHybridCipher {
         GF2Vector z = decC1[1];
 
         // get PRNG object
-        SecureRandom sr0 = null;
+        SecureRandom sr0;
         try {
             sr0 = Registry.getSecureRandom(prngName);
         } catch (NoSuchAlgorithmException nsae) {

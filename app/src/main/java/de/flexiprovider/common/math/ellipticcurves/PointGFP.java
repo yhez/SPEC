@@ -706,61 +706,6 @@ public class PointGFP extends Point {
     }
 
     /**
-     * Adds in affine coordinates to this point the point <code>other</code>.
-     *
-     * @param other point to add to this point
-     * @return <code>this</code> + <code>other</code> in affine coordinates
-     * @throws DifferentCurvesException when <code>other</code> is defined over another
-     *                                  curve
-     */
-    public Point addAffine(Point other) {
-
-        PointGFP p = (PointGFP) this.getAffin();
-        PointGFP o = (PointGFP) other.getAffin();
-        if (this.isZero()) {
-            return new PointGFP(o);
-        }
-
-        if (other.isZero()) {
-            return new PointGFP(p);
-        }
-
-        GFPElement oX = o.mX;
-        GFPElement oY = o.mY;
-        GFPElement pX = p.mX;
-        GFPElement pY = p.mY;
-
-        FlexiBigInt boX = oX.toFlexiBigInt();
-        FlexiBigInt boY = oY.toFlexiBigInt();
-        FlexiBigInt bpX = pX.toFlexiBigInt();
-        FlexiBigInt bpY = pY.toFlexiBigInt();
-
-        // P == other -> double(P)
-        if ((pX == oX) && (pY == oY)) {
-            return p.multiplyBy2Affine();
-        }
-        FlexiBigInt lambda = (boX.subtract(bpX)).modInverse(mP);
-        lambda = lambda.multiply(boY.subtract(bpY)).mod(mP);
-
-        FlexiBigInt x = lambda.multiply(lambda).mod(mP);
-        x = x.subtract(bpX).subtract(boX);
-        x = x.mod(mP);
-
-        FlexiBigInt y = bpX.subtract(x);
-        y = y.multiply(lambda);
-        y = y.subtract(bpY).mod(mP);
-
-        GFPElement gfpx = new GFPElement(x, mP);
-        GFPElement gfpy = new GFPElement(y, mP);
-        try {
-            return new PointGFP(gfpx, gfpy, (EllipticCurveGFP) mE);
-        } catch (InvalidPointException IPExc) {
-            throw new RuntimeException("InvalidPointException: "
-                    + IPExc.getMessage());
-        }
-    }
-
-    /**
      * Subtracts point <tt>other</tt> from this point.
      *
      * @param other another Point

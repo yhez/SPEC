@@ -69,14 +69,6 @@ class SignedMutableBigInteger extends MutableBigInteger {
         super(val);
     }
 
-    /**
-     * Construct a new MutableBigInteger with a magnitude equal to the
-     * specified MutableBigInteger.
-     */
-    SignedMutableBigInteger(MutableBigInteger val) {
-        super(val);
-    }
-
     // Arithmetic Operations
 
     /**
@@ -110,18 +102,6 @@ class SignedMutableBigInteger extends MutableBigInteger {
         else
             add(addend);
 
-    }
-
-    /**
-     * Signed subtraction built upon unsigned add and subtract.
-     */
-    void signedSubtract(MutableBigInteger addend) {
-        if (sign == 1)
-            sign = sign * subtract(addend);
-        else
-            add(addend);
-        if (intLen == 0)
-            sign = 1;
     }
 
     /**

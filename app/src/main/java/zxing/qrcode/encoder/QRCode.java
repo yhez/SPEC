@@ -42,19 +42,11 @@ public final class QRCode {
     return mode;
   }
 
-  public ErrorCorrectionLevel getECLevel() {
-    return ecLevel;
-  }
-
-  public Version getVersion() {
+    public Version getVersion() {
     return version;
   }
 
-  public int getMaskPattern() {
-    return maskPattern;
-  }
-
-  public ByteMatrix getMatrix() {
+    public ByteMatrix getMatrix() {
     return matrix;
   }
 

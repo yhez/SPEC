@@ -126,9 +126,6 @@ final class MatrixUtil {
   static void clearMatrix(ByteMatrix matrix) {
     matrix.clear((byte) -1);
   }
-
-  // Build 2D matrix of QR Code from "dataBits" with "ecLevel", "version" and "getMaskPattern". On
-  // success, store the result in "matrix" and return true.
   static void buildMatrix(BitArray dataBits,
                           ErrorCorrectionLevel ecLevel,
                           Version version,
@@ -215,9 +212,6 @@ final class MatrixUtil {
     }
   }
 
-  // Embed "dataBits" using "getMaskPattern". On success, modify the matrix and return true.
-  // For debugging purposes, it skips masking process if "getMaskPattern" is -1.
-  // See 8.7 of JISX0510:2004 (p.38) for how to embed data bits.
   static void embedDataBits(BitArray dataBits, int maskPattern, ByteMatrix matrix)
       throws WriterException {
     int bitIndex = 0;

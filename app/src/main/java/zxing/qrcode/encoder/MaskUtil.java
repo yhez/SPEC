@@ -142,10 +142,7 @@ final class MaskUtil {
     return fivePercentVariances * N4;
   }
 
-  /**
-   * Return the mask bit for "getMaskPattern" at "x" and "y". See 8.8 of JISX0510:2004 for mask
-   * pattern conditions.
-   */
+
   static boolean getDataMaskBit(int maskPattern, int x, int y) {
     int intermediate;
     int temp;

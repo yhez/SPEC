@@ -32,14 +32,7 @@ public final class QRCodeDecoderMetaData {
     this.mirrored = mirrored;
   }
 
-  /** 
-   * @return true if the QR Code was mirrored. 
-   */
-  public boolean isMirrored() {
-    return mirrored;
-  }
-
-  /**
+    /**
    * Apply the result points' order correction due to mirroring.
    * 
    * @param points Array of points to apply mirror correction to.

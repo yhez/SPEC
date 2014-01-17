@@ -21,11 +21,6 @@ public class PBKDF1_PKCS12ParameterSpec extends PBEParameterSpec {
      */
     public static final byte ID_IV = 2;
 
-    /**
-     * Constant identifying use for integrity protection.
-     */
-    public static final byte ID_INTEGRITY = 3;
-
     // the purpose identification byte
     private byte id;
 

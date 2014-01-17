@@ -18,17 +18,7 @@ import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
-/**
- * This class is used to translate between McEliece CCA2 keys and key
- * specifications.
- *
- * @author Elena Klintsevich
- * @author Martin D�ring
- * @see McElieceCCA2PrivateKey
- * @see McElieceCCA2PrivateKeySpec
- * @see McElieceCCA2PublicKey
- * @see McElieceCCA2PublicKeySpec
- */
+
 public class McElieceCCA2KeyFactory extends KeyFactory {
 
     /**
@@ -36,16 +26,7 @@ public class McElieceCCA2KeyFactory extends KeyFactory {
      */
     public static final String OID = "1.3.6.1.4.1.8301.3.1.3.4.2";
 
-    /**
-     * Converts, if possible, a key specification into a
-     * {@link McElieceCCA2PublicKey}. Currently, the following key
-     * specifications are supported: {@link McElieceCCA2PublicKeySpec},
-     * {@link de.flexiprovider.pki.X509EncodedKeySpec}.
-     *
-     * @param keySpec the key specification
-     * @return the McEliece CCA2 public key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the key specification is not supported.
-     */
+
     public PublicKey generatePublic(KeySpec keySpec)
             throws InvalidKeySpecException {
         if (keySpec instanceof McElieceCCA2PublicKeySpec) {

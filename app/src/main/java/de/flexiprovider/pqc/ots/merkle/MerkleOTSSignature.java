@@ -14,37 +14,7 @@ import de.flexiprovider.core.md.SHA256;
 import de.flexiprovider.core.md.SHA384;
 import de.flexiprovider.core.md.SHA512;
 
-/**
- * This class implements the MerkleOTS (one-time signature scheme). First the
- * message that should be signed, is hashed with a message digest. Then the hash
- * value is concatenate with the value z. z is the quantity of zeros in the bit
- * representation of the hash value of the message. For every bit that is 1 in
- * the bit representation of the concatenation, the corresponding private key
- * part of the OTSPrivateKey is set. For every 0-bit, the corresponding public
- * key part of the MerkleOTSPublicKey is set. So the signature is a
- * concatenation of parts of the private and public key.
- * <p/>
- * Verification of a given signature only succeeds if the hash value of the
- * signature is the MerkleOTSPublicKey.
- * <p/>
- * The MerkleOTSSignature can be used like the following:
- * <p/>
- * <pre>
- * Signature merkleSign = Signature.getInstance(&quot;MerkleOTSwithSHA256&quot;, &quot;FlexiPQC&quot;);
- * // create signature
- * merkleSign.initSign(privateKey);
- * merkleSign.update(data, 0, data.length);
- * byte[] sign = merkleSign.sign();
- *
- * // verify signature
- * merkleSign.initVerify(publicKey);
- * merkleSign.update(data, 0, data.length);
- * boolean verify = merkleSign.verify(sign);
- * System.out.println(verify);
- * </pre>
- *
- * @author Elena Klintsevich
- */
+
 public abstract class MerkleOTSSignature extends Signature {
 
     // the OID of the algorithm
@@ -179,13 +149,6 @@ public abstract class MerkleOTSSignature extends Signature {
         initValues();
     }
 
-    /**
-     * Initialize the signature algorithm for verifying a signature.
-     *
-     * @param key the public key of the signer.
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the public key is not an instance of
-     *                                                             MerkleOTSPublicKey.
-     */
     public void initVerify(PublicKey key) throws InvalidKeyException {
         if (!(key instanceof MerkleOTSPublicKey)) {
             throw new InvalidKeyException("unsupported type");

@@ -16,31 +16,12 @@ import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
-/**
- * This class is able to transform MerkleOTS keys and MerkleOTS key
- * specifications into a form that can be used with the FlexiProvider.
- *
- * @author Elena Klintsevich
- * @see MerkleOTSPrivateKey
- * @see MerkleOTSPublicKey
- */
+
 public class MerkleOTSKeyFactory extends KeyFactory {
 
-    /**
-     * The OID of MerkleOTS.
-     */
     public static final String OID = "1.3.6.1.4.1.8301.3.1.3.1.1";
 
-    /**
-     * Converts, if possible, a key specification into a
-     * {@link MerkleOTSPublicKey}. Currently, the following key specifications
-     * are supported: {@link MerkleOTSPublicKeySpec}.
-     *
-     * @param keySpec the key specification
-     * @return a public Merkle OTS key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     * @see MerkleOTSPublicKey
-     */
+
     public PublicKey generatePublic(KeySpec keySpec)
             throws InvalidKeySpecException {
         if (keySpec instanceof MerkleOTSPublicKeySpec) {
@@ -144,22 +125,6 @@ public class MerkleOTSKeyFactory extends KeyFactory {
         throw new InvalidKeySpecException("Unknown KeySpec type.");
     }
 
-    /**
-     * Converts a given key into a key specification, if possible. Currently the
-     * following specifications are supported:
-     * <UL>
-     * <LI> for MerkleOTSPublicKey: X509EncodedKeySpec, OTSKeySpec
-     * <LI> for OTSPrivateKey: PKCS8EncodedKeySpec, OTSKeySpec.
-     * </UL>
-     * <p/>
-     *
-     * @param key  the key.
-     * @param spec the class of which type the returned class should be.
-     * @return OTSKeySpec the specification of the MerkleOTS key.
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the specification is not supported.
-     * @see MerkleOTSPrivateKey
-     * @see MerkleOTSPublicKey
-     */
     public KeySpec getKeySpec(Key key, Class spec)
             throws InvalidKeySpecException {
         if (key instanceof MerkleOTSPrivateKey) {
@@ -182,14 +147,6 @@ public class MerkleOTSKeyFactory extends KeyFactory {
         throw new InvalidKeySpecException("Unknown KeySpec.");
     }
 
-    /**
-     * Translates a key into a form known by the FlexiProvider. Currently the
-     * following "source" keys are supported: OTSPrivateKey, MerkleOTSPublicKey.
-     *
-     * @param key the key.
-     * @return a key of a known key type.
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the key is not supported.
-     */
     public Key translateKey(Key key) throws InvalidKeyException {
         if (key instanceof MerkleOTSPrivateKey) {
             return key;

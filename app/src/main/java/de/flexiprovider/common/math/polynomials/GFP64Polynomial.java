@@ -34,29 +34,16 @@ public class GFP64Polynomial {
 
     private long p;
 
-    private SecureRandom generator;
 
 
-    /**
-     * Standard Constructor for generating a new GFPPolynomial
-     *
-     * @param f    the modulo Polynomial of the Ring
-     * @param p    the modulo "prime" of the Ring
-     * @param poly the Polynomial an long array, most significant entry is right
-     */
     public GFP64Polynomial(long[] f, long p, long[] poly) {
         this.f = f;
         this.p = p;
         this.poly = reduce(poly);
-        generator = Registry.getSecureRandom();
+        SecureRandom generator = Registry.getSecureRandom();
     }
 
-    /**
-     * adds the given Polynomial to this Polynomial and returns the result
-     *
-     * @param gfp the Polynomial to be added
-     * @return the Addition of the two Polynomials
-     */
+
     public GFP64Polynomial add(GFP64Polynomial gfp) {
         if (!paramEqual(gfp)) {
             return null;
@@ -79,13 +66,6 @@ public class GFP64Polynomial {
 
         return new GFP64Polynomial(f, p, reduce(result));
     }
-
-    /**
-     * Adds the supplied Polynomial to this Polynomial and sets this Polynomial
-     * as the result
-     *
-     * @param gfp the Polynomial to be added
-     */
     public void addToThis(GFP64Polynomial gfp) {
         poly = add(gfp).getPoly();
     }
@@ -115,14 +95,6 @@ public class GFP64Polynomial {
         return a;
     }
 
-    /**
-     * Subtracts p from every entry in this polynomial with a value greater p/2.
-     * <p/>
-     * This Function is used for calculating the correct Norm of a Polynomial,
-     * since the Norm uses the absolute Value for determining the Maximum
-     *
-     * @return the compressed polynomial
-     */
     public long[] getCompressed() {
         return compress(poly);
     }
@@ -170,9 +142,6 @@ public class GFP64Polynomial {
         return p;
     }
 
-    /**
-     * @return The (reduced) Polynomial as an long array
-     */
     public long[] getPoly() {
         return poly;
     }
@@ -219,18 +188,7 @@ public class GFP64Polynomial {
         return new GFP64Polynomial(f, p, reduce(result));
     }
 
-    /**
-     * multiplies this Polynomial with a Vector of Polynomials and returns the
-     * Result
-     * <p/>
-     * Multiplication with a Vector is designed as follows:
-     * <p/>
-     * Vector � = (a1, a2, ... , am), Polynomial p � * p = (a1*p, a2*p, ...
-     * , am * p)
-     *
-     * @param k the Vector of Polynomials to be multiplied
-     * @return the Vector of the Product
-     */
+
     public Vector multiply(Vector k) {
         Vector result = new Vector();
         result.setSize(k.size());

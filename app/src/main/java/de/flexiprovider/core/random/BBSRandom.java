@@ -2,7 +2,6 @@ package de.flexiprovider.core.random;
 
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.common.math.FlexiBigInt;
-import de.flexiprovider.common.util.SeedGenerator;
 
 
 public final class BBSRandom extends SecureRandom {
@@ -49,7 +48,7 @@ public final class BBSRandom extends SecureRandom {
         parametersGenerated = false;
 
         // generate the object that will do seeding
-        new SeedGenerator();
+
 
         // calculate the number of bits to be generated per iteration
         bitsPerRound = 0;
@@ -62,7 +61,6 @@ public final class BBSRandom extends SecureRandom {
 
     public byte[] generateSeed(int numBytes) {
         return this.generateSeed(numBytes);
-        //return seedGenerator.generateSeed(numBytes);
     }
 
 

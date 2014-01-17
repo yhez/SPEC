@@ -14,31 +14,7 @@ import de.flexiprovider.core.md.SHA256;
 import de.flexiprovider.core.md.SHA384;
 import de.flexiprovider.core.md.SHA512;
 
-/**
- * This class generates a private and public key for the MerkleOTS (One Time
- * Signature). The private key is a 2-dimensional byte array of random values
- * that are generated with a secure random generator. The secure random
- * generator is initiated before with a seed that can be set with the integer
- * value startValue. The public key is a 2-dimensional byte array with the hash
- * values of the private key. A key pair consists of a
- * {@link MerkleOTSPublicKey} and a {@link MerkleOTSPrivateKey}.
- * <p/>
- * A MerkleOTS key pair can be generated as follows:
- * <p/>
- * <pre>
- * // obtain an instance of the key pair generator
- * KeyPairGenerator kpg = KeyPairGenerator.getInstance(
- * 	&quot;MerkleOTSwithSHA256andSHA1PRNG&quot;, &quot;FlexiPQC&quot;);
- * // set the seed size
- * kpg.initialize(256);
- * // generate the key pair
- * KeyPair keyPair = kpg.generateKeyPair();
- * </pre>
- *
- * @author Klintsevich Elena
- * @see MerkleOTSPrivateKey
- * @see MerkleOTSPublicKey
- */
+
 public class MerkleOTSKeyPairGenerator extends KeyPairGenerator {
 
     // the OID of the algorithm
@@ -209,12 +185,6 @@ public class MerkleOTSKeyPairGenerator extends KeyPairGenerator {
         initialize(mdLength << 3, Registry.getSecureRandom());
     }
 
-    /**
-     * Generate a MerkleOTS key pair, consisting of a {@link MerkleOTSPublicKey}
-     * and a {@link MerkleOTSPrivateKey}.
-     *
-     * @return the generated key pair
-     */
     public KeyPair genKeyPair() {
         if (!initialized) {
             initializeDefault();

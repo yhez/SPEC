@@ -7,34 +7,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Vector;
 
-/**
- * Parses a Vector of {@link GFPPolynomial} to a byte Array and vice versa
- * <p/>
- * This Class is primarily used for LMOTS and TSS, an equivalent functionality
- * can be accomplished with use of ASN.1, but usage of this class should be
- * slightly more efficient for this specific purpose.
- * <p/>
- * format is as follows: For Reference, the f polynomial, the p parameter and
- * the actual polynomial of the first {@link GFPPolynomial} are always inserted
- * first, those parameters are only included afterwards individually if they
- * differ from the first. Each {@link GFPPolynomial} is prefixed by an
- * identifier to note the information included. Only the last 3 bits of the
- * identifier are used, the least significant bit denotes usage of the
- * Polynomial itself, this bit is not set only if the Polynomial is identical to
- * the first Polynomial, which should rarely happen. the second least
- * significant bit denotes the usage of the f polynomial and the third bit
- * denotes usage for the parameter p. Both of these parameters are usually the
- * same for all {@link GFPPolynomial}, so these bits are usually not set. The
- * actual Polynomials are transformed by prefixing the length of the polynomial
- * in 2 bytes and then all values of the polynomial with a static length
- * intdimension, set in this class (default value 8) for each value. The
- * Parameter p is transformed to a single value with the default length of
- * bytes, without any prefix.
- */
+
 public class TSSVectorSerial {
 
-    // byte size indicators, these may not be variable depending on format, DO
-    // NOT TOUCH!
+
     private static final int intDimension = 8;
     private static final int rankDimension = 2;
 
@@ -42,24 +18,13 @@ public class TSSVectorSerial {
 
     private byte[] byteArray;
 
-    /**
-     * Constructor for a byte Array (probably useless)
-     *
-     * @param b a byte Array containing Vector information corresponding to
-     *          format in class description
-     * @throws Exception
-     */
+
     public TSSVectorSerial(byte[] b) {
         byteArray = b;
 
         gfpVector = parseToVector(b);
     }
 
-    /**
-     * Constructor for a Vector
-     *
-     * @param v a Vector containing {@link GFPPolynomial}
-     */
     public TSSVectorSerial(Vector v) {
         gfpVector = v;
         byteArray = parseToByteArray(v);
@@ -106,7 +71,6 @@ public class TSSVectorSerial {
             return b;
         } else {
             if (gfp.paramEqual(compare)) {
-                // standard procedure
                 b[0] = 0x01;
                 return append(b, arrayToByte(gfp.getPoly()));
             } else {
@@ -195,16 +159,6 @@ public class TSSVectorSerial {
         return b;
     }
 
-    /**
-     * Parses a byte array to a Vector of {@link GFPPolynomial}, the byte array
-     * must have been created by the corresponding method "parseToByteArray" or
-     * use the same format.
-     * <p/>
-     * The format is as follows:
-     *
-     * @param b the byte array containing the Information for the Vector
-     * @return
-     */
     private Vector parseToVector(byte[] b)
             throws ArrayIndexOutOfBoundsException {
         Vector v = new Vector();

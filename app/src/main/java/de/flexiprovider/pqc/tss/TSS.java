@@ -20,18 +20,6 @@ import de.flexiprovider.common.math.IntegerFunctions;
 public abstract class TSS extends Signature {
 
     /**
-     * TSS with RIPEMD128
-     */
-    public static class RIPEMD128 extends TSS {
-        /**
-         * Constructor.
-         */
-        public RIPEMD128() {
-            super(new de.flexiprovider.core.md.RIPEMD128());
-        }
-    }
-
-    /**
      * TSS with RIPEMD160
      */
     public static class RIPEMD160 extends TSS {
@@ -40,30 +28,6 @@ public abstract class TSS extends Signature {
          */
         public RIPEMD160() {
             super(new de.flexiprovider.core.md.RIPEMD160());
-        }
-    }
-
-    /**
-     * TSS with RIPEMD256
-     */
-    public static class RIPEMD256 extends TSS {
-        /**
-         * Constructor.
-         */
-        public RIPEMD256() {
-            super(new de.flexiprovider.core.md.RIPEMD256());
-        }
-    }
-
-    /**
-     * TSS with RIPEMD320
-     */
-    public static class RIPEMD320 extends TSS {
-        /**
-         * Constructor.
-         */
-        public RIPEMD320() {
-            super(new de.flexiprovider.core.md.RIPEMD320());
         }
     }
 
@@ -175,17 +139,6 @@ public abstract class TSS extends Signature {
         messageDigest = md;
     }
 
-    /**
-     * Adds two Vectors of {@link TSSPolynomial} by adding the Polynomials in
-     * each Vector. The Polynomial in Vector @a at position i is added to the
-     * Polynomial in Vector @b at position i. If one Vector is larger than the
-     * other, then the excess Polynomials of the larger Vector are not modified
-     * (Zero Poly added).
-     *
-     * @param a Vector containing {@link TSSPolynomial}
-     * @param b Vector containing {@link TSSPolynomial}
-     * @return The Vector of the added Polynomials
-     */
     public Vector addGFPVector(Vector a, Vector b) {
         Vector result = new Vector();
         int aSize = a.size();

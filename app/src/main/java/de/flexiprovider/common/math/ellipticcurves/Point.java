@@ -203,32 +203,6 @@ public abstract class Point {
      */
     public abstract boolean isZero();
 
-    // /////////////////////////////////////////////////////////
-    // comparison
-    // ////////////////////////////////////////////////////////
-
-    /**
-     * Tests whether this point is the negative of other.
-     *
-     * @param other point to compare this point with
-     * @return <tt>true</tt> if <tt>this == -other</tt>, <tt>false</tt>
-     * otherwise.
-     */
-    public final boolean isNegativeOf(Point other) {
-        return equals(other.negate());
-    }
-
-    // ////////////////////////////////////////////////////////////////////
-    // arithmetic
-    // ////////////////////////////////////////////////////////////////////
-
-    /**
-     * Adds to this point the point <tt>other</tt>.
-     *
-     * @param other point to add to this point
-     * @return <tt>this</tt> + <tt>other</tt>
-     * @throws DifferentCurvesException when <tt>other</tt> is defined over another curve
-     */
     public abstract Point add(Point other) throws DifferentCurvesException;
 
     /**
@@ -238,17 +212,6 @@ public abstract class Point {
      * @throws DifferentCurvesException when <tt>other</tt> is defined over another curve
      */
     public abstract void addToThis(Point other) throws DifferentCurvesException;
-
-    /**
-     * Adds in affine coordinates to this point the point <code>other</code>.
-     *
-     * @param other point to add to this point
-     * @return <code>this</code> + <code>other</code> in affine coordinates
-     * @throws DifferentCurvesException when <code>other</code> is defined over another
-     *                                  curve
-     */
-    public abstract Point addAffine(Point other)
-            throws DifferentCurvesException;
 
     /**
      * Subtracts the point <tt>other</tt> from this point.

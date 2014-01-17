@@ -34,9 +34,6 @@ public final class RIPEMD128 extends MDFamilyDigest {
      */
     public static final String ALG_NAME = "RIPEMD128";
 
-    /**
-     * The OID of RIPEMD128 (defined by Teletrust).
-     */
     public static final String OID = "1.3.36.3.2.2";
 
     // magic constants for initialization
@@ -118,8 +115,8 @@ public final class RIPEMD128 extends MDFamilyDigest {
         int Cr = state[2];
         int Dr = state[3];
 
-        int t = 0;
-        int j = 0;
+        int t;
+        int j;
 
         // Round 1
         for (j = 0; j < 16; j++) {

@@ -3,7 +3,6 @@ package codec.asn1;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -17,10 +16,6 @@ public class OIDRegistry {
     private OIDRegistry parent_ = null;
 
     private OIDRegistry() {
-    }
-
-    static public OIDRegistry getGlobalOIDRegistry() {
-        return global_;
     }
 
 
@@ -55,35 +50,6 @@ public class OIDRegistry {
         return null;
     }
 
-
-    protected ASN1Type getLocalASN1Type(ASN1ObjectIdentifier oid, Map map) {
-        Object o;
-        Class c;
-
-        if (oid == null || map == null) {
-            throw new NullPointerException("oid or map");
-        }
-        o = map.get(oid);
-
-        if (o == null) {
-            return null;
-        }
-        try {
-            if (o instanceof String) {
-                c = Class.forName((String) o);
-
-                map.put(new ASN1ObjectIdentifier(oid.getOID()), c);
-
-                o = c;
-            }
-            c = (Class) o;
-
-            return (ASN1Type) c.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-            return null;
-        }
-    }
 
     public boolean equals(Object o) {
         return getClass() == o.getClass();

@@ -9,15 +9,7 @@ import de.flexiprovider.api.keys.KeySpec;
 import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.pqc.rainbow.util.RainbowUtil;
 
-/**
- * This class provides a specification for a RainbowSignature public key.
- *
- * @author Patrick Neugebauer
- * @author Marius Senftleben
- * @author Tsvetoslava Vateva
- * @see de.flexiprovider.pqc.rainbow.RainbowPublicKey
- * @see de.flexiprovider.api.keys.KeySpec
- */
+
 public class RainbowPublicKeySpec implements KeySpec {
 
     // the OID of the algorithm
@@ -28,15 +20,8 @@ public class RainbowPublicKeySpec implements KeySpec {
     private short[] coeffscalar;
     private int docLength; // length of possible document to sign
 
-    /**
-     * Constructor
-     *
-     * @param docLength
-     * @param coeffquadratic
-     * @param coeffSingular
-     * @param coeffScalar
-     */
-    protected RainbowPublicKeySpec(String oid, int docLength,
+
+    protected RainbowPublicKeySpec(int docLength,
                                    short[][] coeffquadratic, short[][] coeffSingular,
                                    short[] coeffScalar) {
         this.docLength = docLength;
@@ -45,15 +30,6 @@ public class RainbowPublicKeySpec implements KeySpec {
         this.coeffscalar = coeffScalar;
     }
 
-    /**
-     * Constructor used by the {@link RainbowKeyFactory}. It constructs internal
-     * data types out of these bytes got from ASN.1 decoding.
-     *
-     * @param docLength
-     * @param coeffQuadratic
-     * @param coeffSingular
-     * @param coeffScalar
-     */
     protected RainbowPublicKeySpec(String oid, int docLength,
                                    byte[][] coeffQuadratic, byte[][] coeffSingular, byte[] coeffScalar) {
         this.oid = oid;
@@ -63,9 +39,6 @@ public class RainbowPublicKeySpec implements KeySpec {
         this.coeffscalar = RainbowUtil.convertArray(coeffScalar);
     }
 
-    /**
-     * @return name of the algorithm - "Rainbow"
-     */
     public final String getAlgorithm() {
         return "Rainbow";
     }
@@ -112,23 +85,6 @@ public class RainbowPublicKeySpec implements KeySpec {
         return new ASN1ObjectIdentifier(RainbowKeyFactory.OID);
     }
 
-    /**
-     * Return the keyData to encode in the SubjectPublicKeyInfo structure.
-     * <p/>
-     * The ASN.1 definition of the key structure is
-     * <p/>
-     * <pre>
-     *    RainbowPublicKey ::= SEQUENCE {
-     *      oid            OBJECT IDENTIFIER        -- OID identifying the algorithm
-     *      docLength      Integer      	        -- length of signable msg
-     *      coeffquadratic SEQUENCE OF OCTET STRING -- quadratic (mixed) coefficients
-     *      coeffsingular  SEQUENCE OF OCTET STRING -- singular coefficients
-     *      coeffscalar	   OCTET STRING             -- scalar coefficients
-     *       }
-     * </pre>
-     *
-     * @return the keyData to encode in the SubjectPublicKeyInfo structure
-     */
     protected byte[] getKeyData() {
         ASN1Sequence keyData = new ASN1Sequence();
         keyData.add(new ASN1Integer(docLength));

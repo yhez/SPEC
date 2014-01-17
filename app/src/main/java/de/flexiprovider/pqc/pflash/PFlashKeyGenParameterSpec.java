@@ -25,11 +25,6 @@ import de.flexiprovider.common.math.codingtheory.GF2mField;
 public class PFlashKeyGenParameterSpec implements AlgorithmParameterSpec {
 
     /**
-     * the default extension degree
-     */
-    public static final int DEFAULT_m = 4;
-
-    /**
      * the default dimension of K<sup>n</sup>
      */
     public static final int DEFAULT_n = 96;
@@ -76,28 +71,10 @@ public class PFlashKeyGenParameterSpec implements AlgorithmParameterSpec {
         this(DEFAULT_fieldPoly, DEFAULT_n, DEFAULT_alpha, DEFAULT_r, DEFAULT_s);
     }
 
-    /**
-     * Constructs new pFLASH parameters. (not supported)
-     *
-     * @param p     field polynomial for the finite field GF(2<sup>m</sup>)
-     * @param n     extension degree of E/K
-     * @param alpha parameter of the map F: F(x)=x<sup>1+q<sup>&#945</sup></sup>
-     * @param r
-     * @param s
-     */
     public PFlashKeyGenParameterSpec(int p, int n, int alpha, int r, int s) {
         this(new GF2mField(IntegerFunctions.ceilLog(p) - 1, p), n, alpha, r, s);
     }
 
-    /**
-     * Constructs new pFLASH parameters. (not supported)
-     *
-     * @param field the finite field GF(2<sup>m</sup>)
-     * @param n     extension degree of E/K
-     * @param alpha parameter of the map F: F(x)=x<sup>1+q<sup>&#945</sup></sup>
-     * @param r
-     * @param s
-     */
     public PFlashKeyGenParameterSpec(GF2mField field, int n, int alpha, int r, int s) {
         this.field = field;
         this.n = n;

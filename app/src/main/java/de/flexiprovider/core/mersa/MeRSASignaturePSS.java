@@ -16,7 +16,6 @@ import de.flexiprovider.api.MessageDigest;
 import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.api.Signature;
-import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.api.exceptions.InvalidKeyException;
 import de.flexiprovider.api.exceptions.NoSuchAlgorithmException;
 import de.flexiprovider.api.exceptions.SignatureException;
@@ -90,23 +89,6 @@ public class MeRSASignaturePSS extends Signature {
      */
     public MeRSASignaturePSS() {
         params = new PSSParameterSpec();
-    }
-
-    /**
-     * Set the algorithm parameters.
-     *
-     * @param params the algorithm parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if <tt>params</tt> is not an instance of
-     *                                                                            {@link de.flexiprovider.core.rsa.PSSParameterSpec}.
-     */
-    protected final void engineSetParameter(AlgorithmParameterSpec params)
-            throws InvalidAlgorithmParameterException {
-        if (!(params instanceof PSSParameterSpec)) {
-            throw new InvalidAlgorithmParameterException(
-                    "params is not a PSSParameterSpec");
-        }
-
-        this.params = (PSSParameterSpec) params;
     }
 
     /**

@@ -1,30 +1,8 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group, Technische Universitaet
- * Darmstadt
- * 
- * For conditions of usage and distribution please refer to the file COPYING in
- * the root directory of this package.
- *
- * Created on Jul 26, 2005
- */
 package de.flexiprovider.core.md;
 
 import de.flexiprovider.common.util.LittleEndianConversions;
 
-/**
- * This class implements the RIPEMD-256 message digest algorithm according to
- * the implementation guidelines found in <a
- * href="http://www.esat.kuleuven.ac.be/~bosselae/ripemd160.html#extensions"
- * >http://www.esat.kuleuven.ac.be/~bosselae/ripemd160.html#extensions</a>
- * <p/>
- * Information concerning the RIPEMD message digest family can be found at <a
- * href
- * ="http://www.esat.kuleuven.ac.be/~bosselae/ripemd160.html">http://www.esat
- * .kuleuven.ac.be/~bosselae/ripemd160.html"></a>.
- *
- * @author Elena Klintsevitch
- * @see RIPEMD160
- */
+
 public final class RIPEMD256 extends MDFamilyDigest {
 
     /**
@@ -32,9 +10,6 @@ public final class RIPEMD256 extends MDFamilyDigest {
      */
     public static final String ALG_NAME = "RIPEMD256";
 
-    /**
-     * The OID of RIPEMD256 (defined by Teletrust).
-     */
     public static final String OID = "1.3.36.3.2.3";
 
     // magic constants for initialization
@@ -105,7 +80,7 @@ public final class RIPEMD256 extends MDFamilyDigest {
         // aL - chaning variable A-E, aR- chaning variable A`-E`
         int[] aL = new int[4];
         int[] aR = new int[4];
-        int t = 0;
+        int t;
         System.arraycopy(state, 0, aL, 0, 4);
         System.arraycopy(state, 4, aR, 0, 4);
 

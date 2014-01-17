@@ -272,7 +272,7 @@ public class RainbowKeyFactory extends de.flexiprovider.api.keys.KeyFactory {
                 return new X509EncodedKeySpec(key.getEncoded());
             } else if (RainbowPublicKeySpec.class.isAssignableFrom(keySpec)) {
                 RainbowPublicKey pubKey = (RainbowPublicKey) key;
-                return new RainbowPublicKeySpec(pubKey.getOIDString(), pubKey.getDocLength(), pubKey
+                return new RainbowPublicKeySpec(pubKey.getDocLength(), pubKey
                         .getCoeffquadratic(), pubKey.getCoeffsingular(), pubKey
                         .getCoeffscalar());
             }

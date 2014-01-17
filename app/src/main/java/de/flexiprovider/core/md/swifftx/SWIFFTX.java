@@ -9,21 +9,7 @@
 
 package de.flexiprovider.core.md.swifftx;
 
-/**
- * This is a C++ - Java portation of the reference SWIFFTX hash function,
- * designed by Yuriy Arbitman, Gil Dogon, Vadim Lyubashevsky, Daniele
- * Micciancio, Chris Peikert, Alon Rosen.
- * <p/>
- * The NIST submission package can be found here: <a
- * href="http://ehash.iaik.tugraz.at/wiki/SWIFFTX"> It also contains speed
- * optimized versions and papers.
- * <p/>
- * SWIFFTX is a SHA3 candidate.
- * <p/>
- * The original comments are only slightly changed.
- *
- * @author Stephan Mnkehues
- */
+
 public class SWIFFTX {
 
     private static int hashbitlen;

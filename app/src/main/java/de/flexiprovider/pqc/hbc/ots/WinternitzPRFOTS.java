@@ -39,16 +39,6 @@ public class WinternitzPRFOTS implements OTS {
 
     private static final int NOT_SET = -1;
 
-    /**
-     * Constructor.
-     *
-     * @param w the Winternitz parameter
-     */
-    public WinternitzPRFOTS(int w) {
-        this.w = w;
-        // this.bitSecurity = DEFAULT_BIT_SECURITY;
-    }
-
     /*
      * (non-Javadoc)
      *

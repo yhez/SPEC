@@ -9,18 +9,6 @@ package de.flexiprovider.api.exceptions;
  */
 public class RegistrationException extends RuntimeException {
 
-    /**
-     * Default constructor.
-     */
-    public RegistrationException() {
-        super();
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param s the error message
-     */
     public RegistrationException(String s) {
         super(s);
     }

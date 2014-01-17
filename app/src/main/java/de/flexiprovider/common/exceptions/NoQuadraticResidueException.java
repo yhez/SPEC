@@ -21,21 +21,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
  */
 public class NoQuadraticResidueException extends ECException {
 
-    /**
-     * Default constructor. Calls super-constructor with no message.
-     */
-    public NoQuadraticResidueException() {
-        super();
-    }
 
-    /**
-     * Constructs NoQuadraticResidueException with the message:<br>
-     * NoQuadraticResidueException:<br>
-     * a = <tt>a</tt> is not a quadratic residue mod p = <tt>p</tt>.
-     *
-     * @param a the value to calculate the square root from
-     * @param p characteristic of the underlying field
-     */
     public NoQuadraticResidueException(FlexiBigInt a, FlexiBigInt p) {
         super("NoQuadraticResidueException:\na = " + a + " is not"
                 + "a quadratic residue mod p = " + p + ".");

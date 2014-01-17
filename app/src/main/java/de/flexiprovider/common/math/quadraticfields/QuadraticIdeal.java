@@ -87,7 +87,7 @@ public class QuadraticIdeal {
 
     public static QuadraticIdeal octetsToIdeal(FlexiBigInt discriminant,
                                                byte[] M) throws IQEncodingException {
-        QuadraticIdeal I = null;
+        QuadraticIdeal I;
         IQClassGroup classGroup = new IQClassGroup(discriminant);
         FlexiBigInt tmp = IntegerFunctions.squareRoot(discriminant.abs()
                 .divide(FlexiBigInt.valueOf(3)));
