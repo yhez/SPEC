@@ -39,7 +39,7 @@ public class InviteToGroup extends DialogFragment {
                 FilesManagement.createGroupFileToSend(getActivity(),bb);
                 InviteToGroup.this.getDialog().cancel();
                 Intent intent = new Intent(getActivity(), SendMsg.class);
-                intent.putExtra("group",true);
+                intent.putExtra("type",SendMsg.INVITE_GROUP);
                 intent.putExtra("contactId", c.getId());
                 startActivity(intent);
             }

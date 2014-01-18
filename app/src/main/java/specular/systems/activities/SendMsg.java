@@ -31,6 +31,8 @@ import specular.systems.ContactsDataSource;
 import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.FilesManagement;
+import specular.systems.Group;
+import specular.systems.GroupDataSource;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
 import specular.systems.Visual;
@@ -39,10 +41,13 @@ import zxing.WriterException;
 
 public class SendMsg extends Activity {
     private static final int FILE = 0, IMAGE = 1, BOTH = 2;
+    public static final int CONTACT=1,MESSAGE=2,INVITE_GROUP=3,MESSAGE_FOR_GROUP=4,BACKUP=5;
     private static boolean done = false;
     private static List<ResolveInfo> file, image, both;
     ArrayList<Uri> uris;
     Contact contact;
+    Group group;
+    int type=-1;
 
 
     @Override
@@ -54,11 +59,12 @@ public class SendMsg extends Activity {
         }
         uris = FilesManagement.getFilesToSend(this);
         long id = getIntent().getLongExtra("contactId", -1);
-        boolean group = getIntent().getBooleanExtra("group",false);
-        if (id != -1||group)
+        type= getIntent().getIntExtra("type",-1);
+        if (type==MESSAGE||type==INVITE_GROUP)
             contact = ContactsDataSource.contactsDataSource.findContact(id);
-        else
-            contact = null;
+        else if(type==MESSAGE_FOR_GROUP){
+            group = GroupDataSource.groupDataSource.findGroup(id);
+        }
         if (contact == null || contact.getDefaultApp() == null) {
             show();
         } else {
@@ -219,12 +225,26 @@ public class SendMsg extends Activity {
         ComponentName cn;
         cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
         Intent i = new Intent();
-        if (contact != null) {
+        if (type ==MESSAGE) {
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
             i.putExtra(Intent.EXTRA_SUBJECT,
                     getResources().getString(R.string.subject_encrypt));
             try {
                 InputStream is = getAssets().open("spec_tmp_msg.html");
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+            } catch (Exception e) {
+                Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
+                        .show();
+            }
+        }else if(type==INVITE_GROUP){
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{group.getEmail()});
+            i.putExtra(Intent.EXTRA_SUBJECT,"attached a group");
+            try {
+                InputStream is = getAssets().open("spec_tmp_invite.html");
                 int size = is.available();
                 byte[] buffer = new byte[size];
                 is.read(buffer);

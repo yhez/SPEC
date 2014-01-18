@@ -68,11 +68,13 @@ public class AddContactDlg extends DialogFragment {
                         if (FragmentManagement.currentLayout == R.layout.encrypt) {
                             Main.main.contactChosen(true,c.getId());
                         }
+                        StaticVariables.fileContactCard=null;
 
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        StaticVariables.fileContactCard=null;
                         AddContactDlg.this.getDialog().cancel();
                     }
                 });

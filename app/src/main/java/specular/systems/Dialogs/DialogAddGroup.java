@@ -12,6 +12,7 @@ import specular.systems.Group;
 import specular.systems.GroupDataSource;
 import specular.systems.R;
 import specular.systems.StaticVariables;
+import specular.systems.activities.Main;
 
 
 public class DialogAddGroup extends DialogFragment {
@@ -30,6 +31,7 @@ public class DialogAddGroup extends DialogFragment {
                 Group g = new Group(StaticVariables.decryptedGroup);
                 Group d = GroupDataSource.groupDataSource.findGroupByPublic(g.getPublicKey());
                 if(d!=null){
+                    Main.main.contactChosen(false,d.getId());
                     Toast t = Toast.makeText(getActivity(),"group with the same session already exist",Toast.LENGTH_SHORT);
                     t.setGravity(Gravity.CENTER,0,0);
                     t.show();

@@ -74,7 +74,6 @@ public class FragmentManagement extends Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case TURN_TEXT_TRIGGER:
-                    //todo make a better trigger, this one causes problems
                     EditText et = (EditText) rootView.findViewById(R.id.message);
                     String ss = et.getText() + "";
                     et.setText(" " + ss);
@@ -122,7 +121,7 @@ public class FragmentManagement extends Fragment {
                 rp.setImageResource(notOk);
         }
         rootView.findViewById(R.id.answer).setVisibility(View.GONE);
-        ((TextView) rootView.findViewById(R.id.general_details)).setText(getString(R.string.light_msg_message_created_at) + StaticVariables.timeStamp);
+        ((TextView) rootView.findViewById(R.id.general_details)).setText(getString(R.string.light_msg_message_created_at) +"   "+ StaticVariables.timeStamp);
         ((TextView) rootView.findViewById(R.id.flag_contact_exist)).setText(true + "");
         ((TextView) rootView.findViewById(R.id.decrypted_msg)).setText(StaticVariables.msg_content);
     }
@@ -520,7 +519,6 @@ public class FragmentManagement extends Fragment {
                 textView.setText(CryptMethods.getPublic());
                 //textView.
                 final FrameLayout frameLayout = (FrameLayout) rootView.findViewById(R.id.touch);
-                //todo find a better way to implement that
                 frameLayout.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -663,8 +661,7 @@ public class FragmentManagement extends Fragment {
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-                        Message msg = hndl.obtainMessage(TURN_TEXT_TRIGGER);
-                        hndl.sendMessage(msg);
+                        hndl.sendEmptyMessage(TURN_TEXT_TRIGGER);
                     }
                 });
                 if (StaticVariables.currentText != null)
@@ -730,7 +727,6 @@ public class FragmentManagement extends Fragment {
                 break;
             case R.layout.explorer:
                 ListView lv = (ListView) rootView.findViewById(R.id.list);
-                File folder;
                 if (StaticVariables.path == null)
                     StaticVariables.path = Environment.getExternalStorageDirectory();
                 final ArrayList<String> files = new ArrayList<String>();
@@ -814,7 +810,6 @@ public class FragmentManagement extends Fragment {
                 break;
         }
         Visual.setAllFonts(getActivity(), (ViewGroup) rootView);
-        //todo for some reason this font doesn't act properly in android 4.4
         if(!(currentLayout==encrypt))
             rootView.animate().setDuration(500).alpha(1).start();
         Main.main.invalidateOptionsMenu();

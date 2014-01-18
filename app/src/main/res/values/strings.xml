@@ -260,6 +260,7 @@
     <string name="sent_but_not_recieved">you sent your session, but didn\'t get one back yet from contact.</string>
     <string name="hide_session_words">-xxx xxx-</string>
     <string name="hide_secret_sign">-x-</string>
+    <string name="backup_progress">backing up...</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>

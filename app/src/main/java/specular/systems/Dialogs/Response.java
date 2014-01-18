@@ -132,6 +132,7 @@ public class Response extends DialogFragment {
                         prgd.cancel();
                         if (success) {
                             Intent intent = new Intent(getActivity(), SendMsg.class);
+                            intent.putExtra("type",SendMsg.MESSAGE);
                             intent.putExtra("contactId", contact!=null?contact.getId():group.getId());
                             startActivity(intent);
                         } else {

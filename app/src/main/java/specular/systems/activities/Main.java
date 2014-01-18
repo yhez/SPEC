@@ -224,7 +224,7 @@ public class Main extends FragmentActivity {
         }
     }
 
-    void encryptManager() {
+    void encryptManager(final int type) {
         if (contact != null)
             StaticVariables.luc.change(this, contact);
         final ProgressDlg prgd = new ProgressDlg(this, R.string.encrypting);
@@ -241,7 +241,7 @@ public class Main extends FragmentActivity {
                         sss);
                 byte[] data = CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
                         contact != null ? contact.getPublicKey() : group.getPublicKey()).getBytes();
-                sendMessage(data);
+                sendMessage(data,type);
                 prgd.cancel();
                 msgSended = true;
             }
@@ -263,7 +263,7 @@ public class Main extends FragmentActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
                 contact = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
-                encryptManager();
+                encryptManager(SendMsg.MESSAGE);
                 break;
             case R.id.open_file:
                 Intent oi = FilesManagement.openFile(StaticVariables.file_name);
@@ -490,7 +490,7 @@ public class Main extends FragmentActivity {
                         group = GroupDataSource.groupDataSource.findGroup(id);
                     else
                         contact = ContactsDataSource.contactsDataSource.findContact(id);
-                    encryptManager();
+                    encryptManager(SendMsg.MESSAGE);
                 } else {
                     t.setText(R.string.send_orders);
                     t.show();
@@ -508,14 +508,9 @@ public class Main extends FragmentActivity {
             case R.layout.decrypt:
                 Intent intent = new Intent(Main.this, StartScan.class);
                 intent.putExtra("type", StartScan.MESSAGE);
-                startActivityForResult(intent, SCAN_CONTACT);
+                startActivityForResult(intent, SCAN_MESSAGE);
                 break;
         }
-    }
-
-    public void onClickFilter(View v) {
-        Intent intt = new Intent(this, StartScan.class);
-        startActivityForResult(intt, SCAN_CONTACT);
     }
 
     @Override
@@ -813,7 +808,7 @@ public class Main extends FragmentActivity {
                                     mi3.setIcon(R.drawable.after_attached);
                                 else
                                     mi3.setIcon(R.drawable.attachment);
-                            }else{
+                            } else {
                                 mi3.setVisible(false);
                             }
                         }
@@ -821,7 +816,7 @@ public class Main extends FragmentActivity {
                 } else {
                     if (GroupDataSource.fullListG == null || GroupDataSource.fullListG.size() == 0) {
                         mi.setVisible(false);
-                    }else if(ContactsDataSource.fullList==null||ContactsDataSource.fullList.size()==0){
+                    } else if (ContactsDataSource.fullList == null || ContactsDataSource.fullList.size() == 0) {
                         mi3.setVisible(false);
                     } else {
                         if (tv != null && tv.getText().toString().length() != 0) {
@@ -1124,7 +1119,7 @@ public class Main extends FragmentActivity {
                 AddContactDlg acd = new AddContactDlg(StaticVariables.fileContactCard, null, id);
                 acd.show(getFragmentManager(), "acd");
             } else {
-                //todo if we removed contacts screen and contact already exist call contactChosen()
+                contactChosen(true, c.getId());
                 StaticVariables.fileContactCard = null;
                 t.setText(R.string.contact_exist);
                 t.show();
@@ -1142,7 +1137,7 @@ public class Main extends FragmentActivity {
                 public void run() {
                     synchronized (this) {
                         try {
-                            ((Object)this).wait(2000);
+                            ((Object) this).wait(2000);
                             exit = false;
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -1168,7 +1163,7 @@ public class Main extends FragmentActivity {
                 case R.layout.encrypt:
                     TextView contactChosen = (TextView) findViewById(R.id.contact_id_to_send);
                     EditText etMessage = (EditText) findViewById(R.id.message);
-                    TextView fileLength = (TextView)findViewById(R.id.file_content_length);
+                    TextView fileLength = (TextView) findViewById(R.id.file_content_length);
                     boolean clearedSomething = false;
                     if (etMessage.getText().length() > 0) {
                         clearedSomething = true;
@@ -1202,9 +1197,10 @@ public class Main extends FragmentActivity {
                         invalidateOptionsMenu();
                     break;
                 case R.layout.decrypted_msg:
-                    if (StaticVariables.flag_msg) {
+                    if (StaticVariables.flag_msg || StaticVariables.flag_light_msg) {
                         t.setText(R.string.notify_msg_deleted);
                         t.show();
+                        LightMessage.decryptedLightMsg = null;
                         MessageFormat.decryptedMsg = null;
                         FilesManagement.deleteTempDecryptedMSG(this);
                     }
@@ -1275,7 +1271,7 @@ public class Main extends FragmentActivity {
         }
     }
 
-    void sendMessage(byte[] data) {
+    void sendMessage(byte[] data,int type) {
         boolean success = FilesManagement.createFilesToSend(this, (userInput.length() +
                 (StaticVariables.fileContent != null ?
                         StaticVariables.fileContent.length : 0)) <
@@ -1284,6 +1280,7 @@ public class Main extends FragmentActivity {
             hndl.sendEmptyMessage(CLEAR_FOCUS);
             Intent intent = new Intent(this, SendMsg.class);
             intent.putExtra("contactId", contact != null ? contact.getId() : group.getId());
+            intent.putExtra("type",type);
             startActivity(intent);
         } else {
             Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
@@ -1294,6 +1291,7 @@ public class Main extends FragmentActivity {
         boolean success = FilesManagement.createBackupFileToSend(this, data);
         if (success) {
             Intent intent = new Intent(this, SendMsg.class);
+            intent.putExtra("type",SendMsg.BACKUP);
             startActivity(intent);
         } else {
             hndl.sendEmptyMessage(77);
@@ -1316,15 +1314,17 @@ public class Main extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        PendingIntent pi = PendingIntent.getActivity(this, 0,
-                new Intent(this, getClass())
-                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        IntentFilter tagDetected = new IntentFilter(
-                NfcAdapter.ACTION_TAG_DISCOVERED);
-        IntentFilter[] filters = new IntentFilter[]{tagDetected};
-        NfcAdapter
-                .getDefaultAdapter(this)
-                .enableForegroundDispatch(this, pi, filters, null);
+        if (NfcAdapter.getDefaultAdapter(this) != null && NfcAdapter.getDefaultAdapter(this).isEnabled()) {
+            PendingIntent pi = PendingIntent.getActivity(this, 0,
+                    new Intent(this, getClass())
+                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+            IntentFilter tagDetected = new IntentFilter(
+                    NfcAdapter.ACTION_TAG_DISCOVERED);
+            IntentFilter[] filters = new IntentFilter[]{tagDetected};
+            NfcAdapter
+                    .getDefaultAdapter(this)
+                    .enableForegroundDispatch(this, pi, filters, null);
+        }
         if (StaticVariables.flag_msg != null && StaticVariables.flag_msg) {
             FilesManagement.getTempDecryptedMSG(this);
         }
@@ -1364,7 +1364,7 @@ public class Main extends FragmentActivity {
                 }
                 break;
             case R.id.button2:
-                final ProgressDlg prgd = new ProgressDlg(this, R.string.encrypting);
+                final ProgressDlg prgd = new ProgressDlg(this, R.string.backup_progress);
                 prgd.setCancelable(false);
                 prgd.show();
                 new Thread(new Runnable() {
@@ -1486,7 +1486,7 @@ public class Main extends FragmentActivity {
                         hndl.sendEmptyMessage(PROGRESS);
                         synchronized (this) {
                             try {
-                                ((Object)this).wait(10);
+                                ((Object) this).wait(10);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -1522,6 +1522,11 @@ public class Main extends FragmentActivity {
                 findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).setVisibility(View.VISIBLE);
             }
         }
+        ViewPager vp = (ViewPager) findViewById(R.id.pager);
+        if (vp.getCurrentItem() == 0 && !contact)
+            vp.setCurrentItem(1, true);
+        else if (vp.getCurrentItem() == 1 && contact)
+            vp.setCurrentItem(0, true);
         final View root = findViewById(contact ? ContactsGroup.CONTACTS : ContactsGroup.GROUPS);
         root.findViewById(R.id.list).setVisibility(View.GONE);
         root.findViewById(R.id.no_contacts).setVisibility(View.GONE);

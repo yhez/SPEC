@@ -115,6 +115,7 @@ public class QuickMsg extends Activity {
                                     if (success) {
                                         prgd.cancel();
                                         Intent intent = new Intent(QuickMsg.this, SendMsg.class);
+                                        intent.putExtra("type",SendMsg.MESSAGE);
                                         intent.putExtra("contactId", contact.getId());
                                         startActivity(intent);
                                     } else {

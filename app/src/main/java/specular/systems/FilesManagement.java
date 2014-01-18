@@ -150,13 +150,6 @@ public final class FilesManagement {
                 FileOutputStream fos2;
                 fos2 = a.openFileOutput(a.getString(QR_NAME_SEND),
                         Context.MODE_WORLD_READABLE);
-                //todo add this lines to add the contact card to the qr png
-                //we should check does facebook sends the original pictures? does whatsup? does gmail?
-                //todo ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                //todo bitmap.compress(Bitmap.CompressFormat.PNG, 90,stream);
-                //todo stream.write(StaticVariables.encryptedMsgToSend.getBytes());
-                //todo byte[] test = stream.toByteArray();
-                //todo fos2.write(test);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos2);
                 fos2.close();
             } catch (FileNotFoundException e) {
