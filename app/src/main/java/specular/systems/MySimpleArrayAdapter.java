@@ -29,6 +29,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
     private static List<Contact> list;
     int type;
     private Activity a;
+    private ArrayList<bmp> fullList = new ArrayList<bmp>();
     private ArrayList<bmp> lstBmp = new ArrayList<bmp>();
 
     public MySimpleArrayAdapter(Activity a, int type) {
@@ -42,7 +43,8 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
             ContactsDataSource.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
         }
         for (Contact c : list)
-            lstBmp.add(new bmp(c));
+            fullList.add(new bmp(c));
+        lstBmp = fullList;
     }
 
     public static MySimpleArrayAdapter getAdapter() {
@@ -53,23 +55,23 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
         for (int a = 0; a < ContactsDataSource.fullList.size(); a++)
             if (ContactsDataSource.fullList.get(a).getId() == c.getId()) {
                 ContactsDataSource.fullList.remove(a);
-                lstBmp.remove(a);
+                fullList.remove(a);
                 break;
             }
         ContactsDataSource.fullList.add(c);
-        lstBmp.add(new bmp(c));
+        fullList.add(new bmp(c));
         refreshList(aa);
     }
 
     public void removeCont(Activity a, int index) {
         ContactsDataSource.fullList.remove(index);
-        lstBmp.remove(index);
+        fullList.remove(index);
         refreshList(a);
     }
 
     public void addCont(Activity a, Contact c) {
         ContactsDataSource.fullList.add(c);
-        lstBmp.add(new bmp(c));
+        fullList.add(new bmp(c));
         refreshList(a);
     }
 
@@ -82,7 +84,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                         .compareTo((contact2.getContactName().toLowerCase() + contact2.getEmail().toLowerCase()));
             }
         });
-
+        lstBmp=fullList;
         Collections.sort(lstBmp, new Comparator<bmp>() {
             @Override
             public int compare(bmp contact, bmp contact2) {
@@ -103,9 +105,12 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
         }
     }
 
-    public static void showOriginal() {
+    public void showOriginal() {
         if (list != ContactsDataSource.fullList) {
             list = ContactsDataSource.fullList;
+        }
+        if(fullList!=lstBmp){
+            lstBmp=fullList;
         }
     }
 
@@ -205,11 +210,13 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
                 ArrayList<Contact> FilteredArrayNames = new ArrayList<Contact>();
+                lstBmp = new ArrayList<bmp>();
                 constraint = constraint.toString().toLowerCase();
                 for (int i = 0; i < ContactsDataSource.fullList.size(); i++) {
                     String dataNames = ContactsDataSource.fullList.get(i).getEmail() + ContactsDataSource.fullList.get(i).getContactName();
                     if (dataNames.toLowerCase().contains(constraint.toString())) {
                         FilteredArrayNames.add(ContactsDataSource.fullList.get(i));
+                        lstBmp.add(fullList.get(i));
                     }
                 }
                 results.values = FilteredArrayNames;
@@ -223,7 +230,8 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
             a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).setVisibility(View.GONE);
             ((TextView) a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.no_contacts)).setText(R.string.no_result_filter);
             a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
-        } else {
+        } else if(a.findViewById(R.id.contact_id_to_send)==null
+                ||((TextView)a.findViewById(R.id.contact_id_to_send)).getText().length()==0){
             a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.no_contacts).setVisibility(View.GONE);
             a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).setVisibility(View.VISIBLE);
         }

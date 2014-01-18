@@ -28,9 +28,9 @@ import static specular.systems.R.layout.edit_contact;
 public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
     private static GroupsAdapter adapter;
     private static List<Group> list;
+    private ArrayList<bmp> fullList = new ArrayList<bmp>();
     private ArrayList<bmp> lstBmp = new ArrayList<bmp>();
 
-    int type;
     private Activity a;
 
     public GroupsAdapter(Activity a) {
@@ -42,8 +42,9 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
             GroupDataSource.fullListG = GroupDataSource.groupDataSource.getAllGroups();
         }
         list = GroupDataSource.fullListG;
-        for(Group c:list)
-            lstBmp.add(new bmp(c));
+        for (Group c : list)
+            fullList.add(new bmp(c));
+        lstBmp=fullList;
     }
 
     public static GroupsAdapter getAdapter() {
@@ -54,28 +55,29 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
         for (int a = 0; a < GroupDataSource.fullListG.size(); a++)
             if (GroupDataSource.fullListG.get(a).getId() == c.getId()) {
                 GroupDataSource.fullListG.remove(a);
-                lstBmp.remove(a);
+                fullList.remove(a);
                 break;
             }
         GroupDataSource.fullListG.add(c);
-        lstBmp.add(new bmp(c));
-            refreshList(aa);
+        fullList.add(new bmp(c));
+        refreshList(aa);
     }
 
     public void removeCont(Activity a, int index) {
         GroupDataSource.fullListG.remove(index);
-        lstBmp.remove(index);
-            refreshList(a);
+        fullList.remove(index);
+        refreshList(a);
     }
 
     public void addCont(Activity a, Group c) {
         GroupDataSource.fullListG.add(c);
-        lstBmp.add(new bmp(c));
-            refreshList(a);
+        fullList.add(new bmp(c));
+        refreshList(a);
     }
 
     private void refreshList(Activity a) {
         list = GroupDataSource.fullListG;
+        lstBmp = fullList;
         Collections.sort(list, new Comparator<Group>() {
             @Override
             public int compare(Group contact, Group contact2) {
@@ -99,13 +101,16 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
                     v.setVisibility(View.GONE);
                     a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
                 }
-                adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
         }
     }
 
-    public static void showOriginal() {
+    public void showOriginal() {
         if (list != GroupDataSource.fullListG) {
             list = GroupDataSource.fullListG;
+        }
+        if(fullList!=lstBmp){
+            lstBmp=fullList;
         }
     }
 
@@ -126,8 +131,8 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        if (convertView == null||
-                !((TextView)convertView.findViewById(R.id.id_contact)).getText().equals(getItem(position).getId()+"")) {
+        if (convertView == null ||
+                !((TextView) convertView.findViewById(R.id.id_contact)).getText().equals(getItem(position).getId() + "")) {
             LayoutInflater inflater = a.getLayoutInflater();
             convertView = inflater.inflate(R.layout.list_row, parent, false);
             final Group c = list.get(position);
@@ -210,11 +215,13 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
                 ArrayList<Group> FilteredArrayNames = new ArrayList<Group>();
+                lstBmp = new ArrayList<bmp>();
                 constraint = constraint.toString().toLowerCase();
                 for (int i = 0; i < GroupDataSource.fullListG.size(); i++) {
                     String dataNames = GroupDataSource.fullListG.get(i).getEmail() + GroupDataSource.fullListG.get(i).getGroupName();
                     if (dataNames.toLowerCase().contains(constraint.toString())) {
                         FilteredArrayNames.add(GroupDataSource.fullListG.get(i));
+                        lstBmp.add(fullList.get(i));
                     }
                 }
                 results.values = FilteredArrayNames;
@@ -228,17 +235,20 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
             a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).setVisibility(View.GONE);
             ((TextView) a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts)).setText(R.string.no_result_filter);
             a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
-        } else {
+        } else if(a.findViewById(R.id.contact_id_to_send)==null
+                ||((TextView)a.findViewById(R.id.contact_id_to_send)).getText().length()==0){
             a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts).setVisibility(View.GONE);
             a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).setVisibility(View.VISIBLE);
         }
     }
-    private class bmp{
+
+    private class bmp {
         String nameEmail;
         Bitmap bitmap;
-        public bmp(Group c){
-            bitmap=c.getPhoto();
-            nameEmail=c.getGroupName().toLowerCase()+c.getEmail().toLowerCase();
+
+        public bmp(Group c) {
+            bitmap = c.getPhoto();
+            nameEmail = c.getGroupName().toLowerCase() + c.getEmail().toLowerCase();
         }
     }
 }

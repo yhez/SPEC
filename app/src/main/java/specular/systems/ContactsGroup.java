@@ -49,10 +49,13 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
             ListView lv = (ListView) rootView.findViewById(R.id.list);
             if (currentLayout == CONTACTS) {
                 rootView.setId(CONTACTS);
-                MySimpleArrayAdapter.showOriginal();
-                lv.setAdapter(MySimpleArrayAdapter.getAdapter()==null
-                        ?new MySimpleArrayAdapter(getActivity(),MySimpleArrayAdapter.EDIT)
-                        :MySimpleArrayAdapter.getAdapter());
+                MySimpleArrayAdapter ms = MySimpleArrayAdapter.getAdapter();
+                if(ms!=null){
+                    ms.showOriginal();
+                    lv.setAdapter(ms);
+                }
+                else
+                    lv.setAdapter(new MySimpleArrayAdapter(getActivity(), MySimpleArrayAdapter.EDIT));
                 if (ContactsDataSource.fullList.size() == 0) {
                     tv.setVisibility(View.VISIBLE);
                     lv.setVisibility(View.GONE);
@@ -62,10 +65,12 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
                 }
             } else if (currentLayout == GROUPS) {
                 rootView.setId(GROUPS);
-                GroupsAdapter.showOriginal();
-                lv.setAdapter(GroupsAdapter.getAdapter()==null
-                        ?new GroupsAdapter(getActivity())
-                        :GroupsAdapter.getAdapter());
+                GroupsAdapter ga = GroupsAdapter.getAdapter();
+                if(ga!=null){
+                    ga.showOriginal();
+                    lv.setAdapter(ga);
+                }else
+                    lv.setAdapter(new GroupsAdapter(getActivity()));
                 if(GroupDataSource.fullListG.size()==0){
                     tv.setText(R.string.there_is_no_groups);
                     tv.setVisibility(View.VISIBLE);
