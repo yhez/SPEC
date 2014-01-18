@@ -23,15 +23,16 @@ public class Backup {
             my_details = details.getBytes();
         }
         int size = my_details.length;
+        byte[] del = ContactDelimiter.getBytes();
+        int delSize = del.length;
         byte[][] contacts = new byte[contactList.size()][];
         for (int b = 0; b < contactList.size(); b++) {
             contacts[b] = contact2Bytes(contactList.get(b));
             size += contacts[b].length;
+            size += delSize;
         }
 
         //TODO: add a nonce to encryption - sha256(private key)
-        byte[] del = ContactDelimiter.getBytes();
-        int delSize = del.length;
         byte[] finalResult = new byte[size+1];
         System.arraycopy(my_details, 0, finalResult, 0, my_details.length);
         int location = my_details.length;
