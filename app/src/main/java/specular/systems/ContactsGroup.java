@@ -46,20 +46,21 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
             View rootView = layoutInflater.inflate(R.layout.list, container, false);
             StaticVariables.luc.showIfNeeded(getActivity(), rootView);
             TextView tv = (TextView) rootView.findViewById(R.id.no_contacts);
-            ListView lv = (ListView) rootView.findViewById(R.id.list);
+            final ListView lv = (ListView) rootView.findViewById(R.id.list);
             if (currentLayout == CONTACTS) {
                 rootView.setId(CONTACTS);
                 MySimpleArrayAdapter ms = MySimpleArrayAdapter.getAdapter();
                 if(ms!=null){
-                    ms.setFlag(ms.EDIT);
                     ms.showOriginal();
-                    lv.setAdapter(ms);
                 }
-                else{
-                    MySimpleArrayAdapter mas = new MySimpleArrayAdapter(getActivity());
-                    mas.setFlag(MySimpleArrayAdapter.EDIT);
-                    lv.setAdapter(mas);
-                }
+                final MySimpleArrayAdapter mas = ms!=null?ms:new MySimpleArrayAdapter(getActivity());
+                mas.setFlag(MySimpleArrayAdapter.EDIT);
+                lv.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        lv.setAdapter(mas);
+                    }
+                },300);
                 if (ContactsDataSource.fullList.size() == 0) {
                     tv.setVisibility(View.VISIBLE);
                     lv.setVisibility(View.GONE);
@@ -72,9 +73,14 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
                 GroupsAdapter ga = GroupsAdapter.getAdapter();
                 if(ga!=null){
                     ga.showOriginal();
-                    lv.setAdapter(ga);
-                }else
-                    lv.setAdapter(new GroupsAdapter(getActivity()));
+                }
+                final GroupsAdapter groupsAdapter = ga!=null?ga:new GroupsAdapter(getActivity());
+                lv.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        lv.setAdapter(groupsAdapter);
+                    }
+                }, 300);
                 if(GroupDataSource.fullListG.size()==0){
                     tv.setText(R.string.there_is_no_groups);
                     tv.setVisibility(View.VISIBLE);
