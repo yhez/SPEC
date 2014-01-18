@@ -45,27 +45,27 @@ public class Backup {
 
         finalResult[finalResult.length-1]=(byte)FileParser.getFlag(FileParser.ENCRYPTED_BACKUP);
         //TODO: encrypt finalResult
+
         return finalResult;
     }
 
     //TODO:4. groups support
     public static ArrayList<Contact> restore(byte[] data) {
-        //return ByteBuffer.allocate(4).putInt(yourInt).array();
         byte[] del = ContactDelimiter.getBytes();
-        int delLength = del.length, endPos = data.length, startPos = 0, i=0;
-        byte[] temp = new byte[endPos];
+        String DataTemp = new String(data);
         boolean myDetails = false;
         ArrayList<Contact> contactList = new ArrayList<Contact>();
+        Pattern pattern = Pattern.compile(ContactDelimiter, Pattern.LITERAL);
+
+        String[] contactsString = pattern.split(DataTemp, -1);
 
         conflicts = 0;
-        while(endPos > startPos){
-            Contact c;
-            //TODO: add check nonce logic - sha256(private key)
-            int pos = java.util.Arrays.asList(data).indexOf(del);
-            c = bytes2Contact(java.util.Arrays.copyOfRange(data,startPos,pos-1), myDetails);
+        //TODO: add check nonce logic - sha256(private key)
+        for(int i = 0; i < contactsString.length; i++){
+            Contact c = null;
+            c = string2Contact(contactsString[i], myDetails);
             if (c != null){
                 contactList.add(i,c);
-                i++;
                 // TODO: add enum for the search
                 if (conflicts < 3){
                     // searching for existing contact by email
@@ -76,14 +76,9 @@ public class Backup {
                     if ((conflicts == 0 || conflicts == 1) && checkPK(c)){
                         conflicts+=2;
                     }
-                    //if oth found will be 3
+                    //if both found conflicts will be 3
                 }
             }
-
-            // new start point for the copy
-            startPos+= (pos+delLength-1);
-            // help to change the current instance of the delimiter to go for the next one
-            data[pos] = 'a';
 
             // change the loop so only first contact considered as the user
             myDetails = true;
@@ -136,12 +131,11 @@ public class Backup {
         }
     }
 
-    private static Contact bytes2Contact(byte[] c, boolean myDetails){
-        String str = new String(c);
+    private static Contact string2Contact(String c, boolean myDetails){
         Pattern pattern = Pattern.compile(Delimiter, Pattern.LITERAL);
         Contact tempContact;
 
-        String[] details = pattern.split(str, -1);
+        String[] details = pattern.split(c, -1);
         if (!myDetails){
             tempContact = new Contact(1,details[0], details[1],0,0,0,0,details[2],"","");
         }
