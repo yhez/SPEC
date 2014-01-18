@@ -276,7 +276,6 @@ public class FragmentManagement extends Fragment {
                     String[] ownDet = currContact.getOwnerDetails();
                     ((TextView) ll.findViewById(R.id.name)).setText(ownDet[0]);
                     ((TextView) ll.findViewById(R.id.email)).setText(ownDet[1]);
-                    ((TextView) ll.findViewById(R.id.public_)).setText(ownDet[2]);
                     ((CheckBox) ll.findViewById(R.id.reinvite)).setChecked(currContact.getLimitInvite());
                     if(currContact.getLimitInvite()&&!currContact.getOwnerDetails()[2].equals(CryptMethods.getPublic()))
                         ll.findViewById(R.id.invite).setVisibility(View.GONE);
@@ -733,7 +732,6 @@ public class FragmentManagement extends Fragment {
                 Collections.addAll(files, StaticVariables.path.list());
                 final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, files);
                 lv.setAdapter(adapter);
-                //adapter.notifyDataSetChanged();
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

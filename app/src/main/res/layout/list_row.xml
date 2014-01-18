@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:paddingBottom="6dip"
     android:paddingLeft="6dip"
     android:paddingTop="6dip"
@@ -32,9 +32,6 @@
         android:layout_alignParentTop="true"
         android:gravity="center_vertical"
         android:id="@+id/icon"
-        android:src="@drawable/empty"
-        android:visibility="invisible"
-        android:alpha="0"
         android:layout_marginRight="6dip" />
 
     <LinearLayout

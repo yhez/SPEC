@@ -29,7 +29,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
     private static List<Contact> list;
     int type;
     private Activity a;
-
+    private ArrayList<Bitmap> lstBmp = new ArrayList<Bitmap>();
     public MySimpleArrayAdapter(Activity a, int type) {
         super(a, R.layout.list_row, list);
         list = ContactsDataSource.fullList;
@@ -40,6 +40,8 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
             ContactsDataSource.contactsDataSource = new ContactsDataSource(a);
             ContactsDataSource.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
         }
+        for(Contact c:list)
+            lstBmp.add(c.getPhoto());
     }
 
     public static MySimpleArrayAdapter getAdapter() {
@@ -96,8 +98,6 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
     public static void showOriginal() {
         if (list != ContactsDataSource.fullList) {
             list = ContactsDataSource.fullList;
-            if (adapter != null)
-                adapter.notifyDataSetChanged();
         }
     }
 
@@ -118,40 +118,47 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = a.getLayoutInflater();
-        View rowView;
-        if (type == EDIT)
-            rowView = inflater.inflate(R.layout.list_row, parent, false);
-        else
-            rowView = inflater.inflate(R.layout.simple_list_row, parent, false);
-        final Contact c = list.get(position);
-        TextView name = (TextView) rowView.findViewById(R.id.first_line);
-        TextView email = (TextView) rowView.findViewById(R.id.sec_line);
-        final ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-        TextView id = (TextView) rowView.findViewById(R.id.id_contact);
-        id.setText("" + c.getId());
-        if (type == EDIT) {
-            rowView.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Main.exit = false;
-                    Fragment fragment = new FragmentManagement();
-                    Bundle args = new Bundle();
-                    FragmentManagement.currentLayout = edit_contact;
-                    args.putInt("index", position);
-                    fragment.setArguments(args);
-                    FragmentManager fragmentManager = Main.main.getSupportFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.content_frame, fragment).commit();
-                }
-            });
-            rowView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Main.main.contactChosen(true,c.getId());
-                }
-            });
-        }
+        if (convertView == null ||
+                !((TextView) convertView.findViewById(R.id.id_contact)).getText().equals(getItem(position).getId() + "")) {
+            if (convertView == null) {
+                LayoutInflater inflater = a.getLayoutInflater();
+                if (type == EDIT)
+                    convertView = inflater.inflate(R.layout.list_row, parent, false);
+                else
+                    convertView = inflater.inflate(R.layout.simple_list_row, parent, false);
+            }
+            final Contact c = list.get(position);
+            TextView name = (TextView) convertView.findViewById(R.id.first_line);
+            TextView email = (TextView) convertView.findViewById(R.id.sec_line);
+            final ImageView imageView = (ImageView) convertView.findViewById(R.id.icon);
+            TextView id = (TextView) convertView.findViewById(R.id.id_contact);
+            id.setText("" + c.getId());
+            if (type == EDIT) {
+                convertView.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Main.exit = false;
+                        Fragment fragment = new FragmentManagement();
+                        Bundle args = new Bundle();
+                        FragmentManagement.currentLayout = edit_contact;
+                        args.putInt("index", position);
+                        fragment.setArguments(args);
+                        FragmentManager fragmentManager = Main.main.getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.content_frame, fragment).commit();
+                    }
+                });
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Main.main.contactChosen(true, c.getId());
+                    }
+                });
+            }
+            if(lstBmp.get(position)==null)
+                lstBmp.set(position,c.getPhoto());
+            imageView.setImageBitmap(lstBmp.get(position));
+            /*
         new Thread(new Runnable() {
             public void run() {
                 final Bitmap bitmap = c.getPhoto();
@@ -161,15 +168,17 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                         imageView.setImageBitmap(bitmap);
                         imageView.animate().setDuration(500).alpha(1f).start();
                     }
-                },250);
+                }, 250);
             }
-        }).start();
-        email.setText(c.getEmail());
-        email.setTypeface(FilesManagement.getOs(a));
-        name.setText(c.getContactName());
-        name.setTypeface(FilesManagement.getOs(a));
-        return rowView;
+        }).start();*/
+            email.setText(c.getEmail());
+            email.setTypeface(FilesManagement.getOs(a));
+            name.setText(c.getContactName());
+            name.setTypeface(FilesManagement.getOs(a));
+        }
+        return convertView;
     }
+
     //todo should be ok now, this method can probably deleted
     public void updateViewAfterFilter(Activity a) {
         this.a = a;

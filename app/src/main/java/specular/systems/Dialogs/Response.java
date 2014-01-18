@@ -132,7 +132,11 @@ public class Response extends DialogFragment {
                         prgd.cancel();
                         if (success) {
                             Intent intent = new Intent(getActivity(), SendMsg.class);
-                            intent.putExtra("type",SendMsg.MESSAGE);
+                            if(FragmentManagement.currentLayout==R.layout.decrypted_msg
+                                    ||getActivity().findViewById(R.id.group_details).getVisibility()==View.GONE)
+                                intent.putExtra("type",SendMsg.MESSAGE);
+                            else
+                                intent.putExtra("type",SendMsg.MESSAGE_FOR_GROUP);
                             intent.putExtra("contactId", contact!=null?contact.getId():group.getId());
                             startActivity(intent);
                         } else {

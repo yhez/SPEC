@@ -225,8 +225,9 @@ public class SendMsg extends Activity {
         ComponentName cn;
         cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
         Intent i = new Intent();
-        if (type ==MESSAGE) {
-            i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
+        if (type ==MESSAGE||type==MESSAGE_FOR_GROUP) {
+            String email = contact!=null?contact.getEmail():group.getEmail();
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
             i.putExtra(Intent.EXTRA_SUBJECT,
                     getResources().getString(R.string.subject_encrypt));
             try {

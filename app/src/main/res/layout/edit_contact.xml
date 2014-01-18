@@ -188,13 +188,6 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <TextView
-                android:textColor="@color/spec_black"
-                android:id="@+id/public_"
-                android:textSize="10sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"

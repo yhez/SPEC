@@ -247,7 +247,7 @@
     <string name="connecting_to_camera">1 second please, connecting...</string>
     <string name="force_nfc">Force NFC</string>
     <string name="limited_group">Limit Group Size</string>
-    <string name="group_owmer_detailes_title">Group Owner Details:</string>
+    <string name="group_owmer_detailes_title">Group creator Details:</string>
     <string name="invite_not_available">invitation disabled</string>
     <string name="nfc_is_required">NFC required</string>
     <string name="invite_to_the_group">invite a friend to the group</string>

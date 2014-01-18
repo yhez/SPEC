@@ -65,13 +65,12 @@ public class Contact {
     }
 
     public Bitmap getPhoto() {
-
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(publicKey, 128);
-        Bitmap bitmap = null;
         try {
-            bitmap = qrCodeEncoder.encodeAsBitmap();
+            return qrCodeEncoder.encodeAsBitmap();
         } catch (WriterException e) {
             e.printStackTrace();
+            return null;
         }
         /*int sqrSize;
         for (int x = 0; ; x++)
@@ -91,7 +90,6 @@ public class Contact {
                         for (int q = y * sqrSize; q < sqrSize * (y + 1); q++)
                             bitmap.setPixel(z, q, Color.parseColor("#"+color));
                             */
-        return bitmap;
     }
 
     public String getContactName() {

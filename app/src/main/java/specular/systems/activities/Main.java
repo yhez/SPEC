@@ -180,6 +180,9 @@ public class Main extends FragmentActivity {
                     DialogAddGroup dag = new DialogAddGroup();
                     dag.show(getFragmentManager(), "dag");
                     break;
+                case 777:
+                    contactChosen(true,(Long)msg.obj);
+                    break;
             }
         }
     };
@@ -486,11 +489,14 @@ public class Main extends FragmentActivity {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
                     long id = Long.parseLong(((TextView) findViewById(R.id.contact_id_to_send)).getText().toString());
-                    if (findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).getVisibility() == View.VISIBLE)
+                    if (findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).getVisibility() == View.VISIBLE){
                         group = GroupDataSource.groupDataSource.findGroup(id);
-                    else
+                        encryptManager(SendMsg.MESSAGE_FOR_GROUP);
+                    }
+                    else{
                         contact = ContactsDataSource.contactsDataSource.findContact(id);
-                    encryptManager(SendMsg.MESSAGE);
+                        encryptManager(SendMsg.MESSAGE);
+                    }
                 } else {
                     t.setText(R.string.send_orders);
                     t.show();
@@ -1108,7 +1114,7 @@ public class Main extends FragmentActivity {
         } else if (StaticVariables.fileContactCard != null) {
             FragmentManagement.currentPage = 0;
             selectItem(0, R.layout.encrypt, null);
-            Contact c = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.fileContactCard.getPublicKey());
+            final Contact c = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.fileContactCard.getPublicKey());
             if (c == null) {
                 Contact cc = ContactsDataSource.contactsDataSource.findContactByEmail(StaticVariables.fileContactCard.getEmail());
                 long id;
@@ -1119,7 +1125,21 @@ public class Main extends FragmentActivity {
                 AddContactDlg acd = new AddContactDlg(StaticVariables.fileContactCard, null, id);
                 acd.show(getFragmentManager(), "acd");
             } else {
-                contactChosen(true, c.getId());
+                //contactChosen(true, c.getId());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        synchronized (this){
+                            try {
+                                ((Object)this).wait(700);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        Message msg = hndl.obtainMessage(777,c.getId());
+                        hndl.sendMessage(msg);
+                    }
+                }).start();
                 StaticVariables.fileContactCard = null;
                 t.setText(R.string.contact_exist);
                 t.show();
@@ -1434,9 +1454,14 @@ public class Main extends FragmentActivity {
                 ing.show(getFragmentManager(), "ing");
                 break;
             case R.id.add_to_contact:
-                String pbk = ((TextView) findViewById(R.id.public_)).getText().toString();
-                String name = ((TextView) findViewById(R.id.name)).getText().toString();
-                String email = ((TextView) findViewById(R.id.email)).getText().toString();
+                grp = GroupDataSource
+                        .groupDataSource
+                        .findGroup(Long.parseLong(((TextView) findViewById(R.id.contact_id))
+                                .getText().toString()));
+                String[] det = grp.getOwnerDetails();
+                String pbk = det[2];
+                String name = det[1];
+                String email = det[0];
                 StaticVariables.fileContactCard = new ContactCard(this, pbk, email, name);
                 openByFile();
                 break;

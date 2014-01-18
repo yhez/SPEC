@@ -1,6 +1,7 @@
 package zxing;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -18,10 +19,23 @@ final public class QRCodeEncoder {
     public QRCodeEncoder(String data, int dimension) {
         this.dimension = dimension;
         //todo prevent too light colors
-        BLACK = 0xFF000000 + Integer.parseInt(data.substring(data.length() - 6), 16);
+        int red = Integer.parseInt(data.substring(data.length() - 2), 16);
+        int green = Integer.parseInt(data.substring(data.length() - 4,data.length()-2), 16);
+        int blue = Integer.parseInt(data.substring(data.length() - 6,data.length()-4), 16);
+        int third =85;
+        if(!(red<third||green<third||blue<third)){
+            red-=third;
+            green-=third;
+            blue-=third;
+        }
+        if(!(red<third||green<third||blue<third)){
+            red-=third;
+            green-=third;
+            blue-=third;
+        }
+        BLACK = Color.argb(0xFF,red,green,blue);
         encoded = encodeContents(data);
     }
-
     private boolean encodeContents(String data) {
             encodeQRCodeContents(data);
         return contents != null && contents.length() > 0;

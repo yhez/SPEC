@@ -28,6 +28,8 @@ import static specular.systems.R.layout.edit_contact;
 public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
     private static GroupsAdapter adapter;
     private static List<Group> list;
+    private ArrayList<Bitmap> lstBmp = new ArrayList<Bitmap>();
+
     int type;
     private Activity a;
 
@@ -40,6 +42,9 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
             GroupDataSource.fullListG = GroupDataSource.groupDataSource.getAllGroups();
         }
         list = GroupDataSource.fullListG;
+
+        for(Group c:list)
+            lstBmp.add(c.getPhoto());
     }
 
     public static GroupsAdapter getAdapter() {
@@ -96,8 +101,6 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
     public static void showOriginal() {
         if (list != GroupDataSource.fullListG) {
             list = GroupDataSource.fullListG;
-            if (adapter != null)
-                adapter.notifyDataSetChanged();
         }
     }
 
@@ -118,34 +121,35 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = a.getLayoutInflater();
-        View rowView;
-        rowView = inflater.inflate(R.layout.list_row, parent, false);
-        final Group c = list.get(position);
-        TextView name = (TextView) rowView.findViewById(R.id.first_line);
-        View bt = rowView.findViewById(R.id.scan);
-        bt.setVisibility(View.VISIBLE);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(a, StartScan.class);
-                i.putExtra("type",StartScan.MESSAGE);
-                i.putExtra("id",c.getId());
-                a.startActivityForResult(i,Main.SCAN_FOR_GROUP);
-            }
-        });
-        TextView email = (TextView) rowView.findViewById(R.id.sec_line);
-        final ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-        TextView id = (TextView) rowView.findViewById(R.id.id_contact);
-        id.setText("" + c.getId());
-            rowView.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
+        if (convertView == null||
+                !((TextView)convertView.findViewById(R.id.id_contact)).getText().equals(getItem(position).getId()+"")) {
+            LayoutInflater inflater = a.getLayoutInflater();
+            convertView = inflater.inflate(R.layout.list_row, parent, false);
+            final Group c = list.get(position);
+            TextView name = (TextView) convertView.findViewById(R.id.first_line);
+            View bt = convertView.findViewById(R.id.scan);
+            bt.setVisibility(View.VISIBLE);
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(a, StartScan.class);
+                    i.putExtra("type", StartScan.MESSAGE);
+                    i.putExtra("id", c.getId());
+                    a.startActivityForResult(i, Main.SCAN_FOR_GROUP);
+                }
+            });
+            TextView email = (TextView) convertView.findViewById(R.id.sec_line);
+            final ImageView imageView = (ImageView) convertView.findViewById(R.id.icon);
+            TextView id = (TextView) convertView.findViewById(R.id.id_contact);
+            id.setText("" + c.getId());
+            convertView.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Main.exit = false;
                     Fragment fragment = new FragmentManagement();
                     Bundle args = new Bundle();
                     FragmentManagement.currentLayout = edit_contact;
-                    args.putBoolean("groups",true);
+                    args.putBoolean("groups", true);
                     args.putInt("index", position);
                     fragment.setArguments(args);
                     FragmentManager fragmentManager = Main.main.getSupportFragmentManager();
@@ -153,30 +157,36 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
                             .replace(R.id.content_frame, fragment).commit();
                 }
             });
-            rowView.setOnClickListener(new View.OnClickListener() {
+            convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Main.main.contactChosen(false,c.getId());
+                    Main.main.contactChosen(false, c.getId());
                 }
             });
-        new Thread(new Runnable() {
-            public void run() {
-                final Bitmap bitmap = c.getPhoto();
-                imageView.postDelayed(new Runnable() {
-                    public void run() {
-                        imageView.setVisibility(View.VISIBLE);
-                        imageView.setImageBitmap(bitmap);
-                        imageView.animate().setDuration(500).alpha(1f).start();
-                    }
-                },100);
-            }
-        }).start();
-        email.setText(c.getEmail());
-        email.setTypeface(FilesManagement.getOs(a));
-        name.setText(c.getGroupName());
-        name.setTypeface(FilesManagement.getOs(a));
-        return rowView;
+            if(lstBmp.get(position)==null)
+                lstBmp.set(position,c.getPhoto());
+            imageView.setImageBitmap(lstBmp.get(position));
+/*
+            new Thread(new Runnable() {
+                public void run() {
+                    final Bitmap bitmap = c.getPhoto();
+                    imageView.postDelayed(new Runnable() {
+                        public void run() {
+                            imageView.setVisibility(View.VISIBLE);
+                            imageView.setImageBitmap(bitmap);
+                            imageView.animate().setDuration(500).alpha(1f).start();
+                        }
+                    }, 100);
+                }
+            }).start();*/
+            email.setText(c.getEmail());
+            email.setTypeface(FilesManagement.getOs(a));
+            name.setText(c.getGroupName());
+            name.setTypeface(FilesManagement.getOs(a));
+        }
+        return convertView;
     }
+
     //todo should be ok now, this method can probably deleted
     public void updateViewAfterFilter(Activity a) {
         this.a = a;

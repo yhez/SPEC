@@ -177,13 +177,12 @@ public class Group {
     }
     public Bitmap getPhoto() {
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(publicKey, 128);
-        Bitmap bitmap = null;
         try {
-            bitmap = qrCodeEncoder.encodeAsBitmap();
+            return qrCodeEncoder.encodeAsBitmap();
         } catch (WriterException e) {
             e.printStackTrace();
+            return null;
         }
-        return bitmap;
     }
     public void update(Activity a, String contactName, String email,
                        String publicKey, String session) {
