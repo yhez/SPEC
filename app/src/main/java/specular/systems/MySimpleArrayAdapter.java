@@ -29,7 +29,8 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
     private static List<Contact> list;
     int type;
     private Activity a;
-    private ArrayList<Bitmap> lstBmp = new ArrayList<Bitmap>();
+    private ArrayList<bmp> lstBmp = new ArrayList<bmp>();
+
     public MySimpleArrayAdapter(Activity a, int type) {
         super(a, R.layout.list_row, list);
         list = ContactsDataSource.fullList;
@@ -40,44 +41,52 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
             ContactsDataSource.contactsDataSource = new ContactsDataSource(a);
             ContactsDataSource.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
         }
-        for(Contact c:list)
-            lstBmp.add(c.getPhoto());
+        for (Contact c : list)
+            lstBmp.add(new bmp(c));
     }
 
     public static MySimpleArrayAdapter getAdapter() {
         return adapter;
     }
 
-    public static void updateCont(Activity aa, Contact c) {
+    public void updateCont(Activity aa, Contact c) {
         for (int a = 0; a < ContactsDataSource.fullList.size(); a++)
             if (ContactsDataSource.fullList.get(a).getId() == c.getId()) {
                 ContactsDataSource.fullList.remove(a);
+                lstBmp.remove(a);
                 break;
             }
         ContactsDataSource.fullList.add(c);
-        if (adapter != null)
-            refreshList(aa);
+        lstBmp.add(new bmp(c));
+        refreshList(aa);
     }
 
-    public static void removeCont(Activity a, int index) {
+    public void removeCont(Activity a, int index) {
         ContactsDataSource.fullList.remove(index);
-        if (adapter != null)
-            refreshList(a);
+        lstBmp.remove(index);
+        refreshList(a);
     }
 
-    public static void addCont(Activity a, Contact c) {
+    public void addCont(Activity a, Contact c) {
         ContactsDataSource.fullList.add(c);
-        if (adapter != null)
-            refreshList(a);
+        lstBmp.add(new bmp(c));
+        refreshList(a);
     }
 
-    private static void refreshList(Activity a) {
+    private void refreshList(Activity a) {
         list = ContactsDataSource.fullList;
         Collections.sort(list, new Comparator<Contact>() {
             @Override
             public int compare(Contact contact, Contact contact2) {
                 return (contact.getContactName().toLowerCase() + contact.getEmail().toLowerCase())
                         .compareTo((contact2.getContactName().toLowerCase() + contact2.getEmail().toLowerCase()));
+            }
+        });
+
+        Collections.sort(lstBmp, new Comparator<bmp>() {
+            @Override
+            public int compare(bmp contact, bmp contact2) {
+                return contact.nameEmail.compareTo(contact2.nameEmail);
             }
         });
         if (FragmentManagement.currentLayout == R.layout.encrypt) {
@@ -90,8 +99,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                     v.setVisibility(View.GONE);
                     a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
                 }
-            if (adapter != null)
-                adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -155,9 +163,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                     }
                 });
             }
-            if(lstBmp.get(position)==null)
-                lstBmp.set(position,c.getPhoto());
-            imageView.setImageBitmap(lstBmp.get(position));
+            imageView.setImageBitmap(lstBmp.get(position).bitmap);
             /*
         new Thread(new Runnable() {
             public void run() {
@@ -220,6 +226,16 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
         } else {
             a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.no_contacts).setVisibility(View.GONE);
             a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).setVisibility(View.VISIBLE);
+        }
+    }
+
+    private class bmp {
+        String nameEmail;
+        Bitmap bitmap;
+
+        public bmp(Contact c) {
+            bitmap = c.getPhoto();
+            nameEmail = c.getContactName().toLowerCase() + c.getEmail().toLowerCase();
         }
     }
 }

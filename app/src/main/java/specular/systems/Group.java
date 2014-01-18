@@ -160,11 +160,13 @@ public class Group {
         if (defaultApp != null) {
             this.defaultAPP=defaultApp;
             GroupDataSource.groupDataSource.updateDB(id, defaultApp);
-            GroupsAdapter.updateCont(a, this);
+            if(GroupsAdapter.getAdapter()!=null)
+                GroupsAdapter.getAdapter().updateCont(a, this);
         } else {
             this.defaultAPP = null;
             ContactsDataSource.contactsDataSource.updateDB(id, "");
-            GroupsAdapter.updateCont(a, this);
+            if(GroupsAdapter.getAdapter()!=null)
+                GroupsAdapter.getAdapter().updateCont(a, this);
         }
     }
     public String getMentor() {
@@ -196,6 +198,7 @@ public class Group {
             this.session = session;
         ContactsDataSource.contactsDataSource.updateDB(id,
                 contactName, email, publicKey, session);
-        GroupsAdapter.updateCont(a, this);
+        if(GroupsAdapter.getAdapter()!=null)
+            GroupsAdapter.getAdapter().updateCont(a, this);
     }
 }

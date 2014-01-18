@@ -28,7 +28,7 @@ import static specular.systems.R.layout.edit_contact;
 public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
     private static GroupsAdapter adapter;
     private static List<Group> list;
-    private ArrayList<Bitmap> lstBmp = new ArrayList<Bitmap>();
+    private ArrayList<bmp> lstBmp = new ArrayList<bmp>();
 
     int type;
     private Activity a;
@@ -42,45 +42,51 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
             GroupDataSource.fullListG = GroupDataSource.groupDataSource.getAllGroups();
         }
         list = GroupDataSource.fullListG;
-
         for(Group c:list)
-            lstBmp.add(c.getPhoto());
+            lstBmp.add(new bmp(c));
     }
 
     public static GroupsAdapter getAdapter() {
         return adapter;
     }
 
-    public static void updateCont(Activity aa, Group c) {
+    public void updateCont(Activity aa, Group c) {
         for (int a = 0; a < GroupDataSource.fullListG.size(); a++)
             if (GroupDataSource.fullListG.get(a).getId() == c.getId()) {
                 GroupDataSource.fullListG.remove(a);
+                lstBmp.remove(a);
                 break;
             }
         GroupDataSource.fullListG.add(c);
-        if (adapter != null)
+        lstBmp.add(new bmp(c));
             refreshList(aa);
     }
 
-    public static void removeCont(Activity a, int index) {
+    public void removeCont(Activity a, int index) {
         GroupDataSource.fullListG.remove(index);
-        if (adapter != null)
+        lstBmp.remove(index);
             refreshList(a);
     }
 
-    public static void addCont(Activity a, Group c) {
+    public void addCont(Activity a, Group c) {
         GroupDataSource.fullListG.add(c);
-        if (adapter != null)
+        lstBmp.add(new bmp(c));
             refreshList(a);
     }
 
-    private static void refreshList(Activity a) {
+    private void refreshList(Activity a) {
         list = GroupDataSource.fullListG;
         Collections.sort(list, new Comparator<Group>() {
             @Override
             public int compare(Group contact, Group contact2) {
                 return (contact.getGroupName().toLowerCase() + contact.getEmail().toLowerCase())
                         .compareTo((contact2.getGroupName().toLowerCase() + contact2.getEmail().toLowerCase()));
+            }
+        });
+        Collections.sort(lstBmp, new Comparator<bmp>() {
+            @Override
+            public int compare(bmp contact, bmp contact2) {
+                return contact.nameEmail.compareTo(contact2.nameEmail);
             }
         });
         if (FragmentManagement.currentLayout == R.layout.encrypt) {
@@ -93,7 +99,6 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
                     v.setVisibility(View.GONE);
                     a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
                 }
-            if (adapter != null)
                 adapter.notifyDataSetChanged();
         }
     }
@@ -163,9 +168,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
                     Main.main.contactChosen(false, c.getId());
                 }
             });
-            if(lstBmp.get(position)==null)
-                lstBmp.set(position,c.getPhoto());
-            imageView.setImageBitmap(lstBmp.get(position));
+            imageView.setImageBitmap(lstBmp.get(position).bitmap);
 /*
             new Thread(new Runnable() {
                 public void run() {
@@ -228,6 +231,14 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
         } else {
             a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts).setVisibility(View.GONE);
             a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).setVisibility(View.VISIBLE);
+        }
+    }
+    private class bmp{
+        String nameEmail;
+        Bitmap bitmap;
+        public bmp(Group c){
+            bitmap=c.getPhoto();
+            nameEmail=c.getGroupName().toLowerCase()+c.getEmail().toLowerCase();
         }
     }
 }

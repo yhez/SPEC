@@ -152,7 +152,8 @@ public class Contact {
             this.session = session;
         ContactsDataSource.contactsDataSource.updateDB(id,
                 contactName, email, publicKey, session);
-        MySimpleArrayAdapter.updateCont(a, this);
+        if(MySimpleArrayAdapter.getAdapter()!=null)
+            MySimpleArrayAdapter.getAdapter().updateCont(a, this);
     }
 
     //message sent
@@ -160,7 +161,8 @@ public class Contact {
         sent++;
         Session.updateFlag(a, this);
         ContactsDataSource.contactsDataSource.updateDB(id, sent);
-        MySimpleArrayAdapter.updateCont(a, this);
+        if(MySimpleArrayAdapter.getAdapter()!=null)
+            MySimpleArrayAdapter.getAdapter().updateCont(a, this);
     }
 
     //message received
@@ -174,11 +176,13 @@ public class Contact {
         if (defaultApp != null) {
             cn = new ComponentName(defaultApp.split("\n")[0], defaultApp.split("\n")[1]);
             ContactsDataSource.contactsDataSource.updateDB(id, defaultApp);
-            MySimpleArrayAdapter.updateCont(a, this);
+            if(MySimpleArrayAdapter.getAdapter()!=null)
+                MySimpleArrayAdapter.getAdapter().updateCont(a, this);
         } else {
             cn = null;
             ContactsDataSource.contactsDataSource.updateDB(id, "");
-            MySimpleArrayAdapter.updateCont(a, this);
+            if(MySimpleArrayAdapter.getAdapter()!=null)
+                MySimpleArrayAdapter.getAdapter().updateCont(a, this);
         }
     }
 }

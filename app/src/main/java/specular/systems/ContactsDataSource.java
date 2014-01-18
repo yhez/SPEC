@@ -47,7 +47,8 @@ public class ContactsDataSource {
         long l = database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
                 values);
         dbHelper.close();
-        MySimpleArrayAdapter.addCont(a, contact);
+        if(MySimpleArrayAdapter.getAdapter()!=null)
+            MySimpleArrayAdapter.getAdapter().addCont(a, contact);
         return l;
     }
 
@@ -64,7 +65,8 @@ public class ContactsDataSource {
                 + " = " + id, null);
         dbHelper.close();
         if (!(position < 0)) {
-            MySimpleArrayAdapter.removeCont(aa, position);
+            if(MySimpleArrayAdapter.getAdapter()!=null)
+                MySimpleArrayAdapter.getAdapter().removeCont(aa, position);
         }
     }
 

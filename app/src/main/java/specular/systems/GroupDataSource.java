@@ -48,7 +48,8 @@ public class GroupDataSource {
         long l = database.insert(MySQLiteHelper.TABLE_GROUP, null,
                 values);
         dbHelper.close();
-        GroupsAdapter.addCont(a,group);
+        if(GroupsAdapter.getAdapter()!=null)
+            GroupsAdapter.getAdapter().addCont(a,group);
         return l;
     }
 
@@ -65,7 +66,8 @@ public class GroupDataSource {
                 + " = " + id, null);
         dbHelper.close();
         if (!(position < 0)) {
-            GroupsAdapter.removeCont(aa, position);
+            if(GroupsAdapter.getAdapter()!=null)
+                GroupsAdapter.getAdapter().removeCont(aa, position);
         }
     }
 
