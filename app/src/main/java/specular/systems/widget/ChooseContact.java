@@ -46,15 +46,26 @@ public class ChooseContact extends Activity {
             final int mAppWidgetId = extras.getInt(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
-            ListView lv = new ListView(this);
-            MySimpleArrayAdapter sl = new MySimpleArrayAdapter(this,MySimpleArrayAdapter.SIMPLE);
             //todo add filter
+            if(ContactsDataSource.fullList==null){
+                ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
+                ContactsDataSource.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
+            }
             if (ContactsDataSource.fullList.isEmpty()) {
                 Toast t = Toast.makeText(this, R.string.widget_add_contact_list_empty, Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                 t.show();
                 finish();
             } else {
+                MySimpleArrayAdapter my = MySimpleArrayAdapter.getAdapter();
+                if(my!=null){
+                    my.setFlag(MySimpleArrayAdapter.SIMPLE);
+                }else{
+                    my = new MySimpleArrayAdapter(this);
+                    my.setFlag(MySimpleArrayAdapter.SIMPLE);
+                }
+                final MySimpleArrayAdapter sl = my;
+                ListView lv = new ListView(this);
                 lv.setAdapter(sl);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -94,6 +105,7 @@ public class ChooseContact extends Activity {
                         setResult(RESULT_OK, resultValue);
                         //todo if i'm calling update why do i need all the above? seems that the above alone not enough??
                         updateWidget(mAppWidgetId);
+                        sl.setFlag(MySimpleArrayAdapter.EDIT);
                         finish();
                     }
                 });

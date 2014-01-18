@@ -242,7 +242,7 @@ public class SendMsg extends Activity {
                         .show();
             }
         }else if(type==INVITE_GROUP){
-            i.putExtra(Intent.EXTRA_EMAIL, new String[]{group.getEmail()});
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
             i.putExtra(Intent.EXTRA_SUBJECT,"attached a group");
             try {
                 InputStream is = getAssets().open("spec_tmp_invite.html");

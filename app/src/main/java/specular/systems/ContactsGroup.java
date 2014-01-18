@@ -51,11 +51,15 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
                 rootView.setId(CONTACTS);
                 MySimpleArrayAdapter ms = MySimpleArrayAdapter.getAdapter();
                 if(ms!=null){
+                    ms.setFlag(ms.EDIT);
                     ms.showOriginal();
                     lv.setAdapter(ms);
                 }
-                else
-                    lv.setAdapter(new MySimpleArrayAdapter(getActivity(), MySimpleArrayAdapter.EDIT));
+                else{
+                    MySimpleArrayAdapter mas = new MySimpleArrayAdapter(getActivity());
+                    mas.setFlag(MySimpleArrayAdapter.EDIT);
+                    lv.setAdapter(mas);
+                }
                 if (ContactsDataSource.fullList.size() == 0) {
                     tv.setVisibility(View.VISIBLE);
                     lv.setVisibility(View.GONE);

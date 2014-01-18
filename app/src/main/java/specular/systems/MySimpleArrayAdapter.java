@@ -31,17 +31,18 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
     private Activity a;
     private ArrayList<bmp> fullList = new ArrayList<bmp>();
     private ArrayList<bmp> lstBmp = new ArrayList<bmp>();
-
-    public MySimpleArrayAdapter(Activity a, int type) {
+    public void setFlag(int type){
+        this.type=type;
+    }
+    public MySimpleArrayAdapter(Activity a) {
         super(a, R.layout.list_row, list);
-        list = ContactsDataSource.fullList;
         this.a = a;
-        this.type = type;
         adapter = this;
         if (ContactsDataSource.fullList == null) {
             ContactsDataSource.contactsDataSource = new ContactsDataSource(a);
             ContactsDataSource.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
         }
+        list = ContactsDataSource.fullList;
         for (Contact c : list)
             fullList.add(new bmp(c));
         lstBmp = fullList;
@@ -131,7 +132,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        if (convertView == null ||
+        if (convertView == null || convertView.findViewById(R.id.id_contact)==null ||
                 !((TextView) convertView.findViewById(R.id.id_contact)).getText().equals(getItem(position).getId() + "")) {
             if (convertView == null) {
                 LayoutInflater inflater = a.getLayoutInflater();
@@ -169,19 +170,6 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
                 });
             }
             imageView.setImageBitmap(lstBmp.get(position).bitmap);
-            /*
-        new Thread(new Runnable() {
-            public void run() {
-                final Bitmap bitmap = c.getPhoto();
-                imageView.postDelayed(new Runnable() {
-                    public void run() {
-                        imageView.setVisibility(View.VISIBLE);
-                        imageView.setImageBitmap(bitmap);
-                        imageView.animate().setDuration(500).alpha(1f).start();
-                    }
-                }, 250);
-            }
-        }).start();*/
             email.setText(c.getEmail());
             email.setTypeface(FilesManagement.getOs(a));
             name.setText(c.getContactName());

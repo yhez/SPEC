@@ -29,7 +29,15 @@ public class InviteToGroup extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.dialogTransparent);
         ListView lv = new ListView(getActivity());
-        lv.setAdapter(new MySimpleArrayAdapter(getActivity(),MySimpleArrayAdapter.SIMPLE));
+        MySimpleArrayAdapter my = MySimpleArrayAdapter.getAdapter();
+        if(my!=null){
+            my.setFlag(MySimpleArrayAdapter.SIMPLE);
+        }else{
+            my = new MySimpleArrayAdapter(getActivity());
+            my.setFlag(MySimpleArrayAdapter.SIMPLE);
+        }
+        final MySimpleArrayAdapter myy = my;
+        lv.setAdapter(myy);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -37,6 +45,7 @@ public class InviteToGroup extends DialogFragment {
                 byte[] b = CryptMethods.encrypt(g.getGroupToShare(), c.getPublicKey());
                 byte[] bb = Visual.bin2hex(b).getBytes();
                 FilesManagement.createGroupFileToSend(getActivity(),bb);
+                myy.setFlag(MySimpleArrayAdapter.EDIT);
                 InviteToGroup.this.getDialog().cancel();
                 Intent intent = new Intent(getActivity(), SendMsg.class);
                 intent.putExtra("type",SendMsg.INVITE_GROUP);

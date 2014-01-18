@@ -72,7 +72,7 @@ public class Splash extends Activity {
         if (newUser) {
             setContentView(R.layout.splash);
             ((TextView) findViewById(R.id.company)).setTypeface(FilesManagement.getOs(this));
-            findViewById(android.R.id.content).animate().setDuration(TIME_FOR_SPLASH).alpha(1).start();
+            findViewById(R.id.splash).animate().setDuration(TIME_FOR_SPLASH).alpha(1).start();
             waitForSplash.start();
         } else {
             FilesManagement.getKeysFromSDCard(this);
