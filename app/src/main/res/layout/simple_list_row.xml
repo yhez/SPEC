@@ -14,7 +14,6 @@
         android:layout_alignParentTop="true"
         android:gravity="center_vertical"
         android:id="@+id/icon"
-        android:alpha="0"
         android:layout_marginRight="6dip" />
 
     <LinearLayout
