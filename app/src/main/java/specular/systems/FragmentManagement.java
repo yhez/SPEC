@@ -557,26 +557,31 @@ public class FragmentManagement extends Fragment {
                 });
                 break;
             case encrypt:
-                ViewPager vp = (ViewPager) rootView.findViewById(R.id.pager);
-                ContactsGroup cg = new ContactsGroup(Main.main.getSupportFragmentManager());
-                vp.setAdapter(cg);
-                vp.setCurrentItem(currentPage);
-                vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                final ViewPager vp = (ViewPager) rootView.findViewById(R.id.pager);
+                vp.post(new Runnable() {
                     @Override
-                    public void onPageScrolled(int i, float v, int i2) {
+                    public void run() {
+                        ContactsGroup cg = new ContactsGroup(Main.main.getSupportFragmentManager());
+                        vp.setCurrentItem(currentPage);
+                        vp.setAdapter(cg);
+                        vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                            @Override
+                            public void onPageScrolled(int i, float v, int i2) {
 
-                    }
+                            }
 
-                    @Override
-                    public void onPageSelected(int i) {
-                        currentPage=i;
-                        getActivity().invalidateOptionsMenu();
-                        StaticVariables.luc.showIfNeeded(getActivity(), null);
-                    }
+                            @Override
+                            public void onPageSelected(int i) {
+                                currentPage=i;
+                                getActivity().invalidateOptionsMenu();
+                                StaticVariables.luc.showIfNeeded(getActivity(), null);
+                            }
 
-                    @Override
-                    public void onPageScrollStateChanged(int i) {
+                            @Override
+                            public void onPageScrollStateChanged(int i) {
 
+                            }
+                        });
                     }
                 });
                 StaticVariables.readyToSend = false;
@@ -808,8 +813,7 @@ public class FragmentManagement extends Fragment {
                 break;
         }
         Visual.setAllFonts(getActivity(), (ViewGroup) rootView);
-        if(!(currentLayout==encrypt))
-            rootView.animate().setDuration(500).alpha(1).start();
+        rootView.animate().setDuration(500).alpha(1).start();
         Main.main.invalidateOptionsMenu();
         return rootView;
     }

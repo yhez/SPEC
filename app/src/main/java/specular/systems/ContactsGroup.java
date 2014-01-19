@@ -20,7 +20,7 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        return new PageList(i==0?CONTACTS:GROUPS);
+        return new PageList(i == 0 ? CONTACTS : GROUPS);
     }
 
     @Override
@@ -35,6 +35,7 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
 
     public static class PageList extends Fragment {
         private int currentLayout;
+
         public PageList(int currentLayout) {
             super();
             this.currentLayout = currentLayout;
@@ -49,17 +50,12 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
             if (currentLayout == CONTACTS) {
                 rootView.setId(CONTACTS);
                 MySimpleArrayAdapter ms = MySimpleArrayAdapter.getAdapter();
-                if(ms!=null){
+                if (ms != null)
                     ms.showOriginal();
-                }
-                final MySimpleArrayAdapter mas = ms!=null?ms:new MySimpleArrayAdapter(getActivity());
-                mas.setFlag(MySimpleArrayAdapter.EDIT);
-                lv.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        lv.setAdapter(mas);
-                    }
-                },300);
+                else
+                    ms = new MySimpleArrayAdapter(getActivity());
+                ms.setFlag(MySimpleArrayAdapter.EDIT);
+                lv.setAdapter(ms);
                 if (ContactsDataSource.fullList.size() == 0) {
                     tv.setVisibility(View.VISIBLE);
                     lv.setVisibility(View.GONE);
@@ -70,20 +66,16 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
             } else if (currentLayout == GROUPS) {
                 rootView.setId(GROUPS);
                 GroupsAdapter ga = GroupsAdapter.getAdapter();
-                if(ga!=null){
+                if (ga != null)
                     ga.showOriginal();
-                }
-                final GroupsAdapter groupsAdapter = ga!=null?ga:new GroupsAdapter(getActivity());
-                lv.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        lv.setAdapter(groupsAdapter);
-                    }}, 300);
-                if(GroupDataSource.fullListG.size()==0){
+                else
+                    ga = new GroupsAdapter(getActivity());
+                lv.setAdapter(ga);
+                if (GroupDataSource.fullListG.size() == 0) {
                     tv.setText(R.string.there_is_no_groups);
                     tv.setVisibility(View.VISIBLE);
                     lv.setVisibility(View.GONE);
-                }else{
+                } else {
                     lv.setVisibility(View.VISIBLE);
                     tv.setVisibility(View.GONE);
                 }
