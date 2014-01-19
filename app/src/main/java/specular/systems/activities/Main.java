@@ -171,7 +171,7 @@ public class Main extends FragmentActivity {
                     t.show();
                     break;
                 case RESTORE:
-                    DialogRestore dr = new DialogRestore();
+                    DialogRestore dr = new DialogRestore(Backup.restore(StaticVariables.decryptedBackup),null);
                     dr.show(getFragmentManager(), "dr");
                     break;
                 case ADD_GROUP:
@@ -932,7 +932,7 @@ public class Main extends FragmentActivity {
         if (v != null) v.animate().setDuration(100).alpha(0).start();
         final Fragment fragment = new FragmentManagement();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commitAllowingStateLoss();
-        if (mDrawerLayout.isDrawerOpen(mDrawerList))
+        //if (mDrawerLayout.isDrawerOpen(mDrawerList))
             mDrawerLayout.closeDrawer(mDrawerList);
         exit = false;
         View vf = getCurrentFocus();

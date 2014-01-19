@@ -35,7 +35,6 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
 
     public static class PageList extends Fragment {
         private int currentLayout;
-
         public PageList(int currentLayout) {
             super();
             this.currentLayout = currentLayout;
@@ -79,8 +78,7 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
                     @Override
                     public void run() {
                         lv.setAdapter(groupsAdapter);
-                    }
-                }, 300);
+                    }}, 300);
                 if(GroupDataSource.fullListG.size()==0){
                     tv.setText(R.string.there_is_no_groups);
                     tv.setVisibility(View.VISIBLE);

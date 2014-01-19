@@ -185,4 +185,11 @@ public class Contact {
                 MySimpleArrayAdapter.getAdapter().updateCont(a, this);
         }
     }
+    @Override
+    public boolean equals(Object obj){
+        if(!(obj instanceof Contact))
+            return false;
+        Contact c = (Contact)obj;
+        return c.contactName.equals(contactName) && c.email.equals(email)&&c.session.equals(session);
+    }
 }

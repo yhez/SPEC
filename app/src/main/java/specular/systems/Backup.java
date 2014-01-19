@@ -97,22 +97,17 @@ public class Backup {
     }
 
     private static boolean checkEmail(Contact c){
-        boolean email = false;
-        Contact temp = null;
-
-        temp = ContactsDataSource.contactsDataSource.findContactByEmail(c.getEmail());
-        if (temp != null) email = true;
-
-        return email;
+        Contact temp = ContactsDataSource.contactsDataSource.findContactByEmail(c.getEmail());
+        return temp != null&&!temp.equals(c);
     }
 
     private static boolean checkPK(Contact c){
-        boolean pk = false;
-        Contact temp = null;
-
-        temp = ContactsDataSource.contactsDataSource.findContactByKey(c.getPublicKey());
-        if (temp != null) pk = true;
-        return  pk;
+        Contact temp = ContactsDataSource.contactsDataSource.findContactByKey(c.getPublicKey());
+        return  temp != null&&!temp.equals(c);
+    }
+    private static boolean checkExist(Contact c){
+        Contact temp = ContactsDataSource.contactsDataSource.findContactByKey(c.getPublicKey());
+        return  temp.equals(c);
     }
 
     private static byte[] contact2Bytes(Contact c) {
@@ -155,23 +150,28 @@ public class Backup {
     }
 
     // TODO: add enum
-    public ArrayList<Contact> cleanList(ArrayList<Contact> cList , int type){
-        int i = 0;
-        Contact temp = cList.get(i);
+    public static ArrayList<Contact> cleanList(ArrayList<Contact> cList , int type){
         ArrayList<Contact> cleanList = new ArrayList<Contact>();
-
-        while (temp != null){
-            // searching for existing contact by email
-            if ((conflicts == 1 || conflicts == 3)& checkEmail(temp)){
-                continue;
-            }
-            // searching for existing contact by public key
-            if ((conflicts == 2 || conflicts == 3) && checkPK(temp)){
-                continue;
-            }
-            cleanList.add(temp);
-            i++;
-            temp = cList.get(i);
+        for(Contact contact:cList){
+           switch (type){
+               //removing existing contacts
+               case 0:
+                   if(!checkExist(contact))
+                       cleanList.add(contact);
+                   break;
+               case 1:
+                   if(checkEmail(contact))
+                       cleanList.add(contact);
+                   break;
+               case 2:
+                   if(checkPK(contact))
+                       cleanList.add(contact);
+                   break;
+               case 3:
+                   if(checkPK(contact)||checkEmail(contact))
+                       cleanList.add(contact);
+                   break;
+           }
         }
         return cleanList;
     }
