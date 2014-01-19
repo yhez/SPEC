@@ -150,6 +150,8 @@ public class CryptMethods {
     public static int decrypt(String encryptedMessage,byte[] key) {
         MessageFormat.decryptedMsg=null;
         LightMessage.decryptedLightMsg=null;
+        StaticVariables.decryptedBackup=null;
+        StaticVariables.decryptedGroup=null;
         if (encryptedMessage == null) {
             Log.d("null", "null message");
             return -1;

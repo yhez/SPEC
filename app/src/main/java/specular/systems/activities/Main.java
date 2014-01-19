@@ -458,7 +458,6 @@ public class Main extends FragmentActivity {
                         t.setText("keys have been loaded to phone but not yet saved you can choose now to save them on nfc\nor you can decrypt the message you want, and not save it at all");
                         t.show();
                         break;
-
                 }
             }
         }
@@ -1217,7 +1216,8 @@ public class Main extends FragmentActivity {
                         invalidateOptionsMenu();
                     break;
                 case R.layout.decrypted_msg:
-                    if (StaticVariables.flag_msg || StaticVariables.flag_light_msg) {
+                    if ((StaticVariables.flag_msg!=null&&StaticVariables.flag_msg)
+                            || (StaticVariables.flag_light_msg!=null&&StaticVariables.flag_light_msg)) {
                         t.setText(R.string.notify_msg_deleted);
                         t.show();
                         LightMessage.decryptedLightMsg = null;
@@ -1593,5 +1593,4 @@ public class Main extends FragmentActivity {
             }
         });
     }
-
 }
