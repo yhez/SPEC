@@ -20,7 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
-import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
 import specular.systems.R;
 import specular.systems.Visual;
@@ -93,7 +92,7 @@ public class ShareCustomDialog extends DialogFragment {
                         byte[] buffer = new byte[size];
                         is.read(buffer);
                         is.close();
-                        i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+"<br><br><a href="+ CryptMethods.getMyLink()+"\"/>Direct Link</a>"));
+                        i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)/*+"<br><br><a href="+ CryptMethods.getMyLink()+"\"/>Direct Link</a>"*/));
                     } catch (Exception e) {
                         Toast.makeText(getActivity(), R.string.failed, Toast.LENGTH_LONG)
                                 .show();

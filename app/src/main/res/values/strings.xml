@@ -244,7 +244,7 @@
     <string name="create_group">START</string>
     <string name="default_app_click_to_remove">default app\nclick to remove</string>
     <string name="file_name_group">PrivateGroup.SPEC</string>
-    <string name="connecting_to_camera">1 second please, connecting...</string>
+    <string name="connecting_to_camera">1 second please, connecting…</string>
     <string name="force_nfc">Force NFC</string>
     <string name="limited_group">Limit Group Size</string>
     <string name="group_owmer_detailes_title">Group creator Details:</string>
@@ -260,7 +260,13 @@
     <string name="sent_but_not_recieved">you sent your session, but didn\'t get one back yet from contact.</string>
     <string name="hide_session_words">-xxx xxx-</string>
     <string name="hide_secret_sign">-x-</string>
-    <string name="backup_progress">backing up...</string>
+    <string name="backup_progress">backing up…</string>
+    <string name="notify_after_restore">all data has been restored</string>
+    <string name="not_verified_backup_title">something is wrong</string><string name="not_verified_backup_message">we can\'t verify that this backup has created by you.
+some one could try to encrypt false data for you</string><string name="backup_found_old_data">Are you sure?
+by restoring your backup all other data you\'ve saved will be lost</string>
+    <string name="backup_not_found_old_data">Restoring the data will put you in the same position you left.</string>
+    <string name="backup_verified_title">Restore data from backup.</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
@@ -270,11 +276,11 @@
     </string-array>
     <string-array name="menus">
         <item>Encrypt</item>
-        <item>Decrypt</item>
+        <!--<item>Decrypt</item>-->
         <item>My SPEC</item>
         <item>About</item>
         <item>Manage</item>
-        <item>SafeX</item>
+        <!--<item>SafeX</item>-->
     </string-array>
 
     <string-array name="message_parts">

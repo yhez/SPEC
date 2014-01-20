@@ -8,6 +8,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
@@ -147,11 +148,11 @@ public class CryptMethods {
         }
     }
 
-    public static int decrypt(String encryptedMessage,byte[] key) {
-        MessageFormat.decryptedMsg=null;
-        LightMessage.decryptedLightMsg=null;
-        StaticVariables.decryptedBackup=null;
-        StaticVariables.decryptedGroup=null;
+    public static int decrypt(String encryptedMessage, byte[] key) {
+        MessageFormat.decryptedMsg = null;
+        LightMessage.decryptedLightMsg = null;
+        StaticVariables.decryptedBackup = null;
+        StaticVariables.decryptedGroup = null;
         if (encryptedMessage == null) {
             Log.d("null", "null message");
             return -1;
@@ -163,17 +164,17 @@ public class CryptMethods {
         byte[] rawMsg = Visual.hex2bin(encryptedMessage);
 
         byte[] decryptedBytes;
-        if(key==null)
+        if (key == null)
             decryptedBytes = decrypt(rawMsg);
         else
-            decryptedBytes =decrypt(rawMsg,key);
-        if(decryptedBytes==null){
+            decryptedBytes = decrypt(rawMsg, key);
+        if (decryptedBytes == null) {
             return -1;
         }
         StaticVariables.encrypted_msg_size = encryptedMessage.length();
         StaticVariables.orig_msg_size = decryptedBytes.length;
-        int result=FileParser.getType(decryptedBytes);
-        switch (result){
+        int result = FileParser.getType(decryptedBytes);
+        switch (result) {
             case FileParser.ENCRYPTED_MSG:
                 MessageFormat.decryptedMsg = new MessageFormat(decryptedBytes);
                 return result;
@@ -181,10 +182,10 @@ public class CryptMethods {
                 LightMessage.decryptedLightMsg = new LightMessage(decryptedBytes);
                 return result;
             case FileParser.ENCRYPTED_BACKUP:
-                StaticVariables.decryptedBackup=decryptedBytes;
+                StaticVariables.decryptedBackup = decryptedBytes;
                 return result;
             case FileParser.ENCRYPTED_GROUP:
-                StaticVariables.decryptedGroup =decryptedBytes;
+                StaticVariables.decryptedGroup = decryptedBytes;
                 return result;
             default:
                 return result;
@@ -192,14 +193,14 @@ public class CryptMethods {
     }
 
     public static String encrypt(final byte[] msg, final byte[] light, final String friendPublicKey) {
-            if (light != null)
-                StaticVariables.encryptedLight = Visual.bin2hex(encrypt(light, friendPublicKey));
-            encryptedMsgToSend = Visual.bin2hex(encrypt(msg, friendPublicKey));
-            return encryptedMsgToSend;
+        if (light != null)
+            StaticVariables.encryptedLight = Visual.bin2hex(encrypt(light, friendPublicKey));
+        encryptedMsgToSend = Visual.bin2hex(encrypt(msg, friendPublicKey));
+        return encryptedMsgToSend;
 
     }
 
-    public static byte[] encrypt(byte[] b, String publicKey){
+    public static byte[] encrypt(byte[] b, String publicKey) {
         if (notInit) {
             addProviders();
             notInit = false;
@@ -217,10 +218,12 @@ public class CryptMethods {
             return null;
         }
     }
-    public static byte[] decrypt(byte[] raw){
-        return decrypt(raw,null);
+
+    public static byte[] decrypt(byte[] raw) {
+        return decrypt(raw, null);
     }
-    public static byte[] decrypt(byte[] data,byte[] key){
+
+    public static byte[] decrypt(byte[] data, byte[] key) {
         if (notInit) {
             addProviders();
             notInit = false;
@@ -229,7 +232,7 @@ public class CryptMethods {
             IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",
                     "HmacSHA1", null, null);
             Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
-            if(key==null)
+            if (key == null)
                 cipher.init(Cipher.DECRYPT_MODE, mPtK, iesParams);
             else
                 cipher.init(Cipher.DECRYPT_MODE, formatPrivate(key), iesParams);
@@ -239,6 +242,7 @@ public class CryptMethods {
             return null;
         }
     }
+
     private static PrivateKey formatPrivate(byte[] p) {
         if (notInit) {
             addProviders();
@@ -267,6 +271,15 @@ public class CryptMethods {
     }
 
     public static String getMyLink() {
-        return "specular.systems://?name="+myName+"&email="+myEmail+"&key="+myPublicKey;
+        return "specular.systems://?name=" + myName + "&email=" + myEmail + "&key=" + myPublicKey;
+    }
+
+    public static byte[] getPrivateHash() {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            return md.digest(myPrivateKey);
+        } catch (NoSuchAlgorithmException e) {
+            return new byte[0];
+        }
     }
 }

@@ -49,7 +49,6 @@ import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
 import static specular.systems.R.layout.create_new_keys;
-import static specular.systems.R.layout.decrypt;
 import static specular.systems.R.layout.decrypted_msg;
 import static specular.systems.R.layout.edit_contact;
 import static specular.systems.R.layout.encrypt;
@@ -671,7 +670,7 @@ public class FragmentManagement extends Fragment {
                 if (StaticVariables.currentText != null)
                     et.setText(StaticVariables.currentText);
                 break;
-            case decrypt:
+            case R.layout.decrypt:
                 break;
             case wait_nfc_to_write:
                 QRCodeEncoder qr = new QRCodeEncoder(CryptMethods.getPublicTmp(), 256);

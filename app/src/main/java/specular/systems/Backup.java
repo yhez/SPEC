@@ -30,27 +30,34 @@ public class Backup {
             size += contacts[b].length;
             size += delSize;
         }
-
+        byte[] privateHash = CryptMethods.getPrivateHash();
+        size+=privateHash.length;
         //TODO: add a nonce to encryption - sha256(private key)
         byte[] finalResult = new byte[size+1];
-        System.arraycopy(my_details, 0, finalResult, 0, my_details.length);
-        int location = my_details.length;
+        System.arraycopy(privateHash,0,finalResult,0,privateHash.length);
+        System.arraycopy(my_details, 0, finalResult, privateHash.length, my_details.length);
+        int location = my_details.length+privateHash.length;
         for (int b = 0; b < contacts.length; b++) {
             System.arraycopy(del, 0, finalResult, location, delSize);
             location += delSize;
             System.arraycopy(contacts[b], 0, finalResult, location, contacts[b].length);
             location += contacts[b].length;
         }
-
         finalResult[finalResult.length-1]=(byte)FileParser.getFlag(FileParser.ENCRYPTED_BACKUP);
-        //TODO: encrypt finalResult
-
         return finalResult;
     }
 
     //TODO:4. groups support
-    public static ArrayList<Contact> restore(byte[] data) {
+    public static ArrayList<Contact> restore(byte[] rawData) {
         byte[] del = ContactDelimiter.getBytes();
+        byte[] hash = new byte[32];
+        System.arraycopy(rawData,0,hash,0,hash.length);
+        byte[] myHash = CryptMethods.getPrivateHash();
+        for(int a=0;a<hash.length;a++)
+            if(hash[a]!=myHash[a])
+                return null;
+        byte[] data = new byte[rawData.length-32];
+        System.arraycopy(rawData,32,data,0,data.length);
         String DataTemp = new String(data);
         boolean myDetails = false;
         ArrayList<Contact> contactList = new ArrayList<Contact>();

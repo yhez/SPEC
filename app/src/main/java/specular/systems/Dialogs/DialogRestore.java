@@ -35,14 +35,14 @@ public class DialogRestore extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.dialogTransparent);
-        builder.setTitle("restore from backup?\nfound " + cn.size()+" contacts.").
-                //setMessage("would you like to restore missing contacts from this backup file?\nfount " + cn.size() + " missing contacts.")
-                        setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        DialogRestore.this.getDialog().cancel();
-                    }
-                }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        if(cn!=null)
+        builder.setTitle(R.string.backup_verified_title).
+                        setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                DialogRestore.this.getDialog().cancel();
+                            }
+                        }).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 ContactsDataSource.contactsDataSource.deleteAllContact(getActivity());
@@ -53,14 +53,20 @@ public class DialogRestore extends DialogFragment {
                 StaticVariables.NFCMode=true;
                 FilesManagement.save(getActivity());
                 FilesManagement.savePrivate(getActivity());
-                Toast t = Toast.makeText(getActivity(),"all data has been restored", Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(getActivity(),R.string.notify_after_restore, Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER, 0, 0);
                 t.show();
                 getActivity().finish();
                 Intent in = new Intent(getActivity(), Main.class);
                 startActivity(in);
             }
-        }).setMessage("Are you sure?\nby restoring your backup all other data you've saved will be lost");
+        }).setMessage(ContactsDataSource.fullList!=null&&ContactsDataSource.fullList.size()!=0
+                ?R.string.backup_found_old_data
+                :R.string.backup_not_found_old_data);
+        else
+        builder.setTitle(R.string.not_verified_backup_title)
+                .setMessage(R.string.not_verified_backup_message)
+                .setCancelable(true);
         return builder.create();
     }
 }

@@ -951,10 +951,10 @@ public class Main extends FragmentActivity {
     }
 
     private void setUpViews() {
-        final int ENCRYPT = 0, DECRYPT = 1, SHARE = 2, LEARN = 3, SETUP = 4, EXPLORER = 5;
+        final int ENCRYPT = 0/*, DECRYPT = 1*/, SHARE = 1, LEARN = 2, SETUP = 3/*, EXPLORER = 5*/;
         final String[] allMenus = getResources().getStringArray(R.array.menus);
-        final int[] allDrb = {R.drawable.encrypt, R.drawable.decrypt, R.drawable.share
-                , R.drawable.learn, R.drawable.manage, R.drawable.explore};
+        final int[] allDrb = {R.drawable.encrypt, /*R.drawable.decrypt,*/ R.drawable.share
+                , R.drawable.learn, R.drawable.manage/*, R.drawable.explore*/};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.privateExist() ? 1 : CryptMethods.publicExist() ? 2 : 3;
         mTitle = getTitle();
@@ -978,9 +978,9 @@ public class Main extends FragmentActivity {
                         allDrb[LEARN], allDrb[SETUP]};
                 break;
             case PV:
-                menuTitles = new String[]{allMenus[DECRYPT],
+                menuTitles = new String[]{/*allMenus[DECRYPT],*/
                         allMenus[LEARN], allMenus[SETUP]};
-                menuDrawables = new int[]{allDrb[DECRYPT],
+                menuDrawables = new int[]{/*allDrb[DECRYPT],*/
                         allDrb[LEARN], allDrb[SETUP]};
                 break;
             case NONE:
@@ -1023,9 +1023,9 @@ public class Main extends FragmentActivity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        final int allLayouts[] = {R.layout.encrypt, R.layout.decrypt,
+        final int allLayouts[] = {R.layout.encrypt,/* R.layout.decrypt,*/
                 R.layout.me, R.layout.learn,
-                R.layout.setup, R.layout.explorer};
+                R.layout.setup/*, R.layout.explorer*/};
         switch (status) {
             case BOTH:
                 layouts = allLayouts;
@@ -1055,7 +1055,7 @@ public class Main extends FragmentActivity {
                 }
                 break;
             case PV:
-                layouts = new int[]{allLayouts[DECRYPT],
+                layouts = new int[]{/*allLayouts[DECRYPT],*/
                         allLayouts[LEARN], allLayouts[SETUP]};
                 if (!openByFile()) {
                     selectItem(0, R.layout.decrypt, null);
@@ -1227,30 +1227,6 @@ public class Main extends FragmentActivity {
                     }
                     setUpViews();
                     break;
-                case R.layout.decrypt:
-                    if (FragmentManagement.currentLayout == defaultScreen)
-                        new prepareToExit();
-                    else
-                        setUpViews();
-                    break;
-                case R.layout.me:
-                    if (FragmentManagement.currentLayout == defaultScreen)
-                        new prepareToExit();
-                    else
-                        setUpViews();
-                    break;
-                case R.layout.learn:
-                    if (FragmentManagement.currentLayout == defaultScreen)
-                        new prepareToExit();
-                    else
-                        setUpViews();
-                    break;
-                case R.layout.setup:
-                    if (FragmentManagement.currentLayout == defaultScreen)
-                        new prepareToExit();
-                    else
-                        setUpViews();
-                    break;
                 case R.layout.edit_contact:
                     selectItem(-1, R.layout.encrypt, null);
                     break;
@@ -1287,6 +1263,12 @@ public class Main extends FragmentActivity {
                             selectItem(-1, FragmentManagement.currentLayout, null);
                         }
                     }
+                    break;
+                default:
+                    if (FragmentManagement.currentLayout == defaultScreen)
+                        new prepareToExit();
+                    else
+                        setUpViews();
                     break;
             }
         }
