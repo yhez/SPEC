@@ -2,6 +2,8 @@ package specular.systems;
 
 import android.app.Activity;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -32,7 +34,7 @@ public class Backup {
         }
         byte[] privateHash = CryptMethods.getPrivateHash();
         size+=privateHash.length;
-        //TODO: add a nonce to encryption - sha256(private key)
+
         byte[] finalResult = new byte[size+1];
         System.arraycopy(privateHash,0,finalResult,0,privateHash.length);
         System.arraycopy(my_details, 0, finalResult, privateHash.length, my_details.length);
@@ -44,26 +46,50 @@ public class Backup {
             location += contacts[b].length;
         }
         finalResult[finalResult.length-1]=(byte)FileParser.getFlag(FileParser.ENCRYPTED_BACKUP);
-        return finalResult;
+        byte[] hash;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            hash =  md.digest(finalResult);
+        } catch (NoSuchAlgorithmException e) {
+            hash = new byte[0];
+        }
+        byte[] finalFinalResult = new byte[hash.length+finalResult.length];
+        System.arraycopy(hash,0,finalFinalResult,0,hash.length);
+        System.arraycopy(finalResult,0,finalFinalResult,hash.length,finalResult.length);
+        return finalFinalResult;
     }
 
     //TODO:4. groups support
     public static ArrayList<Contact> restore(byte[] rawData) {
         byte[] del = ContactDelimiter.getBytes();
+        byte[] currHash = new byte[32];
+        System.arraycopy(rawData,0,currHash,0,currHash.length);
+        byte[] dataToHash = new byte[rawData.length-32];
+        System.arraycopy(rawData,currHash.length,dataToHash,0,dataToHash.length);
+        byte[] newHash;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            newHash =  md.digest(dataToHash);
+        } catch (NoSuchAlgorithmException e) {
+            newHash = new byte[0];
+        }
+        for(int a=0;a<currHash.length;a++){
+            if(currHash[a]!=newHash[a])
+                return null;
+        }
         byte[] hash = new byte[32];
-        System.arraycopy(rawData,0,hash,0,hash.length);
+        System.arraycopy(dataToHash,0,hash,0,hash.length);
         byte[] myHash = CryptMethods.getPrivateHash();
         for(int a=0;a<hash.length;a++)
             if(hash[a]!=myHash[a])
                 return null;
-        byte[] data = new byte[rawData.length-32];
-        System.arraycopy(rawData,32,data,0,data.length);
+        byte[] data = new byte[dataToHash.length-32];
+        System.arraycopy(dataToHash,32,data,0,data.length);
         String DataTemp = new String(data);
         boolean myDetails = false;
         ArrayList<Contact> contactList = new ArrayList<Contact>();
         Pattern pattern = Pattern.compile(ContactDelimiter, Pattern.LITERAL);
         String[] contactsString = pattern.split(DataTemp, -1);
-        //TODO: add check nonce logic - sha256(private key)
         for(int i = 0; i < contactsString.length; i++){
             Contact c = string2Contact(contactsString[i], myDetails);
             if (c != null){
