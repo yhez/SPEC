@@ -265,4 +265,8 @@ public class CryptMethods {
     public static byte[] getPrivateTmp() {
         return tmpPrivateKey;
     }
+
+    public static String getMyLink() {
+        return "specular.systems://?name="+myName+"&email="+myEmail+"&key="+myPublicKey;
+    }
 }

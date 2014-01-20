@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.Gravity;
 import android.webkit.MimeTypeMap;
 import android.widget.TextView;
@@ -108,16 +109,15 @@ public class Splash extends Activity {
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
-        Intent thisIntent = getIntent();
-        if (thisIntent == null) {
+        if (getIntent() == null) {
             go();
-        } else if (thisIntent.getAction() != null && thisIntent.getAction().equals(Intent.ACTION_SEND)) {
-            String s = thisIntent.getStringExtra(Intent.EXTRA_TEXT);
+        } else if (getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_SEND)) {
+            String s = getIntent().getStringExtra(Intent.EXTRA_TEXT);
             if (s != null) {
                 StaticVariables.currentText = s;
             }
             go();
-        } else if (thisIntent.getData() == null) {
+        } else if (getIntent().getData() == null) {
             go();
         } else {
             //todo how is it possible? but some how it works for big google drive files
@@ -130,57 +130,67 @@ public class Splash extends Activity {
                 finish();
                 return;
             }
-            String fileName = Visual.getFileName(this, uri);
-            String ext = fileName.substring(fileName.lastIndexOf('.') + 1);
-            if (!ext.toLowerCase().equals("spec")) {
-                File f = new File(uri.getPath(), fileName);
-                MimeTypeMap mtm = MimeTypeMap.getSingleton();
-                String type = mtm.getMimeTypeFromExtension(ext);
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                uri = Uri.fromFile(f);
-                intent.setData(uri);
-                if (type != null)
-                    intent.setType(type);
-                else
-                    intent.setType("*/*");
-                finish();
-                startActivity(intent);
-                return;
+            if (uri.getScheme() == null || !uri.getScheme().equals("specular.systems")) {
+                String fileName = Visual.getFileName(this, uri);
+                String ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+                if (!ext.toLowerCase().equals("spec")) {
+                    File f = new File(uri.getPath(), fileName);
+                    MimeTypeMap mtm = MimeTypeMap.getSingleton();
+                    String type = mtm.getMimeTypeFromExtension(ext);
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    uri = Uri.fromFile(f);
+                    intent.setData(uri);
+                    if (type != null)
+                        intent.setType(type);
+                    else
+                        intent.setType("*/*");
+                    finish();
+                    startActivity(intent);
+                    return;
+                }
             }
             final Uri ur = uri;
             final ProgressDialog pd = new ProgressDialog(this, R.style.dialogTransparent);
-            pd.setTitle("loading file");
-            pd.setMessage("loading file");
+            pd.setTitle("loading...");
+            pd.setMessage("loading file into spec,\nplease wait a moment.");
             pd.setCancelable(false);
             pd.show();
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     String data = null;
-                    try {
-                        ContentResolver cr = getBaseContext().getContentResolver();
-                        InputStream is = cr.openInputStream(ur);
-                        try {
-                            StringBuilder buf = new StringBuilder();
-                            BufferedReader reader = new BufferedReader(
-                                    new InputStreamReader(is));
-                            String str;
-                            while ((str = reader.readLine()) != null) {
-                                buf.append(str).append("\n");
-                            }
-                            buf.deleteCharAt(buf.length() - 1);
-                            data = buf.toString();
-                            pd.cancel();
-                            reader.close();
-                            is.close();
-                        } catch (IOException ignored) {
+                    if (ur.getScheme() != null && ur.getScheme().equals("specular.systems")){
+                        data = ur.getQueryParameter("message");
+                        if(data==null){
+                            data = "\n"+ur.getQueryParameter("name")+"\n"+ur.getQueryParameter("email")+"\n"+ur.getQueryParameter("key");
                         }
-                    } catch (FileNotFoundException ignored) {
                     }
+                    else
+                        try {
+                            ContentResolver cr = getBaseContext().getContentResolver();
+                            InputStream is = cr.openInputStream(ur);
+                            try {
+                                StringBuilder buf = new StringBuilder();
+                                BufferedReader reader = new BufferedReader(
+                                        new InputStreamReader(is));
+                                String str;
+                                while ((str = reader.readLine()) != null) {
+                                    buf.append(str).append("\n");
+                                }
+                                buf.deleteCharAt(buf.length() - 1);
+                                data = buf.toString();
+                                pd.cancel();
+                                reader.close();
+                                is.close();
+                            } catch (IOException ignored) {
+                            }
+                        } catch (FileNotFoundException ignored) {
+                        }
                     if (data == null) {
                         hndl.sendEmptyMessage(0);
                         finish();
                     } else {
+                        Log.e("data",data);
                         int typeFile = FileParser.getType(data);
                         if (typeFile == FileParser.CONTACT_CARD)
                             StaticVariables.fileContactCard = new ContactCard(Splash.this, data);
