@@ -26,6 +26,11 @@ import static specular.systems.R.layout.edit_contact;
 public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filterable {
     public static final int EDIT = 1, SIMPLE = 2;
     private static MySimpleArrayAdapter adapter;
+    public static void clearAll(){
+        adapter=null;
+        list=null;
+        ContactsDataSource.fullList=null;
+    }
     private static List<Contact> list;
     int type;
     private Activity a;

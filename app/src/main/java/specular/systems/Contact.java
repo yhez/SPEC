@@ -190,6 +190,6 @@ public class Contact {
         if(!(obj instanceof Contact))
             return false;
         Contact c = (Contact)obj;
-        return c.contactName.equals(contactName) && c.email.equals(email)&&c.session.equals(session);
+        return c.publicKey.equals(publicKey)&&c.contactName.equals(contactName) && c.email.equals(email)&&c.session.equals(session);
     }
 }

@@ -182,7 +182,6 @@ public class CryptMethods {
                 return result;
             case FileParser.ENCRYPTED_BACKUP:
                 StaticVariables.decryptedBackup=decryptedBytes;
-                Log.w("backup data",new String(decryptedBytes));
                 return result;
             case FileParser.ENCRYPTED_GROUP:
                 StaticVariables.decryptedGroup =decryptedBytes;

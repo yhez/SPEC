@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import zxing.QRCodeEncoder;
@@ -351,51 +352,35 @@ public final class FilesManagement {
                     .getDefaultSharedPreferences(a.getApplicationContext());
             SharedPreferences.Editor edt = srp.edit();
             ContactCard qrpk = new ContactCard(a);
-            FileOutputStream fos = null;
             try {
-                fos = a.openFileOutput(a.getString(FILE_NAME),
+                FileOutputStream fos = a.openFileOutput(a.getString(FILE_NAME),
                         Context.MODE_WORLD_READABLE);
+                fos.write(qrpk.getQRToPublish().getBytes("UTF-8"));
+                fos.close();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            if (fos != null) {
-                try {
-                    fos.write(qrpk.getQRToPublish().getBytes("UTF-8"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrpk.getQRToPublish(), 512);
-
             try {
+                QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrpk.getQRToPublish(), 512);
                 Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
                 Bitmap crop = crop(bitmap);
-                FileOutputStream fos2 = null;
                 try {
-                    fos2 = a.openFileOutput(a.getString(QR_NAME),
+                    FileOutputStream fos = a.openFileOutput(a.getString(QR_NAME),
                             Context.MODE_WORLD_READABLE);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                if (fos2 != null) {
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos2);
-                }
-                FileOutputStream fos3 = null;
                 try {
-                    fos3 = a.openFileOutput(QR_NAME_T,
+                    FileOutputStream fos = a.openFileOutput(QR_NAME_T,
                             Context.MODE_WORLD_READABLE);
+                    crop.compress(Bitmap.CompressFormat.PNG, 90, fos);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                }
-                if (fos3 != null) {
-                    crop.compress(Bitmap.CompressFormat.PNG, 90, fos3);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

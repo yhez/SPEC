@@ -44,7 +44,7 @@ public class Splash extends Activity {
         public void run() {
             synchronized (this) {
                 try {
-                    ((Object)this).wait(TIME_FOR_SPLASH);
+                    ((Object) this).wait(TIME_FOR_SPLASH);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -53,12 +53,19 @@ public class Splash extends Activity {
             startActivity(intent);
         }
     });
-    private final Handler hndl = new Handler(){
+    private final Handler hndl = new Handler() {
         @Override
-        public void handleMessage(Message msg){
-            Toast t = Toast.makeText(Splash.this,R.string.failed,Toast.LENGTH_SHORT);
-            t.setGravity(Gravity.CENTER,0,0);
-            t.show();
+        public void handleMessage(Message msg) {
+            if (msg.what == 500) {
+                setContentView(R.layout.splash);
+                ((TextView) findViewById(R.id.company)).setTypeface(FilesManagement.getOs(Splash.this));
+                findViewById(R.id.splash).animate().setDuration(TIME_FOR_SPLASH).alpha(1).start();
+                waitForSplash.start();
+            } else {
+                Toast t = Toast.makeText(Splash.this, R.string.failed, Toast.LENGTH_SHORT);
+                t.setGravity(Gravity.CENTER, 0, 0);
+                t.show();
+            }
         }
     };
 
@@ -70,32 +77,29 @@ public class Splash extends Activity {
     void go() {
         boolean newUser = FilesManagement.isItNewUser(this);
         if (newUser) {
-            setContentView(R.layout.splash);
-            ((TextView) findViewById(R.id.company)).setTypeface(FilesManagement.getOs(this));
-            findViewById(R.id.splash).animate().setDuration(TIME_FOR_SPLASH).alpha(1).start();
-            waitForSplash.start();
-        } else {
-            FilesManagement.getKeysFromSDCard(this);
-            if (!CryptMethods.privateExist() && getIntent().getType() != null) {
-                Parcelable raw[] = getIntent().getParcelableArrayExtra(
-                        NfcAdapter.EXTRA_NDEF_MESSAGES);
-                if (raw != null) {
-                    NdefMessage msg = (NdefMessage) raw[0];
-                    NdefRecord pvk = msg.getRecords()[0];
-                    CryptMethods.setPrivate(pvk
-                            .getPayload());
-                }
-            }
-
-            Intent intent = new Intent(Splash.this, Main.class);
-            if (StaticVariables.time == null || (System.currentTimeMillis() - StaticVariables.time) > (1000 * 60 * TIME_FOR_CLEAR_TASK)) {
-                FilesManagement.deleteTempDecryptedMSG(this);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            }
-            if (getIntent().getParcelableExtra(Intent.EXTRA_STREAM) != null && getIntent().getAction().equals(Intent.ACTION_SEND))
-                intent.putExtra("specattach", getIntent().getParcelableExtra(Intent.EXTRA_STREAM));
-            startActivity(intent);
+            hndl.sendEmptyMessage(500);
+            return;
         }
+        FilesManagement.getKeysFromSDCard(this);
+        if (!CryptMethods.privateExist() && getIntent().getType() != null) {
+            Parcelable raw[] = getIntent().getParcelableArrayExtra(
+                    NfcAdapter.EXTRA_NDEF_MESSAGES);
+            if (raw != null) {
+                NdefMessage msg = (NdefMessage) raw[0];
+                NdefRecord pvk = msg.getRecords()[0];
+                CryptMethods.setPrivate(pvk
+                        .getPayload());
+            }
+        }
+
+        Intent intent = new Intent(Splash.this, Main.class);
+        if (StaticVariables.time == null || (System.currentTimeMillis() - StaticVariables.time) > (1000 * 60 * TIME_FOR_CLEAR_TASK)) {
+            FilesManagement.deleteTempDecryptedMSG(this);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        }
+        if (getIntent().getParcelableExtra(Intent.EXTRA_STREAM) != null && getIntent().getAction().equals(Intent.ACTION_SEND))
+            intent.putExtra("specattach", getIntent().getParcelableExtra(Intent.EXTRA_STREAM));
+        startActivity(intent);
     }
 
     @Override
@@ -144,7 +148,7 @@ public class Splash extends Activity {
                 return;
             }
             final Uri ur = uri;
-            final ProgressDialog pd = new ProgressDialog(this,R.style.dialogTransparent);
+            final ProgressDialog pd = new ProgressDialog(this, R.style.dialogTransparent);
             pd.setTitle("loading file");
             pd.setMessage("loading file");
             pd.setCancelable(false);
@@ -178,9 +182,9 @@ public class Splash extends Activity {
                         finish();
                     } else {
                         int typeFile = FileParser.getType(data);
-                        if(typeFile== FileParser.CONTACT_CARD)
+                        if (typeFile == FileParser.CONTACT_CARD)
                             StaticVariables.fileContactCard = new ContactCard(Splash.this, data);
-                        else if(typeFile==-1){
+                        else if (typeFile == -1) {
                             StaticVariables.message = data;
                         }
                         go();

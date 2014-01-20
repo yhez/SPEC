@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 public class Backup {
     public static final String Delimiter = "\n";
     public static final String ContactDelimiter = "||";
-    private static int conflicts = 0;
 
     public static byte[] backup(Activity a) {
         List<Contact> contactList = ContactsDataSource.contactsDataSource.getAllContacts();
@@ -56,28 +55,12 @@ public class Backup {
         boolean myDetails = false;
         ArrayList<Contact> contactList = new ArrayList<Contact>();
         Pattern pattern = Pattern.compile(ContactDelimiter, Pattern.LITERAL);
-
         String[] contactsString = pattern.split(DataTemp, -1);
-
-        conflicts = 0;
         //TODO: add check nonce logic - sha256(private key)
         for(int i = 0; i < contactsString.length; i++){
-            Contact c = null;
-            c = string2Contact(contactsString[i], myDetails);
+            Contact c = string2Contact(contactsString[i], myDetails);
             if (c != null){
                 contactList.add(i,c);
-                // TODO: add enum for the search
-                if (conflicts < 3){
-                    // searching for existing contact by email
-                    if ((conflicts == 0 || conflicts == 2)& checkEmail(c)){
-                        conflicts+=1;
-                    }
-                    // searching for existing contact by public key
-                    if ((conflicts == 0 || conflicts == 1) && checkPK(c)){
-                        conflicts+=2;
-                    }
-                    //if both found conflicts will be 3
-                }
             }
 
             // change the loop so only first contact considered as the user
@@ -86,29 +69,7 @@ public class Backup {
         return contactList;
     }
 
-    // return value false - ok, true - issue with key
-    public static boolean checkMyPublicKey(Activity a, Contact c){
-        String[] myDetails = CryptMethods.getMyDetails(a);
-        boolean publicKeyNotExist = false;
 
-        if ((myDetails[2] != null) && !myDetails[2].equalsIgnoreCase(c.getPublicKey()))
-            publicKeyNotExist = true;
-        return publicKeyNotExist;
-    }
-
-    private static boolean checkEmail(Contact c){
-        Contact temp = ContactsDataSource.contactsDataSource.findContactByEmail(c.getEmail());
-        return temp != null&&!temp.equals(c);
-    }
-
-    private static boolean checkPK(Contact c){
-        Contact temp = ContactsDataSource.contactsDataSource.findContactByKey(c.getPublicKey());
-        return  temp != null&&!temp.equals(c);
-    }
-    private static boolean checkExist(Contact c){
-        Contact temp = ContactsDataSource.contactsDataSource.findContactByKey(c.getPublicKey());
-        return  temp.equals(c);
-    }
 
     private static byte[] contact2Bytes(Contact c) {
         String contact = "";
@@ -140,39 +101,5 @@ public class Backup {
                     details[2], details[3], "");
         }
         return tempContact;
-    }
-
-    //enum status
-
-    // return value 0 - ok, 1 - issue with email, 2 - issue with key, 3 - both
-    public static int getConflicts() {
-        return conflicts;
-    }
-
-    // TODO: add enum
-    public static ArrayList<Contact> cleanList(ArrayList<Contact> cList , int type){
-        ArrayList<Contact> cleanList = new ArrayList<Contact>();
-        for(Contact contact:cList){
-           switch (type){
-               //removing existing contacts
-               case 0:
-                   if(!checkExist(contact))
-                       cleanList.add(contact);
-                   break;
-               case 1:
-                   if(checkEmail(contact))
-                       cleanList.add(contact);
-                   break;
-               case 2:
-                   if(checkPK(contact))
-                       cleanList.add(contact);
-                   break;
-               case 3:
-                   if(checkPK(contact)||checkEmail(contact))
-                       cleanList.add(contact);
-                   break;
-           }
-        }
-        return cleanList;
     }
 }

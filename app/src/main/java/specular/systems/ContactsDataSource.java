@@ -69,6 +69,12 @@ public class ContactsDataSource {
                 MySimpleArrayAdapter.getAdapter().removeCont(aa, position);
         }
     }
+    public void deleteAllContact(Activity aa) {
+        database = dbHelper.getWritableDatabase();
+        database.delete(MySQLiteHelper.TABLE_CONTACTS, "1 = 1", null);
+        dbHelper.close();
+        MySimpleArrayAdapter.clearAll();
+    }
 
     public void updateDB(long id, String contactName, String email,
                          String publicKey, String session) {

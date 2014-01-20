@@ -173,6 +173,7 @@ public class Main extends FragmentActivity {
                 case RESTORE:
                     DialogRestore dr = new DialogRestore(Backup.restore(StaticVariables.decryptedBackup),null);
                     dr.show(getFragmentManager(), "dr");
+                    StaticVariables.decryptedBackup=null;
                     break;
                 case ADD_GROUP:
                     FragmentManagement.currentPage = 1;
