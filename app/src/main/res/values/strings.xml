@@ -262,9 +262,9 @@
     <string name="hide_secret_sign">-x-</string>
     <string name="backup_progress">backing up…</string>
     <string name="notify_after_restore">all data has been restored</string>
-    <string name="not_verified_backup_title">something is wrong</string><string name="not_verified_backup_message">we can\'t verify that this backup has created by you.
-some one could try to encrypt false data for you</string><string name="backup_found_old_data">Are you sure?
-by restoring your backup all other data you\'ve saved will be lost</string>
+    <string name="not_verified_backup_title">something is wrong</string>
+    <string name="not_verified_backup_message">we can\'t verify that this backup has created by you.\nsome one could try to encrypt false data for you</string>
+    <string name="backup_found_old_data">Are you sure?\nby restoring your backup all other data you\'ve saved will be lost</string>
     <string name="backup_not_found_old_data">Restoring the data will put you in the same position you left.</string>
     <string name="backup_verified_title">Restore data from backup.</string>
 

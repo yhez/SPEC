@@ -255,6 +255,19 @@ public class SendMsg extends Activity {
                 Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
                         .show();
             }
+        }else if(type==BACKUP){
+            i.putExtra(Intent.EXTRA_SUBJECT,"backup SPEC data");
+            try {
+                InputStream is = getAssets().open("backup_file.html");
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+            } catch (Exception e) {
+                Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
+                        .show();
+            }
         }
         i.setComponent(cn);
         if (what == IMAGE || what == BOTH) {
