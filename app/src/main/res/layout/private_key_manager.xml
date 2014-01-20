@@ -35,7 +35,7 @@
         android:padding="@dimen/default_gap"
         android:text="@string/get_private_from_nfc"
         android:textColor="@color/spec_black" />
-
+<!--
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -74,7 +74,7 @@
         android:layout_height="1dp"
         android:background="@color/spec_blue"
         android:visibility="gone" />
-
+-->
     <TextView
         android:padding="32dp"
         android:id="@+id/p_text"
