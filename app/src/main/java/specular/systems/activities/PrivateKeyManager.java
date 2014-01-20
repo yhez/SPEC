@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -32,8 +31,6 @@ import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
 import specular.systems.Visual;
-import zxing.QRCodeEncoder;
-import zxing.WriterException;
 
 
 public class PrivateKeyManager extends Activity {
@@ -50,8 +47,8 @@ public class PrivateKeyManager extends Activity {
         setContentView(R.layout.private_key_manager);
         bt1 = (Button) findViewById(R.id.p_button1);
         bt2 = (Button) findViewById(R.id.p_button2);
-        bt3 = (Button) findViewById(R.id.p_button3);
-        bt4 = (Button) findViewById(R.id.p_button4);
+       // bt3 = (Button) findViewById(R.id.p_button3);
+       // bt4 = (Button) findViewById(R.id.p_button4);
         updateViews();
         Visual.setAllFonts(this, (ViewGroup) findViewById(android.R.id.content));
     }
@@ -271,7 +268,7 @@ public class PrivateKeyManager extends Activity {
                     tv.setText(R.string.tab_nfc_get_from_nfc);
                     v.setVisibility(View.VISIBLE);
                     break;
-                case R.id.p_button3:
+               /* case R.id.p_button3:
                     Intent i = new Intent(this, StartScan.class);
                     i.putExtra("type", StartScan.PRIVATE);
                     startActivityForResult(i, Main.SCAN_PRIVATE);
@@ -289,7 +286,7 @@ public class PrivateKeyManager extends Activity {
                     } catch (WriterException e) {
                         e.printStackTrace();
                     }
-                    break;
+                    break;*/
                 default:
                     NotImplemented nimp = new NotImplemented();
                     nimp.show(getFragmentManager(), "nimp");

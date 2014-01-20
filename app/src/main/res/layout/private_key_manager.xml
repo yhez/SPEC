@@ -67,14 +67,14 @@
         android:layout_gravity="center"
         android:text="@string/print_private_to_qr"
         android:textColor="@color/spec_black" />
-
+-->
     <View
         android:id="@+id/text_view_divide"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/spec_blue"
         android:visibility="gone" />
--->
+
     <TextView
         android:padding="32dp"
         android:id="@+id/p_text"
