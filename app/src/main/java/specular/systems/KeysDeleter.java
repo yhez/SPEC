@@ -18,7 +18,7 @@ public class KeysDeleter {
                 public void run() {
                     synchronized (this) {
                         try {
-                            wait(15000);
+                            ((Object)this).wait(15000);
                             delete();
                         } catch (InterruptedException ignored) {
                         }

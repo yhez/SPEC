@@ -171,9 +171,9 @@ public class Main extends FragmentActivity {
                     t.show();
                     break;
                 case RESTORE:
-                    DialogRestore dr = new DialogRestore(Backup.restore(StaticVariables.decryptedBackup),null);
+                    DialogRestore dr = new DialogRestore(Backup.restore(StaticVariables.decryptedBackup), null);
                     dr.show(getFragmentManager(), "dr");
-                    StaticVariables.decryptedBackup=null;
+                    StaticVariables.decryptedBackup = null;
                     break;
                 case ADD_GROUP:
                     FragmentManagement.currentPage = 1;
@@ -182,7 +182,7 @@ public class Main extends FragmentActivity {
                     dag.show(getFragmentManager(), "dag");
                     break;
                 case 777:
-                    contactChosen(true,(Long)msg.obj);
+                    contactChosen(true, (Long) msg.obj);
                     break;
             }
         }
@@ -245,7 +245,7 @@ public class Main extends FragmentActivity {
                         sss);
                 byte[] data = CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
                         contact != null ? contact.getPublicKey() : group.getPublicKey()).getBytes();
-                sendMessage(data,type);
+                sendMessage(data, type);
                 prgd.cancel();
                 msgSended = true;
             }
@@ -489,11 +489,10 @@ public class Main extends FragmentActivity {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
                     long id = Long.parseLong(((TextView) findViewById(R.id.contact_id_to_send)).getText().toString());
-                    if (findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).getVisibility() == View.VISIBLE){
+                    if (findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).getVisibility() == View.VISIBLE) {
                         group = GroupDataSource.groupDataSource.findGroup(id);
                         encryptManager(SendMsg.MESSAGE_FOR_GROUP);
-                    }
-                    else{
+                    } else {
                         contact = ContactsDataSource.contactsDataSource.findContact(id);
                         encryptManager(SendMsg.MESSAGE);
                     }
@@ -933,7 +932,7 @@ public class Main extends FragmentActivity {
         final Fragment fragment = new FragmentManagement();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commitAllowingStateLoss();
         //if (mDrawerLayout.isDrawerOpen(mDrawerList))
-            mDrawerLayout.closeDrawer(mDrawerList);
+        mDrawerLayout.closeDrawer(mDrawerList);
         exit = false;
         View vf = getCurrentFocus();
         if (vf != null) {
@@ -1129,14 +1128,14 @@ public class Main extends FragmentActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        synchronized (this){
+                        synchronized (this) {
                             try {
-                                ((Object)this).wait(700);
+                                ((Object) this).wait(700);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
                         }
-                        Message msg = hndl.obtainMessage(777,c.getId());
+                        Message msg = hndl.obtainMessage(777, c.getId());
                         hndl.sendMessage(msg);
                     }
                 }).start();
@@ -1217,8 +1216,8 @@ public class Main extends FragmentActivity {
                         invalidateOptionsMenu();
                     break;
                 case R.layout.decrypted_msg:
-                    if ((StaticVariables.flag_msg!=null&&StaticVariables.flag_msg)
-                            || (StaticVariables.flag_light_msg!=null&&StaticVariables.flag_light_msg)) {
+                    if ((StaticVariables.flag_msg != null && StaticVariables.flag_msg)
+                            || (StaticVariables.flag_light_msg != null && StaticVariables.flag_light_msg)) {
                         t.setText(R.string.notify_msg_deleted);
                         t.show();
                         LightMessage.decryptedLightMsg = null;
@@ -1274,7 +1273,7 @@ public class Main extends FragmentActivity {
         }
     }
 
-    void sendMessage(byte[] data,int type) {
+    void sendMessage(byte[] data, int type) {
         boolean success = FilesManagement.createFilesToSend(this, (userInput.length() +
                 (StaticVariables.fileContent != null ?
                         StaticVariables.fileContent.length : 0)) <
@@ -1283,7 +1282,7 @@ public class Main extends FragmentActivity {
             hndl.sendEmptyMessage(CLEAR_FOCUS);
             Intent intent = new Intent(this, SendMsg.class);
             intent.putExtra("contactId", contact != null ? contact.getId() : group.getId());
-            intent.putExtra("type",type);
+            intent.putExtra("type", type);
             startActivity(intent);
         } else {
             Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
@@ -1294,7 +1293,7 @@ public class Main extends FragmentActivity {
         boolean success = FilesManagement.createBackupFileToSend(this, data);
         if (success) {
             Intent intent = new Intent(this, SendMsg.class);
-            intent.putExtra("type",SendMsg.BACKUP);
+            intent.putExtra("type", SendMsg.BACKUP);
             startActivity(intent);
         } else {
             hndl.sendEmptyMessage(77);
@@ -1367,17 +1366,22 @@ public class Main extends FragmentActivity {
                 }
                 break;
             case R.id.button2:
-                final ProgressDlg prgd = new ProgressDlg(this, R.string.backup_progress);
-                prgd.setCancelable(false);
-                prgd.show();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        byte[] data = CryptMethods.encrypt(Backup.backup(Main.this), null, CryptMethods.getPublic()).getBytes();
-                        sendBackup(data);
-                        prgd.cancel();
-                    }
-                }).start();
+                if (CryptMethods.privateExist()) {
+                    final ProgressDlg prgd = new ProgressDlg(this, R.string.backup_progress);
+                    prgd.setCancelable(false);
+                    prgd.show();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            byte[] data = CryptMethods.encrypt(Backup.backup(Main.this), null, CryptMethods.getPublic()).getBytes();
+                            sendBackup(data);
+                            prgd.cancel();
+                        }
+                    }).start();
+                } else {
+                    t.setText(R.string.prevent_backup_no_private);
+                    t.show();
+                }
                 break;
             case R.id.button3:
                 Intent intent = new Intent(this, PrivateKeyManager.class);
