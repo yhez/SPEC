@@ -35,7 +35,7 @@
         android:padding="@dimen/default_gap"
         android:text="@string/get_private_from_nfc"
         android:textColor="@color/spec_black" />
-<!--
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/get_private_from_qr"
-        android:textColor="@color/spec_black" />
+        android:textColor="@color/spec_gray" />
 
     <View
         android:layout_width="match_parent"
@@ -66,8 +66,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/print_private_to_qr"
-        android:textColor="@color/spec_black" />
--->
+        android:textColor="@color/spec_gray" />
+
     <View
         android:id="@+id/text_view_divide"
         android:layout_width="match_parent"

@@ -267,6 +267,7 @@
     <string name="backup_found_old_data">Are you sure?\nby restoring your backup all other data you\'ve saved will be lost</string>
     <string name="backup_not_found_old_data">Restoring the data will put you in the same position you left.</string>
     <string name="backup_verified_title">Restore data from backup.</string>
+    <string name="cant_find_key_on_device">cant_find key on device</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>

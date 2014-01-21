@@ -38,8 +38,8 @@ public class PrivateKeyManager extends Activity {
     int status = NO_CHOICE;
     Button bt1;
     Button bt2;
-    Button bt3;
-    Button bt4;
+    //Button bt3;
+    //Button bt4;
 
     @Override
     public void onCreate(Bundle b) {
@@ -47,8 +47,8 @@ public class PrivateKeyManager extends Activity {
         setContentView(R.layout.private_key_manager);
         bt1 = (Button) findViewById(R.id.p_button1);
         bt2 = (Button) findViewById(R.id.p_button2);
-       // bt3 = (Button) findViewById(R.id.p_button3);
-       // bt4 = (Button) findViewById(R.id.p_button4);
+        // bt3 = (Button) findViewById(R.id.p_button3);
+        // bt4 = (Button) findViewById(R.id.p_button4);
         updateViews();
         Visual.setAllFonts(this, (ViewGroup) findViewById(android.R.id.content));
     }
@@ -57,8 +57,8 @@ public class PrivateKeyManager extends Activity {
     private void updateViews() {
         if (status == NO_CHOICE)
             if (!CryptMethods.privateExist()) {
-                disableButton(bt1, R.string.cant_find_private_key);
-                disableButton(bt4, R.string.cant_find_private_key);
+                disableButton(bt1, R.string.cant_find_key_on_device);
+                //disableButton(bt4, R.string.cant_find_private_key);
             }
         if (NfcAdapter.getDefaultAdapter(this) == null) {
             disableButton(bt1, R.string.cant_connect_nfc_adapter);
@@ -68,7 +68,7 @@ public class PrivateKeyManager extends Activity {
             disabledNFC(bt2);
         }
         if (!PrintHelper.systemSupportsPrint()) {
-            disableButton(bt4, R.string.no_support_print);
+            //disableButton(bt4, R.string.no_support_print);
         }
     }
 
