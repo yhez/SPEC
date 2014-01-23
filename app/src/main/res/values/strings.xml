@@ -269,6 +269,8 @@
     <string name="backup_verified_title">Restore data from backup.</string>
     <string name="cant_find_key_on_device">cant_find key on device</string>
     <string name="prevent_backup_no_private">In order to make the backup save you got to have the private key to create it</string>
+    <string name="loading_title">loading…</string>
+    <string name="loading_msg">loading file into spec,\nplease wait a moment.</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>

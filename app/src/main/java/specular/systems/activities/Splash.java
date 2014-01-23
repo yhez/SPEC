@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Gravity;
 import android.webkit.MimeTypeMap;
 import android.widget.TextView;
@@ -151,8 +150,8 @@ public class Splash extends Activity {
             }
             final Uri ur = uri;
             final ProgressDialog pd = new ProgressDialog(this, R.style.dialogTransparent);
-            pd.setTitle("loading...");
-            pd.setMessage("loading file into spec,\nplease wait a moment.");
+            pd.setTitle(R.string.loading_title);
+            pd.setMessage(getString(R.string.loading_msg));
             pd.setCancelable(false);
             pd.show();
             new Thread(new Runnable() {
@@ -190,7 +189,6 @@ public class Splash extends Activity {
                         hndl.sendEmptyMessage(0);
                         finish();
                     } else {
-                        Log.e("data",data);
                         int typeFile = FileParser.getType(data);
                         if (typeFile == FileParser.CONTACT_CARD)
                             StaticVariables.fileContactCard = new ContactCard(Splash.this, data);
