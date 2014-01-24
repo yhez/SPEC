@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
     android:versionCode="28"
-    android:versionName="1.62">
+    android:versionName="1.63">
 
     <uses-sdk
         android:maxSdkVersion="19"/>
@@ -59,13 +59,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/specular.systems" />
             </intent-filter>
-            <!-- <intent-filter>
-                 <action android:name="android.intent.action.VIEW"/>
-                 <data android:scheme="content" />
-                 <data android:scheme="file" />
-                 <data android:pathPattern="*SPEC*" />
-                 <data android:mimeType="image/png"/>
-             </intent-filter>-->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -120,15 +113,6 @@
             android:launchMode="singleInstance"
             android:name=".widget.QuickMsg"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
-        <activity
-            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen"
-            android:screenOrientation="landscape"
-            android:name=".widget.WidgetScanActivity"
-            android:taskAffinity=""
-            android:exported="true"
-            android:noHistory="true"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance" />
         <activity
             android:noHistory="true"
             android:excludeFromRecents="true"

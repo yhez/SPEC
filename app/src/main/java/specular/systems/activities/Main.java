@@ -171,9 +171,8 @@ public class Main extends FragmentActivity {
                     t.show();
                     break;
                 case RESTORE:
-                    DialogRestore dr = new DialogRestore(Backup.restore(StaticVariables.decryptedBackup), null);
+                    DialogRestore dr = new DialogRestore(Backup.restore(), null);
                     dr.show(getFragmentManager(), "dr");
-                    StaticVariables.decryptedBackup = null;
                     break;
                 case ADD_GROUP:
                     FragmentManagement.currentPage = 1;
@@ -438,7 +437,7 @@ public class Main extends FragmentActivity {
             } else {
                 String result = intent.getStringExtra("barcode");
                 if (requestCode == SCAN_PRIVATE) {
-                    t.setText("keys have been loaded to phone but not yet saved you can choose now to save them on nfc\nor you can decrypt the message you want, and not save it at all");
+                    t.setText(R.string.load_private_from_qr);
                     t.show();
                 } else {
                     int type = FileParser.getType(result);
@@ -636,8 +635,8 @@ public class Main extends FragmentActivity {
                 NdefRecord pvk = msg.getRecords()[0];
                 if (CryptMethods.setPrivate(pvk
                         .getPayload())) {
-                    setUpViews();
-                    mDrawerLayout.openDrawer(mDrawerList);
+                    //setUpViews();
+                    //mDrawerLayout.openDrawer(mDrawerList);
                 } else {
                     t.setText(R.string.cant_find_private_key);
                     t.show();
@@ -671,7 +670,7 @@ public class Main extends FragmentActivity {
                         gc.show(getFragmentManager(), "gc");
                     } else {
                         if (loadingFile) {
-                            t.setText("loading file...");
+                            t.setText(R.string.tring_add_another_file_while_loading);
                             t.show();
                         } else {
                             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -683,7 +682,7 @@ public class Main extends FragmentActivity {
                     }
                 } else {
                     if (loadingFile) {
-                        t.setText("loading file...");
+                        t.setText(R.string.tring_add_another_file_while_loading);
                         t.show();
                     } else {
                         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -1043,7 +1042,7 @@ public class Main extends FragmentActivity {
             case PB:
                 layouts = new int[]{allLayouts[ENCRYPT], allLayouts[SHARE],
                         allLayouts[LEARN], allLayouts[SETUP]};
-                final String msg = getIntent().getStringExtra("message");
+                String msg = getIntent().getStringExtra("message");
                 if (StaticVariables.message != null || msg != null
                         || StaticVariables.fileContactCard != null) {
                     selectItem(0, R.layout.wait_nfc_decrypt, getString(R.string.tab_nfc_title));
@@ -1069,6 +1068,11 @@ public class Main extends FragmentActivity {
                 layouts = new int[]{allLayouts[LEARN], allLayouts[SETUP]};
                 selectItem(1, R.layout.create_new_keys, getString(R.string.first_time_create_keys));
                 defaultScreen = R.layout.create_new_keys;
+                msg = getIntent().getStringExtra("message");
+                if(StaticVariables.message != null || msg != null){
+                    t.setText(R.string.no_keys_open_by_msg);
+                    t.show();
+                }
                 break;
         }
     }
@@ -1151,7 +1155,7 @@ public class Main extends FragmentActivity {
                 return true;
             }
             StaticVariables.fileContactCard=null;
-            t.setText("you cannot add contact without define an account/having public key on the device");
+            t.setText(R.string.no_account_trying_add_contact);
             t.show();
             return true;
         }

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import specular.systems.R;
+import specular.systems.activities.StartScan;
 
 /**
  * Implementation of App Widget functionality.
@@ -36,7 +37,7 @@ public class WidgetScanner extends AppWidgetProvider {
                                 int appWidgetId) {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_scanner);
-        Intent intent = new Intent(context, WidgetScanActivity.class);
+        Intent intent = new Intent(context, StartScan.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_ll_scanner, pendingIntent);
 

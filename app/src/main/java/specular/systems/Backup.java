@@ -60,12 +60,12 @@ public class Backup {
     }
 
     //TODO:4. groups support
-    public static ArrayList<Contact> restore(byte[] rawData) {
+    public static ArrayList<Contact> restore() {
         byte[] del = ContactDelimiter.getBytes();
         byte[] currHash = new byte[32];
-        System.arraycopy(rawData,0,currHash,0,currHash.length);
-        byte[] dataToHash = new byte[rawData.length-32];
-        System.arraycopy(rawData,currHash.length,dataToHash,0,dataToHash.length);
+        System.arraycopy(StaticVariables.decryptedBackup,0,currHash,0,currHash.length);
+        byte[] dataToHash = new byte[StaticVariables.decryptedBackup.length-32];
+        System.arraycopy(StaticVariables.decryptedBackup,currHash.length,dataToHash,0,dataToHash.length);
         byte[] newHash;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -99,6 +99,7 @@ public class Backup {
             // change the loop so only first contact considered as the user
             myDetails = true;
         }
+        StaticVariables.decryptedBackup=null;
         return contactList;
     }
 

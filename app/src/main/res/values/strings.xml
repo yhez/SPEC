@@ -267,10 +267,14 @@
     <string name="backup_found_old_data">Are you sure?\nby restoring your backup all other data you\'ve saved will be lost</string>
     <string name="backup_not_found_old_data">Restoring the data will put you in the same position you left.</string>
     <string name="backup_verified_title">Restore data from backup.</string>
-    <string name="cant_find_key_on_device">cant_find key on device</string>
+    <string name="cant_find_key_on_device">can\'t_find key on device</string>
     <string name="prevent_backup_no_private">In order to make the backup save you got to have the private key to create it</string>
     <string name="loading_title">loading…</string>
     <string name="loading_msg">loading file into spec,\nplease wait a moment.</string>
+    <string name="no_keys_open_by_msg">if your private key is on nfc, just tab it to device and the message will decrypt</string>
+    <string name="no_account_trying_add_contact">you cannot add contact without define an account/having public key on the device</string>
+    <string name="load_private_from_qr">keys have been loaded to phone but not yet saved you can choose now to save them on nfc\nor you can decrypt the message you want, and not save it at all</string>
+    <string name="tring_add_another_file_while_loading">loading file…</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
