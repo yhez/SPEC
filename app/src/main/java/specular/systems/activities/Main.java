@@ -437,19 +437,19 @@ public class Main extends FragmentActivity {
                 intent.setData(null);
             } else {
                 String result = intent.getStringExtra("barcode");
-                if (requestCode==SCAN_PRIVATE) {
+                if (requestCode == SCAN_PRIVATE) {
                     t.setText("keys have been loaded to phone but not yet saved you can choose now to save them on nfc\nor you can decrypt the message you want, and not save it at all");
                     t.show();
-                }else{
+                } else {
                     int type = FileParser.getType(result);
-                    if(type==FileParser.CONTACT_CARD){
+                    if (type == FileParser.CONTACT_CARD) {
                         StaticVariables.fileContactCard = new ContactCard(this, result);
                         if (StaticVariables.fileContactCard.getPublicKey() != null) {
                             setUpViews();
                         } else {
                             hndl.sendEmptyMessage(551);
                         }
-                    }else{
+                    } else {
                         getIntent().putExtra("message", result);
                         setUpViews();
                     }
@@ -661,6 +661,7 @@ public class Main extends FragmentActivity {
         if (FragmentManagement.currentLayout == R.layout.encrypt) {
             if (item.getTitle().equals("Scan")) {
                 Intent i = new Intent(this, StartScan.class);
+                i.putExtra("type", StartScan.CONTACT);
                 startActivityForResult(i, SCAN_CONTACT);
             } else if (item.getTitle().equals("Add")) {
                 if (((ViewPager) findViewById(R.id.pager)).getCurrentItem() == 1) {
@@ -1114,38 +1115,44 @@ public class Main extends FragmentActivity {
             getIntent().setData(null);
             return true;
         } else if (StaticVariables.fileContactCard != null) {
-            FragmentManagement.currentPage = 0;
-            selectItem(0, R.layout.encrypt, null);
-            final Contact c = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.fileContactCard.getPublicKey());
-            if (c == null) {
-                Contact cc = ContactsDataSource.contactsDataSource.findContactByEmail(StaticVariables.fileContactCard.getEmail());
-                long id;
-                if (cc != null)
-                    id = cc.getId();
-                else
-                    id = -1;
-                AddContactDlg acd = new AddContactDlg(StaticVariables.fileContactCard, null, id);
-                acd.show(getFragmentManager(), "acd");
-            } else {
-                //contactChosen(true, c.getId());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        synchronized (this) {
-                            try {
-                                ((Object) this).wait(700);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+            if (CryptMethods.publicExist()&&CryptMethods.privateExist()) {
+                FragmentManagement.currentPage = 0;
+                selectItem(0, R.layout.encrypt, null);
+                final Contact c = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.fileContactCard.getPublicKey());
+                if (c == null) {
+                    Contact cc = ContactsDataSource.contactsDataSource.findContactByEmail(StaticVariables.fileContactCard.getEmail());
+                    long id;
+                    if (cc != null)
+                        id = cc.getId();
+                    else
+                        id = -1;
+                    AddContactDlg acd = new AddContactDlg(StaticVariables.fileContactCard, null, id);
+                    acd.show(getFragmentManager(), "acd");
+                } else {
+                    //contactChosen(true, c.getId());
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            synchronized (this) {
+                                try {
+                                    ((Object) this).wait(700);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
+                            Message msg = hndl.obtainMessage(777, c.getId());
+                            hndl.sendMessage(msg);
                         }
-                        Message msg = hndl.obtainMessage(777, c.getId());
-                        hndl.sendMessage(msg);
-                    }
-                }).start();
-                StaticVariables.fileContactCard = null;
-                t.setText(R.string.contact_exist);
-                t.show();
+                    }).start();
+                    StaticVariables.fileContactCard = null;
+                    t.setText(R.string.contact_exist);
+                    t.show();
+                }
+                return true;
             }
+            StaticVariables.fileContactCard=null;
+            t.setText("you cannot add contact without define an account/having public key on the device");
+            t.show();
             return true;
         }
         return false;
