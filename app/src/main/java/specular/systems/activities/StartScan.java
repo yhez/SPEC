@@ -45,9 +45,9 @@ public class StartScan extends CaptureActivity {
         super.onStart();
         type = getIntent().getIntExtra("type", CONTACT);
         id = getIntent().getLongExtra("id",-1);
-        if (type == MESSAGE)
-            ((TextView) findViewById(R.id.status_view)).setText(R.string.decrypt_qr_message_explain);
-        else if (type == PRIVATE) {
+        if (type != PRIVATE)
+            ((TextView) findViewById(R.id.status_view)).setText(R.string.scan_any_qr_widget);
+        else {
             ((TextView) findViewById(R.id.status_view)).setText(R.string.private_scan_explain);
         }
     }

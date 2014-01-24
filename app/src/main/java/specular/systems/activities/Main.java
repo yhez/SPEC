@@ -437,20 +437,23 @@ public class Main extends FragmentActivity {
                 intent.setData(null);
             } else {
                 String result = intent.getStringExtra("barcode");
-                switch (requestCode) {
-                    case SCAN_MESSAGE:
-                        getIntent().putExtra("message", result);
-                        setUpViews();
-                        break;
-                    case SCAN_CONTACT:
+                if (requestCode==SCAN_PRIVATE) {
+                    t.setText("keys have been loaded to phone but not yet saved you can choose now to save them on nfc\nor you can decrypt the message you want, and not save it at all");
+                    t.show();
+                }else{
+                    int type = FileParser.getType(result);
+                    if(type==FileParser.CONTACT_CARD){
                         StaticVariables.fileContactCard = new ContactCard(this, result);
                         if (StaticVariables.fileContactCard.getPublicKey() != null) {
                             setUpViews();
                         } else {
                             hndl.sendEmptyMessage(551);
                         }
-                        break;
-                    case SCAN_FOR_GROUP:
+                    }else{
+                        getIntent().putExtra("message", result);
+                        setUpViews();
+                    }
+                   /* case SCAN_FOR_GROUP:
                         getIntent().putExtra("message", result);
                         getIntent().putExtra("id", intent.getLongExtra("id", -1));
                         setUpViews();
@@ -458,7 +461,7 @@ public class Main extends FragmentActivity {
                     case SCAN_PRIVATE:
                         t.setText("keys have been loaded to phone but not yet saved you can choose now to save them on nfc\nor you can decrypt the message you want, and not save it at all");
                         t.show();
-                        break;
+                        break;|*/
                 }
             }
         }
