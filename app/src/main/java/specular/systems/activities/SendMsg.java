@@ -211,7 +211,7 @@ public class SendMsg extends Activity {
     private void startOnClick(int what, ResolveInfo rs) {
         if (contact != null)
             if (((CheckBox) findViewById(R.id.check_default)).isChecked()) {
-                contact.update(rs.activityInfo.packageName + "\n" + rs.activityInfo.name, this);
+                contact.update(rs.activityInfo.packageName + "\n" + rs.activityInfo.name, null);
             }
         EditText etFile = (EditText) findViewById(R.id.name_file),
                 etImage = (EditText) findViewById(R.id.qr_name_file);

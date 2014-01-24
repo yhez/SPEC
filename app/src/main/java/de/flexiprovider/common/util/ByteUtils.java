@@ -230,28 +230,6 @@ public final class ByteUtils {
     }
 
     /**
-     * Convert a byte array to the corresponding bit string.
-     *
-     * @param input the byte array to be converted
-     * @return the corresponding bit string
-     */
-    public static String toBinaryString(byte[] input) {
-        String result = "";
-        int i;
-        for (i = 0; i < input.length; i++) {
-            int e = input[i];
-            for (int ii = 0; ii < 8; ii++) {
-                int b = (e >>> ii) & 1;
-                result += b;
-            }
-            if (i != input.length - 1) {
-                result += " ";
-            }
-        }
-        return result;
-    }
-
-    /**
      * Compute the bitwise XOR of two arrays of bytes. The arrays have to be of
      * same length. No length checking is performed.
      *

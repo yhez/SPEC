@@ -12,12 +12,6 @@ public class LMOTSHash {
     private int m;
     private Vector a;
 
-    public LMOTSHash(byte[] encoded) {
-        GFPVectorSerial serial = new GFPVectorSerial(encoded);
-        a = serial.getVectorRepresentation();
-        m = a.size();
-    }
-
 
     public LMOTSHash(Vector a) {
         this.a = a;

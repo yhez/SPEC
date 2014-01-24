@@ -66,7 +66,8 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
             }
         ContactsDataSource.fullList.add(c);
         fullList.add(new bmp(c));
-        refreshList(aa);
+        if(aa!=null)
+            refreshList(aa);
     }
 
     public void removeCont(Activity a, int index) {

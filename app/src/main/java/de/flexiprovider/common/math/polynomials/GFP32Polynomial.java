@@ -1,6 +1,5 @@
 package de.flexiprovider.common.math.polynomials;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Vector;
@@ -9,11 +8,9 @@ import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1Integer;
 import codec.asn1.ASN1Sequence;
 import codec.asn1.ASN1SequenceOf;
-import codec.asn1.DERDecoder;
 import codec.asn1.DEREncoder;
 import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.SecureRandom;
-import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.common.util.IntUtils;
 
 public class GFP32Polynomial {
@@ -25,38 +22,6 @@ public class GFP32Polynomial {
 
     private SecureRandom generator;
 
-
-    public GFP32Polynomial(byte[] encoded) throws ASN1Exception, IOException {
-        ByteArrayInputStream in = new ByteArrayInputStream(encoded);
-        DERDecoder decoder = new DERDecoder(in);
-        ASN1Sequence gfpSequence = new ASN1Sequence(3);
-        gfpSequence.add(new ASN1SequenceOf(ASN1Integer.class));
-        gfpSequence.add(new ASN1Integer());
-        gfpSequence.add(new ASN1SequenceOf(ASN1Integer.class));
-        gfpSequence.decode(decoder);
-        in.close();
-
-        ASN1SequenceOf asn1F = (ASN1SequenceOf) gfpSequence.get(0);
-        ASN1Integer asn1P = (ASN1Integer) gfpSequence.get(1);
-        ASN1SequenceOf asn1Poly = (ASN1SequenceOf) gfpSequence.get(2);
-
-        int[] poly = new int[asn1Poly.size()];
-        for (int i = poly.length - 1; i >= 0; i--) {
-            poly[i] = ASN1Tools.getFlexiBigInt((ASN1Integer) asn1Poly.get(i))
-                    .intValue();
-        }
-        this.poly = poly;
-        int[] f = new int[asn1F.size()];
-        degree = f.length - 1;
-        for (int i = degree; i >= 0; i--) {
-            f[i] = ASN1Tools.getFlexiBigInt((ASN1Integer) asn1F.get(i))
-                    .intValue();
-        }
-        this.f = f;
-        p = ASN1Tools.getFlexiBigInt(asn1P).intValue();
-
-        generator = Registry.getSecureRandom();
-    }
 
     public GFP32Polynomial(int[] f, int p, int[] poly) {
         this.f = f;

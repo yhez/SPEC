@@ -16,6 +16,8 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Random;
 
 import javax.crypto.Cipher;
@@ -26,8 +28,6 @@ import de.flexiprovider.ec.FlexiECProvider;
 import de.flexiprovider.ec.keys.ECPrivateKey;
 import de.flexiprovider.ec.parameters.CurveParams;
 import de.flexiprovider.ec.parameters.CurveRegistry;
-import de.flexiprovider.pki.PKCS8EncodedKeySpec;
-import de.flexiprovider.pki.X509EncodedKeySpec;
 
 public class CryptMethods {
     public static boolean doneCreatingKeys = false;
