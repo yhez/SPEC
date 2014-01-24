@@ -94,7 +94,7 @@ public class SendMsg extends Activity {
                     byte[] buffer = new byte[size];
                     is.read(buffer);
                     is.close();
-                    i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+                    i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()));
                 } catch (Exception e) {
                     Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
                             .show();
@@ -236,7 +236,7 @@ public class SendMsg extends Activity {
                 byte[] buffer = new byte[size];
                 is.read(buffer);
                 is.close();
-                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()));
             } catch (Exception e) {
                 Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
                         .show();
@@ -250,7 +250,7 @@ public class SendMsg extends Activity {
                 byte[] buffer = new byte[size];
                 is.read(buffer);
                 is.close();
-                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()));
             } catch (Exception e) {
                 Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
                         .show();
@@ -263,7 +263,7 @@ public class SendMsg extends Activity {
                 byte[] buffer = new byte[size];
                 is.read(buffer);
                 is.close();
-                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()));
             } catch (Exception e) {
                 Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
                         .show();

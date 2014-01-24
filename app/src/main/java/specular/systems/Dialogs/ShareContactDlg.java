@@ -58,7 +58,7 @@ public class ShareContactDlg extends DialogFragment {
                         byte[] buffer = new byte[size];
                         is.read(buffer);
                         is.close();
-                        i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+                        i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()));
                     } catch (Exception e) {
                         Toast.makeText(getActivity(), R.string.failed, Toast.LENGTH_LONG)
                                 .show();
@@ -93,7 +93,7 @@ public class ShareContactDlg extends DialogFragment {
                         byte[] buffer = new byte[size];
                         is.read(buffer);
                         is.close();
-                        i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)));
+                        i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()));
                     } catch (Exception e) {
                         Toast.makeText(getActivity(), R.string.failed, Toast.LENGTH_LONG)
                                 .show();

@@ -237,4 +237,9 @@ public class Visual {
                 }
             }
     }
+    public static String timeAndDate(){
+        String timestamp = new SimpleDateFormat("yyyy MM dd HH:mm:ss").format(Calendar
+                .getInstance().getTime());
+        return "<br><br>"+timestamp;
+    }
 }
