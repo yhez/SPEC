@@ -691,6 +691,10 @@ public class FragmentManagement extends Fragment {
             case setup:
                 break;
             case R.layout.learn:
+                try {
+                    ((TextView)rootView.findViewById(R.id.version)).setText(
+                            getString(R.string.version)+" "+getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);
+                } catch (PackageManager.NameNotFoundException ignored) {}
                 break;
             case decrypted_msg:
                 if (MessageFormat.decryptedMsg != null) {

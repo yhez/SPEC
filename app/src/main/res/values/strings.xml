@@ -275,6 +275,7 @@
     <string name="no_account_trying_add_contact">you cannot add contact without define an account/having public key on the device</string>
     <string name="load_private_from_qr">keys have been loaded to phone but not yet saved you can choose now to save them on nfc\nor you can decrypt the message you want, and not save it at all</string>
     <string name="tring_add_another_file_while_loading">loading file…</string>
+    <string name="version">SPEC version:</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
