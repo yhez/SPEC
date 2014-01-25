@@ -57,6 +57,7 @@ import specular.systems.ContactsGroup;
 import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.Dialogs.AddContactDlg;
+import specular.systems.Dialogs.BackupDialog;
 import specular.systems.Dialogs.ContactQR;
 import specular.systems.Dialogs.DeleteContactDialog;
 import specular.systems.Dialogs.DialogAddGroup;
@@ -162,9 +163,6 @@ public class Main extends FragmentActivity {
                     break;
                 case CLEAR_FOCUS:
                     findViewById(R.id.message).clearFocus();
-                    break;
-                case 77:
-                    Toast.makeText(Main.this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
                     break;
                 case 551:
                     t.setText(R.string.bad_data);
@@ -1303,16 +1301,6 @@ public class Main extends FragmentActivity {
         }
     }
 
-    void sendBackup(byte[] data) {
-        boolean success = FilesManagement.createBackupFileToSend(this, data);
-        if (success) {
-            Intent intent = new Intent(this, SendMsg.class);
-            intent.putExtra("type", SendMsg.BACKUP);
-            startActivity(intent);
-        } else {
-            hndl.sendEmptyMessage(77);
-        }
-    }
 
     public void onClickShare(View v) {
         selectItem(-1, R.layout.profile, null);
@@ -1380,22 +1368,16 @@ public class Main extends FragmentActivity {
                 }
                 break;
             case R.id.button2:
-                if (CryptMethods.privateExist()) {
-                    final ProgressDlg prgd = new ProgressDlg(this, R.string.backup_progress);
-                    prgd.setCancelable(false);
-                    prgd.show();
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            byte[] data = CryptMethods.encrypt(Backup.backup(Main.this), null, CryptMethods.getPublic()).getBytes();
-                            sendBackup(data);
-                            prgd.cancel();
-                        }
-                    }).start();
-                } else {
-                    t.setText(R.string.prevent_backup_no_private);
-                    t.show();
+                int message;
+                if (!CryptMethods.publicExist()) {
+                    message = R.string.backup_no_public;
+                } else if(!CryptMethods.privateExist()) {
+                    message = R.string.prevent_backup_no_private;
+                }else{
+                    message= R.string.backup_explain;
                 }
+                BackupDialog bd = new BackupDialog(message);
+                bd.show(getFragmentManager(),"bd");
                 break;
             case R.id.button3:
                 Intent intent = new Intent(this, PrivateKeyManager.class);
