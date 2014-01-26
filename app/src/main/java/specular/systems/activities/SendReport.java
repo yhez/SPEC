@@ -54,7 +54,9 @@ public class SendReport extends Activity {
         i.setType("*/*");
         i.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.email_for_reports)});
         i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.send_report_subject));
-        i.putExtra(Intent.EXTRA_TEXT, getString(R.string.send_report_content));
+        ArrayList<String> txt = new ArrayList<String>();
+        txt.add(getString(R.string.send_report_content));
+        i.putExtra(Intent.EXTRA_TEXT,txt);
         File folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports");
         ArrayList<Parcelable> uris = new ArrayList<Parcelable>();
         for (String s : folder.list(filterNotReported)) {
@@ -69,6 +71,10 @@ public class SendReport extends Activity {
     }
 
     public void finish(View v) {
+        File folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports");
+        for (String s : folder.list()) {
+            new File(Environment.getExternalStorageDirectory() + "/SPEC/reports", s).delete();
+        }
         finish();
     }
 

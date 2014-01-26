@@ -33,7 +33,7 @@
 
         <Button
             android:onClick="finish"
-            android:text="@string/dont_send_now"
+            android:text="@string/no"
             style="?android:attr/borderlessButtonStyle"
             android:layout_weight="1"
             android:layout_width="0dip"
