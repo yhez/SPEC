@@ -7,6 +7,7 @@ public class KeysDeleter {
     private static Thread t;
 
     public KeysDeleter() {
+        oldStatus = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         if (CryptMethods.privateExist()) {
             keysDeleted=false;
             if (t != null && t.isAlive()) {
@@ -37,7 +38,6 @@ public class KeysDeleter {
     }
 
     public static void delete() {
-        oldStatus = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         CryptMethods.deleteKeys();
         keysDeleted=true;
     }

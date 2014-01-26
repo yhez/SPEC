@@ -58,7 +58,7 @@ import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 public class FragmentManagement extends Fragment {
-    public static int currentPage=0;
+    public static int currentPage = 0;
     public static int currentLayout = -1;
     final Thread checkHash = new Thread(new Runnable() {
         @Override
@@ -120,7 +120,7 @@ public class FragmentManagement extends Fragment {
                 rp.setImageResource(notOk);
         }
         rootView.findViewById(R.id.answer).setVisibility(View.GONE);
-        ((TextView) rootView.findViewById(R.id.general_details)).setText(getString(R.string.light_msg_message_created_at) +"   "+ StaticVariables.timeStamp);
+        ((TextView) rootView.findViewById(R.id.general_details)).setText(getString(R.string.light_msg_message_created_at) + "   " + StaticVariables.timeStamp);
         ((TextView) rootView.findViewById(R.id.flag_contact_exist)).setText(true + "");
         ((TextView) rootView.findViewById(R.id.decrypted_msg)).setText(StaticVariables.msg_content);
     }
@@ -276,7 +276,7 @@ public class FragmentManagement extends Fragment {
                     ((TextView) ll.findViewById(R.id.name)).setText(ownDet[0]);
                     ((TextView) ll.findViewById(R.id.email)).setText(ownDet[1]);
                     ((CheckBox) ll.findViewById(R.id.reinvite)).setChecked(currContact.getLimitInvite());
-                    if(currContact.getLimitInvite()&&!currContact.getOwnerDetails()[2].equals(CryptMethods.getPublic()))
+                    if (currContact.getLimitInvite() && !currContact.getOwnerDetails()[2].equals(CryptMethods.getPublic()))
                         ll.findViewById(R.id.invite).setVisibility(View.GONE);
                     ((CheckBox) ll.findViewById(R.id.nfc)).setChecked(currContact.getLimitNFC());
                     ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
@@ -428,7 +428,7 @@ public class FragmentManagement extends Fragment {
                             .setText(currContact.getEmail());
                     String sessions;
                     if (CryptMethods.privateExist())
-                        sessions = Session.toShow(getActivity(),currContact.getSession());
+                        sessions = Session.toShow(getActivity(), currContact.getSession());
                     else
                         sessions = Session.toHide(getActivity());
                     ((TextView) rootView.findViewById(R.id.contact_session))
@@ -571,7 +571,7 @@ public class FragmentManagement extends Fragment {
 
                             @Override
                             public void onPageSelected(int i) {
-                                currentPage=i;
+                                currentPage = i;
                                 getActivity().invalidateOptionsMenu();
                                 StaticVariables.luc.showIfNeeded(getActivity(), null);
                             }
@@ -692,9 +692,10 @@ public class FragmentManagement extends Fragment {
                 break;
             case R.layout.learn:
                 try {
-                    ((TextView)rootView.findViewById(R.id.version)).setText(
-                            getString(R.string.version)+" "+getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);
-                } catch (PackageManager.NameNotFoundException ignored) {}
+                    ((TextView) rootView.findViewById(R.id.version)).setText(
+                            getString(R.string.version) + " " + getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);
+                } catch (PackageManager.NameNotFoundException ignored) {
+                }
                 break;
             case decrypted_msg:
                 if (MessageFormat.decryptedMsg != null) {
@@ -895,8 +896,12 @@ public class FragmentManagement extends Fragment {
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((EditText) rootView.findViewById(R.id.email)).setText("");
-                ((EditText) rootView.findViewById(R.id.name)).setText("");
+                Editable et = ((EditText) rootView.findViewById(R.id.email)).getText();
+                if (et != null && et.length() > 0)
+                    et.clear();
+                et = ((EditText) rootView.findViewById(R.id.name)).getText();
+                if (et != null && et.length() > 0)
+                    et.clear();
             }
         });
         ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);

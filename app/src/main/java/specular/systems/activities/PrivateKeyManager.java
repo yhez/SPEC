@@ -230,15 +230,17 @@ public class PrivateKeyManager extends Activity {
     public void onResume() {
         super.onResume();
         KeysDeleter.stop();
-        PendingIntent pi = PendingIntent.getActivity(this, 0,
-                new Intent(this, getClass())
-                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        IntentFilter tagDetected = new IntentFilter(
-                NfcAdapter.ACTION_TAG_DISCOVERED);
-        IntentFilter[] filters = new IntentFilter[]{tagDetected};
-        NfcAdapter
-                .getDefaultAdapter(this)
-                .enableForegroundDispatch(this, pi, filters, null);
+        if (NfcAdapter.getDefaultAdapter(this) != null && NfcAdapter.getDefaultAdapter(this).isEnabled()) {
+            PendingIntent pi = PendingIntent.getActivity(this, 0,
+                    new Intent(this, getClass())
+                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+            IntentFilter tagDetected = new IntentFilter(
+                    NfcAdapter.ACTION_TAG_DISCOVERED);
+            IntentFilter[] filters = new IntentFilter[]{tagDetected};
+            NfcAdapter
+                    .getDefaultAdapter(this)
+                    .enableForegroundDispatch(this, pi, filters, null);
+        }
         updateViews();
     }
 

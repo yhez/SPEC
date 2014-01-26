@@ -29,6 +29,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Editable;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -186,7 +187,6 @@ public class Main extends FragmentActivity {
     };
     public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_FOR_GROUP = 2, SCAN_PRIVATE = 3, SCAN_CONTACT = 4;
     public Handler handler;
-    boolean msgSended = false;
     Thread addFile;
     private Toast t = null;
     private int defaultScreen;
@@ -216,13 +216,10 @@ public class Main extends FragmentActivity {
                 TurnNFCOn tno = new TurnNFCOn();
                 tno.show(getFragmentManager(), "nfc");
             } else {
-                //todo already started at on resume
+                findViewById(R.id.drawer_layout).animate().setDuration(1000)
+                        .alpha(0).start();
+                onClickSkipNFC(null);
             }
-        else {
-            findViewById(R.id.drawer_layout).animate().setDuration(1000)
-                    .alpha(0).start();
-            onClickSkipNFC(null);
-        }
     }
 
     void encryptManager(final int type) {
@@ -237,14 +234,13 @@ public class Main extends FragmentActivity {
                 LightMessage lMsg = null;
                 if (StaticVariables.fileContent == null)
                     lMsg = new LightMessage(userInput);
-                String sss = contact != null ? contact.getSession().substring(0,contact.getSession().length()-2) : group.getMentor();
+                String sss = contact != null ? contact.getSession().substring(0, contact.getSession().length() - 2) : group.getMentor();
                 MessageFormat msg = new MessageFormat(StaticVariables.fileContent, CryptMethods.getMyDetails(Main.this), fileName, userInput,
                         sss);
                 byte[] data = CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
                         contact != null ? contact.getPublicKey() : group.getPublicKey()).getBytes();
                 sendMessage(data, type);
                 prgd.cancel();
-                msgSended = true;
             }
         }).start();
     }
@@ -426,8 +422,6 @@ public class Main extends FragmentActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == ATTACH_FILE)
-            FilesManagement.getKeysFromSDCard(this);
         if (resultCode == RESULT_OK) {
             if (requestCode == ATTACH_FILE) {
                 attachFile(intent.getData());
@@ -1064,7 +1058,7 @@ public class Main extends FragmentActivity {
                 selectItem(1, R.layout.create_new_keys, getString(R.string.first_time_create_keys));
                 defaultScreen = R.layout.create_new_keys;
                 msg = getIntent().getStringExtra("message");
-                if(StaticVariables.message != null || msg != null){
+                if (StaticVariables.message != null || msg != null) {
                     t.setText(R.string.no_keys_open_by_msg);
                     t.show();
                 }
@@ -1114,7 +1108,7 @@ public class Main extends FragmentActivity {
             getIntent().setData(null);
             return true;
         } else if (StaticVariables.fileContactCard != null) {
-            if (CryptMethods.publicExist()&&CryptMethods.privateExist()) {
+            if (CryptMethods.publicExist() && CryptMethods.privateExist()) {
                 FragmentManagement.currentPage = 0;
                 selectItem(0, R.layout.encrypt, null);
                 final Contact c = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.fileContactCard.getPublicKey());
@@ -1149,7 +1143,7 @@ public class Main extends FragmentActivity {
                 }
                 return true;
             }
-            StaticVariables.fileContactCard=null;
+            StaticVariables.fileContactCard = null;
             t.setText(R.string.no_account_trying_add_contact);
             t.show();
             return true;
@@ -1190,12 +1184,12 @@ public class Main extends FragmentActivity {
             switch (FragmentManagement.currentLayout) {
                 case R.layout.encrypt:
                     TextView contactChosen = (TextView) findViewById(R.id.contact_id_to_send);
-                    EditText etMessage = (EditText) findViewById(R.id.message);
+                    Editable etMessage = ((EditText) findViewById(R.id.message)).getText();
                     TextView fileLength = (TextView) findViewById(R.id.file_content_length);
                     boolean clearedSomething = false;
-                    if (etMessage.getText().length() > 0) {
+                    if (etMessage.length() > 0) {
                         clearedSomething = true;
-                        etMessage.setText("");
+                        etMessage.clear();
                         StaticVariables.currentText = "";
                     }
                     if (contactChosen.getText().length() > 0) {
@@ -1338,18 +1332,32 @@ public class Main extends FragmentActivity {
         int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         if (newkeys != KeysDeleter.oldStatus) {
             setUpViews();
-        } else if (msgSended) {
-            onBackPressed();
-            msgSended = false;
+        }
+        if (StaticVariables.msgSended) {
+            StaticVariables.msgSended = false;
+            clearFields();
         }
         //this is for when coming to the app from share
-
         Uri uri = getIntent().getParcelableExtra("specattach");
         getIntent().setData(null);
         if (uri != null) {
             if (FragmentManagement.currentLayout != R.layout.encrypt)
                 selectItem(-1, R.layout.encrypt, null);
             attachFile(uri);
+        }
+    }
+
+    private void clearFields() {
+        if (FragmentManagement.currentLayout == R.layout.encrypt) {
+            ((TextView) findViewById(R.id.file_content_length)).setText("");
+            ((TextView) findViewById(R.id.contact_id_to_send)).setText("");
+            ((TextView) findViewById(R.id.message)).setText("");
+            StaticVariables.currentText = "";
+            StaticVariables.fileContent = null;
+            findViewById(R.id.list).setVisibility(View.VISIBLE);
+            findViewById(R.id.en_contact).setVisibility(View.GONE);
+            StaticVariables.luc.showIfNeeded(this, null);
+            invalidateOptionsMenu();
         }
     }
 
@@ -1368,13 +1376,13 @@ public class Main extends FragmentActivity {
                 int message;
                 if (!CryptMethods.publicExist()) {
                     message = R.string.backup_no_public;
-                } else if(!CryptMethods.privateExist()) {
+                } else if (!CryptMethods.privateExist()) {
                     message = R.string.prevent_backup_no_private;
-                }else{
-                    message= R.string.backup_explain;
+                } else {
+                    message = R.string.backup_explain;
                 }
                 BackupDialog bd = new BackupDialog(message);
-                bd.show(getFragmentManager(),"bd");
+                bd.show(getFragmentManager(), "bd");
                 break;
             case R.id.button3:
                 Intent intent = new Intent(this, PrivateKeyManager.class);

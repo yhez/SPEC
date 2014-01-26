@@ -36,4 +36,5 @@ public class StaticVariables {
     public static File path;
     public static byte[] decryptedGroup;
     public static byte[] decryptedBackup;
+    public static boolean msgSended = false;
 }

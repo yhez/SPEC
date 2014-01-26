@@ -35,6 +35,7 @@ import specular.systems.Group;
 import specular.systems.GroupDataSource;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
+import specular.systems.StaticVariables;
 import specular.systems.Visual;
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
@@ -42,7 +43,6 @@ import zxing.WriterException;
 public class SendMsg extends Activity {
     private static final int FILE = 0, IMAGE = 1, BOTH = 2;
     public static final int CONTACT=1,MESSAGE=2,INVITE_GROUP=3,MESSAGE_FOR_GROUP=4,BACKUP=5;
-    private static boolean done = false;
     private static List<ResolveInfo> file, image, both;
     ArrayList<Uri> uris;
     Contact contact;
@@ -53,7 +53,7 @@ public class SendMsg extends Activity {
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
-        done = false;
+        StaticVariables.msgSended = false;
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
@@ -101,7 +101,7 @@ public class SendMsg extends Activity {
                 }
             }
             try {
-                done = true;
+                StaticVariables.msgSended = true;
                 startActivity(i);
                 if (contact != null)
                     contact.update(this);
@@ -309,7 +309,7 @@ public class SendMsg extends Activity {
                 break;
         }
         try {
-            done = true;
+            StaticVariables.msgSended = true;
             startActivity(i);
             if (contact != null)
                 contact.update(this);
@@ -419,9 +419,8 @@ public class SendMsg extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        if (done) {
-            done = false;
-            onBackPressed();
+        if (StaticVariables.msgSended) {
+            finish();
         } else
             KeysDeleter.stop();
     }
