@@ -84,12 +84,7 @@ public class SAFERPlusKeyGenerator extends SecretKeyGenerator {
         }
     }
 
-    /**
-     * Initialize the key generator with the default SAFERPlus parameters and
-     * the given source of randomness.
-     *
-     * @param random the source of randomness
-     */
+
     public void init(SecureRandom random) {
         SAFERPlusKeyGenParameterSpec defaultParams = new SAFERPlusKeyGenParameterSpec();
         try {

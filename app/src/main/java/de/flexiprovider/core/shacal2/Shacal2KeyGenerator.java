@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2007 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.core.shacal2;
 
 import de.flexiprovider.api.Registry;
@@ -15,13 +7,7 @@ import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.keys.SecretKeyGenerator;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-/**
- * This class is used to generate keys for the Shacal2 block cipher. Values for
- * the key are 128, 192, 256, 320, 384, and 448 bits, with the default being 128
- * bits.
- *
- * @author Paul Nguentcheu
- */
+
 public class Shacal2KeyGenerator extends SecretKeyGenerator {
 
     // the key size in bits
@@ -98,11 +84,6 @@ public class Shacal2KeyGenerator extends SecretKeyGenerator {
         }
     }
 
-    /**
-     * Generate a Shacal2 key.
-     *
-     * @return the generated {@link Shacal2Key}
-     */
     public SecretKey generateKey() {
         if (!initialized) {
             init(Registry.getSecureRandom());

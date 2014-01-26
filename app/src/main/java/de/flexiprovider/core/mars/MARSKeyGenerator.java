@@ -15,13 +15,7 @@ import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.keys.SecretKeyGenerator;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-/**
- * This class is used to generate keys for the MARS block cipher. Values for the
- * key are 128, 192, 256, 320, 384, and 448 bits, with the default being 128
- * bits.
- *
- * @author Katja Rauch
- */
+
 public class MARSKeyGenerator extends SecretKeyGenerator {
 
     // the key size in bits
@@ -96,11 +90,6 @@ public class MARSKeyGenerator extends SecretKeyGenerator {
         }
     }
 
-    /**
-     * Generate a MARS key.
-     *
-     * @return the generated {@link MARSKey}
-     */
     public SecretKey generateKey() {
         if (!initialized) {
             init(Registry.getSecureRandom());

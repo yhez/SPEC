@@ -15,12 +15,7 @@ import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.keys.SecretKeyGenerator;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-/**
- * This class generates new keys for the RC5 block cipher. The default key size
- * is 128 bits.
- *
- * @author Oliver Seiler
- */
+
 public class RC5KeyGenerator extends SecretKeyGenerator {
 
     // the key size in bytes
@@ -94,11 +89,6 @@ public class RC5KeyGenerator extends SecretKeyGenerator {
         }
     }
 
-    /**
-     * Generate an RC5 key.
-     *
-     * @return the generated {@link RC5Key}
-     */
     public SecretKey generateKey() {
         if (!initialized) {
             init(Registry.getSecureRandom());

@@ -63,23 +63,6 @@ public abstract class KeyFactory extends java.security.KeyFactorySpi {
         return generatePrivate((KeySpec) keySpec);
     }
 
-    /**
-     * JCA adapter for FlexiAPI method getKeySpec(): return a specification (key
-     * material) of the given key object. <tt>keySpec</tt> identifies the
-     * specification class in which the key material should be returned. It
-     * could, for example, be <tt>DSAPublicKeySpec.class</tt>, to indicate
-     * that the key material should be returned in an instance of the
-     * <tt>DSAPublicKeySpec</tt> class.
-     *
-     * @param key     the key
-     * @param keySpec the specification class in which the key material should
-     *                be returned
-     * @return the underlying key specification (key material) in an instance of
-     * the requested specification class
-     * @throws java.security.spec.InvalidKeySpecException if the requested key specification is inappropriate for
-     *                                                    the given key, or the given key cannot be dealt with
-     *                                                    (e.g., the given key has an unrecognized format).
-     */
     protected final java.security.spec.KeySpec engineGetKeySpec(
             java.security.Key key, Class keySpec)
             throws java.security.spec.InvalidKeySpecException {
@@ -138,23 +121,6 @@ public abstract class KeyFactory extends java.security.KeyFactorySpi {
     public abstract PrivateKey generatePrivate(KeySpec keySpec)
             throws InvalidKeySpecException;
 
-    /**
-     * Return a specification (key material) of the given key object.
-     * <tt>keySpec</tt> identifies the specification class in which the key
-     * material should be returned. It could, for example, be
-     * <tt>DSAPublicKeySpec.class</tt>, to indicate that the key material
-     * should be returned in an instance of the <tt>DSAPublicKeySpec</tt>
-     * class.
-     *
-     * @param key     the key
-     * @param keySpec the specification class in which the key material should
-     *                be returned
-     * @return the underlying key specification (key material) in an instance of
-     * the requested specification class
-     * @throws InvalidKeySpecException if the requested key specification is inappropriate for
-     *                                 the given key, or the given key cannot be dealt with
-     *                                 (e.g., the given key has an unrecognized format).
-     */
     public abstract KeySpec getKeySpec(Key key, Class keySpec)
             throws InvalidKeySpecException;
 

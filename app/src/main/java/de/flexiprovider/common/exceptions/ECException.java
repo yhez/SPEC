@@ -22,14 +22,6 @@ public class ECException extends RuntimeException {
     private static final String diagnostic = "An ec-specific exception was thrown";
 
     /**
-     * Default constructor. Calls super-constructor with the message "An
-     * ec-specific exception was thrown".
-     */
-    public ECException() {
-        super(diagnostic);
-    }
-
-    /**
      * Constructor with the message "An ec-specific exception was thrown:
      * <em>cause</em>"
      *

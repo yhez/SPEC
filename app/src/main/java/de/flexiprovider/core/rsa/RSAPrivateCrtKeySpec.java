@@ -1,7 +1,5 @@
 package de.flexiprovider.core.rsa;
 
-import java.math.BigInteger;
-
 import de.flexiprovider.common.math.FlexiBigInt;
 
 public class RSAPrivateCrtKeySpec extends
@@ -12,18 +10,7 @@ public class RSAPrivateCrtKeySpec extends
     // JCA adapter methods
     // ****************************************************
 
-    public RSAPrivateCrtKeySpec(BigInteger n, BigInteger e, BigInteger d,
-                                BigInteger p, BigInteger q, BigInteger dP, BigInteger dQ,
-                                BigInteger crtCoeff) {
-        super(n, e, d, p, q, dP, dQ, crtCoeff);
-    }
 
-    /**
-     * Create a new RSAPrivateCrtKeySpec out of the given
-     * {@link java.security.spec.RSAPrivateKeySpec}.
-     *
-     * @param keySpec the {@link java.security.spec.RSAPrivateKeySpec}
-     */
     public RSAPrivateCrtKeySpec(java.security.spec.RSAPrivateCrtKeySpec keySpec) {
         super(keySpec.getModulus(), keySpec.getPublicExponent(), keySpec
                 .getPrivateExponent(), keySpec.getPrimeP(),

@@ -32,18 +32,6 @@ public abstract class TSS extends Signature {
     }
 
     /**
-     * TSS with SHA224
-     */
-    public static class SHA224 extends TSS {
-        /**
-         * Constructor.
-         */
-        public SHA224() {
-            super(new de.flexiprovider.core.md.SHA224());
-        }
-    }
-
-    /**
      * TSS with SHA256
      */
     public static class SHA256 extends TSS {
@@ -55,29 +43,6 @@ public abstract class TSS extends Signature {
         }
     }
 
-    /**
-     * TSS with SHA384
-     */
-    public static class SHA384 extends TSS {
-        /**
-         * Constructor.
-         */
-        public SHA384() {
-            super(new de.flexiprovider.core.md.SHA384());
-        }
-    }
-
-    /**
-     * TSS with SHA512
-     */
-    public static class SHA512 extends TSS {
-        /**
-         * Constructor.
-         */
-        public SHA512() {
-            super(new de.flexiprovider.core.md.SHA512());
-        }
-    }
 
     public static int floor2Log(int i) {
         int counter = 0;

@@ -15,12 +15,6 @@ import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-/**
- * This class generates new keys for the RC2 block cipher. The default key size
- * is 64 bits.
- *
- * @author Oliver Seiler
- */
 public class RC2KeyGenerator extends
         de.flexiprovider.core.rc2.interfaces.RC2KeyGenerator {
 
@@ -93,12 +87,6 @@ public class RC2KeyGenerator extends
             throw new RuntimeException("internal error");
         }
     }
-
-    /**
-     * Generate an RC2 key.
-     *
-     * @return the generated {@link RC2Key}
-     */
     public SecretKey generateKey() {
         if (!initialized) {
             init(Registry.getSecureRandom());

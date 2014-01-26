@@ -1,11 +1,4 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
+
 package de.flexiprovider.core.serpent;
 
 import de.flexiprovider.api.Registry;
@@ -15,12 +8,6 @@ import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.keys.SecretKeyGenerator;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-/**
- * This class is used to generate keys for the Serpent block cipher. Values for
- * the key size are 128, 192, and 256 bits, with the default being 128 bits.
- *
- * @author Katja Rauch
- */
 public class SerpentKeyGenerator extends SecretKeyGenerator {
 
     // the key size in bits
@@ -82,12 +69,7 @@ public class SerpentKeyGenerator extends SecretKeyGenerator {
         }
     }
 
-    /**
-     * Initialize the key generator with the default Serpent parameters and the
-     * given source of randomness.
-     *
-     * @param random the source of randomness
-     */
+
     public void init(SecureRandom random) {
         SerpentKeyGenParameterSpec defaultParams = new SerpentKeyGenParameterSpec();
         try {
@@ -98,11 +80,7 @@ public class SerpentKeyGenerator extends SecretKeyGenerator {
         }
     }
 
-    /**
-     * Generate a Serpent key.
-     *
-     * @return the generated {@link SerpentKey}
-     */
+
     public SecretKey generateKey() {
         if (!initialized) {
             init(Registry.getSecureRandom());

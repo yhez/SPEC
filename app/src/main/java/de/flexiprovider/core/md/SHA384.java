@@ -24,9 +24,6 @@ public final class SHA384 extends SHA384_512 {
      */
     public static final String ALG_NAME = "SHA384";
 
-    /**
-     * The OID of SHA384 (defined by NIST).
-     */
     public static final String OID = "2.16.840.1.101.3.4.2.2";
 
     // Initial hash value H<sup>(0)</sup>. These were obtained by taking the
@@ -36,7 +33,6 @@ public final class SHA384 extends SHA384_512 {
             0x67332667ffc00b31L, 0x8eb44a8768581511L, 0xdb0c2e0d64f98fa7L,
             0x47b5481dbefa4fa4L};
 
-    // length of the SHA384 message digest in bytes
     private static final int SHA384_DIGEST_LENGTH = 48;
 
     /**

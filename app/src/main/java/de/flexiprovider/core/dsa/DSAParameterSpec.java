@@ -18,37 +18,12 @@ public final class DSAParameterSpec extends java.security.spec.DSAParameterSpec
     // JCA adapter methods
     // ****************************************************
 
-    /**
-     * Create a new DSAParameterSpec with the specified parameter values.
-     *
-     * @param p the prime
-     * @param q the subprime
-     * @param g the base
-     */
-    public DSAParameterSpec(BigInteger p, BigInteger q, BigInteger g) {
-        super(BigInteger.get(p), BigInteger.get(q), BigInteger.get(g));
-    }
 
-    /**
-     * Create a new DSAParameterSpec out of the given DSAParams.
-     *
-     * @param dsaParams the DSAParams object
-     */
     public DSAParameterSpec(java.security.interfaces.DSAParams dsaParams) {
         super(dsaParams.getP(), dsaParams.getQ(), dsaParams.getG());
     }
 
-    // ****************************************************
-    // FlexiAPI methods
-    // ****************************************************
 
-    /**
-     * Create a new DSAParameterSpec with the specified parameter values.
-     *
-     * @param p the prime
-     * @param q the subprime
-     * @param g the base
-     */
     public DSAParameterSpec(FlexiBigInt p, FlexiBigInt q, FlexiBigInt g) {
         super(BigInteger.get(p.bigInt), BigInteger.get(q.bigInt), BigInteger.get(g.bigInt));
     }

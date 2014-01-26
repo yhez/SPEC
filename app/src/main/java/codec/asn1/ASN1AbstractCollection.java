@@ -93,7 +93,7 @@ public abstract class ASN1AbstractCollection extends ArrayList implements
         Iterator i;
         String s;
 
-        s = removePackageName(getClass());
+        s = removePackageName(((Object)this).getClass());
 
         buf = new StringBuffer();
         buf.append(s);

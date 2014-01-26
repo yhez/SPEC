@@ -112,19 +112,6 @@ public class DERDecoder extends FilterInputStream implements Decoder {
         super(in);
     }
 
-    public DERDecoder(InputStream in, int limit) {
-        super(in);
-
-        setInputLimit(limit);
-    }
-
-    public void setInputLimit(int limit) {
-        if (limit < 0) {
-            throw new IllegalArgumentException("No negative limits allowed!");
-        }
-        limit_ = limit;
-    }
-
 
     protected boolean readNext() throws ASN1Exception, IOException {
         int n;

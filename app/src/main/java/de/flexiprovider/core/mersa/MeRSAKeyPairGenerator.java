@@ -87,12 +87,7 @@ public class MeRSAKeyPairGenerator extends KeyPairGenerator {
         }
     }
 
-    /**
-     * Generate a MeRSA key pair, consisting of a {@link MeRSAPrivateKey} and an
-     * {@link de.flexiprovider.core.rsa.RSAPublicKey}.
-     *
-     * @return the generated key pair
-     */
+
     public KeyPair genKeyPair() {
         if (!initialized) {
             initializeDefault();

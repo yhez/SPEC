@@ -15,12 +15,7 @@ import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.keys.SecretKeyGenerator;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-/**
- * TwofishKeyGenerator creates Twofish keys. Keys can have a length of 128, 192
- * or 256 bits. The default keysize is 128.
- *
- * @author Katja Rauch
- */
+
 public class TwofishKeyGenerator extends SecretKeyGenerator {
 
     // the key size in bits
@@ -82,12 +77,6 @@ public class TwofishKeyGenerator extends SecretKeyGenerator {
         }
     }
 
-    /**
-     * Initialize the key generator with the default Twofish parameters and the
-     * given source of randomness.
-     *
-     * @param random the source of randomness
-     */
     public void init(SecureRandom random) {
         TwofishKeyGenParameterSpec defaultParams = new TwofishKeyGenParameterSpec();
         try {
@@ -98,11 +87,6 @@ public class TwofishKeyGenerator extends SecretKeyGenerator {
         }
     }
 
-    /**
-     * Generate a Twofish key.
-     *
-     * @return the generated {@link TwofishKey}
-     */
     public SecretKey generateKey() {
         if (!initialized) {
             init(Registry.getSecureRandom());

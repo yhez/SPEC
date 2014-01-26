@@ -222,7 +222,7 @@ public class PBES2 extends Cipher {
         String cipherOID = cipherAid.getAlgorithmOID().toString();
 
         // generate cipher specific key with the SecretKeyFactory
-        SecretKey uKey = null;
+        SecretKey uKey;
         try {
             SecretKeySpec uKeySpec = new SecretKeySpec(uKeyBytes, cipherOID);
             SecretKeyFactory skf = Registry.getSecretKeyFactory(cipherOID);
@@ -344,7 +344,7 @@ public class PBES2 extends Cipher {
         String cipherOID = cipherAid.getAlgorithmOID().toString();
 
         // generate cipher specific key with the SecretKeyFactory
-        SecretKey uKey = null;
+        SecretKey uKey;
         try {
             SecretKeySpec uKeySpec = new SecretKeySpec(uKeyBytes, cipherOID);
             SecretKeyFactory skf = Registry.getSecretKeyFactory(cipherOID);

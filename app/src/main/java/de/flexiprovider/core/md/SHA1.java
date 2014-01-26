@@ -29,11 +29,6 @@ public final class SHA1 extends MessageDigest {
     public static final String ALG_NAME = "SHA1";
 
     /**
-     * An alternative algorithm name.
-     */
-    public static final String ALG_NAME2 = "SHA";
-
-    /**
      * The OID of SHA1 (defined by IEEE P1363).
      */
     public static final String OID = "1.3.14.3.2.26";

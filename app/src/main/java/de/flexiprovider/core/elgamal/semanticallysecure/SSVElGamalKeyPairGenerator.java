@@ -45,17 +45,6 @@ public class SSVElGamalKeyPairGenerator extends KeyPairGenerator {
     // flag indicating whether the key pair generator has been initialized
     private boolean initialized;
 
-    /**
-     * Initialize the key pair generator with the specified parameters and
-     * source of randomness. If the parameters are <tt>null</tt>, the
-     * {@link SSVElGamalKeyGenParameterSpec#ElGamalKeyGenParameterSpec() default
-     * parameters} are used.
-     *
-     * @param params the parameters
-     * @param random the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are not an instance of
-     *                                                                            {@link SSVElGamalKeyGenParameterSpec}.
-     */
     public void initialize(AlgorithmParameterSpec params, SecureRandom random)
             throws InvalidAlgorithmParameterException {
 

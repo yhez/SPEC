@@ -18,41 +18,11 @@ public final class DSAPublicKeySpec extends java.security.spec.DSAPublicKeySpec
     // JCA adapter methods
     // ****************************************************
 
-    /**
-     * Create a new DSAPublicKeySpec with the specified parameter values.
-     *
-     * @param y the public key
-     * @param p the prime
-     * @param q the sub-prime
-     * @param g the base
-     */
-    public DSAPublicKeySpec(BigInteger y, BigInteger p, BigInteger q,
-                            BigInteger g) {
-        super(BigInteger.get(y), BigInteger.get(p), BigInteger.get(q), BigInteger.get(g));
-    }
-
-    /**
-     * Create a new DSAPublicKeySpec out of the given
-     * {@link java.security.spec.DSAPublicKeySpec}.
-     *
-     * @param keySpec the {@link java.security.spec.DSAPublicKeySpec}
-     */
     public DSAPublicKeySpec(java.security.spec.DSAPublicKeySpec keySpec) {
         super(keySpec.getY(), keySpec.getP(), keySpec.getQ(), keySpec.getG());
     }
 
-    // ****************************************************
-    // FlexiAPI methods
-    // ****************************************************
 
-    /**
-     * Create a new DSAPrivateKeySpec with the specified parameter values.
-     *
-     * @param y the public key
-     * @param p the prime
-     * @param q the sub-prime
-     * @param g the base
-     */
     public DSAPublicKeySpec(FlexiBigInt y, FlexiBigInt p, FlexiBigInt q,
                             FlexiBigInt g) {
         super(BigInteger.get(y.bigInt), BigInteger.get(p.bigInt), BigInteger.get(q.bigInt), BigInteger.get(g.bigInt));

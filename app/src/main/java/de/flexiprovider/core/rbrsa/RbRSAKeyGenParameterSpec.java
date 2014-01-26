@@ -39,18 +39,6 @@ public class RbRSAKeyGenParameterSpec implements AlgorithmParameterSpec {
 
     /**
      * Construct new rebalanced RSA key generation parameters from the given key
-     * size. The bit length of the prime <tt>p</tt> modulo <tt>p</tt> and
-     * modulo <tt>q</tt> is chosen as {@link #DEFAULT_PRIVATE_EXPONENT_SIZE}.
-     * If the key size is invalid, choose the {@link #DEFAULT_KEY_SIZE}.
-     *
-     * @param keySize the bit length of the modulus <tt>n</tt> (&gt;= 512)
-     */
-    public RbRSAKeyGenParameterSpec(int keySize) {
-        this(keySize, DEFAULT_PRIVATE_EXPONENT_SIZE);
-    }
-
-    /**
-     * Construct new rebalanced RSA key generation parameters from the given key
      * size and bit length of the prime <tt>p</tt> modulo <tt>p</tt> and
      * modulo <tt>q</tt>. If the key size is invalid, choose the
      * {@link #DEFAULT_KEY_SIZE}. If the bit length of the prime <tt>p</tt>

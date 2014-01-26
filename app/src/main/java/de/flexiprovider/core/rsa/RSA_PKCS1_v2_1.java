@@ -27,55 +27,7 @@ import de.flexiprovider.core.rsa.interfaces.RSAPrivateCrtKey;
 import de.flexiprovider.core.rsa.interfaces.RSAPrivateKey;
 import de.flexiprovider.core.rsa.interfaces.RSAPublicKey;
 
-/**
- * This class implements the RSA algorithm as defined in <a
- * href=http://www.rsasecurity.com/rsalabs/node.asp?id=2125>PKCS#1 version 2.1</a>
- * in the OAEP (Optimal Asymmetric Encryption Padding) mode. The OAEP mode is
- * recommended for new applications.
- * <p/>
- * To encrypt a message, the following steps have to be performed:
- * <p/>
- * <pre>
- * // The message to encrypt
- * String message = &quot;secret message&quot;;
- * byte[] messageBytes = message.getBytes();
- *
- * // The source of randomness
- * SecureRandom secureRandom = Registry.getSecureRandom();
- *
- * // Obtain a RSA Cipher Object
- * Cipher rsaCipher = Cipher.getInstance(&quot;RSA_PKCS1_v2_1&quot;);
- *
- * // Obtain the corresponding key pair generator
- * KeyPairGenerator rsaKPG = KeyPairGenerator.getInstance(&quot;RSA&quot;);
- *
- * // Initialize the key pair generator with the desired strength
- * rsaKPG.initialize(1024);
- *
- * // Generate a key pair
- * KeyPair rsaKeyPair = rsaKPG.genKeyPair();
- *
- * // Initialize the cipher
- * // Note: if the public key has n with k(k - the length of n in octets) less than the
- * // HEADER_SIZE of RSA_PKCS1_v1_5, a RuntimeException is thrown.
- * cipher.init(Cipher.ENCRYPT_MODE, rsaKeyPair.getPublic(), secureRandom);
- *
- * // Finally encrypt the message
- * // If some of the PKCS1 functions fail during encryption, a RuntimeException is thrown.
- * byte[] ciphertextBytes = cipher.doFinal(messageBytes);
- * </pre>
- * <p/>
- * To decrypt a ciphertext, the <tt>Cipher</tt> must be initialized with
- * <tt>Cipher.DECRYPT_MODE</tt> and the private key (<tt>rsaKeyPair.getPrivate()</tt>).
- * Decrypting, there are some special cases one should take in consideration:<br>
- * 1. If the length of the input is not equal to the maximum cipher text length.
- * A RuntimeException is thrown and the decryption is aborted.<br>
- * 2. If some of the PKCS1 functions fail during encryption, a RuntimeException
- * is thrown.
- *
- * @author Thomas Wahrenbruch
- * @author Ralf-Philipp Weinmann
- */
+
 public class RSA_PKCS1_v2_1 extends AsymmetricBlockCipher {
 
     /**

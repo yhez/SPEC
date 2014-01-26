@@ -222,7 +222,6 @@ public class WinternitzOTSignature {
                     counter++;
                 }
             }
-            // rest of hash
             d = mdsize % w;
             big8 = 0;
             for (int j = 0; j < d; j++) {

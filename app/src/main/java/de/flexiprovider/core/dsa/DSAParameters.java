@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.dsa;
 
 import java.io.IOException;
@@ -31,11 +22,6 @@ public class DSAParameters extends AlgorithmParameters {
      * The OID of DSA.
      */
     public static final String OID = DSAKeyFactory.OID;
-
-    /**
-     * An alternative OID of DSA.
-     */
-    public static final String OID2 = DSAKeyFactory.OID2;
 
     // the prime p
     private FlexiBigInt p;
@@ -210,17 +196,7 @@ public class DSAParameters extends AlgorithmParameters {
         return getEncoded();
     }
 
-    /**
-     * Return a (transparent) specification of this parameters object. paramSpec
-     * identifies the specification class in which the parameters should be
-     * returned. Currently only DSAParameterSpec is supported.
-     *
-     * @param paramSpec the the specification class in which the parameters should
-     *                  be returned.
-     * @return the parameter specification.
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterSpecException if the requested parameter specification is inappropriate
-     *                                                                       for this parameter object.
-     */
+
     public AlgorithmParameterSpec getParameterSpec(Class paramSpec)
             throws InvalidParameterSpecException {
 

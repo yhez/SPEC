@@ -11,8 +11,6 @@ package de.flexiprovider.common.ies;
 
 import de.flexiprovider.api.exceptions.InvalidParameterException;
 import de.flexiprovider.api.keys.KeyPair;
-import de.flexiprovider.api.keys.PrivateKey;
-import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.desede.DESede;
@@ -66,31 +64,6 @@ public class IESParameterSpec implements AlgorithmParameterSpec {
     // JCA adapter methods
     // ****************************************************
 
-    /**
-     * Constructor. If the specified symmetric cipher algorithm is <tt>null</tt>
-     * , the {@link #DEFAULT_SYM_CIPHER} is chosen. If the specified MAC
-     * function is <tt>null</tt>, the {@link #DEFAULT_MAC} is chosen.
-     *
-     * @param ephKeyPair    the ephemeral key pair (used only for encryption)
-     * @param symCipherName the name of the desired symmetric cipher algorithm ("internal"
-     *                      for the internal cipher (one-time pad), or one of
-     *                      "DESede_CBC", "AES128_CBC", "AES192_CBC", or "AES256_CBC").
-     * @param macName       the name of the desired MAC function ("HmacSHA1",
-     *                      "HmacSHA256", "HmacSHA384", "HmacSHA512", or "HmacRIPEMD160").
-     * @param macEncParam   the encoding parameter used for the MAC
-     * @param sharedInfo    the shared data used for the key derivation function
-     * @throws java.security.InvalidParameterException if the desired symmetric cipher algorithm or MAC function is
-     *                                                 not supported.
-     */
-    public IESParameterSpec(java.security.KeyPair ephKeyPair,
-                            String symCipherName, String macName, byte[] macEncParam,
-                            byte[] sharedInfo) throws java.security.InvalidParameterException {
-
-        this(ephKeyPair == null ? null : new KeyPair((PublicKey) ephKeyPair
-                .getPublic(), (PrivateKey) ephKeyPair.getPrivate()),
-                symCipherName, macName, macEncParam, sharedInfo);
-    }
-
     // ****************************************************
     // FlexiAPI methods
     // ****************************************************
@@ -102,7 +75,7 @@ public class IESParameterSpec implements AlgorithmParameterSpec {
      * <tt>null</tt>.
      */
     public IESParameterSpec() {
-        this((KeyPair) null, DEFAULT_SYM_CIPHER, DEFAULT_MAC, null, null);
+        this(null, DEFAULT_SYM_CIPHER, DEFAULT_MAC, null, null);
     }
 
     /**
@@ -123,7 +96,7 @@ public class IESParameterSpec implements AlgorithmParameterSpec {
     public IESParameterSpec(String symCipherName, String macName,
                             byte[] macEncParam, byte[] sharedInfo)
             throws InvalidParameterException {
-        this((KeyPair) null, symCipherName, macName, macEncParam, sharedInfo);
+        this(null, symCipherName, macName, macEncParam, sharedInfo);
     }
 
     /**

@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.core.camellia;
 
 import de.flexiprovider.api.Registry;
@@ -15,12 +7,6 @@ import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.keys.SecretKeyGenerator;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-/**
- * This class is used to generate keys for the Camellia block cipher. Values for
- * the key size are 128, 192, and 256 bits, with the default being 128 bits.
- *
- * @author Ralf-Philipp Weinmann
- */
 public class CamelliaKeyGenerator extends SecretKeyGenerator {
 
     // the key size in bits
@@ -96,11 +82,6 @@ public class CamelliaKeyGenerator extends SecretKeyGenerator {
         }
     }
 
-    /**
-     * Generate a Camellia key.
-     *
-     * @return the generated {@link CamelliaKey}
-     */
     public SecretKey generateKey() {
         if (!initialized) {
             init(Registry.getSecureRandom());

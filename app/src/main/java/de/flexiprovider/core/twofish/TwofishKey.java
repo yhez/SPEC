@@ -12,31 +12,16 @@ package de.flexiprovider.core.twofish;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.common.util.ByteUtils;
 
-/**
- * TwofishKey is used to store a symmetric key for Twofish
- * encryption/decryption.
- *
- * @author Katja Rauch
- */
 public class TwofishKey implements SecretKey {
 
     // the key bytes
     private byte[] keyBytes;
 
-    /**
-     * Construct a new Twofish key from the given key bytes.
-     *
-     * @param keyBytes the key bytes
-     */
     protected TwofishKey(byte[] keyBytes) {
         this.keyBytes = ByteUtils.clone(keyBytes);
     }
 
-    /**
-     * Return the name of the algorithm the key is used with.
-     *
-     * @return "Twofish"
-     */
+
     public String getAlgorithm() {
         return "Twofish";
     }

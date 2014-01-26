@@ -52,16 +52,6 @@ public class RijndaelParameterSpec implements AlgorithmParameterSpec {
     }
 
     /**
-     * Construct the default Rijndael parameters with the given initialization
-     * vector (IV). Set the block size to {@link #DEFAULT_BLOCK_SIZE}.
-     *
-     * @param modeParams the mode parameters containing the IV
-     */
-    public RijndaelParameterSpec(ModeParameterSpec modeParams) {
-        this(DEFAULT_BLOCK_SIZE, modeParams);
-    }
-
-    /**
      * Construct new Rijndael parameters from the given block size. If the block
      * size is invalid, the {@link #DEFAULT_BLOCK_SIZE default block size} is
      * chosen.

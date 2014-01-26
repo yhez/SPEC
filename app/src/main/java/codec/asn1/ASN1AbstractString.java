@@ -80,7 +80,7 @@ public abstract class ASN1AbstractString extends ASN1AbstractType implements
         String s;
         int n;
 
-        s = getClass().getName();
+        s = ((Object)this).getClass().getName();
         n = s.lastIndexOf('.');
 
         if (n < 0)
@@ -94,11 +94,11 @@ public abstract class ASN1AbstractString extends ASN1AbstractType implements
     }
 
     public boolean equals(Object s) {
-        return this.getClass().equals(s.getClass()) && value_.equals(((ASN1AbstractString) s).getString());
+        return ((Object)this).getClass().equals(s.getClass()) && value_.equals(((ASN1AbstractString) s).getString());
     }
 
     public int hashCode() {
-        return (this.getClass().hashCode() + value_.hashCode()) / 2;
+        return (((Object)this).getClass().hashCode() + value_.hashCode()) / 2;
     }
 
 }

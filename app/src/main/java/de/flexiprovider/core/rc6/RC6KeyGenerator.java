@@ -16,13 +16,6 @@ import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.keys.SecretKeyGenerator;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-/**
- * This class generates new keys for the RC6 block cipher. Values for the key
- * size are 128, 192, and 256 bits, with the default being 128 bits.
- *
- * @author Christoph Sesterhenn
- * @author Christoph Ender
- */
 public class RC6KeyGenerator extends SecretKeyGenerator {
 
     private int keySize;
@@ -32,18 +25,7 @@ public class RC6KeyGenerator extends SecretKeyGenerator {
     // flag indicating whether the key generator has been initialized
     private boolean initialized;
 
-    /**
-     * Initialize the key generator with the given parameters (which have to be
-     * an instance of {@link RC6KeyGenParameterSpec}) and a source of
-     * randomness. If the parameters are <tt>null</tt>, the
-     * {@link RC6KeyGenParameterSpec#RC6KeyGenParameterSpec() default parameters}
-     * are used.
-     *
-     * @param params the parameters
-     * @param random the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are <tt>null</tt> or not an instance
-     *                                                                            of {@link RC6KeyGenParameterSpec}.
-     */
+
     public void init(AlgorithmParameterSpec params, SecureRandom random)
             throws InvalidAlgorithmParameterException {
 
@@ -81,12 +63,6 @@ public class RC6KeyGenerator extends SecretKeyGenerator {
         }
     }
 
-    /**
-     * Initialize the key generator with the default RC6 parameters and the
-     * given source of randomness.
-     *
-     * @param random the source of randomness
-     */
     public void init(SecureRandom random) {
         RC6KeyGenParameterSpec defaultParams = new RC6KeyGenParameterSpec();
         try {
@@ -97,11 +73,6 @@ public class RC6KeyGenerator extends SecretKeyGenerator {
         }
     }
 
-    /**
-     * Generate an RC6 key.
-     *
-     * @return the generated {@link RC6Key}
-     */
     public SecretKey generateKey() {
         if (!initialized) {
             init(Registry.getSecureRandom());

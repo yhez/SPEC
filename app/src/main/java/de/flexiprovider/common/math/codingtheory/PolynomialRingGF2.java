@@ -143,33 +143,6 @@ public final class PolynomialRingGF2 {
     }
 
     /**
-     * Return the rest of devision two polynomials
-     *
-     * @param p polinomial
-     * @param q polinomial
-     * @return p mod q
-     */
-
-    public static int rest(long p, int q) {
-        long p1 = p;
-        if (q == 0) {
-            System.err.println("Error: to be divided by 0");
-            return 0;
-        }
-        long q1 = q & 0x00000000ffffffffL;
-        while ((p1 >>> 32) != 0) {
-            p1 ^= q1 << (degree(p1) - degree(q1));
-        }
-
-        int result = (int) (p1);
-        while (degree(result) >= degree(q)) {
-            result ^= q << (degree(result) - degree(q));
-        }
-
-        return result;
-    }
-
-    /**
      * Return the greatest common divisor of two polynomials
      *
      * @param p polinomial

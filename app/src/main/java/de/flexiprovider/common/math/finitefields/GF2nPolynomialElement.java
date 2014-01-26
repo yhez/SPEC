@@ -161,17 +161,6 @@ public class GF2nPolynomialElement extends GF2nElement {
     }
 
     /**
-     * Returns <tt>this</tt> element + 'one".
-     *
-     * @return <tt>this</tt> + 'one'
-     */
-    public GF2nElement increase() {
-        GF2nPolynomialElement result = new GF2nPolynomialElement(this);
-        result.increaseThis();
-        return result;
-    }
-
-    /**
      * Increases this element by 'one'.
      */
     public void increaseThis() {
@@ -291,7 +280,7 @@ public class GF2nPolynomialElement extends GF2nElement {
         }
 
         GF2nPolynomialElement x = new GF2nPolynomialElement(this);
-        x.polynomial.expandN((x.mDegree << 1) + 32); // increase performance
+        x.polynomial.expandN((x.mDegree << 1) + 32);
         x.polynomial.reduceN();
 
         for (int i = 0; i < mDegree; i++) {
@@ -320,7 +309,6 @@ public class GF2nPolynomialElement extends GF2nElement {
      * Compute the square root of this element.
      */
     public void squareRootThis() {
-        // increase performance
         polynomial.expandN((mDegree << 1) + 32);
         polynomial.reduceN();
         for (int i = 0; i < mField.getDegree() - 1; i++) {

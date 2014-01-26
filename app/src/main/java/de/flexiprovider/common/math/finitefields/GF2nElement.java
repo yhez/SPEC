@@ -73,13 +73,6 @@ public abstract class GF2nElement implements GFElement {
     // /////////////////////////////////////////////////////////////////////
 
     /**
-     * Returns <tt>this</tt> element + 1.
-     *
-     * @return <tt>this</tt> + 1
-     */
-    public abstract GF2nElement increase();
-
-    /**
      * Increases this element by one.
      */
     public abstract void increaseThis();

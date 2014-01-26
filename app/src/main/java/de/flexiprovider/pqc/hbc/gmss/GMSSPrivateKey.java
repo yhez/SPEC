@@ -712,12 +712,6 @@ public class GMSSPrivateKey extends PrivateKey {
         byte[] OTSseed = new byte[mdLength];
         OTSseed = gmssRandom.nextSeed(currentSeeds[layer]);
 
-        // STEP 2 of Algorithm
-        // if phi's parent on height tau + 1 if left node, store auth_tau
-        // in keep_tau.
-        // TODO check it, formerly was
-        // int L = Phi / (int) Math.floor(Math.pow(2, Tau + 1));
-        // L %= 2;
         int L = (Phi >>> (Tau + 1)) & 1;
 
         byte[] tempKeep = new byte[mdLength];

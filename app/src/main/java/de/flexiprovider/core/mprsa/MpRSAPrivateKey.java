@@ -31,21 +31,6 @@ public class MpRSAPrivateKey extends RSAPrivateCrtKey {
      */
     private RSAOtherPrimeInfo[] otherPrimeInfo;
 
-    /**
-     * Generates a new MpRSA private key.
-     * <p/>
-     *
-     * @param n              the number n = p*q;
-     * @param e              the public exponent e.
-     * @param d              the private exponent d.
-     * @param p              the prime p.
-     * @param q              the prime q.
-     * @param dP             the number d mod (p-1).
-     * @param dQ             the number d mod (q-1).
-     * @param crtCoeff       the coefficient for RSA decryption with the CRT.
-     * @param otherPrimeInfo the additional primes.
-     * @see de.flexiprovider.core.mprsa.MpRSAKeyPairGenerator
-     */
     public MpRSAPrivateKey(FlexiBigInt n, FlexiBigInt e, FlexiBigInt d,
                            FlexiBigInt p, FlexiBigInt q, FlexiBigInt dP, FlexiBigInt dQ,
                            FlexiBigInt crtCoeff, RSAOtherPrimeInfo[] otherPrimeInfo) {

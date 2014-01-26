@@ -51,11 +51,6 @@ public class SSVElGamal extends AsymmetricBlockCipher {
     /* the source of randomness */
     private SecureRandom secureRandom = null;
 
-    /**
-     * Return the name of this cipher.
-     *
-     * @return {@link ALG_NAME}
-     */
     public String getName() {
         return ALG_NAME;
     }

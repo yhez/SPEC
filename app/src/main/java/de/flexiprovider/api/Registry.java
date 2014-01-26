@@ -45,11 +45,6 @@ public abstract class Registry {
 	/* algorithm type constants */
 
     /**
-     * Constant for asymmetric block ciphers
-     */
-    public static final int ASYMMETRIC_BLOCK_CIPHER = 0;
-
-    /**
      * Constant for asymmetric hybrid ciphers
      */
     public static final int ASYMMETRIC_HYBRID_CIPHER = 1;
@@ -70,29 +65,9 @@ public abstract class Registry {
     public static final int PADDING_SCHEME = 4;
 
     /**
-     * Constant for generic ciphers
-     */
-    public static final int CIPHER = 5;
-
-    /**
      * Constant for message authentication codes (MACs)
      */
     public static final int MAC = 6;
-
-    /**
-     * Constant for message digests (hash functions)
-     */
-    public static final int MESSAGE_DIGEST = 7;
-
-    /**
-     * Constant for PRNGs
-     */
-    public static final int SECURE_RANDOM = 8;
-
-    /**
-     * Constant for digital signatures
-     */
-    public static final int SIGNATURE = 9;
 
     /**
      * Constant for algorithm parameter specifications
@@ -130,17 +105,7 @@ public abstract class Registry {
      */
     public static final int KEY_FACTORY = 16;
 
-    /**
-     * Constant for key derivations
-     */
-    public static final int KEY_DERIVATION = 17;
-
-    /**
-     * Constant for key agreements
-     */
-    public static final int KEY_AGREEMENT = 18;
-
-	/* hash tables for the different algorithm types */
+    /* hash tables for the different algorithm types */
 
     private static final Hashtable asymBlockCiphers = new Hashtable();
     private static final Hashtable asymHybridCiphers = new Hashtable();

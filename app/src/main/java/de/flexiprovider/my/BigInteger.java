@@ -1069,7 +1069,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
              */
 
             // Tear m apart into odd part (m1) and power of 2 (m2)
-            int p = m.getLowestSetBit();   // Max pow of 2 that divides m
+            int p = m.getLowestSetBit();
 
             BigInteger m1 = m.shiftRight(p);  // m/2**p
             BigInteger m2 = ONE.shiftLeft(p); // 2**p

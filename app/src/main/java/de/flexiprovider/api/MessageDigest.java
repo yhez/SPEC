@@ -67,49 +67,16 @@ public abstract class MessageDigest extends java.security.MessageDigestSpi {
      */
     public abstract void update(byte[] input, int offset, int len);
 
-    /**
-     * Complete the hash computation by performing final operations such as
-     * padding. Once {@link #digest()} has been called, the engine should be
-     * reset (see {@link #reset()}). Resetting is the responsibility of the
-     * engine implementor.
-     *
-     * @return the array of bytes for the resulting hash value.
-     */
+
     public abstract byte[] digest();
 
-    /**
-     * Update the digest and complete the hash computation by performing final
-     * operations such as padding. Once {@link #digest(byte[])} has been called,
-     * the engine should be reset (see {@link #reset()}). Resetting is the
-     * responsibility of the engine implementor.
-     *
-     * @param input the array of bytes to use for the update
-     * @return the array of bytes for the resulting hash value
-     */
+
     public final byte[] digest(byte[] input) {
         update(input);
         return digest();
     }
 
-    /**
-     * Complete the hash computation by performing final operations such as
-     * padding. Once {@link #digest(byte[], int, int)} has been called, the
-     * engine should be reset (see {@link #reset()}). Resetting is the
-     * responsibility of the engine implementor.
-     *
-     * @param buf    the output buffer in which to store the digest
-     * @param offset offset to start from in the output buffer
-     * @param len    number of bytes within buf allotted for the digest. Both
-     *               this default implementation and the SUN provider do not
-     *               return partial digests. The presence of this parameter is
-     *               solely for consistency in our API's. If the value of this
-     *               parameter is less than the actual digest length, the
-     *               method will throw a DigestException. This parameter is
-     *               ignored if its value is greater than or equal to the
-     *               actual digest length.
-     * @return the length of the digest stored in the output buffer.
-     * @throws de.flexiprovider.api.exceptions.DigestException if an error occurs.
-     */
+
     public final int digest(byte[] buf, int offset, int len)
             throws DigestException {
 

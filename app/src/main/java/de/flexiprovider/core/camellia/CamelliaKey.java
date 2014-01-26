@@ -1,22 +1,8 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.camellia;
 
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.common.util.ByteUtils;
 
-/**
- * This class is used for opaquely storing Camellia keys.
- *
- * @author Ralf-Philipp Weinmann
- */
 public class CamelliaKey implements SecretKey {
 
     /**

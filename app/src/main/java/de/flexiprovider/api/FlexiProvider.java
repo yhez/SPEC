@@ -40,21 +40,6 @@ public abstract class FlexiProvider extends Provider {
     protected static final int MAC = 1;
 
     /**
-     * Constant for message digests (hash functions)
-     */
-    protected static final int MESSAGE_DIGEST = 2;
-
-    /**
-     * Constant for PRNGs
-     */
-    protected static final int SECURE_RANDOM = 3;
-
-    /**
-     * Constant for digital signatures
-     */
-    protected static final int SIGNATURE = 4;
-
-    /**
      * Constant for algorithm parameters (used to encode and decode parameter
      * specifications)
      */
@@ -84,11 +69,6 @@ public abstract class FlexiProvider extends Provider {
      * Constant for key factories
      */
     protected static final int KEY_FACTORY = 10;
-
-    /**
-     * Constant for key agreements
-     */
-    protected static final int KEY_AGREEMENT = 11;
 
     // array holding the algorithm type prefixes (indexed by algorithm type)
     private static final String[] prefixes = {"Cipher.", "Mac.",

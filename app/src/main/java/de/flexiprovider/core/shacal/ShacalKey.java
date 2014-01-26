@@ -12,30 +12,15 @@ package de.flexiprovider.core.shacal;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.common.util.ByteUtils;
 
-/**
- * ShacalKey is used to store a symmetric key for Shacal encryption/decryption.
- *
- * @author Paul Nguentcheu
- */
 public class ShacalKey implements SecretKey {
 
     // the key bytes
     private byte[] keyBytes;
 
-    /**
-     * Construct a new Shacal key from the given key bytes.
-     *
-     * @param keyBytes the key bytes
-     */
     protected ShacalKey(byte[] keyBytes) {
         this.keyBytes = ByteUtils.clone(keyBytes);
     }
 
-    /**
-     * Return the name of the algorithm the key is used with.
-     *
-     * @return "Shacal"
-     */
     public String getAlgorithm() {
         return "Shacal";
     }

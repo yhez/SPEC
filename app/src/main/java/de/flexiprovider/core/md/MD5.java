@@ -1,33 +1,8 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.md;
 
 import de.flexiprovider.common.util.LittleEndianConversions;
 
-/**
- * This class implements the MD5 message digest algorithm according to the
- * Handbook of Applied Cryptography, Menezes, van Oorschot, Vanstone, CRC Press,
- * 1997, algorithm 9.51
- * <p/>
- * <p/>
- * The algorithm has been invented by Rivest and further information concerning
- * the MD5 message digest family can be found at <a
- * href="http://www.rsa.com">www.rsa.com</a> and in RFC 1321.
- * <p/>
- * <p/>
- * The efficiency of this implementation has been tested on a AMD K6-III, 450
- * MHz, running Windows 98 SE, using jdk 1.2.2. The hashing rate is about 125
- * MBits / second.
- *
- * @author Oliver Seiler
- */
+
 public final class MD5 extends MDFamilyDigest {
 
     /**
@@ -35,9 +10,7 @@ public final class MD5 extends MDFamilyDigest {
      */
     public static final String ALG_NAME = "MD5";
 
-    /**
-     * The OID of MD5 (defined by PKCS #2).
-     */
+
     public static final String OID = "1.2.840.113549.2.5";
 
     // magic constants for initialization

@@ -807,60 +807,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
     }
 
 
-    public BigDecimal pow(int n) {
-        if (n < 0 || n > 999999999)
-            throw new ArithmeticException("Invalid operation");
-        // No need to calculate pow(n) if result will over/underflow.
-        // Don't attempt to support "supernormal" numbers.
-        int newScale = checkScale((long) scale * n);
-        this.inflate();
-        return new BigDecimal(intVal.pow(n), newScale);
-    }
-
-
-
-    public BigDecimal pow(int n, MathContext mc) {
-        if (mc.precision == 0)
-            return pow(n);
-        if (n < -999999999 || n > 999999999)
-            throw new ArithmeticException("Invalid operation");
-        if (n == 0)
-            return ONE;                      // x**0 == 1 in X3.274
-        this.inflate();
-        BigDecimal lhs = this;
-        MathContext workmc = mc;           // working settings
-        int mag = Math.abs(n);               // magnitude of n
-        if (mc.precision > 0) {
-
-            int elength = longDigitLength(mag); // length of n in digits
-            if (elength > mc.precision)        // X3.274 rule
-                throw new ArithmeticException("Invalid operation");
-            workmc = new MathContext(mc.precision + elength + 1,
-                    mc.roundingMode);
-        }
-        // ready to carry out power calculation...
-        BigDecimal acc = ONE;           // accumulator
-        boolean seenbit = false;        // set once we've seen a 1-bit
-        for (int i = 1; ; i++) {            // for each bit [top bit ignored]
-            mag += mag;                 // shift left 1 bit
-            if (mag < 0) {              // top bit is set
-                seenbit = true;         // OK, we're off
-                acc = acc.multiply(lhs, workmc); // acc=acc*x
-            }
-            if (i == 31)
-                break;                  // that was the last bit
-            if (seenbit)
-                acc = acc.multiply(acc, workmc);   // acc=acc*acc [square]
-            // else (!seenbit) no point in squaring ONE
-        }
-        // if negative n, calculate the reciprocal using working precision
-        if (n < 0)                          // [hence mc.precision>0]
-            acc = ONE.divide(acc, workmc);
-        // round to final precision and strip zeros
-        return doRound(acc, mc);
-    }
-
-
     public BigDecimal abs() {
         return (signum() < 0 ? negate() : this);
     }
@@ -1375,8 +1321,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
             else
                 return expandBigIntegerTenPowers(n);
         }
-        // BigInteger.pow is slow, so make 10**n by constructing a
-        // BigInteger from a character string (still not very fast)
         char tenpow[] = new char[n + 1];
         tenpow[0] = '1';
         for (int i = 1; i <= n; i++)

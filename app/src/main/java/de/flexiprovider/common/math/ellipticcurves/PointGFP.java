@@ -896,19 +896,6 @@ public class PointGFP extends Point {
         return new PointGFP(gfpx, gfpy, (EllipticCurveGFP) p.mE);
     }
 
-    // ////////////////////////////////////////////////////////////////////
-    // Output
-    // ////////////////////////////////////////////////////////////////////
-
-    /**
-     * Returns this point in affine, decompressed form as a byte array. The
-     * first byte keeps the value 4, to indicate, that this point is stored in
-     * an uncompressed format. The rest of the returned array is split in two
-     * halves, the first holds the x-coordinate <tt>mX</tt> and the second
-     * they-coordinate <tt>mY</tt>.
-     *
-     * @return <tt>this</tt> as byte array
-     */
     byte[] encodeUncompressed() {
 
         // the zero point is encoded as a single byte 0
@@ -937,14 +924,7 @@ public class PointGFP extends Point {
         return encoded;
     }
 
-    /**
-     * Returns this point in affine, compressed form as a byte array. The first
-     * byte keeps the value 2 or 3, to indicate, that this point is stored in a
-     * compressed format. The rest of the returned array is the x-coordinate
-     * <tt>mX</tt>.
-     *
-     * @return <tt>this</tt> as byte array
-     */
+
     byte[] encodeCompressed() {
 
         // the zero point is encoded as a single byte 0
@@ -975,15 +955,6 @@ public class PointGFP extends Point {
         return encoded;
     }
 
-    /**
-     * Returns this point in affine, hybrid form as a byte array. The first byte
-     * keeps the value 6 or 7, to indicate, that this point is stored in a
-     * hybrid format. The rest of the returned array is split in two halves, the
-     * first holds the x-coordinate <tt>mX</tt> and the second they-coordinate
-     * <tt>mY</tt>.
-     *
-     * @return <tt>this</tt> as byte array
-     */
     byte[] encodeHybrid() {
 
         // the zero point is encoded as a single byte 0

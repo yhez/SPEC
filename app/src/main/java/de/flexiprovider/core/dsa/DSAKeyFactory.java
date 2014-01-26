@@ -47,21 +47,6 @@ public class DSAKeyFactory extends
      */
     public static final String OID = "1.2.840.10040.4.1";
 
-    /**
-     * An alternative OID of DSA.
-     */
-    public static final String OID2 = "1.3.14.3.2.12";
-
-    /**
-     * Converts, if possible, a key specification into a DSAPrivKey. Currently
-     * the following key specifications are supported: DSAPrivateKeySpec,
-     * PKCS8EncodedKeySpec.
-     *
-     * @param keySpec the key specification.
-     * @return the private DSA key.
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the key specification is not supported.
-     * @see de.flexiprovider.core.dsa.DSAPrivateKey
-     */
     public PrivateKey generatePrivate(KeySpec keySpec)
             throws InvalidKeySpecException {
 
@@ -81,7 +66,7 @@ public class DSAKeyFactory extends
             }
 
             // get the inner type inside the OCTET STRING
-            ASN1Integer key = null;
+            ASN1Integer key;
             try {
                 key = (ASN1Integer) pki.getDecodedRawKey();
             } catch (CorruptedCodeException CCExc) {
@@ -92,7 +77,7 @@ public class DSAKeyFactory extends
             // Get the parameters from the PrivateKeyInfo.
             // The parameters are in the AlgorithmIdentifier.
             AlgorithmIdentifier algId = PKITools.getAlgorithmIdentifier(pki);
-            AlgorithmParameters aparam = null;
+            AlgorithmParameters aparam;
             try {
                 aparam = algId.getParams();
             } catch (NoSuchAlgorithmException e) {
@@ -101,7 +86,7 @@ public class DSAKeyFactory extends
                 throw new InvalidKeySpecException(e.getMessage());
             }
 
-            DSAParameterSpec dsaps = null;
+            DSAParameterSpec dsaps;
             try {
                 dsaps = (DSAParameterSpec) aparam
                         .getParameterSpec(DSAParameterSpec.class);
@@ -118,16 +103,6 @@ public class DSAKeyFactory extends
                 + keySpec + ".");
     }
 
-    /**
-     * Converts, if possible, a key specification into a DSAPubKey. Currently
-     * the following key specifications are supported: DSAPublicKeySpec,
-     * X509EncodedKeySpec.
-     *
-     * @param keySpec the key specification.
-     * @return the public DSA key.
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     * @see de.flexiprovider.core.dsa.DSAPublicKey
-     */
     public PublicKey generatePublic(KeySpec keySpec)
             throws InvalidKeySpecException {
         if (keySpec instanceof DSAPublicKeySpec) {
@@ -146,7 +121,7 @@ public class DSAKeyFactory extends
             }
 
             // get the inner type inside the BIT STRING
-            ASN1Type key = null;
+            ASN1Type key;
 
             try {
                 key = spki.getDecodedRawKey(); // MM
@@ -160,7 +135,7 @@ public class DSAKeyFactory extends
             // The AlgorithmIdentifier must be a Sequence.
             AlgorithmIdentifier algId = PKITools.getAlgorithmIdentifier(spki);
 
-            AlgorithmParameters aparam = null;
+            AlgorithmParameters aparam;
             try {
                 aparam = algId.getParams();
             } catch (NoSuchAlgorithmException e) {
@@ -169,7 +144,7 @@ public class DSAKeyFactory extends
                 throw new InvalidKeySpecException(e.getMessage());
             }
 
-            DSAParameterSpec dsaps = null;
+            DSAParameterSpec dsaps;
             try {
                 dsaps = (DSAParameterSpec) aparam
                         .getParameterSpec(DSAParameterSpec.class);
@@ -185,20 +160,6 @@ public class DSAKeyFactory extends
                 + keySpec + ".");
     }
 
-    /**
-     * Converts a given key into a key specification, if possible. Currently the
-     * following specifications are supported:
-     * <ul>
-     * <li>for DSAPublicKey: X509EncodedKeySpec, DSAPublicKeySpec</li>
-     * <li>for DSAPrivateKey: PKCS8EncodedKeySpec, DSAPrivateKeySpec.</li>
-     * </ul>
-     * <p/>
-     *
-     * @param key     the key
-     * @param keySpec the key specification
-     * @return the specification of the DSA key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the key type or key specification is not supported.
-     */
     public KeySpec getKeySpec(Key key, Class keySpec)
             throws InvalidKeySpecException {
         if (key instanceof DSAPublicKey) {

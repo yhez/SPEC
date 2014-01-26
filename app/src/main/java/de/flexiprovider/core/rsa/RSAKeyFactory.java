@@ -42,16 +42,7 @@ public class RSAKeyFactory extends
      */
     public static final String OID = "1.2.840.113549.1.1.1";
 
-    /**
-     * Converts, if possible, a key specification into a RSAPubKey. Currently
-     * the following key specifications are supported: RSAPublicKeySpec,
-     * X509EncodedKeySpec.
-     *
-     * @param keySpec the key specification
-     * @return the public RSA key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     * @see de.flexiprovider.core.rsa.RSAPublicKey
-     */
+
     public PublicKey generatePublic(KeySpec keySpec)
             throws InvalidKeySpecException {
 
@@ -96,18 +87,7 @@ public class RSAKeyFactory extends
                 "RSAKeyFactory: Unknown KeySpec type.");
     }
 
-    /**
-     * Converts, if possible, a key specification into an {@link RSAPrivateKey},
-     * an {@link RSAPrivateCrtKey}, or an {@link MpRSAPrivateKey}. Currently the
-     * following key specifications are supported: RSAPrivateCrtKeySpec,
-     * RSAPrivateKeySpec, PKCS8EncodedKeySpec.
-     *
-     * @param keySpec the key specification
-     * @return the private RSA key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the KeySpec is not supported.
-     * @see de.flexiprovider.core.rsa.RSAPrivateCrtKey
-     * @see de.flexiprovider.core.rsa.RSAPrivateKey
-     */
+
     public PrivateKey generatePrivate(KeySpec keySpec)
             throws InvalidKeySpecException {
 
@@ -244,22 +224,7 @@ public class RSAKeyFactory extends
                 "RSAKeyFactory: Unknown KeySpec type.");
     }
 
-    /**
-     * Converts a given key into a key specification, if possible. Currently the
-     * following specifications are supported:
-     * <ul>
-     * <li>for RSAPublicKey: X509EncodedKeySpec, RSAPublicKeySpec</li>
-     * <li>for RSAPrivateKey: PKCS8EncodedKeySpec, RSAPrivateKeySpec</li>
-     * <li>for RSAPrivateCrtKey: PKCS8EncodedKeySpec, RSAPrivateKeySpec,
-     * RSAPrivateCrtKeySpec</li>
-     * <li>for MpRSAPrivateKey: PKCS8EncodedKeySpec, MpRSAPrivateKeySpec</li>
-     * </ul>
-     *
-     * @param key     the key
-     * @param keySpec the key specification
-     * @return key specification of the RSA key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeySpecException if the specification is not supported.
-     */
+
     public KeySpec getKeySpec(Key key, Class keySpec)
             throws InvalidKeySpecException {
 
@@ -286,8 +251,7 @@ public class RSAKeyFactory extends
             }
 
             RSAPrivateCrtKey rsaPrivCrtKey = (RSAPrivateCrtKey) key;
-            // RSAPrivateCrtKeySpec is a subclass of RSAPrivateKeySpec, thus
-            // it must be tested first.
+
             if (RSAPrivateCrtKeySpec.class.isAssignableFrom(keySpec)) {
                 return new RSAPrivateCrtKeySpec(rsaPrivCrtKey.getN(),
                         rsaPrivCrtKey.getE(), rsaPrivCrtKey.getD(),

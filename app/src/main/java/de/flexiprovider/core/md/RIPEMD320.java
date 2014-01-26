@@ -98,7 +98,7 @@ public final class RIPEMD320 extends MDFamilyDigest {
         // aL - chaning variable A-E, aR- chaning variable A`-E`
         int[] aL = new int[5];
         int[] aR = new int[5];
-        int t = 0;
+        int t;
         System.arraycopy(state, 0, aL, 0, 5);
         System.arraycopy(state, 5, aR, 0, 5);
 

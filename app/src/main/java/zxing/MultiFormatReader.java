@@ -63,14 +63,6 @@ public final class MultiFormatReader implements Reader {
     return decodeInternal(image);
   }
 
-  /**
-   * Decode an image using the state set up by calling setHints() previously. Continuous scan
-   * clients will get a <b>large</b> speed increase by using this instead of decode().
-   *
-   * @param image The pixel data to decode
-   * @return The contents of the image
-   * @throws NotFoundException Any errors which occurred
-   */
   public Result decodeWithState(BinaryBitmap image) throws NotFoundException {
     // Make sure to set up the default state so we don't crash
     if (readers == null) {

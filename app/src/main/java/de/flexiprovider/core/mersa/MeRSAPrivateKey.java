@@ -25,24 +25,11 @@ public class MeRSAPrivateKey extends RSAPrivateCrtKey {
         this.crtCoeff = crtCoeff;
     }
 
-    protected MeRSAPrivateKey(MeRSAPrivateKeySpec keySpec) {
-        this(keySpec.getN(), keySpec.getE(), keySpec.getD(), keySpec.getP(),
-                keySpec.getQ(), keySpec.getDp(), keySpec.getDq(), keySpec
-                .getCRTCoeff(), keySpec.getK(), keySpec.getEInvP());
-    }
-
     /**
      * @return the exponent k
      */
     public FlexiBigInt getK() {
         return k;
-    }
-
-    /**
-     * @return the inverse of the public exponent modulo p
-     */
-    public FlexiBigInt getEInvP() {
-        return eInvP;
     }
 
     /**

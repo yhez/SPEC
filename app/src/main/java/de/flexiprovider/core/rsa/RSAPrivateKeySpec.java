@@ -10,16 +10,7 @@ public class RSAPrivateKeySpec extends java.security.spec.RSAPrivateKeySpec
     // JCA adapter methods
     // ****************************************************
 
-    public RSAPrivateKeySpec(BigInteger n, BigInteger d) {
-        super(BigInteger.get(n), BigInteger.get(d));
-    }
 
-    /**
-     * Create a new RSAPrivateKeySpec out of the given
-     * {@link java.security.spec.RSAPrivateKeySpec}.
-     *
-     * @param keySpec the {@link java.security.spec.RSAPrivateKeySpec}
-     */
     public RSAPrivateKeySpec(java.security.spec.RSAPrivateKeySpec keySpec) {
         super(keySpec.getModulus(), keySpec.getPrivateExponent());
     }

@@ -359,13 +359,6 @@ public class GF2nONBElement extends GF2nElement {
     }
 
 
-    public GF2nElement increase() {
-        GF2nONBElement result = new GF2nONBElement(this);
-        result.increaseThis();
-        return result;
-    }
-
-
     public void increaseThis() {
         addToThis(ONE((GF2nONBField) mField));
     }

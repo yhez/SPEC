@@ -233,7 +233,6 @@ class Treehash {
                 messDigestTree.update(toBeHashed);
                 help = messDigestTree.digest();
 
-                // increase help height, stack was reduced by one element
                 helpHeight++;
                 this.tailLength--;
             }

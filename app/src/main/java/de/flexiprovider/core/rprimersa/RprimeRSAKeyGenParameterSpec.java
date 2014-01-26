@@ -64,21 +64,6 @@ public final class RprimeRSAKeyGenParameterSpec implements
 
     /**
      * Construct new rebalanced multi-prime RSA key generation parameters from
-     * the given key size and number of primes. The bit length of the private
-     * exponent <tt>d</tt> modulo all primes is chosen as
-     * {@link #DEFAULT_PRIVATE_EXPONENT_SIZE}. If the key size is invalid,
-     * choose the {@link #DEFAULT_KEY_SIZE}. If the number of primes is
-     * invalid, choose the {@link #DEFAULT_NUM_PRIMES}.
-     *
-     * @param keySize the bit length of the modulus <tt>n</tt> (&gt;= 512)
-     * @param k       the number of primes (&gt;= 2)
-     */
-    public RprimeRSAKeyGenParameterSpec(int keySize, int k) {
-        this(keySize, k, DEFAULT_PRIVATE_EXPONENT_SIZE);
-    }
-
-    /**
-     * Construct new rebalanced multi-prime RSA key generation parameters from
      * the given key size, number of primes, and bit length of the private
      * exponent <tt>d</tt> modulo all primes. If the key size is invalid,
      * choose the {@link #DEFAULT_KEY_SIZE}. If the number of primes is

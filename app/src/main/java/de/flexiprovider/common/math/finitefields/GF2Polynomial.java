@@ -567,18 +567,6 @@ public class GF2Polynomial {
     }
 
     /**
-     * Toggles the LSB of this GF2Polynomial, increasing the value by 'one' and
-     * returns the result in a new GF2Polynomial.
-     *
-     * @return <tt>this + 1</tt>
-     */
-    public GF2Polynomial increase() {
-        GF2Polynomial result = new GF2Polynomial(this);
-        result.increaseThis();
-        return result;
-    }
-
-    /**
      * Multiplies this GF2Polynomial with <i>b</i> and returns the result in a
      * new GF2Polynomial. This method does not reduce the result in GF(2^N).
      * This method uses Karatzuba multiplication.

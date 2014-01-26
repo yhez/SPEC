@@ -631,11 +631,8 @@ public class Main extends FragmentActivity {
             if (raw != null) {
                 NdefMessage msg = (NdefMessage) raw[0];
                 NdefRecord pvk = msg.getRecords()[0];
-                if (CryptMethods.setPrivate(pvk
+                if (!CryptMethods.setPrivate(pvk
                         .getPayload())) {
-                    //setUpViews();
-                    //mDrawerLayout.openDrawer(mDrawerList);
-                } else {
                     t.setText(R.string.cant_find_private_key);
                     t.show();
                 }

@@ -29,7 +29,6 @@ import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.common.math.ellipticcurves.ScalarMult;
 import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.common.util.FlexiBigIntUtils;
-import de.flexiprovider.core.md.NullDigest;
 import de.flexiprovider.ec.keys.ECPrivateKey;
 import de.flexiprovider.ec.keys.ECPublicKey;
 import de.flexiprovider.ec.parameters.CurveParams;
@@ -156,9 +155,6 @@ public abstract class ECDSASignature extends Signature {
         }
     }
 
-    /**
-     * ECDSA with SHA224
-     */
     public static final class SHA224 extends ECDSASignature {
 
         /**
@@ -185,10 +181,6 @@ public abstract class ECDSASignature extends Signature {
             super(new de.flexiprovider.core.md.SHA256());
         }
     }
-
-    /**
-     * ECDSA with SHA384
-     */
     public static final class SHA384 extends ECDSASignature {
 
         /**
@@ -213,15 +205,6 @@ public abstract class ECDSASignature extends Signature {
 
         public SHA512() {
             super(new de.flexiprovider.core.md.SHA512());
-        }
-    }
-
-    /**
-     * ECDSA without message digest
-     */
-    public static final class Raw extends ECDSASignature {
-        public Raw() {
-            super(new NullDigest());
         }
     }
 

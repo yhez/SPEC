@@ -116,7 +116,6 @@ public class CTR extends Mode {
         int inCarry = 1;
         for (int i = blockSize - 1; i >= 0; i--) {
             output[outOff + i] = (byte) (feedbackBlock[i] ^ input[inOff + i]);
-            // increase counter value
             int x = (counter[i] & 0xff) + inCarry;
             counter[i] = (byte) x;
             inCarry = (x > 255) ? 1 : 0;

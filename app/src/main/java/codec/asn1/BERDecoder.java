@@ -173,7 +173,7 @@ public class BERDecoder extends DERDecoder {
                 if (!o.isOptional()) {
                     throw new ASN1Exception("ASN.1 type mismatch!"
                             + "\nExpected: " + o.getClass().getName()
-                            + "\nIn      : " + t.getClass().getName()
+                            + "\nIn      : " + ((Object)t).getClass().getName()
                             + "\nAt index: " + (n - 1) + "\nGot tag : " + tag_
                             + " and class: " + tagclass_);
                 }
@@ -186,7 +186,7 @@ public class BERDecoder extends DERDecoder {
             if (!o.isOptional()) {
                 throw new ASN1Exception("ASN.1 type missing!" + "\nExpected: "
                         + o.getClass().getName() + "\nIn      : "
-                        + t.getClass().getName() + "\nAt index: " + (n - 1));
+                        + ((Object)t).getClass().getName() + "\nAt index: " + (n - 1));
             }
         }
         if (vlen) {

@@ -167,7 +167,6 @@ public class MpRSAKeyPairGenerator extends KeyPairGenerator {
         FlexiBigInt phi = lcm(pm);
         FlexiBigInt two = FlexiBigInt.valueOf(2);
 
-        // increase exponent in steps of 2 in case gcd(phi, e) > 1
         while (!(phi.gcd(e)).equals(one)) {
             e = e.add(two);
         }

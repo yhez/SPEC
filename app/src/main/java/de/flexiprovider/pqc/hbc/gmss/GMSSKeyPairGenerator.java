@@ -327,29 +327,7 @@ public class GMSSKeyPairGenerator extends KeyPairGenerator {
         return null;
     }
 
-    /**
-     * This method initializes the GMSS KeyPairGenerator using an integer value
-     * <code>keySize</code> as input. It provides a simple use of the GMSS for
-     * testing demands.
-     * <p/>
-     * A given <code>keysize</code> of less than 10 creates an amount 2^10
-     * signatures. A keySize between 10 and 20 creates 2^20 signatures. Given an
-     * integer greater than 20 the key pair generator creates 2^40 signatures.
-     *
-     * @param keySize      Assigns the parameters used for the GMSS signatures. There are
-     *                     3 choices:<br/>
-     *                     1. keysize <= 10: creates 2^10 signatures using the
-     *                     parameterset<br/>
-     *                     P = (2, (5, 5), (3, 3), (3, 3))<br/>
-     *                     2. keysize > 10 and <= 20: creates 2^20 signatures using the
-     *                     parameterset<br/>
-     *                     P = (2, (10, 10), (5, 4), (2, 2))<br/>
-     *                     3. keysize > 20: creates 2^40 signatures using the
-     *                     parameterset<br/>
-     *                     P = (2, (10, 10, 10, 10), (9, 9, 9, 3), (2, 2, 2, 2))
-     * @param secureRandom not used by GMSS, the SHA1PRNG of the SUN Provider is always
-     *                     used
-     */
+
     public void initialize(int keySize, SecureRandom secureRandom) {
 
         GMSSParameterSpec gps;

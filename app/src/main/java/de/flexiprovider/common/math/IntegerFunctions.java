@@ -366,24 +366,6 @@ public final class IntegerFunctions {
         return result;
     }
 
-    /**
-     * Compute <tt>a<sup>e</sup></tt>.
-     *
-     * @param a the base
-     * @param e the exponent
-     * @return <tt>a<sup>e</sup></tt>
-     */
-    public static long pow(long a, int e) {
-        long result = 1;
-        while (e > 0) {
-            if ((e & 1) == 1) {
-                result *= a;
-            }
-            a *= a;
-            e >>>= 1;
-        }
-        return result;
-    }
     public static int modPow(int a, int e, int n) {
         if (n <= 0 || e < 0) {
             return 0;
@@ -599,40 +581,6 @@ public final class IntegerFunctions {
      */
     public static FlexiBigInt nextProbablePrime(FlexiBigInt n) {
         return nextProbablePrime(n, 20);
-    }
-
-    /**
-     * Computes the next prime greater than n.
-     *
-     * @param n a integer number
-     * @return the next prime greater than n
-     */
-    public static FlexiBigInt nextPrime(long n) {
-        long i;
-        boolean found = false;
-        long result = 0;
-
-        if (n <= 1) {
-            return FlexiBigInt.valueOf(2);
-        }
-        if (n == 2) {
-            return FlexiBigInt.valueOf(3);
-        }
-
-        for (i = n + 1 + (n & 1); (i <= n << 1) && !found; i += 2) {
-            for (long j = 3; (j <= i >> 1) && !found; j += 2) {
-                if (i % j == 0) {
-                    found = true;
-                }
-            }
-            if (found) {
-                found = false;
-            } else {
-                result = i;
-                found = true;
-            }
-        }
-        return FlexiBigInt.valueOf(result);
     }
 
     /**

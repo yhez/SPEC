@@ -318,36 +318,12 @@ public abstract class Point {
         return mW;
     }
 
-    /**
-     * Returns this point in affin, decompressed form as a byte array. The first
-     * byte keeps the value 4, to indicate, that this point is stored in an
-     * uncompressed format. The rest of the returned array is split in two
-     * halves, the first holds the x-coordinate <tt>mX</tt> and the second
-     * they-coordinate <tt>mY</tt>.
-     *
-     * @return <tt>this</tt> as byte array
-     */
+
     abstract byte[] encodeUncompressed();
 
-    /**
-     * Returns this point in affin, compressed form as a byte array. The first
-     * byte keeps the value 2 or 3, to indicate, that this point is stored in a
-     * compressed format. The rest of the returned array is the x-coordinate
-     * <tt>mX</tt>.
-     *
-     * @return <tt>this</tt> as byte array
-     */
+
     abstract byte[] encodeCompressed();
 
-    /**
-     * Returns this point in affin, hybrid form as a byte array. The first byte
-     * keeps the value 6 or 7, to indicate, that this point is stored in a
-     * hybrid format. The rest of the returned array is split in two halves, the
-     * first holds the x-coordinate <tt>mX</tt> and the second they-coordinate
-     * <tt>mY</tt>.
-     *
-     * @return <tt>this</tt> as byte array
-     */
     abstract byte[] encodeHybrid();
 
 }

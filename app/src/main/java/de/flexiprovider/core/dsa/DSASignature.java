@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.dsa;
 
 import java.io.IOException;
@@ -28,7 +19,6 @@ import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.core.dsa.interfaces.DSAParams;
 import de.flexiprovider.core.dsa.interfaces.DSAPrivateKey;
 import de.flexiprovider.core.dsa.interfaces.DSAPublicKey;
-import de.flexiprovider.core.md.NullDigest;
 
 public abstract class DSASignature extends
         de.flexiprovider.core.dsa.interfaces.DSASignature {
@@ -73,16 +63,6 @@ public abstract class DSASignature extends
         public static final String OID = "1.2.840.10040.4.3";
 
         /**
-         * An alternative OID of SHA1withDSA.
-         */
-        public static final String OID2 = "1.3.14.3.2.13";
-
-        /**
-         * An alternative OID of SHA1withDSA.
-         */
-        public static final String OID3 = "1.3.14.3.2.27";
-
-        /**
          * Constructor.
          */
         public SHA1() {
@@ -90,18 +70,6 @@ public abstract class DSASignature extends
         }
     }
 
-    /**
-     * DSA with SHA224.
-     */
-    public static class SHA224 extends DSASignature {
-
-        /**
-         * Constructor.
-         */
-        public SHA224() {
-            super(new de.flexiprovider.core.md.SHA224());
-        }
-    }
 
     /**
      * DSA with SHA256.
@@ -113,45 +81,6 @@ public abstract class DSASignature extends
          */
         public SHA256() {
             super(new de.flexiprovider.core.md.SHA256());
-        }
-    }
-
-    /**
-     * DSA with SHA384.
-     */
-    public static class SHA384 extends DSASignature {
-
-        /**
-         * Constructor.
-         */
-        public SHA384() {
-            super(new de.flexiprovider.core.md.SHA384());
-        }
-    }
-
-    /**
-     * DSA with SHA512.
-     */
-    public static class SHA512 extends DSASignature {
-
-        /**
-         * Constructor.
-         */
-        public SHA512() {
-            super(new de.flexiprovider.core.md.SHA512());
-        }
-    }
-
-    /**
-     * Inner class providing DSA without message digest
-     */
-    public static class Raw extends DSASignature {
-
-        /**
-         * Constructor.
-         */
-        public Raw() {
-            super(new NullDigest());
         }
     }
 

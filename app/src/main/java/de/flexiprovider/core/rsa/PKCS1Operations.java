@@ -9,16 +9,13 @@
 
 package de.flexiprovider.core.rsa;
 
-import codec.pkcs1.DigestInfo;
 import de.flexiprovider.api.MessageDigest;
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.common.math.FlexiBigInt;
-import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.rsa.interfaces.RSAPrivateCrtKey;
 import de.flexiprovider.core.rsa.interfaces.RSAPrivateKey;
 import de.flexiprovider.core.rsa.interfaces.RSAPublicKey;
-import de.flexiprovider.pki.AlgorithmIdentifier;
 
 public final class PKCS1Operations {
     /*
@@ -450,48 +447,6 @@ public final class PKCS1Operations {
 
         // 14) If H = H2, output "consistent". Otherwise, output "inconsistent".
         return ByteUtils.equals(H, H2);
-    }
-
-    /**
-     * This encoding method is deterministic and does not have an equivalent
-     * decoding function.
-     *
-     * @param H     hash value of the message to be encoded (deviant from
-     *              specification)
-     * @param emLen intended length in octets of the encoded message at least
-     *              tLen+11, where tLen is the octet length of the DER
-     *              encoding T of a certain value computed during the encoding
-     *              operation.
-     * @param aid   Algorithm identifier of the message digest algorithm used
-     *              for hashing the message.
-     * @return the encoded message
-     */
-    public static byte[] EMSA_PKCS1_v1_5_ENCODE(byte[] H, int emLen,
-                                                AlgorithmIdentifier aid) throws PKCS1Exception {
-
-        // 1) Apply the hash function to the message M to produce a hash value H
-        // H = Hash(M). THIS STEP HAS BEEN PERFORMED ALREADY.
-        DigestInfo digestInfo = new DigestInfo(aid, H);
-        byte[] T = ASN1Tools.derEncode(digestInfo);
-
-        int tLen = T.length;
-
-        if (emLen < tLen) {
-            throw new PKCS1Exception(
-                    "intended encoded message length too short.");
-        }
-
-        byte[] EM = new byte[emLen];
-
-        EM[0] = 0x00;
-        EM[1] = 0x01;
-        int i;
-        for (i = 2; i < emLen - tLen - 1; i++) {
-            EM[i] = (byte) 0xff;
-        }
-        EM[i] = 0x00;
-        System.arraycopy(T, 0, EM, emLen - tLen, tLen);
-        return EM;
     }
 
     /**

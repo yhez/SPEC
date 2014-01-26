@@ -18,41 +18,10 @@ public final class DSAPrivateKeySpec extends
     // JCA adapter methods
     // ****************************************************
 
-    /**
-     * Create a new DSAPrivateKeySpec with the specified parameter values.
-     *
-     * @param x the private key
-     * @param p the prime
-     * @param q the sub-prime
-     * @param g the base
-     */
-    public DSAPrivateKeySpec(BigInteger x, BigInteger p, BigInteger q,
-                             BigInteger g) {
-        super(BigInteger.get(x), BigInteger.get(p), BigInteger.get(q), BigInteger.get(g));
-    }
-
-    /**
-     * Create a new DSAPrivateKeySpec out of the given
-     * {@link java.security.spec.DSAPrivateKeySpec}.
-     *
-     * @param keySpec the {@link java.security.spec.DSAPrivateKeySpec}
-     */
     public DSAPrivateKeySpec(java.security.spec.DSAPrivateKeySpec keySpec) {
         super(keySpec.getX(), keySpec.getP(), keySpec.getQ(), keySpec.getG());
     }
 
-    // ****************************************************
-    // FlexiAPI methods
-    // ****************************************************
-
-    /**
-     * Create a new DSAPrivateKeySpec with the specified parameter values.
-     *
-     * @param x the private key
-     * @param p the prime
-     * @param q the sub-prime
-     * @param g the base
-     */
     public DSAPrivateKeySpec(FlexiBigInt x, FlexiBigInt p, FlexiBigInt q,
                              FlexiBigInt g) {
         super(BigInteger.get(x.bigInt), BigInteger.get(p.bigInt), BigInteger.get(q.bigInt), BigInteger.get(g.bigInt));

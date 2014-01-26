@@ -86,11 +86,7 @@ public abstract class ECRegistry extends Registry {
     public static void registerAlgorithms() {
         if (!registered) {
             registerCommon();
-            registerECDSA();
-            registerECNR();
             registerECIES();
-            registerECSVDPDH();
-            registerECPRNG();
             registered = true;
         }
     }
@@ -319,42 +315,11 @@ public abstract class ECRegistry extends Registry {
                         PrimeCurve37.OID, PrimeCurve38.OID});
     }
 
-    private static void registerECDSA() {
-        add(SIGNATURE, ECDSASignature.SHA1.class,
-                new String[]{"SHA1withECDSA", "ECDSA", "SHA1/ECDSA",
-                        ECDSASignature.SHA1.OID});
-        add(SIGNATURE, ECDSASignature.SHA224.class, new String[]{
-                "SHA224withECDSA", "SHA224/ECDSA", ECDSASignature.SHA224.OID});
-        add(SIGNATURE, ECDSASignature.SHA256.class, new String[]{
-                "SHA256withECDSA", "SHA256/ECDSA", ECDSASignature.SHA256.OID});
-        add(SIGNATURE, ECDSASignature.SHA384.class, new String[]{
-                "SHA384withECDSA", "SHA384/ECDSA", ECDSASignature.SHA384.OID});
-        add(SIGNATURE, ECDSASignature.SHA512.class, new String[]{
-                "SHA512withECDSA", "SHA512/ECDSA", ECDSASignature.SHA512.OID});
-        add(SIGNATURE, ECDSASignature.Raw.class, new String[]{"RawECDSA",
-                "RAWECDSA"});
-    }
-
-    private static void registerECNR() {
-        add(SIGNATURE, ECNRSignature.class, new String[]{"ECNR",
-                "SHA1withECNR", "SHA1/ECNR"});
-    }
-
     private static void registerECIES() {
         add(ALG_PARAM_SPEC, IESParameterSpec.class, new String[]{"IES",
                 "ECIES"});
 
         add(ASYMMETRIC_HYBRID_CIPHER, ECIES.class, "ECIES");
-    }
-
-    private static void registerECSVDPDH() {
-        add(KEY_AGREEMENT, ECSVDPDH.class, "ECSVDPDH");
-        add(KEY_AGREEMENT, ECSVDPDHC.class, new String[]{"EC", "ECDH",
-                "ECSVDPDHC"});
-    }
-
-    private static void registerECPRNG() {
-        add(SECURE_RANDOM, ECPRNG.class, "ECPRNG");
     }
 
 }

@@ -33,12 +33,6 @@ public abstract class PBKDF1 extends KeyDerivation {
      * variety of message digests.
      */
 
-    public static final class MD5 extends PBKDF1 {
-        public MD5() {
-            super(new de.flexiprovider.core.md.MD5());
-        }
-    }
-
     public static final class SHA1 extends PBKDF1 {
         public SHA1() {
             super(new de.flexiprovider.core.md.SHA1());

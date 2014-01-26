@@ -12,11 +12,7 @@ package de.flexiprovider.core.mars;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.common.util.ByteUtils;
 
-/**
- * MARSKey is used to store a symmetric key for MARS encryption/decryption.
- *
- * @author Katja Rauch
- */
+
 public class MARSKey implements SecretKey {
 
     // the key data

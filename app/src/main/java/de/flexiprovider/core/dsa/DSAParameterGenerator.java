@@ -33,11 +33,6 @@ public class DSAParameterGenerator extends AlgorithmParameterGenerator {
      */
     public static final String OID = DSAKeyFactory.OID;
 
-    /**
-     * An alternative OID of DSA.
-     */
-    public static final String OID2 = DSAKeyFactory.OID2;
-
     // certainties for prime number generation
     private static final int LO_CERTAINTY = 20;
     private static final int HI_CERTAINTY = 80;

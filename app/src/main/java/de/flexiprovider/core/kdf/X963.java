@@ -107,13 +107,6 @@ public class X963 extends KeyDerivation {
         return result;
     }
 
-    /**
-     * This little 'gem' is a an exponential function to increase a value in a
-     * byte array by 1.
-     *
-     * @param b the byte array holding the value
-     * @return the increased value
-     */
     private byte[] increase(byte[] b) {
         int[] i = new int[4];
         i[0] = (256 + b[0]) % 256;

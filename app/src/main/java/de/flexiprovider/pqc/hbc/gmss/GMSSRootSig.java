@@ -205,7 +205,7 @@ public class GMSSRootSig {
         // variables for calculation of steps
         byte[] messPart = new byte[mdsize];
         System.arraycopy(hash, 0, messPart, 0, mdsize);
-        int checkPart = 0;
+        int checkPart;
         int sumH = 0;
         int checksumsize = getLog((messagesize << w) + 1);
 
@@ -247,7 +247,6 @@ public class GMSSRootSig {
                     big8 >>>= w;
                 }
             }
-            // rest of message part
             dt = mdsize % w;
             big8 = 0;
             for (int j = 0; j < dt; j++) {
@@ -374,9 +373,6 @@ public class GMSSRootSig {
         return sign;
     }
 
-    /**
-     * @return The one-time signature of the message, generated step by step
-     */
     private void oneStep() throws SignatureException {
         // -------- if (8 % w == 0) ----------
         if (8 % w == 0) {
@@ -599,9 +595,9 @@ public class GMSSRootSig {
      */
     public String toString() {
         String out = "" + this.big8 + "  ";
-        int[] statInt = new int[9];
+        int[] statInt;
         statInt = this.getStatInt();
-        byte[][] statByte = new byte[5][mdsize];
+        byte[][] statByte;
         statByte = this.getStatByte();
         for (int i = 0; i < 9; i++) {
             out = out + statInt[i] + " ";

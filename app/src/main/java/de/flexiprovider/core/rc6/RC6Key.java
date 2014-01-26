@@ -12,30 +12,15 @@ package de.flexiprovider.core.rc6;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.common.util.ByteUtils;
 
-/**
- * RC6Key is used to store a symmetric Key for RC6 Encryption/Decryption.
- *
- * @author Christoph Sesterhenn, Christoph Ender
- */
 public class RC6Key implements SecretKey {
 
     // the key bytes
     private byte[] keyBytes;
 
-    /**
-     * Construct a new RC6 key using from the given key bytes.
-     *
-     * @param keyBytes the key bytes
-     */
     protected RC6Key(byte[] keyBytes) {
         this.keyBytes = ByteUtils.clone(keyBytes);
     }
 
-    /**
-     * Return the name of the algorithm the key is used with.
-     *
-     * @return "RC6"
-     */
     public String getAlgorithm() {
         return "RC6";
     }
