@@ -237,7 +237,7 @@ public class Main extends FragmentActivity {
                 LightMessage lMsg = null;
                 if (StaticVariables.fileContent == null)
                     lMsg = new LightMessage(userInput);
-                String sss = contact != null ? contact.getSession() : group.getMentor();
+                String sss = contact != null ? contact.getSession().substring(0,contact.getSession().length()-2) : group.getMentor();
                 MessageFormat msg = new MessageFormat(StaticVariables.fileContent, CryptMethods.getMyDetails(Main.this), fileName, userInput,
                         sss);
                 byte[] data = CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),

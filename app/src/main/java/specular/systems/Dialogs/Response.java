@@ -116,7 +116,7 @@ public class Response extends DialogFragment {
                 else {
                     msgContent = "";
                 }
-                String sss = contact!=null?contact.getSession():group.getMentor();
+                String sss = contact!=null?contact.getSession().substring(0,contact.getSession().length()-2):group.getMentor();
                 final MessageFormat msg = new MessageFormat(null, CryptMethods.getMyDetails(getActivity()), "", userInput + msgContent
                         , sss);
                 final LightMessage lightMessage = new LightMessage(userInput + msgContent);
