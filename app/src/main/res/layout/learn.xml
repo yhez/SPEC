@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="@dimen/default_gap"
         android:text="@string/learn_title"
         android:textColor="@color/spec_black"
         android:textSize="30sp" />
@@ -100,7 +99,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:padding="@dimen/default_gap"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
