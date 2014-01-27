@@ -4,8 +4,6 @@ import de.flexiprovider.api.exceptions.InvalidParameterException;
 import de.flexiprovider.api.keys.KeyPair;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.ByteUtils;
-import de.flexiprovider.core.desede.DESede;
-import de.flexiprovider.core.desede.DESede.DESede_CBC;
 
 public class IESParameterSpec implements AlgorithmParameterSpec {
 
@@ -43,61 +41,17 @@ public class IESParameterSpec implements AlgorithmParameterSpec {
     // the shared data used for the key derivation function
     private byte[] sharedInfo;
 
-    // ****************************************************
-    // JCA adapter methods
-    // ****************************************************
-
-    // ****************************************************
-    // FlexiAPI methods
-    // ****************************************************
-
-    /**
-     * Constructor. Choose the {@link #DEFAULT_SYM_CIPHER} and the
-     * {@link #DEFAULT_MAC}. Set the encoding parameter for the MAC, the shared
-     * data for the key derivation function, and the ephemeral key pair to
-     * <tt>null</tt>.
-     */
     public IESParameterSpec() {
         this(null, DEFAULT_SYM_CIPHER, DEFAULT_MAC, null, null);
     }
 
-    /**
-     * Constructor. If the specified symmetric cipher algorithm is <tt>null</tt>
-     * , the {@link #DEFAULT_SYM_CIPHER} is chosen. If the specified MAC
-     * function is <tt>null</tt>, the {@link #DEFAULT_MAC} is chosen.
-     *
-     * @param symCipherName the name of the desired symmetric cipher algorithm ("internal"
-     *                      for the internal cipher (one-time pad), or one of
-     *                      "DESede_CBC", "AES128_CBC", "AES192_CBC", or "AES256_CBC").
-     * @param macName       the name of the desired MAC function ("HmacSHA1",
-     *                      "HmacSHA256", "HmacSHA384", "HmacSHA512", or "HmacRIPEMD160").
-     * @param macEncParam   the encoding parameter used for the MAC
-     * @param sharedInfo    the shared data used for the key derivation function
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterException if the desired symmetric cipher algorithm or MAC function is
-     *                                                                   not supported.
-     */
+
     public IESParameterSpec(String symCipherName, String macName,
                             byte[] macEncParam, byte[] sharedInfo)
             throws InvalidParameterException {
         this(null, symCipherName, macName, macEncParam, sharedInfo);
     }
 
-    /**
-     * Constructor. If the specified symmetric cipher algorithm is <tt>null</tt>
-     * , the {@link #DEFAULT_SYM_CIPHER} is chosen. If the specified MAC
-     * function is <tt>null</tt>, the {@link #DEFAULT_MAC} is chosen.
-     *
-     * @param ephKeyPair    the ephemeral key pair (used only for encryption)
-     * @param symCipherName the name of the desired symmetric cipher algorithm ("internal"
-     *                      for the internal cipher (one-time pad), or one of
-     *                      "DESede_CBC", "AES128_CBC", "AES192_CBC", or "AES256_CBC").
-     * @param macName       the name of the desired MAC function ("HmacSHA1",
-     *                      "HmacSHA256", "HmacSHA384", "HmacSHA512", or "HmacRIPEMD160").
-     * @param macEncParam   the encoding parameter used for the MAC
-     * @param sharedInfo    the shared data used for the key derivation function
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterException if the desired symmetric cipher algorithm or MAC function is
-     *                                                                   not supported.
-     */
     public IESParameterSpec(KeyPair ephKeyPair, String symCipherName,
                             String macName, byte[] macEncParam, byte[] sharedInfo)
             throws InvalidParameterException {
@@ -109,16 +63,6 @@ public class IESParameterSpec implements AlgorithmParameterSpec {
         this.sharedInfo = ByteUtils.clone(sharedInfo);
     }
 
-	/*-------------------------------------------
-     * Getters
-	 -------------------------------------------*/
-
-    /**
-     * Return the ephemeral key pair. In case it is <tt>null</tt>, the IES
-     * implementation has to generate an ephemeral key pair itself.
-     *
-     * @return the ephemeral key pair (may be <tt>null</tt>)
-     */
     public KeyPair getEphKeyPair() {
         return ephKeyPair;
     }
@@ -186,9 +130,9 @@ public class IESParameterSpec implements AlgorithmParameterSpec {
             this.symCipherName = null;
             mSymKFName = null;
             mSymKeyLength = 0;
-        } else if (symCipherName.equals(DESede_CBC.ALG_NAME)) {
+        } else if (symCipherName.equals("DESede_CBC")) {
             this.symCipherName = symCipherName;
-            mSymKFName = DESede.ALG_NAME;
+            mSymKFName = "DESede";
             mSymKeyLength = 24;
         } else if (symCipherName.equals("AES128_CBC")) {
             this.symCipherName = symCipherName;

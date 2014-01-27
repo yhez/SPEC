@@ -62,14 +62,6 @@ public class DEREncoder extends AbstractEncoder {
         write(t.getBigInteger().toByteArray());
     }
 
-    public void help(byte[] b) {
-        int i;
-
-        for (i = 0; i < b.length; i++) {
-            System.err.println("  " + (b[i] & 0xff));
-        }
-    }
-
 
     public void writeBitString(ASN1BitString t) throws ASN1Exception,
             IOException {
@@ -239,7 +231,7 @@ public class DEREncoder extends AbstractEncoder {
     }
 
 
-    protected void writeHeader(int tag, int cls, boolean prim, int len)
+    private void writeHeader(int tag, int cls, boolean prim, int len)
             throws IOException {
         int b, i;
 
@@ -268,7 +260,7 @@ public class DEREncoder extends AbstractEncoder {
         }
     }
 
-    protected void writeBase128(int n) throws IOException {
+    private void writeBase128(int n) throws IOException {
         int i, j;
 
         i = (significantBits(n) + 6) / 7;
@@ -282,7 +274,7 @@ public class DEREncoder extends AbstractEncoder {
         out.write(n & 0x7f);
     }
 
-    protected void writeBase256(int n) throws IOException {
+    private void writeBase256(int n) throws IOException {
         int i, j;
 
         i = (significantBits(n) + 7) / 8;
@@ -295,7 +287,7 @@ public class DEREncoder extends AbstractEncoder {
         }
     }
 
-    protected int significantBits(int n) {
+    private int significantBits(int n) {
         int i;
 
         if (n == 0)

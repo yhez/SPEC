@@ -11,12 +11,6 @@ import zxing.common.reedsolomon.GenericGF;
 import zxing.common.reedsolomon.ReedSolomonDecoder;
 import zxing.common.reedsolomon.ReedSolomonException;
 
-/**
- * <p>The main class which implements QR Code decoding -- as opposed to locating and extracting
- * the QR Code from an image.</p>
- *
- * @author Sean Owen
- */
 public final class Decoder {
 
   private final ReedSolomonDecoder rsDecoder;
@@ -29,15 +23,6 @@ public final class Decoder {
     return decode(image, null);
   }
 
-  /**
-   * <p>Convenience method that can decode a QR Code represented as a 2D array of booleans.
-   * "true" is taken to mean a black module.</p>
-   *
-   * @param image booleans representing white/black QR Code modules
-   * @return text and bytes encoded within the QR Code
-   * @throws FormatException if the QR Code cannot be decoded
-   * @throws ChecksumException if error correction fails
-   */
   public DecoderResult decode(boolean[][] image, Map<DecodeHintType,?> hints)
       throws ChecksumException, FormatException {
     int dimension = image.length;
@@ -56,14 +41,7 @@ public final class Decoder {
     return decode(bits, null);
   }
 
-  /**
-   * <p>Decodes a QR Code represented as a {@link zxing.common.BitMatrix}. A 1 or "true" is taken to mean a black module.</p>
-   *
-   * @param bits booleans representing white/black QR Code modules
-   * @return text and bytes encoded within the QR Code
-   * @throws FormatException if the QR Code cannot be decoded
-   * @throws ChecksumException if error correction fails
-   */
+
   public DecoderResult decode(BitMatrix bits, Map<DecodeHintType,?> hints)
       throws FormatException, ChecksumException {
 
@@ -137,14 +115,6 @@ public final class Decoder {
     return DecodedBitStreamParser.decode(resultBytes, version, ecLevel, hints);
   }
 
-  /**
-   * <p>Given data and error-correction codewords received, possibly corrupted by errors, attempts to
-   * correct the errors in-place using Reed-Solomon error correction.</p>
-   *
-   * @param codewordBytes data and error correction codewords
-   * @param numDataCodewords number of codewords that are data bytes
-   * @throws ChecksumException if error correction fails
-   */
   private void correctErrors(byte[] codewordBytes, int numDataCodewords) throws ChecksumException {
     int numCodewords = codewordBytes.length;
     // First read into an array of ints

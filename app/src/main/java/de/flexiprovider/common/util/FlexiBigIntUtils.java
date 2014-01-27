@@ -12,40 +12,6 @@ public final class FlexiBigIntUtils {
     }
 
     /**
-     * Checks if two FlexiBigInt arrays contain the same entries
-     *
-     * @param a first FlexiBigInt array
-     * @param b second FlexiBigInt array
-     * @return true or false
-     */
-    public static boolean equals(FlexiBigInt[] a, FlexiBigInt[] b) {
-        int flag = 0;
-
-        if (a.length != b.length) {
-            return false;
-        }
-        for (int i = 0; i < a.length; i++) {
-            // avoid branches here!
-            // problem: compareTo on FlexiBigInts is not
-            // guaranteed constant-time!
-            flag |= a[i].compareTo(b[i]);
-        }
-        return flag == 0;
-    }
-
-    /**
-     * Fill the given FlexiBigInt array with the given value.
-     *
-     * @param array the array
-     * @param value the value
-     */
-    public static void fill(FlexiBigInt[] array, FlexiBigInt value) {
-        for (int i = array.length - 1; i >= 0; i--) {
-            array[i] = value;
-        }
-    }
-
-    /**
      * Return the value of <tt>big</tt> as a byte array. Although FlexiBigInt
      * has such a method, it uses an extra bit to indicate the sign of the
      * number. For elliptic curve cryptography, the numbers usually are

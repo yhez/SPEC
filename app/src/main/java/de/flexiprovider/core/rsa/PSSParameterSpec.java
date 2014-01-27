@@ -55,50 +55,12 @@ public class PSSParameterSpec implements AlgorithmParameterSpec {
      * Parameter set (md = "1.3.14.3.2.26" (SHA1), saltLen = 20)
      */
     public static final class SHA1 extends PSSParameterSpec {
-        public SHA1() {
-            super("1.3.14.3.2.26", 20);
-        }
     }
 
     /**
      * Parameter set (md = "2.16.840.1.101.3.4.2.1" (SHA256), saltLen = 32)
      */
     public static final class SHA256 extends PSSParameterSpec {
-        public SHA256() {
-            super("2.16.840.1.101.3.4.2.1", 32);
-        }
-    }
-
-    /**
-     * Construct the default PSS parameters. Choose the {@link #DEFAULT_MD} and
-     * the {@link #DEFAULT_SALT_LENGTH}.
-     */
-    public PSSParameterSpec() {
-        md = DEFAULT_MD;
-        saltLength = DEFAULT_SALT_LENGTH;
-    }
-
-    /**
-     * Construct new PSS parameters from the given name of the message digest
-     * and salt length. If the message digest name is invalid, choose the
-     * {@link #DEFAULT_MD}. If the salt length is invalid, choose the
-     * {@link #DEFAULT_SALT_LENGTH}.
-     *
-     * @param md         the name of the message digest
-     * @param saltLength the salt length (in bytes)
-     */
-    public PSSParameterSpec(String md, int saltLength) {
-        if (md == null) {
-            this.md = DEFAULT_MD;
-        } else {
-            this.md = md;
-        }
-
-        if (saltLength < 0) {
-            this.saltLength = DEFAULT_SALT_LENGTH;
-        } else {
-            this.saltLength = saltLength;
-        }
     }
 
     /**

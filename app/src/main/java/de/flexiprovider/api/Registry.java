@@ -330,19 +330,6 @@ public abstract class Registry {
     }
 
     /**
-     * Return an instance of the specified source of randomness.
-     *
-     * @param algName the name of the source of randomness
-     * @return a new {@link SecureRandom} object implementing the chosen
-     * algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the source of randomness cannot be found.
-     */
-    public static SecureRandom getSecureRandom(String algName)
-            throws NoSuchAlgorithmException {
-        return (SecureRandom) getInstance(secureRandoms, algName);
-    }
-
-    /**
      * @return the default secure random
      * @throws RuntimeException if the default secure random cannot be instantiated.
      */

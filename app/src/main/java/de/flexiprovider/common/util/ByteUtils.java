@@ -1,17 +1,6 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.common.util;
 
-/**
- * This class is a utility class for manipulating byte arrays.
- */
+
 public final class ByteUtils {
 
     private static final char[] HEX_CHARS = {'0', '1', '2', '3', '4', '5',
@@ -24,13 +13,7 @@ public final class ByteUtils {
         // empty
     }
 
-    /**
-     * Compare two byte arrays (perform null checks beforehand).
-     *
-     * @param left  the first byte array
-     * @param right the second byte array
-     * @return the result of the comparison
-     */
+
     public static boolean equals(byte[] left, byte[] right) {
         if (left == null) {
             return right == null;
@@ -49,13 +32,6 @@ public final class ByteUtils {
         return result;
     }
 
-    /**
-     * Compare two two-dimensional byte arrays. No null checks are performed.
-     *
-     * @param left  the first byte array
-     * @param right the second byte array
-     * @return the result of the comparison
-     */
     public static boolean equals(byte[][] left, byte[][] right) {
         if (left.length != right.length) {
             return false;
@@ -69,13 +45,7 @@ public final class ByteUtils {
         return result;
     }
 
-    /**
-     * Compare two three-dimensional byte arrays. No null checks are performed.
-     *
-     * @param left  the first byte array
-     * @param right the second byte array
-     * @return the result of the comparison
-     */
+
     public static boolean equals(byte[][][] left, byte[][][] right) {
         if (left.length != right.length) {
             return false;
@@ -95,13 +65,6 @@ public final class ByteUtils {
     }
 
 
-    /**
-     * Return a clone of the given byte array (performs null check beforehand).
-     *
-     * @param array the array to clone
-     * @return the clone of the given array, or <tt>null</tt> if the array is
-     * <tt>null</tt>
-     */
     public static byte[] clone(byte[] array) {
         if (array == null) {
             return null;
@@ -111,12 +74,6 @@ public final class ByteUtils {
         return result;
     }
 
-    /**
-     * Convert a string containing hexadecimal characters to a byte-array.
-     *
-     * @param s a hex string
-     * @return a byte array with the corresponding value
-     */
     public static byte[] fromHexString(String s) {
         char[] rawChars = s.toUpperCase().toCharArray();
 
@@ -148,12 +105,7 @@ public final class ByteUtils {
         return byteString;
     }
 
-    /**
-     * Convert a byte array to the corresponding hexstring.
-     *
-     * @param input the byte array to be converted
-     * @return the corresponding hexstring
-     */
+
     public static String toHexString(byte[] input) {
         String result = "";
         for (int i = 0; i < input.length; i++) {
@@ -163,14 +115,7 @@ public final class ByteUtils {
         return result;
     }
 
-    /**
-     * Convert a byte array to the corresponding hex string.
-     *
-     * @param input     the byte array to be converted
-     * @param prefix    the prefix to put at the beginning of the hex string
-     * @param seperator a separator string
-     * @return the corresponding hex string
-     */
+
     public static String toHexString(byte[] input, String prefix,
                                      String seperator) {
         String result = prefix;
@@ -184,14 +129,7 @@ public final class ByteUtils {
         return result;
     }
 
-    /**
-     * Compute the bitwise XOR of two arrays of bytes. The arrays have to be of
-     * same length. No length checking is performed.
-     *
-     * @param x1 the first array
-     * @param x2 the second array
-     * @return x1 XOR x2
-     */
+
     public static byte[] xor(byte[] x1, byte[] x2) {
         byte[] out = new byte[x1.length];
 
@@ -201,16 +139,7 @@ public final class ByteUtils {
         return out;
     }
 
-    /**
-     * Split a byte array <tt>input</tt> into two arrays at <tt>index</tt>,
-     * i.e. the first array will have the lower <tt>index</tt> bytes, the
-     * second one the higher <tt>input.length - index</tt> bytes.
-     *
-     * @param input the byte array to be split
-     * @param index the index where the byte array is split
-     * @return the splitted input array as an array of two byte arrays
-     * @throws ArrayIndexOutOfBoundsException if <tt>index</tt> is out of bounds
-     */
+
     public static byte[][] split(byte[] input, int index)
             throws ArrayIndexOutOfBoundsException {
         if (index > input.length) {

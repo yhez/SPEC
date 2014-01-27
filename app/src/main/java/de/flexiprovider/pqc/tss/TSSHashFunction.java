@@ -8,11 +8,6 @@ public class TSSHashFunction {
     private int m;
     private Vector a;
 
-    public TSSHashFunction(Vector a) {
-        this.a = a;
-        m = a.size();
-    }
-
     public TSSPolynomial calculatHash(Vector vec) {
         Vector intermediateResult = new Vector();
         for (int i = m; i > 0; i--) {

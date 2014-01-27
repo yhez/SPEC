@@ -13,10 +13,6 @@ public final class FlexiBigInt {
 
     public BigInteger bigInt;
 
-    public FlexiBigInt(byte[] val) {
-        bigInt = new BigInteger(val);
-    }
-
     public FlexiBigInt(String val) {
         bigInt = new BigInteger(val);
     }
@@ -117,28 +113,8 @@ public final class FlexiBigInt {
         return new FlexiBigInt(bigInt.shiftRight(n));
     }
 
-    public FlexiBigInt and(FlexiBigInt val) {
-        return new FlexiBigInt(bigInt.and(val.bigInt));
-    }
-
-    public FlexiBigInt or(FlexiBigInt val) {
-        return new FlexiBigInt(bigInt.or(val.bigInt));
-    }
-
-    public FlexiBigInt xor(FlexiBigInt val) {
-        return new FlexiBigInt(bigInt.xor(val.bigInt));
-    }
-
-    public FlexiBigInt not() {
-        return new FlexiBigInt(bigInt.not());
-    }
-
     public boolean testBit(int n) {
         return bigInt.testBit(n);
-    }
-
-    public FlexiBigInt setBit(int n) {
-        return new FlexiBigInt(bigInt.setBit(n));
     }
 
     public int bitLength() {
@@ -151,14 +127,6 @@ public final class FlexiBigInt {
 
     public int compareTo(FlexiBigInt other) {
         return bigInt.compareTo(other.bigInt);
-    }
-
-    public FlexiBigInt min(FlexiBigInt other) {
-        return new FlexiBigInt(bigInt.min(other.bigInt));
-    }
-
-    public FlexiBigInt max(FlexiBigInt other) {
-        return new FlexiBigInt(bigInt.max(other.bigInt));
     }
 
     public boolean equals(Object other) {
@@ -183,10 +151,6 @@ public final class FlexiBigInt {
 
     public int intValue() {
         return bigInt.intValue();
-    }
-
-    public long longValue() {
-        return bigInt.longValue();
     }
 
 }

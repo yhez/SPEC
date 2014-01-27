@@ -10,12 +10,12 @@ public abstract class ASN1AbstractString extends ASN1AbstractType implements
 
     private String value_ = DEFAULT_VALUE;
 
-    public ASN1AbstractString() {
-        super();
-    }
-
     public ASN1AbstractString(String s) {
         setString0(s);
+    }
+
+    public ASN1AbstractString() {
+        super();
     }
 
     public Object getValue() {

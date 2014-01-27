@@ -30,16 +30,6 @@ import de.flexiprovider.common.util.LittleEndianConversions;
  */
 public final class MD4 extends MDFamilyDigest {
 
-    /**
-     * The algorithm name.
-     */
-    public static final String ALG_NAME = "MD4";
-
-    /**
-     * The OID of MD4 (defined by PKCS #2).
-     */
-    public static final String OID = "1.2.840.113549.2.4";
-
     // magic constants for initialization
     private static final int[] initState = {0x67452301, 0xefcdab89,
             0x98badcfe, 0x10325476};
@@ -79,18 +69,10 @@ public final class MD4 extends MDFamilyDigest {
         super(MD4_DIGEST_LENGTH);
     }
 
-    /**
-     * reset the engine to its initial state
-     */
     public void reset() {
         initMessageDigest(initState);
     }
 
-    /**
-     * compute the digest and reset the engine
-     *
-     * @return the message digest in a byte array
-     */
     public synchronized byte[] digest() {
         byte[] digest = new byte[MD4_DIGEST_LENGTH];
 

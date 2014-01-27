@@ -22,11 +22,6 @@ import de.flexiprovider.common.util.BigEndianConversions;
 public class FORK256 extends MessageDigest {
 
     /**
-     * The algorithm name.
-     */
-    public static final String ALG_NAME = "FORK256";
-
-    /**
      * Initial hash value H<sup>(0)</sup>. The value were obtained by taking the
      * fractional parts of the square roots of the first eight primes.
      */

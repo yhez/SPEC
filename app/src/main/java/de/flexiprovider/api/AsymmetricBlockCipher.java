@@ -6,7 +6,6 @@ import de.flexiprovider.api.exceptions.BadPaddingException;
 import de.flexiprovider.api.exceptions.IllegalBlockSizeException;
 import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.api.exceptions.InvalidKeyException;
-import de.flexiprovider.api.exceptions.InvalidParameterException;
 import de.flexiprovider.api.exceptions.ShortBufferException;
 import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
@@ -54,34 +53,11 @@ public abstract class AsymmetricBlockCipher extends Cipher {
     }
 
 
-    public final void initEncrypt(Key key, SecureRandom random)
-            throws InvalidKeyException {
-
-        try {
-            initEncrypt(key, null, random);
-        } catch (InvalidAlgorithmParameterException iape) {
-            throw new InvalidParameterException(
-                    "This cipher needs algorithm parameters for initialization (cannot be null).");
-        }
-    }
-
-
-
     public final void initEncrypt(Key key, AlgorithmParameterSpec params,
                                   SecureRandom secureRandom) throws InvalidKeyException,
             InvalidAlgorithmParameterException {
         opMode = ENCRYPT_MODE;
         initCipherEncrypt(key, params, secureRandom);
-    }
-
-
-    public final void initDecrypt(Key key) throws InvalidKeyException {
-        try {
-            initDecrypt(key, null);
-        } catch (InvalidAlgorithmParameterException iape) {
-            throw new InvalidParameterException(
-                    "This cipher needs algorithm parameters for initialization (cannot be null).");
-        }
     }
 
 

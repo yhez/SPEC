@@ -31,18 +31,6 @@ public abstract class KeyAgreement extends KeyAgreementSpi {
         }
     }
 
-    /**
-     * JCA adapter for FlexiAPI method init(): initialize this
-     * <tt>KeyAgreementSpi</tt> with a key, algorithm parameters, and a source
-     * of randomness.
-     *
-     * @param key      the secret key of the party initializing the key agreement
-     * @param params   the algorithm parameters
-     * @param javaRand the source of randomness
-     * @throws java.security.InvalidKeyException                if the key is invalid.
-     * @throws java.security.InvalidAlgorithmParameterException if the parameters are invalid or null and parameters are
-     *                                                          needed for initialization.
-     */
     protected final void engineInit(java.security.Key key,
                                     java.security.spec.AlgorithmParameterSpec params,
                                     java.security.SecureRandom javaRand)

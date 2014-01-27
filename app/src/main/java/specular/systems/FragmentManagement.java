@@ -94,7 +94,6 @@ public class FragmentManagement extends Fragment {
     private float startPointX, startPointY, width, height, x = 0, y = 0;
 
     public FragmentManagement() {
-        StaticVariables.fragmentManagement = this;
     }
 
     public void updateDecryptedLight() {

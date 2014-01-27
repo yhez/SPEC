@@ -82,45 +82,4 @@ public class JCA {
     }
 
 
-    public static String resolveAlias(String engine, String alias) {
-        if (alias == null || engine == null) {
-            throw new NullPointerException("Engine or alias is null!");
-        }
-        if (alias.length() < 1) {
-            throw new IllegalArgumentException("Zero-length alias!");
-        }
-        return (String) aliases_.get(engine.toLowerCase() + "."
-                + alias.toLowerCase());
-    }
-
-
-    public static String getOID(String algorithm) {
-        if (algorithm == null) {
-            throw new NullPointerException("Algorithm is null!");
-        }
-        if (algorithm.length() < 1) {
-            throw new IllegalArgumentException("Algorithm name is empty!");
-        }
-        if (Character.isDigit(algorithm.charAt(0))) {
-            return algorithm;
-        }
-        return (String) aliases_.get("oid." + algorithm.toLowerCase());
-    }
-
-
-    public static String getOID(String algorithm, String engine) {
-        String oid;
-
-        oid = getOID(algorithm);
-
-        if (oid != null) {
-            return oid;
-        }
-        algorithm = resolveAlias(engine, algorithm);
-
-        if (algorithm == null) {
-            return null;
-        }
-        return getOID(algorithm);
-    }
 }

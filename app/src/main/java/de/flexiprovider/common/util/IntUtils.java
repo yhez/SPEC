@@ -27,18 +27,4 @@ public final class IntUtils {
     }
 
 
-    public static void fill(int[] array, int value) {
-        for (int i = array.length - 1; i >= 0; i--) {
-            array[i] = value;
-        }
-    }
-
-    public static String toString(int[] input) {
-        String result = "";
-        for (int i = 0; i < input.length; i++) {
-            result += input[i] + " ";
-        }
-        return result;
-    }
-
 }

@@ -34,9 +34,6 @@ public class ECPrivateKey extends PrivateKey {
             add(privKey);
         }
 
-        public ASN1OctetString getPrivateKey() {
-            return privKey;
-        }
     }
     protected ECPrivateKey(FlexiBigInt s, CurveParams params) {
         mS = s;

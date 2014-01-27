@@ -360,13 +360,6 @@ public class PointGF2n extends Point {
     }
 
     /**
-     * @return the z-coordinate of this point
-     */
-    public GFElement getZ() {
-        return mZ;
-    }
-
-    /**
      * Return the x-coordinate of this point in affine representation. In this
      * class, the projective representation x = X/Z<sup>2</sup> and y = Y/Z<sup>3</sup>
      * is chosen to speed up point addition. This method returns the
@@ -397,7 +390,7 @@ public class PointGF2n extends Point {
      *
      * @return the y-coordinate of this point in affine representation
      */
-    public GFElement getYAffin() {
+    private GFElement getYAffin() {
         if (isZero()) {
             // mZ equals zero.
             return (GFElement) mZ.clone();
@@ -816,7 +809,7 @@ public class PointGF2n extends Point {
 
     /**
      */
-    public void negateThis() {
+    private void negateThis() {
         if (!isZero()) {
             GFElement tmp = mX.multiply(mZ);
             mY = (GF2nElement) tmp.add(mY);

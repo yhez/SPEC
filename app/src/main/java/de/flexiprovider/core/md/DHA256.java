@@ -16,11 +16,6 @@ import de.flexiprovider.common.util.BigEndianConversions;
 public class DHA256 extends MessageDigest {
 
     /**
-     * The algorithm name.
-     */
-    public static final String ALG_NAME = "DHA256";
-
-    /**
      * Initial hash value H<sup>(0)</sup>
      * <p/>
      * These were obtained by taking the fractional parts of the square roots of

@@ -4,7 +4,6 @@ import java.util.Random;
 
 import de.flexiprovider.common.exceptions.BitDoesNotExistException;
 import de.flexiprovider.common.exceptions.PolynomialIsZeroException;
-import de.flexiprovider.common.exceptions.PolynomialsHaveDifferentLengthException;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.IntegerFunctions;
 import de.flexiprovider.common.util.IntUtils;
@@ -22,35 +21,6 @@ public class GF2Polynomial {
 
     // Random source
     private static Random rand = new Random();
-
-    // Lookup-Table for vectorMult: parity[a]= #1(a) mod 2 == 1
-    private static final boolean[] parity = {false, true, true, false, true,
-            false, false, true, true, false, false, true, false, true, true,
-            false, true, false, false, true, false, true, true, false, false,
-            true, true, false, true, false, false, true, true, false, false,
-            true, false, true, true, false, false, true, true, false, true,
-            false, false, true, false, true, true, false, true, false, false,
-            true, true, false, false, true, false, true, true, false, true,
-            false, false, true, false, true, true, false, false, true, true,
-            false, true, false, false, true, false, true, true, false, true,
-            false, false, true, true, false, false, true, false, true, true,
-            false, false, true, true, false, true, false, false, true, true,
-            false, false, true, false, true, true, false, true, false, false,
-            true, false, true, true, false, false, true, true, false, true,
-            false, false, true, true, false, false, true, false, true, true,
-            false, false, true, true, false, true, false, false, true, false,
-            true, true, false, true, false, false, true, true, false, false,
-            true, false, true, true, false, false, true, true, false, true,
-            false, false, true, true, false, false, true, false, true, true,
-            false, true, false, false, true, false, true, true, false, false,
-            true, true, false, true, false, false, true, false, true, true,
-            false, true, false, false, true, true, false, false, true, false,
-            true, true, false, true, false, false, true, false, true, true,
-            false, false, true, true, false, true, false, false, true, true,
-            false, false, true, false, true, true, false, false, true, true,
-            false, true, false, false, true, false, true, true, false, true,
-            false, false, true, true, false, false, true, false, true, true,
-            false};
 
     // Lookup-Table for Squaring: squaringTable[a]=a^2
     private static final short[] squaringTable = {0x0000, 0x0001, 0x0004,
@@ -185,39 +155,6 @@ public class GF2Polynomial {
             value[i] |= (os[m - 3] << 24) & 0xff000000;
         }
         zeroUnusedBits();
-        reduceN();
-    }
-    public GF2Polynomial(int length, FlexiBigInt bi) {
-        int l = length;
-        if (l < 1) {
-            l = 1;
-        }
-        blocks = ((l - 1) >> 5) + 1;
-        value = new int[blocks];
-        len = l;
-        int i;
-        byte[] val = bi.toByteArray();
-        if (val[0] == 0) {
-            byte[] dummy = new byte[val.length - 1];
-            System.arraycopy(val, 1, dummy, 0, dummy.length);
-            val = dummy;
-        }
-        int ov = val.length & 0x03;
-        int k = ((val.length - 1) >> 2) + 1;
-        for (i = 0; i < ov; i++) {
-            value[k - 1] |= (val[i] & 0x000000ff) << ((ov - 1 - i) << 3);
-        }
-        int m;
-        for (i = 0; i <= (val.length - 4) >> 2; i++) {
-            m = val.length - 1 - (i << 2);
-            value[i] = (val[m]) & 0x000000ff;
-            value[i] |= ((val[m - 1]) << 8) & 0x0000ff00;
-            value[i] |= ((val[m - 2]) << 16) & 0x00ff0000;
-            value[i] |= ((val[m - 3]) << 24) & 0xff000000;
-        }
-        if ((len & 0x1f) != 0) {
-            value[blocks - 1] &= reverseRightMask[len & 0x1f];
-        }
         reduceN();
     }
 
@@ -419,11 +356,6 @@ public class GF2Polynomial {
         return true;
     }
 
-    /**
-     * Tests if all bits are reset to 0 and LSB is set to 1.
-     *
-     * @return true if this GF2Polynomial equals 'one' (<i>this</i> == 1)
-     */
     public boolean isOne() {
         int i;
         for (i = 1; i < blocks; i++) {
@@ -452,18 +384,6 @@ public class GF2Polynomial {
     public void subtractFromThis(GF2Polynomial b) {
         expandN(b.len);
         xorThisBy(b);
-    }
-
-    /**
-     * Subtracts two GF2Polynomials, <i>this</i> and <i>b</i>, and returns the
-     * result in a new GF2Polynomial. <i>this</i> and <i>b</i> can be of
-     * different size.
-     *
-     * @param b a GF2Polynomial
-     * @return a new GF2Polynomial (<i>this</i> - <i>b</i>)
-     */
-    public GF2Polynomial subtract(GF2Polynomial b) {
-        return xor(b);
     }
 
     /**
@@ -885,40 +805,6 @@ public class GF2Polynomial {
     }
 
 
-    public GF2Polynomial[] divide(GF2Polynomial g)
-            throws PolynomialIsZeroException {
-        GF2Polynomial[] result = new GF2Polynomial[2];
-        GF2Polynomial q = new GF2Polynomial(len);
-        GF2Polynomial a = new GF2Polynomial(this);
-        GF2Polynomial b = new GF2Polynomial(g);
-        GF2Polynomial j;
-        int i;
-        if (b.isZero()) {
-            throw new PolynomialIsZeroException();
-        }
-        a.reduceN();
-        b.reduceN();
-        if (a.len < b.len) {
-            result[0] = new GF2Polynomial(0);
-            result[1] = a;
-            return result;
-        }
-        i = a.len - b.len;
-        q.expandN(i + 1);
-
-        while (i >= 0) {
-            j = b.shiftLeft(i);
-            a.subtractFromThis(j);
-            a.reduceN();
-            q.xorBit(i);
-            i = a.len - b.len;
-        }
-
-        result[0] = q;
-        result[1] = a;
-        return result;
-    }
-
     public GF2Polynomial gcd(GF2Polynomial g) throws PolynomialIsZeroException {
         if (isZero() && g.isZero()) {
             throw new ArithmeticException("Both operands of gcd equal zero.");
@@ -1126,24 +1012,6 @@ public class GF2Polynomial {
             blocks <<= 1;
             len = (len << 1) - 1;
         }
-    }
-
-    public boolean vectorMult(GF2Polynomial b)
-            throws PolynomialsHaveDifferentLengthException {
-        int i;
-        int h;
-        boolean result = false;
-        if (len != b.len) {
-            throw new PolynomialsHaveDifferentLengthException();
-        }
-        for (i = 0; i < blocks; i++) {
-            h = value[i] & b.value[i];
-            result ^= parity[h & 0x000000ff];
-            result ^= parity[(h >>> 8) & 0x000000ff];
-            result ^= parity[(h >>> 16) & 0x000000ff];
-            result ^= parity[(h >>> 24) & 0x000000ff];
-        }
-        return result;
     }
 
     public GF2Polynomial xor(GF2Polynomial b) {

@@ -89,16 +89,6 @@ public abstract class GF2nElement implements GFElement {
         return add(minuend);
     }
 
-    /**
-     * Compute the difference of this element and <tt>minuend</tt>,
-     * overwriting this element.
-     *
-     * @param minuend the minuend
-     * @throws DifferentFieldsException if the elements are of different fields.
-     */
-    public final void subtractFromThis(GFElement minuend) {
-        addToThis(minuend);
-    }
     public abstract GF2nElement square();
 
     /**
@@ -113,32 +103,6 @@ public abstract class GF2nElement implements GFElement {
      * @return <tt>this<sup>1/2</sup></tt> (newly created)
      */
     public abstract GF2nElement squareRoot();
-
-    /**
-     * Compute the square root of this element.
-     */
-    public abstract void squareRootThis();
-
-    /**
-     * Performs a basis transformation of this element to the given GF2nField
-     * <tt>basis</tt>.
-     *
-     * @param basis the GF2nField representation to transform this element to
-     * @return this element in the representation of <tt>basis</tt>
-     * @throws DifferentFieldsException if <tt>this</tt> cannot be converted according to
-     *                                  <tt>basis</tt>.
-     */
-    public final GF2nElement convert(GF2nField basis)
-            throws DifferentFieldsException {
-        return mField.convert(this, basis);
-    }
-
-    /**
-     * Returns the trace of this element.
-     *
-     * @return the trace of this element
-     */
-    public abstract int trace();
 
     /**
      * Solves a quadratic equation.<br>

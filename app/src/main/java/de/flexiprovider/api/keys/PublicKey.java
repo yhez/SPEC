@@ -34,20 +34,10 @@ public abstract class PublicKey implements Key, java.security.PublicKey {
         return ASN1Tools.derEncode(spki);
     }
 
-    /**
-     * @return the OID to encode in the SubjectPublicKeyInfo structure
-     */
     protected abstract ASN1ObjectIdentifier getOID();
 
-    /**
-     * @return the algorithm parameters to encode in the SubjectPublicKeyInfo
-     * structure
-     */
     protected abstract ASN1Type getAlgParams();
 
-    /**
-     * @return the keyData to encode in the SubjectPublicKeyInfo structure
-     */
     protected abstract byte[] getKeyData();
 
 }

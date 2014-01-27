@@ -24,9 +24,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
     // strings will
     private static final int MAX_COMPACT_DIGITS = 18;
 
-    /* Appease the serialization gods */
-    private static final long serialVersionUID = 6108874887143696463L;
-
     private static final ThreadLocal<StringBuilderHelper>
             threadLocalStringBuilderHelper = new ThreadLocal<StringBuilderHelper>() {
         @Override
@@ -72,11 +69,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
     // Half of Long.MIN_VALUE & Long.MAX_VALUE.
     private static final long HALF_LONG_MAX_VALUE = Long.MAX_VALUE / 2;
     private static final long HALF_LONG_MIN_VALUE = Long.MIN_VALUE / 2;
-    public static final BigDecimal ZERO =
-            zeroThroughTen[0];
-
-    public static final BigDecimal ONE =
-            zeroThroughTen[1];
 
     BigDecimal(BigInteger intVal, long val, int scale, int prec) {
         this.scale = scale;
@@ -305,14 +297,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
         return new BigDecimal(BigInteger.valueOf(val), val, 0, 0);
     }
 
-
-    public static BigDecimal valueOf(double val) {
-        // Reminder: a zero double returns '0.0', so we cannot fastpath
-        // to use the constant ZERO.  This might be important enough to
-        // justify a factory approach, a cache, or a few private
-        // constants, later.
-        return new BigDecimal(Double.toString(val));
-    }
 
     // Arithmetic Operations
 
@@ -891,18 +875,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      * {@code ROUND_DOWN}.
      */
     public final static int ROUND_HALF_DOWN = 5;
-
-    /**
-     * Rounding mode to round towards the {@literal "nearest neighbor"}
-     * unless both neighbors are equidistant, in which case, round
-     * towards the even neighbor.  Behaves as for
-     * {@code ROUND_HALF_UP} if the digit to the left of the
-     * discarded fraction is odd; behaves as for
-     * {@code ROUND_HALF_DOWN} if it's even.  Note that this is the
-     * rounding mode that minimizes cumulative error when applied
-     * repeatedly over a sequence of calculations.
-     */
-    public final static int ROUND_HALF_EVEN = 6;
 
     /**
      * Rounding mode to assert that the requested operation has an exact

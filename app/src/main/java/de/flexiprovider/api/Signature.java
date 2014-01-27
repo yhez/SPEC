@@ -212,10 +212,4 @@ public abstract class Signature extends java.security.SignatureSpi {
         return verify(sig);
     }
 
-    public final boolean verify(byte[] input, byte[] signature, int sigOff,
-                                int sigLen) throws SignatureException {
-        update(input);
-        return verify(signature, sigOff, sigLen);
-    }
-
 }

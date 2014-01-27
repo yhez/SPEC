@@ -30,9 +30,6 @@ public interface ASN1Type {
     public void setConstraint(Constraint o);
 
 
-    public Constraint getConstraint();
-
-
     public void checkConstraints() throws ConstraintException;
 
 }

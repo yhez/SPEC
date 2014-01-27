@@ -84,8 +84,6 @@ public class Session {
             if (equals(mySavedSession, receivedSession)) {
                 return KNOWN;
             }
-            //he lost my session and i sent him a message
-            //so he's verified to me, but he needs to verify me
             if (contains(receivedSession, mySavedSession)) {
                 contact.update(a, null, null, null, getHisSession(mySavedSession, receivedSession).toString());
                 return UPDATED;

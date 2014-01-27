@@ -47,16 +47,7 @@ public abstract class SecretKeyGenerator extends javax.crypto.KeyGeneratorSpi {
 
     public abstract void init(SecureRandom random);
 
-    public final void init(int keySize) {
-        init(keySize, Registry.getSecureRandom());
-    }
-
     public abstract void init(int keySize, SecureRandom random);
-
-    public final void init(AlgorithmParameterSpec params)
-            throws InvalidAlgorithmParameterException {
-        init(params, Registry.getSecureRandom());
-    }
 
     public abstract void init(AlgorithmParameterSpec params, SecureRandom random)
             throws InvalidAlgorithmParameterException;

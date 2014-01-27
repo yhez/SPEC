@@ -33,25 +33,6 @@ import de.flexiprovider.ec.keys.ECPrivateKey;
 import de.flexiprovider.ec.keys.ECPublicKey;
 import de.flexiprovider.ec.parameters.CurveParams;
 
-/**
- * This Signature class is used to provide applications the functionality of the
- * digital signature algorithm ECDSA. Digital signatures are used for
- * authentication and integrity assurance of digital data.
- * <p/>
- * A Signature object can be used to generate and verify digital signatures.
- * This specific signature ECDSA is based on the discrete logarithm problem in a
- * group of points of an elliptic curve over a primefield <i>GF(q)</i>, where q
- * is the prime and GF is a common synonym for a galois field. For a description
- * of the signing and verifying procedure see the documentation of this <a href =
- * package-summary.html>package</a>.
- *
- * @author Birgit Henhapl
- * @author Michele Boivin
- * @author Martin D�ring
- * @see de.flexiprovider.ec.keys.ECPublicKey
- * @see de.flexiprovider.ec.keys.ECPrivateKey
- * @see de.flexiprovider.ec.parameters.CurveParams
- */
 public abstract class ECDSASignature extends Signature {
 
     // the source of randomness
@@ -150,9 +131,6 @@ public abstract class ECDSASignature extends Signature {
          */
         public static final String OID = "1.2.840.10045.4.1";
 
-        public SHA1() {
-            super(new de.flexiprovider.core.md.SHA1());
-        }
     }
 
     public static final class SHA224 extends ECDSASignature {
@@ -162,9 +140,6 @@ public abstract class ECDSASignature extends Signature {
          */
         public static final String OID = "1.2.840.10045.4.3.1";
 
-        public SHA224() {
-            super(new de.flexiprovider.core.md.SHA224());
-        }
     }
 
     /**
@@ -177,9 +152,6 @@ public abstract class ECDSASignature extends Signature {
          */
         public static final String OID = "1.2.840.10045.4.3.2";
 
-        public SHA256() {
-            super(new de.flexiprovider.core.md.SHA256());
-        }
     }
     public static final class SHA384 extends ECDSASignature {
 
@@ -188,9 +160,6 @@ public abstract class ECDSASignature extends Signature {
          */
         public static final String OID = "1.2.840.10045.4.3.3";
 
-        public SHA384() {
-            super(new de.flexiprovider.core.md.SHA384());
-        }
     }
 
     /**
@@ -203,18 +172,6 @@ public abstract class ECDSASignature extends Signature {
          */
         public static final String OID = "1.2.840.10045.4.3.4";
 
-        public SHA512() {
-            super(new de.flexiprovider.core.md.SHA512());
-        }
-    }
-
-    /**
-     * Constructor. Set the message digest.
-     *
-     * @param md the message digest
-     */
-    protected ECDSASignature(MessageDigest md) {
-        this.md = md;
     }
 
     /**

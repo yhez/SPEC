@@ -94,9 +94,6 @@ public class ECB extends Mode {
         singleBlockDecrypt(input, inOff, output, outOff);
     }
 
-    /**
-     * ECB does not perform any operations on reset.
-     */
     protected final void reset() {
         // empty
     }

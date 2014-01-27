@@ -29,13 +29,6 @@ import de.flexiprovider.common.util.LittleEndianConversions;
  */
 public final class RIPEMD128 extends MDFamilyDigest {
 
-    /**
-     * The algorithm name.
-     */
-    public static final String ALG_NAME = "RIPEMD128";
-
-    public static final String OID = "1.3.36.3.2.2";
-
     // magic constants for initialization
     private static final int[] initState = {0x67452301, 0xefcdab89,
             0x98badcfe, 0x10325476};

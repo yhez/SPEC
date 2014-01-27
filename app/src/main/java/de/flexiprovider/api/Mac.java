@@ -2,32 +2,10 @@ package de.flexiprovider.api;
 
 import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.api.exceptions.InvalidKeyException;
-import de.flexiprovider.api.exceptions.ShortBufferException;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-/**
- * This class implements a "message authentication code" (MAC), a method to
- * ensure the integrity of data transmitted between two parties who share a
- * common secret key.
- * <p/>
- * <p/>
- * The best way to describe a MAC is as a <i>keyed one-way hash function</i>,
- * which looks like:
- * <p/>
- * <blockquote>
- * <p/>
- * <tt>D = MAC(K, M)</tt></blockquote>
- * <p/>
- * <p/>
- * where <tt>K</tt> is the key, <tt>M</tt> is the message, and <tt>D</tt>
- * is the resulting digest. One party will usually send the concatenation
- * <tt>M || D</tt> to the other party, who will then verify <tt>D</tt> by
- * computing <tt>D'</tt> in a similar fashion. If <tt>D == D'</tt>, then
- * the message is assumed to be authentic.
- *
- * @author Martin Dring, Johannes Mller
- */
+
 public abstract class Mac extends javax.crypto.MacSpi {
 
     // ****************************************************
@@ -161,30 +139,6 @@ public abstract class Mac extends javax.crypto.MacSpi {
     public final byte[] doFinal(byte[] input) {
         update(input);
         return doFinal();
-    }
-
-    /**
-     * Finishes the computation of a MAC and places the result into the given
-     * array.
-     * <p/>
-     * After this method succeeds, it may be used again as just after a call to
-     * <tt>init</tt>, and can compute another MAC using the same key and
-     * parameters.
-     *
-     * @param output    The destination for the result.
-     * @param outOffset The index in the output array to start.
-     * @return the number of bytes stored in output.
-     * @throws ShortBufferException If <tt>output</tt> is not large enough to hold the
-     *                              result.
-     */
-    public final int doFinal(byte[] output, int outOffset)
-            throws ShortBufferException {
-        if (output.length - outOffset < getMacLength()) {
-            throw new ShortBufferException();
-        }
-        byte[] mac = doFinal();
-        System.arraycopy(mac, 0, output, outOffset, mac.length);
-        return mac.length;
     }
 
     /**

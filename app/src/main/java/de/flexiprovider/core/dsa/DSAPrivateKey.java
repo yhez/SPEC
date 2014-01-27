@@ -23,12 +23,6 @@ public class DSAPrivateKey extends
     private DSAParams params;
 
 
-    protected DSAPrivateKey(FlexiBigInt x, DSAParams params) {
-        this.x = x;
-        this.params = params;
-    }
-
-
     /**
      * This function returns the name of the corresponding algorithm "DSA".
      *
@@ -95,10 +89,6 @@ public class DSAPrivateKey extends
         return new ASN1ObjectIdentifier(OID);
     }
 
-    /**
-     * @return the algorithm parameters to encode in the SubjectPublicKeyInfo
-     * structure
-     */
     protected ASN1Type getAlgParams() {
         DSAParameters dsaParams = new DSAParameters();
         DSAParameterSpec dsaParamSpec = new DSAParameterSpec(
@@ -112,9 +102,6 @@ public class DSAPrivateKey extends
         return dsaParams.getASN1Parameters();
     }
 
-    /**
-     * @return the keyData to encode in the SubjectPublicKeyInfo structure
-     */
     protected byte[] getKeyData() {
         ASN1Integer keyData = new ASN1Integer(x.toByteArray());
         return ASN1Tools.derEncode(keyData);

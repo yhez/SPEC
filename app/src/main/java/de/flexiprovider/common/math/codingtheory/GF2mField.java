@@ -11,11 +11,6 @@ public class GF2mField {
 
     private int polynomial;
 
-    public GF2mField(GF2mField field) {
-        degree = field.degree;
-        polynomial = field.polynomial;
-    }
-
     /**
      * return degree of the field
      *

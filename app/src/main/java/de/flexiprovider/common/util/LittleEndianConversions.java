@@ -15,24 +15,11 @@ public final class LittleEndianConversions {
         // empty
     }
 
-    public static int OS2IP(byte[] input) {
-        return ((input[0] & 0xff)) | ((input[1] & 0xff) << 8)
-                | ((input[2] & 0xff) << 16) | ((input[3] & 0xff)) << 24;
-    }
-
     public static int OS2IP(byte[] input, int inOff) {
         int result = input[inOff++] & 0xff;
         result |= (input[inOff++] & 0xff) << 8;
         result |= (input[inOff++] & 0xff) << 16;
         result |= (input[inOff] & 0xff) << 24;
-        return result;
-    }
-
-    public static int OS2IP(byte[] input, int inOff, int inLen) {
-        int result = 0;
-        for (int i = inLen - 1; i >= 0; i--) {
-            result |= (input[inOff + i] & 0xff) << (8 * i);
-        }
         return result;
     }
 
@@ -69,25 +56,6 @@ public final class LittleEndianConversions {
         for (int i = outLen - 1; i >= 0; i--) {
             output[outOff + i] = (byte) (value >>> (8 * i));
         }
-    }
-
-    /**
-     * Convert an integer to a byte array of length 8.
-     *
-     * @param input the integer to convert
-     * @return the converted integer
-     */
-    public static byte[] I2OSP(long input) {
-        byte[] output = new byte[8];
-        output[0] = (byte) input;
-        output[1] = (byte) (input >>> 8);
-        output[2] = (byte) (input >>> 16);
-        output[3] = (byte) (input >>> 24);
-        output[4] = (byte) (input >>> 32);
-        output[5] = (byte) (input >>> 40);
-        output[6] = (byte) (input >>> 48);
-        output[7] = (byte) (input >>> 56);
-        return output;
     }
 
     /**

@@ -145,7 +145,6 @@ public class ECSVDPDHC extends KeyAgreement {
             q = ScalarMult.multiply(mK, q);
         }
 
-        // verify that the result is not the point at infinity
         if (q.isZero()) {
             throw new InvalidPointException("shared secret is invalid");
         }

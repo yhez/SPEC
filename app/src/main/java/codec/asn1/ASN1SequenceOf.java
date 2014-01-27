@@ -11,7 +11,6 @@ public class ASN1SequenceOf extends ASN1Sequence implements ASN1CollectionOf {
         super(capacity);
     }
 
-
     public ASN1SequenceOf(Class type) {
         if (type == null)
             throw new NullPointerException("Need a class!");

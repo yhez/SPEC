@@ -11,13 +11,6 @@ package de.flexiprovider.core.md;
 
 public final class SHA224 extends SHA224_256 {
 
-    /**
-     * The algorithm name.
-     */
-    public static final String ALG_NAME = "SHA224";
-
-
-    public static final String OID = "2.16.840.1.101.3.4.2.4";
 
     // Initial hash value H<sup>(0)</sup>. These were obtained by taking the
     // fractional parts of the square roots of the first eight primes.

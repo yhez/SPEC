@@ -11,7 +11,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import codec.asn1.ASN1;
 import codec.asn1.ASN1Exception;
@@ -34,10 +33,6 @@ import codec.asn1.Resolver;
 
 
 public class Name extends ASN1SequenceOf implements Principal, Resolver {
-    /**
-     * The serial version UID of the class.
-     */
-    private static final long serialVersionUID = 1L;
 
     /**
      * Constant for IA5Encoding of the Name
@@ -101,17 +96,13 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
     private String name_;
 
     List tmp_;
-    public Name() {
-        super(8);
-        initMaps();
-    }
 
 
     public Name(String rfc2253String) throws BadNameException {
         this(rfc2253String, -1);
     }
 
-    public Name(String rfc2253String, int encType) throws BadNameException {
+    private Name(String rfc2253String, int encType) throws BadNameException {
         super(8);
 
         ASN1ObjectIdentifier oid;
@@ -257,12 +248,6 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         }
     }
 
-    /**
-     * Check if the given String is printable.
-     *
-     * @return <code>true</code>, iff the giben String only contains
-     * printable characters (letters, digits, or one of " (),-./:=?").
-     */
     private boolean checkPrintableSpelling(String val) {
         boolean result;
         char[] allowed;
@@ -322,11 +307,6 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         return buf.toString();
     }
 
-    /**
-     * This method returns the <code>Name</code> as a list of <code>AVA</code>
-     * instances. The order is the same as the order in which the
-     * <code>AVA</code> instances appear in the code.
-     */
     public List getAVAList() {
         ASN1ObjectIdentifier oid;
         ASN1Sequence ava;
@@ -348,16 +328,9 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
             n = rdn.size();
 
             for (j = 0; j < n; j++) {
-        /*
-		 * We have to mark siblings. An AVA has a sibling if it is not
-		 * the last AVA in the set.
-		 */
+
                 sibling = (j < n - 1);
 
-		/*
-		 * Convert key and value into strings. These values are then put
-		 * into an AVA instance.
-		 */
                 ava = (ASN1Sequence) rdn.get(j);
                 oid = (ASN1ObjectIdentifier) ava.get(0);
                 obj = (ASN1Type) ava.get(1);
@@ -370,11 +343,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
                     val = ((ASN1String) obj).getString();
                     entry = new AVA(key, val, sibling);
                 } else {
-		    /*
-		     * OK, we have to encode the damn ASN.1 object. Outrageous
-		     * inefficient but hey, what choice do we have, if it is not
-		     * a string?
-		     */
+
                     ByteArrayOutputStream out;
                     DEREncoder enc;
 
@@ -416,19 +385,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         return seq;
     }
 
-    /**
-     * This method reads the DER encoded ASN.1 sequence into a hashmap. The
-     * implementation uses a (perfectly legal) trick. Method
-     * {@link #newElement newElement} adds the AttributeValueAssertions
-     * instances to a temporary list which is processed at the end of this
-     * method. The temporary list is used to eliminate Open Types that are not
-     * required any more after decoding in a way that saves us laborious
-     * descending in the various depths of the Name.
-     * <p/>
-     *
-     * @param dec The {@link codec.asn1.Decoder Decoder} to use.
-     * @throws codec.asn1.ASN1Exception if the expected ANS1Type cannot be found.
-     */
+
     public void decode(Decoder dec) throws ASN1Exception, IOException {
         clear();
 
@@ -549,42 +506,6 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         return true;
     }
 
-
-    public static Name clone(Name source) throws IllegalArgumentException {
-        ASN1Sequence seq;
-        Vector sets;
-        Name result;
-
-        result = null;
-
-        if (source == null || source.getName().length() == 0) {
-            throw new IllegalArgumentException(
-                    "Name/Principal must not be null nor empty !");
-        }
-        seq = source;
-        sets = new Vector();
-
-        for (int i = 0; i < seq.size(); i++) {
-            sets.add(seq.get(i));
-        }
-        result = new Name();
-
-        for (int j = 0; j < sets.size(); j++) {
-            result.add((ASN1Set) sets.elementAt(j));
-        }
-        return result;
-    }
-
-
-    public static Name clone(Principal sourcePrincipal)
-            throws BadNameException, IllegalArgumentException {
-
-        if (sourcePrincipal == null || sourcePrincipal.getName().length() == 0) {
-            throw new IllegalArgumentException(
-                    "Name/Principal must not be null nor empty !");
-        }
-        return new Name(sourcePrincipal.getName(), Name.defaultEncoding_);
-    }
 
     public Hashtable divide() {
         StringTokenizer st;

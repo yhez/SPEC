@@ -56,10 +56,6 @@ public class ASN1Choice extends ASN1AbstractType {
         return getType(tag, tagclass) != null;
     }
 
-    public void clear() {
-        choices_.clear();
-    }
-
     public ASN1Type getInnerType() {
         return inner_;
     }

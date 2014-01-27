@@ -33,32 +33,6 @@ public final class PolynomialRingGF2 {
     }
 
     /**
-     * Return product of two polynomials
-     *
-     * @param p polynomial
-     * @param q polynomial
-     * @return p*q
-     */
-
-    public static long multiply(int p, int q) {
-        long result = 0;
-        if (q != 0) {
-            long q1 = q & 0x00000000ffffffffL;
-
-            while (p != 0) {
-                byte b = (byte) (p & 0x01);
-                if (b == 1) {
-                    result ^= q1;
-                }
-                p >>>= 1;
-                q1 <<= 1;
-
-            }
-        }
-        return result;
-    }
-
-    /**
      * Compute the product of two polynomials modulo a third polynomial.
      *
      * @param a the first polynomial
@@ -105,22 +79,6 @@ public final class PolynomialRingGF2 {
     }
 
     /**
-     * Return the degree of a polynomial
-     *
-     * @param p polynomial p
-     * @return degree(p)
-     */
-
-    public static int degree(long p) {
-        int result = 0;
-        while (p != 0) {
-            result++;
-            p >>>= 1;
-        }
-        return result - 1;
-    }
-
-    /**
      * Return the remainder of a polynomial division of two polynomials.
      *
      * @param p dividend
@@ -140,27 +98,6 @@ public final class PolynomialRingGF2 {
         }
 
         return result;
-    }
-
-    /**
-     * Return the greatest common divisor of two polynomials
-     *
-     * @param p polinomial
-     * @param q polinomial
-     * @return GCD(p, q)
-     */
-
-    public static int gcd(int p, int q) {
-        int a, b, c;
-        a = p;
-        b = q;
-        while (b != 0) {
-            c = remainder(a, b);
-            a = b;
-            b = c;
-
-        }
-        return a;
     }
 
 }

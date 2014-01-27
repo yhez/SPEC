@@ -227,7 +227,7 @@ public class GF2nPolynomialElement extends GF2nElement {
         return result;
     }
 
-    public void squareRootThis() {
+    private void squareRootThis() {
         polynomial.expandN((mDegree << 1) + 32);
         polynomial.reduceN();
         for (int i = 0; i < mField.getDegree() - 1; i++) {
@@ -271,20 +271,6 @@ public class GF2nPolynomialElement extends GF2nElement {
         return z;
     }
 
-    public int trace() {
-        GF2nPolynomialElement t = new GF2nPolynomialElement(this);
-        int i;
-
-        for (i = 1; i < mDegree; i++) {
-            t.squareThis();
-            t.addToThis(this);
-        }
-
-        if (t.isOne()) {
-            return 1;
-        }
-        return 0;
-    }
     private GF2nPolynomialElement halfTrace() throws DegreeIsEvenException {
         if ((mDegree & 0x01) == 0) {
             throw new DegreeIsEvenException();

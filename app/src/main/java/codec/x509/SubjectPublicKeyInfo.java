@@ -4,11 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
 
 import codec.CorruptedCodeException;
 import codec.InconsistentStateException;
@@ -57,42 +53,6 @@ public class SubjectPublicKeyInfo extends ASN1Sequence {
         add(algorithm_);
         add(null);
         setRawKey(key);
-    }
-
-
-    public SubjectPublicKeyInfo(PublicKey key) throws InvalidKeyException {
-        super(2);
-        setPublicKey(key);
-    }
-
-
-    public PublicKey getPublicKey() throws NoSuchAlgorithmException {
-        ByteArrayOutputStream bos;
-        X509EncodedKeySpec spec;
-        DEREncoder enc;
-        KeyFactory kf;
-        String alg;
-
-        try {
-            bos = new ByteArrayOutputStream();
-            enc = new DEREncoder(bos);
-            encode(enc);
-            spec = new X509EncodedKeySpec(bos.toByteArray());
-            enc.close();
-
-            alg = algorithm_.getAlgorithmOID().toString();
-            kf = KeyFactory.getInstance(alg);
-
-            return kf.generatePublic(spec);
-        } catch (ASN1Exception e) {
-            throw new InconsistentStateException("Internal, encoding error!");
-        } catch (IOException e) {
-            throw new InconsistentStateException(
-                    "Internal, I/O exception caught!");
-        } catch (InvalidKeySpecException e) {
-            throw new InconsistentStateException(
-                    "Encoded key spec rejected by key factory!");
-        }
     }
 
 

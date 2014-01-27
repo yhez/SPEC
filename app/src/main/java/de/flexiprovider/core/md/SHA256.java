@@ -17,16 +17,6 @@ package de.flexiprovider.core.md;
  */
 public final class SHA256 extends SHA224_256 {
 
-    /**
-     * The algorithm name.
-     */
-    public static final String ALG_NAME = "SHA256";
-
-    /**
-     * The OID of SHA256 (defined by NIST).
-     */
-    public static final String OID = "2.16.840.1.101.3.4.2.1";
-
     // Initial hash value H<sup>(0)</sup>. These were obtained by taking the
     // fractional parts of the square roots of the first eight primes.
     private static final int[] H0 = {0x6a09e667, 0xbb67ae85, 0x3c6ef372,

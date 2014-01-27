@@ -61,11 +61,6 @@ public abstract class ASN1AbstractCollection extends ArrayList implements
     }
 
 
-    public Constraint getConstraint() {
-        return constraint_;
-    }
-
-
     public void checkConstraints() throws ConstraintException {
         if (constraint_ != null) {
             constraint_.constrain(this);

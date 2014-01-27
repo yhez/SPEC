@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import codec.asn1.ASN1Exception;
-import codec.asn1.ASN1ObjectIdentifier;
 import codec.asn1.ASN1OpenType;
 import codec.asn1.ASN1RegisteredType;
 import codec.asn1.ASN1Sequence;
@@ -17,13 +16,7 @@ import codec.asn1.Decoder;
 
 public class Attribute extends ASN1Sequence implements ASN1RegisteredType {
 
-    protected ASN1ObjectIdentifier type_;
-
     protected ASN1Set values_;
-
-    public ASN1ObjectIdentifier getOID() {
-        return type_;
-    }
 
 
     public void decode(Decoder dec) throws IOException, ASN1Exception {

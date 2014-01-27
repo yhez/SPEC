@@ -164,19 +164,9 @@ public abstract class Point {
     public abstract GFElement getY();
 
     /**
-     * @return the z-coordinate of this point
-     */
-    public abstract GFElement getZ();
-
-    /**
      * @return the x-coordinate of this point in affine representation
      */
     public abstract GFElement getXAffin();
-
-    /**
-     * @return the y-coordinate of this point in affine representation
-     */
-    public abstract GFElement getYAffin();
 
     /**
      * Returns this point with affin coordinates.
@@ -244,21 +234,9 @@ public abstract class Point {
     public abstract void multiplyThisBy2();
 
     /**
-     * Doubles this point in affine coordinates.
-     *
-     * @return 2*<code>this</code> in affine coordinates
-     */
-    public abstract Point multiplyBy2Affine();
-
-    /**
      * @return the inverse of this point. returns -<tt>this</tt>
      */
     public abstract Point negate();
-
-    /**
-     * Additively invert this point.
-     */
-    public abstract void negateThis();
 
     // ////////////////////////////////////////////////////////////////////
     // help functions

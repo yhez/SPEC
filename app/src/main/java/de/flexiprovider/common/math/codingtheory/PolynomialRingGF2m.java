@@ -33,19 +33,6 @@ public class PolynomialRingGF2m {
     protected PolynomialGF2mSmallM[] sqRootMatrix;
 
     /**
-     * Constructor.
-     *
-     * @param field the finite field
-     * @param p     the reduction polynomial
-     */
-    public PolynomialRingGF2m(GF2mField field, PolynomialGF2mSmallM p) {
-        this.field = field;
-        this.p = p;
-        computeSquaringMatrix();
-        computeSquareRootMatrix();
-    }
-
-    /**
      * Compute the squaring matrix for this polynomial ring, using the base
      * field and the reduction polynomial.
      */

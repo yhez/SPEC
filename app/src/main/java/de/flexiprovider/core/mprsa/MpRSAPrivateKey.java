@@ -118,24 +118,14 @@ public class MpRSAPrivateKey extends RSAPrivateCrtKey {
         return h;
     }
 
-    /**
-     * @return the OID to encode in the SubjectPublicKeyInfo structure
-     */
     protected ASN1ObjectIdentifier getOID() {
         return new ASN1ObjectIdentifier(RSAKeyFactory.OID);
     }
 
-    /**
-     * @return the algorithm parameters to encode in the SubjectPublicKeyInfo
-     * structure
-     */
     protected ASN1Type getAlgParams() {
         return new ASN1Null();
     }
 
-    /**
-     * @return the keyData to encode in the SubjectPublicKeyInfo structure
-     */
     protected byte[] getKeyData() {
         ASN1Sequence keyData = new ASN1Sequence();
         keyData.add(new ASN1Integer(0));

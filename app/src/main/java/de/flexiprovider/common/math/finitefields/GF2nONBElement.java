@@ -174,22 +174,6 @@ public class GF2nONBElement extends GF2nElement {
      * value <tt>val</tt>.
      *
      * @param gf2n the field
-     * @param val  the value represented by a FlexiBigInt
-     */
-    public GF2nONBElement(GF2nONBField gf2n, FlexiBigInt val) {
-        mField = gf2n;
-        mDegree = mField.getDegree();
-        mLength = gf2n.getONBLength();
-        mBit = gf2n.getONBBit();
-        mPol = new long[mLength];
-        assign(val);
-    }
-
-    /**
-     * Construct the element of the field <tt>gf2n</tt> with the specified
-     * value <tt>val</tt>.
-     *
-     * @param gf2n the field
      * @param val  the value in ONB representation
      */
     private GF2nONBElement(GF2nONBField gf2n, long[] val) {
@@ -241,10 +225,6 @@ public class GF2nONBElement extends GF2nElement {
 
     void assignZero() {
         mPol = new long[mLength];
-    }
-
-    private void assign(FlexiBigInt val) {
-        assign(val.toByteArray());
     }
 
     private void assign(long[] val) {
@@ -323,20 +303,6 @@ public class GF2nONBElement extends GF2nElement {
         System.arraycopy(mPol, 0, result, 0, mPol.length);
 
         return result;
-    }
-
-    private long[] getElementReverseOrder() {
-        long[] result = new long[mPol.length];
-        for (int i = 0; i < mDegree; i++) {
-            if (testBit(mDegree - i - 1)) {
-                result[i >>> 6] |= mBitmask[i & 0x3f];
-            }
-        }
-        return result;
-    }
-
-    void reverseOrder() {
-        mPol = getElementReverseOrder();
     }
 
     public GFElement add(GFElement addend) throws DifferentFieldsException {
@@ -615,7 +581,7 @@ public class GF2nONBElement extends GF2nElement {
     /**
      * square roots <tt>this</tt> element.
      */
-    public void squareRootThis() {
+    private void squareRootThis() {
 
         long[] pol = getElement();
 
@@ -650,7 +616,7 @@ public class GF2nONBElement extends GF2nElement {
      *
      * @return the trace of this element
      */
-    public int trace() {
+    private int trace() {
 
         // trace = sum of coefficients
         //

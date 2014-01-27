@@ -90,15 +90,6 @@ public interface GFElement {
     GFElement subtract(GFElement minuend) throws DifferentFieldsException;
 
     /**
-     * Compute the difference of this element and <tt>minuend</tt>,
-     * overwriting this element.
-     *
-     * @param minuend the minuend
-     * @throws DifferentFieldsException if the elements are of different fields.
-     */
-    void subtractFromThis(GFElement minuend);
-
-    /**
      * Compute the product of this element and <tt>factor</tt>.
      *
      * @param factor the factor

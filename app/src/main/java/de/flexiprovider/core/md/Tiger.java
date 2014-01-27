@@ -29,11 +29,6 @@ import de.flexiprovider.common.util.LittleEndianConversions;
 public final class Tiger extends MessageDigest {
 
     /**
-     * The algorithm name.
-     */
-    public static final String ALG_NAME = "Tiger";
-
-    /**
      * The OID of Tiger (defined by the GNU project, see <a
      * href="http://www.gnupg.org/oids.html"
      * >http://www.gnupg.org/oids.html</a>).

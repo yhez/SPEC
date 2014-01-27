@@ -256,10 +256,6 @@ class MutableBigInteger {
     }
 
 
-    boolean isNormal() {
-        return intLen + offset <= value.length && (intLen == 0 || (value[offset] != 0));
-    }
-
     /**
      * Returns a String representation of this MutableBigInteger in radix 10.
      */

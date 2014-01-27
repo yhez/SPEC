@@ -87,9 +87,6 @@ public final class RSAPublicKey extends
         return n.hashCode() + e.hashCode();
     }
 
-    /**
-     * @return the OID to encode in the SubjectPublicKeyInfo structure
-     */
     protected ASN1ObjectIdentifier getOID() {
         return new ASN1ObjectIdentifier(RSAKeyFactory.OID);
     }

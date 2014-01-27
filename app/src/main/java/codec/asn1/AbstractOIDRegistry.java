@@ -11,7 +11,7 @@ public abstract class AbstractOIDRegistry extends OIDRegistry {
         this(null);
     }
 
-    public AbstractOIDRegistry(OIDRegistry parent) {
+    private AbstractOIDRegistry(OIDRegistry parent) {
         super(parent);
     }
 

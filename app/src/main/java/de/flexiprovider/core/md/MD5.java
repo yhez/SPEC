@@ -5,13 +5,6 @@ import de.flexiprovider.common.util.LittleEndianConversions;
 
 public final class MD5 extends MDFamilyDigest {
 
-    /**
-     * The algorithm name.
-     */
-    public static final String ALG_NAME = "MD5";
-
-
-    public static final String OID = "1.2.840.113549.2.5";
 
     // magic constants for initialization
     private static final int[] initState = {0x67452301, 0xefcdab89,
@@ -60,18 +53,10 @@ public final class MD5 extends MDFamilyDigest {
         super(MD5_DIGEST_LENGTH);
     }
 
-    /**
-     * reset the engine to its initial state
-     */
     public void reset() {
         initMessageDigest(initState);
     }
 
-    /**
-     * compute the digest and reset the engine
-     *
-     * @return the message digest in a byte array
-     */
     public synchronized byte[] digest() {
         byte[] digest = new byte[MD5_DIGEST_LENGTH];
 

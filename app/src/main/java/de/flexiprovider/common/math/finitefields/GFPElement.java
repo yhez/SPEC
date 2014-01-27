@@ -187,21 +187,12 @@ public class GFPElement implements GFElement {
      * @param minuend the minuend
      * @throws DifferentFieldsException if the elements are of different fields.
      */
-    public void subtractFromThis(GFElement minuend)
+    private void subtractFromThis(GFElement minuend)
             throws DifferentFieldsException {
         if (!(minuend instanceof GFPElement)) {
             throw new DifferentFieldsException();
         }
         mValue = mValue.subtract(((GFPElement) minuend).mValue).mod(mP);
-    }
-
-    /**
-     * Compute the additive inverse of this element.
-     *
-     * @return <tt>-this</tt> (newly created)
-     */
-    public GFPElement negate() {
-        return new GFPElement(mValue.negate(), mP);
     }
 
     /**

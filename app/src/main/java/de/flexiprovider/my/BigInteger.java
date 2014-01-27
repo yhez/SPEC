@@ -2,11 +2,6 @@ package de.flexiprovider.my;
 
 import android.util.Log;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectStreamField;
-import java.io.StreamCorruptedException;
 import java.util.Random;
 
 public class BigInteger extends Number implements Comparable<BigInteger> {
@@ -561,11 +556,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
         return true;
     }
 
-    /**
-     * This internal constructor differs from its public cousin
-     * with the arguments reversed in two ways: it assumes that its
-     * arguments are correct, and it doesn't copy the magnitude array.
-     */
     BigInteger(int[] magnitude, int signum) {
         this.signum = (magnitude.length == 0 ? 0 : signum);
         this.mag = magnitude;
@@ -608,12 +598,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
     private static BigInteger valueOf(int val[]) {
         return (val[0] > 0 ? new BigInteger(val, 1) : new BigInteger(val));
     }
-
-    // Constants
-
-    /**
-     * Initialize static constant array when class is loaded.
-     */
     private final static int MAX_CONSTANT = 16;
     private static BigInteger posConst[] = new BigInteger[MAX_CONSTANT + 1];
     private static BigInteger negConst[] = new BigInteger[MAX_CONSTANT + 1];
@@ -656,11 +640,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
         return new BigInteger(resultMag, cmp == signum ? 1 : -1);
     }
 
-    /**
-     * Adds the contents of the int arrays x and y. This method allocates
-     * a new int array to hold the answer and returns a reference to that
-     * array.
-     */
     private static int[] add(int[] x, int[] y) {
         // If x is shorter, swap the two arrays
         if (x.length < y.length) {
@@ -897,32 +876,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
                 b = new MutableBigInteger(val.mag);
 
         return a.divide(b, q).toBigInteger(this.signum);
-    }
-
-
-    public BigInteger pow(int exponent) {
-        if (exponent < 0)
-            throw new ArithmeticException("Negative exponent");
-        if (signum == 0)
-            return (exponent == 0 ? ONE : this);
-
-        // Perform exponentiation using repeated squaring trick
-        int newSign = (signum < 0 && (exponent & 1) == 1 ? -1 : 1);
-        int[] baseToPow2 = this.mag;
-        int[] result = {1};
-
-        while (exponent != 0) {
-            if ((exponent & 1) == 1) {
-                result = multiplyToLen(result, result.length,
-                        baseToPow2, baseToPow2.length, null);
-                result = trustedStripLeadingZeroInts(result);
-            }
-            if ((exponent >>>= 1) != 0) {
-                baseToPow2 = squareToLen(baseToPow2, baseToPow2.length, null);
-                baseToPow2 = trustedStripLeadingZeroInts(baseToPow2);
-            }
-        }
-        return new BigInteger(result, newSign);
     }
 
 
@@ -1898,10 +1851,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
         return result;
     }
 
-    /**
-     * Takes an array a representing a negative 2's-complement number and
-     * returns the minimal (no leading zero bytes) unsigned whose value is -a.
-     */
     private static int[] makePositive(byte a[]) {
         int keep, k;
         int byteLength = a.length;
@@ -2054,66 +2003,9 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
         return fn;
     }
 
-    /**
-     * use serialVersionUID from JDK 1.1. for interoperability
-     */
-    private static final long serialVersionUID = -8287574255936472291L;
-
-
-    private static final ObjectStreamField[] serialPersistentFields = {
-            new ObjectStreamField("signum", Integer.TYPE),
-            new ObjectStreamField("magnitude", byte[].class),
-            new ObjectStreamField("bitCount", Integer.TYPE),
-            new ObjectStreamField("bitLength", Integer.TYPE),
-            new ObjectStreamField("firstNonzeroByteNum", Integer.TYPE),
-            new ObjectStreamField("lowestSetBit", Integer.TYPE)
-    };
-
-
-    private void readObject(ObjectInputStream s)
-            throws IOException, ClassNotFoundException {
-
-
-        // prepare to read the alternate persistent fields
-        ObjectInputStream.GetField fields = s.readFields();
-
-        // Read the alternate persistent fields that we care about
-        int sign = fields.get("signum", -2);
-        byte[] magnitude = (byte[]) fields.get("magnitude", null);
-
-        // Validate signum
-        if (sign < -1 || sign > 1) {
-            String message = "BigInteger: Invalid signum value";
-            if (fields.defaulted("signum"))
-                message = "BigInteger: Signum not present in stream";
-            throw new StreamCorruptedException(message);
-        }
-        if ((magnitude.length == 0) != (sign == 0)) {
-            String message = "BigInteger: signum-magnitude mismatch";
-            if (fields.defaulted("magnitude"))
-                message = "BigInteger: Magnitude not present in stream";
-            throw new StreamCorruptedException(message);
-        }
-    }
 
     // Support for resetting final fields while deserializing
 
-
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        // set the values of the Serializable fields
-        ObjectOutputStream.PutField fields = s.putFields();
-        fields.put("signum", signum);
-        fields.put("magnitude", magSerializedForm());
-        // The values written for cached fields are compatible with older
-        // versions, but are ignored in readObject so don't otherwise matter.
-        fields.put("bitCount", -1);
-        fields.put("bitLength", -1);
-        fields.put("lowestSetBit", -2);
-        fields.put("firstNonzeroByteNum", -2);
-
-        // save them
-        s.writeFields();
-    }
 
     /**
      * Returns the mag array as an array of bytes.

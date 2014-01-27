@@ -39,7 +39,6 @@ public class RSAKeyFactory extends
             // get the DER-encoded Key according to X.509 from the spec
             byte[] enc = ((X509EncodedKeySpec) keySpec).getEncoded();
 
-            // decode the SubjectPublicKeyInfo data structure to the pki object
             SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo();
             try {
                 ASN1Tools.derDecode(enc, spki);

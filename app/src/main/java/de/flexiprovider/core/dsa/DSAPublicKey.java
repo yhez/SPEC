@@ -23,50 +23,21 @@ public class DSAPublicKey extends
      */
     private DSAParams params;
 
-    /**
-     * The default constructor generates a DSA public key with the specified
-     * parameters.
-     *
-     * @param y      the public y.
-     * @param params the DSA parameters.
-     */
-    protected DSAPublicKey(FlexiBigInt y, DSAParams params) {
-        this.y = y;
-        this.params = params;
-    }
 
-    /**
-     * This function returns the name of the corresponding algorithm "DSA".
-     *
-     * @return "DSA".
-     */
     public String getAlgorithm() {
         return "DSA";
     }
 
-    /**
-     * This function returns the DSA parameters.
-     *
-     * @return the DSA parameters.
-     */
     public DSAParams getParameters() {
         return params;
     }
 
-    /**
-     * This function returns the public y.
-     *
-     * @return the public y.
-     */
+
     public FlexiBigInt getValueY() {
         return y;
     }
 
-    /**
-     * Returns a human readable form of the key.
-     *
-     * @return a human readable form of the key.
-     */
+
     public String toString() {
 
         return "public y:  0x" + y.toString(16) + "\n" + "p:         0x"
@@ -101,10 +72,7 @@ public class DSAPublicKey extends
         return new ASN1ObjectIdentifier(OID);
     }
 
-    /**
-     * @return the algorithm parameters to encode in the SubjectPublicKeyInfo
-     * structure
-     */
+
     protected ASN1Type getAlgParams() {
         DSAParameters dsaParams = new DSAParameters();
         DSAParameterSpec dsaParamSpec = new DSAParameterSpec(
@@ -118,9 +86,6 @@ public class DSAPublicKey extends
         return dsaParams.getASN1Parameters();
     }
 
-    /**
-     * @return the keyData to encode in the SubjectPublicKeyInfo structure
-     */
     protected byte[] getKeyData() {
         ASN1Integer keyData = new ASN1Integer(y.toByteArray());
         return ASN1Tools.derEncode(keyData);

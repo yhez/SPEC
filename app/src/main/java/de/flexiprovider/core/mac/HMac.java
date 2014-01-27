@@ -198,13 +198,6 @@ public class HMac extends Mac {
         md.update(input);
     }
 
-    /**
-     * Return the computed MAC value. After the MAC has been computed, the MAC
-     * object is reset and has to be initialized again for further MAC
-     * computations.
-     *
-     * @return the computed MAC value
-     */
     public byte[] doFinal() {
         byte[] hash1 = md.digest();
         md.update(opadKey);

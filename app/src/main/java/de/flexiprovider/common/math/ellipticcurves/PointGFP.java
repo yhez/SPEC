@@ -363,13 +363,6 @@ public class PointGFP extends Point {
     }
 
     /**
-     * @return the z-coordinate of this point
-     */
-    public GFElement getZ() {
-        return mZ;
-    }
-
-    /**
      * Return the x-coordinate of this point in affine representation. In this
      * class, the projective representation x = X/Z<sup>2</sup> and y = Y/Z<sup>3</sup>
      * is chosen to speed up point addition. This method returns the
@@ -400,7 +393,7 @@ public class PointGFP extends Point {
      *
      * @return the y-coordinate of this point in affine representation
      */
-    public GFElement getYAffin() {
+    private GFElement getYAffin() {
 
         // TODO the zero point has no affine coordinates
         if (isZero()) {
@@ -729,7 +722,7 @@ public class PointGFP extends Point {
     /**
      * Returns the inverse of this point.
      */
-    public void negateThis() {
+    private void negateThis() {
         if (!isZero()) {
             // y = -mY mod mP
             FlexiBigInt y = mP.add(mY.toFlexiBigInt().negate());

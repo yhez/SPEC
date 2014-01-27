@@ -23,16 +23,6 @@ import de.flexiprovider.common.util.BigEndianConversions;
  */
 public final class SHA1 extends MessageDigest {
 
-    /**
-     * The algorithm name.
-     */
-    public static final String ALG_NAME = "SHA1";
-
-    /**
-     * The OID of SHA1 (defined by IEEE P1363).
-     */
-    public static final String OID = "1.3.14.3.2.26";
-
     // array to buffer the input before attaining the blocksize that can be
     // hashed
     private byte[] buffer;

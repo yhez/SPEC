@@ -16,8 +16,6 @@ public class StaticVariables {
     public static KeyListener edit;
     public static String currentText = "";
     public static byte[] fileContent;
-    //from fragment
-    public static FragmentManagement fragmentManagement;
     public static LastUsedContacts luc;
     public static boolean readyToSend = false;
     //from files management

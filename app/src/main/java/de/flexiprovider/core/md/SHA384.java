@@ -19,13 +19,6 @@ package de.flexiprovider.core.md;
  */
 public final class SHA384 extends SHA384_512 {
 
-    /**
-     * The algorithm name.
-     */
-    public static final String ALG_NAME = "SHA384";
-
-    public static final String OID = "2.16.840.1.101.3.4.2.2";
-
     // Initial hash value H<sup>(0)</sup>. These were obtained by taking the
     // fractional parts of the square roots of the ninth to sixteenth prime.
     private static final long[] H0 = {0xcbbb9d5dc1059ed8L,

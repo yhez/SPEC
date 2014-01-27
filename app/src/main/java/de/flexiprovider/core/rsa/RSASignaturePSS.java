@@ -20,7 +20,6 @@ import de.flexiprovider.core.rsa.interfaces.RSAPublicKey;
 
 public class RSASignaturePSS extends Signature {
 
-    public static final String OID = "1.2.840.113549.1.1.10";
     private PSSParameterSpec params;
     private MessageDigest md;
     private SecureRandom random;
@@ -29,10 +28,6 @@ public class RSASignaturePSS extends Signature {
     private RSAPublicKey pubKey;
     private RSAPrivateKey privKey;
     private ByteArrayOutputStream baos;
-
-    public RSASignaturePSS() {
-        params = new PSSParameterSpec();
-    }
 
     private void initCommon() throws InvalidKeyException {
         try {

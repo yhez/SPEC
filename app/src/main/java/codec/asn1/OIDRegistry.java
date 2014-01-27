@@ -11,16 +11,12 @@ public class OIDRegistry {
 
     private static Set registries_ = Collections.synchronizedSet(new HashSet());
 
-    private static OIDRegistry global_ = new OIDRegistry();
-
     private OIDRegistry parent_ = null;
 
     private OIDRegistry() {
     }
-
-
-    public OIDRegistry(OIDRegistry parent) {
-        parent_ = parent;
+    public OIDRegistry(OIDRegistry parent){
+        parent_=parent;
     }
 
     final public ASN1Type getASN1Type(ASN1ObjectIdentifier oid) {
