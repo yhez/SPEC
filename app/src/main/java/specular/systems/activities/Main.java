@@ -211,15 +211,14 @@ public class Main extends FragmentActivity {
     public void createKeysManager(View v) {
         CryptMethods.doneCreatingKeys = true;
         selectItem(-1, R.layout.wait_nfc_to_write, getString(R.string.save_keys_menu_title));
-        if (NfcAdapter.getDefaultAdapter(this) != null)
+        if (NfcAdapter.getDefaultAdapter(this) != null) {
             if (!NfcAdapter.getDefaultAdapter(this).isEnabled()) {
                 TurnNFCOn tno = new TurnNFCOn();
                 tno.show(getFragmentManager(), "nfc");
-            } else {
-                findViewById(R.id.drawer_layout).animate().setDuration(1000)
-                        .alpha(0).start();
-                onClickSkipNFC(null);
             }
+        } else {
+            onClickSkipNFC(null);
+        }
     }
 
     void encryptManager(final int type) {

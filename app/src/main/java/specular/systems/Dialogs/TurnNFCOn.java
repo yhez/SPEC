@@ -16,9 +16,9 @@ public class TurnNFCOn extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.dialogTransparent);
         builder.setCancelable(false)
-                .setTitle(getActivity().getString(R.string.title_turn_nfc_on))
+                .setMessage(getActivity().getString(R.string.title_turn_nfc_on))
                         // Set the action buttons
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
