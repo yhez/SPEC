@@ -279,12 +279,14 @@
     <string name="backup_no_public">you cannot create a backup without having your public key to encrypt to</string>
     <string name="backup_explain">1. the backup option will use your public key to encrypt the data.\n2. we\'ll add hash signature of your private key to verify that it was created by you.\n3. we\'ll add hash signature of the entire data to verify that it hasn\'t be changed</string>
     <string name="backup_title">Backup</string>
+    <string name="credits">credits</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
         <item>https://specularx.co/faqs/</item>
         <item>https://specularx.co/specularx-blog/</item>
         <item>https://specularx.co/contact/</item>
+        <item>https://specularx.co/credits/</item>
     </string-array>
     <string-array name="menus">
         <item>Encrypt</item>

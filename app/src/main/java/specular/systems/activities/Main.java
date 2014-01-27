@@ -1408,7 +1408,8 @@ public class Main extends FragmentActivity {
             case R.id.button4:
                 i.setData(Uri.parse(links[3]));
                 break;
-            default:
+            case R.id.button5:
+                i.setData(Uri.parse(links[4]));
                 break;
         }
         startActivity(i);

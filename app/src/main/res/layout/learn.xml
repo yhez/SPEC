@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:alpha="0"
+    android:alpha="1"
     android:background="@android:color/white"
     android:gravity="center"
     android:orientation="vertical">
@@ -81,6 +81,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/contact_spec"
+            android:textColor="@color/spec_black" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue" />
+
+        <Button
+            android:onClick="onClickAbout"
+            android:id="@+id/button5"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/credits"
             android:textColor="@color/spec_black" />
     </LinearLayout>
 
