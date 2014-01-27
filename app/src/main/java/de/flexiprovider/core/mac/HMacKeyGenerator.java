@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2008 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.core.mac;
 
 import de.flexiprovider.api.Registry;
@@ -109,54 +101,24 @@ public class HMacKeyGenerator extends SecretKeyGenerator {
     // flag indicating whether the key generator has been initialized
     private boolean initialized;
 
-    /**
-     * Constructor. Set the key size.
-     *
-     * @param keySize the key size in bits
-     */
+
     protected HMacKeyGenerator(int keySize) {
         this.keySize = keySize;
     }
 
-    /**
-     * Initialize the key generator. Since the key size is set by the concrete
-     * instantiations and no further parameters are used, the parameters are
-     * ignored and only the source of randomness is set.
-     *
-     * @param params the parameters (not used)
-     * @param random the source of randomness
-     */
     public void init(AlgorithmParameterSpec params, SecureRandom random) {
         init(random);
     }
 
-    /**
-     * Initialize the key generator. Since the key size is set by the concrete
-     * instantiations, the key size parameter is ignored and only the source of
-     * randomness is set.
-     *
-     * @param keySize the key size (not used)
-     * @param random  the source of randomness
-     */
     public void init(int keySize, SecureRandom random) {
         init(random);
     }
 
-    /**
-     * Initialize the key generator with a source of randomness.
-     *
-     * @param random the source of randomness
-     */
     public void init(SecureRandom random) {
         this.random = random != null ? random : Registry.getSecureRandom();
         initialized = true;
     }
 
-    /**
-     * Generate an HMac key.
-     *
-     * @return the generated {@link HMacKey}
-     */
     public SecretKey generateKey() {
         if (!initialized) {
             init(Registry.getSecureRandom());

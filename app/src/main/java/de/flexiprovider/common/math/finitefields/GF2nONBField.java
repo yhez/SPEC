@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.common.math.finitefields;
 
 import java.util.Random;
@@ -14,106 +6,26 @@ import java.util.Vector;
 import de.flexiprovider.common.exceptions.NoSuchBasisException;
 import de.flexiprovider.common.math.IntegerFunctions;
 
-/**
- * This class implements the abstract class <tt>GF2nField</tt> for ONB
- * representation. It computes the fieldpolynomial, multiplication matrix and
- * one of its roots mONBRoot, (see for example <a
- * href=http://www2.certicom.com/ecc/intro.htm>Certicoms Whitepapers</a>).
- * GF2nField is used by GF2nONBElement which implements the elements of this
- * field.
- *
- * @author Birgit Henhapl
- * @author Oliver Seiler
- * @see GF2nField
- * @see GF2nONBElement
- */
+
 public class GF2nONBField extends GF2nField {
 
-    // ///////////////////////////////////////////////////////////////////
-    // Hashtable for irreducible normal polynomials //
-    // ///////////////////////////////////////////////////////////////////
-
-    // i*5 + 0 i*5 + 1 i*5 + 2 i*5 + 3 i*5 + 4
-    /*
-     * private static int[][] mNB = {{0, 0, 0}, {0, 0, 0}, {1, 0, 0}, {1, 0, 0},
-     * {1, 0, 0}, // i = 0 {2, 0, 0}, {1, 0, 0}, {1, 0, 0}, {4, 3, 1}, {1, 0,
-     * 0}, // i = 1 {3, 0, 0}, {2, 0, 0}, {3, 0, 0}, {4, 3, 1}, {5, 0, 0}, // i =
-     * 2 {1, 0, 0}, {5, 3, 1}, {3, 0, 0}, {3, 0, 0}, {5, 2, 1}, // i = 3 {3, 0,
-     * 0}, {2, 0, 0}, {1, 0, 0}, {5, 0, 0}, {4, 3, 1}, // i = 4 {3, 0, 0}, {4,
-     * 3, 1}, {5, 2, 1}, {1, 0, 0}, {2, 0, 0}, // i = 5 {1, 0, 0}, {3, 0, 0},
-     * {7, 3, 2}, {10, 0, 0}, {7, 0, 0}, // i = 6 {2, 0, 0}, {9, 0, 0}, {6, 4,
-     * 1}, {6, 5, 1}, {4, 0, 0}, // i = 7 {5, 4, 3}, {3, 0, 0}, {7, 0, 0}, {6,
-     * 4, 3}, {5, 0, 0}, // i = 8 {4, 3, 1}, {1, 0, 0}, {5, 0, 0}, {5, 3, 2},
-     * {9, 0, 0}, // i = 9 {4, 3, 2}, {6, 3, 1}, {3, 0, 0}, {6, 2, 1}, {9, 0,
-     * 0}, // i = 10 {7, 0, 0}, {7, 4, 2}, {4, 0, 0}, {19, 0, 0}, {7, 4, 2}, //
-     * i = 11 {1, 0, 0}, {5, 2, 1}, {29, 0, 0}, {1, 0, 0}, {4, 3, 1}, // i = 12
-     * {18, 0, 0}, {3, 0, 0}, {5, 2, 1}, {9, 0, 0}, {6, 5, 2}, // i = 13 {5, 3,
-     * 1}, {6, 0, 0}, {10, 9, 3}, {25, 0, 0}, {35, 0, 0}, // i = 14 {6, 3, 1},
-     * {21, 0, 0}, {6, 5, 2}, {6, 5, 3}, {9, 0, 0}, // i = 15 {9, 4, 2}, {4, 0,
-     * 0}, {8, 3, 1}, {7, 4, 2}, {5, 0, 0}, // i = 16 {8, 2, 1}, {21, 0, 0},
-     * {13, 0, 0}, {7, 6, 2}, {38, 0, 0}, // i = 17 {27, 0, 0}, {8, 5, 1}, {21,
-     * 0, 0}, {2, 0, 0}, {21, 0, 0}, // i = 18 {11, 0, 0}, {10, 9, 6}, {6, 0,
-     * 0}, {11, 0, 0}, {6, 3, 1}, // i = 19 {15, 0, 0}, {7, 6, 1}, {29, 0, 0},
-     * {9, 0, 0}, {4, 3, 1}, // i = 20 {4, 0, 0}, {15, 0, 0}, {9, 7, 4}, {17, 0,
-     * 0}, {5, 4, 2}, // i = 21 {33, 0, 0}, {10, 0, 0}, {5, 4, 3}, {9, 0, 0},
-     * {5, 3, 2}, // i = 22 {8, 7, 5}, {4, 2, 1}, {5, 2, 1}, {33, 0, 0}, {8, 0,
-     * 0}, // i = 23 {4, 3, 1}, {18, 0, 0}, {6, 2, 1}, {2, 0, 0}, {19, 0, 0}, //
-     * i = 24 {7, 6, 5}, {21, 0, 0}, {1, 0, 0}, {7, 2, 1}, {5, 0, 0}, // i = 25
-     * {3, 0, 0}, {8, 3, 2}, {17, 0, 0}, {9, 8, 2}, {57, 0, 0}, // i = 26 {11,
-     * 0, 0}, {5, 3, 2}, {21, 0, 0}, {8, 7, 1}, {8, 5, 3}, // i = 27 {15, 0, 0},
-     * {10, 4, 1}, {21, 0, 0}, {5, 3, 2}, {7, 4, 2}, // i = 28 {52, 0, 0}, {71,
-     * 0, 0}, {14, 0, 0}, {27, 0, 0}, {10, 9, 7}, // i = 29 {53, 0, 0}, {3, 0,
-     * 0}, {6, 3, 2}, {1, 0, 0}, {15, 0, 0}, // i = 30 {62, 0, 0}, {9, 0, 0},
-     * {6, 5, 2}, {8, 6, 5}, {31, 0, 0}, // i = 31 {5, 3, 2}, {18, 0, 0 }, {27,
-     * 0, 0}, {7, 6, 3}, {10, 8, 7}, // i = 32 {9, 8, 3}, {37, 0, 0}, {6, 0, 0},
-     * {15, 3, 2}, {34, 0, 0}, // i = 33 {11, 0, 0}, {6, 5, 2}, {1, 0, 0}, {8,
-     * 5, 2}, {13, 0, 0}, // i = 34 {6, 0, 0}, {11, 3, 2}, {8, 0, 0}, {31, 0,
-     * 0}, {4, 2, 1}, // i = 35 {3, 0, 0}, {7, 6, 1}, {81, 0, 0}, {56, 0, 0},
-     * {9, 8, 7}, // i = 36 {24, 0, 0}, {11, 0, 0}, {7, 6, 5}, {6, 5, 2}, {6, 5,
-     * 2}, // i = 37 {8, 7, 6}, {9, 0, 0}, {7, 2, 1}, {15, 0, 0}, {87, 0, 0}, //
-     * i = 38 {8, 3, 2}, {3, 0, 0}, {9, 4, 2}, {9, 0, 0}, {34, 0, 0}, // i = 39
-     * {5, 3, 2}, {14, 0, 0}, {55, 0, 0}, {8, 7, 1}, {27, 0, 0}, // i = 40 {9,
-     * 5, 2}, {10, 9, 5}, {43, 0, 0}, {8, 6, 2}, {6, 0, 0}, // i = 41 {7, 0, 0},
-     * {11, 10, 8}, {105, 0, 0}, {6, 5, 2}, {73, 0, 0}}; // i = 42
-     */
-    // /////////////////////////////////////////////////////////////////////
-    // member variables
-    // /////////////////////////////////////////////////////////////////////
     private static final int MAXLONG = 64;
 
-    /**
-     * holds the length of the array-representation of degree mDegree.
-     */
+
     private int mLength;
 
-    /**
-     * holds the number of relevant bits in mONBPol[mLength-1].
-     */
+
     private int mBit;
 
-    /**
-     * holds the type of mONB
-     */
+
     private int mType;
 
-    /**
-     * holds the multiplication matrix
-     */
+
     int[][] mMult;
 
-    // /////////////////////////////////////////////////////////////////////
-    // constructors
-    // /////////////////////////////////////////////////////////////////////
 
-    /**
-     * constructs an instance of the finite field with 2<sup>deg</sup>
-     * elements and characteristic 2.
-     *
-     * @param deg -
-     *            the extention degree of this field
-     * @throws NoSuchBasisException if an ONB-implementation other than type 1 or type 2 is
-     *                              requested.
-     */
+
+
     public GF2nONBField(int deg) throws NoSuchBasisException {
         if (deg < 3) {
             throw new IllegalArgumentException("k must be at least 3");
@@ -148,9 +60,9 @@ public class GF2nONBField extends GF2nField {
         matrices = new Vector();
     }
 
-    // /////////////////////////////////////////////////////////////////////
-    // access
-    // /////////////////////////////////////////////////////////////////////
+
+
+
 
     int getONBLength() {
         return mLength;
@@ -160,16 +72,7 @@ public class GF2nONBField extends GF2nField {
         return mBit;
     }
 
-    // /////////////////////////////////////////////////////////////////////
-    // arithmetic
-    // /////////////////////////////////////////////////////////////////////
 
-    /**
-     * Computes the field polynomial for a ONB according to IEEE 1363 A.7.2
-     * (p110f).
-     *
-     * @see "P1363 A.7.2, p110f"
-     */
     protected void computeFieldPolynomial() {
         if (mType == 1) {
             fieldPolynomial = new GF2Polynomial(mDegree + 1, "ALL");

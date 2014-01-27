@@ -55,31 +55,23 @@ class BitSieve {
         } while (step > 0);
     }
 
-    /**
-     * Given a bit index return unit index containing it.
-     */
+
     private static int unitIndex(int bitIndex) {
         return bitIndex >>> 6;
     }
 
-    /**
-     * Return a unit that masks the specified bit in its unit.
-     */
+
     private static long bit(int bitIndex) {
         return 1L << (bitIndex & ((1 << 6) - 1));
     }
 
-    /**
-     * Get the value of the bit at the specified index.
-     */
+
     private boolean get(int bitIndex) {
         int unitIndex = unitIndex(bitIndex);
         return ((bits[unitIndex] & bit(bitIndex)) != 0);
     }
 
-    /**
-     * Set the bit at the specified index.
-     */
+
     private void set(int bitIndex) {
         int unitIndex = unitIndex(bitIndex);
         bits[unitIndex] |= bit(bitIndex);

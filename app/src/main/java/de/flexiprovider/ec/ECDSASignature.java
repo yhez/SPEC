@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.ec;
 
 import java.io.IOException;
@@ -66,18 +57,6 @@ public abstract class ECDSASignature extends Signature {
 
     private static final FlexiBigInt ONE = FlexiBigInt.ONE;
 
-    /**
-     * Inner class providing the ECDSA ASN.1 signature structure.
-     * <p/>
-     * The ASN.1 signature structure is defined as follows:
-     * <p/>
-     * <pre>
-     *  ECDSASignature ::= SEQUENCE{
-     *    r  INTEGER,
-     *    s  INTEGER
-     * }
-     * </pre>
-     */
     private static class ECDSAASN1Signature extends ASN1Sequence {
 
         // the value r
@@ -101,70 +80,38 @@ public abstract class ECDSASignature extends Signature {
             add(r);
             add(s);
         }
-
-        /**
-         * @return the value r
-         */
         public FlexiBigInt getR() {
             return ASN1Tools.getFlexiBigInt(r);
         }
-
-        /**
-         * @return the value s
-         */
         public FlexiBigInt getS() {
             return ASN1Tools.getFlexiBigInt(s);
         }
     }
-
-    /*
-     * Inner classes providing ECDSA with a variety of message digests.
-     */
-
-    /**
-     * ECDSA with SHA1
-     */
     public static final class SHA1 extends ECDSASignature {
 
-        /**
-         * The OID of SHA1withECDSA
-         */
+
         public static final String OID = "1.2.840.10045.4.1";
 
     }
 
     public static final class SHA224 extends ECDSASignature {
 
-        /**
-         * The OID of SHA224withECDSA
-         */
         public static final String OID = "1.2.840.10045.4.3.1";
 
     }
 
-    /**
-     * ECDSA with SHA256
-     */
     public static final class SHA256 extends ECDSASignature {
 
-        /**
-         * The OID of SHA256withECDSA
-         */
         public static final String OID = "1.2.840.10045.4.3.2";
 
     }
     public static final class SHA384 extends ECDSASignature {
 
-        /**
-         * The OID of SHA384withECDSA
-         */
         public static final String OID = "1.2.840.10045.4.3.3";
 
     }
 
-    /**
-     * ECDSA with SHA512
-     */
+
     public static final class SHA512 extends ECDSASignature {
 
         /**
@@ -174,16 +121,7 @@ public abstract class ECDSASignature extends Signature {
 
     }
 
-    /**
-     * Initializes this signature object with the specified private key and
-     * source of randomness for signing operations.
-     *
-     * @param privateKey the private key of the identity whose signature is going
-     *                   to be signed.
-     * @param random     the source of randomness
-     * @throws InvalidKeyException If <tt>privateKey</tt> is an invalid key (invalid
-     *                             encoding, wrong length, uninitialized, etc).
-     */
+
     public void initSign(PrivateKey privateKey, SecureRandom random)
             throws InvalidKeyException {
 
@@ -222,13 +160,7 @@ public abstract class ECDSASignature extends Signature {
         md.reset();
     }
 
-    /**
-     * Initialize this signature engine with the specified parameter set.
-     *
-     * @param params the parameters
-     * @throws InvalidParameterException if the given parameters are inappropriate for this
-     *                                   signature engine
-     */
+
     public void setParameters(AlgorithmParameterSpec params)
             throws InvalidParameterException {
         if (params instanceof CurveParams) {
@@ -238,24 +170,11 @@ public abstract class ECDSASignature extends Signature {
                     + " of ECParameterSpec");
         }
     }
-
-    /**
-     * Updates the data to be signed or verified using the specified byte.
-     *
-     * @param input the byte to be updated.
-     */
     public void update(byte input) {
         md.update(input);
     }
 
-    /**
-     * Updates the data to be signed or verified, using the specified array of
-     * bytes, starting at the specified offset.
-     *
-     * @param input  the array of bytes.
-     * @param offset the offset to start from in the array of bytes.
-     * @param length the number of bytes to use, starting at offset.
-     */
+
     public void update(byte[] input, int offset, int length) {
         int l = length;
         if (l == -1) {
@@ -264,11 +183,6 @@ public abstract class ECDSASignature extends Signature {
         md.update(input, offset, l);
     }
 
-    /**
-     * Return the signature of all the data updated so far.
-     *
-     * @return the signature
-     */
     public byte[] sign() {
 
 	/* generate a one-time key pair (u, V) */
@@ -312,14 +226,7 @@ public abstract class ECDSASignature extends Signature {
         return ASN1Tools.derEncode(ecdsaSigVal);
     }
 
-    /**
-     * Verify the passed-in signature.
-     *
-     * @param sigBytes the signature to be verified
-     * @return <tt>true</tt> if the signature is valid, <tt>false</tt>
-     * otherwise
-     * @throws SignatureException if this signature object is not initialized properly.
-     */
+
     public boolean verify(byte[] sigBytes) throws SignatureException {
 
         FlexiBigInt h = FlexiBigInt.valueOf(1);

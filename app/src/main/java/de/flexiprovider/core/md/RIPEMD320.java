@@ -1,28 +1,8 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group, Technische Universitaet
- * Darmstadt
- * 
- * For conditions of usage and distribution please refer to the file COPYING in
- * the root directory of this package.
- * 
- * Created on Jul 26, 2005
- */
 package de.flexiprovider.core.md;
 
 import de.flexiprovider.common.util.LittleEndianConversions;
 
-/**
- * This class implements the RIPEMD-320 message digest algorithm according to
- * the Handbook of Applied Cryptography, Menezes, van Oorschot, Vanstone, CRC
- * Press, 1997, algorithm 9.55
- * <p/>
- * The algorithm has been invented by Hans Dobbertin, and further information
- * concerning the RIPEMD message digest family can be found at <a
- * href="http://www.esat.kuleuven.ac.be/~bosselae/ripemd320.html">
- * www.esat.kuleuven.ac.be/~bosselae/ripemd320.html</a>.
- *
- * @author Elena Klintsevitch
- */
+
 public final class RIPEMD320 extends MDFamilyDigest {
 
     // magic constants for initialization
@@ -51,25 +31,15 @@ public final class RIPEMD320 extends MDFamilyDigest {
                     {15, 5, 8, 11, 14, 14, 6, 14, 6, 9, 12, 9, 12, 5, 15, 8},
                     {8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11}}; // right
 
-    /**
-     * Constructor.
-     */
+
     public RIPEMD320() {
         super(RIPEMD320_DIGEST_LENGTH);
     }
 
-    /**
-     * reset the engine to its initial state
-     */
+
     public void reset() {
         initMessageDigest(initState);
     }
-
-    /**
-     * Compute the digest and reset the engine
-     *
-     * @return the message digest in a byte array
-     */
     public synchronized byte[] digest() {
         // produce the final digest
         byte[] digest = new byte[RIPEMD320_DIGEST_LENGTH];
@@ -85,9 +55,7 @@ public final class RIPEMD320 extends MDFamilyDigest {
         return digest;
     }
 
-    /**
-     * process a block of 64 bytes
-     */
+
     protected synchronized void processBlock() {
 
         // aL - chaning variable A-E, aR- chaning variable A`-E`
@@ -130,9 +98,7 @@ public final class RIPEMD320 extends MDFamilyDigest {
         }
     }
 
-    /**
-     * basic conversion functions
-     */
+
 
     // selection of message word left
     private static int selWordL(int i, int j) {

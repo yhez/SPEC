@@ -207,12 +207,7 @@ public class GF2Polynomial {
         return res;
     }
 
-    /**
-     * Converts this polynomial to a byte[] (octet string) according to 1363.
-     *
-     * @return a byte[] representing the value of this polynomial
-     * @see "P1363 5.5.2 p22f, BS2OSP"
-     */
+
     public byte[] toByteArray() {
         int k = ((len - 1) >> 3) + 1;
         int ov = k & 0x03;
@@ -248,9 +243,7 @@ public class GF2Polynomial {
         value[0] = 0x01;
     }
 
-    /**
-     * Sets Bit 1 to 1 and all other to 0, assigning 'x' to this GF2Polynomial.
-     */
+
     public void assignX() {
         int i;
         for (i = 1; i < blocks; i++) {
@@ -259,9 +252,7 @@ public class GF2Polynomial {
         value[0] = 0x02;
     }
 
-    /**
-     * Sets all Bits to 1.
-     */
+
     public void assignAll() {
         int i;
         for (i = 0; i < blocks; i++) {
@@ -270,9 +261,7 @@ public class GF2Polynomial {
         zeroUnusedBits();
     }
 
-    /**
-     * Resets all bits to zero.
-     */
+
     public void assignZero() {
         int i;
         for (i = 0; i < blocks; i++) {
@@ -280,9 +269,7 @@ public class GF2Polynomial {
         }
     }
 
-    /**
-     * Fills all len bits of this GF2Polynomial with random values.
-     */
+
     public void randomize() {
         int i;
         for (i = 0; i < blocks; i++) {
@@ -291,12 +278,7 @@ public class GF2Polynomial {
         zeroUnusedBits();
     }
 
-    /**
-     * Fills all len bits of this GF2Polynomial with random values using the
-     * specified source of randomness.
-     *
-     * @param rand the source of randomness
-     */
+
     public void randomize(Random rand) {
         int i;
         for (i = 0; i < blocks; i++) {
@@ -305,14 +287,7 @@ public class GF2Polynomial {
         zeroUnusedBits();
     }
 
-    /**
-     * Returns true if two GF2Polynomials have the same size and value and thus
-     * are equal.
-     *
-     * @param other the other GF2Polynomial
-     * @return true if this GF2Polynomial equals <i>b</i> (<i>this</i> ==
-     * <i>b</i>)
-     */
+
     public boolean equals(Object other) {
         if (other == null || !(other instanceof GF2Polynomial)) {
             return false;
@@ -330,19 +305,11 @@ public class GF2Polynomial {
         }
         return true;
     }
-
-    /**
-     * @return the hash code of this polynomial
-     */
     public int hashCode() {
         return len + value.hashCode();
     }
 
-    /**
-     * Tests if all bits equal zero.
-     *
-     * @return true if this GF2Polynomial equals 'zero' (<i>this</i> == 0)
-     */
+
     public boolean isZero() {
         int i;
         if (len == 0) {
@@ -365,13 +332,6 @@ public class GF2Polynomial {
         }
         return value[0] == 0x01;
     }
-
-    /**
-     * Adds <i>b</i> to this GF2Polynomial and assigns the result to this
-     * GF2Polynomial. <i>b</i> can be of different size.
-     *
-     * @param b GF2Polynomial to add to this GF2Polynomial
-     */
     public void addToThis(GF2Polynomial b) {
         expandN(b.len);
         xorThisBy(b);
@@ -385,22 +345,11 @@ public class GF2Polynomial {
         expandN(b.len);
         xorThisBy(b);
     }
-
-    /**
-     * Toggles the LSB of this GF2Polynomial, increasing its value by 'one'.
-     */
     public void increaseThis() {
         xorBit(0);
     }
 
-    /**
-     * Multiplies this GF2Polynomial with <i>b</i> and returns the result in a
-     * new GF2Polynomial. This method does not reduce the result in GF(2^N).
-     * This method uses Karatzuba multiplication.
-     *
-     * @param b a GF2Polynomial
-     * @return a new GF2Polynomial (<i>this</i> * <i>b</i>)
-     */
+
     public GF2Polynomial multiply(GF2Polynomial b) {
         int n = Math.max(len, b.len);
         expandN(n);
@@ -408,9 +357,7 @@ public class GF2Polynomial {
         return karaMult(b);
     }
 
-    /**
-     * Does the recursion for Karatzuba multiplication.
-     */
+
     private GF2Polynomial karaMult(GF2Polynomial b) {
         GF2Polynomial result = new GF2Polynomial(len << 1);
         if (len <= 32) {
@@ -456,9 +403,7 @@ public class GF2Polynomial {
         return result;
     }
 
-    /**
-     * 16-Integer Version of Karatzuba multiplication.
-     */
+
     private static int[] mult512(int[] a, int[] b) {
         int[] result = new int[32];
         int[] a0 = new int[8];
@@ -559,9 +504,7 @@ public class GF2Polynomial {
         return result;
     }
 
-    /**
-     * 8-Integer Version of Karatzuba multiplication.
-     */
+
     private static int[] mult256(int[] a, int[] b) {
         int[] result = new int[16];
         int[] a0 = new int[4];
@@ -644,9 +587,7 @@ public class GF2Polynomial {
         return result;
     }
 
-    /**
-     * 4-Integer Version of Karatzuba multiplication.
-     */
+
     private static int[] mult128(int[] a, int[] b) {
         int[] result = new int[8];
         int[] a0 = new int[2];
@@ -710,10 +651,6 @@ public class GF2Polynomial {
         }
         return result;
     }
-
-    /**
-     * 2-Integer Version of Karatzuba multiplication.
-     */
     private static int[] mult64(int[] a, int[] b) {
         int[] result = new int[4];
         int a0 = a[0];
@@ -741,10 +678,6 @@ public class GF2Polynomial {
         result[0] ^= e[0];
         return result;
     }
-
-    /**
-     * 4-Byte Version of Karatzuba multiplication. Here the actual work is done.
-     */
     private static int[] mult32(int a, int b) {
         int[] result = new int[2];
         if (a == 0 || b == 0) {
@@ -1050,12 +983,7 @@ public class GF2Polynomial {
         }
     }
 
-    /**
-     * Sets the bit at position <i>i</i>.
-     *
-     * @param i int
-     * @throws BitDoesNotExistException if (<i>i</i> < 0) || (<i>i</i> > (len - 1))
-     */
+
     public void setBit(int i) throws BitDoesNotExistException {
         if (i < 0 || i > (len - 1)) {
             throw new BitDoesNotExistException();
@@ -1147,9 +1075,7 @@ public class GF2Polynomial {
         }
     }
 
-    /**
-     * Shifts-right this GF2Polynomial by 1.
-     */
+
     public void shiftRightThis() {
         int i;
         len -= 1;

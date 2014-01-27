@@ -12,58 +12,26 @@ import codec.UTF8InputStreamReader;
 
 public class RFC2253Parser {
 
-    /**
-     * Characters that are treated in a special way. Some of them must be
-     * escaped or quoted, some serve as delimiters and more.
-     */
     public static final String TOKENIZERS = " ,+=\"#;\\<>\r\n";
 
-    /**
-     * Characters that are treated in a special way. Some of them must be
-     * escaped or quoted, some serve as delimiters and more.
-     */
     public static final String SPECIALS = "\"\\,=+<>#;";
 
-    /**
-     * Delimiters for the <code>StringTokenizer</code>.
-     */
     public static final String SEPARATORS = ";,+";
 
-    /**
-     * Valid hex characters.
-     */
     public static final String HEXCHAR = "0123456789ABCDEFabcdef";
 
-    /**
-     * The pair introducer.
-     */
     public static final String ESCAPE = "\\";
 
-    /**
-     * The quote character.
-     */
     public static final String QUOTE = "\"";
 
     public static final String PLUS = "+";
 
-    /**
-     * The space character.
-     */
     public static final String SPC = " ";
 
-    /**
-     * The line break character.
-     */
     public static final String LINEBREAK = "\r";
 
-    /**
-     * The carriage return character.
-     */
     public static final String RETURN = "\n";
 
-    /**
-     * Whitespace characters.
-     */
     public static final String WHITESPACE = SPC + LINEBREAK + RETURN;
 
     public List parse(String rfc2253name) throws BadNameException {
@@ -114,10 +82,7 @@ public class RFC2253Parser {
 
             switch (state) {
                 case 0:
-        /*
-         * We consume whitespace characters and wait for an attribute
-		 * keyword in this state.
-		 */
+
                     if (WHITESPACE.contains(tok)) {
                         continue;
                     }
@@ -164,10 +129,7 @@ public class RFC2253Parser {
                             + ") Key starts with SPECIAL '" + tok + "'!");
 
                 case 1:
-		/*
-		 * We again consume whitespace characters until we encounter an
-		 * equals sign ('='). Then we advance our state.
-		 */
+
                     if (WHITESPACE.contains(tok)) {
                         continue;
                     }
@@ -179,35 +141,21 @@ public class RFC2253Parser {
                             + ") '=' expected after '" + key + "'!");
 
                 case 2:
-		/*
-		 * We again consume whitespace characters until we hit the first
-		 * non-space character. In that case we emulate an epsilon
-		 * transition to state number 3. In other words, we fall through
-		 * with the current token still being valid.
-		 */
+
                     if (WHITESPACE.contains(tok)) {
                         continue;
                     }
-		/*
-		 * If the first token is a hash mark ('#') then we have n
-		 * hexadecimal encoding that is treated in state 7.
-		 */
+
                     if (tok.equals("#")) {
                         state = 7;
 
                         continue;
                     }
-		/*
-		 * Fall through, new state, token stays valid.
-		 */
+
                     state = 3;
 
                 case 3:
-		/*
-		 * The central state. It distinguishes between quoted and
-		 * unquoted substrings, handles the truncation counter for
-		 * trailing whitespace characters and more.
-		 */
+
                     if (!tok.equals(ESCAPE) && !utfParsed) {
                         throw new BadNameException("(" + state
                                 + ") Invalid UTF-8 code '"
@@ -218,23 +166,14 @@ public class RFC2253Parser {
                         tokParsed = true;
                     }
 
-		/*
-		 * Check if we hit a whitespace character. This is a nasty case
-		 * because the DN could be 'cn= "foo" ,...' which must be
-		 * transformed into 'cn=foo'. that means all whitespace
-		 * characters before the delimiter must be truncated.
-		 */
+
                     if (WHITESPACE.contains(tok)) {
-		    /*
-		     * Ignore leading whitespace characters.
-		     */
+
                         if (value.length() == 0) {
                             continue;
                         }
 
-		    /*
-		     * Remember start of trailing whitespace characters.
-		     */
+
                         if (trunc == -1) {
                             trunc = value.length();
                         }
@@ -243,33 +182,21 @@ public class RFC2253Parser {
                         continue;
                     }
 
-		/*
-		 * If we hit upon a RDN separator then we can ship out the
-		 * attribute and value.
-		 */
+
                     if (SEPARATORS.indexOf(tok.charAt(0)) >= 0) {
-		    /*
-		     * Remove trailing whitespace characters, if existent
-		     */
+
                         if (trunc != -1) {
                             value.setLength(trunc);
                         }
 
-		    /*
-		     * If the separator is a PLUS then we have to set the flag
-		     * that says: "this AVA is followed by another one at the
-		     * same level."
-		     */
+
                         val = value.toString();
                         state = 0;
                         plus = tok.equals(PLUS);
 
                         value.setLength(0);
 
-		    /*
-		     * We got a key and an empty value. Now we ship it out and
-		     * go on in state 0.
-		     */
+
                         ava_.add(new AVA(key, val, plus));
                         continue;
                     }
@@ -278,21 +205,13 @@ public class RFC2253Parser {
                         trunc = -1;
                     }
 
-		/*
-		 * An ESCAPE brings us into a state that simply returns after
-		 * having read the escaped special character.
-		 */
                     if (tok.equals(ESCAPE)) {
                         returnState = state;
 
                         state = 4;
                         continue;
                     }
-		/*
-		 * If we hit upon a QUOTE then we have to parse a quoted
-		 * substring. The state for that simply returns as well.
-		 */
-                    if (tok.equals(QUOTE)) {
+		    if (tok.equals(QUOTE)) {
                         if (value.length() > 0) {
                             throw new BadNameException("(" + state
                                     + ") Only whitespace characters "
@@ -302,11 +221,7 @@ public class RFC2253Parser {
                         state = 5;
                         continue;
                     }
-		/*
-		 * Last not least, we check for a special character that is not
-		 * escaped. If there isn't then we have plain chars that we
-		 * append to the current value.
-		 */
+
                     if (SPECIALS.indexOf(tok.charAt(0)) < 0) {
                         if (tok.length() > 0) {
                             value.append(tok);
@@ -318,16 +233,9 @@ public class RFC2253Parser {
                             + key + "'!");
 
                 case 4:
-		/*
-		 * This state handles escaped SPECIAL characters, backslashes
-		 * (\), quotations ("), and UTF-8 code. It returns to the set
-		 * 'returnState'.
-		 */
+
                     if (SPECIALS.indexOf(tok.charAt(0)) >= 0) {
-		    /*
-		     * We got an escaped special character, so we append it to
-		     * the value.
-		     */
+
                         value.append(tok);
 
                         state = returnState;
@@ -335,11 +243,7 @@ public class RFC2253Parser {
                     }
                     if (tok.length() > 1) {
                         t = tok.substring(0, 2);
-		    /*
-		     * we first have to check whether we are in a situation like
-		     * 'CN=Before\0DAfter' (escaped non printable ascii
-		     * character)
-		     */
+
                         try {
                             b = (Hex.decode(t))[0];
                         } catch (Exception e) {
@@ -366,9 +270,7 @@ public class RFC2253Parser {
                                         + ") Invalid hex character '" + t + "'!");
                             }
                         } else {
-			/*
-			 * now we have to try to parse the UTF-8 code
-			 */
+
                             try {
                                 baos.write(b);
                                 utf = baos.toByteArray();
@@ -411,10 +313,7 @@ public class RFC2253Parser {
                             + tok.charAt(0) + "'!");
 
                 case 5:
-		/*
-		 * This state means, that we are parsing a quoted value, upon
-		 * hitting another unescaped quote.
-		 */
+
                     if (!tok.equals(ESCAPE) && !utfParsed) {
                         throw new BadNameException("(" + state
                                 + ") Invalid UTF-8 code '"
@@ -429,52 +328,33 @@ public class RFC2253Parser {
                         continue;
                     }
 
-		/*
-		 * If we read an escape character then we again have to call a
-		 * substate for handling that.
-		 */
+
                     if (tok.equals(ESCAPE)) {
                         returnState = state;
 
                         state = 4;
                         continue;
                     }
-		/*
-		 * Since we are in quotation marks, we add what we find to the
-		 * current value.
-		 */
+
                     value.append(tok);
                     continue;
 
                 case 6:
-		/*
-		 * This state means, that we have found the closing unescaped
-		 * quotation mark, wait for a RDN separator, and handle
-		 * whitespace characters.
-		 */
+
                     if (SEPARATORS.indexOf(tok.charAt(0)) >= 0) {
-		    /*
-		     * Remove trailing whitespace characters, if existent
-		     */
+
                         if (trunc != -1) {
                             value.setLength(trunc);
                         }
 
-		    /*
-		     * If the separator is a PLUS then we have to set the flag
-		     * that says: "this AVA is followed by another one at the
-		     * same level."
-		     */
+
                         val = value.toString();
                         state = 0;
                         plus = tok.equals(PLUS);
 
                         value.setLength(0);
 
-		    /*
-		     * We got a key and an empty value. Now we ship it out and
-		     * go on in state 0.
-		     */
+
                         ava_.add(new AVA(key, val, plus));
                         continue;
                     }
@@ -487,11 +367,7 @@ public class RFC2253Parser {
                     continue;
 
                 case 7:
-		/*
-		 * This state decodes a string that represents a binary value.
-		 * If we hit upon a separator then we ship out the accumulated
-		 * hexadecimal string.
-		 */
+
                     if (SEPARATORS.indexOf(tok.charAt(0)) >= 0) {
                         try {
                             val = value.toString();
@@ -515,9 +391,6 @@ public class RFC2253Parser {
                         continue;
                     }
 
-		/*
-		 * Remove trailing spaces.
-		 */
                     if (WHITESPACE.contains(tok)) {
                         if (trunc == -1) {
                             trunc = value.length();
@@ -530,18 +403,11 @@ public class RFC2253Parser {
                                 + "after hexadecimal code '" + value.toString()
                                 + "'!");
                     }
-		/*
-		 * We check for specials now. If we do not hit one then we
-		 * assume everything is fine and we go on. The hexadecimal
-		 * encoding is checked when we ship out the string.
-		 */
+
                     if (HEXCHAR.indexOf(tok.charAt(0)) >= 0) {
                         value.append(tok);
                         continue;
                     }
-		/*
-		 * Everything else is an error.
-		 */
                     throw new BadNameException("(" + state
                             + ") Bad hexadecimal encoding '" + value.toString()
                             + "'!");
@@ -560,15 +426,10 @@ public class RFC2253Parser {
             value.setLength(trunc);
         }
 
-	/*
-	 * We first check if the state machine is in a final state.
-	 */
+
         if (state != 2 && state != 3 && state != 6 && state != 7) {
             throw new BadNameException("(" + state + ") Not in a final state!");
         }
-	/*
-	 * We have to check for the epsilon transitions of the final states.
-	 */
         switch (state) {
             case 7:
                 try {
@@ -604,12 +465,4 @@ public class RFC2253Parser {
         }
         return ava_;
     }
-
-    /**
-     * Main method of the class.
-     *
-     * @param argv
-     *                a sequence of RFC2253 strings (e.g. "CN=DE")
-     */
-
 }

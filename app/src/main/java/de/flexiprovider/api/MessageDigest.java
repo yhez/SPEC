@@ -4,10 +4,6 @@ import de.flexiprovider.api.exceptions.DigestException;
 
 public abstract class MessageDigest extends java.security.MessageDigestSpi {
 
-    // ****************************************************
-    // JCA adapter methods
-    // ****************************************************
-
     protected final int engineGetDigestLength() {
         return getDigestLength();
     }
@@ -27,29 +23,10 @@ public abstract class MessageDigest extends java.security.MessageDigestSpi {
     protected final void engineReset() {
         reset();
     }
-
-    // ****************************************************
-    // FlexiAPI methods
-    // ****************************************************
-
-    /**
-     * @return the digest length in bytes
-     */
     public abstract int getDigestLength();
 
-    /**
-     * Update the digest using the specified byte.
-     *
-     * @param input the byte to use for the update
-     */
     public abstract void update(byte input);
 
-    /**
-     * Update the digest using the specified array of bytes, starting at the
-     * specified offset.
-     *
-     * @param input the array of bytes to use for the update
-     */
     public final void update(byte[] input) {
         if (input == null) {
             return;
@@ -57,14 +34,6 @@ public abstract class MessageDigest extends java.security.MessageDigestSpi {
         update(input, 0, input.length);
     }
 
-    /**
-     * Update the digest using the specified array of bytes, starting at the
-     * specified offset.
-     *
-     * @param input  the array of bytes to use for the update
-     * @param offset the offset to start from in the array of bytes
-     * @param len    the number of bytes to use, starting at <tt>offset</tt>
-     */
     public abstract void update(byte[] input, int offset, int len);
 
 
@@ -92,9 +61,6 @@ public abstract class MessageDigest extends java.security.MessageDigestSpi {
         return digest.length;
     }
 
-    /**
-     * Reset the digest for further use.
-     */
     public abstract void reset();
 
 }

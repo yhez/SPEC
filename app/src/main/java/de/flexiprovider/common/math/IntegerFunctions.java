@@ -1,22 +1,7 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.common.math;
 
 import de.flexiprovider.common.exceptions.NoQuadraticResidueException;
 
-/**
- * Class of number-theory related functions for use with integers represented as
- * <tt>int</tt>'s or <tt>FlexiBigInt</tt> objects.
- *
- * @author Ralf-P. Weinmann
- * @author Martin Dring
- */
 public final class IntegerFunctions {
 
     private static final FlexiBigInt ZERO = FlexiBigInt.ZERO;
@@ -24,8 +9,6 @@ public final class IntegerFunctions {
     private static final FlexiBigInt ONE = FlexiBigInt.ONE;
 
     private static final FlexiBigInt TWO = FlexiBigInt.valueOf(2);
-
-    private static final FlexiBigInt FOUR = FlexiBigInt.valueOf(4);
 
     private static final int[] SMALL_PRIMES = {3, 5, 7, 11, 13, 17, 19, 23,
             29, 31, 37, 41};
@@ -202,33 +185,9 @@ public final class IntegerFunctions {
         return r;
     }
 
-    /**
-     * Computes the greatest common divisor of the two specified integers
-     *
-     * @param u - first integer
-     * @param v - second integer
-     * @return gcd(a, b)
-     */
+
     public static int gcd(int u, int v) {
         return FlexiBigInt.valueOf(u).gcd(FlexiBigInt.valueOf(v)).intValue();
-    }
-
-    /**
-     * Extended euclidian algorithm (computes gcd and representation).
-     *
-     * @param a the first integer
-     * @param b the second integer
-     * @return <tt>(g,u,v)</tt>, where <tt>g = gcd(abs(a),abs(b)) = ua + vb</tt>
-     */
-    public static int[] extGCD(int a, int b) {
-        FlexiBigInt ba = FlexiBigInt.valueOf(a);
-        FlexiBigInt bb = FlexiBigInt.valueOf(b);
-        FlexiBigInt[] bresult = extgcd(ba, bb);
-        int[] result = new int[3];
-        result[0] = bresult[0].intValue();
-        result[1] = bresult[1].intValue();
-        result[2] = bresult[2].intValue();
-        return result;
     }
 
     public static int ceilLog256(int n) {
@@ -289,28 +248,6 @@ public final class IntegerFunctions {
         return j;
     }
 
-    public static FlexiBigInt[] extgcd(FlexiBigInt a, FlexiBigInt b) {
-        FlexiBigInt u = FlexiBigInt.ONE;
-        FlexiBigInt v = FlexiBigInt.ZERO;
-        FlexiBigInt d = a;
-        if (b.signum() != 0) {
-            FlexiBigInt v1 = FlexiBigInt.ZERO;
-            FlexiBigInt v3 = b;
-            while (v3.signum() != 0) {
-                FlexiBigInt[] tmp = d.divideAndRemainder(v3);
-                FlexiBigInt q = tmp[0];
-                FlexiBigInt t3 = tmp[1];
-                FlexiBigInt t1 = u.subtract(q.multiply(v1));
-                u = v1;
-                d = v3;
-                v1 = t1;
-                v3 = t3;
-            }
-            v = d.subtract(a.multiply(u)).divide(b);
-        }
-        return new FlexiBigInt[]{d, u, v};
-    }
-
     public static boolean isPrime(int n) {
         if (n < 2) {
             return false;
@@ -322,8 +259,8 @@ public final class IntegerFunctions {
             return false;
         }
         if (n < 42) {
-            for (int i = 0; i < SMALL_PRIMES.length; i++) {
-                if (n == SMALL_PRIMES[i]) {
+            for (int SMALL_PRIME : SMALL_PRIMES) {
+                if (n == SMALL_PRIME) {
                     return true;
                 }
             }
@@ -331,42 +268,6 @@ public final class IntegerFunctions {
 
         return !((n % 3 == 0) || (n % 5 == 0) || (n % 7 == 0) || (n % 11 == 0) || (n % 13 == 0) || (n % 17 == 0) || (n % 19 == 0) || (n % 23 == 0) || (n % 29 == 0) || (n % 31 == 0) || (n % 37 == 0) || (n % 41 == 0)) && FlexiBigInt.valueOf(n).isProbablePrime(20);
 
-    }
-
-
-    public static FlexiBigInt squareRoot(FlexiBigInt a) {
-        int bl;
-        FlexiBigInt result, remainder, b;
-
-        if (a.compareTo(ZERO) < 0) {
-            throw new ArithmeticException(
-                    "cannot extract root of negative number" + a + ".");
-        }
-
-        bl = a.bitLength();
-        result = ZERO;
-        remainder = ZERO;
-
-        // if the bit length is odd then extra step
-        if ((bl & 1) != 0) {
-            result = result.add(ONE);
-            bl--;
-        }
-
-        while (bl > 0) {
-            remainder = remainder.multiply(FOUR);
-            remainder = remainder.add(FlexiBigInt.valueOf((a.testBit(--bl) ? 2
-                    : 0)
-                    + (a.testBit(--bl) ? 1 : 0)));
-            b = result.multiply(FOUR).add(ONE);
-            result = result.multiply(TWO);
-            if (remainder.compareTo(b) != -1) {
-                result = result.add(ONE);
-                remainder = remainder.subtract(b);
-            }
-        }
-
-        return result;
     }
 
 

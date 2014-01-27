@@ -2,9 +2,6 @@ package de.flexiprovider.common.util;
 
 public final class IntUtils {
 
-    /**
-     * Default constructor (private).
-     */
     private IntUtils() {
         // empty
     }

@@ -1,16 +1,8 @@
 package de.flexiprovider.common.util;
 
-/**
- * This is a utility class containing data type conversions using little-endian
- * byte order.
- *
- * @see BigEndianConversions
- */
+
 public final class LittleEndianConversions {
 
-    /**
-     * Default constructor (private).
-     */
     private LittleEndianConversions() {
         // empty
     }
@@ -58,13 +50,6 @@ public final class LittleEndianConversions {
         }
     }
 
-    /**
-     * Convert an integer to a byte array of length 8.
-     *
-     * @param input  the integer to convert
-     * @param output byte array holding the output
-     * @param outOff offset in output array where the result is stored
-     */
     public static void I2OSP(long input, byte[] output, int outOff) {
         output[outOff++] = (byte) input;
         output[outOff++] = (byte) (input >>> 8);
@@ -74,26 +59,6 @@ public final class LittleEndianConversions {
         output[outOff++] = (byte) (input >>> 40);
         output[outOff++] = (byte) (input >>> 48);
         output[outOff] = (byte) (input >>> 56);
-    }
-
-    /**
-     * Convert an int array to a byte array of the specified length. No length
-     * checking is performed (i.e., if the last integer cannot be encoded with
-     * <tt>length % 4</tt> octets, it is truncated).
-     *
-     * @param input  the int array
-     * @param outLen the length of the converted array
-     * @return the converted array
-     */
-    public static byte[] toByteArray(int[] input, int outLen) {
-        int intLen = input.length;
-        byte[] result = new byte[outLen];
-        int index = 0;
-        for (int i = 0; i <= intLen - 2; i++, index += 4) {
-            I2OSP(input[i], result, index);
-        }
-        I2OSP(input[intLen - 1], result, index, outLen - index);
-        return result;
     }
 
 }

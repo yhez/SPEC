@@ -46,9 +46,7 @@ public final class MD5 extends MDFamilyDigest {
 
     private static final int S44 = 21;
 
-    /**
-     * Constructor.
-     */
+
     public MD5() {
         super(MD5_DIGEST_LENGTH);
     }
@@ -73,9 +71,6 @@ public final class MD5 extends MDFamilyDigest {
         return digest;
     }
 
-    /**
-     * process a block of 64 bytes
-     */
     protected synchronized void processBlock() {
         int a = state[0];
         int b = state[1];
@@ -161,7 +156,6 @@ public final class MD5 extends MDFamilyDigest {
 
     }
 
-	/* basic conversion functions */
 
     private static int F(int x, int y, int z) {
         return (x & y) | (~x & z);

@@ -8,17 +8,10 @@ import de.flexiprovider.ec.parameters.CurveParams.CurveParamsGFP;
 
 public final class CurveRegistry {
 
-    /*-------------------------------------------------
-     * PRIME CURVES
-     -------------------------------------------------*/
-
-    /* ANSI X9.62 */
 
     public static final class Prime192v1 extends CurveParamsGFP {
 
-        /**
-         * The OID of prime192v1.
-         */
+
         public static final String OID = "1.2.840.10045.3.1.1";
 
         public Prime192v1() {
@@ -40,9 +33,6 @@ public final class CurveRegistry {
 
     public static final class Prime192v2 extends CurveParamsGFP {
 
-        /**
-         * The OID of prime192v2.
-         */
         public static final String OID = "1.2.840.10045.3.1.2";
 
         public Prime192v2() {
@@ -64,9 +54,6 @@ public final class CurveRegistry {
 
     public static final class Prime192v3 extends CurveParamsGFP {
 
-        /**
-         * The OID of prime192v3.
-         */
         public static final String OID = "1.2.840.10045.3.1.3";
 
         public Prime192v3() {
@@ -88,9 +75,7 @@ public final class CurveRegistry {
 
     public static final class Prime239v1 extends CurveParamsGFP {
 
-        /**
-         * The OID of prime239v1.
-         */
+
         public static final String OID = "1.2.840.10045.3.1.4";
 
         public Prime239v1() {
@@ -113,9 +98,6 @@ public final class CurveRegistry {
 
     public static final class Prime239v2 extends CurveParamsGFP {
 
-        /**
-         * The OID of prime239v2.
-         */
         public static final String OID = "1.2.840.10045.3.1.5";
 
         public Prime239v2() {
@@ -138,9 +120,6 @@ public final class CurveRegistry {
 
     public static final class Prime239v3 extends CurveParamsGFP {
 
-        /**
-         * The OID of prime239v3.
-         */
         public static final String OID = "1.2.840.10045.3.1.6";
 
         public Prime239v3() {
@@ -163,9 +142,6 @@ public final class CurveRegistry {
 
     public static final class Prime256v1 extends CurveParamsGFP {
 
-        /**
-         * The OID of prime256v1.
-         */
         public static final String OID = "1.2.840.10045.3.1.7";
 
         public Prime256v1() {
@@ -186,7 +162,6 @@ public final class CurveRegistry {
         }
     }
 
-    /* SEC 2 */
 
     public static final class Secp112r1 extends CurveParamsGFP {
 
@@ -1643,15 +1618,9 @@ public final class CurveRegistry {
             300, 310, 320, 330, 340, 350, 360, 370, 380, 384, 390, 400, 410,
             420, 430, 440, 450, 460, 470, 480, 490, 500, 512};
 
-    /**
-     * Map holding default curves parameters (specified by their OID)
-     */
+
     private static Hashtable defaultParamsMap;
 
-    /**
-     * Construct the "keySize -> default curve parameters" mapping via static
-     * initialization.
-     */
     static {
         defaultParamsMap = new Hashtable();
         defaultParamsMap.put(112, "secp112r1");

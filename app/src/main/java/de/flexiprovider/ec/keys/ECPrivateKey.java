@@ -24,12 +24,9 @@ public class ECPrivateKey extends PrivateKey {
 
         private ASN1Integer version;
 
-        private ASN1OctetString privKey;
-
         public ECASN1PrivateKey(int version, ASN1OctetString privKey) {
             super(2);
             this.version = new ASN1Integer(version);
-            this.privKey = privKey;
             add(this.version);
             add(privKey);
         }
@@ -77,9 +74,6 @@ public class ECPrivateKey extends PrivateKey {
                 + mParams.getQ().hashCode();
     }
 
-    /**
-     * @return the OID to encode in the SubjectPublicKeyInfo structure
-     */
     protected ASN1ObjectIdentifier getOID() {
         return new ASN1ObjectIdentifier(ECKeyFactory.OID);
     }
@@ -88,9 +82,6 @@ public class ECPrivateKey extends PrivateKey {
         // get the OID of the parameters
         ASN1Type algParams = mParams.getOID();
         if (algParams == null) {
-            // If no OID is given, the parameters are specified explicitly. In
-            // this case, use the corresponding AlgorithmParameters class to get
-            // the ASN.1 encoded parameters.
             ECParameters ecParams = new ECParameters();
             try {
                 ecParams.init(mParams);

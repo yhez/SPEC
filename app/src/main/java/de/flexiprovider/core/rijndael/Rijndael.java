@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2008 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.core.rijndael;
 
 import de.flexiprovider.api.BlockCipher;
@@ -17,42 +9,24 @@ import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.BigEndianConversions;
 
-/**
- * This class implements the Rijndael block cipher. Rijndael uses a block size
- * of 16, 24 or 32 bytes. The key size can be 16, 24 or 32 bytes.
- * Encryption/decryption takes 32 rounds. For more information, see <a
- * href="http://csrc.nist.gov/archive/aes/index.html"
- * >http://csrc.nist.gov/archive/aes/index.html</a>.
- *
- * @author Katja Rauch
- */
+
 public class Rijndael extends BlockCipher {
 
-    /**
-     * The algorithm name.
-     */
+
     public static final String ALG_NAME = "Rijndael";
 
     protected String algName;
 
-    /**
-     * the key size in words (word width is 32 bits)
-     */
+
     protected int keySize;
 
-    /**
-     * flag indicating whether key size may be changed
-     */
+
     protected boolean keySizeIsMutable;
 
-    /**
-     * the block length in words (word width is 32 bits)
-     */
+
     protected int blockSize;
 
-    /**
-     * flag indicating whether block length may be changed
-     */
+
     protected boolean blockSizeIsMutable;
 
     // the number of rounds
@@ -732,43 +706,23 @@ public class Rijndael extends BlockCipher {
             2041877159, 1891211689, 1806599355, 1654886325, 1568718495,
             1418573201, 1335535747, 1184342925};
 
-	/*
-     * Inner class providing AES implementation (Rijndael with fixed block size)
-	 */
+
 
     public static class AES extends Rijndael {
 
-        /**
-         * The algorithm name.
-         */
+
         public static final String ALG_NAME = "AES";
 
-        /**
-         * The OID of AES (defined by NIST, see <a href=
-         * "http://csrc.nist.gov/groups/ST/crypto_apps_infra/csor/algorithms.html"
-         * >http://csrc.nist.gov/groups/ST/crypto_apps_infra/csor/algorithms.
-         * html</a>).
-         */
+
         public static final String OID = "2.16.840.1.101.3.4.1";
 
-		/*
-         * Inner classes providing concrete implementations of AES with a
-		 * variety of modes and key sizes.
-		 */
 
-        /**
-         * AES128_ECB
-         */
         public static class AES128_ECB extends AES {
 
-            /**
-             * The algorithm name.
-             */
+
             public static final String ALG_NAME = AES.ALG_NAME + "128_ECB";
 
-            /**
-             * The OID of AES128_ECB (defined by NIST).
-             */
+
             public static final String OID = AES.OID + ".1";
 
             public AES128_ECB() {
@@ -776,19 +730,13 @@ public class Rijndael extends BlockCipher {
             }
         }
 
-        /**
-         * AES128_CBC
-         */
+
         public static class AES128_CBC extends AES {
 
-            /**
-             * The algorithm name.
-             */
+
             public static final String ALG_NAME = AES.ALG_NAME + "128_CBC";
 
-            /**
-             * The OID of AES128_CBC (defined by NIST).
-             */
+
             public static final String OID = AES.OID + ".2";
 
             public AES128_CBC() {
@@ -796,19 +744,13 @@ public class Rijndael extends BlockCipher {
             }
         }
 
-        /**
-         * AES128_OFB
-         */
+
         public static class AES128_OFB extends AES {
 
-            /**
-             * The algorithm name.
-             */
+
             public static final String ALG_NAME = AES.ALG_NAME + "128_OFB";
 
-            /**
-             * The OID of AES128_OFB (defined by NIST).
-             */
+
             public static final String OID = AES.OID + ".3";
 
             public AES128_OFB() {
@@ -816,19 +758,13 @@ public class Rijndael extends BlockCipher {
             }
         }
 
-        /**
-         * AES128_CFB
-         */
+
         public static class AES128_CFB extends AES {
 
-            /**
-             * The algorithm name.
-             */
+
             public static final String ALG_NAME = AES.ALG_NAME + "128_CFB";
 
-            /**
-             * The OID of AES128_CFB (defined by NIST).
-             */
+
             public static final String OID = AES.OID + ".4";
 
             public AES128_CFB() {
@@ -836,19 +772,13 @@ public class Rijndael extends BlockCipher {
             }
         }
 
-        /**
-         * AES192_ECB
-         */
+
         public static class AES192_ECB extends AES {
 
-            /**
-             * The algorithm name.
-             */
+
             public static final String ALG_NAME = AES.ALG_NAME + "192_ECB";
 
-            /**
-             * The OID of AES192_ECB (defined by NIST).
-             */
+
             public static final String OID = AES.OID + ".21";
 
             public AES192_ECB() {
@@ -856,39 +786,25 @@ public class Rijndael extends BlockCipher {
             }
         }
 
-        /**
-         * AES192_CBC
-         */
+
         public static class AES192_CBC extends AES {
 
-            /**
-             * The algorithm name.
-             */
+
             public static final String ALG_NAME = AES.ALG_NAME + "192_CBC";
 
-            /**
-             * The OID of AES192_CBC (defined by NIST).
-             */
+
             public static final String OID = AES.OID + ".22";
 
             public AES192_CBC() {
                 super(ALG_NAME, "CBC", 6);
             }
         }
-
-        /**
-         * AES192_OFB
-         */
         public static class AES192_OFB extends AES {
 
-            /**
-             * The algorithm name.
-             */
+
             public static final String ALG_NAME = AES.ALG_NAME + "192_OFB";
 
-            /**
-             * The OID of AES192_OFB (defined by NIST).
-             */
+
             public static final String OID = AES.OID + ".23";
 
             public AES192_OFB() {
@@ -896,19 +812,13 @@ public class Rijndael extends BlockCipher {
             }
         }
 
-        /**
-         * AES192_CFB
-         */
+
         public static class AES192_CFB extends AES {
 
-            /**
-             * The algorithm name.
-             */
+
             public static final String ALG_NAME = AES.ALG_NAME + "192_CFB";
 
-            /**
-             * The OID of AES192_CFB (defined by NIST).
-             */
+
             public static final String OID = AES.OID + ".24";
 
             public AES192_CFB() {
@@ -916,19 +826,13 @@ public class Rijndael extends BlockCipher {
             }
         }
 
-        /**
-         * AES256_ECB
-         */
+
         public static class AES256_ECB extends AES {
 
-            /**
-             * The algorithm name.
-             */
+
             public static final String ALG_NAME = AES.ALG_NAME + "256_ECB";
 
-            /**
-             * The OID of AES256_ECB (defined by NIST).
-             */
+
             public static final String OID = AES.OID + ".41";
 
             public AES256_ECB() {
@@ -936,19 +840,13 @@ public class Rijndael extends BlockCipher {
             }
         }
 
-        /**
-         * AES256_CBC
-         */
+
         public static class AES256_CBC extends AES {
 
-            /**
-             * The algorithm name.
-             */
+
             public static final String ALG_NAME = AES.ALG_NAME + "256_CBC";
 
-            /**
-             * The OID of AES256_CBC (defined by NIST).
-             */
+
             public static final String OID = AES.OID + ".42";
 
             public AES256_CBC() {
@@ -956,19 +854,13 @@ public class Rijndael extends BlockCipher {
             }
         }
 
-        /**
-         * AES256_OFB
-         */
+
         public static class AES256_OFB extends AES {
 
-            /**
-             * The algorithm name.
-             */
+
             public static final String ALG_NAME = AES.ALG_NAME + "256_OFB";
 
-            /**
-             * The OID of AES256_OFB (defined by NIST).
-             */
+
             public static final String OID = AES.OID + ".43";
 
             public AES256_OFB() {
@@ -976,19 +868,13 @@ public class Rijndael extends BlockCipher {
             }
         }
 
-        /**
-         * AES256_CFB
-         */
+
         public static class AES256_CFB extends AES {
 
-            /**
-             * The algorithm name.
-             */
+
             public static final String ALG_NAME = AES.ALG_NAME + "256_CFB";
 
-            /**
-             * The OID of AES256_CFB (defined by NIST).
-             */
+
             public static final String OID = AES.OID + ".44";
 
             public AES256_CFB() {
@@ -996,13 +882,7 @@ public class Rijndael extends BlockCipher {
             }
         }
 
-        /**
-         * Constructor.
-         *
-         * @param algName  the algorithm name
-         * @param modeName the mode to use
-         * @param keySize  the key size in words
-         */
+
         protected AES(String algName, String modeName, int keySize) {
             // set the block size
             this();
@@ -1025,10 +905,7 @@ public class Rijndael extends BlockCipher {
             }
         }
 
-        /**
-         * Constructor. Only set the block size and do not chose a mode or
-         * padding.
-         */
+
         public AES() {
             // set the algorithm name
             algName = ALG_NAME;
@@ -1043,31 +920,19 @@ public class Rijndael extends BlockCipher {
         }
     }
 
-    /**
-     * Constructor.
-     */
+
     public Rijndael() {
         keySizeIsMutable = true;
         blockSizeIsMutable = true;
         algName = ALG_NAME;
     }
 
-    /**
-     * @return the name of this cipher
-     */
+
     public final String getName() {
         return algName;
     }
 
-    /**
-     * Return the key size of the given key object. Check whether the key object
-     * is an instance of {@link RijndaelKey} and whether the key size is valid
-     * for Rijndael. 128, 192 and 256 bit keys are allowed.
-     *
-     * @param key the key object
-     * @return the key size of the given key object.
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if key is invalid.
-     */
+
     public int getKeySize(Key key) throws InvalidKeyException {
         if (!(key instanceof RijndaelKey)) {
             throw new InvalidKeyException("unsupported type");
@@ -1082,23 +947,12 @@ public class Rijndael extends BlockCipher {
         return keyLen;
     }
 
-    /**
-     * @return the block size (in bytes)
-     */
+
     protected int getCipherBlockSize() {
         return blockSize << 2;
     }
 
-    /**
-     * Initialize the block cipher with a given key and parameters for data
-     * encryption.
-     *
-     * @param key    {@link de.flexiprovider.api.keys.SecretKey} to be used to encrypt data
-     * @param params {@link de.flexiprovider.api.parameters.AlgorithmParameterSpec} to be used with this algorithm.
-     *               Only instances of {@link RijndaelParameterSpec} are allowed.
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the given key is illegal for this cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are illegal for this cipher.
-     */
+
     protected void initCipherEncrypt(SecretKey key,
                                      AlgorithmParameterSpec params) throws InvalidKeyException,
             InvalidAlgorithmParameterException {
@@ -1132,30 +986,14 @@ public class Rijndael extends BlockCipher {
         keyExpansion(keyBytes);
     }
 
-    /**
-     * Initialize the block cipher with a given key and parameters for data
-     * decryption.
-     *
-     * @param key    {@link de.flexiprovider.api.keys.SecretKey} to be used to decrypt data
-     * @param params {@link de.flexiprovider.api.parameters.AlgorithmParameterSpec} to be used with this algorithm.
-     *               Only instances of {@link RijndaelParameterSpec} are allowed.
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the given key is illegal for this cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are illegal for this cipher.
-     */
+
     protected void initCipherDecrypt(SecretKey key,
                                      AlgorithmParameterSpec params) throws InvalidKeyException,
             InvalidAlgorithmParameterException {
         initCipherEncrypt(key, params);
     }
 
-    /**
-     * Encrypt a single block of data.
-     *
-     * @param input  byte array containing the plaintext block to be encrypted
-     * @param inOff  index where the plaintext block starts
-     * @param output byte array to hold the ciphertext block
-     * @param outOff index where the ciphertext block will start
-     */
+
     protected void singleBlockEncrypt(byte[] input, int inOff, byte[] output,
                                       int outOff) {
 
@@ -1386,14 +1224,7 @@ public class Rijndael extends BlockCipher {
                 }
     }
 
-    /**
-     * Decrypt a single block of data.
-     *
-     * @param input  byte array containing the ciphertext block to be decrypted
-     * @param inOff  index where the ciphertext block starts
-     * @param output byte array to hold the plaintext block
-     * @param outOff index where the plaintext block will start
-     */
+
     protected void singleBlockDecrypt(byte[] input, int inOff, byte[] output,
                                       int outOff) {
 
@@ -1623,10 +1454,6 @@ public class Rijndael extends BlockCipher {
                     output[outOff++] = (byte) (Si[d3 & 0xff] ^ Ki[i]);
                 }
     }
-
-    /**
-     * Compute the number of rounds.
-     */
     private int computeNumRounds() {
         if ((keySize == 4) && (blockSize == 4)) {
             return 10;
@@ -1637,11 +1464,7 @@ public class Rijndael extends BlockCipher {
         }
     }
 
-    /**
-     * This method implements the Rijndael key expansion.
-     *
-     * @param keyBytes the key bytes
-     */
+
     private void keyExpansion(byte[] keyBytes) {
 
         // compute the key array

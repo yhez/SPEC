@@ -46,9 +46,7 @@ import de.flexiprovider.ec.parameters.CurveParams.CurveParamsGFP;
 
 public class ECParameters extends AlgorithmParameters {
 
-    /**
-     * The OID for ECDSA parameters.
-     */
+
     public static final String OID = "1.2.840.10045.4.1";
 
     // the EC domain parameters
@@ -64,13 +62,7 @@ public class ECParameters extends AlgorithmParameters {
         curveParams = (CurveParams) params;
     }
 
-    /**
-     * Import the specified parameters and decode them according to the primary
-     * decoding format. The primary decoding format for parameters is ASN.1.
-     *
-     * @param encParams the encoded parameters.
-     * @throws java.io.IOException on decoding errors
-     */
+
     public void init(byte[] encParams) throws IOException {
 
         Parameters params = new Parameters();
@@ -200,15 +192,7 @@ public class ECParameters extends AlgorithmParameters {
         }
     }
 
-    /**
-     * Import the specified parameters and decode them according to the
-     * specified decoding format. Currently, only the primary decoding format
-     * (ASN.1) is supported.
-     *
-     * @param encParams the encoded parameters
-     * @param format    the name of the decoding format
-     * @throws java.io.IOException if format is not equal to "ASN.1" or on decoding errors.
-     */
+
     public void init(byte[] encParams, String format) throws IOException {
         if (!format.equals("ASN.1")) {
             throw new IOException("unsupported format");
@@ -216,11 +200,7 @@ public class ECParameters extends AlgorithmParameters {
         init(encParams);
     }
 
-    /**
-     * Return the parameters encoded in the primary encoding format (ASN.1).
-     *
-     * @return the encoded parameters
-     */
+
     public byte[] getEncoded() {
         ASN1ObjectIdentifier oid = curveParams.getOID();
 
@@ -235,14 +215,7 @@ public class ECParameters extends AlgorithmParameters {
         return ASN1Tools.derEncode(getASN1Params());
     }
 
-    /**
-     * Return the parameters encoded in the specified encoding format.
-     * Currently, only the primary encoding format (ASN.1) is supported.
-     *
-     * @param format the name of the encoding format
-     * @return the encoded parameters
-     * @throws java.io.IOException if format is not equal to "ASN.1" or on decoding errors.
-     */
+
     public byte[] getEncoded(String format) throws IOException {
         if (!format.equals("ASN.1")) {
             throw new IOException("Unsupported encoding format.");
@@ -250,18 +223,7 @@ public class ECParameters extends AlgorithmParameters {
         return getEncoded();
     }
 
-    /**
-     * Return a transparent specification of this object. <tt>paramSpec</tt>
-     * identifies the specification class in which the parameters should be
-     * returned.
-     *
-     * @param paramSpec the class of which an instance is to be returned
-     * @return a specification of this object
-     * @throws InvalidParameterSpecException if <tt>paramSpec</tt> is <tt>null</tt> or not the
-     *                                       same as or a superclass of the type of parameters
-     *                                       specified by {@link #init(AlgorithmParameterSpec)} or by
-     *                                       {@link #init(byte[])}.
-     */
+
     public AlgorithmParameterSpec getParameterSpec(Class paramSpec)
             throws InvalidParameterSpecException {
 
@@ -273,18 +235,12 @@ public class ECParameters extends AlgorithmParameters {
         return curveParams;
     }
 
-    /**
-     * @return a human readable form of these parameters
-     */
+
     public String toString() {
         return ((Object)curveParams).toString();
     }
 
-    /**
-     * Returns the ECParameters in an ASN.1 syntax.
-     *
-     * @return the ECParameters in an ASN.1 syntax
-     */
+
     public ECDomainParameters getASN1Params() {
 
         // create the curve E with coefficients a and b

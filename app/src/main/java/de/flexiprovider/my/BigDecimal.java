@@ -20,10 +20,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
 
     private transient long intCompact;
 
-    // All 18-digit base ten strings fit into a long; not all 19-digit
-    // strings will
-    private static final int MAX_COMPACT_DIGITS = 18;
-
     private static final ThreadLocal<StringBuilderHelper>
             threadLocalStringBuilderHelper = new ThreadLocal<StringBuilderHelper>() {
         @Override
@@ -77,184 +73,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
         this.intVal = intVal;
     }
 
-    public BigDecimal(char[] in, int offset, int len) {
-        // protect against huge length.
-        if (offset + len > in.length || offset < 0)
-            throw new NumberFormatException();
-
-        int prec = 0;                 // record precision value
-        int scl = 0;                  // record scale value
-        long rs = 0;                  // the compact value in long
-        BigInteger rb = null;         // the inflated value in BigInteger
-
-        // use array bounds checking to handle too-long, len == 0,
-        // bad offset, etc.
-        try {
-            // handle the sign
-            boolean isneg = false;          // assume positive
-            if (in[offset] == '-') {
-                isneg = true;               // leading minus means negative
-                offset++;
-                len--;
-            } else if (in[offset] == '+') { // leading + allowed
-                offset++;
-                len--;
-            }
-
-            // should now be at numeric part of the significand
-            boolean dot = false;             // true when there is a '.'
-            long exp = 0;                    // exponent
-            char c;                          // current character
-
-            boolean isCompact = (len <= MAX_COMPACT_DIGITS);
-            // integer significand array & idx is the index to it. The array
-            // is ONLY used when we can't use a compact representation.
-            char coeff[] = isCompact ? null : new char[len];
-            int idx = 0;
-
-            for (; len > 0; offset++, len--) {
-                c = in[offset];
-                // have digit
-                if ((c >= '0' && c <= '9') || Character.isDigit(c)) {
-                    // First compact case, we need not to preserve the character
-                    // and we can just compute the value in place.
-                    if (isCompact) {
-                        int digit = Character.digit(c, 10);
-                        if (digit == 0) {
-                            if (prec == 0)
-                                prec = 1;
-                            else if (rs != 0) {
-                                rs *= 10;
-                                ++prec;
-                            } // else digit is a redundant leading zero
-                        } else {
-                            if (prec != 1 || rs != 0)
-                                ++prec; // prec unchanged if preceded by 0s
-                            rs = rs * 10 + digit;
-                        }
-                    } else { // the unscaled value is likely a BigInteger object.
-                        if (c == '0' || Character.digit(c, 10) == 0) {
-                            if (prec == 0) {
-                                coeff[idx] = c;
-                                prec = 1;
-                            } else if (idx != 0) {
-                                coeff[idx++] = c;
-                                ++prec;
-                            } // else c must be a redundant leading zero
-                        } else {
-                            if (prec != 1 || idx != 0)
-                                ++prec; // prec unchanged if preceded by 0s
-                            coeff[idx++] = c;
-                        }
-                    }
-                    if (dot)
-                        ++scl;
-                    continue;
-                }
-                // have dot
-                if (c == '.') {
-                    // have dot
-                    if (dot)         // two dots
-                        throw new NumberFormatException();
-                    dot = true;
-                    continue;
-                }
-                // exponent expected
-                if ((c != 'e') && (c != 'E'))
-                    throw new NumberFormatException();
-                offset++;
-                c = in[offset];
-                len--;
-                boolean negexp = (c == '-');
-                // optional sign
-                if (negexp || c == '+') {
-                    offset++;
-                    c = in[offset];
-                    len--;
-                }
-                if (len <= 0)    // no exponent digits
-                    throw new NumberFormatException();
-                // skip leading zeros in the exponent
-                while (len > 10 && Character.digit(c, 10) == 0) {
-                    offset++;
-                    c = in[offset];
-                    len--;
-                }
-                if (len > 10)  // too many nonzero exponent digits
-                    throw new NumberFormatException();
-                // c now holds first digit of exponent
-                for (; ; len--) {
-                    int v;
-                    if (c >= '0' && c <= '9') {
-                        v = c - '0';
-                    } else {
-                        v = Character.digit(c, 10);
-                        if (v < 0)            // not a digit
-                            throw new NumberFormatException();
-                    }
-                    exp = exp * 10 + v;
-                    if (len == 1)
-                        break;               // that was final character
-                    offset++;
-                    c = in[offset];
-                }
-                if (negexp)                  // apply sign
-                    exp = -exp;
-                // Next test is required for backwards compatibility
-                if ((int) exp != exp)         // overflow
-                    throw new NumberFormatException();
-                break;                       // [saves a test]
-            }
-            // here when no characters left
-            if (prec == 0)              // no digits found
-                throw new NumberFormatException();
-
-            // Adjust scale if exp is not zero.
-            if (exp != 0) {                  // had significant exponent
-                // Can't call checkScale which relies on proper fields value
-                long adjustedScale = scl - exp;
-                if (adjustedScale > Integer.MAX_VALUE ||
-                        adjustedScale < Integer.MIN_VALUE)
-                    throw new NumberFormatException("Scale out of range.");
-                scl = (int) adjustedScale;
-            }
-
-            // Remove leading zeros from precision (digits count)
-            if (isCompact) {
-                rs = isneg ? -rs : rs;
-            } else {
-                char quick[];
-                if (!isneg) {
-                    quick = (coeff.length != prec) ?
-                            Arrays.copyOf(coeff, prec) : coeff;
-                } else {
-                    quick = new char[prec + 1];
-                    quick[0] = '-';
-                    System.arraycopy(coeff, 0, quick, 1, prec);
-                }
-                rb = new BigInteger(quick);
-                rs = compactValFor(rb);
-            }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new NumberFormatException();
-        } catch (NegativeArraySizeException e) {
-            throw new NumberFormatException();
-        }
-        this.scale = scl;
-        this.precision = prec;
-        this.intCompact = rs;
-        this.intVal = (rs != INFLATED) ? null : rb;
-    }
-
-
-
-
-
-
-    public BigDecimal(String val) {
-        this(val.toCharArray(), 0, val.length());
-    }
-
 
     public BigDecimal(BigInteger val) {
         intCompact = compactValFor(val);
@@ -268,10 +86,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
         this.scale = scale;
     }
 
-
-
-
-    // Static Factory Methods
 
 
     public static BigDecimal valueOf(long unscaledVal, int scale) {
@@ -298,7 +112,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
     }
 
 
-    // Arithmetic Operations
 
 
     public BigDecimal add(BigDecimal augend) {
@@ -850,7 +663,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
     }
 
 
-    // Rounding Modes
 
 
     public final static int ROUND_UP = 0;
@@ -867,30 +679,13 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
 
     public final static int ROUND_HALF_UP = 4;
 
-    /**
-     * Rounding mode to round towards {@literal "nearest neighbor"}
-     * unless both neighbors are equidistant, in which case round
-     * down.  Behaves as for {@code ROUND_UP} if the discarded
-     * fraction is {@literal >} 0.5; otherwise, behaves as for
-     * {@code ROUND_DOWN}.
-     */
+
     public final static int ROUND_HALF_DOWN = 5;
 
-    /**
-     * Rounding mode to assert that the requested operation has an exact
-     * result, hence no rounding is necessary.  If this rounding mode is
-     * specified on an operation that yields an inexact result, an
-     * {@code ArithmeticException} is thrown.
-     */
+
     public final static int ROUND_UNNECESSARY = 7;
 
 
-    // Scaling/Rounding Operations
-
-
-    public BigDecimal round(MathContext mc) {
-        return plus(mc);
-    }
 
 
     public BigDecimal setScale(int newScale, RoundingMode roundingMode) {
@@ -957,9 +752,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
         return (xsign > 0) ? cmp : -cmp;
     }
 
-    /**
-     * Version of compareTo that ignores sign.
-     */
+
     private int compareMagnitude(BigDecimal val) {
         // Match scales, avoid unnecessary inflation
         long ys = val.intCompact;
@@ -1026,16 +819,10 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
     }
 
 
-    public BigDecimal min(BigDecimal val) {
-        return (compareTo(val) <= 0 ? this : val);
-    }
-
-
     public BigDecimal max(BigDecimal val) {
         return (compareTo(val) >= 0 ? this : val);
     }
 
-    // Hash Function
 
 
     @Override
@@ -1049,7 +836,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
             return 31 * intVal.hashCode() + scale;
     }
 
-    // Format Converters
 
 
     @Override
@@ -1384,10 +1170,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
             Long.MAX_VALUE / 1000000000000000000L // 18
     };
 
-    /**
-     * Compute val * 10 ^ n; return this product if it is
-     * representable as a long, INFLATED otherwise.
-     */
+
     private static long longMultiplyPowerTen(long val, int n) {
         if (val == 0 || n <= 0)
             return val;
@@ -1403,10 +1186,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
         return INFLATED;
     }
 
-    /**
-     * Compute this * 10 ^ n.
-     * Needed mainly to allow special casing to trap zero value
-     */
+
     private BigInteger bigMultiplyPowerTen(int n) {
         if (n <= 0)
             return this.inflate();
@@ -1558,11 +1338,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
         return d;
     }
 
-    /**
-     * Returns the compact value for given {@code BigInteger}, or
-     * INFLATED if too big. Relies on internal representation of
-     * {@code BigInteger}.
-     */
+
     private static long compactValFor(BigInteger b) {
         int[] m = b.mag;
         int len = m.length;

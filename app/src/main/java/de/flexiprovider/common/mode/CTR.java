@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.common.mode;
 
 import de.flexiprovider.api.Mode;
@@ -14,17 +6,7 @@ import de.flexiprovider.api.exceptions.InvalidKeyException;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-/**
- * Counter (CTR) mode for symmetric block ciphers.
- * <p/>
- * Please see the following document for more information: H. Lipmaa, P.
- * Rogaway, D. Wagner: Comments to NIST concerning AES Modes of Operations:
- * CTR-Mode Encryption
- * http://csrc.nist.gov/CryptoToolkit/modes/proposedmodes/ctr/ctr-spec.pdf
- *
- * @author Ralf-P. Weinmann
- * @author Martin D�ring
- */
+
 public class CTR extends Mode {
 
     // the counter value
@@ -33,17 +15,7 @@ public class CTR extends Mode {
     // the feedback block
     private byte[] feedbackBlock;
 
-    /**
-     * Initialize the Mode object for encryption.
-     *
-     * @param key          the key used for encryption
-     * @param modeParams   additional mode parameters
-     * @param cipherParams additional algorithm parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the key is inappropriate for initializing the underlying
-     *                                                                            block cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are inappropriate for initializing the
-     *                                                                            underlying block cipher.
-     */
+
     protected final void initEncrypt(SecretKey key,
                                      ModeParameterSpec modeParams, AlgorithmParameterSpec cipherParams)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
@@ -52,17 +24,7 @@ public class CTR extends Mode {
         initCommon(modeParams);
     }
 
-    /**
-     * Initialize the Mode object for decryption.
-     *
-     * @param key          the key used for decryption
-     * @param modeParams   additional mode parameters
-     * @param cipherParams additional algorithm parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the key is inappropriate for initializing the underlying
-     *                                                                            block cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are inappropriate for initializing the
-     *                                                                            underlying block cipher.
-     */
+
     protected final void initDecrypt(SecretKey key,
                                      ModeParameterSpec modeParams, AlgorithmParameterSpec cipherParams)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
@@ -71,9 +33,7 @@ public class CTR extends Mode {
         initCommon(modeParams);
     }
 
-    /**
-     * CTR common initialization.
-     */
+
     private void initCommon(ModeParameterSpec modeParams) {
         blockSize = getCipherBlockSize();
 
@@ -99,15 +59,7 @@ public class CTR extends Mode {
         reset();
     }
 
-    /**
-     * Encrypt the next data block. Any special features of the Mode should be
-     * implemented here.
-     *
-     * @param input  input data buffer
-     * @param inOff  input data offset
-     * @param output output data buffer
-     * @param outOff output data offset
-     */
+
     protected final void nextChunkEncrypt(final byte[] input, final int inOff,
                                           byte[] output, final int outOff) {
 
@@ -122,23 +74,13 @@ public class CTR extends Mode {
         }
     }
 
-    /**
-     * Decrypt the next data block. Any special features of the Mode should be
-     * implemented here.
-     *
-     * @param input  input data buffer
-     * @param inOff  input data offset
-     * @param output output data buffer
-     * @param outOff output data offset
-     */
+
     protected final void nextChunkDecrypt(final byte[] input, final int inOff,
                                           byte[] output, final int outOff) {
         nextChunkEncrypt(input, inOff, output, outOff);
     }
 
-    /**
-     * Reset counter value to initialization vector.
-     */
+
     protected final void reset() {
         System.arraycopy(iv, 0, counter, 0, blockSize);
     }

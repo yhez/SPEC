@@ -17,57 +17,26 @@ import javax.crypto.SecretKeyFactorySpi;
 
 import de.flexiprovider.api.exceptions.RegistrationException;
 
-/**
- * This class is the base class for all providers which are part of the
- * FlexiProvider library. It contains registration methods which provide
- * existence and type checking of the registered classes as well as an improved
- * alias handling.
- *
- * @author Martin D�ring
- */
 public abstract class FlexiProvider extends Provider {
 
-    /* algorithm type constants */
 
-    /**
-     * Constant for ciphers
-     */
     protected static final int CIPHER = 0;
 
-    /**
-     * Constant for message authentication codes (MACs)
-     */
+
     protected static final int MAC = 1;
 
-    /**
-     * Constant for algorithm parameters (used to encode and decode parameter
-     * specifications)
-     */
+
     protected static final int ALG_PARAMS = 5;
 
-    /**
-     * Constant for algorithm parameter generators
-     */
     protected static final int ALG_PARAM_GENERATOR = 6;
 
-    /**
-     * Constant for secret key generators
-     */
     protected static final int SECRET_KEY_GENERATOR = 7;
 
-    /**
-     * Constant for key pair generators
-     */
+
     protected static final int KEY_PAIR_GENERATOR = 8;
 
-    /**
-     * Constant for secret key factories
-     */
     protected static final int SECRET_KEY_FACTORY = 9;
 
-    /**
-     * Constant for key factories
-     */
     protected static final int KEY_FACTORY = 10;
 
     // array holding the algorithm type prefixes (indexed by algorithm type)
@@ -85,43 +54,15 @@ public abstract class FlexiProvider extends Provider {
             SecretKeyFactorySpi.class, KeyFactorySpi.class,
             KeyAgreementSpi.class};
 
-    /**
-     * Construct a provider with the specified name, version number, and
-     * provider information.
-     *
-     * @param name    the provider name
-     * @param version the provider version number
-     * @param info    a description of the provider and its services
-     */
     protected FlexiProvider(String name, double version, String info) {
         super(name, version, info);
     }
 
-    /**
-     * Register an algorithm of the given type under the given name.
-     *
-     * @param type     the algorithm type
-     * @param algClass the class implementing the algorithm
-     * @param algName  the name for the algorithm
-     * @throws de.flexiprovider.api.exceptions.RegistrationException if the expected and actual algorithm types do not match
-     *                                                               or an algorithm is already registered under the given
-     *                                                               name.
-     */
     protected void add(int type, Class algClass, String algName)
             throws RegistrationException {
         add(type, algClass, new String[]{algName});
     }
 
-    /**
-     * Register an algorithm of the given type under the given names.
-     *
-     * @param type     the algorithm type
-     * @param algClass the class implementing the algorithm
-     * @param algNames the names for the algorithm
-     * @throws de.flexiprovider.api.exceptions.RegistrationException if the expected and actual algorithm types do not match
-     *                                                               or an algorithm is already registered under one of the
-     *                                                               given names.
-     */
     protected void add(int type, Class algClass, String[] algNames)
             throws RegistrationException {
 

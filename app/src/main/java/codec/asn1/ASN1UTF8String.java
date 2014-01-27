@@ -6,7 +6,7 @@ public class ASN1UTF8String extends ASN1AbstractString {
 
 
     public ASN1UTF8String(String s) {
-        super(s);
+        super.setString0(s);
     }
 
     public int getTag() {

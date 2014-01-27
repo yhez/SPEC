@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- */
 package de.flexiprovider.core.md;
 
 import de.flexiprovider.common.util.LittleEndianConversions;
@@ -19,25 +12,17 @@ public final class RIPEMD160 extends MDFamilyDigest {
     // length of the resulting message digest in bytes
     private static final int RIPEMD160_DIGEST_LENGTH = 20;
 
-    /**
-     * Constructor.
-     */
+
     public RIPEMD160() {
         super(RIPEMD160_DIGEST_LENGTH);
     }
 
-    /**
-     * reset the engine to its initial state
-     */
+
     public void reset() {
         initMessageDigest(initState);
     }
 
-    /**
-     * Compute the digest and reset the engine
-     *
-     * @return the message digest in a byte array
-     */
+
     public synchronized byte[] digest() {
         // produce the final digest
         byte[] digest = new byte[RIPEMD160_DIGEST_LENGTH];
@@ -57,9 +42,7 @@ public final class RIPEMD160 extends MDFamilyDigest {
         return digest;
     }
 
-    /**
-     * process a block of 64 bytes
-     */
+
     protected synchronized void processBlock() {
         int Al = state[0];
         int Bl = state[1];
@@ -421,7 +404,6 @@ public final class RIPEMD160 extends MDFamilyDigest {
         state[4] = Bl;
     }
 
-	/* basic conversion functions */
 
     private static int F(int u, int v, int w) {
         return u ^ v ^ w;

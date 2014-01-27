@@ -7,9 +7,7 @@ import de.flexiprovider.common.exceptions.PolynomialIsNotIrreducibleException;
 
 public class GF2nPolynomialField extends GF2nField {
 
-    /**
-     * Matrix used for fast squaring
-     */
+
     GF2Polynomial[] squaringMatrix;
 
     // field polynomial is a trinomial
@@ -24,15 +22,7 @@ public class GF2nPolynomialField extends GF2nField {
     // middle 3 coefficients of the field polynomial in case it is a pentanomial
     private int[] pc = new int[3];
 
-    /**
-     * Creates a new GF2nField of degree <i>i</i> and uses the given
-     * <i>polynomial</i> as field polynomial. The <i>polynomial</i> is checked
-     * whether it is irreducible. This can take some time if <i>i</i> is huge!
-     *
-     * @param deg        degree of the GF2nField
-     * @param polynomial the field polynomial to use
-     * @throws PolynomialIsNotIrreducibleException if the given polynomial is not irreducible in GF(2^<i>i</i>)
-     */
+
     public GF2nPolynomialField(int deg, GF2Polynomial polynomial)
             throws PolynomialIsNotIrreducibleException {
         if (deg < 3) {
@@ -70,33 +60,17 @@ public class GF2nPolynomialField extends GF2nField {
         matrices = new Vector();
     }
 
-    /**
-     * Returns true if the field polynomial is a trinomial. The coefficient can
-     * be retrieved using getTc().
-     *
-     * @return true if the field polynomial is a trinomial
-     */
+
     public boolean isTrinomial() {
         return isTrinomial;
     }
 
-    /**
-     * Returns true if the field polynomial is a pentanomial. The coefficients
-     * can be retrieved using getPc().
-     *
-     * @return true if the field polynomial is a pentanomial
-     */
+
     public boolean isPentanomial() {
         return isPentanomial;
     }
 
-    /**
-     * Returns the degree of the middle coefficient of the used field trinomial
-     * (x^n + x^(getTc()) + 1).
-     *
-     * @return the middle coefficient of the used field trinomial
-     * @throws GFException if the field polynomial is not a trinomial
-     */
+
     public int getTc() throws GFException {
         if (!isTrinomial) {
             throw new GFException();
@@ -104,13 +78,7 @@ public class GF2nPolynomialField extends GF2nField {
         return tc;
     }
 
-    /**
-     * Returns the degree of the middle coefficients of the used field
-     * pentanomial (x^n + x^(getPc()[2]) + x^(getPc()[1]) + x^(getPc()[0]) + 1).
-     *
-     * @return the middle coefficients of the used field pentanomial
-     * @throws GFException if the field polynomial is not a pentanomial
-     */
+
     public int[] getPc() throws GFException {
         if (!isPentanomial) {
             throw new GFException();
@@ -120,11 +88,7 @@ public class GF2nPolynomialField extends GF2nField {
         return result;
     }
 
-    /**
-     * Computes a new squaring matrix used for fast squaring.
-     *
-     * @see GF2nPolynomialElement#square
-     */
+
     private void computeSquaringMatrix() {
         GF2Polynomial[] d = new GF2Polynomial[mDegree - 1];
         int i, j;
@@ -150,9 +114,7 @@ public class GF2nPolynomialField extends GF2nField {
 
     }
 
-    /**
-     * Computes the field polynomial. This can take a long time for big degrees.
-     */
+
     protected void computeFieldPolynomial() {
         if (testTrinomials()) {
             return;
@@ -163,14 +125,7 @@ public class GF2nPolynomialField extends GF2nField {
         testRandom();
     }
 
-    /**
-     * Tests all trinomials of degree (n+1) until a irreducible is found and
-     * stores the result in <i>field polynomial</i>. Returns false if no
-     * irreducible trinomial exists in GF(2^n). This can take very long for huge
-     * degrees.
-     *
-     * @return true if an irreducible trinomial is found
-     */
+
     private boolean testTrinomials() {
         int i;
         boolean done = false;
@@ -193,14 +148,7 @@ public class GF2nPolynomialField extends GF2nField {
         return done;
     }
 
-    /**
-     * Tests all pentanomials of degree (n+1) until a irreducible is found and
-     * stores the result in <i>field polynomial</i>. Returns false if no
-     * irreducible pentanomial exists in GF(2^n). This can take very long for
-     * huge degrees.
-     *
-     * @return true if an irreducible pentanomial is found
-     */
+
     private boolean testPentanomials() {
         int i, j, k;
         boolean done = false;
@@ -235,13 +183,7 @@ public class GF2nPolynomialField extends GF2nField {
         return done;
     }
 
-    /**
-     * Tests random polynomials of degree (n+1) until an irreducible is found
-     * and stores the result in <i>field polynomial</i>. This can take very
-     * long for huge degrees.
-     *
-     * @return true
-     */
+
     private boolean testRandom() {
         boolean done = false;
 

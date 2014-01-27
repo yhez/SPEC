@@ -29,9 +29,7 @@ import de.flexiprovider.core.kdf.KDFParameterSpec;
 
 public abstract class IES extends AsymmetricHybridCipher {
 
-    /**
-     * the source of randomness
-     */
+
     protected SecureRandom random;
 
     // the public key used for encryption
@@ -52,9 +50,7 @@ public abstract class IES extends AsymmetricHybridCipher {
     // the instantiated symmetric cipher for symmetric cipher mode
     private BlockCipher symCipher;
 
-    /**
-     * The algorithm parameters obtained from the (private or public) key.
-     */
+
     protected AlgorithmParameterSpec keyParams;
 
     // the length of the symmetric cipher key
@@ -99,9 +95,7 @@ public abstract class IES extends AsymmetricHybridCipher {
     // buffer to store the input data
     private ByteArrayOutputStream buf;
 
-    /**
-     * Constructor.
-     */
+
     protected IES() {
         buf = new ByteArrayOutputStream();
         kag = getKeyAgreement();
@@ -241,15 +235,7 @@ public abstract class IES extends AsymmetricHybridCipher {
         }
     }
 
-    /**
-     * Check whether the given parameters are of the correct type. If so, return
-     * the checked parameters. If not, throw an
-     * {@link de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException}.
-     *
-     * @param params the parameters to be checked
-     * @return the checked parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are inappropriate.
-     */
+
     private IESParameterSpec checkParameters(AlgorithmParameterSpec params)
             throws InvalidAlgorithmParameterException {
 
@@ -268,10 +254,7 @@ public abstract class IES extends AsymmetricHybridCipher {
         return (IESParameterSpec) params;
     }
 
-    /**
-     * If the cipher uses a symmetric cipher for encryption or decryption,
-     * instantiate and assign the symmetric cipher object to <tt>symCipher</tt>.
-     */
+
     private void initSymCipher() {
         try {
             symCipher = Registry.getBlockCipher(symCipherName);
@@ -282,10 +265,7 @@ public abstract class IES extends AsymmetricHybridCipher {
         symKeyLength = iesParams.getSymKeyLength();
     }
 
-    /**
-     * Initialize the MAC function object. Try to instantiate the MAC function
-     * with name <tt>macName</tt> and set <tt>macLen</tt>.
-     */
+
     private void initMAC() {
         macName = iesParams.getMacName();
         try {
@@ -337,16 +317,7 @@ public abstract class IES extends AsymmetricHybridCipher {
         }
     }
 
-    /**
-     * Encrypt or decrypt a message via XOR when in internal mode or via the
-     * symmetric cipher <tt>symCipher</tt> when in symmetric cipher mode.
-     *
-     * @param keyStream the key stream generated with <tt>genKeyStream()</tt>
-     * @param message   the message
-     * @return encrypted or decrypted message
-     * @throws de.flexiprovider.api.exceptions.BadPaddingException       during encryption if the ciphertext is invalid.
-     * @throws de.flexiprovider.api.exceptions.IllegalBlockSizeException during encryption if the ciphertext is invalid.
-     */
+
     private byte[] processMessage(byte[] keyStream, byte[] message)
             throws IllegalBlockSizeException, BadPaddingException {
 
@@ -363,18 +334,7 @@ public abstract class IES extends AsymmetricHybridCipher {
         return result;
     }
 
-    /**
-     * Generate the MAC tag.
-     * <p/>
-     * Create an <tt>HMacKey</tt> object from the <tt>keyStream</tt> and
-     * initializes the MAC function with it. If there are some MAC encoding
-     * parameters they are appended to the ciphertext and finally the MAC
-     * function is called.
-     *
-     * @param keyStream the key stream generated with <tt>genKeyStream()</tt>
-     * @param cText     the ciphertext
-     * @return MAC tag
-     */
+
     private byte[] generateMAC(byte[] keyStream, byte[] cText) {
 
         int macKeyLen = isInternal ? cText.length : symKeyLength;
@@ -411,14 +371,7 @@ public abstract class IES extends AsymmetricHybridCipher {
 
     }
 
-    /**
-     * Pack the IES ciphertext as
-     * <tt>(encoded ephemeral public key || symmetric ciphertext || MAC tag)</tt>.
-     *
-     * @param cText  the ciphertext
-     * @param macTag the MAC tag
-     * @return the packed output
-     */
+
     private byte[] packCiphertext(byte[] cText, byte[] macTag) {
         byte[] result = new byte[encEphPubKeySize + cText.length + macLen];
         byte[] encEphPubKey = encodeEphPubKey(ephPubKey);
@@ -431,13 +384,7 @@ public abstract class IES extends AsymmetricHybridCipher {
         return result;
     }
 
-    /**
-     * Unpack the IES ciphertext into the ephemeral public key, ciphertext, and
-     * MAC tag.
-     *
-     * @param input the IES ciphertext
-     * @return the symmetric ciphertext and the MAC tag
-     */
+
     private byte[][] unpackCiphertext(byte[] input) {
         int cLen = input.length - encEphPubKeySize - macLen;
         byte[] encEphPubKey = new byte[encEphPubKeySize];
@@ -453,68 +400,27 @@ public abstract class IES extends AsymmetricHybridCipher {
         return new byte[][]{cText, macTag};
     }
 
-    /**
-     * Check whether the given encryption key is of the correct type. If so, set
-     * the key parameters and return the checked key. If not, throw an
-     * {@link de.flexiprovider.api.exceptions.InvalidKeyException}.
-     *
-     * @param key the key to be checked
-     * @return the checked key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the given key is inappropriate.
-     */
+
     protected abstract PublicKey checkPubKey(Key key)
             throws InvalidKeyException;
 
-    /**
-     * Check whether the given decryption key is of the correct type. If so, set
-     * the key parameters and return the checked key. If not, throw an
-     * {@link de.flexiprovider.api.exceptions.InvalidKeyException}.
-     *
-     * @param key the key to be checked
-     * @return the checked key
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the given key is inappropriate.
-     */
+
     protected abstract PrivateKey checkPrivKey(Key key)
             throws InvalidKeyException;
 
-    /**
-     * Instantiate and return the key agreement module.
-     *
-     * @return the key agreement module
-     */
+
     protected abstract KeyAgreement getKeyAgreement();
 
-    /**
-     * Generate an ephemeral key pair. This method is used in case no ephemeral
-     * key pair is specified via the {@link IESParameterSpec} during
-     * initialization.
-     *
-     * @return the generated ephemeral key pair
-     */
+
     protected abstract KeyPair generateEphKeyPair();
 
-    /**
-     * Encode the ephemeral public key.
-     *
-     * @param ephPubKey the ephemeral public key
-     * @return the encoded key
-     */
+
     protected abstract byte[] encodeEphPubKey(PublicKey ephPubKey);
 
-    /**
-     * Compute and return the size (in bytes) of the encoded ephemeral public
-     * key.
-     *
-     * @return the size of the encoded ephemeral public key
-     */
+
     protected abstract int getEncEphPubKeySize();
 
-    /**
-     * Decode the ephemeral public key.
-     *
-     * @param encEphPubKey the encoded ephemeral public key
-     * @return the decoded key
-     */
+
     protected abstract PublicKey decodeEphPubKey(byte[] encEphPubKey);
 
 }

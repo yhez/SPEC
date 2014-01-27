@@ -7,19 +7,6 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
 
 public abstract class KeyFactory extends java.security.KeyFactorySpi {
 
-    // ****************************************************
-    // JCA adapter methods
-    // ****************************************************
-
-    /**
-     * JCA adapter for FlexiAPI method generatePublic(): generates a public key
-     * object from the provided key specification (key material).
-     *
-     * @param keySpec the specification (key material) of the public key
-     * @return the public key
-     * @throws java.security.spec.InvalidKeySpecException if the given key specification is inappropriate for this
-     *                                                    key factory to produce a public key.
-     */
     protected java.security.PublicKey engineGeneratePublic(
             java.security.spec.KeySpec keySpec)
             throws java.security.spec.InvalidKeySpecException {
@@ -37,15 +24,7 @@ public abstract class KeyFactory extends java.security.KeyFactorySpi {
         return generatePublic((KeySpec) keySpec);
     }
 
-    /**
-     * JCA adapter for FlexiAPI method generatePrivate(): generate a private key
-     * object from the provided key specification (key material).
-     *
-     * @param keySpec the specification (key material) of the private key
-     * @return the private key
-     * @throws java.security.spec.InvalidKeySpecException if the given key specification is inappropriate for this
-     *                                                    key factory to produce a private key.
-     */
+
     protected java.security.PrivateKey engineGeneratePrivate(
             java.security.spec.KeySpec keySpec)
             throws java.security.spec.InvalidKeySpecException {
@@ -74,15 +53,6 @@ public abstract class KeyFactory extends java.security.KeyFactorySpi {
         return getKeySpec((Key) key, keySpec);
     }
 
-    /**
-     * JCA adapter for FlexiAPI method translateKey(): translate a key object,
-     * whose provider may be unknown or potentially untrusted, into a
-     * corresponding key object of this key factory.
-     *
-     * @param key the key whose provider is unknown or untrusted
-     * @return the translated key
-     * @throws java.security.InvalidKeyException if the given key cannot be processed by this key factory.
-     */
     protected final java.security.Key engineTranslateKey(java.security.Key key)
             throws java.security.InvalidKeyException {
 
@@ -93,45 +63,17 @@ public abstract class KeyFactory extends java.security.KeyFactorySpi {
         return translateKey((Key) key);
     }
 
-    // ****************************************************
-    // FlexiAPI methods
-    // ****************************************************
 
-    /**
-     * Generate a public key object from the provided key specification (key
-     * material).
-     *
-     * @param keySpec the specification (key material) of the public key
-     * @return the public key
-     * @throws InvalidKeySpecException if the given key specification is inappropriate for this
-     *                                 key factory to produce a public key.
-     */
     public abstract PublicKey generatePublic(KeySpec keySpec)
             throws InvalidKeySpecException;
 
-    /**
-     * Generate a private key object from the provided key specification (key
-     * material).
-     *
-     * @param keySpec the specification (key material) of the private key
-     * @return the private key
-     * @throws InvalidKeySpecException if the given key specification is inappropriate for this
-     *                                 key factory to produce a private key.
-     */
+
     public abstract PrivateKey generatePrivate(KeySpec keySpec)
             throws InvalidKeySpecException;
 
     public abstract KeySpec getKeySpec(Key key, Class keySpec)
             throws InvalidKeySpecException;
 
-    /**
-     * Translate a key object, whose provider may be unknown or potentially
-     * untrusted, into a corresponding key object of this key factory.
-     *
-     * @param key the key whose provider is unknown or untrusted
-     * @return the translated key
-     * @throws InvalidKeyException if the given key cannot be processed by this key factory.
-     */
     public abstract Key translateKey(Key key) throws InvalidKeyException;
 
 }

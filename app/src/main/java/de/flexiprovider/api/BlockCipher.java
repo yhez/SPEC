@@ -234,8 +234,6 @@ public abstract class BlockCipher extends Cipher {
 
     public final byte[] update(byte[] input, int inOff, int inLen) {
 
-        // if the cipher is not initialized or input is empty, return an empty
-        // byte array
         if (!initialized || input == null || inLen <= 0) {
             return new byte[0];
         }

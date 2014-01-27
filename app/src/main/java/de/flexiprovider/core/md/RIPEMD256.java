@@ -29,26 +29,18 @@ public final class RIPEMD256 extends MDFamilyDigest {
                     {9, 7, 15, 11, 8, 6, 6, 14, 12, 13, 5, 14, 13, 13, 7, 5},
                     {15, 5, 8, 11, 14, 14, 6, 14, 6, 9, 12, 9, 12, 5, 15, 8}}; // right
 
-    /**
-     * Constructor.
-     */
+
     public RIPEMD256() {
         super(RIPEMD256_DIGEST_LENGTH);
     }
 
-    /**
-     * Resets the engine to its initial state.
-     */
+
 
     public void reset() {
         initMessageDigest(initState);
     }
 
-    /**
-     * Computes the digest and resets the engine.
-     *
-     * @return the digested message.
-     */
+
     public synchronized byte[] digest() {
         // produce the final digest
         byte[] digest = new byte[RIPEMD256_DIGEST_LENGTH];
@@ -65,9 +57,7 @@ public final class RIPEMD256 extends MDFamilyDigest {
         return digest;
     }
 
-    /**
-     * Processes a block of 64 bytes.
-     */
+
     protected synchronized void processBlock() {
 
         // aL - chaning variable A-E, aR- chaning variable A`-E`
@@ -106,9 +96,7 @@ public final class RIPEMD256 extends MDFamilyDigest {
         }
     }
 
-    /**
-     * basic conversion functions
-     */
+
 
     // selection of message word left
     private static int selWordL(int i, int j) {

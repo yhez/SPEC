@@ -72,17 +72,12 @@ import de.flexiprovider.ec.parameters.CurveRegistry.Secp384r1;
 import de.flexiprovider.ec.parameters.CurveRegistry.Secp521r1;
 import de.flexiprovider.ec.parameters.ECParameters;
 
-/**
- * Register all algorithms of the <a href="package.html">EC package</a>.
- */
+
 public abstract class ECRegistry extends Registry {
 
     // flag indicating if algorithms already have been registered
     private static boolean registered = false;
 
-    /**
-     * Register all algorithms of the <a href="package.html">EC package</a>.
-     */
     public static void registerAlgorithms() {
         if (!registered) {
             registerCommon();

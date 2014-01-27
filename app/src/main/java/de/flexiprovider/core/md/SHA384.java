@@ -1,22 +1,6 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.md;
 
-/**
- * SHA-384 is a 384-bit hash and is meant to provide 192 bits of security
- * against collision attacks.
- * <p/>
- * To obtain a 384-bit hash value will require truncating the SHA-512 output.
- *
- * @author Ralf-P. Weinmann
- */
+
 public final class SHA384 extends SHA384_512 {
 
     // Initial hash value H<sup>(0)</sup>. These were obtained by taking the
@@ -28,16 +12,10 @@ public final class SHA384 extends SHA384_512 {
 
     private static final int SHA384_DIGEST_LENGTH = 48;
 
-    /**
-     * Constructor.
-     */
     public SHA384() {
         super(SHA384_DIGEST_LENGTH);
     }
 
-    /**
-     * Reset the digest objects to its initial state.
-     */
     public void reset() {
         initMessageDigest(H0);
     }

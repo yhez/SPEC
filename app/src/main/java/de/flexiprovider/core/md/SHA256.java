@@ -1,20 +1,5 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.md;
 
-/**
- * SHA256 is a 256-bit hash and is meant to provide 128 bits of security against
- * collision attacks.
- *
- * @author Ralf-P. Weinmann
- */
 public final class SHA256 extends SHA224_256 {
 
     // Initial hash value H<sup>(0)</sup>. These were obtained by taking the
@@ -25,16 +10,9 @@ public final class SHA256 extends SHA224_256 {
     // length of the SHA256 message digest in bytes
     private static final int SHA256_DIGEST_LENGTH = 32;
 
-    /**
-     * Default constructor.
-     */
     public SHA256() {
         super(SHA256_DIGEST_LENGTH);
     }
-
-    /**
-     * Reset the digest objects to its initial state.
-     */
     public void reset() {
         initMessageDigest(H0);
     }

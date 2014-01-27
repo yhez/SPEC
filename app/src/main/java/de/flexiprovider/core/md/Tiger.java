@@ -1,39 +1,10 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group, Technische Universitaet
- * Darmstadt
- * 
- * For conditions of usage and distribution please refer to the file COPYING in
- * the root directory of this package.
- * 
- * Created on Jul 26, 2005
- */
 package de.flexiprovider.core.md;
 
 import de.flexiprovider.api.MessageDigest;
 import de.flexiprovider.common.util.LittleEndianConversions;
 
-/**
- * Tiger is a fast new hash function, by Ross Anderson and Eli Biham. This class
- * is a simple Java implementation of the 192-bit Tiger algorithm, based on the
- * sample C code published by Eli Biham on
- * http://www.cs.technion.ac.il/~biham/Reports/Tiger/ in its HTML reference
- * Appendix.
- * <p/>
- * It computes a 192-bit digest that is considered stronger, but faster to
- * compute than 160-bit SHA-1. Its input is a set of 64-bytes blocks. The last
- * block of a digested message must include a required padded byte which must be
- * 0x01.
- *
- * @author Elena Klintsevitch
- */
-public final class Tiger extends MessageDigest {
 
-    /**
-     * The OID of Tiger (defined by the GNU project, see <a
-     * href="http://www.gnupg.org/oids.html"
-     * >http://www.gnupg.org/oids.html</a>).
-     */
-    public static final String OID = "1.3.6.1.4.1.11591.12.2";
+public final class Tiger extends MessageDigest {
 
     // magic constants for initialization
     private static final long[] initState = {0x0123456789abcdefL,
@@ -562,31 +533,20 @@ public final class Tiger extends MessageDigest {
             0xC12591D7535F5065L /* 1021 */, 0xC83223F1720AEF96L /* 1022 */,
             0xC3A0396F7363A51FL /* 1023 */};
 
-    /**
-     * buffer used to store bytes for
-     */
+
     private byte[] buffer = new byte[64];
 
-    // processing
 
-    /**
-     * internal buffer for processing
-     */
+
     private long[] x = new long[8];
 
-    /**
-     * state of the engine
-     */
+
     private long[] state = null;
 
-    /**
-     * counts the number of bytes to digest
-     */
+
     private long count;
 
-    /**
-     * constructor for a new Tiger message digest
-     */
+
 
     public Tiger() {
         reset();
@@ -615,12 +575,7 @@ public final class Tiger extends MessageDigest {
         count = 0;
     }
 
-    /**
-     * this method performs the padding. A single 1-bit is appended and then
-     * 0-bits, until only 64 bits are left free in the final block to enter the
-     * total length of the entered message. The last block of a digested message
-     * must include a required padded byte which must be 0x01.
-     */
+
     private void padMessageDigest() {
         long len = count << 3; // bit-length = count * 8
 
@@ -642,9 +597,7 @@ public final class Tiger extends MessageDigest {
         processBlock();
     }
 
-    /**
-     * process a block of 8 bytes
-     */
+
     private synchronized void processBlock() {
         long a, b, c, mull;
         a = state[0];
@@ -865,18 +818,12 @@ public final class Tiger extends MessageDigest {
         state[2] += c;
     }
 
-    /**
-     * @return the digest length in bytes
-     */
+
     public int getDigestLength() {
         return TIGER_DIGEST_LENGTH;
     }
 
-    /**
-     * Update the engine with the specified byte.
-     *
-     * @param b the input byte
-     */
+
     public synchronized void update(byte b) {
         buffer[(int) count & 63] = b;
         if ((count & 63) == 63) {
@@ -890,13 +837,7 @@ public final class Tiger extends MessageDigest {
         count++;
     }
 
-    /**
-     * Update the engine with the specified byte array.
-     *
-     * @param bytes  the input
-     * @param offset the offset where the input starts
-     * @param len    the input length
-     */
+
     public synchronized void update(byte[] bytes, int offset, int len) {
         // fill up buffer
 
@@ -928,11 +869,7 @@ public final class Tiger extends MessageDigest {
         }
     }
 
-    /**
-     * Compute the digest and reset the engine
-     *
-     * @return the message digest in a byte array
-     */
+
     public synchronized byte[] digest() {
         // produce the final digest
         byte[] digest = new byte[TIGER_DIGEST_LENGTH];
@@ -948,9 +885,7 @@ public final class Tiger extends MessageDigest {
         return digest;
     }
 
-    /**
-     * reset the engine to its initial state
-     */
+
     public void reset() {
         initMessageDigest(initState);
     }

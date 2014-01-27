@@ -1,26 +1,9 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.md;
 
 import de.flexiprovider.api.MessageDigest;
 import de.flexiprovider.common.util.BigEndianConversions;
 
-/**
- * SHA1 extends java.security.MessageDigestSpi A class that implements the NIST
- * Secure Hash Algorithm - version 1. The Algorithm was implemented according to
- * Standard FIPS PUB 180-1.
- *
- * @author Torsten Ehli
- * @author Sylvain Franke
- * @author Ralf-Philipp Weinmann
- */
+
 public final class SHA1 extends MessageDigest {
 
     // array to buffer the input before attaining the blocksize that can be
@@ -36,8 +19,7 @@ public final class SHA1 extends MessageDigest {
     // array w is a temporary buffer used while computing any block
     private int[] w;
 
-    // some constants are used while processing the digest. You might refer to
-    // them as "The magic".
+
 
     private static final int const1 = 0x5a827999;
 
@@ -50,20 +32,14 @@ public final class SHA1 extends MessageDigest {
     // length of the resulting message digest in bytes
     private static final int SHA1_DIGEST_LENGTH = 20;
 
-    /**
-     * Constructor. Create and initialize the arrays needed for computing the
-     * digest.
-     */
+
     public SHA1() {
         w = new int[80];
         buffer = new byte[64];
         reset();
     }
 
-    /**
-     * This function processBlock contains the actual SHA1 Algorithm, which is
-     * coded in accordance to the definition of the FIPS PUB 180-1 Standard.
-     */
+
     private synchronized void processBlock() {
         int a, b, c, d, e;
         int i;
@@ -272,12 +248,7 @@ public final class SHA1 extends MessageDigest {
         h4 += e;
     }
 
-    /**
-     * Completes the hash computation by performing final operations such as
-     * padding.
-     *
-     * @return the digest value
-     */
+
     public synchronized byte[] digest() {
 
         pad();
@@ -294,18 +265,12 @@ public final class SHA1 extends MessageDigest {
         return digestValue;
     }
 
-    /**
-     * Returns the digest length in bytes.
-     *
-     * @return the digest length in bytes.
-     */
+
     public int getDigestLength() {
         return SHA1_DIGEST_LENGTH;
     }
 
-    /**
-     * Resets the digest for further use.
-     */
+
     public void reset() {
         h0 = 0x67452301;
         h1 = 0xefcdab89;
@@ -315,14 +280,7 @@ public final class SHA1 extends MessageDigest {
         count = 0;
     }
 
-    /**
-     * Updates the digest using the specified array of bytes, starting at the
-     * specified offset.
-     *
-     * @param input  - the byte[] to use for the update.
-     * @param offset - the offset to start from in the array of bytes.
-     * @param len    - the number of bytes to use, starting at offset.
-     */
+
     public synchronized void update(byte[] input, int offset, int len) {
         int bufOffset = ((int) count) & 0x3f;
         int copyLen;
@@ -344,11 +302,7 @@ public final class SHA1 extends MessageDigest {
         }
     }
 
-    /**
-     * Updates the digest using the specified byte.
-     *
-     * @param input - the byte to use for the update.
-     */
+
     public synchronized void update(byte input) {
         buffer[(int) count & 0x3f] = input;
 
@@ -359,11 +313,7 @@ public final class SHA1 extends MessageDigest {
         count++;
     }
 
-    /**
-     * This Method performs the padding for the SHA1 algorithm. A single 1-bit
-     * is appended and then 0-bits, until only 64 bits are left free in the
-     * final block to enter the total length of the entered message.
-     */
+
     private void pad() {
         long bitLength = count << 3;
         buffer[(int) count & 0x3f] = (byte) 0x80;

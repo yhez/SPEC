@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.common.math.ellipticcurves;
 
 import de.flexiprovider.common.exceptions.DifferentCurvesException;
@@ -20,61 +12,26 @@ import de.flexiprovider.common.math.finitefields.GF2nPolynomialElement;
 import de.flexiprovider.common.math.finitefields.GF2nPolynomialField;
 import de.flexiprovider.common.math.finitefields.GFElement;
 
-/**
- * This class implements points and their arithmetic on elliptic curves over
- * finite fields with characteristic 2 (GF(2<sup>n</sup>)). A Point P = (x, y)
- * is the tupel x, y that solves the equation y<sup>2</sup> + xy = x<sup>3</sup> +
- * ax<sup>2</sup> + b, x and y in GF(2<sup>n</sup>).
- * <p/>
- * Points on elliptic curves can be added and subtracted. Since each of these
- * operations require a field inversion in GF(2<sup>n</sup>), which is
- * expensive, this class calculates with projective coordinates to avoid these
- * inversions. The equation for the elliptic curve is as follows:<br>
- * Y<SUP>2</SUP>Z<SUP>6</SUP> + XYZ<SUP>5</SUP> = X<SUP>3</SUP>Z<SUP>6</SUP> +
- * aX<SUP>2</SUP>Z<SUP>4</SUP> + b, <br>
- * with x = X/Z<SUP>2</SUP> and y = Y/Z<SUP>3</SUP>.
- * <p/>
- * For the formulas of the projective addition and doubling
- * {@link #add(Point) add} and {@link #multiplyBy2 multiplyBy2}, respectively.
- *
- * @author Birgit Henhapl
- * @author Vangelis Karatsiolis
- * @see de.flexiprovider.common.math.ellipticcurves.EllipticCurveGF2n
- * @see de.flexiprovider.common.math.ellipticcurves.Point
- * @see de.flexiprovider.common.math.finitefields.GF2nField
- * @see de.flexiprovider.common.math.finitefields.GF2nElement
- */
+
 public class PointGF2n extends Point {
 
-    // /////////////////////////////////////////////////////////////
-    // member variables
-    // /////////////////////////////////////////////////////////////
 
-    /**
-     * the extension degree of the underlying field
-     */
+
+
     private int mDeg;
 
-    /**
-     * the underlying field
-     */
+
     private GF2nField mGF2n;
 
     private boolean isGF2nONBField = false;
 
-    /**
-     * curve parameter a
-     */
+
     private GF2nElement mA;
 
-    /**
-     * flag indicating whether mA is zero
-     */
+
     private boolean mAIsZero;
 
-    /**
-     * curve parameter b
-     */
+
     private GF2nElement mB;
 
     private GF2nElement mX;
@@ -116,15 +73,7 @@ public class PointGF2n extends Point {
     }
 
 
-    /**
-     * Constructs a new point. The information is packed in the given byte array
-     * together with the given elliptic curve. (see X9.63-199x)
-     *
-     * @param encoded the point in normal, compressed or hybrid form.
-     * @param E       the underlying elliptic curve
-     * @throws InvalidPointException  if the point is not on the curve.
-     * @throws InvalidFormatException if the point representation is invalid.
-     */
+
     public PointGF2n(byte[] encoded, EllipticCurveGF2n E)
             throws InvalidPointException, InvalidFormatException {
 
@@ -193,11 +142,7 @@ public class PointGF2n extends Point {
         mZ = createGF2nOneElement(mGF2n);
     }
 
-    /**
-     * Copy constructor.
-     *
-     * @param other point to copy
-     */
+
     public PointGF2n(PointGF2n other) {
         EllipticCurveGF2n E = (EllipticCurveGF2n) other.getE();
         mE = E;
@@ -212,28 +157,16 @@ public class PointGF2n extends Point {
         assign(other);
     }
 
-    // /////////////////////////////////////////////////////////////
-    // assignments
-    // /////////////////////////////////////////////////////////////
 
-    /**
-     * Assigns to this point the point at infinity. The coordinates of this
-     * point are (x, y, z) = (1, 1, 0).
-     */
+
+
     private void assignZero() {
         mX = createGF2nOneElement(mGF2n);
         mY = createGF2nOneElement(mGF2n);
         mZ = createGF2nZeroElement(mGF2n);
     }
 
-    /**
-     * Assigns to this point the x-, y- and z-coordinates (<tt>x</tt>,
-     * <tt>y</tt>, <tt>z</tt>) (without copying).
-     *
-     * @param x FlexiBigInt is the x-coordinate
-     * @param y FlexiBigInt is the y-coordinate
-     * @param z FlexiBigInt is the z-coordinate
-     */
+
     private void assign(GF2nElement x, GF2nElement y, GF2nElement z)
             throws InvalidPointException {
         mX = x;
@@ -247,9 +180,7 @@ public class PointGF2n extends Point {
         mZ = (GF2nElement) other.mZ.clone();
     }
 
-    /**
-     * @return a clone of this point
-     */
+
     public Object clone() {
         return new PointGF2n(this);
     }
@@ -313,10 +244,7 @@ public class PointGF2n extends Point {
         return result;
     }
 
-    /**
-     * @return the hash code of this point
-     * @see Object#hashCode()
-     */
+
     public int hashCode() {
         // Two projective points are equal iff their corresponding
         // affine representations are equal. We cannot simply sum over the
@@ -328,45 +256,24 @@ public class PointGF2n extends Point {
         // this point changes.
         return getXAffin().hashCode() + getYAffin().hashCode();
     }
-
-    /**
-     * Returns this point in affine representation as a String: (x, y), where x =
-     * <tt>mX</tt>/<tt>mZ<sup>2</sup></tt> and y = <tt>mZ</tt>/<tt>mZ<sup>3</sup></tt>.
-     * If this point is at infinity (that means, mZ = 0), the output is (0, 0).
-     *
-     * @return String (x, y)
-     */
     public String toString() {
         return "(" + getXAffin().toString(16) + ",\n "
                 + getYAffin().toString(16) + ")";
     }
 
-    // ///////////////////////////////////////////////////////////
-    // access
-    // ///////////////////////////////////////////////////////////
 
-    /**
-     * @return the x-coordinate of this point
-     */
+
+
     public GFElement getX() {
         return mX;
     }
 
-    /**
-     * @return the y-coordinate of this point
-     */
+
     public GFElement getY() {
         return mY;
     }
 
-    /**
-     * Return the x-coordinate of this point in affine representation. In this
-     * class, the projective representation x = X/Z<sup>2</sup> and y = Y/Z<sup>3</sup>
-     * is chosen to speed up point addition. This method returns the
-     * x-coordinate in affine representation.
-     *
-     * @return the x-coordinate of this point in affine representation
-     */
+
     public GFElement getXAffin() {
         if (isZero()) {
             // mZ equals zero.
@@ -381,15 +288,6 @@ public class PointGF2n extends Point {
             return z;
         }
     }
-
-    /**
-     * Return the y-coordinate of this point in affine representation. In this
-     * class, the projective representation x = X/Z<sup>2</sup> and y = Y/Z<sup>3</sup>
-     * is chosen to speed up point addition. This method returns the
-     * y-coordinate in affine representation.
-     *
-     * @return the y-coordinate of this point in affine representation
-     */
     private GFElement getYAffin() {
         if (isZero()) {
             // mZ equals zero.
@@ -406,10 +304,6 @@ public class PointGF2n extends Point {
             return z;
         }
     }
-
-    /**
-     * @return <tt>this</tt> in affine coordinates
-     */
     public Point getAffin() {
         if (isZero()) {
             return this;
@@ -425,21 +319,6 @@ public class PointGF2n extends Point {
 
         return new PointGF2n(x, y, (EllipticCurveGF2n) mE);
     }
-
-    /**
-     * Tests whether this point is on the curve mE. This method returns
-     * <tt>true</tt>, if <br>
-     * <tt><tt>mY</tt><sup>2</sup> -
-     * <tt>mX</tt><sup>3</sup> - <tt>mA</tt>*<tt>mX</tt>*
-     * <tt>mZ</tt><sup>4</sup> - <tt>mB</tt>*<tt>mZ</tt><sup>6</sup>
-     * = 0</tt>,<br>
-     * otherwise <tt>false</tt>.
-     *
-     * @return <tt><tt>mY</tt><sup>2</sup> - <tt>mX</tt>
-     * <sup>3</sup> - <tt>mA</tt>*<tt>mX</tt>*<tt>mZ</tt>
-     * <sup>4</sup> - <tt>mB</tt>*<tt>mZ</tt><sup>6</sup> == 0</tt>
-     * @see de.flexiprovider.common.math.ellipticcurves.EllipticCurveGF2n
-     */
     public boolean onCurve() {
 
         if (isZero()) {
@@ -506,77 +385,14 @@ public class PointGF2n extends Point {
 
         return right.equals(left);
     }
-
-    /**
-     * @return flag indicating whether this is the point at infinity
-     */
     public boolean isZero() {
         return mX.isOne() && mY.isOne() && mZ.isZero();
     }
-
-    // ////////////////////////////////////////////////////////////////////
-    // arithmetic
-    // ////////////////////////////////////////////////////////////////////
-
-    /**
-     * Adds to this point the point <tt>other</tt>. <br>
-     * The algorithm is due to Chudnovsky and Chudnovsky:<br>
-     * <tt>input : (X<sub>0</sub>, Y<sub>0</sub>, Z<sub>0</sub>),
-     * (X<sub>1</sub>, Y<sub>1</sub>, Z<sub>1</sub>)</tt><br>
-     * <tt>output: (X<sub>0</sub>, Y<sub>0</sub>, Z<sub>0</sub>) +
-     * (X<sub>1</sub>, Y<sub>1</sub>, Z<sub>1</sub>) =
-     * (X<sub>2</sub>, Y<sub>2</sub>, Z<sub>2</sub>)<br><br>
-     * <p/>
-     * U<sub>0</sub> = X<sub>0</sub>Z<sub>1</sub><sup>2</sup><br>
-     * S<sub>0</sub> = Y<sub>0</sub>Z<sub>1</sub><sup>3</sup><br>
-     * U<sub>1</sub> = X<sub>1</sub>Z<sub>0</sub><sup>2</sup><br>
-     * W = U<sub>0</sub> + U<sub>1</sub><br>
-     * S<sub>1</sub> = Y<sub>1</sub>Z<sub>0</sub><sup>3</sup><br>
-     * R = S<sub>0</sub> + S<sub>1</sub><br>
-     * L = Z<sub>0</sub>W
-     * V = RX<sup>1</sup> + LY<sub>1</sub><br>
-     * Z<sub>2</sub> = LZ<sub>1</sub><br>
-     * T = R + Z<sub>2</sub><br>
-     * X<sub>2</sub> = aZ<sub>2</sub><sup>2</sup> + TR<sup>2</sup> + W<sup>3</sup><br>
-     * Y<sub>2</sub> = TX<sub>2</sub> + VL<sup>2</sup></tt><br>
-     *
-     * @param other point to add to this point
-     * @return <tt>this + other</tt>
-     * @throws DifferentCurvesException if <tt>this</tt> and <tt>other</tt> are not on the
-     *                                  same curve.
-     */
     public Point add(Point other) throws DifferentCurvesException {
         PointGF2n result = new PointGF2n(this);
         result.addToThis(other);
         return result;
     }
-
-    /**
-     * Adds to this point the point <tt>other</tt>. <br>
-     * The algorithm is due to Chudnovsky and Chudnovsky:<br>
-     * <tt>input : (X<sub>0</sub>, Y<sub>0</sub>, Z<sub>0</sub>),
-     * (X<sub>1</sub>, Y<sub>1</sub>, Z<sub>1</sub>)</tt><br>
-     * <tt>output: (X<sub>0</sub>, Y<sub>0</sub>, Z<sub>0</sub>) +
-     * (X<sub>1</sub>, Y<sub>1</sub>, Z<sub>1</sub>) =
-     * (X<sub>2</sub>, Y<sub>2</sub>, Z<sub>2</sub>)<br><br>
-     * <p/>
-     * U<sub>0</sub> = X<sub>0</sub>Z<sub>1</sub><sup>2</sup><br>
-     * S<sub>0</sub> = Y<sub>0</sub>Z<sub>1</sub><sup>3</sup><br>
-     * U<sub>1</sub> = X<sub>1</sub>Z<sub>0</sub><sup>2</sup><br>
-     * W = U<sub>0</sub> + U<sub>1</sub><br>
-     * S<sub>1</sub> = Y<sub>1</sub>Z<sub>0</sub><sup>3</sup><br>
-     * R = S<sub>0</sub> + S<sub>1</sub><br>
-     * L = Z<sub>0</sub>W
-     * V = RX<sup>1</sup> + LY<sub>1</sub><br>
-     * Z<sub>2</sub> = LZ<sub>1</sub><br>
-     * T = R + Z<sub>2</sub><br>
-     * X<sub>2</sub> = aZ<sub>2</sub><sup>2</sup> + TR<sup>2</sup> + W<sup>3</sup><br>
-     * Y<sub>2</sub> = TX<sub>2</sub> + VL<sup>2</sup></tt><br>
-     *
-     * @param other point to add to this point
-     * @throws DifferentCurvesException if <tt>this</tt> and <tt>other</tt> are not on the
-     *                                  same curve.
-     */
     public void addToThis(Point other) throws DifferentCurvesException {
 
         if (!(other instanceof PointGF2n)) {
@@ -647,42 +463,11 @@ public class PointGF2n extends Point {
         }
 
     }
-
-    /**
-     * Doubles this point. <br>
-     * input : <tt>(X<sub>1</sub>, Y<sub>1</sub>, Z<sub>1</sub>)</tt><br>
-     * output: <tt>2*(X<sub>1</sub>, Y<sub>1</sub>, Z<sub>1</sub>)
-     * = (X<sub>2</sub>, Y<sub>2</sub>, Z<sub>2</sub>)</tt><br>
-     * <br>
-     * <tt>c = b<sup>2<sup>m-2</sup></sup>,<br>
-     * Z<sub>2</sub> = X<sub>1</sub>Z<sub>1</sub><sup>2</sup><br>
-     * X<sub>2</sub> = (X<sub>1</sub> + cZ<sub>1</sub><sup>2</sup>)<sup>4</sup><br>
-     * U = Z<sub>2</sub> + X<sub>1</sub><sup>2</sup> + Y<sub>1</sub>Z<sub>1</sub><br>
-     * Y<sub>2</sub> = X<sub>1</sub><sub>4</sub>Z<sub>2</sub> + UX<sub></sub>2</tt><br>
-     *
-     * @return 2*this
-     */
     public Point multiplyBy2() {
         PointGF2n result = new PointGF2n(this);
         result.multiplyThisBy2();
         return result;
     }
-
-    /**
-     * Doubles this point. <br>
-     * input : <tt>(X<sub>1</sub>, Y<sub>1</sub>, Z<sub>1</sub>)</tt><br>
-     * output: <tt>2*(X<sub>1</sub>, Y<sub>1</sub>, Z<sub>1</sub>)
-     * = (X<sub>2</sub>, Y<sub>2</sub>, Z<sub>2</sub>)</tt><br>
-     * <br>
-     * <tt>c = b<sup>2<sup>m-2</sup></sup>,<br>
-     * Z<sub>2</sub> = X<sub>1</sub>Z<sub>1</sub><sup>2</sup><br>
-     * X<sub>2</sub> = (X<sub>1</sub> + cZ<sub>1</sub><sup>2</sup>)
-     * <sup>4</sup><br>
-     * U = Z<sub>2</sub> + X<sub>1</sub><sup>2</sup> + Y<sub>1</sub>Z
-     * n <sub>1</sub><br>
-     * Y<sub>2</sub> = X<sub>1</sub><sub>4</sub>Z<sub>2</sub> + UX<sub></sub>
-     * 2</tt><br>
-     */
     public void multiplyThisBy2() {
 
         GF2nElement T1, T2, T3, T4;
@@ -726,12 +511,6 @@ public class PointGF2n extends Point {
 
         }
     }
-
-    /**
-     * Doubles this point in affine coordinates.
-     *
-     * @return 2*<code>this</code> in affine coordinates
-     */
     public Point multiplyBy2Affine() {
         PointGF2n p = (PointGF2n) this.getAffin();
 
@@ -755,31 +534,11 @@ public class PointGF2n extends Point {
 
         return new PointGF2n(x, y, (EllipticCurveGF2n) mE);
     }
-
-    /**
-     * Subtracts point <tt>other</tt> from this point. When P = (x, y) then -P =
-     * (x, x + y). So this method returns<br>
-     * <tt>add(other.negate())</tt>
-     *
-     * @param other another Point
-     * @return <tt>this</tt> - <tt>other</tt>
-     * @throws DifferentCurvesException if <tt>this</tt> and <tt>other</tt> are not on the
-     *                                  same curve.
-     */
     public Point subtract(Point other) throws DifferentCurvesException {
         PointGF2n result = new PointGF2n(this);
         result.subtractFromThis(other);
         return result;
     }
-
-    /**
-     * Subtracts point <tt>other</tt> from this point. When P = (x, y) then -P =
-     * (x, x + y).
-     *
-     * @param other another Point
-     * @throws DifferentCurvesException if <tt>this</tt> and <tt>other</tt> are not on the
-     *                                  same curve.
-     */
     public void subtractFromThis(Point other) throws DifferentCurvesException {
 
         if (!(other instanceof PointGF2n)) {
@@ -795,20 +554,11 @@ public class PointGF2n extends Point {
             addToThis(minusOther);
         }
     }
-
-    /**
-     * Returns the inverse of this point. When P = (x, y) then -P = (x, x + y).
-     *
-     * @return -<tt>this</tt>
-     */
     public Point negate() {
         PointGF2n result = new PointGF2n(this);
         result.negateThis();
         return result;
     }
-
-    /**
-     */
     private void negateThis() {
         if (!isZero()) {
             GFElement tmp = mX.multiply(mZ);
@@ -912,21 +662,9 @@ public class PointGF2n extends Point {
         return encoded;
     }
 
-    // ////////////////////////////////////////////////////////////////////
-    // help functions
-    // ////////////////////////////////////////////////////////////////////
 
-    /**
-     * Compute the y-coordinate from the given x-coordinate, the elliptic curve
-     * mE, and the the least significant bit yMod2 of y. Let
-     * <tt>g = x<sup>3</sup> + ax + b mod p</tt>. Then
-     * <tt>y = sqrt(g) mod p</tt> if either
-     * <ul>
-     * <li>y is even and yMod2 = 0 or if</li>
-     * <li>y is odd and yMod2 = 1.</li>
-     * </ul>
-     * Otherwise, <tt>y = p - sqrt(g) mod p</tt>.
-     */
+
+
     private GF2nElement decompress(boolean yMod2, GF2nElement x) {
 
         // if x = 0, y' = 1 -> y = b^0,5

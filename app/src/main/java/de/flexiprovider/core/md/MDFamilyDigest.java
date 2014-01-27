@@ -15,21 +15,10 @@ public abstract class MDFamilyDigest extends MessageDigest {
     // count the number of bytes to digest
     private int count;
 
-    /**
-     * internal buffer for processing
-     */
     protected int[] x = new int[16];
 
-    /**
-     * state of the engine
-     */
     protected int[] state = null;
 
-    /**
-     * Constructor.
-     *
-     * @param digestLength the digest length
-     */
     protected MDFamilyDigest(int digestLength) {
         this.digestLength = digestLength;
         reset();
@@ -43,19 +32,10 @@ public abstract class MDFamilyDigest extends MessageDigest {
         System.arraycopy(initialState, 0, state, 0, initialState.length);
         count = 0;
     }
-
-    /**
-     * @return the digest length in bytes.
-     */
     public int getDigestLength() {
         return digestLength;
     }
 
-    /**
-     * Update the engine with a single byte
-     *
-     * @param b byte to be added.
-     */
     public synchronized void update(byte b) {
         buffer[count & 63] = b;
         if ((count & 63) == 63) {
@@ -68,14 +48,6 @@ public abstract class MDFamilyDigest extends MessageDigest {
         count++;
     }
 
-    /**
-     * add a block of data from the array bytes to the message digest. The block
-     * starts offset bytes into the array, and is of size length.
-     *
-     * @param bytes  byte array to process
-     * @param offset offset into the array to start from
-     * @param len    number of bytes to process
-     */
     public synchronized void update(byte[] bytes, int offset, int len) {
         // fill up buffer
         while ((len > 0) & ((count & 63) != 0)) {
@@ -106,11 +78,6 @@ public abstract class MDFamilyDigest extends MessageDigest {
         }
     }
 
-    /**
-     * this method performs the padding. A single 1-bit is appended and then
-     * 0-bits, until only 64 bits are left free in the final block to enter the
-     * total length of the entered message.
-     */
     protected void padMessageDigest() {
         // bit length = count * 8
         long len = count << 3;
@@ -133,18 +100,8 @@ public abstract class MDFamilyDigest extends MessageDigest {
         processBlock();
     }
 
-    /**
-     * Compute the hash value of the current block.
-     */
     protected abstract void processBlock();
 
-    /**
-     * Left rotate the given word by the specified amount.
-     *
-     * @param x the word
-     * @param n the rotation amount
-     * @return the rotated word
-     */
     protected static int rotateLeft(int x, int n) {
         return (x << n) | (x >>> (32 - n));
     }

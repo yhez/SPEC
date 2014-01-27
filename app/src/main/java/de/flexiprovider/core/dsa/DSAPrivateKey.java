@@ -12,49 +12,29 @@ import de.flexiprovider.core.dsa.interfaces.DSAParams;
 public class DSAPrivateKey extends
         de.flexiprovider.core.dsa.interfaces.DSAPrivateKey {
 
-    /**
-     * The secret exponent x
-     */
+
     private FlexiBigInt x;
 
-    /**
-     * The normal DSA parameters.
-     */
+
     private DSAParams params;
 
 
-    /**
-     * This function returns the name of the corresponding algorithm "DSA".
-     *
-     * @return "DSA".
-     */
+
     public String getAlgorithm() {
         return "DSA";
     }
 
-    /**
-     * This function returns the DSA parameters.
-     *
-     * @return the DSA parameters.
-     */
+
     public DSAParams getParameters() {
         return params;
     }
 
-    /**
-     * This function returns the secret exponent x.
-     *
-     * @return the secret exponent x.
-     */
+
     public FlexiBigInt getValueX() {
         return x;
     }
 
-    /**
-     * Returns a human readable form of the key.
-     *
-     * @return a human readable form of the key.
-     */
+
     public String toString() {
 
         return "private x: 0x" + x.toString(16) + "\n" + "p:         0x"

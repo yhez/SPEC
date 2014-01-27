@@ -35,10 +35,6 @@ public class ASN1Integer extends ASN1AbstractType {
         value_ = val;
     }
 
-    public ASN1Integer(String val) throws NumberFormatException {
-        value_ = new BigInteger(val);
-    }
-
 
     public ASN1Integer(byte[] val) throws NumberFormatException {
         value_ = new BigInteger(val);

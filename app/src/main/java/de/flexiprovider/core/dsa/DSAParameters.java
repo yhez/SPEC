@@ -11,16 +11,10 @@ import de.flexiprovider.api.parameters.AlgorithmParameters;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.util.ASN1Tools;
 
-/**
- * This class represents the DSA parameters p, q, g.
- *
- * @author Thomas Wahrenbruch
- */
+
 public class DSAParameters extends AlgorithmParameters {
 
-    /**
-     * The OID of DSA.
-     */
+
     public static final String OID = "1.2.840.10040.4.1";
 
     // the prime p
@@ -32,19 +26,7 @@ public class DSAParameters extends AlgorithmParameters {
     // the generator g
     private FlexiBigInt g;
 
-    /**
-     * Inner class providing the DSA ASN.1 parameters structure.
-     * <p/>
-     * The ASN.1 parameters structure is defined as follows:
-     * <p/>
-     * <pre>
-     * DSAAlgorithmParameters ::= SEQUENCE {
-     *   p INTEGER,   -- the prime p
-     *   q INTEGER,   -- the subprime q
-     *   g INTEGER,   -- the generator g
-     * }
-     * </pre>
-     */
+
     private static class DSAASN1Parameters extends ASN1Sequence {
 
         // the prime p
@@ -56,9 +38,7 @@ public class DSAParameters extends AlgorithmParameters {
         // the generator g
         private ASN1Integer g;
 
-        /**
-         * Constructs a new ASN.1 Structure.
-         */
+
         public DSAASN1Parameters() {
             super(3);
             p = new ASN1Integer();
@@ -70,13 +50,7 @@ public class DSAParameters extends AlgorithmParameters {
             add(g);
         }
 
-        /**
-         * Constructs a new ASN.1 Structure with the given p,q and g.
-         *
-         * @param p the prime p.
-         * @param q the subprime q.
-         * @param g the generator g.
-         */
+
         public DSAASN1Parameters(FlexiBigInt p, FlexiBigInt q, FlexiBigInt g) {
             super(3);
             this.p = ASN1Tools.createInteger(p);
@@ -88,38 +62,24 @@ public class DSAParameters extends AlgorithmParameters {
             add(this.g);
         }
 
-        /**
-         * @return the generator g
-         */
+
         public FlexiBigInt getG() {
             return ASN1Tools.getFlexiBigInt(g);
         }
 
-        /**
-         * @return the prime p
-         */
+
         public FlexiBigInt getP() {
             return ASN1Tools.getFlexiBigInt(p);
         }
 
-        /**
-         * @return the subprime q
-         */
+
         public FlexiBigInt getQ() {
             return ASN1Tools.getFlexiBigInt(q);
         }
 
     }
 
-    /**
-     * Initialize this parameters object using the given parameter
-     * specification. The parameter specification has to be an instance of
-     * {@link DSAParameterSpec}.
-     *
-     * @param params the parameter specification
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterSpecException if the parameter specification is <tt>null</tt> or of
-     *                                                                       an unsupported type.
-     */
+
     public void init(AlgorithmParameterSpec params)
             throws InvalidParameterSpecException {
 
@@ -133,13 +93,7 @@ public class DSAParameters extends AlgorithmParameters {
         g = dsaSpec.getBaseG();
     }
 
-    /**
-     * Import the specified parameters and decode them according to the primary
-     * decoding format (ASN.1).
-     *
-     * @param encParams the encoded parameters.
-     * @throws java.io.IOException on decoding errors
-     */
+
     public void init(byte[] encParams) throws IOException {
 
         try {
@@ -155,15 +109,7 @@ public class DSAParameters extends AlgorithmParameters {
         }
     }
 
-    /**
-     * Import the specified parameters and decode them according to the
-     * specified decoding format. Currently, only the primary decoding format is
-     * supported.
-     *
-     * @param encParams the encoded parameters
-     * @param format    the name of the decoding format
-     * @throws java.io.IOException if format is not equal to "ASN.1" or on decoding errors.
-     */
+
     public void init(byte[] encParams, String format) throws IOException {
         if (!format.equals("ASN.1")) {
             throw new IOException("unsupported format");
@@ -171,24 +117,13 @@ public class DSAParameters extends AlgorithmParameters {
         init(encParams);
     }
 
-    /**
-     * Return the parameters encoded in the primary encoding format (ASN.1).
-     *
-     * @return the encoded parameters
-     */
+
     public byte[] getEncoded() {
         DSAASN1Parameters asn1dsaParams = new DSAASN1Parameters(p, q, g);
         return ASN1Tools.derEncode(asn1dsaParams);
     }
 
-    /**
-     * Return the parameters encoded in the specified encoding format.
-     * Currently, only the primary encoding format (ASN.1) is supported.
-     *
-     * @param format the name of the encoding format
-     * @return the encoded parameters
-     * @throws java.io.IOException if format is not equal to "ASN.1" or on decoding errors.
-     */
+
     public byte[] getEncoded(String format) throws IOException {
         if (!format.equals("ASN.1")) {
             throw new IOException("unsupported format");
@@ -208,18 +143,14 @@ public class DSAParameters extends AlgorithmParameters {
         return new DSAParameterSpec(p, q, g);
     }
 
-    /**
-     * @return a human readable form of the parameters
-     */
+
     public String toString() {
         return "p: 0x" + p.toString(16) + "\n" + "q: 0x" + q.toString(16)
                 + "\n" + "g: 0x" + g.toString(16);
 
     }
 
-    /**
-     * @return the (unencoded) ASN.1 parameters structure
-     */
+
     protected DSAASN1Parameters getASN1Parameters() {
         return new DSAASN1Parameters(p, q, g);
     }

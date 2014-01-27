@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.common.mode;
 
 import java.io.IOException;
@@ -20,33 +12,12 @@ import de.flexiprovider.api.parameters.AlgorithmParameters;
 import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.common.util.ByteUtils;
 
-/**
- * This class is used as an opaque representation of initialization vectors used
- * as mode parameters. ASN.1/DER encoding and decoding are supported. Parameters
- * are encoded as
- * <p/>
- * <pre>
- *   ModeParameters = OCTET STRING (SIZE 8) IV
- * </pre>
- *
- * @author Norbert Trummel
- * @author Sylvain Franke
- */
+
 public class ModeParameters extends AlgorithmParameters {
 
     private byte[] iv;
 
-    /**
-     * JCA adapter for FlexiAPI method {@link #init(de.flexiprovider.api.parameters.AlgorithmParameterSpec)}:
-     * initialize this parameters object using the parameters specified in
-     * <tt>paramSpec</tt>. This method overrides the corresponding method of
-     * {@link de.flexiprovider.api.parameters.AlgorithmParameters} in order to provide support for
-     * {@link javax.crypto.spec.IvParameterSpec}.
-     *
-     * @param params the parameter specification
-     * @throws java.security.spec.InvalidParameterSpecException if <tt>paramSpec</tt> is inappropriate for
-     *                                                          initialization.
-     */
+
     protected void engineInit(java.security.spec.AlgorithmParameterSpec params)
             throws java.security.spec.InvalidParameterSpecException {
 
@@ -64,18 +35,7 @@ public class ModeParameters extends AlgorithmParameters {
         init((AlgorithmParameterSpec) params);
     }
 
-    /**
-     * JCA adapter for FlexiAPI method {@link #getParameterSpec(Class)}: return
-     * a (transparent) specification of this parameters object. This method
-     * overrides the corresponding method of {@link de.flexiprovider.api.parameters.AlgorithmParameters} in
-     * order to provide support for {@link javax.crypto.spec.IvParameterSpec}.
-     *
-     * @param paramSpec the the specification class in which the parameters should
-     *                  be returned
-     * @return the parameter specification
-     * @throws java.security.spec.InvalidParameterSpecException if the requested parameter specification is inappropriate
-     *                                                          for this parameter object.
-     */
+
     protected java.security.spec.AlgorithmParameterSpec engineGetParameterSpec(
             Class paramSpec)
             throws java.security.spec.InvalidParameterSpecException {
@@ -91,14 +51,7 @@ public class ModeParameters extends AlgorithmParameters {
         return getParameterSpec(paramSpec);
     }
 
-    /**
-     * Initialize this parameters object using the parameters specified in
-     * <tt>paramSpec</tt>.
-     *
-     * @param paramSpec the parameter specification
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterSpecException if the given parameter specification is inappropriate for
-     *                                                                       the initialization of this parameter object.
-     */
+
     public final void init(AlgorithmParameterSpec paramSpec)
             throws InvalidParameterSpecException {
 
@@ -113,14 +66,7 @@ public class ModeParameters extends AlgorithmParameters {
         iv = ((ModeParameterSpec) paramSpec).getIV();
     }
 
-    /**
-     * Import the specified parameters and decodes them according to the primary
-     * decoding format for parameters. The primary decoding format for
-     * parameters is ASN.1.
-     *
-     * @param encParams the encoded parameters
-     * @throws java.io.IOException on decoding errors
-     */
+
     public final void init(byte[] encParams) throws IOException {
         ASN1OctetString asn1IV = new ASN1OctetString();
         try {
@@ -131,14 +77,7 @@ public class ModeParameters extends AlgorithmParameters {
         iv = asn1IV.getByteArray();
     }
 
-    /**
-     * Import the specified parameters and decodes them according to the
-     * specified decoding format. Only "ASN.1" is supported at the moment.
-     *
-     * @param params the encoded parameters.
-     * @param format the name of the decoding format.
-     * @throws java.io.IOException if <tt>format</tt> is not equal to "ASN.1".
-     */
+
     public final void init(byte[] params, String format) throws IOException {
         if (!(format == "ASN.1")) {
             throw new IOException("Unsupported encoding format.");
@@ -146,21 +85,12 @@ public class ModeParameters extends AlgorithmParameters {
         init(params);
     }
 
-    /**
-     * @return the ASN.1 encoded parameters
-     */
+
     public final byte[] getEncoded() {
         return ASN1Tools.derEncode(new ASN1OctetString(iv));
     }
 
-    /**
-     * Return the parameters encoded in the specified format. Only "ASN.1" is
-     * supported at the moment.
-     *
-     * @param format the encoding format
-     * @return the encoded parameters
-     * @throws java.io.IOException if <tt>format</tt> is not equal to "ASN.1".
-     */
+
     public final byte[] getEncoded(String format) throws IOException {
         if (!(format == "ASN.1")) {
             throw new IOException("Unsupported encoding format.");
@@ -168,18 +98,7 @@ public class ModeParameters extends AlgorithmParameters {
         return getEncoded();
     }
 
-    /**
-     * Return a (transparent) specification of this parameters object.
-     * <tt>paramSpec</tt> identifies the specification class in which the
-     * parameters should be returned. Only {@link ModeParameterSpec} is
-     * supported.
-     *
-     * @param paramSpec the specification class in which the parameters should be
-     *                  returned
-     * @return the parameter specification
-     * @throws de.flexiprovider.api.exceptions.InvalidParameterSpecException if the requested parameter specification is inappropriate
-     *                                                                       for this parameters object.
-     */
+
     public final AlgorithmParameterSpec getParameterSpec(Class paramSpec)
             throws InvalidParameterSpecException {
         if (!(paramSpec.isAssignableFrom(ModeParameterSpec.class))) {
@@ -189,9 +108,7 @@ public class ModeParameters extends AlgorithmParameters {
         return new ModeParameterSpec(iv);
     }
 
-    /**
-     * @return a formatted string describing the parameters
-     */
+
     public final String toString() {
         return "IV: " + ByteUtils.toHexString(iv);
     }

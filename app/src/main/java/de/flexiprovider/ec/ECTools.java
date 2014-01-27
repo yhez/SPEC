@@ -6,9 +6,7 @@ import de.flexiprovider.ec.keys.ECPublicKey;
 
 public final class ECTools {
 
-    /**
-     * Default constructor (private).
-     */
+
     private ECTools() {
         // empty
     }

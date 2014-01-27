@@ -188,11 +188,6 @@ public class RunLengthEncoder implements Encoder {
         push(t, n);
     }
 
-    protected void reset() {
-        tops_ = 0;
-        topa_ = 0;
-    }
-
     protected void push(ASN1Type t, int n) throws ASN1Exception {
         if (stack_ == null) {
             stack_ = new int[INCREMENT];

@@ -1,33 +1,8 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.md;
 
 import de.flexiprovider.common.util.LittleEndianConversions;
 
-/**
- * This class implements the MD4 message digest algorithm according to the
- * Handbook of Applied Cryptography, Menezes, van Oorschot, Vanstone, CRC Press,
- * 1997, algorithm 9.49
- * <p/>
- * <p/>
- * The algorithm has been invented by Rivest and further information concerning
- * the MD4 message digest family can be found at <a
- * href="http://www.rsa.com">www.rsa.com</a> and in RFC 1320.
- * <p/>
- * <p/>
- * The efficiency of this implementation has been tested on a AMD K6-III, 450
- * MHz, running Windows 98 SE, using jdk 1.2.2. The hashing rate is about 138
- * MBits / second.
- *
- * @author Oliver Seiler
- */
+
 public final class MD4 extends MDFamilyDigest {
 
     // magic constants for initialization
@@ -62,9 +37,7 @@ public final class MD4 extends MDFamilyDigest {
 
     private static final int S34 = 15;
 
-    /**
-     * Constructor.
-     */
+
     public MD4() {
         super(MD4_DIGEST_LENGTH);
     }
@@ -88,10 +61,6 @@ public final class MD4 extends MDFamilyDigest {
 
         return digest;
     }
-
-    /**
-     * process a block of 64 bytes
-     */
     protected synchronized void processBlock() {
         int a = state[0];
         int b = state[1];
@@ -159,7 +128,6 @@ public final class MD4 extends MDFamilyDigest {
 
     }
 
-	/* basic conversion functions */
 
     private static int F(int x, int y, int z) {
         return (x & y) | (~x & z);

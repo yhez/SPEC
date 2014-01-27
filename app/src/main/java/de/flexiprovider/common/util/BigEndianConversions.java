@@ -35,43 +35,11 @@ public final class BigEndianConversions {
     }
 
 
-    public static void I2OSP(int input, byte[] output, int outOff, int length) {
-        for (int i = length - 1; i >= 0; i--) {
-            output[outOff + i] = (byte) (input >>> (8 * (length - 1 - i)));
-        }
-    }
-
-
-    public static int OS2IP(byte[] input) {
-        if (input.length > 4) {
-            throw new ArithmeticException("invalid input length");
-        }
-        if (input.length == 0) {
-            return 0;
-        }
-        int result = 0;
-        for (int j = 0; j < input.length; j++) {
-            result |= (input[j] & 0xff) << (8 * (input.length - 1 - j));
-        }
-        return result;
-    }
-
     public static int OS2IP(byte[] input, int inOff) {
         int result = (input[inOff++] & 0xff) << 24;
         result |= (input[inOff++] & 0xff) << 16;
         result |= (input[inOff++] & 0xff) << 8;
         result |= input[inOff] & 0xff;
-        return result;
-    }
-
-    public static int OS2IP(byte[] input, int inOff, int inLen) {
-        if ((input.length == 0) || input.length < inOff + inLen - 1) {
-            return 0;
-        }
-        int result = 0;
-        for (int j = 0; j < inLen; j++) {
-            result |= (input[inOff + j] & 0xff) << (8 * (inLen - j - 1));
-        }
         return result;
     }
 

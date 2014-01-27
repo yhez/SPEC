@@ -1,22 +1,9 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.md;
 
 import de.flexiprovider.api.MessageDigest;
 import de.flexiprovider.common.util.BigEndianConversions;
 
-/**
- * Super class for SHA-224 and SHA-256
- *
- * @author Ralf-P. Weinmann
- */
+
 public abstract class SHA224_256 extends MessageDigest {
 
     // Constant words K<sub>0...63</sub>. These are the first thirty-two bits of
@@ -50,11 +37,6 @@ public abstract class SHA224_256 extends MessageDigest {
     // the digest length
     private int digestLength;
 
-    /**
-     * Constructor.
-     *
-     * @param digestLength the digest length
-     */
     protected SHA224_256(int digestLength) {
         H = new int[8];
         W = new int[64];
@@ -63,39 +45,19 @@ public abstract class SHA224_256 extends MessageDigest {
         reset();
     }
 
-    /**
-     * Initialize the function with an initial state.
-     *
-     * @param initialState the initial state
-     */
     protected void initMessageDigest(int[] initialState) {
         count = 0;
         System.arraycopy(initialState, 0, H, 0, initialState.length);
     }
 
-    /**
-     * Sigma 0 function.
-     *
-     * @param x the input
-     * @return the rotated value
-     */
     private static int s0(int x) {
         return ((x >>> 7) | (x << 25)) ^ ((x >>> 18) | (x << 14)) ^ (x >>> 3);
     }
 
-    /**
-     * Sigma 1 function.
-     *
-     * @param x the input
-     * @return the rotated value
-     */
     private static int s1(int x) {
         return ((x >>> 17) | (x << 15)) ^ ((x >>> 19) | (x << 13)) ^ (x >>> 10);
     }
 
-    /**
-     * Compute the hash value of the current block and store it in H
-     */
     private void processBlock() {
         int i, i2;
         int T1, T2;
@@ -143,9 +105,6 @@ public abstract class SHA224_256 extends MessageDigest {
 
     }
 
-    /**
-     * Pad and hash the value
-     */
     private void pad() {
         // compute length of message in bits
         long bitLength = count << 3;
@@ -175,18 +134,10 @@ public abstract class SHA224_256 extends MessageDigest {
         processBlock();
     }
 
-    /**
-     * @return the digest length in bytes
-     */
     public int getDigestLength() {
         return digestLength;
     }
 
-    /**
-     * Update the digest using the specified input byte.
-     *
-     * @param input the input byte
-     */
     public synchronized void update(byte input) {
         buffer[(int) count & 63] = input;
 
@@ -197,13 +148,6 @@ public abstract class SHA224_256 extends MessageDigest {
         count++;
     }
 
-    /**
-     * Update the digest using the specified input byte array.
-     *
-     * @param input the input
-     * @param inOff the offset where the input starts
-     * @param inLen the input length
-     */
     public synchronized void update(byte[] input, int inOff, int inLen) {
         int bufOff = ((int) count) & 63;
 
@@ -223,13 +167,6 @@ public abstract class SHA224_256 extends MessageDigest {
             }
         }
     }
-
-    /**
-     * Complete the hash computation by performing final operations such as
-     * padding.
-     *
-     * @return the digest value
-     */
     public synchronized byte[] digest() {
         pad();
 

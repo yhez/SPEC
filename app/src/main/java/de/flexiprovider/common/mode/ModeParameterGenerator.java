@@ -7,12 +7,7 @@ import de.flexiprovider.api.parameters.AlgorithmParameterGenerator;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.api.parameters.AlgorithmParameters;
 
-/**
- * This class is used to generate initialization vectors (IVs) used by the modes
- * CBC, CFB, OFB, and CTR.
- *
- * @author Martin D�ring
- */
+
 public class ModeParameterGenerator extends AlgorithmParameterGenerator {
 
     // the length of the IV
@@ -24,25 +19,12 @@ public class ModeParameterGenerator extends AlgorithmParameterGenerator {
     // flag indicating whether the parameter generator has been initialized
     private boolean initialized;
 
-    /**
-     * @return an instance of the {@link de.flexiprovider.api.parameters.AlgorithmParameters} class
-     * corresponding to the generated parameters
-     */
+
     protected AlgorithmParameters getAlgorithmParameters() {
         return new ModeParameters();
     }
 
-    /**
-     * Initialize the parameter generator with parameters and a source of
-     * randomness. If the parameters are <tt>null</tt>, the
-     * {@link ModeParamGenParameterSpec#ModeParamGenParameterSpec() default parameters}
-     * are used.
-     *
-     * @param genParams the parameters
-     * @param random    the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are not an instance of
-     *                                                                            {@link ModeParamGenParameterSpec}.
-     */
+
     public void init(AlgorithmParameterSpec genParams, SecureRandom random)
             throws InvalidAlgorithmParameterException {
 
@@ -61,13 +43,7 @@ public class ModeParameterGenerator extends AlgorithmParameterGenerator {
         initialized = true;
     }
 
-    /**
-     * Initialize the parameter generator with the desired length of the IV in
-     * bytes and the source of randomness used to generate the IV.
-     *
-     * @param ivLength the length of the IV in bytes
-     * @param random   the source of randomness
-     */
+
     public void init(int ivLength, SecureRandom random) {
         ModeParamGenParameterSpec genParams = new ModeParamGenParameterSpec(
                 ivLength);
@@ -89,13 +65,7 @@ public class ModeParameterGenerator extends AlgorithmParameterGenerator {
         }
     }
 
-    /**
-     * Generate a new IV using the length and source of randomness specified
-     * during initialization.
-     *
-     * @return the generated IV encapsulated in an instance of
-     * {@link ModeParameterSpec}
-     */
+
     public AlgorithmParameterSpec generateParameters() {
         if (!initialized) {
             initDefault();

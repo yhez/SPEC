@@ -1,34 +1,13 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.common.math.finitefields;
-
-import java.util.Random;
 
 import de.flexiprovider.common.exceptions.DifferentFieldsException;
 import de.flexiprovider.common.exceptions.NoSolutionException;
 import de.flexiprovider.common.math.FlexiBigInt;
 
-/**
- * This class implements an element of the finite field <i>GF(2<sup>n </sup>)</i>.
- * It is represented in an optimal normal basis representation and holds the
- * pointer <tt>mField</tt> to its corresponding field.
- *
- * @author Birgit Henhapl
- * @author Martin D�ring
- * @see GF2nField
- * @see GF2nElement
- */
+
 public class GF2nONBElement extends GF2nElement {
 
-    // /////////////////////////////////////////////////////////////////////
-    // member variables
-    // /////////////////////////////////////////////////////////////////////
+
 
     private static final long[] mBitmask = new long[]{0x0000000000000001L,
             0x0000000000000002L, 0x0000000000000004L, 0x0000000000000008L,
@@ -76,12 +55,7 @@ public class GF2nONBElement extends GF2nElement {
             0x07FFFFFFFFFFFFFFL, 0x0FFFFFFFFFFFFFFFL, 0x1FFFFFFFFFFFFFFFL,
             0x3FFFFFFFFFFFFFFFL, 0x7FFFFFFFFFFFFFFFL, 0xFFFFFFFFFFFFFFFFL};
 
-    // mIBy64[j * 16 + i] = (j * 16 + i)/64
-    // i =
-    // 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
-    //
     private static final int[] mIBY64 = new int[]{
-            // j =
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 1
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 2
@@ -110,56 +84,17 @@ public class GF2nONBElement extends GF2nElement {
 
     private static final int MAXLONG = 64;
 
-    /**
-     * holds the lenght of the polynomial with 64 bit sized fields.
-     */
+
     private int mLength;
 
-    /**
-     * holds the value of mDeg % MAXLONG.
-     */
+
     private int mBit;
 
-    /**
-     * holds this element in ONB representation.
-     */
+
     private long[] mPol;
 
-    // /////////////////////////////////////////////////////////////////////
-    // constructors
-    // /////////////////////////////////////////////////////////////////////
 
-    /**
-     * Construct a random element over the field <tt>gf2n</tt>, using the
-     * specified source of randomness.
-     *
-     * @param gf2n the field
-     * @param rand the source of randomness
-     */
-    public GF2nONBElement(GF2nONBField gf2n, Random rand) {
-        mField = gf2n;
-        mDegree = mField.getDegree();
-        mLength = gf2n.getONBLength();
-        mBit = gf2n.getONBBit();
-        mPol = new long[mLength];
-        if (mLength > 1) {
-            for (int j = 0; j < mLength - 1; j++) {
-                mPol[j] = rand.nextLong();
-            }
-            long last = rand.nextLong();
-            mPol[mLength - 1] = last >>> (MAXLONG - mBit);
-        } else {
-            mPol[0] = rand.nextLong();
-            mPol[0] = mPol[0] >>> (MAXLONG - mBit);
-        }
-    }
 
-    /**
-     * Construct a new GF2nONBElement from its encoding.
-     *
-     * @param gf2n the field
-     * @param e    the encoded element
-     */
     public GF2nONBElement(GF2nONBField gf2n, byte[] e) {
         mField = gf2n;
         mDegree = mField.getDegree();
@@ -169,13 +104,7 @@ public class GF2nONBElement extends GF2nElement {
         assign(e);
     }
 
-    /**
-     * Construct the element of the field <tt>gf2n</tt> with the specified
-     * value <tt>val</tt>.
-     *
-     * @param gf2n the field
-     * @param val  the value in ONB representation
-     */
+
     private GF2nONBElement(GF2nONBField gf2n, long[] val) {
         mField = gf2n;
         mDegree = mField.getDegree();
@@ -184,15 +113,7 @@ public class GF2nONBElement extends GF2nElement {
         mPol = val;
     }
 
-    // /////////////////////////////////////////////////////////////////////
-    // pseudo-constructors
-    // /////////////////////////////////////////////////////////////////////
 
-    /**
-     * Copy constructor.
-     *
-     * @param gf2n the field
-     */
     public GF2nONBElement(GF2nONBElement gf2n) {
 
         mField = gf2n.mField;
@@ -221,10 +142,6 @@ public class GF2nONBElement extends GF2nElement {
         polynomial[mLength - 1] = mMaxmask[gf2n.getONBBit() - 1];
 
         return new GF2nONBElement(gf2n, polynomial);
-    }
-
-    void assignZero() {
-        mPol = new long[mLength];
     }
 
     private void assign(long[] val) {
@@ -286,14 +203,6 @@ public class GF2nONBElement extends GF2nElement {
     }
     public boolean testRightmostBit() {
         return (mPol[mLength - 1] & mBitmask[mBit - 1]) != 0L;
-    }
-
-    boolean testBit(int index) {
-        if (index < 0 || index > mDegree) {
-            return false;
-        }
-        long test = mPol[index >>> 6] & mBitmask[index & 0x3f];
-        return test != 0x0L;
     }
 
 
@@ -521,11 +430,7 @@ public class GF2nONBElement extends GF2nElement {
         return result;
     }
 
-    /**
-     * Multiplicatively invert of this element (overwrite <tt>this</tt>).
-     *
-     * @throws ArithmeticException if <tt>this</tt> is the zero element.
-     */
+
     public void invertThis() throws ArithmeticException {
 
         if (isZero()) {
@@ -567,20 +472,14 @@ public class GF2nONBElement extends GF2nElement {
         n.squareThis();
     }
 
-    /**
-     * returns the root of<tt>this</tt> element.
-     *
-     * @return <tt>this</tt><sup>1/2</sup>
-     */
+
     public GF2nElement squareRoot() {
         GF2nONBElement result = new GF2nONBElement(this);
         result.squareRootThis();
         return result;
     }
 
-    /**
-     * square roots <tt>this</tt> element.
-     */
+
     private void squareRootThis() {
 
         long[] pol = getElement();
@@ -611,11 +510,7 @@ public class GF2nONBElement extends GF2nElement {
         assign(pol);
     }
 
-    /**
-     * Returns the trace of this element.
-     *
-     * @return the trace of this element
-     */
+
     private int trace() {
 
         // trace = sum of coefficients
@@ -646,14 +541,7 @@ public class GF2nONBElement extends GF2nElement {
         return result;
     }
 
-    /**
-     * Solves a quadratic equation.<br>
-     * Let z<sup>2</sup> + z = <tt>this</tt>. Then this method returns z.
-     *
-     * @return z with z<sup>2</sup> + z = <tt>this</tt>
-     * @throws NoSolutionException if z<sup>2</sup> + z = <tt>this</tt> does not have a
-     *                             solution
-     */
+
     public GF2nElement solveQuadraticEquation() throws NoSolutionException {
 
         if (trace() == 1) {
@@ -699,27 +587,14 @@ public class GF2nONBElement extends GF2nElement {
         return new GF2nONBElement((GF2nONBField) mField, p);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // conversion
-    // /////////////////////////////////////////////////////////////////
 
-    /**
-     * Returns a String representation of this element.
-     *
-     * @return String representation of this element with the specified radix
-     */
+
+
     public String toString() {
         return toString(16);
     }
 
-    /**
-     * Returns a String representation of this element. <tt>radix</tt>
-     * specifies the radix of the String representation.<br>
-     * NOTE: ONLY <tt>radix = 2</tt> or <tt>radix = 16</tt> IS IMPLEMENTED>
-     *
-     * @param radix specifies the radix of the String representation
-     * @return String representation of this element with the specified radix
-     */
+
     public String toString(int radix) {
         String s = "";
 
@@ -771,12 +646,7 @@ public class GF2nONBElement extends GF2nElement {
         return s;
     }
 
-    /**
-     * Returns this element as FlexiBigInt. The conversion is <a href =
-     * "http://grouper.ieee.org/groups/1363/">P1363</a>-conform.
-     *
-     * @return this element as FlexiBigInt
-     */
+
     public FlexiBigInt toFlexiBigInt() {
 
         return new FlexiBigInt(1, toByteArray());

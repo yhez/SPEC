@@ -1,6 +1,5 @@
 package de.flexiprovider.common.math.ellipticcurves;
 
-//import java.math.BigInteger;
 
 import de.flexiprovider.common.exceptions.DifferentCurvesException;
 import de.flexiprovider.common.exceptions.DifferentFieldsException;
@@ -16,55 +15,33 @@ import de.flexiprovider.common.util.FlexiBigIntUtils;
 
 public class PointGFP extends Point {
 
-    /**
-     * curve parameter a
-     */
+
     private GFPElement mA;
 
-    /**
-     * curve parameter b
-     */
+
     private GFPElement mB;
 
-    /**
-     * x-coordinate of this point
-     */
+
     private GFPElement mX;
 
-    /**
-     * y-coordinate of this point
-     */
+
     private GFPElement mY;
 
-    /**
-     * z-coordinate of this point
-     */
+
     private GFPElement mZ;
 
-    /**
-     * holds z<sup>2</sup> of this point
-     */
+
     private GFPElement mZ2;
 
-    /**
-     * holds z<sup>3</sup> of this point
-     */
+
     private GFPElement mZ3;
 
-    /**
-     * holds a * z<sup>3</sup> of this point
-     */
+
     private GFPElement mAZ4;
 
-    // /////////////////////////////////////////////////////////////
-    // constructors
-    // /////////////////////////////////////////////////////////////
 
-    /**
-     * Construct the point at infinity on the specified elliptic curve.
-     *
-     * @param E EllipticCurveGFP is the elliptic curve this point lies on
-     */
+
+
     public PointGFP(EllipticCurveGFP E) {
         mE = E;
         mP = E.getQ();
@@ -107,15 +84,7 @@ public class PointGFP extends Point {
         mAZ4 = null;
     }
 
-    /**
-     * Constructs a new point. The information is packed in the given byte array
-     * together with the given elliptic curve. (see X9.63-199x)
-     *
-     * @param encoded the point in normal, compressed or hybrid form.
-     * @param E       the underlying elliptic curve
-     * @throws InvalidPointException  if the point is not on the curve.
-     * @throws InvalidFormatException if the point representation is invalid.
-     */
+
     public PointGFP(byte[] encoded, EllipticCurveGFP E)
             throws InvalidPointException, InvalidFormatException {
 
@@ -193,11 +162,7 @@ public class PointGFP extends Point {
         assign(x, y, z);
     }
 
-    /**
-     * Copy constructor.
-     *
-     * @param other point to copy
-     */
+
     public PointGFP(PointGFP other) {
         mE = other.mE;
         mP = other.mP;
@@ -207,14 +172,9 @@ public class PointGFP extends Point {
         assign(other);
     }
 
-    // /////////////////////////////////////////////////////////////
-    // assignments
-    // /////////////////////////////////////////////////////////////
 
-    /**
-     * Assigns to this point the point at infinity. The coordinates of this
-     * point are (x, y, z) = (1, 1, 0).
-     */
+
+
     private void assignZero() {
         mX = GFPElement.ONE(mP);
         mY = GFPElement.ONE(mP);
@@ -224,14 +184,7 @@ public class PointGFP extends Point {
         mAZ4 = null;
     }
 
-    /**
-     * Assigns to this point the x-, y- and z-coordinates (<tt>x</tt>,
-     * <tt>y</tt>, <tt>z</tt>) (without copying).
-     *
-     * @param x FlexiBigInt is the x-coordinate
-     * @param y FlexiBigInt is the y-coordinate
-     * @param z FlexiBigInt is the z-coordinate
-     */
+
     private void assign(GFPElement x, GFPElement y, GFPElement z) {
         mX = x;
         mY = y;
@@ -241,12 +194,7 @@ public class PointGFP extends Point {
         mAZ4 = null;
     }
 
-    /**
-     * Assigns to this point the x-, y- and z-coordinates of the given other
-     * point (by copying the coordinates).
-     *
-     * @param other the other point
-     */
+
     private void assign(PointGFP other) {
         mX = (GFPElement) other.mX.clone();
         mY = (GFPElement) other.mY.clone();
@@ -256,9 +204,7 @@ public class PointGFP extends Point {
         mAZ4 = null;
     }
 
-    /**
-     * @return a clone of this point
-     */
+
     public Object clone() {
         return new PointGFP(this);
     }
@@ -313,10 +259,7 @@ public class PointGFP extends Point {
         return oX.equals(x) && oY.equals(y);
     }
 
-    /**
-     * @return the hash code of this point
-     * @see Object#hashCode()
-     */
+
     public int hashCode() {
         // Two projective points are equal iff their corresponding
         // affine representations are equal. We cannot simply sum over the
@@ -328,14 +271,6 @@ public class PointGFP extends Point {
         // this point changes.
         return getXAffin().hashCode() + getYAffin().hashCode();
     }
-
-    /**
-     * Returns this point in affine representation as a String: (x, y), where x =
-     * <tt>mX</tt>/<tt>mZ<sup>2</sup></tt> and y = <tt>mZ</tt>/<tt>mZ<sup>3</sup></tt>.
-     * If this point is at infinity (that means, mZ = 0), the output is (0, 0).
-     *
-     * @return String (x, y)
-     */
     public String toString() {
         if (isZero()) {
             return "(0, 0)";
@@ -343,33 +278,16 @@ public class PointGFP extends Point {
         return "(" + getXAffin().toString() + ",\n " + getYAffin().toString()
                 + ")";
     }
-
-    // ///////////////////////////////////////////////////////////
-    // access
-    // ///////////////////////////////////////////////////////////
-
-    /**
-     * @return the x-coordinate of this point
-     */
     public GFElement getX() {
         return mX;
     }
 
-    /**
-     * @return the y-coordinate of this point
-     */
+
     public GFElement getY() {
         return mY;
     }
 
-    /**
-     * Return the x-coordinate of this point in affine representation. In this
-     * class, the projective representation x = X/Z<sup>2</sup> and y = Y/Z<sup>3</sup>
-     * is chosen to speed up point addition. This method returns the
-     * x-coordinate in affine representation.
-     *
-     * @return the x-coordinate of this point in affine representation
-     */
+
     public GFElement getXAffin() {
 
         // TODO the zero point has no affine coordinates
@@ -385,14 +303,7 @@ public class PointGFP extends Point {
         return mX.multiply(mZ2.invert());
     }
 
-    /**
-     * Return the y-coordinate of this point in affine representation. In this
-     * class, the projective representation x = X/Z<sup>2</sup> and y = Y/Z<sup>3</sup>
-     * is chosen to speed up point addition. This method returns the
-     * y-coordinate in affine representation.
-     *
-     * @return the y-coordinate of this point in affine representation
-     */
+
     private GFElement getYAffin() {
 
         // TODO the zero point has no affine coordinates
@@ -406,12 +317,6 @@ public class PointGFP extends Point {
 
         return mY.multiply(mZ3.invert());
     }
-
-    /**
-     * Returns this point with affine coordinates.
-     *
-     * @return <tt>this</tt>
-     */
     public Point getAffin() {
         if (!(mZ.isOne()) && !(mZ.isZero())) {
             GFElement z = mZ.invert();
@@ -425,20 +330,7 @@ public class PointGFP extends Point {
         return this;
     }
 
-    /**
-     * Tests whether this point is on the curve mE. This method returns
-     * <tt>true</tt>, if <br>
-     * <tt><tt>mY</tt><sup>2</sup> -
-     * <tt>mX</tt><sup>3</sup> - <tt>mA</tt>*<tt>mX</tt>*
-     * <tt>mZ</tt><sup>4</sup> - <tt>mB</tt>*<tt>mZ</tt><sup>6</sup>
-     * = 0</tt>,<br>
-     * otherwise <tt>false</tt>.
-     *
-     * @return <tt><tt>mY</tt><sup>2</sup> - <tt>mX</tt>
-     * <sup>3</sup> - <tt>mA</tt>*<tt>mX</tt>*<tt>mZ</tt>
-     * <sup>4</sup> - <tt>mB</tt>*<tt>mZ</tt><sup>6</sup> == 0</tt>
-     * @see EllipticCurveGFP
-     */
+
     public boolean onCurve() {
         // The point at infinity is always on the curve:
         if (isZero()) {
@@ -478,62 +370,16 @@ public class PointGFP extends Point {
         final GFElement bZ6 = mB.multiply(mZ3).multiply(mZ3); // b*z^6
         return y2.equals(x3.add(aXZ4).add(bZ6));
     }
-
-    /**
-     * @return <tt>true</tt> if this point is the point at infinity,
-     * <tt>false</tt> otherwise.
-     */
     public boolean isZero() {
         return mX.isOne() && mY.isOne() && mZ.isZero();
     }
-
-    // ////////////////////////////////////////////////////////////////////
-    // arithmetic
-    // ////////////////////////////////////////////////////////////////////
-
-    /**
-     * Adds to this point <tt>other</tt>. The formula is:<br>
-     * X<sub>3</sub> = -H<sup>3</sup> - 2U<sub>1</sub>H<sup>2</sup> + r<sup>2</sup><br>
-     * Y<sub>3</sub> = -S<sub>1</sub>H<sup>3</sup> + r*(U<sub>1</sub>H<sup>2</sup> -
-     * X<sub>3</sub><br>
-     * Z<sub>3</sub> = Z<sub>1</sub>Z<sub>2</sub>H<br>
-     * Z<sub>3</sub><sup>2</sup> = Z<sub>3</sub><sup>2</sup><br>
-     * Z<sub>3</sub><sup>3</sup> = Z<sub>3</sub><sup>3</sup><br>
-     * with<br>
-     * U<sub>1</sub> = X<sub>1</sub>Z<sub>2</sub><sup>2</sup><br>
-     * U<sub>2</sub> = X<sub>2</sub>Z<sub>1</sub><sup>2</sup><br>
-     * S<sub>1</sub> = Y<sub>1</sub>Z<sub>2</sub><sup>3</sup><br>
-     * S<sub>2</sub> = Y<sub>2</sub>Z<sub>1</sub><sup>3</sup><br>
-     * H = U<sub>2</sub> - U<sub>1</sub><br>
-     * r = S<sub>2</sub> - S<sub>1</sub><br>
-     *
-     * @param other point to add to this point
-     * @return <tt>this + other</tt>
-     */
     public Point add(Point other) {
         PointGFP result = new PointGFP(this);
         result.addToThis(other);
         return result;
     }
 
-    /**
-     * Adds to this point <tt>other</tt>. The formula is:<br>
-     * X<sub>3</sub> = -H<sup>3</sup> - 2U<sub>1</sub>H<sup>2</sup> + r<sup>2</sup><br>
-     * Y<sub>3</sub> = -S<sub>1</sub>H<sup>3</sup> + r*(U<sub>1</sub>H<sup>2</sup> -
-     * X<sub>3</sub><br>
-     * Z<sub>3</sub> = Z<sub>1</sub>Z<sub>2</sub>H<br>
-     * Z<sub>3</sub><sup>2</sup> = Z<sub>3</sub><sup>2</sup><br>
-     * Z<sub>3</sub><sup>3</sup> = Z<sub>3</sub><sup>3</sup><br>
-     * with<br>
-     * U<sub>1</sub> = X<sub>1</sub>Z<sub>2</sub><sup>2</sup><br>
-     * U<sub>2</sub> = X<sub>2</sub>Z<sub>1</sub><sup>2</sup><br>
-     * S<sub>1</sub> = Y<sub>1</sub>Z<sub>2</sub><sup>3</sup><br>
-     * S<sub>2</sub> = Y<sub>2</sub>Z<sub>1</sub><sup>3</sup><br>
-     * H = U<sub>2</sub> - U<sub>1</sub><br>
-     * r = S<sub>2</sub> - S<sub>1</sub><br>
-     *
-     * @param other point to add to this point
-     */
+
     public void addToThis(Point other) {
 
         if (!(other instanceof PointGFP)) {
@@ -676,23 +522,14 @@ public class PointGFP extends Point {
         assign((GFPElement) x, (GFPElement) y, (GFPElement) z);
     }
 
-    /**
-     * Subtracts point <tt>other</tt> from this point.
-     *
-     * @param other another Point
-     * @return <tt>this</tt> - <tt>other</tt>
-     */
+
     public Point subtract(Point other) {
         PointGFP result = new PointGFP(this);
         result.subtractFromThis(other);
         return result;
     }
 
-    /**
-     * Subtracts point <tt>other</tt> from this point.
-     *
-     * @param other another Point
-     */
+
     public void subtractFromThis(Point other) {
 
         if (!(other instanceof PointGFP)) {
@@ -707,21 +544,13 @@ public class PointGFP extends Point {
             addToThis(minusOther);
         }
     }
-
-    /**
-     * Returns the inverse of this point.
-     *
-     * @return -<tt>this</tt>
-     */
     public Point negate() {
         PointGFP result = new PointGFP(this);
         result.negateThis();
         return result;
     }
 
-    /**
-     * Returns the inverse of this point.
-     */
+
     private void negateThis() {
         if (!isZero()) {
             // y = -mY mod mP
@@ -730,38 +559,14 @@ public class PointGFP extends Point {
         }
     }
 
-    /**
-     * Returns 2*<tt>this</tt>. The formula is:<br>
-     * X<sub>2</sub> = T<br>
-     * Y<sub>2</sub> = 8Y<sup>4</sup> + M(S - T)<br>
-     * Z<sub>2</sub> = 2YZ<br>
-     * Z<sub>2</sub><sup>2</sup> = Z<sub>2</sub><sup>2</sup><br>
-     * Z<sub>2</sub><sup>3</sup> = Z<sub>2</sub><sup>3</sup><br>
-     * with<br>
-     * S = 4XY<sup>2</sup><br>
-     * M = 3X<sup>2</sup> + a(Z<sup>2</sup>)<sup>2</sup><br>
-     * T = -2S + M<sup>2</sup>
-     *
-     * @return 2*<tt>this</tt>
-     */
+
     public Point multiplyBy2() {
         PointGFP result = new PointGFP(this);
         result.multiplyThisBy2();
         return result;
     }
 
-    /**
-     * This = 2*<tt>this</tt>. The formula is:<br>
-     * X<sub>2</sub> = -2S + M<sup>2</sup><br>
-     * Y<sub>2</sub> = M(S - X<sub>2</sub>) - T<br>
-     * Z<sub>2</sub> = 2YZ<br>
-     * Z<sub>2</sub><sup>2</sup> = Z<sub>2</sub><sup>2</sup><br>
-     * Z<sub>2</sub><sup>3</sup> = Z<sub>2</sub><sup>3</sup><br>
-     * with<br>
-     * S = 4XY<sup>2</sup><br>
-     * M = 3X<sup>2</sup> + aZ<sup>4</sup><br>
-     * T = 8Y<sup>4</sup>
-     */
+
     public void multiplyThisBy2() {
 
         if (isZero()) {
@@ -826,11 +631,7 @@ public class PointGFP extends Point {
         assign((GFPElement) x, (GFPElement) y, (GFPElement) z);
     }
 
-    /**
-     * Doubles this point in affine coordinates.
-     *
-     * @return 2*<code>this</code> in affine coordinates
-     */
+
     public Point multiplyBy2Affine() {
 
         if (this.isZero()) {
@@ -958,18 +759,9 @@ public class PointGFP extends Point {
         return encoded;
     }
 
-    // ////////////////////////////////////////////////////////////////////
-    // help functions
-    // ////////////////////////////////////////////////////////////////////
 
-    /**
-     * Computes the y-coordinate from the given x-coordinate, the elliptic curve
-     * mE and the least significant bit yMod2 of y. Let g = x<sup>3</sup> + ax +
-     * b mod p and z = sqrt(g) mod p. Then, y = z if either<br>
-     * y is even and yMod2 = 0 or<br>
-     * y is odd and yMod2 = 1.<br>
-     * Otherwise, y = p - z.
-     */
+
+
     private GFPElement decompress(boolean yMod2, GFElement x)
             throws InvalidPointException {
 

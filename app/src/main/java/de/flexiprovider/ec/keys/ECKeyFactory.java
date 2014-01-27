@@ -47,23 +47,11 @@ public class ECKeyFactory extends KeyFactory {
 
             try {
                 ASN1Tools.derDecode(encKey, pki);
-
-                // Get the private key as an instance of an ECPrivateKey
-                // Sequence.
                 ASN1Sequence privKeySequence = (ASN1Sequence) pki
                         .getDecodedRawKey();
-
-                // The ECPrivateKey sequence contains a version number, the
-                // actual private key as an octet string, and optional
-                // parameters. The parameters are always given in the PKCS #8
-                // PrivateKeyInfo Sequence, so that there is no need to take the
-                // parameters from the ECPrivateKey.
                 ASN1OctetString oct = (ASN1OctetString) privKeySequence.get(1);
                 FlexiBigInt priv = new FlexiBigInt(1, oct.getByteArray());
 
-                // Get the parameters from the PrivateKeyInfo. The parameters
-                // are in the AlgorithmIdentifier. The AlgorithmIdentifier must
-                // be a Sequence.
                 AlgorithmIdentifier algId = PKITools
                         .getAlgorithmIdentifier(pki);
                 AlgorithmParameters params = algId.getParams();
@@ -82,15 +70,6 @@ public class ECKeyFactory extends KeyFactory {
                 + keySpec + ".");
     }
 
-    /**
-     * Generates a public key object from the provided key specification (key
-     * material).
-     *
-     * @param keySpec the specification (key material) of the public key
-     * @return the public key
-     * @throws InvalidKeySpecException if the given key specification is inappropriate for this
-     *                                 key factory to produce a public key.
-     */
     public PublicKey generatePublic(KeySpec keySpec)
             throws InvalidKeySpecException {
 
@@ -117,10 +96,6 @@ public class ECKeyFactory extends KeyFactory {
 
                 // get the public key as a byte array.
                 byte[] pubKeyBytes = spki.getRawKey();
-
-                // Get the parameters from the SubjectPublicKeyInfo.
-                // The parameters are in the AlgorithmIdentifier.
-                // The AlgorithmIdentifier must be a Sequence.
                 AlgorithmIdentifier algId = PKITools
                         .getAlgorithmIdentifier(spki);
                 AlgorithmParameters aparam = algId.getParams();
@@ -194,14 +169,6 @@ public class ECKeyFactory extends KeyFactory {
                 + keySpec + ".");
     }
 
-    /**
-     * Translates a key object, whose provider may be unknown or potentially
-     * untrusted, into a corresponding key object of this key factory.
-     *
-     * @param key the key whose provider is unknown or untrusted
-     * @return the translated key
-     * @throws InvalidKeyException if the given key cannot be processed by this key factory.
-     */
     public Key translateKey(Key key) throws InvalidKeyException {
 
         try {

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.md;
 
 import de.flexiprovider.api.MessageDigest;
@@ -15,21 +6,11 @@ import de.flexiprovider.common.util.BigEndianConversions;
 
 public class DHA256 extends MessageDigest {
 
-    /**
-     * Initial hash value H<sup>(0)</sup>
-     * <p/>
-     * These were obtained by taking the fractional parts of the square roots of
-     * the first eight primes.
-     */
+
     private static final int[] H0 = {0x6a09e667, 0xbb67ae85, 0x3c6ef372,
             0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19};
 
-    /**
-     * Constant words K<sub>0...63</sub>
-     * <p/>
-     * These are the first thirty-two bits of the fractional parts of the cube
-     * roots of the first sixty-four primes.
-     */
+
     private static final int[] K = {0x428a2f98, 0x71374491, 0xb5c0fbcf,
             0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
             0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74,
@@ -45,49 +26,30 @@ public class DHA256 extends MessageDigest {
             0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7,
             0xc67178f2,};
 
-    /**
-     * Length of the DHA-256 message digest in bytes
-     */
+
     private static final int DHA256_DIGEST_LENGTH = 32;
 
-    /**
-     * Input buffer
-     */
+
     private byte[] buffer;
 
-    /**
-     * Counter for the number of bytes of the message
-     */
+
     private long count;
 
-    /**
-     * Contains the digest value after complete message has been processed
-     */
+
     private int[] H = new int[8];
 
-    /**
-     * Default constructor
-     */
+
     public DHA256() {
         buffer = new byte[64];
         reset();
     }
 
-    /**
-     * @return the digest length in bytes
-     */
+
     public int getDigestLength() {
         return DHA256_DIGEST_LENGTH;
     }
 
-    /**
-     * Update the digest using the specified array of bytes, starting at the
-     * specified offset.
-     *
-     * @param input the byte array to use for the update
-     * @param inOff the offset to start from in the byte array
-     * @param inLen the number of bytes to use
-     */
+
     public synchronized void update(byte[] input, int inOff, int inLen) {
         int bufOffset = ((int) count) & 63;
         int copyLen;
@@ -107,11 +69,7 @@ public class DHA256 extends MessageDigest {
         }
     }
 
-    /**
-     * Update the digest using the specified byte.
-     *
-     * @param input the byte to use for the update
-     */
+
     public synchronized void update(byte input) {
         buffer[(int) count & 63] = input;
 
@@ -120,13 +78,6 @@ public class DHA256 extends MessageDigest {
         }
         count++;
     }
-
-    /**
-     * Complete the hash computation by performing final operations such as
-     * padding.
-     *
-     * @return the digest value
-     */
     public synchronized byte[] digest() {
         pad();
 
@@ -140,9 +91,7 @@ public class DHA256 extends MessageDigest {
         return digestValue;
     }
 
-    /**
-     * Reset the digest objects to its initial state.
-     */
+
     public void reset() {
         H[0] = H0[0];
         H[1] = H0[1];
@@ -155,10 +104,6 @@ public class DHA256 extends MessageDigest {
 
         count = 0;
     }
-
-    /**
-     * Compute the hash value of the current block and store it in H
-     */
     private synchronized void processBlock() {
         int T1, T2;
         int[] W = new int[64];
@@ -268,10 +213,6 @@ public class DHA256 extends MessageDigest {
         H[6] += g;
         H[7] += h;
     }
-
-    /**
-     * This method performs the padding and hash the value.
-     */
     private void pad() {
         // compute length of message in bits
         long bitLength = count << 3;
@@ -301,16 +242,10 @@ public class DHA256 extends MessageDigest {
         processBlock();
     }
 
-    /**
-     * Sigma 0 function
-     */
+
     private static int sigma0(int x) {
         return ((x << 7) | (x >>> 25)) ^ ((x << 22) | (x >>> 10)) ^ x;
     }
-
-    /**
-     * Sigma 1 function
-     */
     private static int sigma1(int x) {
         return ((x << 13) | (x >>> 19)) ^ ((x << 27) | (x >>> 5)) ^ x;
     }

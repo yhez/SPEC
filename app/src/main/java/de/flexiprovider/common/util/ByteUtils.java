@@ -32,38 +32,6 @@ public final class ByteUtils {
         return result;
     }
 
-    public static boolean equals(byte[][] left, byte[][] right) {
-        if (left.length != right.length) {
-            return false;
-        }
-
-        boolean result = true;
-        for (int i = left.length - 1; i >= 0; i--) {
-            result &= ByteUtils.equals(left[i], right[i]);
-        }
-
-        return result;
-    }
-
-
-    public static boolean equals(byte[][][] left, byte[][][] right) {
-        if (left.length != right.length) {
-            return false;
-        }
-
-        boolean result = true;
-        for (int i = left.length - 1; i >= 0; i--) {
-            if (left[i].length != right[i].length) {
-                return false;
-            }
-            for (int j = left[i].length - 1; j >= 0; j--) {
-                result &= ByteUtils.equals(left[i][j], right[i][j]);
-            }
-        }
-
-        return result;
-    }
-
 
     public static byte[] clone(byte[] array) {
         if (array == null) {
@@ -129,28 +97,5 @@ public final class ByteUtils {
         return result;
     }
 
-
-    public static byte[] xor(byte[] x1, byte[] x2) {
-        byte[] out = new byte[x1.length];
-
-        for (int i = x1.length - 1; i >= 0; i--) {
-            out[i] = (byte) (x1[i] ^ x2[i]);
-        }
-        return out;
-    }
-
-
-    public static byte[][] split(byte[] input, int index)
-            throws ArrayIndexOutOfBoundsException {
-        if (index > input.length) {
-            throw new ArrayIndexOutOfBoundsException();
-        }
-        byte[][] result = new byte[2][];
-        result[0] = new byte[index];
-        result[1] = new byte[input.length - index];
-        System.arraycopy(input, 0, result[0], 0, index);
-        System.arraycopy(input, index, result[1], 0, input.length - index);
-        return result;
-    }
 
 }

@@ -31,81 +31,40 @@ import de.flexiprovider.common.padding.OneAndZeroesPadding;
 import de.flexiprovider.common.padding.PKCS5Padding;
 import de.flexiprovider.common.util.DefaultPRNG;
 
-/**
- * This class is responsible for the registration and instantiation of all
- * cryptographic algorithms of the FlexiProvider. It provides methods for adding
- * registrations of algorithms and methods for instantiating registered
- * algorithms.
- *
- * @author Johannes M�ller
- * @author Martin D�ring
- */
+
 public abstract class Registry {
 
-	/* algorithm type constants */
-
-    /**
-     * Constant for asymmetric hybrid ciphers
-     */
     public static final int ASYMMETRIC_HYBRID_CIPHER = 1;
 
-    /**
-     * Constant for symmetric block ciphers
-     */
     public static final int BLOCK_CIPHER = 2;
 
-    /**
-     * Constant for modes of operation
-     */
     public static final int MODE = 3;
 
-    /**
-     * Constant for padding schemes
-     */
     public static final int PADDING_SCHEME = 4;
 
-    /**
-     * Constant for message authentication codes (MACs)
-     */
     public static final int MAC = 6;
 
-    /**
-     * Constant for algorithm parameter specifications
-     */
+
     public static final int ALG_PARAM_SPEC = 10;
 
-    /**
-     * Constant for algorithm parameters (used to encode and decode parameter
-     * specifications)
-     */
+
     public static final int ALG_PARAMS = 11;
 
-    /**
-     * Constant for algorithm parameter generators
-     */
+
     public static final int ALG_PARAM_GENERATOR = 12;
 
-    /**
-     * Constant for secret key generators
-     */
+
     public static final int SECRET_KEY_GENERATOR = 13;
 
-    /**
-     * Constant for key pair generators
-     */
+
     public static final int KEY_PAIR_GENERATOR = 14;
 
-    /**
-     * Constant for secret key factories
-     */
+
     public static final int SECRET_KEY_FACTORY = 15;
 
-    /**
-     * Constant for key factories
-     */
+
     public static final int KEY_FACTORY = 16;
 
-    /* hash tables for the different algorithm types */
 
     private static final Hashtable asymBlockCiphers = new Hashtable();
     private static final Hashtable asymHybridCiphers = new Hashtable();
@@ -200,16 +159,7 @@ public abstract class Registry {
         }
     }
 
-    /**
-     * Try to find an algorithm with the specified name inside the corresponding
-     * hashtable and return an instance of the algorithm.
-     *
-     * @param transformation the transformation (either of the form 'algorithm' or
-     *                       'algorithm/mode/padding')
-     * @return block cipher object
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the block cipher or mode cannot be found.
-     * @throws de.flexiprovider.api.exceptions.NoSuchPaddingException   if the padding scheme cannot be found.
-     */
+
     public static BlockCipher getBlockCipher(String transformation)
             throws NoSuchAlgorithmException, NoSuchPaddingException {
 
@@ -257,20 +207,12 @@ public abstract class Registry {
         return result;
     }
 
-    /**
-     * @return an instance of the default mode (CBC)
-     */
+
     protected static Mode getMode() {
         return new CBC();
     }
 
-    /**
-     * Return an instance of the specified mode.
-     *
-     * @param modeName the name of the mode
-     * @return a new {@link Mode} object implementing the chosen algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchModeException if the mode cannot be found.
-     */
+
     protected static Mode getMode(String modeName)
             throws NoSuchModeException {
         try {
@@ -280,21 +222,12 @@ public abstract class Registry {
         }
     }
 
-    /**
-     * @return an instance of the default padding scheme (PKCS5Padding)
-     */
+
     protected static PaddingScheme getPaddingScheme() {
         return new PKCS5Padding();
     }
 
-    /**
-     * Return an instance of the specified padding scheme.
-     *
-     * @param paddingName the name of the padding scheme
-     * @return a new {@link PaddingScheme} object implementing the chosen
-     * algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchPaddingException if the padding scheme cannot be found.
-     */
+
     protected static PaddingScheme getPaddingScheme(String paddingName)
             throws NoSuchPaddingException {
         try {
@@ -304,47 +237,18 @@ public abstract class Registry {
         }
     }
 
-    /**
-     * Return an instance of the specified message authentication code (MAC).
-     *
-     * @param algName the name of the MAC
-     * @return a new {@link Mac} object implementing the chosen algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the MAC cannot be found.
-     */
+
     public static Mac getMAC(String algName)
             throws NoSuchAlgorithmException {
         return (Mac) getInstance(macs, algName);
     }
 
-    /**
-     * Return an instance of the specified message digest.
-     *
-     * @param algName the name of the message digest
-     * @return a new {@link MessageDigest} object implementing the chosen
-     * algorithm
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the message digest cannot be found.
-     */
-    public static MessageDigest getMessageDigest(String algName)
-            throws NoSuchAlgorithmException {
-        return (MessageDigest) getInstance(messageDigests, algName);
-    }
 
-    /**
-     * @return the default secure random
-     * @throws RuntimeException if the default secure random cannot be instantiated.
-     */
     public static SecureRandom getSecureRandom() {
         return new DefaultPRNG();
     }
 
-    /**
-     * Return the algorithm parameter specification class corresponding to the
-     * given algorithm name.
-     *
-     * @param algName the algorithm name
-     * @return the corresponding algorithm parameter specification class
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the parameters class cannot be found.
-     */
+
     public static Class getAlgParamSpecClass(String algName)
             throws NoSuchAlgorithmException {
         Class algorithmClass = (Class) resolveAlias(algParamSpecs, algName);
@@ -354,14 +258,7 @@ public abstract class Registry {
         return algorithmClass;
     }
 
-    /**
-     * Return an instance of the algorithm parameter specification class
-     * corresponding to the given algorithm name.
-     *
-     * @param paramName the name of the standard algorithm parameters
-     * @return the standard algorithm parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters cannot be found.
-     */
+
     public static AlgorithmParameterSpec getAlgParamSpec(String paramName)
             throws InvalidAlgorithmParameterException {
         try {
@@ -373,17 +270,7 @@ public abstract class Registry {
         }
     }
 
-    /**
-     * Register a list of standardized algorithm parameters for the given list
-     * of algorithms. Additionally, each parameter set has to be registered
-     * separately using the {@link #add(int, Class, String)} or
-     * {@link #add(int, Class, String[])} method with the
-     * {@link #ALG_PARAM_SPEC} type.
-     *
-     * @param algNames   the names of the algorithms
-     * @param paramNames the names of the standardized algorithm parameters suitable
-     *                   for the specified algorithm
-     */
+
     public static void addStandardAlgParams(String[] algNames,
                                                   String[] paramNames) {
 
@@ -430,16 +317,7 @@ public abstract class Registry {
         return value;
     }
 
-    /**
-     * Try to find an algorithm with the specified name inside the corresponding
-     * hashtable and return an instance of the algorithm.
-     *
-     * @param table hashtable containing the algorithm
-     * @param name  the algorithm name
-     * @return a new object implementing the chosen algorithm, or <tt>null</tt>
-     * if the algorithm name is <tt>null</tt>
-     * @throws de.flexiprovider.api.exceptions.NoSuchAlgorithmException if the algorithm cannot be found.
-     */
+
     private static Object getInstance(Hashtable table, String name)
             throws NoSuchAlgorithmException {
         if (name == null) {

@@ -7,9 +7,6 @@ import codec.asn1.ASN1ObjectIdentifier;
 
 public class Parameters extends ASN1Choice {
 
-    /**
-     * The default constructor adds the supported types to this choice.
-     */
     public Parameters() {
         // create an instance of ASN1Choice with capacity 3.
         super(3);

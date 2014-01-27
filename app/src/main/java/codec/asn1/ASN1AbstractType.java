@@ -76,17 +76,6 @@ public abstract class ASN1AbstractType implements ASN1Type,
         }
     }
 
-    /**
-     * The writeExternal and readExternal methods of the Externalizable
-     * interface are implemented by a class to give the serializable class
-     * complete control over the format and contents of the stream for an object
-     * and its supertypes.
-     *
-     * @param out -
-     *            the stream to write the object to
-     * @throws java.io.IOException if an I/0 error has occured
-     * @see java.io.Externalizable
-     */
     public void writeExternal(ObjectOutput out) throws IOException {
         byte[] res;
 
@@ -102,18 +91,6 @@ public abstract class ASN1AbstractType implements ASN1Type,
         }
     }
 
-    /**
-     * The writeExternal and readExternal methods of the Externalizable
-     * interface are implemented by a class to give the serializable class
-     * complete control over the format and contents of the stream for an object
-     * and its supertypes.
-     *
-     * @param in -
-     *           the stream to read data from in order to restore the
-     *           object
-     * @throws java.io.IOException if an I/0 error has occured
-     * @see java.io.Externalizable
-     */
     public void readExternal(ObjectInput in) throws IOException {
         try {
             decode(new DERDecoder((ObjectInputStream) in));

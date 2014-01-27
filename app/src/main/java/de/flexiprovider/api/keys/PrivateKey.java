@@ -9,20 +9,11 @@ import de.flexiprovider.pki.AlgorithmIdentifier;
 
 public abstract class PrivateKey implements Key, java.security.PrivateKey {
 
-    /**
-     * Return the encoding format, PKCS #8.
-     *
-     * @return "PKCS#8"
-     */
+
     public final String getFormat() {
         return "PKCS#8";
     }
 
-    /**
-     * Return the key in its primary encoding format, PKCS #8.
-     *
-     * @return the PKCS #8 encoded key.
-     */
     public final byte[] getEncoded() {
         AlgorithmIdentifier aid;
         try {

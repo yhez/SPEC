@@ -1,32 +1,6 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- */
 package de.flexiprovider.core.md;
 
 import de.flexiprovider.common.util.LittleEndianConversions;
-
-/**
- * This class implements the RIPEMD-128 message digest algorithm according to
- * the Handbook of Applied Cryptography, Menezes, van Oorschot, Vanstone, CRC
- * Press, 19??, algorithm 9.55
- * <p/>
- * <p/>
- * The algorithm has been invented by Hans Dobbertin, and further information
- * concerning the RIPEMD message digest family can be found at <a
- * href="http://www.esat.kuleuven.ac.be/~bosselae/ripemd160.html">
- * www.esat.kuleuven.ac.be/~bosselae/ripemd160.html</a>.
- * <p/>
- * <p/>
- * The efficiency of this implementation has been tested on a AMD K6-III, 450
- * MHz, running Windows 98 SE, using jdk 1.2.2. The hashing rate is about 55
- * MBits / second.
- *
- * @author Oliver Seiler
- */
 public final class RIPEMD128 extends MDFamilyDigest {
 
     // magic constants for initialization
@@ -57,25 +31,17 @@ public final class RIPEMD128 extends MDFamilyDigest {
             11, 8, 6, 6, 14, 12, 13, 5, 14, 13, 13, 7, 5, 15, 5, 8, 11,
             14, 14, 6, 14, 6, 9, 12, 9, 12, 5, 15, 8};
 
-    /**
-     * Constructor.
-     */
+
     public RIPEMD128() {
         super(RIPEMD128_DIGEST_LENGTH);
     }
 
-    /**
-     * reset the engine to its initial state
-     */
+
     public void reset() {
         initMessageDigest(initState);
     }
 
-    /**
-     * compute the digest and reset the engine
-     *
-     * @return the message digest in a byte array
-     */
+
     public synchronized byte[] digest() {
         // produce the final digest
         byte[] digest = new byte[RIPEMD128_DIGEST_LENGTH];
@@ -94,9 +60,7 @@ public final class RIPEMD128 extends MDFamilyDigest {
         return digest;
     }
 
-    /**
-     * process a block of 64 bytes
-     */
+
     protected synchronized void processBlock() {
         int Al = state[0];
         int Bl = state[1];
@@ -190,7 +154,6 @@ public final class RIPEMD128 extends MDFamilyDigest {
         state[0] = Cl;
     }
 
-	/* basic conversion functions */
 
     private static int F(int u, int v, int w) {
         return u ^ v ^ w;

@@ -5,7 +5,7 @@ public class ASN1T61String extends ASN1AbstractString {
 
 
     public ASN1T61String(String s) {
-        super(s);
+        super.setString0(s);
     }
 
     public int getTag() {

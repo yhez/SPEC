@@ -7,37 +7,24 @@ import de.flexiprovider.common.math.finitefields.GFElement;
 
 public class Curve extends ASN1Sequence {
 
-    /**
-     * Default constructor. The optional seed is omitted.
-     */
+
     public Curve() {
         super(3);
         add(new ASN1OctetString());
         add(new ASN1OctetString());
     }
 
-    /**
-     * Constructor from two curve coefficients. The optional seed is omitted.
-     *
-     * @param a the curve coefficient a
-     * @param b the curve coefficient b
-     */
+
     public Curve(GFElement a, GFElement b) {
         super(2);
         add(new ASN1OctetString(filterByteArray(a.toByteArray())));
         add(new ASN1OctetString(filterByteArray(b.toByteArray())));
     }
 
-    /**
-     * @return the curve coefficient a
-     */
     byte[] getA() {
         return ((ASN1OctetString) get(0)).getByteArray();
     }
 
-    /**
-     * @return the curve coefficient b
-     */
     byte[] getB() {
         return ((ASN1OctetString) get(1)).getByteArray();
     }

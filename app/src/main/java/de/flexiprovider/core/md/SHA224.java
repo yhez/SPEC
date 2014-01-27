@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.core.md;
 
 
@@ -19,16 +11,10 @@ public final class SHA224 extends SHA224_256 {
 
     private static final int SHA224_DIGEST_LENGTH = 28;
 
-    /**
-     * Default constructor.
-     */
     public SHA224() {
         super(SHA224_DIGEST_LENGTH);
     }
 
-    /**
-     * Reset the digest objects to its initial state.
-     */
     public void reset() {
         initMessageDigest(H0);
     }

@@ -15,39 +15,24 @@ import de.flexiprovider.common.util.StringUtils;
 
 public abstract class CurveParams implements AlgorithmParameterSpec {
 
-    /**
-     * OID
-     */
+
     private ASN1ObjectIdentifier oid;
 
     FlexiBigInt q;
 
-    /**
-     * elliptic curve E
-     */
+
     EllipticCurve E;
 
-    /**
-     * basepoint G
-     */
+
     Point g;
 
-    /**
-     * order r of basepoint G
-     */
+
     private FlexiBigInt r;
 
-    /**
-     * cofactor k
-     */
+
     private int k;
 
-    /**
-     * Construct new curve parameters from the given Strings.
-     *
-     * @param r order r of basepoint G
-     * @param k cofactor k
-     */
+
     protected CurveParams(String r, String k) {
         String s = StringUtils.filterSpaces(r);
         this.r = new FlexiBigInt(s, 16);
@@ -55,13 +40,7 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
         this.k = Integer.valueOf(s, 16);
     }
 
-    /**
-     * Construct new curve parameters from the given Strings.
-     *
-     * @param oid OID of the curve parameters
-     * @param r   order r of basepoint G
-     * @param k   cofactor k
-     */
+
     protected CurveParams(String oid, String r, String k) {
         this.oid = new ASN1ObjectIdentifier(oid);
         String s = StringUtils.filterSpaces(r);
@@ -70,13 +49,7 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
         this.k = Integer.valueOf(s, 16);
     }
 
-    /**
-     * Construct new curve parameters from the given parameters.
-     *
-     * @param g basepoint G
-     * @param r order r of basepoint G
-     * @param k cofactor k
-     */
+
     protected CurveParams(Point g, FlexiBigInt r, int k) {
         this.g = g;
         E = g.getE();
@@ -85,51 +58,33 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
         this.k = k;
     }
 
-    /**
-     * @return the OID of the curve parameters
-     */
+
     public ASN1ObjectIdentifier getOID() {
         return oid;
     }
 
-    /**
-     * @return the size of the underlying field
-     */
+
     public FlexiBigInt getQ() {
         return q;
     }
 
-    /**
-     * @return the elliptic curve <tt>E</tt>
-     */
+
     public EllipticCurve getE() {
         return E;
     }
-
-    /**
-     * @return a copy of the basepoint <tt>G</tt>
-     */
     public Point getG() {
         return (Point) g.clone();
     }
-
-    /**
-     * @return the order <tt>r</tt> of basepoint <tt>G</tt>
-     */
     public FlexiBigInt getR() {
         return r;
     }
 
-    /**
-     * @return the cofactor <tt>k</tt>
-     */
+
     public int getK() {
         return k;
     }
 
-    /**
-     * @return the hash code of these curve parameters
-     */
+
     public int hashCode() {
 
         int oidHashCode = 0;
@@ -159,12 +114,7 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
 
     }
 
-    /**
-     * Compare these parameters with another object.
-     *
-     * @param other the other object
-     * @return the result of the comparison
-     */
+
     public boolean equals(Object other) {
         if ((other == null) || !(other instanceof CurveParams)) {
             return false;
@@ -175,9 +125,7 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
                 && r.equals(otherParams.r) && (k == otherParams.k);
     }
 
-    /**
-     * Inner class for representing prime curve parameters.
-     */
+
     public static class CurveParamsGFP extends CurveParams {
 
         /**
@@ -242,9 +190,7 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
         }
     }
 
-    /**
-     * Inner class for representing char 2 curve parameters.
-     */
+
     public abstract static class CurveParamsGF2n extends CurveParams {
 
         /**
@@ -294,9 +240,7 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
         }
     }
 
-    /**
-     * Inner class for representing char 2 curve parameters.
-     */
+
     public static class CurveParamsGF2nONB extends CurveParamsGF2n {
 
         /**
@@ -328,10 +272,6 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
             return !((other == null) || !(other instanceof CurveParamsGF2nONB)) && super.equals(other);
         }
     }
-
-    /**
-     * Inner class for representing char 2 trinomial curve parameters.
-     */
     public static class CurveParamsGF2nTrinomial extends CurveParamsGF2n {
         /**
          * trinomial coefficient
@@ -381,10 +321,6 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
             return super.equals(other) && (tc == otherParams.tc);
         }
     }
-
-    /**
-     * Inner class for representing char 2 pentanomial curve parameters.
-     */
     public static class CurveParamsGF2nPentanomial extends CurveParamsGF2n {
         /**
          * first pentanomial coefficient

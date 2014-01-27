@@ -9,20 +9,11 @@ import de.flexiprovider.pki.AlgorithmIdentifier;
 
 public abstract class PublicKey implements Key, java.security.PublicKey {
 
-    /**
-     * Return the encoding format, X.509.
-     *
-     * @return "X.509"
-     */
+
     public final String getFormat() {
         return "X.509";
     }
 
-    /**
-     * Return the key in its primary encoding format, X.509.
-     *
-     * @return the X.509 encoded key.
-     */
     public final byte[] getEncoded() {
         AlgorithmIdentifier aid;
         try {

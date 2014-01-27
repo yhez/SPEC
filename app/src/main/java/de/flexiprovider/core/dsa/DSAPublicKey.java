@@ -13,14 +13,10 @@ import de.flexiprovider.core.dsa.interfaces.DSAParams;
 public class DSAPublicKey extends
         de.flexiprovider.core.dsa.interfaces.DSAPublicKey implements DSAKey {
 
-    /**
-     * The public y.
-     */
+
     private FlexiBigInt y;
 
-    /**
-     * The normal DSA parameters.
-     */
+
     private DSAParams params;
 
 

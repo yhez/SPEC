@@ -13,9 +13,6 @@ import de.flexiprovider.core.rsa.RSAPrivateCrtKey;
 
 public class MpRSAPrivateKey extends RSAPrivateCrtKey {
 
-    /**
-     * The additional primes.
-     */
     private RSAOtherPrimeInfo[] otherPrimeInfo;
 
     public MpRSAPrivateKey(FlexiBigInt n, FlexiBigInt e, FlexiBigInt d,
@@ -25,30 +22,16 @@ public class MpRSAPrivateKey extends RSAPrivateCrtKey {
         this.otherPrimeInfo = otherPrimeInfo;
     }
 
-    /**
-     * Construct an MpRSAPrivateKey out of the given key specification.
-     *
-     * @param keySpec the key specification
-     */
     public MpRSAPrivateKey(MpRSAPrivateKeySpec keySpec) {
         this(keySpec.getN(), keySpec.getE(), keySpec.getD(), keySpec.getP(),
                 keySpec.getQ(), keySpec.getDp(), keySpec.getDq(), keySpec
                 .getCRTCoeff(), keySpec.getOtherPrimeInfo());
     }
 
-    /**
-     * @return the additional primes
-     */
     public RSAOtherPrimeInfo[] getOtherPrimeInfo() {
         return this.otherPrimeInfo;
     }
 
-    /**
-     * Compare this key with another object.
-     *
-     * @param other the other object
-     * @return the result of the comparison
-     */
     public boolean equals(Object other) {
         if (other == null || !(other instanceof MpRSAPrivateKey)) {
             return false;
@@ -79,9 +62,6 @@ public class MpRSAPrivateKey extends RSAPrivateCrtKey {
         return false;
     }
 
-    /**
-     * @return a human readable form of the key
-     */
     public String toString() {
         String out = "";
         out += "modulus n:           0x" + n.toString(16) + "\n";

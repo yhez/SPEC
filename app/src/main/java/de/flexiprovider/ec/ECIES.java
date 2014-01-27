@@ -23,9 +23,7 @@ import de.flexiprovider.ec.parameters.CurveParams;
 
 public class ECIES extends IES {
 
-    /**
-     * @return the name of this cipher
-     */
+
     public String getName() {
         return "ECIES";
     }
@@ -62,11 +60,7 @@ public class ECIES extends IES {
         return ecPrivKey;
     }
 
-    /**
-     * Instantiate and return the key agreement module.
-     *
-     * @return the key agreement module
-     */
+
     protected KeyAgreement getKeyAgreement() {
         return new ECSVDPDHC();
     }
@@ -82,12 +76,7 @@ public class ECIES extends IES {
         return kpg.genKeyPair();
     }
 
-    /**
-     * Encode the ephemeral public key.
-     *
-     * @param ephPubKey the ephemeral public key
-     * @return the encoded key
-     */
+
     protected byte[] encodeEphPubKey(PublicKey ephPubKey) {
         Point q;
         try {
@@ -99,23 +88,13 @@ public class ECIES extends IES {
         return q.EC2OSP(Point.ENCODING_TYPE_COMPRESSED);
     }
 
-    /**
-     * Compute and return the size (in bytes) of the encoded ephemeral public
-     * key.
-     *
-     * @return the size of the encoded ephemeral public key
-     */
+
     protected int getEncEphPubKeySize() {
         Point g = ((CurveParams) keyParams).getG();
         return g.EC2OSP(Point.ENCODING_TYPE_COMPRESSED).length;
     }
 
-    /**
-     * Decode the ephemeral public key.
-     *
-     * @param encEphPubKey the encoded ephemeral public key
-     * @return the decoded key
-     */
+
     protected PublicKey decodeEphPubKey(byte[] encEphPubKey) {
 
         try {

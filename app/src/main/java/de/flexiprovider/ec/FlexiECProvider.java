@@ -10,21 +10,12 @@ public class FlexiECProvider extends FlexiProvider {
 
     private static final String INFO = "ECDSA, ECNR, ECDH, and ECIES";
 
-    /**
-     * Constructor. Register all algorithms for FlexiAPI and JCA.
-     */
+
     public FlexiECProvider() {
         super("FlexiEC", 1.76, INFO);
 
-        // ------------------------------------------------
-        // register algorithms for FlexiAPI
-        // ------------------------------------------------
 
         ECRegistry.registerAlgorithms();
-
-        // ------------------------------------------------
-        // register algorithms for JCA/JCE
-        // ------------------------------------------------
 
         registerCommon();
         registerECIES();

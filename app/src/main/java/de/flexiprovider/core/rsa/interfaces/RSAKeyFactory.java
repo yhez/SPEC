@@ -8,15 +8,6 @@ import de.flexiprovider.core.rsa.RSAPublicKeySpec;
 
 public abstract class RSAKeyFactory extends KeyFactory {
 
-    /**
-     * Translation adapter for Java-KeySpecs: generate a public key object from
-     * the provided key specification (key material).
-     *
-     * @param keySpec the specification (key material) of the public key
-     * @return the public key
-     * @throws java.security.spec.InvalidKeySpecException if the given key specification is inappropriate for this
-     *                                                    key factory to produce a public key.
-     */
     protected java.security.PublicKey engineGeneratePublic(
             java.security.spec.KeySpec keySpec)
             throws java.security.spec.InvalidKeySpecException {
@@ -31,15 +22,6 @@ public abstract class RSAKeyFactory extends KeyFactory {
         return super.engineGeneratePublic(keySpec);
     }
 
-    /**
-     * Translation adapter for Java-KeySpecs: generate a private key object from
-     * the provided key specification (key material).
-     *
-     * @param keySpec the specification (key material) of the private key
-     * @return the private key
-     * @throws java.security.spec.InvalidKeySpecException if the given key specification is inappropriate for this
-     *                                                    key factory to produce a private key.
-     */
     protected java.security.PrivateKey engineGeneratePrivate(
             java.security.spec.KeySpec keySpec)
             throws java.security.spec.InvalidKeySpecException {

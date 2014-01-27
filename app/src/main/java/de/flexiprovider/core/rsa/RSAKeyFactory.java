@@ -23,9 +23,6 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
 public class RSAKeyFactory extends
         de.flexiprovider.core.rsa.interfaces.RSAKeyFactory {
 
-    /**
-     * The OID of RSA.
-     */
     public static final String OID = "1.2.840.113549.1.1.1";
 
 
@@ -271,15 +268,6 @@ public class RSAKeyFactory extends
                 + keySpec + ".");
     }
 
-    /**
-     * Translates a key into a form known by the FlexiProvider. Currently the
-     * following "source" keys are supported: {@link RSAPrivateCrtKey},
-     * {@link RSAPrivateKey}, [@link MpRSAPrivateKey}, {@link RSAPublicKey}.
-     *
-     * @param key the key
-     * @return a key of a known key type
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if the key is not supported.
-     */
     public Key translateKey(Key key) throws InvalidKeyException {
         if ((key instanceof RSAPrivateCrtKey) || (key instanceof RSAPrivateKey)
                 || (key instanceof MpRSAPrivateKey)

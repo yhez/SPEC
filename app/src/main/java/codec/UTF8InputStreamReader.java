@@ -131,7 +131,6 @@ public class UTF8InputStreamReader extends Reader {
         }
         byteptr_ = 0;
 
-        // fill buffer from underlying stream
         numbytes_ = ins_.read(bytebuf_);
 
         if (numbytes_ > 0) {

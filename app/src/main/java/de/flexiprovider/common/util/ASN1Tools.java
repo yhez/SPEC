@@ -13,9 +13,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
 
 public final class ASN1Tools {
 
-    /**
-     * Default constructor (private).
-     */
+
     private ASN1Tools() {
         // empty
     }

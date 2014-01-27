@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.common.mode;
 
 import de.flexiprovider.api.Mode;
@@ -15,42 +6,16 @@ import de.flexiprovider.api.exceptions.InvalidKeyException;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-/**
- * Cipher feedback mode for symmetric block ciphers.
- * <p/>
- * This class currently only supports 1-byte feedback which should be sufficient
- * for most applications.
- * <p/>
- * For further information, see "Handbook of Applied Cryptography", Note 7.17.
- * <p/>
- * <b>WARNING: CFB</b> feedback should be in <b>BYTES</b>. The default value
- * is 1 Byte(8 Bits)
- *
- * @author Ralf-P. Weinmann
- */
+
 public class CFB extends Mode {
 
-    /**
-     * a help buffer
-     */
+
     private byte[] buf;
 
-    /**
-     * The shift register needed by the mode.
-     */
+
     private byte[] feedbackBlock;
 
-    /**
-     * Initialize the Mode object for encryption.
-     *
-     * @param key          the key used for encryption
-     * @param modeParams   additional mode parameters
-     * @param cipherParams additional algorithm parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the key is inappropriate for initializing the
-     *                                                                            underlying block cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are inappropriate for initializing the
-     *                                                                            underlying block cipher.
-     */
+
     protected final void initEncrypt(SecretKey key,
                                      ModeParameterSpec modeParams, AlgorithmParameterSpec cipherParams)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
@@ -92,32 +57,12 @@ public class CFB extends Mode {
         reset();
     }
 
-    /**
-     * Initialize the Mode object for decryption.
-     *
-     * @param key        the key used for decryption
-     * @param modeParams additional mode parameters
-     * @param paramSpec  additional algorithm parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the key is inappropriate for initializing the
-     *                                                                            underlying block cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are inappropriate for initializing the
-     *                                                                            underlying block cipher.
-     */
+
     protected final void initDecrypt(SecretKey key,
                                      ModeParameterSpec modeParams, AlgorithmParameterSpec paramSpec)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
         initEncrypt(key, modeParams, paramSpec);
     }
-
-    /**
-     * Encrypt the next data block. Any special features of the Mode should be
-     * implemented here.
-     *
-     * @param input  input data buffer
-     * @param inOff  input data offset
-     * @param output output data buffer
-     * @param outOff output data offset
-     */
     protected final void nextChunkEncrypt(final byte[] input, final int inOff,
                                           byte[] output, final int outOff) {
         nextChunk(input, inOff, output, outOff);
@@ -125,15 +70,7 @@ public class CFB extends Mode {
         System.arraycopy(output, outOff, feedbackBlock, 0, blockSize);
     }
 
-    /**
-     * Decrypt the next data block. Any special features of the Mode should be
-     * implemented here.
-     *
-     * @param input  input data buffer
-     * @param inOff  input data offset
-     * @param output output data buffer
-     * @param outOff output data offset
-     */
+
     protected final void nextChunkDecrypt(byte[] input, int inOff,
                                           byte[] output, int outOff) {
         nextChunk(input, inOff, output, outOff);
@@ -156,9 +93,7 @@ public class CFB extends Mode {
                 feedbackBlock.length - blockSize);
     }
 
-    /**
-     * Reset shift block to initialization vector.
-     */
+
     protected final void reset() {
         System.arraycopy(iv, 0, feedbackBlock, 0, iv.length);
     }

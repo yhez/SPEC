@@ -34,45 +34,22 @@ import codec.asn1.Resolver;
 
 public class Name extends ASN1SequenceOf implements Principal, Resolver {
 
-    /**
-     * Constant for IA5Encoding of the Name
-     */
     public static final int IA5_ENCODING = ASN1.TAG_IA5STRING;
 
-    /**
-     * Constant for Printable Encoding of the Name
-     */
     public static final int PRINTABLE_ENCODING = ASN1.TAG_PRINTABLESTRING;
 
-    /**
-     * Constant for Teletex (T61) Encoding of the Name
-     */
     public static final int T61_ENCODING = ASN1.TAG_T61STRING;
 
-    /**
-     * Constant for UTF8Encoding of the Name
-     */
     public static final int UTF8_ENCODING = ASN1.TAG_UTF8STRING;
 
-    /**
-     * Determines in what kind of encoding all Name objects will be encoded as
-     * long as no special constructors are used. Default is UTF8 Encoding.
-     */
     protected static int defaultEncoding_ = PRINTABLE_ENCODING;
 
-    /**
-     * The (uppercase) acronyms of the default attributes allowed in this Name
-     * class.
-     */
     static final String keys_[] = {"ALIASEDOBJECTNAME", "C", "CN", "DC",
             "DATEOFBIRTH", "DNQUALIFIER", "DESCRIPTION", "EMAILADDRESS",
             "GENDER", "GENERATION", "GN", "INITIALS", "IP", "L", "O", "OU",
             "PLACEOFBIRTH", "POSTALADDRESS", "POSTALCODE", "PSEUDONYM",
             "SERIALNUMBER", "SN", "ST", "STREET", "UID", "TITLE",};
 
-    /**
-     * The OID of the default attributes allowed in this Name class.
-     */
     static final int oids_[][] = {{2, 5, 4, 1}, {2, 5, 4, 6},
             {2, 5, 4, 3}, {0, 9, 2342, 19200300, 100, 1, 25},
             {1, 3, 6, 1, 5, 5, 7, 9, 1}, {2, 5, 4, 46}, {2, 5, 4, 13},
@@ -84,9 +61,6 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
             {2, 5, 4, 4}, {2, 5, 4, 8}, {2, 5, 4, 9},
             {0, 9, 2342, 19200300, 100, 1, 1}, {2, 5, 4, 12},};
 
-    /**
-     * Mapping from acronyms to OID.
-     */
     protected HashMap a2oid_;
 
 
@@ -164,12 +138,6 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
             } else {
                 val = entry.getValue();
 
-		/*
-         * This is a workaround for email addresses which contain the
-		 * '@' symbol. This symbol is not in the character set of the
-		 * ASN.1 PrintableString. Hence, we have to take a IA5String
-		 * instead.
-		 */
                 if (entry.getKey().equalsIgnoreCase("EMAILADDRESS")
                         || entry.getKey().equalsIgnoreCase("UID")) {
                     seq.add(new ASN1IA5String(val));
@@ -177,9 +145,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
                         || entry.getKey().equalsIgnoreCase("SERIALNUMBER")) {
                     seq.add(new ASN1PrintableString(val));
                 } else {
-                    /*
-      defines the encoding of the current Name Object
-     */
+
                     int currentEncoding_ = defaultEncoding_;
                     switch (currentEncoding_) {
                         case (ASN1.TAG_UTF8STRING):
@@ -216,9 +182,6 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         trimToSize();
     }
 
-    /**
-     * Clears this name instance.
-     */
     public void clear() {
         super.clear();
 
@@ -227,10 +190,6 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         }
     }
 
-    /**
-     * This method initializes the hashmaps, which are needed to create the
-     * ASN1Structure Tree.
-     */
     protected void initMaps() {
         int i;
         ASN1ObjectIdentifier oid;
@@ -293,8 +252,6 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
 
             buf.insert(0, entry.toString());
 
-            // only insert a seperator, if another AVA is
-            // still in the list
             if (it.hasNext()) {
                 if (entry.hasSibling()) {
                     buf.insert(0, " + ");
@@ -532,9 +489,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
                     j++;
                     result.put("UN" + j, st.nextToken());
                 }
-            } else if ("1.2.840.113549.1.9.8".equals(ava.getKey())) { // UA
-                // unstructured
-                // adress
+            } else if ("1.2.840.113549.1.9.8".equals(ava.getKey())) {
                 result.put("UA", ava.getValue());
             } else if ("OU".equals(ava.getKey())) {
                 if (result.get("OU") == null) {

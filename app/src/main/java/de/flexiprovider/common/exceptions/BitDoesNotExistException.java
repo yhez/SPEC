@@ -7,8 +7,5 @@ public class BitDoesNotExistException extends GFException {
     public BitDoesNotExistException() {
         super(DIAGNOSTIC);
     }
-    public BitDoesNotExistException(int pos) {
-        super(DIAGNOSTIC + ": " + pos);
-    }
 
 }

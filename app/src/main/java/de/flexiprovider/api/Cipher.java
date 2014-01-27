@@ -18,14 +18,9 @@ import de.flexiprovider.common.util.JavaSecureRandomWrapper;
 
 public abstract class Cipher extends javax.crypto.CipherSpi {
 
-    /**
-     * Constant specifying encrypt mode.
-     */
     public static final int ENCRYPT_MODE = javax.crypto.Cipher.ENCRYPT_MODE;
 
-    /**
-     * Constant specifying decrypt mode.
-     */
+
     public static final int DECRYPT_MODE = javax.crypto.Cipher.DECRYPT_MODE;
 
     protected int opMode;

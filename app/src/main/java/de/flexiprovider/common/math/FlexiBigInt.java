@@ -67,12 +67,6 @@ public final class FlexiBigInt {
         return new FlexiBigInt(bigInt.divide(divisor.bigInt));
     }
 
-    public FlexiBigInt[] divideAndRemainder(FlexiBigInt divisor) {
-        BigInteger[] dar = bigInt.divideAndRemainder(divisor.bigInt);
-        return new FlexiBigInt[]{new FlexiBigInt(dar[0]),
-                new FlexiBigInt(dar[1])};
-    }
-
     public FlexiBigInt remainder(FlexiBigInt divisor) {
         return new FlexiBigInt(bigInt.remainder(divisor.bigInt));
     }

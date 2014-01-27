@@ -14,9 +14,6 @@ public class MpRSAPrivateKeySpec extends RSAPrivateCrtKeySpec {
         this.otherP = otherP;
     }
 
-    /**
-     * @return the other primes
-     */
     public RSAOtherPrimeInfo[] getOtherPrimeInfo() {
         return otherP;
     }

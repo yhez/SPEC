@@ -9,10 +9,6 @@ import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 public class HMac extends Mac {
 
-    /*
-     * Inner classes providing concrete implementations of HMac with a variety
-     * of message digests.
-     */
 
     public static class SHA1 extends HMac {
 
@@ -177,23 +173,12 @@ public class HMac extends Mac {
         md.update(ipadKey);
     }
 
-    /**
-     * Processes the given number of bytes, supplied in a byte array starting at
-     * the given position.
-     *
-     * @param input the byte array containing the input
-     * @param inOff the offset where the input starts
-     * @param inLen the length of the input
-     */
+
     public void update(byte[] input, int inOff, int inLen) {
         md.update(input, inOff, inLen);
     }
 
-    /**
-     * Process the given byte.
-     *
-     * @param input the byte to be processed
-     */
+
     public void update(byte input) {
         md.update(input);
     }
@@ -205,10 +190,7 @@ public class HMac extends Mac {
         return md.digest();
     }
 
-    /**
-     * Resets this MAC object so that it may be used for further MAC
-     * comptations.
-     */
+
     public void reset() {
         md.reset();
     }

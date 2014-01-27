@@ -7,14 +7,10 @@ import de.flexiprovider.common.util.ByteUtils;
 
 public class IESParameterSpec implements AlgorithmParameterSpec {
 
-    /**
-     * The default symmetric cipher (AES128_CBC)
-     */
+
     public static final String DEFAULT_SYM_CIPHER = "AES128_CBC";
 
-    /**
-     * The default MAC function (HmacSHA1)
-     */
+
     public static final String DEFAULT_MAC = "HmacSHA1";
 
     // the ephemeral key pair
@@ -67,51 +63,37 @@ public class IESParameterSpec implements AlgorithmParameterSpec {
         return ephKeyPair;
     }
 
-    /**
-     * @return the name of the symmetric cipher algorithm
-     */
+
     public String getSymCipherName() {
         return symCipherName;
     }
 
-    /**
-     * @return the name of the key factory for the symmetric cipher algorithm
-     */
+
     protected String getSymKFName() {
         return mSymKFName;
     }
 
-    /**
-     * @return the key length of the symmetric cipher algorithm
-     */
+
     protected int getSymKeyLength() {
         return mSymKeyLength;
     }
 
-    /**
-     * @return the name of the MAC function
-     */
+
     public String getMacName() {
         return macName;
     }
 
-    /**
-     * @return the name of the key factory for the MAC function
-     */
+
     protected String getMacKFName() {
         return mMacKFName;
     }
 
-    /**
-     * @return the encoding parameters for the MAC function
-     */
+
     public byte[] getMacEncParam() {
         return ByteUtils.clone(macEncParam);
     }
 
-    /**
-     * @return the shared data used for the key derivation function
-     */
+
     public byte[] getSharedInfo() {
         return ByteUtils.clone(sharedInfo);
     }
@@ -119,8 +101,6 @@ public class IESParameterSpec implements AlgorithmParameterSpec {
     private void setSymCipher(String symCipherName)
             throws InvalidParameterException {
 
-        // if no symmetric algorithm is specified, choose the default one
-        // (AES128_CBC)
         if (symCipherName == null || symCipherName.equals("")) {
             symCipherName = DEFAULT_SYM_CIPHER;
         }

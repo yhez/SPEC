@@ -7,23 +7,6 @@ import de.flexiprovider.common.util.ASN1Tools;
 
 public class PpBasis extends ASN1Sequence {
 
-    /**
-     * Constructor used for decoding.
-     */
-    public PpBasis() {
-        super(3);
-        add(new ASN1Integer());
-        add(new ASN1Integer());
-        add(new ASN1Integer());
-    }
-
-    /**
-     * Constructor used for encoding.
-     *
-     * @param pc1 the first value for pentanomial representation
-     * @param pc2 the second value for pentanomial representation
-     * @param pc3 the third value for pentanomial representation
-     */
     public PpBasis(int pc1, int pc2, int pc3) {
         super(3);
         add(new ASN1Integer(pc1));

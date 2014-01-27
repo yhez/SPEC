@@ -1,20 +1,6 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.md;
 
-/**
- * SHA-512 is a 512-bit hash and is meant to provide 256 bits of security
- * against collision attacks.
- *
- * @author Ralf-P. Weinmann
- */
+
 public final class SHA512 extends SHA384_512 {
 
     // Initial hash value H<sup>(0)</sup>. These were obtained by taking the
@@ -27,16 +13,10 @@ public final class SHA512 extends SHA384_512 {
     // length of the SHA512 message digest in bytes
     private static final int SHA512_DIGEST_LENGTH = 64;
 
-    /**
-     * Constructor.
-     */
     public SHA512() {
         super(SHA512_DIGEST_LENGTH);
     }
 
-    /**
-     * Reset the digest objects to its initial state.
-     */
     public void reset() {
         initMessageDigest(H0);
     }

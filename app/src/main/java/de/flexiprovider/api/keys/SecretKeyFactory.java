@@ -7,10 +7,6 @@ import de.flexiprovider.api.exceptions.InvalidKeySpecException;
 
 public abstract class SecretKeyFactory extends SecretKeyFactorySpi {
 
-    // ****************************************************
-    // JCA adapter methods
-    // ****************************************************
-
     protected javax.crypto.SecretKey engineGenerateSecret(
             java.security.spec.KeySpec keySpec)
             throws java.security.spec.InvalidKeySpecException {
@@ -52,10 +48,6 @@ public abstract class SecretKeyFactory extends SecretKeyFactorySpi {
         }
         return translateKey((SecretKey) key);
     }
-
-    // ****************************************************
-    // FlexiAPI methods
-    // ****************************************************
 
     public abstract SecretKey generateSecret(KeySpec keySpec)
             throws InvalidKeySpecException;

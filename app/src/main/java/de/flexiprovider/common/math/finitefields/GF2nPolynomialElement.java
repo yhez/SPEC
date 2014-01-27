@@ -49,11 +49,6 @@ public class GF2nPolynomialElement extends GF2nElement {
     }
 
 
-    void assignZero() {
-        polynomial.assignZero();
-    }
-
-
     public static GF2nPolynomialElement ZERO(GF2nPolynomialField f) {
         GF2Polynomial polynomial = new GF2Polynomial(f.getDegree());
         return new GF2nPolynomialElement(f, polynomial);
@@ -104,9 +99,6 @@ public class GF2nPolynomialElement extends GF2nElement {
 
     private GF2Polynomial getGF2Polynomial() {
         return new GF2Polynomial(polynomial);
-    }
-    boolean testBit(int index) {
-        return polynomial.testBit(index);
     }
 
     public boolean testRightmostBit() {

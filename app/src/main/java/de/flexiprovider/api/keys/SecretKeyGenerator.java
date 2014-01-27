@@ -1,16 +1,11 @@
 package de.flexiprovider.api.keys;
 
-import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.JavaSecureRandomWrapper;
 
 public abstract class SecretKeyGenerator extends javax.crypto.KeyGeneratorSpi {
-
-    // ****************************************************
-    // JCA adapter methods
-    // ****************************************************
 
     protected final javax.crypto.SecretKey engineGenerateKey() {
         return generateKey();
@@ -35,15 +30,7 @@ public abstract class SecretKeyGenerator extends javax.crypto.KeyGeneratorSpi {
                 javaRand));
     }
 
-    // ****************************************************
-    // FlexiAPI methods
-    // ****************************************************
-
     public abstract SecretKey generateKey();
-
-    public final void init() {
-        init(Registry.getSecureRandom());
-    }
 
     public abstract void init(SecureRandom random);
 

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.rsa;
 
 import codec.asn1.ASN1Integer;
@@ -17,75 +8,38 @@ import codec.asn1.ASN1Type;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.util.ASN1Tools;
 
-/**
- * This class implements the RSAPrivateCrtKey interface. It represents a RSA
- * private key with additional information (for the RSA decryption with the CRT)
- * and is usually instantiated from RSAKeyPairGenerator.
- *
- * @author Thomas Wahrenbruch
- * @see de.flexiprovider.core.rsa.RSAKeyPairGenerator
- */
+
 public class RSAPrivateCrtKey extends
         de.flexiprovider.core.rsa.interfaces.RSAPrivateCrtKey {
 
-    /**
-     * The RSA algorithm identifier.
-     */
+
     private static final String RSA_OID_STRING = "1.2.840.113549.1.1.1";
 
-    /**
-     * The number n = p*q.
-     */
+
     protected FlexiBigInt n;
 
-    /**
-     * The private exponent d.
-     */
+
     protected FlexiBigInt d;
 
-    /**
-     * The public exponent e.
-     */
+
     protected FlexiBigInt e;
 
-    /**
-     * The prime p.
-     */
+
     protected FlexiBigInt p;
 
-    /**
-     * The prime q.
-     */
+
     protected FlexiBigInt q;
 
-    /**
-     * The number d mod (p-1).
-     */
+
     protected FlexiBigInt dP;
 
-    /**
-     * The number d mod (q-1).
-     */
+
     protected FlexiBigInt dQ;
 
-    /**
-     * The CRT coefficient q<sup><font size="-2">-1</font></sup> mod p.
-     */
+
     protected FlexiBigInt crtCoeff;
 
-    /**
-     * Generate a new RSA private key.
-     *
-     * @param n        the number n = p*q;
-     * @param e        the public exponent e.
-     * @param d        the private exponent d.
-     * @param p        the prime p.
-     * @param q        the prime q.
-     * @param dP       the number d mod (p-1).
-     * @param dQ       the number d mod (q-1).
-     * @param crtCoeff the coefficient for RSA decryption with the CRT.
-     * @see de.flexiprovider.core.rsa.RSAKeyPairGenerator
-     */
+
     public RSAPrivateCrtKey(FlexiBigInt n, FlexiBigInt e, FlexiBigInt d,
                             FlexiBigInt p, FlexiBigInt q, FlexiBigInt dP, FlexiBigInt dQ,
                             FlexiBigInt crtCoeff) {
@@ -98,80 +52,37 @@ public class RSAPrivateCrtKey extends
         this.dQ = dQ;
         this.crtCoeff = crtCoeff;
     }
-
-    /**
-     * Construct an RSAPrivCrtKey out of the given key specification.
-     *
-     * @param keySpec the key specification
-     */
     protected RSAPrivateCrtKey(RSAPrivateCrtKeySpec keySpec) {
         this(keySpec.getN(), keySpec.getE(), keySpec.getD(), keySpec.getP(),
                 keySpec.getQ(), keySpec.getDp(), keySpec.getDq(), keySpec
                 .getCRTCoeff());
     }
-
-    /**
-     * @return the n n
-     */
     public FlexiBigInt getN() {
         return n;
     }
-
-    /**
-     * @return the public exponent e
-     */
     public FlexiBigInt getE() {
         return e;
     }
-
-    /**
-     * @return the private exponent d
-     */
     public FlexiBigInt getD() {
         return d;
     }
-
-    /**
-     * @return the prime p
-     */
     public FlexiBigInt getP() {
         return p;
     }
 
-    /**
-     * @return the prime q
-     */
+
     public FlexiBigInt getQ() {
         return q;
     }
-
-    /**
-     * @return the private exponent d mod (p-1)
-     */
     public FlexiBigInt getDp() {
         return dP;
     }
-
-    /**
-     * @return the private exponent d mod (q-1)
-     */
     public FlexiBigInt getDq() {
         return dQ;
     }
-
-    /**
-     * @return the CRT coefficient
-     */
     public FlexiBigInt getCRTCoeff() {
         return crtCoeff;
     }
-
-    /**
-     * Compare this key with another object.
-     *
-     * @param other the other object
-     * @return the result of the comparison
-     */
     public boolean equals(Object other) {
         if (other == null || !(other instanceof RSAPrivateCrtKey)) {
             return false;
@@ -185,10 +96,6 @@ public class RSAPrivateCrtKey extends
                 && dQ.equals(otherKey.dQ) && crtCoeff.equals(otherKey.crtCoeff);
 
     }
-
-    /**
-     * @return a human readable form of the key
-     */
     public String toString() {
         String out = "";
         out += "modulus n:          0x" + n.toString(16) + "\n";

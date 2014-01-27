@@ -65,25 +65,6 @@ public class PrivateKeyInfo extends ASN1Sequence {
     }
 
 
-    public int getVersion() {
-        return version_.getBigInteger().intValue();
-    }
-
-    public void setVersion(int version) {
-        version_ = new ASN1Integer(version);
-        set(0, version_);
-    }
-
-
-    public void setAlgorithm(AlgorithmIdentifier aid) {
-        if (aid == null)
-            throw new NullPointerException("Algorithm identifier is null!");
-
-        set(1, aid);
-        algorithm_ = aid;
-    }
-
-
     public ASN1Type getDecodedRawKey() throws CorruptedCodeException {
         DERDecoder dec;
         ASN1Type raw;

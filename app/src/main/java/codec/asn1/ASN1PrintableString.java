@@ -3,7 +3,7 @@ package codec.asn1;
 public class ASN1PrintableString extends ASN1AbstractString {
 
     public ASN1PrintableString(String s) {
-        super(s);
+        super.setString0(s);
     }
 
     public int getTag() {
