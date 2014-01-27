@@ -131,6 +131,13 @@ public class Splash extends Activity {
             }
             if (uri.getScheme() == null || !uri.getScheme().equals("specular.systems")) {
                 String fileName = Visual.getFileName(this, uri);
+                if(fileName==null){
+                    Toast t  = Toast.makeText(this,R.string.failed_loading,Toast.LENGTH_SHORT);
+                    t.setGravity(Gravity.CENTER,0,0);
+                    t.show();
+                    finish();
+                    return;
+                }
                 String ext = fileName.substring(fileName.lastIndexOf('.') + 1);
                 if (!ext.toLowerCase().equals("spec")) {
                     File f = new File(uri.getPath(), fileName);

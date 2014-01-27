@@ -535,4 +535,13 @@ public final class FilesManagement {
         CryptMethods.setDetails(srp.getString(NAME, null), srp.getString(EMAIL, null));
         CryptMethods.setPublic(srp.getString(PUBLIC_KEY, null));
     }
+
+    public static boolean motNFCMod(Activity a) {
+        byte[] p = getPrivate(a);
+        byte[] cp = CryptMethods.getPrivateToSave();
+        for(int aa=0;aa<p.length;aa++)
+            if(p[aa]!=cp[aa])
+                return false;
+        return true;
+    }
 }

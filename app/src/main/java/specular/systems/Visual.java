@@ -200,18 +200,23 @@ public class Visual {
     }
 
     public static String getFileName(Activity a, Uri contentURI) {
-        Cursor cursor = a.getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {
-            return contentURI.getLastPathSegment();
+        try {
+            Cursor cursor = a.getContentResolver().query(contentURI, null, null, null, null);
+            if (cursor == null) {
+                return contentURI.getLastPathSegment();
+            }
+            cursor.moveToFirst();
+            String rs = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME));
+            if (!rs.contains(".")) {
+                rs += "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(
+                        cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)));
+            }
+            cursor.close();
+            return rs;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        cursor.moveToFirst();
-        String rs = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME));
-        if (!rs.contains(".")) {
-            rs += "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(
-                    cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)));
-        }
-        cursor.close();
-        return rs;
     }
 
     public static void hideAllChildes(Activity act, ViewGroup v) {
@@ -237,9 +242,10 @@ public class Visual {
                 }
             }
     }
-    public static String timeAndDate(){
+
+    public static String timeAndDate() {
         String timestamp = new SimpleDateFormat("yyyy MM dd HH:mm:ss").format(Calendar
                 .getInstance().getTime());
-        return "<br><br>"+timestamp;
+        return "<br><br>" + timestamp;
     }
 }

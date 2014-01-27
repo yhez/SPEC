@@ -52,7 +52,8 @@ public class DialogRestore extends DialogFragment {
                 CryptMethods.setPublic(myDetails[2]);
                 StaticVariables.NFCMode=true;
                 FilesManagement.save(getActivity());
-                //FilesManagement.savePrivate(getActivity());
+                if(FilesManagement.motNFCMod(getActivity()))
+                    FilesManagement.savePrivate(getActivity());
                 Toast t = Toast.makeText(getActivity(),R.string.notify_after_restore, Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER, 0, 0);
                 t.show();

@@ -146,6 +146,8 @@ public class FragmentManagement extends Fragment {
                     + StaticVariables.name
                     + " , " + StaticVariables.email);
             contactExist.setText(false + "");
+            StaticVariables.flag_session = Session.UNKNOWN;
+            StaticVariables.flag_replay = MessageFormat.NOT_RELEVANT;
         }
         if (StaticVariables.file_name == null || StaticVariables.file_name.length() == 0) {
             fileAttach.setVisibility(View.GONE);

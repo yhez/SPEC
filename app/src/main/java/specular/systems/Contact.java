@@ -31,7 +31,7 @@ public class Contact {
             this.sent = 0;
             this.received = session != null ? 1 : 0;
             this.sent = 0;
-            this.last = session != null ? System.currentTimeMillis() : 0;
+            this.last = session != null ? StaticVariables.time : 0;
             this.id = ContactsDataSource.contactsDataSource.createContact(a, this);
         }
     }
