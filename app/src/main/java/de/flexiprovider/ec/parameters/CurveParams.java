@@ -12,13 +12,7 @@ import de.flexiprovider.common.math.finitefields.GFPElement;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.common.util.StringUtils;
 
-/**
- * This class implements EC Domain Parameters as specified in the standard <a
- * href = "http://grouper.ieee.org/groups/1363/P1363">IEEE P1363-D8</a>.
- *
- * @author Birgit Henhapl
- * @author Martin Dring
- */
+
 public abstract class CurveParams implements AlgorithmParameterSpec {
 
     /**
@@ -26,9 +20,6 @@ public abstract class CurveParams implements AlgorithmParameterSpec {
      */
     private ASN1ObjectIdentifier oid;
 
-    /**
-     * size of the underlying field (either a prime or a power of two)
-     */
     FlexiBigInt q;
 
     /**

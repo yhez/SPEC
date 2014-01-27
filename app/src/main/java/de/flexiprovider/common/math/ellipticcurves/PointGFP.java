@@ -13,16 +13,7 @@ import de.flexiprovider.common.math.finitefields.GFElement;
 import de.flexiprovider.common.math.finitefields.GFPElement;
 import de.flexiprovider.common.util.FlexiBigIntUtils;
 
-/**
- * This class implements points and their arithmetic on elliptic curves over
- * finite prime fields (<i>GF(p)</i>). For more information on the arithmetic
- * see for example <a href =
- * http://www.certicom.com/research/online.html>Certicom online- tutorial</a>.
- *
- * @author Birgit Henhapl
- * @see EllipticCurveGFP
- * @see PointGFP
- */
+
 public class PointGFP extends Point {
 
     /**
@@ -272,19 +263,6 @@ public class PointGFP extends Point {
         return new PointGFP(this);
     }
 
-    /**
-     * Tests whether this Point is equal to other. The points are equal, if <br>
-     * <tt><tt>mX</tt>*<tt>other.mZ</tt><sup>2</sup> ==
-     * <tt>other.mX</tt>*<tt>mZ</tt><sup>2</sup></tt>
-     * and <tt><tt>mY</tt>*<tt>other.mZ</tt><sup>3</sup>
-     * <tt>other.mY</tt>*<tt>mZ</tt><sup>3</sup></tt>.
-     *
-     * @param other Point to compare this Point with
-     * @return <tt>(<tt>mX</tt>*<tt>other.mZ</tt><sup>2</sup> ==
-     * <tt>other.mX</tt>*<tt>mZ</tt><sup>2</sup>) <tt>AND</tt>
-     * (<tt>mY</tt>*<tt>other.mZ</tt><sup>3</sup>
-     * <tt>other.mY</tt>*<tt>mZ</tt><sup>3</sup>)</tt>
-     */
     public boolean equals(Object other) {
 
         // Guard against other==null or being of an unsuitable type:

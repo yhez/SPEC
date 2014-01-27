@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.common.ies;
 
 import java.io.ByteArrayOutputStream;
@@ -34,16 +26,7 @@ import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.kdf.KDF2;
 import de.flexiprovider.core.kdf.KDFParameterSpec;
 
-/**
- * The <i>Integrated Encryption Scheme</i> (IES) is an encryption scheme based
- * on a key agreement scheme using an ephemeral key pair, a symmetric cipher,
- * and a message authentication code (MAC) to encrypt and decrypt data. IES is
- * described in IEEE 1363a-2004.
- *
- * @author Marcus St�gbauer
- * @author Hristo Indzhov
- * @author Martin D�ring
- */
+
 public abstract class IES extends AsymmetricHybridCipher {
 
     /**
@@ -125,14 +108,6 @@ public abstract class IES extends AsymmetricHybridCipher {
         kdf = new KDF2();
     }
 
-    /**
-     * Continue a multiple-part encryption or decryption operation.
-     *
-     * @param input byte array containing the next part of the input
-     * @param inOff index in the array where the input starts
-     * @param inLen length of the input
-     * @return the processed byte array.
-     */
     public byte[] update(byte[] input, int inOff, int inLen) {
         if (input != null) {
             buf.write(input, inOff, inLen);
@@ -140,19 +115,6 @@ public abstract class IES extends AsymmetricHybridCipher {
         return new byte[0];
     }
 
-    /**
-     * Encrypts or decrypts data in a single-part operation, or finishes a
-     * multiple-part operation. The data is encrypted or decrypted, depending on
-     * how this cipher was initialized.
-     *
-     * @param input the input buffer
-     * @param inOff the offset in input where the input starts
-     * @param inLen the input length
-     * @return the new buffer with the result
-     * @throws de.flexiprovider.api.exceptions.BadPaddingException if this cipher is in decryption mode, and (un)padding has
-     *                                                             been requested, but the decrypted data is not bounded by
-     *                                                             the appropriate padding bytes
-     */
     public byte[] doFinal(byte[] input, int inOff, int inLen)
             throws BadPaddingException {
         update(input, inOff, inLen);
@@ -166,18 +128,6 @@ public abstract class IES extends AsymmetricHybridCipher {
         return null;
     }
 
-    /**
-     * Initialize the cipher with a key and parameters for data encryption. The
-     * parameters have to be an instance of {@link IESParameterSpec}.
-     *
-     * @param key    the key
-     * @param params the parameters
-     * @param random the source of randomness
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the key is inappropriate.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are not an instance of
-     *                                                                            {@link IESParameterSpec} or the ephemeral key pair stored
-     *                                                                            in the parameters is invalid.
-     */
     protected void initCipherEncrypt(Key key, AlgorithmParameterSpec params,
                                      SecureRandom random) throws InvalidKeyException,
             InvalidAlgorithmParameterException {
@@ -214,17 +164,6 @@ public abstract class IES extends AsymmetricHybridCipher {
         this.random = (random != null) ? random : Registry.getSecureRandom();
         opMode = ENCRYPT_MODE;
     }
-
-    /**
-     * Initialize the cipher with a certain key for data encryption.
-     *
-     * @param key    the key
-     * @param params the algorithm parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the given key is inappropriate for initializing this
-     *                                                                            cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the given parameters are inappropriate for
-     *                                                                            initializing this cipher.
-     */
     protected void initCipherDecrypt(Key key, AlgorithmParameterSpec params)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
 
@@ -255,14 +194,6 @@ public abstract class IES extends AsymmetricHybridCipher {
         return 0;
     }
 
-    /**
-     * Encrypt the plaintext stored in input. The method should also perform an
-     * additional length check.
-     *
-     * @param input the plaintext to be encrypted
-     * @return the encrypted message
-     * @throws de.flexiprovider.api.exceptions.BadPaddingException if encryption fails.
-     */
     protected byte[] messageEncrypt(byte[] input) throws BadPaddingException {
 
         // generate key stream
@@ -283,14 +214,6 @@ public abstract class IES extends AsymmetricHybridCipher {
         return packCiphertext(cText, macTag);
     }
 
-    /**
-     * Decrypt the ciphertext stored in input. If MAC verification fails,
-     * <tt>null</tt> is returned.
-     *
-     * @param input the message to be decrypted
-     * @return the decrypted ciphertext
-     * @throws de.flexiprovider.api.exceptions.BadPaddingException if the ciphertext is invalid.
-     */
     protected byte[] messageDecrypt(byte[] input) throws BadPaddingException {
 
         // unpack the IES ciphertext ...
@@ -376,14 +299,7 @@ public abstract class IES extends AsymmetricHybridCipher {
         macEncParams = iesParams.getMacEncParam();
     }
 
-    /**
-     * Generate the key stream used for encryption and decryption.
-     *
-     * @param privKey the private key used for the key agreement
-     * @param pubKey  the public key used for the key agreement
-     * @param len     the desired length of the key stream
-     * @return the key stream
-     */
+
     private byte[] generateKeyStream(PrivateKey privKey, PublicKey pubKey,
                                      int len) {
 

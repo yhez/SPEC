@@ -12,14 +12,7 @@ package de.flexiprovider.core.md;
 import de.flexiprovider.api.MessageDigest;
 import de.flexiprovider.common.util.BigEndianConversions;
 
-/**
- * This is an implementaion of the DHA-256 Message digest
- * <p/>
- * DHA-256 is a 256-bit hash and is meant to provide 128 bits of security
- * against collision attacks.
- *
- * @author Paul Nguentcheu
- */
+
 public class DHA256 extends MessageDigest {
 
     /**

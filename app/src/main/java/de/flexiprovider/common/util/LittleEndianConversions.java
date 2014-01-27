@@ -128,28 +128,4 @@ public final class LittleEndianConversions {
         return result;
     }
 
-    /**
-     * Convert a byte array to an int array.
-     *
-     * @param input the byte array
-     * @return the converted array
-     */
-    public static int[] toIntArray(byte[] input) {
-        int intLen = (input.length + 3) / 4;
-        int lastLen = input.length & 0x03;
-        int[] result = new int[intLen];
-
-        int index = 0;
-        for (int i = 0; i <= intLen - 2; i++, index += 4) {
-            result[i] = OS2IP(input, index);
-        }
-        if (lastLen != 0) {
-            result[intLen - 1] = OS2IP(input, index, lastLen);
-        } else {
-            result[intLen - 1] = OS2IP(input, index);
-        }
-
-        return result;
-    }
-
 }

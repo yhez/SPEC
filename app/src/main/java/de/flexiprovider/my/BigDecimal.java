@@ -1304,12 +1304,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
         return buf.toString();
     }
 
-    /**
-     * Return 10 to the power n, as a {@code BigInteger}.
-     *
-     * @param n the power of ten to be returned (>=0)
-     * @return a {@code BigInteger} with the value (10<sup>n</sup>)
-     */
     private static BigInteger bigTenToThe(int n) {
         if (n < 0)
             return BigInteger.ZERO;
@@ -1494,27 +1488,8 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
     }
 
 
-    /**
-     * Returns the length of the absolute value of a {@code long}, in decimal
-     * digits.
-     *
-     * @param x the {@code long}
-     * @return the length of the unscaled value, in deciaml digits.
-     */
     private static int longDigitLength(long x) {
-        /*
-         * As described in "Bit Twiddling Hacks" by Sean Anderson,
-         * (http://graphics.stanford.edu/~seander/bithacks.html)
-         * integer log 10 of x is within 1 of
-         * (1233/4096)* (1 + integer log 2 of x).
-         * The fraction 1233/4096 approximates log10(2). So we first
-         * do a version of log2 (a variant of Long class with
-         * pre-checks and opposite directionality) and then scale and
-         * check against powers table. This is a little simpler in
-         * present context than the version in Hacker's Delight sec
-         * 11-4.  Adding one to bit length allows comparing downward
-         * from the LONG_TEN_POWERS_TABLE that we need anyway.
-         */
+
         assert x != INFLATED;
         if (x < 0)
             x = -x;

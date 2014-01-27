@@ -11,7 +11,6 @@ import de.flexiprovider.common.math.FlexiBigInt;
 
 public class GF2nPolynomialElement extends GF2nElement {
 
-    // the used GF2Polynomial which stores the coefficients
     private GF2Polynomial polynomial;
 
     public GF2nPolynomialElement(GF2nPolynomialField f, Random rand) {
@@ -98,10 +97,6 @@ public class GF2nPolynomialElement extends GF2nElement {
 
         return polynomial.equals(otherElem.polynomial);
     }
-
-    /**
-     * @return the hash code of this element
-     */
     public int hashCode() {
         return mField.hashCode() + polynomial.hashCode();
     }
@@ -110,46 +105,20 @@ public class GF2nPolynomialElement extends GF2nElement {
     private GF2Polynomial getGF2Polynomial() {
         return new GF2Polynomial(polynomial);
     }
-
-    /**
-     * Checks whether the indexed bit of the bit representation is set.
-     *
-     * @param index the index of the bit to test
-     * @return <tt>true</tt> if the indexed bit is set
-     */
     boolean testBit(int index) {
         return polynomial.testBit(index);
     }
 
-    /**
-     * Returns whether the rightmost bit of the bit representation is set. This
-     * is needed for data conversion according to 1363.
-     *
-     * @return true if the rightmost bit of this element is set
-     */
     public boolean testRightmostBit() {
         return polynomial.testBit(0);
     }
 
-    /**
-     * Compute the sum of this element and <tt>addend</tt>.
-     *
-     * @param addend the addend
-     * @return <tt>this + other</tt> (newly created)
-     * @throws DifferentFieldsException if the elements are of different fields.
-     */
     public GFElement add(GFElement addend) throws DifferentFieldsException {
         GF2nPolynomialElement result = new GF2nPolynomialElement(this);
         result.addToThis(addend);
         return result;
     }
 
-    /**
-     * Compute <tt>this + addend</tt> (overwrite <tt>this</tt>).
-     *
-     * @param addend the addend
-     * @throws DifferentFieldsException if the elements are of different fields.
-     */
     public void addToThis(GFElement addend) throws DifferentFieldsException {
         if (!(addend instanceof GF2nPolynomialElement)) {
             throw new DifferentFieldsException();
@@ -160,32 +129,16 @@ public class GF2nPolynomialElement extends GF2nElement {
         polynomial.addToThis(((GF2nPolynomialElement) addend).polynomial);
     }
 
-    /**
-     * Increases this element by 'one'.
-     */
     public void increaseThis() {
         polynomial.increaseThis();
     }
 
-    /**
-     * Compute the product of this element and <tt>factor</tt>.
-     *
-     * @param factor the factor
-     * @return <tt>this * factor</tt> (newly created)
-     * @throws DifferentFieldsException if the elements are of different fields.
-     */
     public GFElement multiply(GFElement factor) throws DifferentFieldsException {
         GF2nPolynomialElement result = new GF2nPolynomialElement(this);
         result.multiplyThisBy(factor);
         return result;
     }
 
-    /**
-     * Compute <tt>this * factor</tt> (overwrite <tt>this</tt>).
-     *
-     * @param factor the factor
-     * @throws DifferentFieldsException if the elements are of different fields.
-     */
     public void multiplyThisBy(GFElement factor)
             throws DifferentFieldsException {
         if (!(factor instanceof GF2nPolynomialElement)) {
@@ -268,46 +221,12 @@ public class GF2nPolynomialElement extends GF2nElement {
         reduceThis();
     }
 
-    public GF2nPolynomialElement power(int k) {
-        if (k == 1) {
-            return new GF2nPolynomialElement(this);
-        }
-
-        GF2nPolynomialElement result = GF2nPolynomialElement
-                .ONE((GF2nPolynomialField) mField);
-        if (k == 0) {
-            return result;
-        }
-
-        GF2nPolynomialElement x = new GF2nPolynomialElement(this);
-        x.polynomial.expandN((x.mDegree << 1) + 32);
-        x.polynomial.reduceN();
-
-        for (int i = 0; i < mDegree; i++) {
-            if ((k & (1 << i)) != 0) {
-                result.multiplyThisBy(x);
-            }
-            x.square();
-        }
-
-        return result;
-    }
-
-    /**
-     * Compute the square root of this element and return the result in a new
-     * {@link GF2nPolynomialElement}.
-     *
-     * @return <tt>this<sup>1/2</sup></tt> (newly created)
-     */
     public GF2nElement squareRoot() {
         GF2nPolynomialElement result = new GF2nPolynomialElement(this);
         result.squareRootThis();
         return result;
     }
 
-    /**
-     * Compute the square root of this element.
-     */
     public void squareRootThis() {
         polynomial.expandN((mDegree << 1) + 32);
         polynomial.reduceN();
@@ -467,27 +386,9 @@ public class GF2nPolynomialElement extends GF2nElement {
         polynomial.expandN(mDegree);
     }
 
-    // /////////////////////////////////////////////////////////////////////
-    // conversion
-    // /////////////////////////////////////////////////////////////////////
-
-    /**
-     * Returns a string representing this Bitstrings value using hexadecimal
-     * radix in MSB-first order.
-     *
-     * @return a String representing this Bitstrings value.
-     */
     public String toString() {
         return polynomial.toString(16);
     }
-
-    /**
-     * Returns a string representing this Bitstrings value using hexadecimal or
-     * binary radix in MSB-first order.
-     *
-     * @param radix the radix to use (2 or 16, otherwise 2 is used)
-     * @return a String representing this Bitstrings value.
-     */
     public String toString(int radix) {
         return polynomial.toString(radix);
     }

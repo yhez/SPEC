@@ -10,15 +10,6 @@ public class SparseBinaryConvolutionPolynomial implements ConvolutionPolynomial 
 
     int[] degrees;
 
-    /*
-     * Public methods
-     */
-
-    /**
-     * Compute an array of bit pattern locations (minimal size).
-     *
-     * @return an array of bit pattern locations
-     */
     public int[][] getPatterns() {
         int d = degrees.length;
 
@@ -44,13 +35,6 @@ public class SparseBinaryConvolutionPolynomial implements ConvolutionPolynomial 
 
         return L;
     }
-
-    /**
-     * Compare this polynomial with the given object.
-     *
-     * @param other the other object
-     * @return the result of the comparison
-     */
     public boolean equals(Object other) {
         if (other == null
                 || !(other instanceof SparseBinaryConvolutionPolynomial)) {

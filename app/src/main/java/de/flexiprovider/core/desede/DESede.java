@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.core.desede;
 
 import de.flexiprovider.api.BlockCipher;
@@ -17,20 +9,7 @@ import de.flexiprovider.api.keys.SecretKeySpec;
 import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.BigEndianConversions;
 
-/**
- * This class implements the TripleDES (DESede) block cipher. The implementation
- * conforms to the <a
- * href="http://csrc.nist.gov/publications/fips/fips46-3/fips46-3.pdf">FIPS 46-3
- * standard</a>.
- * <p/>
- * Note that the single DES algorithm can be emulated by TripleDES by
- * concatenating the same key three times.
- *
- * @author Norbert Trummel
- * @author Sylvain Franke
- * @author Torsten Ehli
- * @author Oliver Seiler
- */
+
 public class DESede extends BlockCipher {
 
     /**
@@ -45,14 +24,6 @@ public class DESede extends BlockCipher {
 
     // subkeys for the 3*16 rounds.
     private int[][] keys = new int[3][32];
-
-    /**
-     * The following arrays contain the eight S-boxes combined with the
-     * permutation P. Compared to FIPS 46-3, the order of the elements has been
-     * changed to allow faster calculation of element positions. The new order
-     * of elements in each box is: 0-0, 1-0, 0-1, 1-1, ... , 0-15, 1-15 2-0,
-     * 3-0, 2-1, 3-1, ... , 2-15, 3-15
-     */
 
     private static int[] S1 = {0x00808200, 0x00000000, 0x00008000, 0x00808202,
             0x00808002, 0x00008202, 0x00000002, 0x00008000, 0x00000200,
@@ -166,15 +137,6 @@ public class DESede extends BlockCipher {
             0x08000820, 0x00000000, 0x08020820, 0x00020800, 0x00020800,
             0x00000820, 0x00000820, 0x00020020, 0x08000000, 0x08020800};
 
-    // =========================================================================================================
-
-	/*
-     * Inner class providing DESede with predefined mode
-	 */
-
-    /**
-     * DESede_CBC
-     */
     public static class DESede_CBC extends DESede {
 
         /**
@@ -209,17 +171,6 @@ public class DESede extends BlockCipher {
         return ALG_NAME;
     }
 
-    /**
-     * Returns the key size of the given key object. Checks whether the key
-     * object is an instance of <tt>DESedeKey</tt> or <tt>SecretKeySpec</tt>. If
-     * the 3 DES keys differ from each other, the effective key strength is 112
-     * bits (not 168 bits, due to a meet in the middle attack), if they are all
-     * equal, we're simulating single DES.
-     *
-     * @param key the key object
-     * @return the key size of the given key object
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException if key is invalid.
-     */
     public int getKeySize(Key key) throws InvalidKeyException {
         boolean tripleDES = false;
 
@@ -424,20 +375,7 @@ public class DESede extends BlockCipher {
         // With this we?ve got 3*16 subkeys.
     }
 
-    /**
-     * This method encrypts a single block of data, and may only be called, when
-     * the block cipher is in encrytion mode. It has to be assured, too, that
-     * the array <TT>in</TT> contains a whole block starting at
-     * <TT>inOffset</TT> and that <TT>out</TT> is large enough to hold an
-     * encrypted block starting at <TT>outOffset</TT>. Key schedule is according
-     * to the FIPS46.3 standard.
-     *
-     * @param input  array of bytes which contains the plaintext to be encrypted
-     * @param inOff  index in array in, where the plaintext block starts
-     * @param output array of bytes which will contain the ciphertext starting at
-     *               outOffset
-     * @param outOff index in array out, where the ciphertext block will start
-     */
+
     protected void singleBlockEncrypt(byte[] input, int inOff, byte[] output,
                                       int outOff) {
 
@@ -458,20 +396,6 @@ public class DESede extends BlockCipher {
         BigEndianConversions.I2OSP(block, output, outOff);
     }
 
-    /**
-     * This method decrypts a single block of data, and may only be called, when
-     * the block cipher is in decryption mode. It has to be assured, too, that
-     * the array <TT>in</TT> contains a whole block starting at
-     * <TT>inOffset</TT> and that <TT>out</TT> is large enough to hold a
-     * decrypted block starting at <TT>outOffset</TT>. Key schedule is according
-     * to the FIPS46.3 standard.
-     *
-     * @param input  array of bytes which contains the ciphertext to be decrypted
-     * @param inOff  index in array in, where the ciphertext block starts
-     * @param output array of bytes which will contain the plaintext starting at
-     *               outOffset
-     * @param outOff index in array out, where the plaintext block will start
-     */
     protected void singleBlockDecrypt(byte[] input, int inOff, byte[] output,
                                       int outOff) {
 
@@ -492,16 +416,6 @@ public class DESede extends BlockCipher {
         BigEndianConversions.I2OSP(block, output, outOff);
     }
 
-    // ====================================================================================================================
-    //
-    // Here starts the single DES part where the real work is done.
-    //
-    // ====================================================================================================================
-
-    /**
-     * @param key the single SecretKey which has to be used to encrypt data
-     * @param in  long integer which contains the plaintext to be encrypted
-     */
     private long encryptDES(int key, long in) {
         int L, R, save, c, left, right;
 
@@ -578,16 +492,7 @@ public class DESede extends BlockCipher {
         // f_(K_1,R_1),R1).
     }
 
-    /**
-     * The initial permutation occurs before round 1. It transposes the input
-     * block as described in the matrix IP. According to Bruce Schneier, Applied
-     * Cryptography: "The initial permutation and the corresponding final
-     * permutation do not affect DES?s security. [...] Since this bit-wise
-     * permutation is difficult in software (although it is trivial in
-     * hardware), many software implementations of DES leave out both the
-     * initial and final permutations." This implementation does IP and FP
-     * according to FIPS46-3.
-     */
+
     private long initialPermutation(long in) {
         long result;
 

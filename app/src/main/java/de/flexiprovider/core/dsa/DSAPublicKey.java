@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.dsa;
 
 import codec.asn1.ASN1Integer;
@@ -18,12 +9,7 @@ import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.core.dsa.interfaces.DSAKey;
 import de.flexiprovider.core.dsa.interfaces.DSAParams;
 
-/**
- * This class implements the DSAPublicKey interface.
- *
- * @author Thomas Wahrenbruch
- * @see de.flexiprovider.core.dsa.DSAKeyFactory
- */
+
 public class DSAPublicKey extends
         de.flexiprovider.core.dsa.interfaces.DSAPublicKey implements DSAKey {
 
@@ -47,16 +33,6 @@ public class DSAPublicKey extends
     protected DSAPublicKey(FlexiBigInt y, DSAParams params) {
         this.y = y;
         this.params = params;
-    }
-
-    /**
-     * Construct a DSAPubKey out of the given key specification.
-     *
-     * @param keySpec the key specification
-     */
-    protected DSAPublicKey(DSAPublicKeySpec keySpec) {
-        this(keySpec.getValueY(), new DSAParameterSpec(keySpec.getPrimeP(),
-                keySpec.getPrimeQ(), keySpec.getBaseG()));
     }
 
     /**
@@ -119,11 +95,10 @@ public class DSAPublicKey extends
                 + params.getPrimeP().hashCode() + params.getPrimeQ().hashCode();
     }
 
-    /**
-     * @return the OID to encode in the SubjectPublicKeyInfo structure
-     */
+    public static final String OID = "1.2.840.10040.4.1";
+
     protected ASN1ObjectIdentifier getOID() {
-        return new ASN1ObjectIdentifier(DSAKeyFactory.OID);
+        return new ASN1ObjectIdentifier(OID);
     }
 
     /**

@@ -26,14 +26,6 @@ import de.flexiprovider.common.util.ASN1Tools;
 public class TpBasis extends ASN1Integer {
 
     /**
-     * Constructor used for decoding.
-     */
-    public TpBasis() {
-        // do not delete this constructor !!!
-        super();
-    }
-
-    /**
      * Constructor used for encoding.
      *
      * @param tc the trinomial coefficient

@@ -266,7 +266,7 @@ public class ECParameters extends AlgorithmParameters {
             throws InvalidParameterSpecException {
 
         if ((paramSpec == null)
-                || !(paramSpec.isAssignableFrom(curveParams.getClass()))) {
+                || !(paramSpec.isAssignableFrom(((Object)curveParams).getClass()))) {
             throw new InvalidParameterSpecException("unsupported type");
         }
 
@@ -277,7 +277,7 @@ public class ECParameters extends AlgorithmParameters {
      * @return a human readable form of these parameters
      */
     public String toString() {
-        return curveParams.toString();
+        return ((Object)curveParams).toString();
     }
 
     /**

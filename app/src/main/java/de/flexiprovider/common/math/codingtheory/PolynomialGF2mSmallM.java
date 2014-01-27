@@ -1,7 +1,6 @@
 package de.flexiprovider.common.math.codingtheory;
 
 import de.flexiprovider.api.SecureRandom;
-import de.flexiprovider.common.math.linearalgebra.GF2mVector;
 import de.flexiprovider.common.util.IntUtils;
 
 /**
@@ -44,25 +43,6 @@ public class PolynomialGF2mSmallM {
      */
     public static final char RANDOM_IRREDUCIBLE_POLYNOMIAL = 'I';
 
-    /**
-     * Construct the zero polynomial over the finite field GF(2^m).
-     *
-     * @param field the finite field GF(2^m)
-     */
-    public PolynomialGF2mSmallM(GF2mField field) {
-        this.field = field;
-        degree = -1;
-        coefficients = new int[1];
-    }
-
-    /**
-     * Construct a polynomial over the finite field GF(2^m).
-     *
-     * @param field            the finite field GF(2^m)
-     * @param deg              degree of polynomial
-     * @param typeOfPolynomial type of polynomial
-     * @param sr               PRNG
-     */
     public PolynomialGF2mSmallM(GF2mField field, int deg,
                                 char typeOfPolynomial, SecureRandom sr) {
         this.field = field;
@@ -132,48 +112,6 @@ public class PolynomialGF2mSmallM {
     }
 
     /**
-     * Create a polynomial over the finite field GF(2^m).
-     *
-     * @param field the finite field GF(2^m)
-     * @param enc   byte[] polynomial in byte array form
-     */
-    public PolynomialGF2mSmallM(GF2mField field, byte[] enc) {
-        this.field = field;
-
-        // decodes polynomial
-        int d = 8;
-        int count = 1;
-        while (field.getDegree() > d) {
-            count++;
-            d += 8;
-        }
-
-        if ((enc.length % count) != 0) {
-            throw new IllegalArgumentException(
-                    " Error: byte array is not encoded polynomial over given finite field GF2m");
-        }
-
-        coefficients = new int[enc.length / count];
-        count = 0;
-        for (int i = 0; i < coefficients.length; i++) {
-            for (int j = 0; j < d; j += 8) {
-                coefficients[i] ^= (enc[count++] & 0x000000ff) << j;
-            }
-            if (!this.field.isElementOfThisField(coefficients[i])) {
-                throw new IllegalArgumentException(
-                        " Error: byte array is not encoded polynomial over given finite field GF2m");
-            }
-        }
-        // if HC = 0 for non-zero polynomial, returns error
-        if ((coefficients.length != 1)
-                && (coefficients[coefficients.length - 1] == 0)) {
-            throw new IllegalArgumentException(
-                    " Error: byte array is not encoded polynomial over given finite field GF2m");
-        }
-        computeDegree();
-    }
-
-    /**
      * Copy constructor.
      *
      * @param other another {@link PolynomialGF2mSmallM}
@@ -183,17 +121,6 @@ public class PolynomialGF2mSmallM {
         field = other.field;
         degree = other.degree;
         coefficients = IntUtils.clone(other.coefficients);
-    }
-
-    /**
-     * Create a polynomial over the finite field GF(2^m) out of the given
-     * coefficient vector. The finite field is also obtained from the
-     * {@link GF2mVector}.
-     *
-     * @param vect the coefficient vector
-     */
-    public PolynomialGF2mSmallM(GF2mVector vect) {
-        this(vect.getField(), vect.getIntArrayForm());
     }
 
     /*
@@ -212,16 +139,6 @@ public class PolynomialGF2mSmallM {
             return -1;
         }
         return d;
-    }
-
-    /**
-     * @return the head coefficient of this polynomial
-     */
-    public int getHeadCoefficient() {
-        if (degree == -1) {
-            return 0;
-        }
-        return coefficients[degree];
     }
 
     /**
@@ -271,14 +188,6 @@ public class PolynomialGF2mSmallM {
         return res;
     }
 
-    public int evaluateAt(int e) {
-        int result = coefficients[degree];
-        for (int i = degree - 1; i >= 0; i--) {
-            result = field.mult(result, e) ^ coefficients[i];
-        }
-        return result;
-    }
-
     public PolynomialGF2mSmallM add(PolynomialGF2mSmallM addend) {
         int[] resultCoeff = add(coefficients, addend.coefficients);
         return new PolynomialGF2mSmallM(field, resultCoeff);
@@ -310,19 +219,6 @@ public class PolynomialGF2mSmallM {
         }
 
         return result;
-    }
-
-    /**
-     * Compute the sum of this polynomial and the monomial of the given degree.
-     *
-     * @param degree the degree of the monomial
-     * @return <tt>this + X^k</tt>
-     */
-    public PolynomialGF2mSmallM addMonomial(int degree) {
-        int[] monomial = new int[degree + 1];
-        monomial[degree] = 1;
-        int[] resultCoeff = add(coefficients, monomial);
-        return new PolynomialGF2mSmallM(field, resultCoeff);
     }
 
     /**
@@ -382,17 +278,6 @@ public class PolynomialGF2mSmallM {
         }
 
         return result;
-    }
-
-    /**
-     * Compute the product of this polynomial with a monomial X^k.
-     *
-     * @param k the degree of the monomial
-     * @return <tt>this * X^k</tt>
-     */
-    public PolynomialGF2mSmallM multWithMonomial(int k) {
-        int[] resultCoeff = multWithMonomial(coefficients, k);
-        return new PolynomialGF2mSmallM(field, resultCoeff);
     }
 
     /**
@@ -649,45 +534,6 @@ public class PolynomialGF2mSmallM {
     }
 
     /**
-     * Compute the square root of this polynomial using a square root matrix.
-     *
-     * @param matrix the matrix for computing square roots in
-     *               <tt>(GF(2^m))^t</tt> the polynomial ring defining the
-     *               square root matrix
-     * @return <tt>this^(1/2)</tt> modulo the reduction polynomial implicitly
-     * given via the square root matrix
-     */
-    public PolynomialGF2mSmallM modSquareRootMatrix(
-            PolynomialGF2mSmallM[] matrix) {
-
-        int length = matrix.length;
-
-        int[] resultCoeff = new int[length];
-
-        // do matrix multiplication
-        for (int i = 0; i < length; i++) {
-            // compute scalar product of i-th row and j-th column
-            for (int j = 0; j < length; j++) {
-                if (i >= matrix[j].coefficients.length) {
-                    continue;
-                }
-                if (j < coefficients.length) {
-                    int scalarTerm = field.mult(matrix[j].coefficients[i],
-                            coefficients[j]);
-                    resultCoeff[i] = field.add(resultCoeff[i], scalarTerm);
-                }
-            }
-        }
-
-        // compute the square root of each entry of the result coefficients
-        for (int i = 0; i < length; i++) {
-            resultCoeff[i] = field.sqRoot(resultCoeff[i]);
-        }
-
-        return new PolynomialGF2mSmallM(field, resultCoeff);
-    }
-
-    /**
      * Compute the result of the division of two polynomials modulo a third
      * polynomial over the field <tt>GF(2^m)</tt>.
      *
@@ -729,33 +575,6 @@ public class PolynomialGF2mSmallM {
         return new PolynomialGF2mSmallM(field, resultCoeff);
     }
 
-    /**
-     * Compute a polynomial pair (a,b) from this polynomial and the given
-     * polynomial g with the property b*this = a mod g and deg(a)<=deg(g)/2.
-     *
-     * @param g the reduction polynomial
-     * @return PolynomialGF2mSmallM[] {a,b} with b*this = a mod g and deg(a)<=
-     * deg(g)/2
-     */
-    public PolynomialGF2mSmallM[] modPolynomialToFracton(PolynomialGF2mSmallM g) {
-        int dg = g.degree >> 1;
-        int[] a0 = normalForm(g.coefficients);
-        int[] a1 = mod(coefficients, g.coefficients);
-        int[] b0 = {0};
-        int[] b1 = {1};
-        while (computeDegree(a1) > dg) {
-            int[][] q = div(a0, a1);
-            a0 = a1;
-            a1 = q[1];
-            int[] b2 = add(b0, modMultiply(q[0], b1, g.coefficients));
-            b0 = b1;
-            b1 = b2;
-        }
-
-        return new PolynomialGF2mSmallM[]{
-                new PolynomialGF2mSmallM(field, a1),
-                new PolynomialGF2mSmallM(field, b1)};
-    }
 
     /**
      * checks if given object is equal to this polynomial.

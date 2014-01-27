@@ -2,11 +2,6 @@ package de.flexiprovider.common.util;
 
 import de.flexiprovider.api.SecureRandom;
 
-/**
- * FlexiAPI wrapper for the default PRNG obtained via JCA.
- *
- * @author Martin Dring
- */
 public class DefaultPRNG extends SecureRandom {
 
     java.security.SecureRandom javaRand;

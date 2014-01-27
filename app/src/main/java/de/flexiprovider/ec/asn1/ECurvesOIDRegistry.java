@@ -1,10 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- */
 package de.flexiprovider.ec.asn1;
 
 import java.util.Hashtable;
@@ -13,18 +6,9 @@ import java.util.Map;
 import codec.asn1.ASN1ObjectIdentifier;
 import codec.asn1.AbstractOIDRegistry;
 
-/**
- * This class maps ASN.1 object identifiers onto ASN.1 types suitable for
- * decoding the structure defined by the given OID.
- *
- * @author Michele Boivin
- * @author Martin D�ring
- */
+
 public class ECurvesOIDRegistry extends AbstractOIDRegistry {
 
-    /**
-     * The OIDs specified as {@link codec.asn1.ASN1ObjectIdentifier} array
-     */
     private static final ASN1ObjectIdentifier[] oids = {
             // prime field
             FieldId.PRIME_FIELD,

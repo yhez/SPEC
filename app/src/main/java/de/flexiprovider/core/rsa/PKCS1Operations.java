@@ -190,10 +190,6 @@ public final class PKCS1Operations {
         byte[] lHash = hash(L, md);
         int hLen = lHash.length;
 
-        // b) no need to generate zero octets for PS. this step is superfluos.
-        // c) concatenate, lHash, PS, single octet of hexadecimal value 0x01
-        // and the message M to form a data block of length k - hLen - 1.
-        // DB = lHash || PS || 0x01 || M
         byte[] DB = new byte[k - hLen - 1];
         System.arraycopy(lHash, 0, DB, 0, hLen);
         DB[DB.length - M.length - 1] = 0x01;

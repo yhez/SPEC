@@ -8,7 +8,6 @@ public class TSSParameterSpec implements AlgorithmParameterSpec {
 
     // TODO: PS for public use!
 
-    private TSSPrivateKey privKey = null;
     private TSSPublicKey pubKey = null;
 
     private TSSPolynomial gfp;
@@ -37,7 +36,7 @@ public class TSSParameterSpec implements AlgorithmParameterSpec {
             s.setElementAt(gfp.generatePoly(2, true), i);
         }
 
-        privKey = new TSSPrivateKey(s);
+        TSSPrivateKey privKey = new TSSPrivateKey(s);
 
         pubKey = new TSSPublicKey(hashFunction.calculatHash(privKey.getKey()));
     }
@@ -71,10 +70,6 @@ public class TSSParameterSpec implements AlgorithmParameterSpec {
 
     public long getP() {
         return p;
-    }
-
-    public TSSPrivateKey getPrivateKey() {
-        return privKey;
     }
 
     public TSSPublicKey getPublicKey() {

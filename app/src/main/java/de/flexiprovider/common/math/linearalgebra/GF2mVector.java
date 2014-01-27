@@ -24,43 +24,6 @@ public class GF2mVector extends Vector {
     private int[] vector;
 
     /**
-     * creates the vector over GF(2^m) of given length and with elements from
-     * array v (beginning at the first bit)
-     *
-     * @param field finite field
-     * @param v     array with elements of vector
-     */
-    public GF2mVector(GF2mField field, byte[] v) {
-        this.field = new GF2mField(field);
-
-        // decode vector
-        int d = 8;
-        int count = 1;
-        while (field.getDegree() > d) {
-            count++;
-            d += 8;
-        }
-
-        if ((v.length % count) != 0) {
-            throw new IllegalArgumentException(
-                    "Byte array is not an encoded vector over the given finite field.");
-        }
-
-        length = v.length / count;
-        vector = new int[length];
-        count = 0;
-        for (int i = 0; i < vector.length; i++) {
-            for (int j = 0; j < d; j += 8) {
-                vector[i] |= (v[count++] & 0xff) << j;
-            }
-            if (!field.isElementOfThisField(vector[i])) {
-                throw new IllegalArgumentException(
-                        "Byte array is not an encoded vector over the given finite field.");
-            }
-        }
-    }
-
-    /**
      * Create a new vector over <tt>GF(2<sup>m</sup>)</tt> of the given
      * length and element array.
      *

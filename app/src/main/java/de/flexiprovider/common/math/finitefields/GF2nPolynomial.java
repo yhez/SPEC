@@ -381,16 +381,6 @@ public class GF2nPolynomial {
         }
     }
 
-    public final GF2nPolynomial shiftLeft(int amount) {
-        if (amount <= 0) {
-            return new GF2nPolynomial(this);
-        }
-        GF2nPolynomial result = new GF2nPolynomial(size + amount, coeff[0]);
-        result.assignZeroToElements();
-        System.arraycopy(coeff, 0, result.coeff, amount, size);
-        return result;
-    }
-
     public final GF2nPolynomial[] divide(GF2nPolynomial b)
             throws DifferentFieldsException, ArithmeticException {
         GF2nPolynomial[] result = new GF2nPolynomial[2];

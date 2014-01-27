@@ -128,18 +128,12 @@ public final class GenericGF {
     return a ^ b;
   }
 
-  /**
-   * @return 2 to the power of a in GF(size)
-   */
   int exp(int a) {
     checkInit();
 
     return expTable[a];
   }
 
-  /**
-   * @return base 2 log of a in GF(size)
-   */
   int log(int a) {
     checkInit();
 

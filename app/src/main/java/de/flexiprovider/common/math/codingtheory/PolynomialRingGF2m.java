@@ -46,13 +46,6 @@ public class PolynomialRingGF2m {
     }
 
     /**
-     * @return the matrix for computing square roots for this polynomial ring
-     */
-    public PolynomialGF2mSmallM[] getSquareRootMatrix() {
-        return sqRootMatrix;
-    }
-
-    /**
      * Compute the squaring matrix for this polynomial ring, using the base
      * field and the reduction polynomial.
      */

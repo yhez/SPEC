@@ -3,81 +3,13 @@ package de.flexiprovider.common.math.codingtheory;
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.common.util.LittleEndianConversions;
 
-/**
- * This class describes operations with elements from the finite field F =
- * GF(2^m). ( GF(2^m)= GF(2)[A] where A is a root of irreducible polynomial with
- * degree m, each field element B has a polynomial basis representation, i.e. it
- * is represented by a different binary polynomial of degree less than m, B =
- * poly(A) ) All operations are defined only for field with 1< m <32. For the
- * representation of field elements the map f: F->Z, poly(A)->poly(2) is used,
- * where integers have the binary representation. For example: A^7+A^3+A+1 ->
- * (00...0010001011)=139 Also for elements type Integer is used.
- *
- * @author Elena Klintsevich
- * @see PolynomialRingGF2
- */
+
 public class GF2mField {
 
-    /*
-     * degree - degree of the field polynomial - the field polynomial ring -
-     * polynomial ring over the finite field GF(2)
-     */
 
     private int degree = 0;
 
     private int polynomial;
-
-    /**
-     * create a finite field GF(2^m)
-     *
-     * @param degree the degree of the field
-     */
-    public GF2mField(int degree) {
-        if (degree >= 32) {
-            throw new IllegalArgumentException(
-                    " Error: the degree of field is too large ");
-        }
-        if (degree < 1) {
-            throw new IllegalArgumentException(
-                    " Error: the degree of field is non-positive ");
-        }
-        this.degree = degree;
-        polynomial = PolynomialRingGF2.getIrreduciblePolynomial(degree);
-    }
-
-    /**
-     * create a finite field GF(2^m) with the fixed field polynomial
-     *
-     * @param degree the degree of the field
-     * @param poly   the field polynomial
-     */
-    public GF2mField(int degree, int poly) {
-        if (degree != PolynomialRingGF2.degree(poly)) {
-            throw new IllegalArgumentException(
-                    " Error: the degree is not correct");
-        }
-        if (!PolynomialRingGF2.isIrreducible(poly)) {
-            throw new IllegalArgumentException(
-                    " Error: given polynomial is reducible");
-        }
-        this.degree = degree;
-        polynomial = poly;
-
-    }
-
-    public GF2mField(byte[] enc) {
-        if (enc.length != 4) {
-            throw new IllegalArgumentException(
-                    "byte array is not an encoded finite field");
-        }
-        polynomial = LittleEndianConversions.OS2IP(enc);
-        if (!PolynomialRingGF2.isIrreducible(polynomial)) {
-            throw new IllegalArgumentException(
-                    "byte array is not an encoded finite field");
-        }
-
-        degree = PolynomialRingGF2.degree(polynomial);
-    }
 
     public GF2mField(GF2mField field) {
         degree = field.degree;
@@ -152,29 +84,10 @@ public class GF2mField {
         return exp(a, d);
     }
 
-    /**
-     * compute the square root of an integer
-     *
-     * @param a a field element a
-     * @return a<sup>1/2</sup>
-     */
-    public int sqRoot(int a) {
-        for (int i = 1; i < degree; i++) {
-            a = mult(a, a);
-        }
-        return a;
-    }
-
     public int getRandomElement(SecureRandom sr) {
         return sr.nextInt(1 << degree);
     }
 
-    /**
-     * create a random non-zero field element using PRNG sr
-     *
-     * @param sr SecureRandom
-     * @return a random non-zero element
-     */
     public int getRandomNonZeroElement(SecureRandom sr) {
         int controltime = 1 << 20;
         int count = 0;

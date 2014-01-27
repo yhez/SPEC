@@ -67,38 +67,12 @@ public abstract class GF2nField {
         return mDegree + fieldPolynomial.hashCode();
     }
 
-    /**
-     * Computes a random root from the given irreducible fieldpolynomial
-     * according to IEEE 1363 algorithm A.5.6. This cal take very long for big
-     * degrees.
-     *
-     * @param B0FieldPolynomial the fieldpolynomial if the other basis as a Bitstring
-     * @return a random root of BOFieldPolynomial in representation according to
-     * this field
-     * @see "P1363 A.5.6, p103f"
-     */
     protected abstract GF2nElement getRandomRoot(GF2Polynomial B0FieldPolynomial);
 
-    /**
-     * Computes the change-of-basis matrix for basis conversion according to
-     * 1363. The result is stored in the lists fields and matrices.
-     *
-     * @param B1 the GF2nField to convert to
-     * @see "P1363 A.7.3, p111ff"
-     */
     protected abstract void computeCOBMatrix(GF2nField B1);
 
-    /**
-     * Computes the fieldpolynomial. This can take a long time for big degrees.
-     */
     protected abstract void computeFieldPolynomial();
 
-    /**
-     * Inverts the given matrix represented as bitstrings.
-     *
-     * @param matrix the matrix to invert as a Bitstring[]
-     * @return matrix^(-1)
-     */
     protected final GF2Polynomial[] invertMatrix(GF2Polynomial[] matrix) {
         GF2Polynomial[] a = new GF2Polynomial[matrix.length];
         GF2Polynomial[] inv = new GF2Polynomial[matrix.length];

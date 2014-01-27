@@ -1,24 +1,8 @@
-/*
- * Copyright (c) 1998-2008 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
 package de.flexiprovider.common.padding;
 
 import de.flexiprovider.api.PaddingScheme;
 import de.flexiprovider.api.exceptions.BadPaddingException;
 
-/**
- * OneAndZeroesPadding pads the plaintext by appending a single byte 1 and
- * several 0 bytes.
- *
- * @author Christoph Sesterhenn
- * @author Christoph Ender
- * @author Martin Dring
- */
 public class OneAndZeroesPadding extends PaddingScheme {
 
     protected int padLength(int inLen) {

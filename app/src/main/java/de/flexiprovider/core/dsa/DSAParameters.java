@@ -21,7 +21,7 @@ public class DSAParameters extends AlgorithmParameters {
     /**
      * The OID of DSA.
      */
-    public static final String OID = DSAKeyFactory.OID;
+    public static final String OID = "1.2.840.10040.4.1";
 
     // the prime p
     private FlexiBigInt p;

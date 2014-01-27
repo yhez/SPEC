@@ -6,20 +6,11 @@
  * file COPYING in the root directory of this package.
  *
  */
-
 package de.flexiprovider.common.padding;
 
 import de.flexiprovider.api.PaddingScheme;
 import de.flexiprovider.api.exceptions.BadPaddingException;
 
-/**
- * PKCS5Padding pads the plaintext by the method described in the PKCS #5 and
- * PKCS #7 standards.
- *
- * @author Ulrich Dudszus
- * @author Tom Kollmar
- * @author Martin Dring
- */
 public class PKCS5Padding extends PaddingScheme {
 
     protected int padLength(int inLen) {

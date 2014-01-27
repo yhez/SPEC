@@ -41,8 +41,4 @@ public final class IntUtils {
         return result;
     }
 
-    public static String toHexString(int[] input) {
-        return ByteUtils.toHexString(BigEndianConversions.toByteArray(input));
-    }
-
 }

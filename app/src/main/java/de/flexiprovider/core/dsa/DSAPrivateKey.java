@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.dsa;
 
 import codec.asn1.ASN1Integer;
@@ -17,11 +8,7 @@ import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.core.dsa.interfaces.DSAParams;
 
-/**
- * This class implements the DSAPrivateKey interface.
- *
- * @author Thomas Wahrenbruch
- */
+
 public class DSAPrivateKey extends
         de.flexiprovider.core.dsa.interfaces.DSAPrivateKey {
 
@@ -35,29 +22,12 @@ public class DSAPrivateKey extends
      */
     private DSAParams params;
 
-    /**
-     * Construct a DSA private key with the specified parameters (used by the
-     * {@link DSAKeyPairGenerator}).
-     *
-     * @param x      the secret exponent.
-     * @param params the DSA parameters.
-     */
+
     protected DSAPrivateKey(FlexiBigInt x, DSAParams params) {
         this.x = x;
         this.params = params;
     }
 
-    /**
-     * Construct a DSA private key from the given key specification (used by the
-     * {@link DSAKeyFactory}).
-     *
-     * @param keySpec the key specification
-     */
-    protected DSAPrivateKey(DSAPrivateKeySpec keySpec) {
-        this(keySpec.getValueX(), new DSAParameterSpec(keySpec.getPrimeP(),
-                keySpec.getPrimeQ(), keySpec.getBaseG()));
-
-    }
 
     /**
      * This function returns the name of the corresponding algorithm "DSA".
@@ -119,11 +89,10 @@ public class DSAPrivateKey extends
                 + params.getPrimeP().hashCode() + params.getPrimeQ().hashCode();
     }
 
-    /**
-     * @return the OID to encode in the SubjectPublicKeyInfo structure
-     */
+    public static final String OID = "1.2.840.10040.4.1";
+
     protected ASN1ObjectIdentifier getOID() {
-        return new ASN1ObjectIdentifier(DSAKeyFactory.OID);
+        return new ASN1ObjectIdentifier(OID);
     }
 
     /**

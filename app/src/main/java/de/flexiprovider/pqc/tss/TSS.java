@@ -19,25 +19,16 @@ import de.flexiprovider.common.math.IntegerFunctions;
 
 public abstract class TSS extends Signature {
 
-    /**
-     * TSS with SHA1
-     */
+
     public static class SHA1 extends TSS {
-        /**
-         * Constructor.
-         */
+
         public SHA1() {
             super(new de.flexiprovider.core.md.SHA1());
         }
     }
 
-    /**
-     * TSS with SHA256
-     */
     public static class SHA256 extends TSS {
-        /**
-         * Constructor.
-         */
+
         public SHA256() {
             super(new de.flexiprovider.core.md.SHA256());
         }
@@ -62,27 +53,17 @@ public abstract class TSS extends Signature {
 
     private TSSPublicKey pubKey = null;
 
-    /**
-     * Used to generate random gfps
-     */
     private TSSPolynomial refGfp;
 
     private byte[] message = null;
 
-    /**
-     * the message-digest used for the hashfunction
-     */
+
     protected MessageDigest messageDigest = null;
 
-    /**
-     * the hash-function described in the document
-     */
     protected TSSHashFunction hashFunction = null;
 
-    // dimension: integer that is a power of two
     protected int n = 0;
 
-    // 3 log(n)
     protected int m = 0;
 
     // prime
@@ -128,9 +109,6 @@ public abstract class TSS extends Signature {
             e.printStackTrace();
         }
 
-        // if (binary.length < n) {
-        // return null;
-        // }
         long[] ternary = new long[n];
         // System.arraycopy(binary, 0, ternary, 0, n);
         for (int i = n - 1; i >= 0; i--) {
@@ -162,14 +140,6 @@ public abstract class TSS extends Signature {
         return true;
     }
 
-    /**
-     * returns a Vector of {@link TSSPolynomial}s
-     *
-     * @param limit  the limit of the elements in the polynomials (eg: 2 to receive
-     *               polynomials with the values {-1, 0, 1})
-     * @param amount the amount of Polynomials in the vector
-     * @return the Vector of Polynomials
-     */
     public Vector getPolyVector(int limit, int amount) {
         Vector result = new Vector();
         result.setSize(amount);

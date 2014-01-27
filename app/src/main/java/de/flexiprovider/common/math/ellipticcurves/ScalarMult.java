@@ -18,18 +18,6 @@ public final class ScalarMult {
         // empty
     }
 
-    // ////////////////////////////////////////////////////////////////////
-    // multiplications
-    // ////////////////////////////////////////////////////////////////////
-
-    /**
-     * Multiplies this point with the scalar <tt>b</tt>. Naf-recoding (<tt>w = 4</tt>)
-     * and CMO-Precomputation will be used.
-     *
-     * @param b <tt>FlexiBigInt</tt>
-     * @param p base point
-     * @return <tt>b*p</tt>
-     */
     public static Point multiply(FlexiBigInt b, Point p) {
         int w = 4;
         int[] N = determineNaf(b, w);

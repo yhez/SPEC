@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.common.ies;
 
 import de.flexiprovider.api.exceptions.InvalidParameterException;
@@ -16,14 +7,6 @@ import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.desede.DESede;
 import de.flexiprovider.core.desede.DESede.DESede_CBC;
 
-/**
- * This class implements the {@link IES} algorithm parameters.
- *
- * @author Marcus St&ouml;gbauer
- * @author Hristo Indzhov
- * @author Martin D�ring
- * @see IES
- */
 public class IESParameterSpec implements AlgorithmParameterSpec {
 
     /**

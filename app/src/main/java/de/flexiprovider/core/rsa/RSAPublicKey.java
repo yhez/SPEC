@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.rsa;
 
 import codec.asn1.ASN1Null;
@@ -16,14 +7,7 @@ import codec.asn1.ASN1Type;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.util.ASN1Tools;
 
-/**
- * This class implements the <tt>RSAPublicKey</tt> interface. It represents a
- * RSA public key and is usually instantiated from <tt>RSAKeyPairGenerator</tt>.
- *
- * @author Thomas Wahrenbruch
- * @author Ralf-Philipp Weinmann
- * @see de.flexiprovider.core.rsa.RSAKeyPairGenerator
- */
+
 public final class RSAPublicKey extends
         de.flexiprovider.core.rsa.interfaces.RSAPublicKey {
 

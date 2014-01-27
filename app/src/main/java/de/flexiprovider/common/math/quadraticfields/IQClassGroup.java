@@ -12,45 +12,18 @@ public class IQClassGroup {
      * Constants
      */
 
-    private static final int PRIME_CERTAINTY = 15;
-
-    private static final int RANDOM_PRIME_POWER_IDEAL_EXPONENT = 5;
-
-    private static final int RANDOM_PRIME_POWER_IDEAL_BITLENGTH = 70;
-
-    private static final int RANDOM_IDEAL_ITERATIONS = 4;
-
     /*
      * Member variables
      */
 
-    private SecureRandom prng;
-
     private FlexiBigInt discriminant;
 
     public IQClassGroup(FlexiBigInt discriminant, SecureRandom prng) {
-        this.prng = (prng == null) ? Registry.getSecureRandom() : prng;
+        SecureRandom prng1 = (prng == null) ? Registry.getSecureRandom() : prng;
         this.discriminant = discriminant;
     }
     public IQClassGroup(FlexiBigInt discriminant) {
         this(discriminant, null);
-    }
-    public IQClassGroup(int bits, boolean primeDiscriminant, SecureRandom prng) {
-        this.prng = (prng == null) ? Registry.getSecureRandom() : prng;
-
-        do {
-            discriminant = new FlexiBigInt(bits, this.prng).or(FlexiBigInt
-                    .valueOf(3));
-            discriminant = discriminant.setBit(bits - 1);
-
-            if (primeDiscriminant) {
-                while (!discriminant.isProbablePrime(PRIME_CERTAINTY)) {
-                    discriminant = discriminant.add(FlexiBigInt.valueOf(4));
-                }
-            }
-        } while (discriminant.bitLength() != bits);
-
-        discriminant = discriminant.negate();
     }
 
     public FlexiBigInt getDiscriminant() {
@@ -319,197 +292,6 @@ public class IQClassGroup {
         return new QuadraticIdeal(1, discriminant.testBit(0) ? 1 : 0);
     }
 
-    /**
-     * Exponentiate a quadratic ideal (uses signed-digit exponent recoding).
-     *
-     * @param I the ideal
-     * @param n the exponent
-     * @return <tt>I<sup>n</sup></tt>
-     */
-    public QuadraticIdeal power(QuadraticIdeal I, FlexiBigInt n) {
-        QuadraticIdeal T, T2;
-        int c, cn, d, e, en, i, t;
-        int sign;
-
-        T = one();
-
-        // check whether sign of exponent is negative
-        if (n.signum() < 0) {
-            n = n.abs();
-            sign = -1;
-        } else {
-            sign = 1;
-        }
-
-        t = n.bitLength();
-        c = 0;
-        e = n.testBit(0) ? 1 : 0;
-        T2 = I;
-
-        for (i = 0; i <= t; i++) {
-            en = n.testBit(i + 1) ? 1 : 0;
-            cn = (e + en + c) >> 1;
-            d = e + c - 2 * cn;
-
-            if (d > 0) {
-                T = multiply(T, T2);
-            } else if (d < 0) {
-                T = divide(T, T2);
-            }
-
-            e = en;
-            c = cn;
-            T2 = square(T2);
-        }
-
-        return sign < 0 ? invert(T) : T;
-    }
-
-    public QuadraticIdeal power(QuadraticIdeal[] powI, FlexiBigInt n) {
-        QuadraticIdeal T;
-        int c, cn, d, e, en, i, t;
-        int sign;
-
-        T = one();
-
-        // check whether sign of exponent is negative
-        if (n.signum() < 0) {
-            n = n.abs();
-            sign = -1;
-        } else {
-            sign = 1;
-        }
-
-        t = n.bitLength();
-        c = 0;
-        e = n.testBit(0) ? 1 : 0;
-
-        for (i = 0; i <= t; i++) {
-            en = n.testBit(i + 1) ? 1 : 0;
-            cn = (e + en + c) >> 1;
-            d = e + c - 2 * cn;
-
-            if (d > 0) {
-                T = multiply(T, powI[i]);
-            } else if (d < 0) {
-                T = divide(T, powI[i]);
-            }
-
-            e = en;
-            c = cn;
-        }
-
-        return (sign < 0) ? invert(T) : T;
-    }
-
-    /**
-     * Generate precomputed values for fast exponentation using the Gordon
-     * Brickell method.
-     *
-     * @param I the ideal
-     * @param n the number of ideals to precompute
-     * @return the array
-     * <tt>[I, I<sup>2<sup>1</sup></sup>, ..., I<sup>2<sup>n-1</sup></sup>]</tt>
-     */
-    public QuadraticIdeal[] precomputeGordonBrickell(QuadraticIdeal I, int n) {
-        QuadraticIdeal[] powI = new QuadraticIdeal[n];
-
-        for (int i = 0; i < n; i++) {
-            powI[i] = I;
-            I = square(I);
-        }
-
-        return powI;
-    }
-
-    private int[] determineNAF(FlexiBigInt e, int wi, int b) {
-        int power2wi = 1 << wi;
-        int j, u;
-        int[] N = new int[b + 1];
-        FlexiBigInt c = e.abs();
-        int s = e.signum();
-
-        j = 0;
-        while (c.signum() > 0) {
-            if (c.testBit(0)) {
-                u = (c.intValue()) & ((power2wi << 1) - 1);
-                if ((u & power2wi) != 0) {
-                    u = u - (power2wi << 1);
-                }
-
-                c = c.subtract(FlexiBigInt.valueOf(u));
-            } else {
-                u = 0;
-            }
-
-            N[j++] = (s > 0) ? u : -u;
-            c = c.shiftRight(1);
-        }
-
-        // fill with zeros
-        while (j <= b) {
-            N[j++] = 0;
-        }
-
-        return N;
-    }
-
-    public QuadraticIdeal[][] precomputeSimPowerWNAF(QuadraticIdeal[] g, int w) {
-        int power2w = 1 << (w + 1);
-        int count = power2w >> 1;
-        QuadraticIdeal[][] gE = new QuadraticIdeal[g.length][count];
-        QuadraticIdeal A;
-
-        for (int i = 0; i < g.length; i++) {
-            A = square(g[i]);
-            gE[i][0] = g[i];
-
-            for (int j = 1; j < count; j++) {
-                gE[i][j] = multiply(gE[i][j - 1], A);
-            }
-        }
-        return gE;
-    }
-
-    public QuadraticIdeal simPowerWNAF(QuadraticIdeal[][] gLUT,
-                                       FlexiBigInt[] e, int w) {
-        QuadraticIdeal A;
-        int b, i, j;
-        int k = e.length;
-        int[][] N = new int[k][];
-
-        for (i = k - 1, b = 0; i >= 0; i--) {
-            int bl;
-
-            bl = e[i].bitLength();
-            if (bl > b) {
-                b = bl;
-            }
-        }
-
-        // determine the (w + 1) non-adjacent form for all exponents
-        for (i = k - 1; i >= 0; i--) {
-            N[i] = determineNAF(e[i], w, b);
-        }
-
-        for (j = b, A = one(); j >= 0; j--) {
-            int n;
-
-            A = square(A);
-            for (i = 0; i < k; i++) {
-                n = N[i][j];
-                if (n == 0) {
-                    continue;
-                }
-
-                A = (n > 0) ? multiply(A, gLUT[i][n >> 1]) : divide(A,
-                        gLUT[i][(-n) >> 1]);
-            }
-        }
-
-        return A;
-    }
-
     // /////////////////////////////////////////////////////////////////////////
 
     public QuadraticIdeal primePowerIdeal(FlexiBigInt p, int e)
@@ -538,34 +320,6 @@ public class IQClassGroup {
         }
 
         return reduce(a, b);
-    }
-
-    public QuadraticIdeal randomPrimePowerIdeal(int bits, int e) {
-        FlexiBigInt p;
-
-        do {
-            p = new FlexiBigInt(bits, 20, prng);
-        } while (IntegerFunctions.jacobi(discriminant.mod(p), p) != 1);
-
-        // XXX --rpw 2001/10/17 fix this.
-        try {
-            return primePowerIdeal(p, e);
-        } catch (NoQuadraticResidueException nqre) {
-            return one();
-        }
-    }
-
-    public QuadraticIdeal randomIdeal() {
-        QuadraticIdeal I;
-
-        I = randomPrimePowerIdeal(70, prng.nextInt()
-                % RANDOM_PRIME_POWER_IDEAL_EXPONENT);
-        for (int i = 0; i < RANDOM_IDEAL_ITERATIONS; i++) {
-            I = multiply(I, randomPrimePowerIdeal(
-                    RANDOM_PRIME_POWER_IDEAL_BITLENGTH, prng.nextInt()
-                    % RANDOM_PRIME_POWER_IDEAL_EXPONENT));
-        }
-        return I;
     }
 
     // ////////////////////////////////////////////////////////////////////////

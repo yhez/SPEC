@@ -94,51 +94,6 @@ public final class ByteUtils {
         return result;
     }
 
-    /**
-     * Computes a hashcode based on the contents of a one-dimensional byte array
-     * rather than its identity.
-     *
-     * @param array the array to compute the hashcode of
-     * @return the hashcode
-     */
-    public static int deepHashCode(byte[] array) {
-        int result = 1;
-        for (int i = 0; i < array.length; i++) {
-            result = 31 * result + array[i];
-        }
-        return result;
-    }
-
-    /**
-     * Computes a hashcode based on the contents of a two-dimensional byte array
-     * rather than its identity.
-     *
-     * @param array the array to compute the hashcode of
-     * @return the hashcode
-     */
-    public static int deepHashCode(byte[][] array) {
-        int result = 1;
-        for (int i = 0; i < array.length; i++) {
-            result = 31 * result + deepHashCode(array[i]);
-        }
-        return result;
-    }
-
-    /**
-     * Computes a hashcode based on the contents of a three-dimensional byte
-     * array rather than its identity.
-     *
-     * @param array the array to compute the hashcode of
-     * @return the hashcode
-     */
-    public static int deepHashCode(byte[][][] array) {
-        int result = 1;
-        for (int i = 0; i < array.length; i++) {
-            result = 31 * result + deepHashCode(array[i]);
-        }
-        return result;
-    }
-
 
     /**
      * Return a clone of the given byte array (performs null check beforehand).
@@ -246,33 +201,6 @@ public final class ByteUtils {
         return out;
     }
 
-    public static byte[] concatenate(byte[] x1, byte[] x2) {
-        byte[] result = new byte[x1.length + x2.length];
-
-        System.arraycopy(x1, 0, result, 0, x1.length);
-        System.arraycopy(x2, 0, result, x1.length, x2.length);
-
-        return result;
-    }
-
-    /**
-     * Convert a 2-dimensional byte array into a 1-dimensional byte array by
-     * concatenating all entries.
-     *
-     * @param array a 2-dimensional byte array
-     * @return the concatenated input array
-     */
-    public static byte[] concatenate(byte[][] array) {
-        int rowLength = array[0].length;
-        byte[] result = new byte[array.length * rowLength];
-        int index = 0;
-        for (int i = 0; i < array.length; i++) {
-            System.arraycopy(array[i], 0, result, index, rowLength);
-            index += rowLength;
-        }
-        return result;
-    }
-
     /**
      * Split a byte array <tt>input</tt> into two arrays at <tt>index</tt>,
      * i.e. the first array will have the lower <tt>index</tt> bytes, the
@@ -293,21 +221,6 @@ public final class ByteUtils {
         result[1] = new byte[input.length - index];
         System.arraycopy(input, 0, result[0], 0, index);
         System.arraycopy(input, index, result[1], 0, input.length - index);
-        return result;
-    }
-
-    /**
-     * Generate a subarray of a given byte array.
-     *
-     * @param input the input byte array
-     * @param start the start index
-     * @param end   the end index
-     * @return a subarray of <tt>input</tt>, ranging from <tt>start</tt>
-     * (inclusively) to <tt>end</tt> (exclusively)
-     */
-    public static byte[] subArray(byte[] input, int start, int end) {
-        byte[] result = new byte[end - start];
-        System.arraycopy(input, start, result, 0, end - start);
         return result;
     }
 

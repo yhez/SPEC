@@ -12,7 +12,6 @@ import de.flexiprovider.common.util.IntUtils;
 
 public class GF2Polynomial {
 
-    // number of bits stored in this GF2Polynomial
     private int len;
 
     // number of int used in value
@@ -107,11 +106,6 @@ public class GF2Polynomial {
             0x07ffffff, 0x0fffffff, 0x1fffffff, 0x3fffffff, 0x7fffffff,
             0xffffffff};
 
-    /**
-     * Creates a new GF2Polynomial of the given <i>length</i> and value zero.
-     *
-     * @param length the desired number of bits to store
-     */
     public GF2Polynomial(int length) {
         int l = length;
         if (l < 1) {
@@ -122,37 +116,6 @@ public class GF2Polynomial {
         len = l;
     }
 
-    /**
-     * Creates a new GF2Polynomial of the given <i>length</i> and random value.
-     *
-     * @param length the desired number of bits to store
-     * @param rand   SecureRandom to use for randomization
-     */
-    public GF2Polynomial(int length, Random rand) {
-        int l = length;
-        if (l < 1) {
-            l = 1;
-        }
-        blocks = ((l - 1) >> 5) + 1;
-        value = new int[blocks];
-        len = l;
-        randomize(rand);
-    }
-
-    /**
-     * Creates a new GF2Polynomial of the given <i>length</i> and value
-     * selected by <i>value</i>:
-     * <UL>
-     * <LI>ZERO</LI>
-     * <LI>ONE</LI>
-     * <LI>RANDOM</LI>
-     * <LI>X</LI>
-     * <LI>ALL</LI>
-     * </UL>
-     *
-     * @param length the desired number of bits to store
-     * @param value  the value described by a String
-     */
     public GF2Polynomial(int length, String value) {
         int l = length;
         if (l < 1) {
@@ -179,13 +142,6 @@ public class GF2Polynomial {
 
     }
 
-    /**
-     * Creates a new GF2Polynomial of the given <i>length</i> using the given
-     * int[]. LSB is contained in bs[0].
-     *
-     * @param length the desired number of bits to store
-     * @param bs     contains the desired value, LSB in bs[0]
-     */
     public GF2Polynomial(int length, int[] bs) {
         int leng = length;
         if (leng < 1) {
@@ -199,14 +155,6 @@ public class GF2Polynomial {
         zeroUnusedBits();
     }
 
-    /**
-     * Creates a new GF2Polynomial by converting the given byte[] <i>os</i>
-     * according to 1363 and using the given <i>length</i>.
-     *
-     * @param length the intended length of this polynomial
-     * @param os     the octet string to assign to this polynomial
-     * @see "P1363 5.5.2 p22f, OS2BSP"
-     */
     public GF2Polynomial(int length, byte[] os) {
         int l = length;
         if (l < 1) {
@@ -239,15 +187,6 @@ public class GF2Polynomial {
         zeroUnusedBits();
         reduceN();
     }
-
-    /**
-     * Creates a new GF2Polynomial by converting the given FlexiBigInt <i>bi</i>
-     * according to 1363 and using the given <i>length</i>.
-     *
-     * @param length the intended length of this polynomial
-     * @param bi     the FlexiBigInt to assign to this polynomial
-     * @see "P1363 5.5.1 p22, I2BSP"
-     */
     public GF2Polynomial(int length, FlexiBigInt bi) {
         int l = length;
         if (l < 1) {
@@ -282,20 +221,11 @@ public class GF2Polynomial {
         reduceN();
     }
 
-    /**
-     * Creates a new GF2Polynomial by cloneing the given GF2Polynomial <i>b</i>.
-     *
-     * @param b the GF2Polynomial to clone
-     */
     public GF2Polynomial(GF2Polynomial b) {
         len = b.len;
         blocks = b.blocks;
         value = IntUtils.clone(b.value);
     }
-
-    /**
-     * @return a copy of this GF2Polynomial
-     */
     public Object clone() {
         return new GF2Polynomial(this);
     }
@@ -366,12 +296,6 @@ public class GF2Polynomial {
         return res;
     }
 
-    /**
-     * Converts this polynomial to an integer according to 1363.
-     *
-     * @return a FlexiBigInt representing the value of this polynomial
-     * @see "P1363 5.5.1 p22, BS2IP"
-     */
     public FlexiBigInt toFlexiBigInt() {
         if (len == 0 || isZero()) {
             return new FlexiBigInt(0, new byte[0]);
@@ -379,10 +303,6 @@ public class GF2Polynomial {
         return new FlexiBigInt(1, toByteArray());
     }
 
-    /**
-     * Sets the LSB to 1 and all other to 0, assigning 'one' to this
-     * GF2Polynomial.
-     */
     public void assignOne() {
         int i;
         for (i = 1; i < blocks; i++) {
@@ -525,23 +445,10 @@ public class GF2Polynomial {
         xorThisBy(b);
     }
 
-    /**
-     * Adds two GF2Polynomials, <i>this</i> and <i>b</i>, and returns the
-     * result. <i>this</i> and <i>b</i> can be of different size.
-     *
-     * @param b a GF2Polynomial
-     * @return a new GF2Polynomial (<i>this</i> + <i>b</i>)
-     */
     public GF2Polynomial add(GF2Polynomial b) {
         return xor(b);
     }
 
-    /**
-     * Subtracts <i>b</i> from this GF2Polynomial and assigns the result to
-     * this GF2Polynomial. <i>b</i> can be of different size.
-     *
-     * @param b a GF2Polynomial
-     */
     public void subtractFromThis(GF2Polynomial b) {
         expandN(b.len);
         xorThisBy(b);

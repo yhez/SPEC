@@ -1062,13 +1062,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
         if (m.testBit(0)) { // odd modulus
             result = base.oddModPow(exponent, m);
         } else {
-            /*
-             * Even modulus.  Tear it into an "odd part" (m1) and power of two
-             * (m2), exponentiate mod m1, manually exponentiate mod m2, and
-             * use Chinese Remainder Theorem to combine results.
-             */
-
-            // Tear m apart into odd part (m1) and power of 2 (m2)
             int p = m.getLowestSetBit();
 
             BigInteger m1 = m.shiftRight(p);  // m/2**p
@@ -1641,7 +1634,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
                 // Calculate the bit length of the magnitude
                 int magBitLength = ((len - 1) << 5) + bitLengthForInt(mag[0]);
                 if (signum < 0) {
-                    // Check if magnitude is a power of two
                     boolean pow2 = (Integer.bitCount(mag[0]) == 1);
                     for (int i = 1; i < len && pow2; i++)
                         pow2 = (mag[i] == 0);

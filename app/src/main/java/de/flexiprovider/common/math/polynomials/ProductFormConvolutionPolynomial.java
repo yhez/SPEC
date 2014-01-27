@@ -1,16 +1,5 @@
 package de.flexiprovider.common.math.polynomials;
 
-/**
- * This class represents product form polynomials in <tt>Z(X)/(X^N-1)</tt>,
- * i.e. polynomials of the form <tt>f1*f2+f3</tt>, where <tt>f1</tt>,
- * <tt>f2</tt>, and <tt>f3</tt> are sparse binary polynomials.
- * <p/>
- * The fields have package visibility so that they can be accessed by
- * {@link de.flexiprovider.common.math.polynomials.ModQConvolutionPolynomial}.
- *
- * @author Martin D�ring
- * @see de.flexiprovider.common.math.polynomials.SparseBinaryConvolutionPolynomial
- */
 public class ProductFormConvolutionPolynomial implements ConvolutionPolynomial {
 
     /**

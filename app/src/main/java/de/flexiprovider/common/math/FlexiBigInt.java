@@ -81,10 +81,6 @@ public final class FlexiBigInt {
         return new FlexiBigInt(bigInt.remainder(divisor.bigInt));
     }
 
-    public FlexiBigInt pow(int exponent) {
-        return new FlexiBigInt(bigInt.pow(exponent));
-    }
-
     public FlexiBigInt gcd(FlexiBigInt val) {
         return new FlexiBigInt(bigInt.gcd(val.bigInt));
     }

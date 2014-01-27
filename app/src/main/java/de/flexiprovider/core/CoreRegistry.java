@@ -24,17 +24,12 @@ import de.flexiprovider.core.rijndael.RijndaelKeyGenerator;
 import de.flexiprovider.core.rijndael.RijndaelParameterSpec;
 import de.flexiprovider.core.rijndael.RijndaelParameters;
 
-/**
- * Register all algorithms of the <a href="package.html">core package</a>.
- */
+
 public abstract class CoreRegistry extends Registry {
 
     // flag indicating if algorithms already have been registered
     private static boolean registered = false;
 
-    /**
-     * Register all algorithms of the <a href="package.html">core package</a>.
-     */
     public static void registerAlgorithms() {
         if (!registered) {
             registerHMAC();

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.rsa;
 
 import codec.CorruptedCodeException;
@@ -28,12 +19,7 @@ import de.flexiprovider.core.mprsa.RSAOtherPrimeInfo;
 import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 
-/**
- * This class is able to transform RSA-keys and RSA-key specs into a form that
- * can be used with the FlexiProvider.
- *
- * @author Thomas Wahrenbruch
- */
+
 public class RSAKeyFactory extends
         de.flexiprovider.core.rsa.interfaces.RSAKeyFactory {
 

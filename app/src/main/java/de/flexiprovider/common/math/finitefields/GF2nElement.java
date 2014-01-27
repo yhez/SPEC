@@ -99,12 +99,6 @@ public abstract class GF2nElement implements GFElement {
     public final void subtractFromThis(GFElement minuend) {
         addToThis(minuend);
     }
-
-    /**
-     * Returns <tt>this</tt> element to the power of 2.
-     *
-     * @return <tt>this</tt><sup>2</sup>
-     */
     public abstract GF2nElement square();
 
     /**

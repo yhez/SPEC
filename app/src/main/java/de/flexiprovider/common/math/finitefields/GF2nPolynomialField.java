@@ -121,12 +121,6 @@ public class GF2nPolynomialField extends GF2nField {
         return result;
     }
 
-    /**
-     * Compute a random root of the given GF2Polynomial.
-     *
-     * @param polynomial the polynomial
-     * @return a random root of <tt>polynomial</tt>
-     */
     protected GF2nElement getRandomRoot(GF2Polynomial polynomial) {
         // We are in B1!!!
         GF2nPolynomial c;

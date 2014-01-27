@@ -8,8 +8,6 @@
  */
 package de.flexiprovider.common.math;
 
-import de.flexiprovider.api.Registry;
-import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.common.exceptions.NoQuadraticResidueException;
 
 /**
@@ -31,11 +29,6 @@ public final class IntegerFunctions {
 
     private static final int[] SMALL_PRIMES = {3, 5, 7, 11, 13, 17, 19, 23,
             29, 31, 37, 41};
-
-    private static final long SMALL_PRIME_PRODUCT = 3L * 5 * 7 * 11 * 13 * 17
-            * 19 * 23 * 29 * 31 * 37 * 41;
-
-    private static SecureRandom sr = null;
 
     // the jacobi function uses this lookup table
     private static final int[] jacobiTable = {0, 1, 0, -1, 0, -1, 0, 1};
@@ -247,15 +240,7 @@ public final class IntegerFunctions {
         }
         return a.shiftLeft(1).add(b).divide(b.shiftLeft(1));
     }
-    public static int ceilLog(int a) {
-        int log = 0;
-        int i = 1;
-        while (i < a) {
-            i <<= 1;
-            log++;
-        }
-        return log;
-    }
+
     public static int ceilLog256(int n) {
         if (n == 0) {
             return 1;
@@ -275,30 +260,6 @@ public final class IntegerFunctions {
         return d;
     }
 
-    /**
-     * Compute the integer part of the logarithm to the base 2 of the given
-     * integer.
-     *
-     * @param a the integer
-     * @return floor[log(a)]
-     */
-    public static int floorLog(FlexiBigInt a) {
-        int result = -1;
-        FlexiBigInt p = FlexiBigInt.ONE;
-        while (p.compareTo(a) <= 0) {
-            result++;
-            p = p.shiftLeft(1);
-        }
-        return result;
-    }
-
-    /**
-     * Compute the integer part of the logarithm to the base 2 of the given
-     * integer.
-     *
-     * @param a the integer
-     * @return floor[log(a)]
-     */
     public static int floorLog(int a) {
         int h = 0;
         if (a <= 0) {
@@ -313,15 +274,6 @@ public final class IntegerFunctions {
         return h;
     }
 
-    /**
-     * determines the order of g modulo p, p prime and 1 < g < p. This algorithm
-     * is only efficient for small p (see X9.62-1998, p. 68).
-     *
-     * @param g an integer with 1 < g < p
-     * @param p a prime
-     * @return the order k of g (that is k is the smallest integer with
-     * g<sup>k</sup> = 1 mod p
-     */
     public static int order(int g, int p) {
         int b, j;
 
@@ -366,29 +318,6 @@ public final class IntegerFunctions {
         return result;
     }
 
-    public static int modPow(int a, int e, int n) {
-        if (n <= 0 || e < 0) {
-            return 0;
-        }
-        int result = 1;
-        a = (a % n + n) % n;
-        while (e > 0) {
-            if ((e & 1) == 1) {
-                result = (result * a) % n;
-            }
-            a = (a * a) % n;
-            e >>>= 1;
-        }
-        return result;
-    }
-
-    /**
-     * Extended euclidian algorithm (computes gcd and representation).
-     *
-     * @param a - the first integer
-     * @param b - the second integer
-     * @return <tt>(d,u,v)</tt>, where <tt>d = gcd(a,b) = ua + vb</tt>
-     */
     public static FlexiBigInt[] extgcd(FlexiBigInt a, FlexiBigInt b) {
         FlexiBigInt u = FlexiBigInt.ONE;
         FlexiBigInt v = FlexiBigInt.ZERO;
@@ -411,15 +340,6 @@ public final class IntegerFunctions {
         return new FlexiBigInt[]{d, u, v};
     }
 
-    /**
-     * Returns a long integer whose value is <tt>(a mod m</tt>). This method
-     * differs from <tt>%</tt> in that it always returns a <i>non-negative</i>
-     * integer.
-     *
-     * @param a value on which the modulo operation has to be performed.
-     * @param m the modulus.
-     * @return <tt>a mod m</tt>
-     */
     public static long mod(long a, long m) {
         long result = a % m;
         if (result < 0) {
@@ -428,39 +348,16 @@ public final class IntegerFunctions {
         return result;
     }
 
-    /**
-     * Computes the modular inverse of an integer a
-     *
-     * @param a   - the integer to invert
-     * @param mod - the modulus
-     * @return <tt>a<sup>-1</sup> mod n</tt>
-     */
     public static int modInverse(int a, int mod) {
         return FlexiBigInt.valueOf(a).modInverse(FlexiBigInt.valueOf(mod))
                 .intValue();
     }
 
-    /**
-     * Computes the modular inverse of an integer a
-     *
-     * @param a   - the integer to invert
-     * @param mod - the modulus
-     * @return <tt>a<sup>-1</sup> mod n</tt>
-     */
     public static long modInverse(long a, long mod) {
         return FlexiBigInt.valueOf(a).modInverse(FlexiBigInt.valueOf(mod))
                 .longValue();
     }
 
-    /**
-     * Miller-Rabin-Test, determines wether the given integer is probably prime
-     * or composite. This method returns <tt>true</tt> if the given integer is
-     * prime with probability <tt>1 - 2<sup>-20</sup></tt>.
-     *
-     * @param n the integer to test for primality
-     * @return <tt>true</tt> if the given integer is prime with probability
-     * 2<sup>-100</sup>, <tt>false</tt> otherwise
-     */
     public static boolean isPrime(int n) {
         if (n < 2) {
             return false;
@@ -483,166 +380,7 @@ public final class IntegerFunctions {
 
     }
 
-    /**
-     * Short trial-division test to find out whether a number is not prime. This
-     * test is usually used before a Miller-Rabin primality test.
-     *
-     * @param candidate the number to test
-     * @return <tt>true</tt> if the number has no factor of the tested primes,
-     * <tt>false</tt> if the number is definitely composite
-     */
-    public static boolean passesSmallPrimeTest(FlexiBigInt candidate) {
-        final int[] smallPrime = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37,
-                41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103,
-                107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167,
-                173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233,
-                239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307,
-                311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379,
-                383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449,
-                457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523,
-                541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607,
-                613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677,
-                683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761,
-                769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853,
-                857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937,
-                941, 947, 953, 967, 971, 977, 983, 991, 997, 1009, 1013, 1019,
-                1021, 1031, 1033, 1039, 1049, 1051, 1061, 1063, 1069, 1087,
-                1091, 1093, 1097, 1103, 1109, 1117, 1123, 1129, 1151, 1153,
-                1163, 1171, 1181, 1187, 1193, 1201, 1213, 1217, 1223, 1229,
-                1231, 1237, 1249, 1259, 1277, 1279, 1283, 1289, 1291, 1297,
-                1301, 1303, 1307, 1319, 1321, 1327, 1361, 1367, 1373, 1381,
-                1399, 1409, 1423, 1427, 1429, 1433, 1439, 1447, 1451, 1453,
-                1459, 1471, 1481, 1483, 1487, 1489, 1493, 1499};
 
-        for (int i = 0; i < smallPrime.length; i++) {
-            if (candidate.mod(FlexiBigInt.valueOf(smallPrime[i])).equals(
-                    FlexiBigInt.ZERO)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Compute the next probable prime greater than <tt>n</tt> with the
-     * specified certainty.
-     *
-     * @param n         a integer number
-     * @param certainty the certainty that the generated number is prime
-     * @return the next prime greater than <tt>n</tt>
-     */
-    public static FlexiBigInt nextProbablePrime(FlexiBigInt n, int certainty) {
-
-        if (n.signum() < 0 || n.signum() == 0 || n.equals(ONE)) {
-            return TWO;
-        }
-
-        FlexiBigInt result = n.add(ONE);
-
-        // Ensure an odd number
-        if (!result.testBit(0)) {
-            result = result.add(ONE);
-        }
-
-        while (true) {
-            // Do cheap "pre-test" if applicable
-            if (result.bitLength() > 6) {
-                long r = result.remainder(
-                        FlexiBigInt.valueOf(SMALL_PRIME_PRODUCT)).longValue();
-                if ((r % 3 == 0) || (r % 5 == 0) || (r % 7 == 0)
-                        || (r % 11 == 0) || (r % 13 == 0) || (r % 17 == 0)
-                        || (r % 19 == 0) || (r % 23 == 0) || (r % 29 == 0)
-                        || (r % 31 == 0) || (r % 37 == 0) || (r % 41 == 0)) {
-                    result = result.add(TWO);
-                    continue; // Candidate is composite; try another
-                }
-            }
-
-            // All candidates of bitLength 2 and 3 are prime by this point
-            if (result.bitLength() < 4) {
-                return result;
-            }
-
-            // The expensive test
-            if (result.isProbablePrime(certainty)) {
-                return result;
-            }
-
-            result = result.add(TWO);
-        }
-    }
-
-    /**
-     * Compute the next probable prime greater than <tt>n</tt> with the default
-     * certainty (20).
-     *
-     * @param n a integer number
-     * @return the next prime greater than <tt>n</tt>
-     */
-    public static FlexiBigInt nextProbablePrime(FlexiBigInt n) {
-        return nextProbablePrime(n, 20);
-    }
-
-    /**
-     * Computes the binomial coefficient (n|t) ("n over t"). Formula:<br/>
-     * <ul>
-     * <li>if n !=0 and t != 0 then (n|t) = Mult(i=1, t): (n-(i-1))/i</li>
-     * <li>if t = 0 then (n|t) = 1</li>
-     * <li>if n = 0 and t > 0 then (n|t) = 0</li>
-     * </ul>
-     *
-     * @param n - the "upper" integer
-     * @param t - the "lower" integer
-     * @return the binomialcoefficient "n over t" as FlexiBigInt
-     */
-    public static FlexiBigInt binomial(int n, int t) {
-
-        FlexiBigInt result = FlexiBigInt.ONE;
-
-        if (n == 0) {
-            if (t == 0) {
-                return result;
-            }
-            return FlexiBigInt.ZERO;
-        }
-
-        // the property (n|t) = (n|n-t) be used to reduce numbers of operations
-        if (t > (n >>> 1)) {
-            t = n - t;
-        }
-
-        for (int i = 1; i <= t; i++) {
-            result = (result.multiply(FlexiBigInt.valueOf(n - (i - 1))))
-                    .divide(FlexiBigInt.valueOf(i));
-        }
-
-        return result;
-    }
-
-    public static FlexiBigInt randomize(FlexiBigInt upperBound,
-                                        SecureRandom prng) {
-        int blen = upperBound.bitLength();
-        FlexiBigInt randomNum = FlexiBigInt.valueOf(0);
-
-        if (prng == null) {
-            prng = sr != null ? sr : Registry.getSecureRandom();
-        }
-
-        for (int i = 0; i < 20; i++) {
-            randomNum = new FlexiBigInt(blen, prng);
-            if (randomNum.compareTo(upperBound) < 0) {
-                return randomNum;
-            }
-        }
-        return randomNum.mod(upperBound);
-    }
-
-    /**
-     * Extract the truncated square root of a FlexiBigInt.
-     *
-     * @param a - value out of which we extract the square root
-     * @return the truncated square root of <tt>a</tt>
-     */
     public static FlexiBigInt squareRoot(FlexiBigInt a) {
         int bl;
         FlexiBigInt result, remainder, b;
@@ -678,13 +416,6 @@ public final class IntegerFunctions {
         return result;
     }
 
-    /**
-     * Takes an approximation of the root from an integer base, using newton's
-     * algorithm
-     *
-     * @param base the base to take the root from
-     * @param root the root, for example 2 for a square root
-     */
     public static float intRoot(int base, int root) {
         float gNew = base / root;
         float gOld = 0;
@@ -738,13 +469,6 @@ public final class IntegerFunctions {
             tmp2 *= 2;
         }
         double rem = x / tmp2;
-        rem = logBKM(rem);
-        return tmp + rem;
-    }
-    public static double log(long x) {
-        int tmp = floorLog(FlexiBigInt.valueOf(x));
-        long tmp2 = 1 << tmp;
-        double rem = (double) x / (double) tmp2;
         rem = logBKM(rem);
         return tmp + rem;
     }
@@ -868,28 +592,6 @@ public final class IntegerFunctions {
             s *= 0.5;
         }
         return y;
-    }
-
-    public static byte[] integerToOctets(FlexiBigInt val) {
-        byte[] valBytes = val.abs().toByteArray();
-
-        // check whether the array includes a sign bit
-        if ((val.bitLength() & 7) != 0) {
-            return valBytes;
-        }
-        // get rid of the sign bit (first byte)
-        byte[] tmp = new byte[val.bitLength() >> 3];
-        System.arraycopy(valBytes, 1, tmp, 0, tmp.length);
-        return tmp;
-    }
-
-    public static FlexiBigInt octetsToInteger(byte[] data, int offset,
-                                              int length) {
-        byte[] val = new byte[length + 1];
-
-        val[0] = 0;
-        System.arraycopy(data, offset, val, 1, length);
-        return new FlexiBigInt(val);
     }
 
 }

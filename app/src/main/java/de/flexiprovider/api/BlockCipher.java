@@ -320,66 +320,13 @@ public abstract class BlockCipher extends Cipher {
         }
     }
 
-    /**
-     * Initialize this cipher with a key, a set of algorithm parameters, and a
-     * source of randomness for decryption.
-     * <p/>
-     * If this cipher requires any algorithm parameters and paramSpec is null,
-     * the underlying cipher implementation is supposed to generate the required
-     * parameters itself (using provider-specific default or random values) if
-     * it is being initialized for encryption, and throw an
-     * {@link de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException} if it is being initialized for
-     * decryption. The generated parameters can be retrieved using
-     * engineGetParameters or engineGetIV (if the parameter is an IV).
-     * <p/>
-     * If this cipher (including its underlying feedback or padding scheme)
-     * requires any random bytes (e.g., for parameter generation), it will get
-     * them from random.
-     * <p/>
-     * Note that when a {@link BlockCipher} object is initialized, it loses all
-     * previously-acquired state. In other words, initializing a Cipher is
-     * equivalent to creating a new instance of that Cipher and initializing it.
-     *
-     * @param key          the encryption key
-     * @param cipherParams the cipher parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the given key is inappropriate for initializing this
-     *                                                                            block cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are inappropriate for initializing this
-     *                                                                            block cipher.
-     */
+
     public final void initDecrypt(Key key, AlgorithmParameterSpec cipherParams)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
         initDecrypt(key, null, cipherParams);
     }
 
-    /**
-     * Initialize this cipher with a key, a set of algorithm parameters, and a
-     * source of randomness for decryption.
-     * <p/>
-     * If this cipher requires any algorithm parameters and paramSpec is null,
-     * the underlying cipher implementation is supposed to generate the required
-     * parameters itself (using provider-specific default or random values) if
-     * it is being initialized for encryption, and throw an
-     * {@link de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException} if it is being initialized for
-     * decryption. The generated parameters can be retrieved using
-     * engineGetParameters or engineGetIV (if the parameter is an IV).
-     * <p/>
-     * If this cipher (including its underlying feedback or padding scheme)
-     * requires any random bytes (e.g., for parameter generation), it will get
-     * them from random.
-     * <p/>
-     * Note that when a {@link BlockCipher} object is initialized, it loses all
-     * previously-acquired state. In other words, initializing a Cipher is
-     * equivalent to creating a new instance of that Cipher and initializing it.
-     *
-     * @param key          the encryption key
-     * @param modeParams   the mode parameters
-     * @param cipherParams the cipher parameters
-     * @throws de.flexiprovider.api.exceptions.InvalidKeyException                if the given key is inappropriate for initializing this
-     *                                                                            block cipher.
-     * @throws de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException if the parameters are inappropriate for initializing this
-     *                                                                            block cipher.
-     */
+
     public final void initDecrypt(Key key, ModeParameterSpec modeParams,
                                   AlgorithmParameterSpec cipherParams) throws InvalidKeyException,
             InvalidAlgorithmParameterException {
@@ -418,7 +365,6 @@ public abstract class BlockCipher extends Cipher {
             return new byte[0];
         }
 
-        // concatenate buffer and input (only if buffer is not empty)
         int bufLen = buffer.length;
         int newInLen, newInOff;
         byte[] newInput;

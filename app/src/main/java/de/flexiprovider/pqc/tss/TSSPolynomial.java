@@ -63,12 +63,6 @@ public class TSSPolynomial {
         return new TSSPolynomial(f, p, reduce(result));
     }
 
-    /**
-     * Adds the supplied Polynomial to this Polynomial and sets this Polynomial
-     * as the result
-     *
-     * @param gfp the Polynomial to be added
-     */
     public void addToThis(TSSPolynomial gfp) {
         poly = add(gfp).getPoly();
     }
@@ -108,25 +102,10 @@ public class TSSPolynomial {
         return false;
     }
 
-    /**
-     * Generates a random Polynomial, complying to the specification of this
-     * Ring
-     *
-     * @return the randomly generated Polynomial
-     */
     public TSSPolynomial generatePoly() {
         return generatePoly(0);
     }
 
-    /**
-     * Generates a random Polynomial with the specified limit, denoting the
-     * maximum Value of entries in this Polynomial.
-     *
-     * @param limit the limit to be used for modulo in the generated Polynomial.
-     *              Only used if the supplied number is lower than p, otherwise p
-     *              is used.
-     * @return the randomly generated Polynomial
-     */
     public TSSPolynomial generatePoly(long limit) {
         return generatePoly(limit, false);
     }
@@ -150,14 +129,6 @@ public class TSSPolynomial {
         }
     }
 
-    /**
-     * Subtracts p from every entry in this polynomial with a value greater p/2.
-     * <p/>
-     * This Function is used for calculating the correct Norm of a Polynomial,
-     * since the Norm uses the absolute Value for determining the Maximum
-     *
-     * @return the compressed polynomial
-     */
     public long[] getCompressed() {
         return compress(poly);
     }
@@ -196,9 +167,6 @@ public class TSSPolynomial {
         return p;
     }
 
-    /**
-     * @return The (reduced) Polynomial as an long array
-     */
     public long[] getPoly() {
         return poly;
     }
@@ -214,12 +182,6 @@ public class TSSPolynomial {
         return poly;
     }
 
-    /**
-     * multiplies the given Polynomial to this Polynomial and returns the Result
-     *
-     * @param gfp the Polynomial to be multiplied
-     * @return the Product of the two Polynomials
-     */
     public TSSPolynomial multiply(TSSPolynomial gfp) {
         if (!paramEqual(gfp)) {
             return null;
@@ -236,28 +198,12 @@ public class TSSPolynomial {
         for (int i = a.length - 1; i >= 0; i--) {
             for (int j = z.length - 1; j >= 0; j--) {
                 result[i + j] = (result[i + j] + (a[i] * z[j])) % p;
-                // FlexiBigInt l = new FlexiBigInt("" + a[i]);
-                // FlexiBigInt k = new FlexiBigInt("" + z[j]);
-                // k = l.multiply(k).mod(new FlexiBigInt("" + p));
-                // result[i + j] = (k.longValue() + result[i + j]) % p;
             }
         }
         result = mod(result);
         return new TSSPolynomial(f, p, reduce(result));
     }
 
-    /**
-     * multiplies this Polynomial with a Vector of Polynomials and returns the
-     * Result
-     * <p/>
-     * Multiplication with a Vector is designed as follows:
-     * <p/>
-     * Vector � = (a1, a2, ... , am), Polynomial p � * p = (a1*p, a2*p, ...
-     * , am * p)
-     *
-     * @param k the Vector of Polynomials to be multiplied
-     * @return the Vector of the Product
-     */
     public Vector multiply(Vector k) {
         Vector result = new Vector();
         result.setSize(k.size());
@@ -299,15 +245,6 @@ public class TSSPolynomial {
         return result;
     }
 
-    /**
-     * This Methods reduces a Polynomial in long array representation, with the
-     * most significant value rightmost. This means that the supplied Polynomial
-     * will be calculated modulo the Ring Polynomial f and the remainder is
-     * returned.
-     *
-     * @param z The supplied Polynomial to be reduced
-     * @return the remainder of the reduced Polynomial
-     */
     private long[] reduce(long[] z) {
         z = reduceZeros(mod(z));
         int gradZ = z.length;

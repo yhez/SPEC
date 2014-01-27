@@ -1,23 +1,9 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.md;
 
 import de.flexiprovider.api.MessageDigest;
 import de.flexiprovider.common.util.LittleEndianConversions;
 
-/**
- * This class is the base class for all message digests of the MD family ({@link MD4},
- * {@link MD5}, {@link RIPEMD128}, ...).
- *
- * @author Martin D�ring
- */
+
 public abstract class MDFamilyDigest extends MessageDigest {
 
     // the digest length in bytes
@@ -49,11 +35,7 @@ public abstract class MDFamilyDigest extends MessageDigest {
         reset();
     }
 
-    /**
-     * Initialize the function with an initial state.
-     *
-     * @param initialState the initial state
-     */
+
     protected void initMessageDigest(int[] initialState) {
         if (state == null) {
             state = new int[initialState.length];
@@ -79,7 +61,6 @@ public abstract class MDFamilyDigest extends MessageDigest {
         if ((count & 63) == 63) {
             // 64 bytes arrived -> time for some processing
             for (int i = 15; i >= 0; i--) {
-                // setup x with converted values from the buffer
                 x[i] = LittleEndianConversions.OS2IP(buffer, 4 * i);
             }
             processBlock();

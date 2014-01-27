@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 1998-2003 by The FlexiProvider Group,
- *                            Technische Universitaet Darmstadt 
- *
- * For conditions of usage and distribution please refer to the
- * file COPYING in the root directory of this package.
- *
- */
-
 package de.flexiprovider.core.mprsa;
 
 import codec.asn1.ASN1Integer;
@@ -19,11 +10,7 @@ import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.core.rsa.RSAKeyFactory;
 import de.flexiprovider.core.rsa.RSAPrivateCrtKey;
 
-/**
- * This class implements a multi-prime RSA private key.
- *
- * @author Paul Nguentcheu
- */
+
 public class MpRSAPrivateKey extends RSAPrivateCrtKey {
 
     /**

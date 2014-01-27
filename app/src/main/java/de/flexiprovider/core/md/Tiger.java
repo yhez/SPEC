@@ -887,7 +887,6 @@ public final class Tiger extends MessageDigest {
         if ((count & 63) == 63) {
             // 64 bytes arrived -> time for some processing
             for (int i = x.length - 1; i >= 0; i--) {
-                // setup x with converted values from the buffer
                 x[i] = LittleEndianConversions.OS2LIP(buffer, i << 3);
 
             }

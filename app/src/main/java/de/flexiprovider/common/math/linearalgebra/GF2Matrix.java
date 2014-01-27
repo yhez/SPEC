@@ -2,80 +2,18 @@ package de.flexiprovider.common.math.linearalgebra;
 
 import java.util.Arrays;
 
-import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.common.util.IntUtils;
 import de.flexiprovider.common.util.LittleEndianConversions;
 
-/**
- * This class describes some operations with matrices over finite field GF(2)
- * and is used in ecc and MQ-PKC (also has some specific methods and
- * implementation)
- *
- * @author Elena Klintsevich
- */
 public class GF2Matrix extends Matrix {
 
-    /**
-     * For the matrix representation the array of type int[][] is used, thus one
-     * element of the array keeps 32 elements of the matrix (from one row and 32
-     * columns)
-     */
+
     private int[][] matrix;
 
-    /**
-     * the length of each array representing a row of this matrix, computed as
-     * <tt>(numColumns + 31) / 32</tt>
-     */
     private int length;
 
-    /**
-     * Create the matrix from encoded form.
-     *
-     * @param enc the encoded matrix
-     */
-    public GF2Matrix(byte[] enc) {
-        if (enc.length < 9) {
-            throw new ArithmeticException(
-                    "given array is not an encoded matrix over GF(2)");
-        }
 
-        numRows = LittleEndianConversions.OS2IP(enc, 0);
-        numColumns = LittleEndianConversions.OS2IP(enc, 4);
-
-        int n = ((numColumns + 7) >>> 3) * numRows;
-
-        if ((numRows <= 0) || (n != (enc.length - 8))) {
-            throw new ArithmeticException(
-                    "given array is not an encoded matrix over GF(2)");
-        }
-
-        length = (numColumns + 31) >>> 5;
-        matrix = new int[numRows][length];
-
-        // number of "full" integer
-        int q = numColumns >> 5;
-        // number of bits in non-full integer
-        int r = numColumns & 0x1f;
-
-        int count = 8;
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < q; j++, count += 4) {
-                matrix[i][j] = LittleEndianConversions.OS2IP(enc, count);
-            }
-            for (int j = 0; j < r; j += 8) {
-                matrix[i][q] ^= (enc[count++] & 0xff) << j;
-            }
-        }
-    }
-
-    /**
-     * Create the matrix with the contents of the given array. The matrix is not
-     * copied. Unused coefficients are masked out.
-     *
-     * @param numColumns the number of columns
-     * @param matrix     the element array
-     */
     public GF2Matrix(int numColumns, int[][] matrix) {
         if (matrix[0].length != (numColumns + 31) >> 5) {
             throw new ArithmeticException(
@@ -95,17 +33,6 @@ public class GF2Matrix extends Matrix {
             matrix[i][length - 1] &= bitMask;
         }
         this.matrix = matrix;
-    }
-
-    /**
-     * Create an nxn matrix of the given type.
-     *
-     * @param n            the number of rows (and columns)
-     * @param typeOfMatrix the martix type (see {@link Matrix} for predefined
-     *                     constants)
-     */
-    public GF2Matrix(int n, char typeOfMatrix) {
-        this(n, typeOfMatrix, Registry.getSecureRandom());
     }
 
     /**
@@ -145,22 +72,6 @@ public class GF2Matrix extends Matrix {
             default:
                 throw new ArithmeticException("Unknown matrix type.");
         }
-    }
-
-    /**
-     * Copy constructor.
-     *
-     * @param a another {@link GF2Matrix}
-     */
-    public GF2Matrix(GF2Matrix a) {
-        numColumns = a.getNumColumns();
-        numRows = a.getNumRows();
-        length = a.length;
-        matrix = new int[a.matrix.length][];
-        for (int i = 0; i < matrix.length; i++) {
-            matrix[i] = IntUtils.clone(a.matrix[i]);
-        }
-
     }
 
     /**
@@ -298,78 +209,6 @@ public class GF2Matrix extends Matrix {
     }
 
     /**
-     * Create a nxn random regular matrix and its inverse.
-     *
-     * @param n  number of rows (and columns)
-     * @param sr source of randomness
-     * @return the created random regular matrix and its inverse
-     */
-    public static GF2Matrix[] createRandomRegularMatrixAndItsInverse(int n,
-                                                                     SecureRandom sr) {
-
-        GF2Matrix[] result = new GF2Matrix[2];
-
-        // ------------------------------------
-        // First part: create regular matrix
-        // ------------------------------------
-
-        // ------
-        int length = (n + 31) >> 5;
-        GF2Matrix lm = new GF2Matrix(n, Matrix.MATRIX_TYPE_RANDOM_LT, sr);
-        GF2Matrix um = new GF2Matrix(n, Matrix.MATRIX_TYPE_RANDOM_UT, sr);
-        GF2Matrix rm = (GF2Matrix) lm.rightMultiply(um);
-        Permutation p = new Permutation(n, sr);
-        int[] pVec = p.getVector();
-
-        int[][] matrix = new int[n][length];
-        for (int i = 0; i < n; i++) {
-            System.arraycopy(rm.matrix[pVec[i]], 0, matrix[i], 0, length);
-        }
-
-        result[0] = new GF2Matrix(n, matrix);
-
-        // ------------------------------------
-        // Second part: create inverse matrix
-        // ------------------------------------
-
-        // inverse to lm
-        GF2Matrix invLm = new GF2Matrix(n, Matrix.MATRIX_TYPE_UNIT);
-        for (int i = 0; i < n; i++) {
-            int rest = i & 0x1f;
-            int q = i >>> 5;
-            int r = 1 << rest;
-            for (int j = i + 1; j < n; j++) {
-                int b = (lm.matrix[j][q]) & r;
-                if (b != 0) {
-                    for (int k = 0; k <= q; k++) {
-                        invLm.matrix[j][k] ^= invLm.matrix[i][k];
-                    }
-                }
-            }
-        }
-        // inverse to um
-        GF2Matrix invUm = new GF2Matrix(n, Matrix.MATRIX_TYPE_UNIT);
-        for (int i = n - 1; i >= 0; i--) {
-            int rest = i & 0x1f;
-            int q = i >>> 5;
-            int r = 1 << rest;
-            for (int j = i - 1; j >= 0; j--) {
-                int b = (um.matrix[j][q]) & r;
-                if (b != 0) {
-                    for (int k = q; k < length; k++) {
-                        invUm.matrix[j][k] ^= invUm.matrix[i][k];
-                    }
-                }
-            }
-        }
-
-        // inverse matrix
-        result[1] = (GF2Matrix) invUm.rightMultiply(invLm.rightMultiply(p));
-
-        return result;
-    }
-
-    /**
      * @return the length of each array representing a row of this matrix
      */
     public int getLength() {
@@ -449,28 +288,6 @@ public class GF2Matrix extends Matrix {
     }
 
     /**
-     * Compute the full form matrix <tt>(this | Id)</tt> from this matrix in
-     * left compact form, where <tt>Id</tt> is the <tt>k x k</tt> identity
-     * matrix and <tt>k</tt> is the number of rows of this matrix.
-     *
-     * @return <tt>(this | Id)</tt>
-     */
-    public GF2Matrix extendLeftCompactForm() {
-        int newNumColumns = numColumns + numRows;
-        GF2Matrix result = new GF2Matrix(numRows, newNumColumns);
-
-        int ind = numRows - 1 + numColumns;
-        for (int i = numRows - 1; i >= 0; i--, ind--) {
-            // copy this matrix to first columns
-            System.arraycopy(matrix[i], 0, result.matrix[i], 0, length);
-            // store the identity in last columns
-            result.matrix[i][ind >> 5] |= 1 << (ind & 0x1f);
-        }
-
-        return result;
-    }
-
-    /**
      * Get the submatrix of this matrix consisting of the rightmost
      * <tt>numColumns-numRows</tt> columns.
      *
@@ -508,29 +325,6 @@ public class GF2Matrix extends Matrix {
             }
         }
         return result;
-    }
-
-    /**
-     * Compute the transpose of this matrix.
-     *
-     * @return <tt>(this)<sup>T</sup></tt>
-     */
-    public Matrix computeTranspose() {
-        int[][] result = new int[numColumns][(numRows + 31) >>> 5];
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numColumns; j++) {
-                int qs = j >>> 5;
-                int rs = j & 0x1f;
-                int b = (matrix[i][qs] >>> rs) & 1;
-                int qt = i >>> 5;
-                int rt = i & 0x1f;
-                if (b == 1) {
-                    result[j][qt] |= 1 << rt;
-                }
-            }
-        }
-
-        return new GF2Matrix(numRows, result);
     }
 
     /**
@@ -597,76 +391,6 @@ public class GF2Matrix extends Matrix {
         return new GF2Matrix(numColumns, invMatrix);
     }
 
-    /**
-     * Compute the product of the matrix <tt>(this | Id)</tt> and a column
-     * vector, where <tt>Id</tt> is a <tt>(numRows x numRows)</tt> unit
-     * matrix.
-     *
-     * @param vec the vector over GF(2)
-     * @return <tt>(this | Id)*vector</tt>
-     */
-    public Vector leftMultiplyLeftCompactForm(Vector vec) {
-        if (!(vec instanceof GF2Vector)) {
-            throw new ArithmeticException("vector is not defined over GF(2)");
-        }
-
-        if (vec.length != numRows) {
-            throw new ArithmeticException("length mismatch");
-        }
-
-        int[] v = ((GF2Vector) vec).getVecArray();
-        int[] res = new int[(numRows + numColumns + 31) >>> 5];
-
-        // process full words of vector
-        int words = numRows >>> 5;
-        int row = 0;
-        for (int i = 0; i < words; i++) {
-            int bitMask = 1;
-            do {
-                int b = v[i] & bitMask;
-                if (b != 0) {
-                    // compute scalar product part
-                    for (int j = 0; j < length; j++) {
-                        res[j] ^= matrix[row][j];
-                    }
-                    // set last bit
-                    int q = (numColumns + row) >>> 5;
-                    int r = (numColumns + row) & 0x1f;
-                    res[q] |= 1 << r;
-                }
-                row++;
-                bitMask <<= 1;
-            } while (bitMask != 0);
-        }
-
-        // process last word of vector
-        int rem = 1 << (numRows & 0x1f);
-        int bitMask = 1;
-        while (bitMask != rem) {
-            int b = v[words] & bitMask;
-            if (b != 0) {
-                // compute scalar product part
-                for (int j = 0; j < length; j++) {
-                    res[j] ^= matrix[row][j];
-                }
-                // set last bit
-                int q = (numColumns + row) >>> 5;
-                int r = (numColumns + row) & 0x1f;
-                res[q] |= 1 << r;
-            }
-            row++;
-            bitMask <<= 1;
-        }
-
-        return new GF2Vector(res, numRows + numColumns);
-    }
-
-    /**
-     * Compute the product of this matrix and a matrix A over GF(2).
-     *
-     * @param mat a matrix A over GF(2)
-     * @return matrix product <tt>this*matrixA</tt>
-     */
     public Matrix rightMultiply(Matrix mat) {
         if (!(mat instanceof GF2Matrix)) {
             throw new ArithmeticException("matrix is not defined over GF(2)");
@@ -745,43 +469,6 @@ public class GF2Matrix extends Matrix {
         return result;
     }
 
-    /**
-     * Compute the product of this matrix and the given column vector.
-     *
-     * @param vec the vector over GF(2)
-     * @return <tt>this*vector</tt>
-     */
-    public Vector rightMultiply(Vector vec) {
-        if (!(vec instanceof GF2Vector)) {
-            throw new ArithmeticException("vector is not defined over GF(2)");
-        }
-
-        if (vec.length != numColumns) {
-            throw new ArithmeticException("length mismatch");
-        }
-
-        int[] v = ((GF2Vector) vec).getVecArray();
-        int[] res = new int[(numRows + 31) >>> 5];
-
-        for (int i = 0; i < numRows; i++) {
-            // compute full word scalar products
-            int help = 0;
-            for (int j = 0; j < length; j++) {
-                help ^= matrix[i][j] & v[j];
-            }
-            // compute single word scalar product
-            int bitValue = 0;
-            for (int j = 0; j < 32; j++) {
-                bitValue ^= (help >>> j) & 1;
-            }
-            // set result bit
-            if (bitValue == 1) {
-                res[i >>> 5] |= 1 << (i & 0x1f);
-            }
-        }
-
-        return new GF2Vector(res, numRows);
-    }
     public boolean equals(Object other) {
 
         if (!(other instanceof GF2Matrix)) {

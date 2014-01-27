@@ -53,13 +53,6 @@ public abstract class Matrix {
     // ----------------------------------------------------
 
     /**
-     * @return the number of rows in the matrix
-     */
-    public int getNumRows() {
-        return numRows;
-    }
-
-    /**
      * @return the number of columns in the binary matrix
      */
     public int getNumColumns() {
@@ -104,14 +97,6 @@ public abstract class Matrix {
      * @return <tt>this * p</tt> (newly created)
      */
     public abstract Matrix rightMultiply(Permutation p);
-
-    /**
-     * Compute the product of this matrix and a vector.
-     *
-     * @param vector a vector
-     * @return <tt>this * vector</tt> (newly created)
-     */
-    public abstract Vector rightMultiply(Vector vector);
 
     /**
      * @return a human readable form of the matrix.

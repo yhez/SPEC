@@ -1010,7 +1010,6 @@ class MutableBigInteger {
         if (isEven())
             throw new ArithmeticException("BigInteger not invertible.");
 
-        // Get even part of modulus expressed as a power of 2
         int powersOf2 = p.getLowestSetBit();
 
         // Construct odd part of modulus
@@ -1202,10 +1201,7 @@ class MutableBigInteger {
         return c;
     }
 
-    /**
-     * Uses the extended Euclidean algorithm to compute the modInverse of base
-     * mod a modulus that is a power of 2. The modulus is 2^k.
-     */
+
     MutableBigInteger euclidModInverse(int k) {
         MutableBigInteger b = new MutableBigInteger(1);
         b.leftShift(k);

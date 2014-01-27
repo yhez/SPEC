@@ -1,20 +1,9 @@
 package de.flexiprovider.common.math.linearalgebra;
 
-import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.common.math.codingtheory.GF2mField;
 import de.flexiprovider.common.util.IntUtils;
 import de.flexiprovider.common.util.LittleEndianConversions;
 
-/**
- * This class implements the abstract class <tt>Vector</tt> for the case of
- * vectors over the finite field GF(2). <br>
- * For the vector representation the array of type int[] is used, thus one
- * element of the array holds 32 elements of the vector.
- *
- * @author Elena Klintsevich
- * @author Andrei Pyshkin
- * @see Vector
- */
 public class GF2Vector extends Vector {
 
     /**
@@ -33,25 +22,6 @@ public class GF2Vector extends Vector {
         }
         this.length = length;
         v = new int[(length + 31) >> 5];
-    }
-
-    public GF2Vector(int length, SecureRandom sr) {
-        this.length = length;
-
-        int size = (length + 31) >> 5;
-        v = new int[size];
-
-        // generate random elements
-        for (int i = size - 1; i >= 0; i--) {
-            v[i] = sr.nextInt();
-        }
-
-        // erase unused bits
-        int r = length & 0x1f;
-        if (r != 0) {
-            // erase unused bits
-            v[size - 1] &= (1 << r) - 1;
-        }
     }
 
     public GF2Vector(int length, int[] v) {
@@ -75,62 +45,9 @@ public class GF2Vector extends Vector {
         }
     }
 
-    /**
-     * Copy constructor.
-     *
-     * @param other another {@link GF2Vector}
-     */
-    public GF2Vector(GF2Vector other) {
-        this.length = other.length;
-        this.v = IntUtils.clone(other.v);
-    }
-
-    /**
-     * Construct a new {@link GF2Vector} of the given length and with the given
-     * element array. The array is not changed and only a reference to the array
-     * is stored. No length checking is performed either.
-     *
-     * @param v      the element array
-     * @param length the length of the vector
-     */
-    protected GF2Vector(int[] v, int length) {
-        this.v = v;
-        this.length = length;
-    }
-    public static GF2Vector OS2VP(int length, byte[] encVec) {
-        if (length < 0) {
-            throw new ArithmeticException("negative length");
-        }
-
-        int byteLen = (length + 7) >> 3;
-
-        if (encVec.length > byteLen) {
-            throw new ArithmeticException("length mismatch");
-        }
-
-        return new GF2Vector(length, LittleEndianConversions.toIntArray(encVec));
-    }
     public byte[] getEncoded() {
         int byteLen = (length + 7) >> 3;
         return LittleEndianConversions.toByteArray(v, byteLen);
-    }
-    public int[] getVecArray() {
-        return v;
-    }
-
-    public int getHammingWeight() {
-        int weight = 0;
-        for (int i = 0; i < v.length; i++) {
-            int e = v[i];
-            for (int j = 0; j < 32; j++) {
-                int b = e & 1;
-                if (b != 0) {
-                    weight++;
-                }
-                e >>>= 1;
-            }
-        }
-        return weight;
     }
 
     /**
@@ -195,49 +112,6 @@ public class GF2Vector extends Vector {
             if (e != 0) {
                 result.v[i >> 5] |= 1 << (i & 0x1f);
             }
-        }
-
-        return result;
-    }
-
-    /**
-     * Return a new vector consisting of the last <tt>k</tt> elements of this
-     * vector.
-     *
-     * @param k the number of elements to extract
-     * @return a new {@link GF2Vector} consisting of the last <tt>k</tt>
-     * elements of this vector
-     */
-    public GF2Vector extractRightVector(int k) {
-        if (k > length) {
-            throw new ArithmeticException("invalid length");
-        }
-
-        if (k == length) {
-            return new GF2Vector(this);
-        }
-
-        GF2Vector result = new GF2Vector(k);
-
-        int q = (length - k) >> 5;
-        int r = (length - k) & 0x1f;
-        int length = (k + 31) >> 5;
-
-        int ind = q;
-        // if words have to be shifted
-        if (r != 0) {
-            // process all but last word
-            for (int i = 0; i < length - 1; i++) {
-                result.v[i] = (v[ind++] >>> r) | (v[ind] << (32 - r));
-            }
-            // process last word
-            result.v[length - 1] = v[ind++] >>> r;
-            if (ind < v.length) {
-                result.v[length - 1] |= v[ind] << (32 - r);
-            }
-        } else {
-            // no shift necessary
-            System.arraycopy(v, q, result.v, 0, length);
         }
 
         return result;

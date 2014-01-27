@@ -40,17 +40,6 @@ public class ECIES extends IES {
         }
         throw new InvalidKeyException("unsupported type");
     }
-
-    /**
-     * Check whether the given encryption key is an instance of
-     * {@link de.flexiprovider.ec.keys.ECPublicKey}. If not, terminate with an
-     * {@link InvalidKeyException}. Otherwise, assign the key parameters and
-     * return the checked key.
-     *
-     * @param key the key to be checked
-     * @return the checked key
-     * @throws InvalidKeyException if the key is not an instance of {@link de.flexiprovider.ec.keys.ECPublicKey}.
-     */
     protected PublicKey checkPubKey(Key key) throws InvalidKeyException {
         // check key
         if (!(key instanceof ECPublicKey)) {
@@ -62,16 +51,6 @@ public class ECIES extends IES {
         return ecPubKey;
     }
 
-    /**
-     * Check whether the given encryption key is an instance of
-     * {@link de.flexiprovider.ec.keys.ECPrivateKey}. If not, terminate with an
-     * {@link InvalidKeyException}. Otherwise, assign the key parameters and
-     * return the checked key.
-     *
-     * @param key the key to be checked
-     * @return the checked key
-     * @throws InvalidKeyException if the key is not an instance of {@link de.flexiprovider.ec.keys.ECPrivateKey}.
-     */
     protected PrivateKey checkPrivKey(Key key) throws InvalidKeyException {
         // check key
         if (!(key instanceof ECPrivateKey)) {
@@ -92,12 +71,6 @@ public class ECIES extends IES {
         return new ECSVDPDHC();
     }
 
-    /**
-     * Generate an ephemeral key pair. This method is used in case no ephemeral
-     * key pair is specified via the parameters during initialization.
-     *
-     * @return the generated ephemeral key pair
-     */
     protected KeyPair generateEphKeyPair() {
         KeyPairGenerator kpg = new ECKeyPairGenerator();
         try {

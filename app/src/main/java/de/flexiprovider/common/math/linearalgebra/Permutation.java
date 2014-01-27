@@ -5,15 +5,6 @@ import de.flexiprovider.common.math.IntegerFunctions;
 import de.flexiprovider.common.util.IntUtils;
 import de.flexiprovider.common.util.LittleEndianConversions;
 
-/**
- * This class implements permutations of the set {0,1,...,n-1} for some given n
- * &gt; 0, i.e., ordered sequences containing each number <tt>m</tt> (<tt>0 &lt;=
- * m &lt; n</tt>)
- * once and only once.
- *
- * @author Elena Klintsevich
- * @author Andrei Pyshkin
- */
 public class Permutation {
 
     /**
@@ -22,70 +13,7 @@ public class Permutation {
      */
     private int[] perm;
 
-    /**
-     * Create the identity permutation of the given size.
-     *
-     * @param n the size of the permutation
-     */
-    public Permutation(int n) {
-        if (n <= 0) {
-            throw new IllegalArgumentException("invalid length");
-        }
 
-        perm = new int[n];
-        for (int i = n - 1; i >= 0; i--) {
-            perm[i] = i;
-        }
-    }
-
-    /**
-     * Create a permutation using the given permutation vector.
-     *
-     * @param perm the permutation vector
-     */
-    public Permutation(int[] perm) {
-        if (!isPermutation(perm)) {
-            throw new IllegalArgumentException(
-                    "array is not a permutation vector");
-        }
-
-        this.perm = IntUtils.clone(perm);
-    }
-
-    /**
-     * Create a permutation from an encoded permutation.
-     *
-     * @param enc the encoded permutation
-     */
-    public Permutation(byte[] enc) {
-        if (enc.length <= 4) {
-            throw new IllegalArgumentException("invalid encoding");
-        }
-
-        int n = LittleEndianConversions.OS2IP(enc, 0);
-        int size = IntegerFunctions.ceilLog256(n - 1);
-
-        if (enc.length != 4 + n * size) {
-            throw new IllegalArgumentException("invalid encoding");
-        }
-
-        perm = new int[n];
-        for (int i = 0; i < n; i++) {
-            perm[i] = LittleEndianConversions.OS2IP(enc, 4 + i * size, size);
-        }
-
-        if (!isPermutation(perm)) {
-            throw new IllegalArgumentException("invalid encoding");
-        }
-
-    }
-
-    /**
-     * Create a random permutation of the given size.
-     *
-     * @param n  the size of the permutation
-     * @param sr the source of randomness
-     */
     public Permutation(int n, SecureRandom sr) {
         if (n <= 0) {
             throw new IllegalArgumentException("invalid length");
@@ -106,12 +34,6 @@ public class Permutation {
             help[i] = help[k];
         }
     }
-
-    /**
-     * Encode this permutation as byte array.
-     *
-     * @return the encoded permutation
-     */
     public byte[] getEncoded() {
         int n = perm.length;
         int size = IntegerFunctions.ceilLog256(n - 1);
@@ -130,28 +52,6 @@ public class Permutation {
         return IntUtils.clone(perm);
     }
 
-    /**
-     * Compute the inverse permutation <tt>P<sup>-1</sup></tt>.
-     *
-     * @return <tt>this<sup>-1</sup></tt>
-     */
-    public Permutation computeInverse() {
-        Permutation result = new Permutation(perm.length);
-        for (int i = perm.length - 1; i >= 0; i--) {
-            result.perm[perm[i]] = i;
-        }
-        return result;
-    }
-
-    /**
-     * checks if given object is equal to this permutation.
-     * <p/>
-     * The method returns false whenever the given object is not permutation.
-     *
-     * @param other -
-     *              permutation
-     * @return true or false
-     */
     public boolean equals(Object other) {
 
         if (!(other instanceof Permutation)) {
@@ -179,27 +79,6 @@ public class Permutation {
      */
     public int hashCode() {
         return perm.hashCode();
-    }
-
-    /**
-     * Check that the given array corresponds to a permutation of the set
-     * <tt>{0, 1, ..., n-1}</tt>.
-     *
-     * @param perm permutation vector
-     * @return true if perm represents an n-permutation and false otherwise
-     */
-    private boolean isPermutation(int[] perm) {
-        int n = perm.length;
-        boolean[] onlyOnce = new boolean[n];
-
-        for (int i = 0; i < n; i++) {
-            if ((perm[i] < 0) || (perm[i] >= n) || onlyOnce[perm[i]]) {
-                return false;
-            }
-            onlyOnce[perm[i]] = true;
-        }
-
-        return true;
     }
 
 }
