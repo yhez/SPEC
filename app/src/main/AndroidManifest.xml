@@ -132,6 +132,9 @@
             android:excludeFromRecents="true"
             android:name=".activities.PrivateKeyManager"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
-
+        <activity android:name=".activities.FilesOpener"
+            android:launchMode="singleTask"
+            android:exported="false"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
     </application>
 </manifest>

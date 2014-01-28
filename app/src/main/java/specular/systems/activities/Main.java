@@ -262,7 +262,7 @@ public class Main extends FragmentActivity {
                 encryptManager(SendMsg.MESSAGE);
                 break;
             case R.id.open_file:
-                Intent oi = FilesManagement.openFile(StaticVariables.file_name);
+                Intent oi = FilesManagement.openFile(this,StaticVariables.file_name);
                 try {
                     startActivity(oi);
                 } catch (Exception e) {

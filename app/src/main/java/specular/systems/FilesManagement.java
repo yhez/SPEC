@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import specular.systems.activities.FilesOpener;
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
@@ -42,7 +43,7 @@ public final class FilesManagement {
     private final static int QR_NAME_SEND = R.string.file_name_qr_msg;
     private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
     private final static int FILE_NAME_BACKUP = R.string.file_name_Backup_msg;
-    private final static int FILE_NAME_GROUP =R.string.file_name_group;
+    private final static int FILE_NAME_GROUP = R.string.file_name_group;
     private final static String PUBLIC_KEY = "public_key", PRIVATE_KEY = "private_key", NAME = "name", EMAIL = "email";
     private static final String FILE = "file://";
     private static Bitmap myQRPublicKey;
@@ -64,11 +65,20 @@ public final class FilesManagement {
         if (MessageFormat.decryptedMsg.getFileContent() == null)
             return false;
         try {
-            File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
-            if (!path.exists())
-                path.mkdirs();
-            File file = new File(path, MessageFormat.decryptedMsg.getFileName());
-            OutputStream os = new FileOutputStream(file);
+            OutputStream os;
+            MimeTypeMap m = MimeTypeMap.getSingleton();
+            String name = MessageFormat.decryptedMsg.getFileName();
+            String ext = name.substring(name.lastIndexOf(".") + 1);
+            String type = m.getMimeTypeFromExtension(ext);
+            if (type.startsWith("image")){
+                os=a.openFileOutput(name,a.MODE_PRIVATE);
+            }
+            else {
+                File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments",name);
+                if (!path.exists())
+                    path.mkdirs();
+                os = new FileOutputStream(path);
+            }
             os.write(MessageFormat.decryptedMsg.getFileContent());
             os.close();
         } catch (Exception e) {
@@ -78,13 +88,20 @@ public final class FilesManagement {
         return true;
     }
 
-    public static Intent openFile(String fileName) {
-        File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
-        File f = new File(path, fileName);
+    public static Intent openFile(Activity a, String fileName) {
+        File path;
+        Intent intent;
+        MimeTypeMap m = MimeTypeMap.getSingleton();
         String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
-        MimeTypeMap mtm = MimeTypeMap.getSingleton();
-        String type = mtm.getMimeTypeFromExtension(ext);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
+        String type = m.getMimeTypeFromExtension(ext);
+        if (type.startsWith("image")) {
+            path = a.getFilesDir();
+            intent = new Intent(a, FilesOpener.class);
+        } else {
+            path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
+            intent = new Intent(Intent.ACTION_VIEW);
+        }
+        File f = new File(path, fileName);
         Uri uri = Uri.fromFile(f);
         intent.setDataAndType(uri, type);
         return intent;
@@ -111,12 +128,14 @@ public final class FilesManagement {
         edt.remove("file_name");
         edt.remove("session");
         edt.commit();
-        if (StaticVariables.file_name != null)
-            try {
-                new File(Environment.getExternalStorageDirectory(), StaticVariables.file_name).delete();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            File[] files = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments").listFiles();
+            if(files!=null)
+            for (File f : files)
+                f.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         StaticVariables.flag_msg = false;
         StaticVariables.session = null;
         StaticVariables.file_name = null;
@@ -181,24 +200,25 @@ public final class FilesManagement {
 
     // ORI : added new function to reuse old code
     public static boolean createBackupFileToSend(Activity a, byte[] fileData) {
-        new File(a.getFilesDir(),a.getString(FILE_NAME_BACKUP)).delete();
-        new File(a.getFilesDir(),a.getString(FILE_NAME_GROUP)).delete();
+        new File(a.getFilesDir(), a.getString(FILE_NAME_BACKUP)).delete();
+        new File(a.getFilesDir(), a.getString(FILE_NAME_GROUP)).delete();
         new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
         new File(a.getFilesDir(), a.getString(FILE_NAME_SEND)).delete();
         return saveFileToSend(a, a.getString(FILE_NAME_BACKUP), fileData);
     }
-    public static boolean createGroupFileToSend(Activity a, byte[] fileData){
-        new File(a.getFilesDir(),a.getString(FILE_NAME_BACKUP)).delete();
-        new File(a.getFilesDir(),a.getString(FILE_NAME_GROUP)).delete();
+
+    public static boolean createGroupFileToSend(Activity a, byte[] fileData) {
+        new File(a.getFilesDir(), a.getString(FILE_NAME_BACKUP)).delete();
+        new File(a.getFilesDir(), a.getString(FILE_NAME_GROUP)).delete();
         new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
         new File(a.getFilesDir(), a.getString(FILE_NAME_SEND)).delete();
-        return saveFileToSend(a,a.getString(FILE_NAME_GROUP),fileData);
+        return saveFileToSend(a, a.getString(FILE_NAME_GROUP), fileData);
     }
 
     // ORI : took out the createfiletosend logic to savefiletosend function
     public static boolean createFilesToSend(Activity a, boolean qr, byte[] data) {
-        new File(a.getFilesDir(),a.getString(FILE_NAME_BACKUP)).delete();
-        new File(a.getFilesDir(),a.getString(FILE_NAME_GROUP)).delete();
+        new File(a.getFilesDir(), a.getString(FILE_NAME_BACKUP)).delete();
+        new File(a.getFilesDir(), a.getString(FILE_NAME_GROUP)).delete();
         new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
         new File(a.getFilesDir(), a.getString(FILE_NAME_SEND)).delete();
         boolean qrSuccess = true, fileSuccess;
@@ -212,13 +232,12 @@ public final class FilesManagement {
         try {
             File root = a.getFilesDir();
             ArrayList<Uri> uris = new ArrayList<Uri>(2);
-            if(new File(root, a.getString(FILE_NAME_SEND)).exists()){
-                uris.add(Uri.parse(FILE+new File(root, a.getString(FILE_NAME_SEND))));
-            }
-            else if(new File(root, a.getString(FILE_NAME_BACKUP)).exists()){
-                uris.add(Uri.parse(FILE+new File(root, a.getString(FILE_NAME_BACKUP))));
-            }else {
-                uris.add(Uri.parse(FILE+new File(root, a.getString(FILE_NAME_GROUP))));
+            if (new File(root, a.getString(FILE_NAME_SEND)).exists()) {
+                uris.add(Uri.parse(FILE + new File(root, a.getString(FILE_NAME_SEND))));
+            } else if (new File(root, a.getString(FILE_NAME_BACKUP)).exists()) {
+                uris.add(Uri.parse(FILE + new File(root, a.getString(FILE_NAME_BACKUP))));
+            } else {
+                uris.add(Uri.parse(FILE + new File(root, a.getString(FILE_NAME_GROUP))));
             }
             File f = new File(root, a.getString(QR_NAME_SEND));
             if (f.exists())
@@ -538,11 +557,11 @@ public final class FilesManagement {
 
     public static boolean motNFCMod(Activity a) {
         byte[] p = getPrivate(a);
-        if(p==null)
+        if (p == null)
             return true;
         byte[] cp = CryptMethods.getPrivateToSave();
-        for(int aa=0;aa<p.length;aa++)
-            if(p[aa]!=cp[aa])
+        for (int aa = 0; aa < p.length; aa++)
+            if (p[aa] != cp[aa])
                 return false;
         return true;
     }

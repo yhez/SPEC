@@ -184,7 +184,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
                     hndl.sendEmptyMessage(FADE);
                     synchronized (this) {
                         try {
-                            wait(LENGTH);
+                            ((Object)this).wait(LENGTH);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
