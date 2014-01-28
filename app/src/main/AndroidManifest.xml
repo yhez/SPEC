@@ -3,8 +3,7 @@
     android:versionCode="28"
     android:versionName="1.69">
 
-    <uses-sdk
-        android:maxSdkVersion="19"/>
+    <uses-sdk android:maxSdkVersion="19" />
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.NFC" />
@@ -62,6 +61,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="content" />
                 <data android:scheme="file" />
                 <data android:pathPattern=".*\\.SPEC" />
@@ -82,10 +82,12 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <data  android:scheme="specular.systems" />
+
+                <data android:scheme="specular.systems" />
             </intent-filter>
         </activity>
         <activity
@@ -132,9 +134,13 @@
             android:excludeFromRecents="true"
             android:name=".activities.PrivateKeyManager"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
-        <activity android:name=".activities.FilesOpener"
+
+        <activity
+            android:name=".activities.FilesOpener"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:exported="false"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
     </application>
 </manifest>

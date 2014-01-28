@@ -70,11 +70,10 @@ public final class FilesManagement {
             String name = MessageFormat.decryptedMsg.getFileName();
             String ext = name.substring(name.lastIndexOf(".") + 1);
             String type = m.getMimeTypeFromExtension(ext);
-            if (type.startsWith("image")){
-                os=a.openFileOutput(name,a.MODE_PRIVATE);
-            }
-            else {
-                File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments",name);
+            if (type.startsWith("image")) {
+                os = a.openFileOutput(name, a.MODE_PRIVATE);
+            } else {
+                File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments", name);
                 if (!path.exists())
                     path.mkdirs();
                 os = new FileOutputStream(path);
@@ -130,16 +129,18 @@ public final class FilesManagement {
         edt.commit();
         try {
             File[] files = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments").listFiles();
-            if(files!=null)
-            for (File f : files)
-                f.delete();
+            if (files != null)
+                for (File f : files)
+                    f.delete();
         } catch (Exception e) {
             e.printStackTrace();
         }
         StaticVariables.flag_msg = false;
         StaticVariables.session = null;
-        a.deleteFile(StaticVariables.file_name);
-        StaticVariables.file_name = null;
+        if (StaticVariables.file_name != null) {
+            a.deleteFile(StaticVariables.file_name);
+            StaticVariables.file_name = null;
+        }
         StaticVariables.msg_content = null;
     }
 
