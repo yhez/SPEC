@@ -538,6 +538,8 @@ public final class FilesManagement {
 
     public static boolean motNFCMod(Activity a) {
         byte[] p = getPrivate(a);
+        if(p==null)
+            return true;
         byte[] cp = CryptMethods.getPrivateToSave();
         for(int aa=0;aa<p.length;aa++)
             if(p[aa]!=cp[aa])

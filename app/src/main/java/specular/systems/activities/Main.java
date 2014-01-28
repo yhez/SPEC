@@ -1311,7 +1311,7 @@ public class Main extends FragmentActivity {
         if (NfcAdapter.getDefaultAdapter(this) != null && NfcAdapter.getDefaultAdapter(this).isEnabled()) {
             PendingIntent pi = PendingIntent.getActivity(this, 0,
                     new Intent(this, getClass())
-                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), 0);
             IntentFilter tagDetected = new IntentFilter(
                     NfcAdapter.ACTION_TAG_DISCOVERED);
             IntentFilter[] filters = new IntentFilter[]{tagDetected};

@@ -89,6 +89,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:exported="true"
             android:name=".activities.Main"
             android:icon="@drawable/menu"
             android:launchMode="singleTask"
