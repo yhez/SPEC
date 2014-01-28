@@ -138,6 +138,7 @@ public final class FilesManagement {
         }
         StaticVariables.flag_msg = false;
         StaticVariables.session = null;
+        a.deleteFile(StaticVariables.file_name);
         StaticVariables.file_name = null;
         StaticVariables.msg_content = null;
     }

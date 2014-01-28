@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
@@ -11,30 +12,58 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.TypedValue;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Scroller;
+import android.widget.TextView;
 
 import specular.systems.KeysDeleter;
 
 
 public class FilesOpener extends Activity {
-    TouchImageView iv;
+    String path;
 
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
-        Uri uri = getIntent().getData();
-        Bitmap bm = BitmapFactory.decodeFile(uri.getPath());
-        iv = new TouchImageView(this);
+        path = getIntent().getData().getPath();
+        Bitmap bm = BitmapFactory.decodeFile(path);
+        TouchImageView iv = new TouchImageView(this);
         iv.setImageBitmap(bm);
-        setContentView(iv);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        iv.setLayoutParams(params);
+        FrameLayout fl = new FrameLayout(this);
+        fl.addView(iv);
+        TextView tv = new TextView(this);
+        params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,Gravity.CENTER_HORIZONTAL|Gravity.TOP);
+        tv.setLayoutParams(params);
+        tv.setTextColor(Color.WHITE);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+        tv.setPadding(20, 20, 20, 0);
+        tv.setText(path.substring(path.lastIndexOf("/")+1));
+        fl.addView(tv);
+        /*ImageButton ib = new ImageButton(this);
+        ib.setImageResource(R.drawable.delete);
+        params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,Gravity.BOTTOM|Gravity.RIGHT);
+        ib.setLayoutParams(params);
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                new File(path).delete();
+                StaticVariables.file_name=null;
+            }
+        });
+        fl.addView(ib);*/
+        setContentView(fl);
     }
-
     @Override
     public void onPause() {
         super.onPause();
@@ -47,8 +76,7 @@ public class FilesOpener extends Activity {
         KeysDeleter.stop();
     }
     enum State { NONE, DRAG, ZOOM, FLING, ANIMATE_ZOOM }
-    class TouchImageView extends ImageView {
-
+    public class TouchImageView extends ImageView {
         private static final float SUPER_MIN_MULTIPLIER = .75f;
         private static final float SUPER_MAX_MULTIPLIER = 1.25f;
         private float normalizedScale;

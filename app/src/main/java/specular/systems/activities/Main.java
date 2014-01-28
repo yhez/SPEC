@@ -946,7 +946,7 @@ public class Main extends FragmentActivity {
         final int[] allDrb = {R.drawable.encrypt, /*R.drawable.decrypt,*/ R.drawable.share
                 , R.drawable.learn, R.drawable.manage/*, R.drawable.explore*/};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
-        int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.privateExist() ? 1 : CryptMethods.publicExist() ? 2 : 3;
+        int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? BOTH : CryptMethods.privateExist() ? PV : CryptMethods.publicExist() ? PB : NONE;
         mTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
