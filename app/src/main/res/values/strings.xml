@@ -16,7 +16,7 @@
     <string name="tag_written">Tag written successfully.</string>
     <string name="io_exception_format">Trouble formatting before saving key.\nTry again.</string>
     <string name="cant_find_private_key">Can\'t find a valid private key on the NFC tag.\nTry another one.</string>
-    <string name="cant_find_data">The tag is empty.\nTry another one.</string>
+    <string name="cant_find_data">This tag is empty.\nTry another one.</string>
     <string name="wait_for_nfc_to_read">Waiting for NFC&#8230;</string>
     <string name="title_turn_nfc_on">Activate NFC? If not, keys will be saved on device.</string>
     <string name="failed_to_write">Failed to write NFC tag.</string>
@@ -31,7 +31,7 @@
     <string name="get_private_from_qr">QR &#8594; Device</string>
     <string name="print_private_to_qr">Print QR Backup</string>
     <string name="scan_any_qr_widget">Place QR code within box to scan (message or contact).</string>
-    <string name="qr_scan_explain">Place QR code within box to activate magic.</string>
+    <string name="qr_scan_explain">Place QR code within box to scan.</string>
     <string name="title_scan_error_msg">Please scan again.</string>
     <string name="content_scan_error_msg">Please scan again.</string>
     <string name="scan_contact_explain">Place QR code within box to add contact.</string>
@@ -48,8 +48,9 @@
     <string name="what_is_session">What is a Session?</string>
     <string name="session_explain">A session identifier or session token is a piece
         of data that is used in network communications to identify a session, a series of related
-        message exchanges. In SPEC, we want you to be sure that you\'re in touch with the correct contact and not a malicous impersonator. Therefore it is vital to keep track of the current state of the conversation and a session ID is one way to achieve that goal.</string>
-    <string name="session_what_we_did">we creating a secret that the other side must decrypt and send it back every time</string>
+        message exchanges. In SPEC, we want you to be sure that you\'re in touch with the correct contact and not an impersonator.
+        Therefore it is vital to keep track of the current state of the conversation and a session ID is one way to achieve that goal.</string>
+    <string name="session_what_we_did">we are creating a secret that the other side must decrypt and send back</string>
     <string name="session_ok_explain">You both have the same session, so you\'re communicating with the same person as before.\n</string>
     <string name="dont_trust_session_explain">You have a different session than your contact.
         \nIt\'s possible that your contact is a fake, fraud.
@@ -62,7 +63,7 @@
     <string name="replay_title">Replay Attack Info:</string>
     <string name="what_is_replay">What is a Replay Attack?</string>
     <string name="replay_explain">A replay attack is a form of network attack in which a valid data transmission is
-        maliciously or fraudulently repeated or delayed (after it has been possibly tampered with). This is mostly carried out by an adversary
+        maliciously or fraudulently repeated or delayed (after possible tampering). These attacks are mostly carried out by an adversary
         whom intercepts the data and retransmits it, possibly as part of a Man in the Middle Attack. SPEC verifies that this type of attack and similar ones aren\'t carried out.</string>
     <string name="replay_not_relevant">No need to be worried about Replay Attacks.\nConversation just started.</string>
     <string name="replay_ok">Everything seems to be OK.</string>
@@ -74,8 +75,8 @@
     <string name="light_msg_two_weeks">Message created within the last two weeks.</string>
     <string name="light_msg_old">Message is over due and may not be relevant.</string>
     <string name="light_msg_message_created_at">Message created:     </string>
-    <string name="replay_what_we_did">we checking the time of the last message you received from this contact, and the day that the message was created</string>
-    <string name="replay_qr_what_we_did">messages came from QR may be taking longer to get to you.\nwe decide to give three parameters: now int this week in last two weeks, and old</string>
+    <string name="replay_what_we_did">we are checking the last time you received a message from this contact, and the day this message was created</string>
+    <string name="replay_qr_what_we_did">messages came from QR may be taking longer to get to you.\nwe decide to give three parameters: now, in this week, in last two weeks, and old</string>
 
     <!--hash check-->
     <string name="hash_title">Crypto Hash Info:</string>
@@ -101,7 +102,7 @@
     <string name="file_name_qr_msg">SecureQRMessage.SPEC.png</string>
 
     <!--general-->
-    <string name="welcome"><b>Let the SPEC magic begin.</b>\nStart bringing privacy and security to your online life and presence.\nEnter email and swipe arrow to generate keys.</string>
+    <string name="welcome"><b>Let the SPEC magic begin.</b>\nStart bringing privacy and security to your online life.\nEnter email and swipe arrow to the left to generate keys.</string>
     <string name="company_text"><b>SPEC</b> ; HOLD THE KEY TO YOUR SECURITY.</string>
     <string name="drawer_open">Open navigation drawer.</string>
     <string name="drawer_close">Close navigation drawer.</string>
@@ -112,7 +113,7 @@
     <string name="ok">OK</string>
     <string name="hint_enter_your_name">name (optional)&#8230;</string>
     <string name="hint_enter_your_email">email&#8230;</string>
-    <string name="wait_for_nfc_to_write">Tap NFC to securely store Private Decryption Key\n(provides additional security)</string>
+    <string name="wait_for_nfc_to_write">Tap NFC to store Private Decryption Key\n(provides additional security)</string>
     <string name="skip_save_to_phone">Skip and save key on device</string>
     <string name="explain_and_about">LEARN ABOUT SPEC</string>
     <string name="create_keys">Generate New Keys</string>
@@ -149,11 +150,11 @@
     <string name="cant_find_an_app_to_open_file">Can\'t find proper app.</string>
     <string name="failed_to_create_file_to_open">Failed to create file.</string>
     <string name="described_what_going_to_be">SPEC CONTACT CARD</string>
-    <string name="new_contact_to_add">Would you like to approve this contact?\nVerify that you trust the <b>email</b> below.\nAfter approval you\'ll be able to send this contact secure content.</string>
+    <string name="new_contact_to_add">Would you like to approve this contact?\nAfter approval you\'ll be able to send this contact secure content.</string>
     <string name="no">NO</string>
     <string name="yes">YES</string>
-    <string name="save_changes_back_pressed">Would you like to save the changes?</string>
-    <string name="verify_delete_msg">Are you sure you want to delete this contact / group?</string>
+    <string name="save_changes_back_pressed">Would you like to save your changes?</string>
+    <string name="verify_delete_msg">Are you sure you want to delete this contact?</string>
     <string name="clean_up">Clean up:</string>
     <string name="clear">Delete</string>
     <string name="not_cosen_clean">Please choose what to delete/clean.</string>
@@ -199,7 +200,7 @@
     <string name="first_step"><b>1<sup>st</sup></b></string>
     <string name="sec_step"><b>2<sup>nd</sup></b></string>
     <string name="last_step"><b>Final Step</b></string>
-    <string name="second_text">Please verify that you understand the risk before continuing. You will not be able to decrypt and read previous data.</string>
+    <string name="second_text">Verify that you understand the risk before continuing. You will not be able to decrypt and read previous messages or files.</string>
     <string name="third_text">There is no going back if you change your keys (in current Beta version).</string>
     <string name="got_it"><b>Got It</b></string>
     <string name="generate"><b>Generate New Keys!</b></string>
@@ -226,7 +227,7 @@
     <string name="widget_add_contact_list_empty">-----\nYour contact list is empty.\nThis widget requires at least one contact.\n-----</string>
     <string name="check_box_confirm_recreate_keys">I accept</string>
     <string name="first_time_create_keys">Welcome to SPEC</string>
-    <string name="not_imp_msg">This feature hasn\'t been integrated or implemented yet.\nIf you would like to help, please contact us.</string>
+    <string name="not_imp_msg">This feature hasn\'t been integrated or implemented yet.</string>
     <string name="not_implemented_title">NEW FEATURES SOON&#8230;</string>
     <string name="back_bt_replace_keys_dlg">Back</string>
     <string name="length_name_of_file">File name must be at least 1 character long.</string>
@@ -263,20 +264,20 @@
     <string name="backup_progress">backing up…</string>
     <string name="notify_after_restore">all data has been restored</string>
     <string name="not_verified_backup_title">something is wrong</string>
-    <string name="not_verified_backup_message">we can\'t verify that this backup has created by you.\nsome one could try to encrypt false data for you</string>
+    <string name="not_verified_backup_message">we can\'t verify that this backup was created by you.\nsomeone could try to encrypt false data for you</string>
     <string name="backup_found_old_data">Are you sure?\nby restoring your backup all other data you\'ve saved will be lost</string>
     <string name="backup_not_found_old_data">Restoring the data will put you in the same position you left.</string>
     <string name="backup_verified_title">Restore data from backup.</string>
     <string name="cant_find_key_on_device">can\'t_find key on device</string>
-    <string name="prevent_backup_no_private">In order to make the backup save you got to have the private key to create it</string>
+    <string name="prevent_backup_no_private">In order to make the backup save you must have the private key to create it</string>
     <string name="loading_title">loading…</string>
     <string name="loading_msg">loading file into spec,\nplease wait a moment.</string>
-    <string name="no_keys_open_by_msg">if your private key is on nfc, just tab it to device and the message will decrypt</string>
-    <string name="no_account_trying_add_contact">you cannot add contact without define an account/having public key on the device</string>
-    <string name="load_private_from_qr">keys have been loaded to phone but not yet saved you can choose now to save them on nfc\nor you can decrypt the message you want, and not save it at all</string>
+    <string name="no_keys_open_by_msg">if your private key is on NFC, just tap it to device and the message will decrypt</string>
+    <string name="no_account_trying_add_contact">you cannot add contact without an account/having public key on the device</string>
+    <string name="load_private_from_qr">\nor you can decrypt the message you want, and not save it at all</string>
     <string name="tring_add_another_file_while_loading">loading file…</string>
     <string name="version">SPEC version:</string>
-    <string name="backup_no_public">you cannot create a backup without having your public key to encrypt to</string>
+    <string name="backup_no_public">you cannot create a backup without having your public key</string>
     <string name="backup_explain">1. the backup option will use your public key to encrypt the data.\n2. we\'ll add hash signature of your private key to verify that it was created by you.\n3. we\'ll add hash signature of the entire data to verify that it hasn\'t be changed</string>
     <string name="backup_title">Backup</string>
     <string name="credits">Credits</string>
