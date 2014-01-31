@@ -56,7 +56,8 @@ public class AddContactDlg extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Contact c;
-                        if (((CheckBox) v.findViewById(R.id.check_box_update)).isChecked()) {
+                        View vv = v.findViewById(R.id.check_box_update);
+                        if (vv!=null&&((CheckBox) vv).isChecked()) {
                             c = ContactsDataSource.contactsDataSource.findContactByEmail(pcc.getEmail());
                             c.update(getActivity(), null, null, pcc.getPublicKey(), null);
                         } else

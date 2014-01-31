@@ -252,7 +252,7 @@ public class Main extends FragmentActivity {
     public void decryptedMsgClick(View v) {
         switch (v.getId()) {
             case R.id.send:
-                findViewById(R.id.answer).setVisibility(View.GONE);
+                //findViewById(R.id.answer).setVisibility(View.GONE);
                 EditText et = (EditText) findViewById(R.id.message);
                 userInput = et.getText().toString();
                 // hides the keyboard when the user starts the encryption process
@@ -534,6 +534,9 @@ public class Main extends FragmentActivity {
         if (GroupDataSource.fullListG == null) {
             GroupDataSource.groupDataSource = new GroupDataSource(this);
             GroupDataSource.fullListG = GroupDataSource.groupDataSource.getAllGroups();
+        }
+        if(MySimpleArrayAdapter.getAdapter()==null){
+            new MySimpleArrayAdapter(this);
         }
         t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
         t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
@@ -1404,9 +1407,9 @@ public class Main extends FragmentActivity {
             case R.id.button3:
                 i.setData(Uri.parse(links[2]));
                 break;
-            case R.id.button4:
-                i.setData(Uri.parse(links[3]));
-                break;
+            //case R.id.button4:
+            //    i.setData(Uri.parse(links[3]));
+            //    break;
             case R.id.button5:
                 i.setData(Uri.parse(links[4]));
                 break;

@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.graphics.Bitmap;
 
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
@@ -31,7 +34,15 @@ public class Contact {
             this.sent = 0;
             this.received = session != null ? 1 : 0;
             this.sent = 0;
-            this.last = session != null ? StaticVariables.time : 0;
+            long timeStamp=0;
+            if(session!=null){
+                SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                parser.setTimeZone(TimeZone.getTimeZone("GMT"));
+                try {
+                    timeStamp = parser.parse(StaticVariables.timeStamp).getTime();
+            }catch (Exception e){}
+            }
+            this.last = timeStamp;
             this.id = ContactsDataSource.contactsDataSource.createContact(a, this);
         }
     }

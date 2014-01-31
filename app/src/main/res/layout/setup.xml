@@ -68,20 +68,6 @@
             android:text="@string/move_key_to_nfc_and_such"
             android:textColor="@color/spec_black" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/spec_blue" />
-
-        <Button
-            android:onClick="notImp"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/sync_keys_between_devices"
-            android:padding="@dimen/default_gap"
-            android:textColor="@color/spec_gray" />
     </LinearLayout>
 
 </LinearLayout>

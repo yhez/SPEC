@@ -290,7 +290,7 @@
         <item>https://specularx.co/credits/</item>
     </string-array>
     <string-array name="menus">
-        <item>Encrypt</item>
+        <item>Contacts</item>
         <!--<item>Decrypt</item>-->
         <item>My SPEC</item>
         <item>About</item>

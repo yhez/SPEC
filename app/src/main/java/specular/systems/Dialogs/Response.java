@@ -95,8 +95,8 @@ public class Response extends DialogFragment {
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (FragmentManagement.currentLayout == R.layout.decrypted_msg)
-                    getActivity().findViewById(R.id.answer).setVisibility(View.GONE);
+                //if (FragmentManagement.currentLayout == R.layout.decrypted_msg)
+                //    getActivity().findViewById(R.id.answer).setVisibility(View.GONE);
                 final String userInput = et.getText().toString();
                 String msgContent;
                 if (cb.isChecked())
