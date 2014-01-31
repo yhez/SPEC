@@ -1,11 +1,12 @@
 package de.flexiprovider.api;
 
+import java.security.spec.AlgorithmParameterSpec;
+
 import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.api.exceptions.InvalidKeyException;
 import de.flexiprovider.api.exceptions.SignatureException;
 import de.flexiprovider.api.keys.PrivateKey;
 import de.flexiprovider.api.keys.PublicKey;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.JavaSecureRandomWrapper;
 
 public abstract class Signature extends java.security.SignatureSpi {
@@ -57,7 +58,7 @@ public abstract class Signature extends java.security.SignatureSpi {
         if (params != null && !(params instanceof AlgorithmParameterSpec)) {
             throw new java.security.InvalidAlgorithmParameterException();
         }
-        setParameters((AlgorithmParameterSpec) params);
+        setParameters(params);
     }
 
     protected final void engineUpdate(byte b)

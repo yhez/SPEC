@@ -1,10 +1,11 @@
 package de.flexiprovider.common.mode;
 
+import java.security.spec.AlgorithmParameterSpec;
+
 import de.flexiprovider.api.Mode;
 import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.api.exceptions.InvalidKeyException;
 import de.flexiprovider.api.keys.SecretKey;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 
 public class OFB extends Mode {

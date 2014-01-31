@@ -1,6 +1,7 @@
 package de.flexiprovider.api;
 
 import java.lang.reflect.Method;
+import java.security.spec.AlgorithmParameterSpec;
 
 import de.flexiprovider.api.exceptions.BadPaddingException;
 import de.flexiprovider.api.exceptions.IllegalBlockSizeException;
@@ -12,7 +13,6 @@ import de.flexiprovider.api.exceptions.NoSuchPaddingException;
 import de.flexiprovider.api.exceptions.ShortBufferException;
 import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.keys.SecretKey;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.mode.ModeParameterSpec;
 import de.flexiprovider.common.mode.OFB;
 import de.flexiprovider.common.util.JavaSecureRandomWrapper;
@@ -63,7 +63,7 @@ public abstract class BlockCipher extends Cipher {
                 throw new java.security.InvalidAlgorithmParameterException(
                         "unsupported type");
             }
-            cipherParams = (AlgorithmParameterSpec) paramSpec;
+            cipherParams = paramSpec;
 
             byte[] iv;
             Method getIV;

@@ -1,8 +1,9 @@
 package de.flexiprovider.common.ies;
 
+import java.security.spec.AlgorithmParameterSpec;
+
 import de.flexiprovider.api.exceptions.InvalidParameterException;
 import de.flexiprovider.api.keys.KeyPair;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.ByteUtils;
 
 public class IESParameterSpec implements AlgorithmParameterSpec {

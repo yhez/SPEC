@@ -1,9 +1,8 @@
 package de.flexiprovider.core.kdf;
 
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.ByteUtils;
 
-public class KDFParameterSpec implements AlgorithmParameterSpec {
+public class KDFParameterSpec implements java.security.spec.AlgorithmParameterSpec {
 
     // the shared information
     private byte[] sharedInfo;

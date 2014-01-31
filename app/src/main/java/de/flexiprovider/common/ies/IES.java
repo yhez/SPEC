@@ -1,6 +1,7 @@
 package de.flexiprovider.common.ies;
 
 import java.io.ByteArrayOutputStream;
+import java.security.spec.AlgorithmParameterSpec;
 
 import de.flexiprovider.api.AsymmetricHybridCipher;
 import de.flexiprovider.api.BlockCipher;
@@ -21,7 +22,6 @@ import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.keys.SecretKeyFactory;
 import de.flexiprovider.api.keys.SecretKeySpec;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.kdf.KDF2;
 import de.flexiprovider.core.kdf.KDFParameterSpec;

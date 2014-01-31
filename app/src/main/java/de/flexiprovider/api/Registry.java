@@ -1,5 +1,6 @@
 package de.flexiprovider.api;
 
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -13,7 +14,6 @@ import de.flexiprovider.api.keys.KeyPairGenerator;
 import de.flexiprovider.api.keys.SecretKeyFactory;
 import de.flexiprovider.api.keys.SecretKeyGenerator;
 import de.flexiprovider.api.parameters.AlgorithmParameterGenerator;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.api.parameters.AlgorithmParameters;
 import de.flexiprovider.common.mode.CBC;
 import de.flexiprovider.common.mode.CFB;

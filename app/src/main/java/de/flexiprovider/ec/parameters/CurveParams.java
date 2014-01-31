@@ -1,7 +1,6 @@
 package de.flexiprovider.ec.parameters;
 
 import codec.asn1.ASN1ObjectIdentifier;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.EllipticCurve;
 import de.flexiprovider.common.math.ellipticcurves.EllipticCurveGFP;
@@ -13,7 +12,7 @@ import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.common.util.StringUtils;
 
 
-public abstract class CurveParams implements AlgorithmParameterSpec {
+public abstract class CurveParams implements java.security.spec.AlgorithmParameterSpec {
 
 
     private ASN1ObjectIdentifier oid;

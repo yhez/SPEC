@@ -1,5 +1,7 @@
 package de.flexiprovider.api;
 
+import java.security.spec.AlgorithmParameterSpec;
+
 import javax.crypto.KeyAgreementSpi;
 
 import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
@@ -10,7 +12,6 @@ import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.keys.PrivateKey;
 import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.api.keys.SecretKey;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.JavaSecureRandomWrapper;
 
 public abstract class KeyAgreement extends KeyAgreementSpi {
@@ -42,7 +43,7 @@ public abstract class KeyAgreement extends KeyAgreementSpi {
         }
 
         SecureRandom flexiRand = new JavaSecureRandomWrapper(javaRand);
-        init((PrivateKey) key, (AlgorithmParameterSpec) params, flexiRand);
+        init((PrivateKey) key, params, flexiRand);
     }
 
     protected final byte[] engineGenerateSecret() throws IllegalStateException {

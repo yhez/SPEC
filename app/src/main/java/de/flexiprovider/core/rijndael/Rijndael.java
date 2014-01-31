@@ -1,12 +1,13 @@
 package de.flexiprovider.core.rijndael;
 
+import java.security.spec.AlgorithmParameterSpec;
+
 import de.flexiprovider.api.BlockCipher;
 import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.api.exceptions.InvalidKeyException;
 import de.flexiprovider.api.exceptions.NoSuchModeException;
 import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.keys.SecretKey;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.BigEndianConversions;
 
 

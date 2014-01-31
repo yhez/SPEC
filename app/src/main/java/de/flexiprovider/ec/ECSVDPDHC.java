@@ -1,5 +1,7 @@
 package de.flexiprovider.ec;
 
+import java.security.spec.AlgorithmParameterSpec;
+
 import de.flexiprovider.api.KeyAgreement;
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.api.exceptions.InvalidKeyException;
@@ -9,7 +11,6 @@ import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.keys.PrivateKey;
 import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.api.keys.SecretKey;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.exceptions.InvalidPointException;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.Point;

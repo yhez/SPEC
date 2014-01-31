@@ -1,10 +1,8 @@
 package de.flexiprovider.common.mode;
 
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
-
 
 public class ModeParameterSpec extends javax.crypto.spec.IvParameterSpec
-        implements AlgorithmParameterSpec {
+        implements java.security.spec.AlgorithmParameterSpec {
     public ModeParameterSpec(javax.crypto.spec.IvParameterSpec params) {
         super(params.getIV());
     }

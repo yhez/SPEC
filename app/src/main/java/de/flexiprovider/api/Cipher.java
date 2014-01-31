@@ -1,5 +1,6 @@
 package de.flexiprovider.api;
 
+import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidParameterSpecException;
 
 import de.flexiprovider.api.exceptions.BadPaddingException;
@@ -12,7 +13,6 @@ import de.flexiprovider.api.exceptions.NoSuchModeException;
 import de.flexiprovider.api.exceptions.NoSuchPaddingException;
 import de.flexiprovider.api.exceptions.ShortBufferException;
 import de.flexiprovider.api.keys.Key;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.api.parameters.AlgorithmParameters;
 import de.flexiprovider.common.util.JavaSecureRandomWrapper;
 
@@ -84,10 +84,10 @@ public abstract class Cipher extends javax.crypto.CipherSpi {
 
         if (opMode == ENCRYPT_MODE) {
             SecureRandom flexiRand = new JavaSecureRandomWrapper(javaRand);
-            initEncrypt((Key) key, (AlgorithmParameterSpec) params, flexiRand);
+            initEncrypt((Key) key, params, flexiRand);
 
         } else if (opMode == DECRYPT_MODE) {
-            initDecrypt((Key) key, (AlgorithmParameterSpec) params);
+            initDecrypt((Key) key, params);
 
         }
     }

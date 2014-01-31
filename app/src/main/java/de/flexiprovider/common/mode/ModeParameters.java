@@ -1,13 +1,13 @@
 package de.flexiprovider.common.mode;
 
 import java.io.IOException;
+import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.spec.IvParameterSpec;
 
 import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1OctetString;
 import de.flexiprovider.api.exceptions.InvalidParameterSpecException;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.api.parameters.AlgorithmParameters;
 import de.flexiprovider.common.util.ASN1Tools;
 import de.flexiprovider.common.util.ByteUtils;
@@ -32,7 +32,7 @@ public class ModeParameters extends AlgorithmParameters {
             throw new java.security.spec.InvalidParameterSpecException();
         }
 
-        init((AlgorithmParameterSpec) params);
+        init(params);
     }
 
 

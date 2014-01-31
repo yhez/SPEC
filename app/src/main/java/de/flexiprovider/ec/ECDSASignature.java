@@ -1,6 +1,7 @@
 package de.flexiprovider.ec;
 
 import java.io.IOException;
+import java.security.spec.AlgorithmParameterSpec;
 
 import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1Integer;
@@ -14,7 +15,6 @@ import de.flexiprovider.api.exceptions.InvalidParameterException;
 import de.flexiprovider.api.exceptions.SignatureException;
 import de.flexiprovider.api.keys.PrivateKey;
 import de.flexiprovider.api.keys.PublicKey;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.common.math.ellipticcurves.ScalarMult;

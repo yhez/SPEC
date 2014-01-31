@@ -209,8 +209,7 @@ public class CryptMethods {
             PublicKey frndPbK = KeyFactory.getInstance("ECIES", "FlexiEC")
                     .generatePublic(new X509EncodedKeySpec(Visual.hex2bin(publicKey)));
             Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
-            IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",
-                    "HmacSHA1", null, null);
+            IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC", "HmacSHA1",null,null);
             cipher.init(Cipher.ENCRYPT_MODE, frndPbK, iesParams);
             return cipher.doFinal(b);
         } catch (Exception ignore) {
@@ -229,8 +228,7 @@ public class CryptMethods {
             notInit = false;
         }
         try {
-            IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",
-                    "HmacSHA1", null, null);
+            IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",  "HmacSHA1",null,null);
             Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
             if (key == null)
                 cipher.init(Cipher.DECRYPT_MODE, mPtK, iesParams);

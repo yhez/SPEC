@@ -1,9 +1,7 @@
 package de.flexiprovider.common.mode;
 
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-
-public class ModeParamGenParameterSpec implements AlgorithmParameterSpec {
+public class ModeParamGenParameterSpec implements java.security.spec.AlgorithmParameterSpec {
 
 
     public static final int DEFAULT_LENGTH = 8;

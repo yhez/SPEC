@@ -1,11 +1,10 @@
 package de.flexiprovider.core.rijndael;
 
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.mode.ModeParameterSpec;
 import de.flexiprovider.common.util.ByteUtils;
 
 
-public class RijndaelParameterSpec implements AlgorithmParameterSpec {
+public class RijndaelParameterSpec implements java.security.spec.AlgorithmParameterSpec {
 
 
     public static final int DEFAULT_BLOCK_SIZE = 128;

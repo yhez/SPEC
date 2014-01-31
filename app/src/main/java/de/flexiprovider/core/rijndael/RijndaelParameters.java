@@ -1,6 +1,7 @@
 package de.flexiprovider.core.rijndael;
 
 import java.io.IOException;
+import java.security.spec.AlgorithmParameterSpec;
 
 import codec.asn1.ASN1Choice;
 import codec.asn1.ASN1Exception;
@@ -10,7 +11,6 @@ import codec.asn1.ASN1OctetString;
 import codec.asn1.ASN1Sequence;
 import codec.asn1.ASN1Type;
 import de.flexiprovider.api.exceptions.InvalidParameterSpecException;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.api.parameters.AlgorithmParameters;
 import de.flexiprovider.common.mode.ModeParameterSpec;
 import de.flexiprovider.common.util.ASN1Tools;

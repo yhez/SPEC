@@ -1,11 +1,12 @@
 package de.flexiprovider.core.rijndael;
 
+import java.security.spec.AlgorithmParameterSpec;
+
 import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.keys.SecretKeyGenerator;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 public class RijndaelKeyGenerator extends SecretKeyGenerator {
 

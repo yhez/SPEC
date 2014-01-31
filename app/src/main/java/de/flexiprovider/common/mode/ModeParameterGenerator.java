@@ -1,10 +1,11 @@
 package de.flexiprovider.common.mode;
 
+import java.security.spec.AlgorithmParameterSpec;
+
 import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.api.parameters.AlgorithmParameterGenerator;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.api.parameters.AlgorithmParameters;
 
 

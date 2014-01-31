@@ -1,6 +1,7 @@
 package de.flexiprovider.api;
 
 import java.io.ByteArrayOutputStream;
+import java.security.spec.AlgorithmParameterSpec;
 
 import de.flexiprovider.api.exceptions.BadPaddingException;
 import de.flexiprovider.api.exceptions.IllegalBlockSizeException;
@@ -8,7 +9,6 @@ import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.api.exceptions.InvalidKeyException;
 import de.flexiprovider.api.exceptions.ShortBufferException;
 import de.flexiprovider.api.keys.Key;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
 
 public abstract class AsymmetricBlockCipher extends Cipher {

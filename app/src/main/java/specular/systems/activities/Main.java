@@ -571,9 +571,10 @@ public class Main extends FragmentActivity {
                         mimeBytes, new byte[0], bin);
                 NdefMessage message = new NdefMessage(new NdefRecord[]{cardRecord,
                         appRecord});
+                Ndef ndef=null;
                 try {
                     // see if tag is already NDEF formatted
-                    Ndef ndef = Ndef.get(tag);
+                    ndef = Ndef.get(tag);
                     ndef.connect();
                     if (!ndef.isWritable()) {
                         t.setText(R.string.failed_read_only);
@@ -604,6 +605,12 @@ public class Main extends FragmentActivity {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    if(ndef!=null&&ndef.isConnected())
+                        try {
+                            ndef.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     NdefFormatable format = NdefFormatable.get(tag);
                     if (format != null) {
                         try {

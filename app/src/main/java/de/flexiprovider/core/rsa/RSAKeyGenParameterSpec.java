@@ -1,13 +1,12 @@
 package de.flexiprovider.core.rsa;
 
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.my.BigInteger;
 
 
 public class RSAKeyGenParameterSpec extends
         java.security.spec.RSAKeyGenParameterSpec implements
-        AlgorithmParameterSpec {
+        java.security.spec.AlgorithmParameterSpec {
 
     public static final int DEFAULT_KEY_SIZE = 1024;
 

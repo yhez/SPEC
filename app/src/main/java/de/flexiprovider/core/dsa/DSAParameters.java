@@ -1,12 +1,12 @@
 package de.flexiprovider.core.dsa;
 
 import java.io.IOException;
+import java.security.spec.AlgorithmParameterSpec;
 
 import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1Integer;
 import codec.asn1.ASN1Sequence;
 import de.flexiprovider.api.exceptions.InvalidParameterSpecException;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.api.parameters.AlgorithmParameters;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.util.ASN1Tools;

@@ -1,9 +1,7 @@
 package de.flexiprovider.core.rijndael;
 
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 
-
-public class RijndaelKeyGenParameterSpec implements AlgorithmParameterSpec {
+public class RijndaelKeyGenParameterSpec implements java.security.spec.AlgorithmParameterSpec {
 
     public static final int DEFAULT_KEY_SIZE = 128;
 

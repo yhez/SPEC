@@ -1,6 +1,7 @@
 package de.flexiprovider.api.parameters;
 
 import java.io.IOException;
+import java.security.spec.AlgorithmParameterSpec;
 
 import de.flexiprovider.api.exceptions.InvalidParameterSpecException;
 
@@ -15,7 +16,7 @@ public abstract class AlgorithmParameters extends
         if ((params == null) || !(params instanceof AlgorithmParameterSpec)) {
             throw new java.security.spec.InvalidParameterSpecException();
         }
-        init((AlgorithmParameterSpec) params);
+        init(params);
     }
 
 

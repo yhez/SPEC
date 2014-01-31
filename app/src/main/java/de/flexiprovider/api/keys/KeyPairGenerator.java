@@ -1,9 +1,10 @@
 package de.flexiprovider.api.keys;
 
+import java.security.spec.AlgorithmParameterSpec;
+
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.api.exceptions.InvalidParameterException;
-import de.flexiprovider.api.parameters.AlgorithmParameterSpec;
 import de.flexiprovider.common.util.JavaSecureRandomWrapper;
 
 public abstract class KeyPairGenerator extends
@@ -17,7 +18,7 @@ public abstract class KeyPairGenerator extends
             throw new java.security.InvalidAlgorithmParameterException();
         }
         SecureRandom flexiRand = new JavaSecureRandomWrapper(javaRand);
-        initialize((AlgorithmParameterSpec) params, flexiRand);
+        initialize(params, flexiRand);
     }
 
     public final void initialize(int keysize,
