@@ -170,6 +170,7 @@ public class Main extends FragmentActivity {
                     t.show();
                     break;
                 case RESTORE:
+                    setUpViews();
                     DialogRestore dr = new DialogRestore(Backup.restore(), null);
                     dr.show(getFragmentManager(), "dr");
                     break;

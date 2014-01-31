@@ -30,7 +30,6 @@ public class AddContactDlg extends DialogFragment {
     private final String session;
 
     public AddContactDlg(ContactCard pcc, String session, long id) {
-        //todo need to check if he has a good copy before deleting
         StaticVariables.fileContactCard = null;
         this.pcc = pcc;
         this.id = id;

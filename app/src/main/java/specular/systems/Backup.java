@@ -131,7 +131,7 @@ public class Backup {
         }
         else{
             tempContact = new Contact(1, details[0], details[1], Integer.parseInt(details[4]),
-                    System.currentTimeMillis(), Integer.parseInt(details[6]), Integer.parseInt(details[5]),
+                    0, Integer.parseInt(details[6]), Integer.parseInt(details[5]),
                     details[2], details[3], "");
         }
         return tempContact;

@@ -33,7 +33,6 @@ public class Contact {
             this.session = session != null ? new Session(session).toString() : new Session().toString();
             this.sent = 0;
             this.received = session != null ? 1 : 0;
-            this.sent = 0;
             long timeStamp=0;
             if(session!=null){
                 SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
