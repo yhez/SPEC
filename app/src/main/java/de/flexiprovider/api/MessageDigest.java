@@ -40,12 +40,6 @@ public abstract class MessageDigest extends java.security.MessageDigestSpi {
     public abstract byte[] digest();
 
 
-    public final byte[] digest(byte[] input) {
-        update(input);
-        return digest();
-    }
-
-
     public final int digest(byte[] buf, int offset, int len)
             throws DigestException {
 

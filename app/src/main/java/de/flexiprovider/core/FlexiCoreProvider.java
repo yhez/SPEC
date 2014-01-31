@@ -30,7 +30,7 @@ public class FlexiCoreProvider extends FlexiProvider {
         super("FlexiCore", 1.76, "");
         CoreRegistry.registerAlgorithms();
         registerCommon();
-          registerHMAC();
+        registerHMAC();
         registerAESRijndael();
     }
 
@@ -42,47 +42,10 @@ public class FlexiCoreProvider extends FlexiProvider {
 
     private void registerHMAC() {
         add(SECRET_KEY_FACTORY, HMacKeyFactory.class, new String[]{"Hmac",
-                "HmacSHA1", HMac.SHA1.OID, HMac.SHA1.PKCS5_OID, "HmacSHA224",
-                "HmacSHA256", "HmacSHA384", "HmacSHA512", "HmacMD4", "HmacMD5",
-                HMac.MD5.OID, "HmacRIPEMD128", "HmacRIPEMD160",
-                HMac.RIPEMD160.OID, "HmacRIPEMD256", "HmacRIPEMD320",
-                "HmacTiger", HMac.Tiger.OID, "HmacDHA256", "HmacFORK256"});
+                "HmacSHA1", HMac.SHA1.OID, HMac.SHA1.PKCS5_OID});
         add(SECRET_KEY_GENERATOR, HMacKeyGenerator.SHA1.class, new String[]{
                 "HmacSHA1", HMac.SHA1.OID, HMac.SHA1.PKCS5_OID});
         add(MAC, HMac.SHA1.class, new String[]{"HmacSHA1", HMac.SHA1.OID});
-        add(SECRET_KEY_GENERATOR, HMacKeyGenerator.SHA224.class, "HmacSHA224");
-        add(MAC, HMac.SHA224.class, "HmacSHA224");
-        add(SECRET_KEY_GENERATOR, HMacKeyGenerator.SHA256.class, "HmacSHA256");
-        add(MAC, HMac.SHA256.class, "HmacSHA256");
-        add(SECRET_KEY_GENERATOR, HMacKeyGenerator.SHA384.class, "HmacSHA384");
-        add(MAC, HMac.SHA384.class, "HmacSHA384");
-        add(SECRET_KEY_GENERATOR, HMacKeyGenerator.SHA512.class, "HmacSHA512");
-        add(MAC, HMac.SHA512.class, "HmacSHA512");
-        add(SECRET_KEY_GENERATOR, HMacKeyGenerator.MD4.class, "HmacMD4");
-        add(MAC, HMac.MD4.class, "HmacMD4");
-        add(SECRET_KEY_GENERATOR, HMacKeyGenerator.MD5.class, new String[]{
-                "HmacMD5", HMac.MD5.OID});
-        add(MAC, HMac.MD5.class, new String[]{"MD5", HMac.MD5.OID});
-        add(SECRET_KEY_GENERATOR, HMacKeyGenerator.RIPEMD128.class,
-                "HmacRIPEMD128");
-        add(MAC, HMac.RIPEMD128.class, "HmacRIPEMD128");
-        add(SECRET_KEY_GENERATOR, HMacKeyGenerator.RIPEMD160.class,
-                new String[]{"HmacRIPEMD160", HMac.RIPEMD160.OID});
-        add(MAC, HMac.RIPEMD160.class, new String[]{"RIPEMD160",
-                HMac.RIPEMD160.OID});
-        add(SECRET_KEY_GENERATOR, HMacKeyGenerator.RIPEMD256.class,
-                "HmacRIPEMD256");
-        add(MAC, HMac.RIPEMD256.class, "HmacRIPEMD256");
-        add(SECRET_KEY_GENERATOR, HMacKeyGenerator.RIPEMD320.class,
-                "HmacRIPEMD320");
-        add(MAC, HMac.RIPEMD320.class, "HmacRIPEMD320");
-        add(SECRET_KEY_GENERATOR, HMacKeyGenerator.Tiger.class, new String[]{
-                "HmacTiger", HMac.Tiger.OID});
-        add(MAC, HMac.Tiger.class, new String[]{"Tiger", HMac.Tiger.OID});
-        add(SECRET_KEY_GENERATOR, HMacKeyGenerator.DHA256.class, "HmacDHA256");
-        add(MAC, HMac.DHA256.class, "HmacDHA256");
-        add(SECRET_KEY_GENERATOR, HMacKeyGenerator.FORK256.class, "HmacFORK256");
-        add(MAC, HMac.FORK256.class, "HmacFORK256");
     }
 
     private void registerAESRijndael() {

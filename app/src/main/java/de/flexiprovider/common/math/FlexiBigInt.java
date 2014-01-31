@@ -30,11 +30,6 @@ public final class FlexiBigInt {
         bigInt = new BigInteger(numBits, javaRand);
     }
 
-    public FlexiBigInt(int bitLength, int certainty, SecureRandom flexiRand) {
-        JavaSecureRandom javaRand = new JavaSecureRandom(flexiRand);
-        bigInt = new BigInteger(bitLength, certainty, javaRand);
-    }
-
     public FlexiBigInt(BigInteger bigInt) {
         this.bigInt = bigInt;
     }
