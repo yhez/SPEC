@@ -13,8 +13,6 @@ import de.flexiprovider.api.keys.Key;
 
 public abstract class AsymmetricBlockCipher extends Cipher {
 
-    protected AlgorithmParameterSpec paramSpec;
-
     protected ByteArrayOutputStream buf;
 
     protected int maxPlainTextSize;
@@ -49,7 +47,7 @@ public abstract class AsymmetricBlockCipher extends Cipher {
 
 
     public final AlgorithmParameterSpec getParameters() {
-        return paramSpec;
+        return null;
     }
 
 

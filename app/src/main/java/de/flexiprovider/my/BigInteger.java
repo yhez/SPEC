@@ -274,80 +274,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
     }
 
 
-    public BigInteger(int bitLength, int certainty, Random rnd) {
-        BigInteger prime;
-
-        if (bitLength < 2)
-            throw new ArithmeticException("bitLength < 2");
-        // The cutoff of 95 was chosen empirically for best performance
-        prime = (bitLength < 95 ? smallPrime(bitLength, certainty, rnd)
-                : largePrime(bitLength, certainty, rnd));
-        signum = 1;
-        mag = prime.mag;
-    }
-
-
-    private static BigInteger smallPrime(int bitLength, int certainty, Random rnd) {
-        int magLen = (bitLength + 31) >>> 5;
-        int temp[] = new int[magLen];
-        int highBit = 1 << ((bitLength + 31) & 0x1f);  // High bit of high int
-        int highMask = (highBit << 1) - 1;  // Bits to keep in high int
-
-        while (true) {
-            // Construct a candidate
-            for (int i = 0; i < magLen; i++)
-                temp[i] = rnd.nextInt();
-            temp[0] = (temp[0] & highMask) | highBit;  // Ensure exact length
-            if (bitLength > 2)
-                temp[magLen - 1] |= 1;  // Make odd if bitlen > 2
-
-            BigInteger p = new BigInteger(temp, 1);
-
-            // Do cheap "pre-test" if applicable
-            if (bitLength > 6) {
-                long r = p.remainder(SMALL_PRIME_PRODUCT).longValue();
-                if ((r % 3 == 0) || (r % 5 == 0) || (r % 7 == 0) || (r % 11 == 0) ||
-                        (r % 13 == 0) || (r % 17 == 0) || (r % 19 == 0) || (r % 23 == 0) ||
-                        (r % 29 == 0) || (r % 31 == 0) || (r % 37 == 0) || (r % 41 == 0))
-                    continue; // Candidate is composite; try another
-            }
-
-            // All candidates of bitLength 2 and 3 are prime by this point
-            if (bitLength < 4)
-                return p;
-
-            // Do expensive test if we survive pre-test (or it's inapplicable)
-            if (p.primeToCertainty(certainty, rnd))
-                return p;
-        }
-    }
-
-    private static final BigInteger SMALL_PRIME_PRODUCT
-            = valueOf(3L * 5 * 7 * 11 * 13 * 17 * 19 * 23 * 29 * 31 * 37 * 41);
-
-
-    private static BigInteger largePrime(int bitLength, int certainty, Random rnd) {
-        BigInteger p;
-        p = new BigInteger(bitLength, rnd).setBit(bitLength - 1);
-        p.mag[p.mag.length - 1] &= 0xfffffffe;
-
-        // Use a sieve length likely to contain the next prime number
-        int searchLen = (bitLength / 20) * 64;
-        BitSieve searchSieve = new BitSieve(p, searchLen);
-        BigInteger candidate = searchSieve.retrieve(p, certainty, rnd);
-
-        while ((candidate == null) || (candidate.bitLength() != bitLength)) {
-            p = p.add(BigInteger.valueOf(2 * searchLen));
-            if (p.bitLength() != bitLength)
-                p = new BigInteger(bitLength, rnd).setBit(bitLength - 1);
-            p.mag[p.mag.length - 1] &= 0xfffffffe;
-            searchSieve = new BitSieve(p, searchLen);
-            candidate = searchSieve.retrieve(p, certainty, rnd);
-        }
-        return candidate;
-    }
-
-
     boolean primeToCertainty(int certainty, Random random) {
         int rounds;
         int n = (Math.min(certainty, Integer.MAX_VALUE - 1) + 1) / 2;
@@ -563,9 +489,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
         }
     }
 
-    private static BigInteger valueOf(int val[]) {
-        return (val[0] > 0 ? new BigInteger(val, 1) : new BigInteger(val));
-    }
     private final static int MAX_CONSTANT = 16;
     private static BigInteger posConst[] = new BigInteger[MAX_CONSTANT + 1];
     private static BigInteger negConst[] = new BigInteger[MAX_CONSTANT + 1];
@@ -1437,22 +1360,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
     }
 
 
-    public BigInteger setBit(int n) {
-        if (n < 0)
-            throw new ArithmeticException("Negative bit address");
-
-        int intNum = n >>> 5;
-        int[] result = new int[Math.max(intLength(), intNum + 2)];
-
-        for (int i = 0; i < result.length; i++)
-            result[result.length - i - 1] = getInt(i);
-
-        result[result.length - intNum - 1] |= (1 << (n & 31));
-
-        return valueOf(result);
-    }
-
-
     public int getLowestSetBit() {
         @SuppressWarnings("deprecation") int lsb = lowestSetBit - 2;
         if (lsb == -2) {  // lowestSetBit not initialized yet
@@ -1788,10 +1695,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
             0x40000000, 0x4cfa3cc1, 0x5c13d840, 0x6d91b519, 0x39aa400
     };
 
-
-    private int intLength() {
-        return (bitLength() >>> 5) + 1;
-    }
 
     private int signInt() {
         return signum < 0 ? -1 : 0;

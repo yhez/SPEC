@@ -10,8 +10,6 @@ import de.flexiprovider.api.keys.Key;
 
 public abstract class AsymmetricHybridCipher extends Cipher {
 
-    protected AlgorithmParameterSpec paramSpec;
-
     protected final void setMode(String modeName) {
         // empty
     }
@@ -29,7 +27,7 @@ public abstract class AsymmetricHybridCipher extends Cipher {
 
 
     public final AlgorithmParameterSpec getParameters() {
-        return paramSpec;
+        return null;
     }
 
 

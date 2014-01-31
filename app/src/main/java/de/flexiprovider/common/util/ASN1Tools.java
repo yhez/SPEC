@@ -19,10 +19,6 @@ public final class ASN1Tools {
     }
 
 
-    public static ASN1Integer createInteger(FlexiBigInt value) {
-        return new ASN1Integer(de.flexiprovider.my.BigInteger.get(value.bigInt));
-    }
-
     public static FlexiBigInt getFlexiBigInt(ASN1Integer value) {
         return new FlexiBigInt(value.getBigInteger());
     }

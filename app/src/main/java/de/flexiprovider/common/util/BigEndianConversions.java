@@ -43,16 +43,4 @@ public final class BigEndianConversions {
         return result;
     }
 
-    public static long OS2LIP(byte[] input, int inOff) {
-        long result = ((long) input[inOff++] & 0xff) << 56;
-        result |= ((long) input[inOff++] & 0xff) << 48;
-        result |= ((long) input[inOff++] & 0xff) << 40;
-        result |= ((long) input[inOff++] & 0xff) << 32;
-        result |= ((long) input[inOff++] & 0xff) << 24;
-        result |= (input[inOff++] & 0xff) << 16;
-        result |= (input[inOff++] & 0xff) << 8;
-        result |= input[inOff] & 0xff;
-        return result;
-    }
-
 }

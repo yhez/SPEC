@@ -1216,30 +1216,6 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
     }
 
 
-    private void readObject(java.io.ObjectInputStream s)
-            throws java.io.IOException, ClassNotFoundException {
-        // Read in all fields
-        s.defaultReadObject();
-        // validate possibly bad fields
-        if (intVal == null) {
-            String message = "BigDecimal: null intVal in stream";
-            throw new java.io.StreamCorruptedException(message);
-            // [all values of scale are now allowed]
-        }
-        intCompact = compactValFor(intVal);
-    }
-
-
-    private void writeObject(java.io.ObjectOutputStream s)
-            throws java.io.IOException {
-        // Must inflate to maintain compatible serial form.
-        this.inflate();
-
-        // Write proper fields
-        s.defaultWriteObject();
-    }
-
-
     private static int longDigitLength(long x) {
 
         assert x != INFLATED;

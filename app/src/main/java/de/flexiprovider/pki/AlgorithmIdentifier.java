@@ -15,11 +15,6 @@ import de.flexiprovider.api.parameters.AlgorithmParameters;
 public class AlgorithmIdentifier extends codec.x509.AlgorithmIdentifier {
 
 
-    public AlgorithmIdentifier() {
-        super();
-    }
-
-
     public AlgorithmIdentifier(ASN1ObjectIdentifier oid, byte[] b)
             throws ASN1Exception {
         super(oid, b);

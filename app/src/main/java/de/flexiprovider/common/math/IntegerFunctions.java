@@ -190,25 +190,6 @@ public final class IntegerFunctions {
         return FlexiBigInt.valueOf(u).gcd(FlexiBigInt.valueOf(v)).intValue();
     }
 
-    public static int ceilLog256(int n) {
-        if (n == 0) {
-            return 1;
-        }
-        int m;
-        if (n < 0) {
-            m = -n;
-        } else {
-            m = n;
-        }
-
-        int d = 0;
-        while (m > 0) {
-            d++;
-            m >>>= 8;
-        }
-        return d;
-    }
-
     public static int floorLog(int a) {
         int h = 0;
         if (a <= 0) {
