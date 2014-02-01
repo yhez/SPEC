@@ -1246,6 +1246,7 @@ public class Main extends FragmentActivity {
                     selectItem(-1, R.layout.me, null);
                     break;
                 case R.layout.recreating_keys:
+                    CryptMethods.doneCreatingKeys=true;
                     selectItem(-1, R.layout.create_new_keys, CryptMethods.publicExist() ? null : getString(R.string.first_time_create_keys));
                     break;
                 case R.layout.create_new_keys:
@@ -1506,7 +1507,9 @@ public class Main extends FragmentActivity {
             p = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    while (t.isAlive()) {
+                    while (true) {
+                        if(CryptMethods.doneCreatingKeys)
+                            break;
                         hndl.sendEmptyMessage(PROGRESS);
                         synchronized (this) {
                             try {
