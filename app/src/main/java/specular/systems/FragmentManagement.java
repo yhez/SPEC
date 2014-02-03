@@ -158,7 +158,7 @@ public class FragmentManagement extends Fragment {
             String type = mtm.getMimeTypeFromExtension(ext);
             if (type == null)
                 imageButton.setImageResource(R.drawable.unknown2);
-            else if (type.startsWith("audio") || type.equals("application/ogg"))
+            else if (type.startsWith("audio") || type.equals("application/ogg")||type.equals("video/3gpp"))
                 imageButton.setImageResource(R.drawable.music);
             else if (type.startsWith("video"))
                 imageButton.setImageResource(R.drawable.movie);

@@ -70,13 +70,14 @@ public final class FilesManagement {
             String name = MessageFormat.decryptedMsg.getFileName();
             String ext = name.substring(name.lastIndexOf(".") + 1);
             String type = m.getMimeTypeFromExtension(ext);
-            if (type.startsWith("image")) {
+            if (type.startsWith("image")||type.startsWith("audio")||type.equals("application/ogg")||type.equals("video/3gpp")) {
                 os = a.openFileOutput(name, a.MODE_PRIVATE);
             } else {
-                File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments", name);
+                File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
                 if (!path.exists())
                     path.mkdirs();
-                os = new FileOutputStream(path);
+                File file = new File(path,name);
+                os = new FileOutputStream(file);
             }
             os.write(MessageFormat.decryptedMsg.getFileContent());
             os.close();
@@ -93,7 +94,7 @@ public final class FilesManagement {
         MimeTypeMap m = MimeTypeMap.getSingleton();
         String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
         String type = m.getMimeTypeFromExtension(ext);
-        if (type.startsWith("image")) {
+        if (type.startsWith("image")||type.startsWith("audio")||type.equals("application/ogg")||type.equals("video/3gpp")) {
             path = a.getFilesDir();
             intent = new Intent(a, FilesOpener.class);
         } else {

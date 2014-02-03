@@ -292,11 +292,10 @@
     </string-array>
     <string-array name="menus">
         <item>Contacts</item>
-        <!--<item>Decrypt</item>-->
         <item>My SPEC</item>
         <item>About</item>
         <item>Manage</item>
-        <!--<item>SafeX</item>-->
+        <item>Safe</item>
     </string-array>
 
     <string-array name="message_parts">

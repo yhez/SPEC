@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,6 +43,8 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
             version = pInfo.versionName;
         } catch (PackageManager.NameNotFoundException ignored) {
         }
+        CryptMethods.deleteKeys();
+        Log.e("stacktrace", stacktrace);
         writeToFile("spec version: " + version + "\n" + stacktrace);
         android.os.Process.killProcess(android.os.Process.myPid());
         defaultUEH.uncaughtException(t, e);

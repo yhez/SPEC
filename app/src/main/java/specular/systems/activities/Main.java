@@ -2,6 +2,7 @@ package specular.systems.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -36,10 +38,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -186,7 +190,8 @@ public class Main extends FragmentActivity {
             }
         }
     };
-    public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_FOR_GROUP = 2, SCAN_PRIVATE = 3, SCAN_CONTACT = 4;
+    public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_FOR_GROUP = 2, SCAN_PRIVATE = 3
+            , SCAN_CONTACT = 4,TAKE_PICTURE=5,RECORD_AUDIO=6;
     public Handler handler;
     Thread addFile;
     private Toast t = null;
@@ -253,7 +258,6 @@ public class Main extends FragmentActivity {
     public void decryptedMsgClick(View v) {
         switch (v.getId()) {
             case R.id.send:
-                //findViewById(R.id.answer).setVisibility(View.GONE);
                 EditText et = (EditText) findViewById(R.id.message);
                 userInput = et.getText().toString();
                 // hides the keyboard when the user starts the encryption process
@@ -410,6 +414,8 @@ public class Main extends FragmentActivity {
                     loadingFile = false;
                     if (r == FilesManagement.RESULT_ADD_FILE_OK) {
                         fileName = Visual.getFileName(Main.this, uri);
+                        if(pic!=null)
+                            new File(pic.getPath()).delete();
                         hndl.sendEmptyMessage(REPLACE_PHOTO);
                     } else {
                         hndl.sendEmptyMessage(r);
@@ -426,7 +432,13 @@ public class Main extends FragmentActivity {
             if (requestCode == ATTACH_FILE) {
                 attachFile(intent.getData());
                 intent.setData(null);
-            } else {
+            }else if(requestCode==TAKE_PICTURE){
+                attachFile(pic);
+            } else if(requestCode==RECORD_AUDIO){
+                pic = intent.getData();
+                attachFile(intent.getData());
+                intent.setData(null);
+            }else {
                 String result = intent.getStringExtra("barcode");
                 if (requestCode == SCAN_PRIVATE) {
                     t.setText(R.string.load_private_from_qr);
@@ -442,17 +454,10 @@ public class Main extends FragmentActivity {
                         }
                     } else {
                         getIntent().putExtra("message", result);
+                        if(requestCode==SCAN_FOR_GROUP)
+                            getIntent().putExtra("id", intent.getLongExtra("id", -1));
                         setUpViews();
                     }
-                   /* case SCAN_FOR_GROUP:
-                        getIntent().putExtra("message", result);
-                        getIntent().putExtra("id", intent.getLongExtra("id", -1));
-                        setUpViews();
-                        break;
-                    case SCAN_PRIVATE:
-                        t.setText("keys have been loaded to phone but not yet saved you can choose now to save them on nfc\nor you can decrypt the message you want, and not save it at all");
-                        t.show();
-                        break;|*/
                 }
             }
         }
@@ -672,11 +677,7 @@ public class Main extends FragmentActivity {
                             t.setText(R.string.tring_add_another_file_while_loading);
                             t.show();
                         } else {
-                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                            intent.addCategory(Intent.CATEGORY_OPENABLE);
-                            intent.setType("*/*");
-                            Intent i = Intent.createChooser(intent, getString(R.string.choose_file_to_attach));
-                            startActivityForResult(i, ATTACH_FILE);
+                            showPictureialog();
                         }
                     }
                 } else {
@@ -684,11 +685,7 @@ public class Main extends FragmentActivity {
                         t.setText(R.string.tring_add_another_file_while_loading);
                         t.show();
                     } else {
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.addCategory(Intent.CATEGORY_OPENABLE);
-                        intent.setType("*/*");
-                        Intent i = Intent.createChooser(intent, getString(R.string.choose_file_to_attach));
-                        startActivityForResult(i, ATTACH_FILE);
+                        showPictureialog();
                     }
                 }
             }
@@ -708,6 +705,60 @@ public class Main extends FragmentActivity {
             share(null);
         }
         return super.onOptionsItemSelected(item);
+    }
+    Uri pic=null;
+    private void showPictureialog() {
+        final Dialog dialog = new Dialog(this,R.style.menu);
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.TOP | Gravity.RIGHT);
+        window.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.setContentView(R.layout.dlg_attach_file);
+        dialog.findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*");
+                Intent i = Intent.createChooser(intent, getString(R.string.choose_file_to_attach));
+                startActivityForResult(i, ATTACH_FILE);
+            }
+        });
+        dialog.findViewById(R.id.dlg_attach).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+        dialog.findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE);
+                File f = new File(Environment.getExternalStorageDirectory()+"/SPEC/attachments",System.currentTimeMillis()+".jpg");
+                pic = Uri.fromFile(f);
+                i.putExtra(MediaStore.EXTRA_OUTPUT, pic);
+                startActivityForResult(i,TAKE_PICTURE);
+            }
+        });
+        dialog.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                Intent i = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+                startActivityForResult(i,RECORD_AUDIO);
+            }
+        });
+        dialog.findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                notImp(null);
+            }
+        });
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+        dialog.show();
     }
 
     public void share(View v) {
@@ -952,10 +1003,10 @@ public class Main extends FragmentActivity {
     }
 
     private void setUpViews() {
-        final int ENCRYPT = 0/*, DECRYPT = 1*/, SHARE = 1, LEARN = 2, SETUP = 3/*, EXPLORER = 5*/;
+        final int ENCRYPT = 0, SHARE = 1, LEARN = 2, SETUP = 3, EXPLORER = 4;
         final String[] allMenus = getResources().getStringArray(R.array.menus);
-        final int[] allDrb = {R.drawable.encrypt, /*R.drawable.decrypt,*/ R.drawable.share
-                , R.drawable.learn, R.drawable.manage/*, R.drawable.explore*/};
+        final int[] allDrb = {R.drawable.encrypt, R.drawable.share
+                , R.drawable.learn, R.drawable.manage, R.drawable.explore};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? BOTH : CryptMethods.privateExist() ? PV : CryptMethods.publicExist() ? PB : NONE;
         mTitle = getTitle();
@@ -979,10 +1030,8 @@ public class Main extends FragmentActivity {
                         allDrb[LEARN], allDrb[SETUP]};
                 break;
             case PV:
-                menuTitles = new String[]{/*allMenus[DECRYPT],*/
-                        allMenus[LEARN], allMenus[SETUP]};
-                menuDrawables = new int[]{/*allDrb[DECRYPT],*/
-                        allDrb[LEARN], allDrb[SETUP]};
+                menuTitles = new String[]{allMenus[LEARN], allMenus[SETUP]};
+                menuDrawables = new int[]{allDrb[LEARN], allDrb[SETUP]};
                 break;
             case NONE:
                 menuTitles = new String[]{allMenus[LEARN], allMenus[SETUP]};
@@ -1024,9 +1073,9 @@ public class Main extends FragmentActivity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        final int allLayouts[] = {R.layout.encrypt,/* R.layout.decrypt,*/
+        final int allLayouts[] = {R.layout.encrypt,
                 R.layout.me, R.layout.learn,
-                R.layout.setup/*, R.layout.explorer*/};
+                R.layout.setup, R.layout.explorer};
         switch (status) {
             case BOTH:
                 layouts = allLayouts;
@@ -1056,8 +1105,7 @@ public class Main extends FragmentActivity {
                 }
                 break;
             case PV:
-                layouts = new int[]{/*allLayouts[DECRYPT],*/
-                        allLayouts[LEARN], allLayouts[SETUP]};
+                layouts = new int[]{ allLayouts[LEARN], allLayouts[SETUP]};
                 if (!openByFile()) {
                     selectItem(0, R.layout.decrypt, null);
                     defaultScreen = R.layout.decrypt;

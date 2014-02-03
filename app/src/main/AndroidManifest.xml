@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
-    android:versionCode="30"
-    android:versionName="V 0.1">
+    android:versionCode="33"
+    android:versionName="V 0.2.1">
 
     <uses-sdk android:maxSdkVersion="19" />
 
@@ -147,6 +147,6 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:exported="false"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+            android:theme="@style/Theme.Transparent" />
     </application>
 </manifest>

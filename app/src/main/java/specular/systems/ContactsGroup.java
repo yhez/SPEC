@@ -20,12 +20,12 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        return new PageList(/*i == 0 ? CONTACTS : GROUPS*/);
+        return new PageList(i == 0 ? CONTACTS : GROUPS);
     }
 
     @Override
     public int getCount() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -36,9 +36,13 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
     public static class PageList extends Fragment {
         private int currentLayout=CONTACTS;
 
-        public PageList(/*int currentLayout*/) {
+        public PageList(int currentLayout) {
             super();
-            /*this.currentLayout = currentLayout;*/
+            this.currentLayout = currentLayout;
+        }
+        public PageList(){
+            super();
+            this.currentLayout = CONTACTS;
         }
 
         @Override

@@ -8,9 +8,12 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.util.TypedValue;
 import android.view.GestureDetector;
@@ -19,51 +22,87 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.webkit.MimeTypeMap;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Scroller;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 import specular.systems.KeysDeleter;
+import specular.systems.Visual;
 
 
 public class FilesOpener extends Activity {
     String path;
-
+    ProgressBar pd;
+    private Handler hndl = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            pd.setProgress(msg.what);
+        }
+    };
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
         path = getIntent().getData().getPath();
-        Bitmap bm = BitmapFactory.decodeFile(path);
-        TouchImageView iv = new TouchImageView(this);
-        iv.setImageBitmap(bm);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-        iv.setLayoutParams(params);
-        FrameLayout fl = new FrameLayout(this);
-        fl.addView(iv);
-        TextView tv = new TextView(this);
-        params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,Gravity.CENTER_HORIZONTAL|Gravity.TOP);
-        tv.setLayoutParams(params);
-        tv.setTextColor(Color.WHITE);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
-        tv.setPadding(20, 20, 20, 0);
-        tv.setText(path.substring(path.lastIndexOf("/")+1));
-        fl.addView(tv);
-        /*ImageButton ib = new ImageButton(this);
-        ib.setImageResource(R.drawable.delete);
-        params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,Gravity.BOTTOM|Gravity.RIGHT);
-        ib.setLayoutParams(params);
-        ib.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                new File(path).delete();
-                StaticVariables.file_name=null;
+        String fileName = Visual.getFileName(this, getIntent().getData());
+        MimeTypeMap m = MimeTypeMap.getSingleton();
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+        String type = m.getMimeTypeFromExtension(ext);
+        if (type.startsWith("image")) {
+            Bitmap bm = BitmapFactory.decodeFile(path);
+            TouchImageView iv = new TouchImageView(this);
+            iv.setImageBitmap(bm);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+            iv.setLayoutParams(params);
+            FrameLayout fl = new FrameLayout(this);
+            fl.addView(iv);
+            TextView tv = new TextView(this);
+            params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+            tv.setLayoutParams(params);
+            tv.setTextColor(Color.WHITE);
+            tv.setBackgroundColor(Color.BLACK);
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            tv.setPadding(20, 20, 20, 0);
+            tv.setText(path.substring(path.lastIndexOf("/") + 1));
+            fl.addView(tv);
+            setContentView(fl);
+        } else if (type.startsWith("audio")||type.equals("application/ogg")||type.equals("video/3gpp")) {
+            pd = new ProgressBar(this, null, android.R.attr.progressBarStyle);
+            pd.setMax(100);
+            pd.setKeepScreenOn(true);
+            setContentView(pd);
+            try {
+                final MediaPlayer mp = new MediaPlayer();
+                mp.setScreenOnWhilePlaying(true);
+                mp.setDataSource(path);
+                mp.prepare();
+                mp.start();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (mp.isPlaying()){
+                            synchronized (this){
+                                try {
+                                    ((Object)this).wait(25);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            hndl.sendEmptyMessage(mp.getCurrentPosition()/mp.getDuration()*100);
+                        }
+                        finish();
+                    }
+                }).start();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
-        fl.addView(ib);*/
-        setContentView(fl);
+        }
     }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -75,7 +114,9 @@ public class FilesOpener extends Activity {
         super.onResume();
         KeysDeleter.stop();
     }
-    enum State { NONE, DRAG, ZOOM, FLING, ANIMATE_ZOOM }
+
+    enum State {NONE, DRAG, ZOOM, FLING, ANIMATE_ZOOM}
+
     public class TouchImageView extends ImageView {
         private static final float SUPER_MIN_MULTIPLIER = .75f;
         private static final float SUPER_MAX_MULTIPLIER = 1.25f;
@@ -226,6 +267,7 @@ public class FilesOpener extends Activity {
                 matrix.postTranslate(fixTransX, fixTransY);
             }
         }
+
         private void fixScaleTrans() {
             fixTrans();
             matrix.getValues(m);
@@ -292,6 +334,7 @@ public class FilesOpener extends Activity {
             setMeasuredDimension(viewWidth, viewHeight);
             fitImageToView();
         }
+
         private void fitImageToView() {
             Drawable drawable = getDrawable();
             if (drawable == null || drawable.getIntrinsicWidth() == 0 || drawable.getIntrinsicHeight() == 0) {
@@ -363,6 +406,7 @@ public class FilesOpener extends Activity {
             }
             setImageMatrix(matrix);
         }
+
         private int setViewSize(int mode, int size, int drawableWidth) {
             int viewSize;
             switch (mode) {
@@ -384,6 +428,7 @@ public class FilesOpener extends Activity {
             }
             return viewSize;
         }
+
         private void translateMatrixAfterRotate(int axis, float trans, float prevImageSize, float imageSize, int prevViewSize, int viewSize, int drawableSize) {
             if (imageSize < viewSize) {
                 //
@@ -411,23 +456,21 @@ public class FilesOpener extends Activity {
         private void setState(State state) {
             this.state = state;
         }
+
         private class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
             @Override
-            public boolean onSingleTapConfirmed(MotionEvent e)
-            {
+            public boolean onSingleTapConfirmed(MotionEvent e) {
                 return performClick();
             }
 
             @Override
-            public void onLongPress(MotionEvent e)
-            {
+            public void onLongPress(MotionEvent e) {
                 performLongClick();
             }
 
             @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
-            {
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 if (fling != null) {
                     //
                     // If a previous fling is still active, it should be cancelled so that two flings
@@ -452,6 +495,7 @@ public class FilesOpener extends Activity {
                 return consumed;
             }
         }
+
         class TouchImageViewListener implements OnTouchListener {
 
             //
@@ -500,6 +544,7 @@ public class FilesOpener extends Activity {
                 return true;
             }
         }
+
         private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
             @Override
             public boolean onScaleBegin(ScaleGestureDetector detector) {
@@ -564,8 +609,8 @@ public class FilesOpener extends Activity {
         /**
          * DoubleTapZoom calls a series of runnables which apply
          * an animated zoom in/out graphic to the image.
-         * @author Ortiz
          *
+         * @author Ortiz
          */
         private class DoubleTapZoom implements Runnable {
 
@@ -617,23 +662,27 @@ public class FilesOpener extends Activity {
                     setState(State.NONE);
                 }
             }
+
             private void translateImageToCenterTouchPosition(float t) {
                 float targetX = startTouch.x + t * (endTouch.x - startTouch.x);
                 float targetY = startTouch.y + t * (endTouch.y - startTouch.y);
                 PointF curr = transformCoordBitmapToTouch(bitmapX, bitmapY);
                 matrix.postTranslate(targetX - curr.x, targetY - curr.y);
             }
+
             private float interpolate() {
                 long currTime = System.currentTimeMillis();
                 float elapsed = (currTime - startTime) / ZOOM_TIME;
                 elapsed = Math.min(1f, elapsed);
                 return interpolator.getInterpolation(elapsed);
             }
+
             private float calculateDeltaScale(float t) {
                 float zoom = startZoom + t * (targetZoom - startZoom);
                 return zoom / normalizedScale;
             }
         }
+
         private PointF transformCoordTouchToBitmap(float x, float y, boolean clipToBitmap) {
             matrix.getValues(m);
             float origW = getDrawable().getIntrinsicWidth();
@@ -648,8 +697,9 @@ public class FilesOpener extends Activity {
                 finalY = Math.min(Math.max(y, 0), origH);
             }
 
-            return new PointF(finalX , finalY);
+            return new PointF(finalX, finalY);
         }
+
         private PointF transformCoordBitmapToTouch(float bx, float by) {
             matrix.getValues(m);
             float origW = getDrawable().getIntrinsicWidth();
@@ -658,8 +708,9 @@ public class FilesOpener extends Activity {
             float py = by / origH;
             float finalX = m[Matrix.MTRANS_X] + getImageWidth() * px;
             float finalY = m[Matrix.MTRANS_Y] + getImageHeight() * py;
-            return new PointF(finalX , finalY);
+            return new PointF(finalX, finalY);
         }
+
         private class Fling implements Runnable {
 
             Scroller scroller;
@@ -730,7 +781,7 @@ public class FilesOpener extends Activity {
                 postOnAnimation(runnable);
 
             } else {
-                postDelayed(runnable, 1000/60);
+                postDelayed(runnable, 1000 / 60);
             }
         }
     }

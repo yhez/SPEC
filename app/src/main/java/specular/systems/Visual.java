@@ -25,6 +25,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -247,5 +248,43 @@ public class Visual {
         String timestamp = new SimpleDateFormat("yyyy MM dd HH:mm:ss").format(Calendar
                 .getInstance().getTime());
         return "<br><br>" + timestamp;
+    }
+    public static enum types{
+        IMAGE,VIDEO,AUDIO,ZIP,TEXT,UNKNOWN,APK,PDF,DOC
+    }
+    public static types getType(File f){
+        if(f.isDirectory())
+            return null;
+        String name = f.getName();
+        String ext = StaticVariables.file_name.substring(StaticVariables.file_name.lastIndexOf('.') + 1);
+        MimeTypeMap mtm = MimeTypeMap.getSingleton();
+        String type = mtm.getMimeTypeFromExtension(ext);
+        if(type==null)
+            return types.UNKNOWN;
+        if(type.startsWith("image"))
+            return types.IMAGE;
+        if(type.startsWith("audio")|type.equals("application/ogg"))
+            return types.AUDIO;
+        if(type.contains("zip")||type.contains("rar"))
+            return types.ZIP;
+        if(type.contains("text"))
+            return types.TEXT;
+        if (type.equals("application/vnd.android.package-archive"))
+            return types.APK;
+        if (type.endsWith("pdf"))
+            return types.PDF;
+        if (ext.equals("doc") || ext.equals("docx"))
+            return types.DOC;
+        if(type.startsWith("video")){
+            if(type.endsWith("3gpp")){
+               // MediaMetadataRetriever.
+               // MediaStore.Audio.Media.
+               // if(f.)
+                return types.AUDIO;
+            }
+            else
+                return types.VIDEO;
+        }
+        return types.UNKNOWN;
     }
 }
