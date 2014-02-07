@@ -10,12 +10,12 @@
     <string name="cant_connect_nfc_adapter">Something went wrong.</string>
     <string name="turn_nfc_on_nfc_wait">NFC is OFF, go to settings and turn it ON.</string>
     <string name="failed_read_only">Read-only tag.\nUse another tag.</string>
-    <string name="tag_formatted">Tag has been formatted.\nTap again to save.</string>
+    <string name="tag_formatted">Tag has been formatted.\nTap again to save key.</string>
     <string name="cant_format">Unable to format tag to NDEF.\nTry another tag.</string>
     <string name="tag_not_supported">Tag doesn\'t appear to support NDEF format.\nTry another tag.</string>
     <string name="tag_written">Tag written successfully.</string>
     <string name="io_exception_format">Trouble formatting before saving key.\nTry again.</string>
-    <string name="cant_find_private_key">Can\'t find a valid private key on the NFC tag.\nTry another one.</string>
+    <string name="cant_find_private_key">Can\'t find a valid Private Key on the NFC tag.\nTry another one.</string>
     <string name="cant_find_data">This tag is empty.\nTry another one.</string>
     <string name="wait_for_nfc_to_read">Waiting for NFC&#8230;</string>
     <string name="title_turn_nfc_on">Activate NFC? If not, keys will be saved on device.</string>
@@ -30,7 +30,7 @@
     <string name="bad_data">Please scan again.</string>
     <string name="get_private_from_qr">QR &#8594; Device</string>
     <string name="print_private_to_qr">Print QR Backup</string>
-    <string name="scan_any_qr_widget">Place QR code within box to scan (message or contact).</string>
+    <string name="scan_any_qr_widget">Place QR code within box to scan message OR contact.</string>
     <string name="qr_scan_explain">Place QR code within box to scan.</string>
     <string name="title_scan_error_msg">Please scan again.</string>
     <string name="content_scan_error_msg">Please scan again.</string>
@@ -42,15 +42,15 @@
     <string name="explain_button">Explain</string>
     <!--session check-->
     <string name="session_title">Session Info:</string>
-    <string name="session_try_again">Try sending the message again. You have not received a session ID from your contact\n</string>
-    <string name="session_reset">Session has been reset, due to a possible attack, problem\n</string>
-    <string name="session_updated">Session updated, everything is A OK\n</string>
+    <string name="session_try_again">Try sending the message again. You have not received a session ID from your contact.\n</string>
+    <string name="session_reset">Session has been reset, due to a possible attack or problem.\n</string>
+    <string name="session_updated">Session updated, everything is A OK.\n</string>
     <string name="what_is_session">What is a Session?</string>
     <string name="session_explain">A session identifier or session token is a piece
         of data that is used in network communications to identify a session, a series of related
         message exchanges. In SPEC, we want you to be sure that you\'re in touch with the correct contact and not an impersonator.
-        Therefore it is vital to keep track of the current state of the conversation and a session ID is one way to achieve that goal.</string>
-    <string name="session_what_we_did">we are creating a secret that the other side must decrypt and send back</string>
+        Therefore it is vital to keep track of the current state of the conversation and a session ID is one way to achieve that goal.\n</string>
+    <string name="session_what_we_did">SPEC generates a secret that the other side (contact) must decrypt and send back.</string>
     <string name="session_ok_explain">You both have the same session, so you\'re communicating with the same person as before.\n</string>
     <string name="dont_trust_session_explain">You have a different session than your contact.
         \nIt\'s possible that your contact is a fake, fraud.
@@ -66,7 +66,7 @@
         maliciously or fraudulently repeated or delayed (after possible tampering). These attacks are mostly carried out by an adversary
         whom intercepts the data and retransmits it, possibly as part of a Man in the Middle Attack. SPEC verifies that this type of attack and similar ones aren\'t carried out.</string>
     <string name="replay_not_relevant">No need to be worried about Replay Attacks.\nConversation just started.</string>
-    <string name="replay_ok">Everything seems to be OK.</string>
+    <string name="replay_ok">Everything seems to be A OK.</string>
     <string name="replay_check_failed">Time-stamp is broken.\nDo not trust this message.</string>
     <string name="replay_old">This message has been sent more than 60 hours ago.\nYou should be careful.</string>
     <string name="replay_older_then_latest">You\'ve already received a newer message from this contact.</string>
@@ -80,9 +80,9 @@
 
     <!--hash check-->
     <string name="hash_title">Crypto Hash Info:</string>
-    <string name="hash_explain">The main application of secure cryptographic hashes is verification of message integrity - determining whether any changes have been made to a message or a file. SPEC verifies that your messages are secure and complete. WE FIGHT DATA TAMPERING 24/7.</string>
+    <string name="hash_explain">The main application of secure cryptographic hashes is verification of message integrity - determining whether any changes have been made to a message or a file. SPEC verifies that your messages are secure and complete. WE FIGHT DATA TAMPERING 24/7.\n</string>
     <string name="what_is_hash">What is a Crypto Hash?</string>
-    <string name="hash_what_we_did">Using SHA-256 Algorithm</string>
+    <string name="hash_what_we_did">SPEC uses the SHA-256 algorithm.</string>
     <string name="hash_qr_what_we_did">to make the hash small we used xor of the entire bytes(divided for 4 bytes packets) that create an integer.\nby encrypting this integer inside the message we making it secure</string>
 
     <string name="reject_changes">You must have a Private Key in order to make changes.</string>
@@ -179,7 +179,7 @@
     <string name="both_qr_file">send both file and QR code via:</string>
     <string name="files_details">file details:</string>
     <string name="technical_info">Security Audit Info</string>
-    <string name="no_result_filter">No result, please search again</string>
+    <string name="no_result_filter">No result, please search again.</string>
     <string name="profile_my_name">my name:</string>
     <string name="profile_my_email">my email:</string>
     <string name="send_file">send file via:</string>
@@ -261,21 +261,21 @@
     <string name="sent_but_not_recieved">you sent your session, but didn\'t get one back yet from contact.</string>
     <string name="hide_session_words">-xxx xxx-</string>
     <string name="hide_secret_sign">-x-</string>
-    <string name="backup_progress">backing up…</string>
-    <string name="notify_after_restore">all data has been restored</string>
-    <string name="not_verified_backup_title">something is wrong</string>
+    <string name="backup_progress">Backing Up SPEC Data…</string>
+    <string name="notify_after_restore">All your data has been restored.</string>
+    <string name="not_verified_backup_title">Something went wrong, try again.</string>
     <string name="not_verified_backup_message">we can\'t verify that this backup was created by you.\nsomeone could try to encrypt false data for you</string>
     <string name="backup_found_old_data">Are you sure?\nby restoring your backup all other data you\'ve saved will be lost</string>
     <string name="backup_not_found_old_data">Restoring the data will put you in the same position you left.</string>
     <string name="backup_verified_title">Restore data from backup.</string>
     <string name="cant_find_key_on_device">can\'t_find key on device</string>
     <string name="prevent_backup_no_private">In order to make the backup save you must have the private key to create it</string>
-    <string name="loading_title">loading…</string>
-    <string name="loading_msg">loading file into spec,\nplease wait a moment.</string>
+    <string name="loading_title">Loading…</string>
+    <string name="loading_msg">Loading file into SPEC.</string>
     <string name="no_keys_open_by_msg">if your private key is on NFC, just tap it to device and the message will decrypt</string>
     <string name="no_account_trying_add_contact">you cannot add contact without an account/having public key on the device</string>
     <string name="load_private_from_qr">\nor you can decrypt the message you want, and not save it at all</string>
-    <string name="tring_add_another_file_while_loading">loading file…</string>
+    <string name="tring_add_another_file_while_loading">Loading file…</string>
     <string name="version">SPEC version:</string>
     <string name="backup_no_public">you cannot create a backup without having your public key</string>
     <string name="backup_explain">1. the backup option will use your public key to encrypt the data.\n2. we\'ll add hash signature of your private key to verify that it was created by you.\n3. we\'ll add hash signature of the entire data to verify that it hasn\'t be changed</string>
@@ -295,7 +295,7 @@
         <item>My SPEC</item>
         <item>About</item>
         <item>Manage</item>
-        <item>Safe</item>
+        <item>SafeX</item>
     </string-array>
 
     <string-array name="message_parts">
