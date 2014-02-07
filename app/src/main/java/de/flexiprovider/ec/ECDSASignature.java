@@ -23,6 +23,7 @@ import de.flexiprovider.common.util.FlexiBigIntUtils;
 import de.flexiprovider.ec.keys.ECPrivateKey;
 import de.flexiprovider.ec.keys.ECPublicKey;
 import de.flexiprovider.ec.parameters.CurveParams;
+import specular.systems.CryptMethods;
 
 public abstract class ECDSASignature extends Signature {
 
@@ -193,8 +194,9 @@ public abstract class ECDSASignature extends Signature {
         do {
             // select uniformly at random a FlexiBigInt u in the interval [1,
             // r-1] with gcd(u, r) == 1
+            CryptMethods.randomBits rb = new CryptMethods.randomBits(512);
             do {
-                u = new FlexiBigInt(rLength, mSecureRandom);
+                u = new FlexiBigInt(rb.getRandomBits());
             } while ((u.compareTo(ONE) < 0) || (u.compareTo(mR) >= 0)
                     || (u.gcd(mR).compareTo(ONE) != 0));
 

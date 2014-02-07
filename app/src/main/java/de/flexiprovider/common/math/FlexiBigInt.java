@@ -25,9 +25,8 @@ public final class FlexiBigInt {
         bigInt = new BigInteger(val, radix);
     }
 
-    public FlexiBigInt(int numBits, SecureRandom flexiRand) {
-        JavaSecureRandom javaRand = new JavaSecureRandom(flexiRand);
-        bigInt = new BigInteger(numBits, javaRand);
+    public FlexiBigInt(byte[] randomData) {
+        bigInt = new BigInteger(1,randomData);
     }
 
     public FlexiBigInt(BigInteger bigInt) {

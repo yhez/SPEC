@@ -13,7 +13,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.SecureRandom;
 import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -124,22 +123,19 @@ public class CryptMethods {
             addProviders();
             notInit = false;
         }
-        KeyPairGenerator kpg;
         try {
-            kpg = KeyPairGenerator.getInstance("ECIES", "FlexiEC");
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance("ECIES", "FlexiEC");
             CurveParams ecParams = new CurveRegistry.BrainpoolP512r1();
             try {
-                //todo add random data from camera
-                kpg.initialize(ecParams, new SecureRandom());
+                kpg.initialize(ecParams);
+                KeyPair keypair = kpg.generateKeyPair();
+                if (!doneCreatingKeys) {
+                    tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
+                    tmpPtK = keypair.getPrivate();
+                    tmpPrivateKey = tmpPtK.getEncoded();
+                }
             } catch (InvalidAlgorithmParameterException e) {
                 e.printStackTrace();
-            }
-            KeyPair keypair;
-            keypair = kpg.generateKeyPair();
-            if (!doneCreatingKeys) {
-                tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
-                tmpPtK = keypair.getPrivate();
-                tmpPrivateKey = tmpPtK.getEncoded();
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -154,11 +150,9 @@ public class CryptMethods {
         StaticVariables.decryptedBackup = null;
         StaticVariables.decryptedGroup = null;
         if (encryptedMessage == null) {
-            Log.d("null", "null message");
             return -1;
         }
         if (!privateExist()) {
-            Log.e("no private", "message");
             return -1;
         }
         byte[] rawMsg = Visual.hex2bin(encryptedMessage);
@@ -278,6 +272,52 @@ public class CryptMethods {
             return md.digest(myPrivateKey);
         } catch (NoSuchAlgorithmException e) {
             return new byte[0];
+        }
+    }
+    public static class randomBits{
+        int numBytes;
+        byte[] randomBits;
+        byte[] oldPic,currPic;
+        public randomBits(int numBits) {
+            numBytes = (int) (((long) numBits + 7) / 8); // avoid overflow
+            randomBits = new byte[numBytes];
+        }
+        public byte[] getRandomBits(){
+            while(!CameraPreview.called){
+                synchronized (this){
+                try {
+                    wait(15);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }}
+            CameraPreview.called=false;
+            byte[] temp = CameraPreview.getFrame();
+            if(temp==null)
+                return getRandomBits();
+            boolean isNew=true;
+            if(currPic!=null){
+                oldPic=currPic;
+                isNew=false;
+            }
+            currPic = new byte[temp.length];
+            System.arraycopy(temp,0,currPic,0,currPic.length);
+            if(isNew)
+                return getRandomBits();
+            int s = 0;
+            boolean found = false;
+            for(int a=0;a<numBytes;a++){
+                found = false;
+                for(;s<currPic.length&&s<oldPic.length;s++)
+                    if(currPic[s]!=oldPic[s]){
+                        randomBits[a]=currPic[s];
+                        found=true;
+                        break;
+                    }
+                if(!found)
+                    return getRandomBits();
+            }
+            return randomBits;
         }
     }
 }

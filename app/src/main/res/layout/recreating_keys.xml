@@ -1,42 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:alpha="0"
-    android:background="@android:color/white"
+    tools:context="specular.systems.activities.Main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="">
-
-    <TextView
-        android:textColor="@color/spec_black"
-        android:padding="@dimen/default_gap"
-        android:gravity="center"
-        android:text="@string/recreating_keys_title"
+    android:layout_height="match_parent">
+    <specular.systems.CameraPreview
+        android:id="@+id/camera"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <View
-        android:padding="@dimen/default_gap"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/spec_blue"
-        android:layout_width="240dp"
-        android:layout_height="1dp" />
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="@android:style/Widget.Holo.ProgressBar.Horizontal"
-        android:padding="@dimen/default_gap"
+        android:layout_height="match_parent" />
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    <ImageButton
-        android:onClick="createKeysManager"
-        style="?android:attr/borderlessButtonStyle"
-        android:id="@+id/image_public"
-        android:src="@drawable/spin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@android:color/black"
+            android:padding="@dimen/default_gap"
+            android:gravity="center"
+            android:text="@string/recreating_keys_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-</LinearLayout>
+        <View
+            android:padding="@dimen/default_gap"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/spec_blue"
+            android:layout_width="240dp"
+            android:layout_height="1dp" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@android:style/Widget.Holo.ProgressBar.Horizontal"
+            android:padding="@dimen/default_gap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:onClick="createKeysManager"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/image_public"
+            android:src="@drawable/spin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</FrameLayout>
