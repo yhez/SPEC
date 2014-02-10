@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class Backup {
     public static final String Delimiter = "\n";
-    public static final String ContactDelimiter = "||";
+    public static final String ContactDelimiter = "\t";
 
     public static byte[] backup(Activity a) {
         List<Contact> contactList = ContactsDataSource.contactsDataSource.getAllContacts();
@@ -91,13 +91,10 @@ public class Backup {
         Pattern pattern = Pattern.compile(ContactDelimiter, Pattern.LITERAL);
         String[] contactsString = pattern.split(DataTemp, -1);
         for(int i = 0; i < contactsString.length; i++){
-            Contact c = string2Contact(contactsString[i], myDetails);
+            Contact c = string2Contact(contactsString[i]);
             if (c != null){
                 contactList.add(i,c);
             }
-
-            // change the loop so only first contact considered as the user
-            myDetails = true;
         }
         StaticVariables.decryptedBackup=null;
         return contactList;
@@ -121,12 +118,12 @@ public class Backup {
         }
     }
 
-    private static Contact string2Contact(String c, boolean myDetails){
+    private static Contact string2Contact(String c){
         Pattern pattern = Pattern.compile(Delimiter, Pattern.LITERAL);
         Contact tempContact;
 
         String[] details = pattern.split(c, -1);
-        if (!myDetails){
+        if (details.length==4){
             tempContact = new Contact(1,details[0], details[1],0,0,0,0,details[2],"","");
         }
         else{

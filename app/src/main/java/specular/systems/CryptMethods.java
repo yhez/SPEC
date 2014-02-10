@@ -21,7 +21,6 @@ import java.util.Random;
 
 import javax.crypto.Cipher;
 
-import de.flexiprovider.common.ies.IESParameterSpec;
 import de.flexiprovider.core.FlexiCoreProvider;
 import de.flexiprovider.ec.FlexiECProvider;
 import de.flexiprovider.ec.keys.ECPrivateKey;
@@ -123,6 +122,7 @@ public class CryptMethods {
             addProviders();
             notInit = false;
         }
+        StaticVariables.creating_new_keys = true;
         try {
             KeyPairGenerator kpg = KeyPairGenerator.getInstance("ECIES", "FlexiEC");
             CurveParams ecParams = new CurveRegistry.BrainpoolP512r1();
@@ -130,9 +130,12 @@ public class CryptMethods {
                 kpg.initialize(ecParams);
                 KeyPair keypair = kpg.generateKeyPair();
                 if (!doneCreatingKeys) {
-                    tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
-                    tmpPtK = keypair.getPrivate();
-                    tmpPrivateKey = tmpPtK.getEncoded();
+                    PrivateKey tmp = keypair.getPrivate();
+                    if (tmp != null) {
+                        tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
+                        tmpPtK = tmp;
+                        tmpPrivateKey = tmpPtK.getEncoded();
+                    }
                 }
             } catch (InvalidAlgorithmParameterException e) {
                 e.printStackTrace();
@@ -142,6 +145,7 @@ public class CryptMethods {
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
         }
+        StaticVariables.creating_new_keys = false;
     }
 
     public static int decrypt(String encryptedMessage, byte[] key) {
@@ -203,8 +207,9 @@ public class CryptMethods {
             PublicKey frndPbK = KeyFactory.getInstance("ECIES", "FlexiEC")
                     .generatePublic(new X509EncodedKeySpec(Visual.hex2bin(publicKey)));
             Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
-            IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC", "HmacSHA1",null,null);
-            cipher.init(Cipher.ENCRYPT_MODE, frndPbK, iesParams);
+            //SecureRandom sr = null;
+            //IESParameterSpec iesParams = null;//new IESParameterSpec("AES128_CBC", "HmacSHA1",null,null);
+            cipher.init(Cipher.ENCRYPT_MODE, frndPbK);
             return cipher.doFinal(b);
         } catch (Exception ignore) {
             ignore.printStackTrace();
@@ -222,12 +227,12 @@ public class CryptMethods {
             notInit = false;
         }
         try {
-            IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",  "HmacSHA1",null,null);
+            //IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",  "HmacSHA1",null,null);
             Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
             if (key == null)
-                cipher.init(Cipher.DECRYPT_MODE, mPtK, iesParams);
+                cipher.init(Cipher.DECRYPT_MODE, mPtK);
             else
-                cipher.init(Cipher.DECRYPT_MODE, formatPrivate(key), iesParams);
+                cipher.init(Cipher.DECRYPT_MODE, formatPrivate(key));
             return cipher.doFinal(data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -274,50 +279,30 @@ public class CryptMethods {
             return new byte[0];
         }
     }
-    public static class randomBits{
-        int numBytes;
+
+    public static class randomBits {
+        int numBytes,numBits;
         byte[] randomBits;
-        byte[] oldPic,currPic;
+        CameraPreview cp;
+
         public randomBits(int numBits) {
             numBytes = (int) (((long) numBits + 7) / 8); // avoid overflow
             randomBits = new byte[numBytes];
+            this.numBits = numBits;
+            cp = CameraPreview.getCameraPreview();
         }
-        public byte[] getRandomBits(){
-            while(!CameraPreview.called){
-                synchronized (this){
-                try {
-                    wait(15);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }}
-            CameraPreview.called=false;
-            byte[] temp = CameraPreview.getFrame();
-            if(temp==null)
-                return getRandomBits();
-            boolean isNew=true;
-            if(currPic!=null){
-                oldPic=currPic;
-                isNew=false;
-            }
-            currPic = new byte[temp.length];
-            System.arraycopy(temp,0,currPic,0,currPic.length);
-            if(isNew)
-                return getRandomBits();
-            int s = 0;
-            boolean found = false;
-            for(int a=0;a<numBytes;a++){
-                found = false;
-                for(;s<currPic.length&&s<oldPic.length;s++)
-                    if(currPic[s]!=oldPic[s]){
-                        randomBits[a]=currPic[s];
-                        found=true;
-                        break;
+
+        public byte[] getRandomBits() {
+            while (!cp.ready) {
+                synchronized (this) {
+                    try {
+                        wait(15);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                if(!found)
-                    return getRandomBits();
+                }
             }
-            return randomBits;
+            return cp.getData();
         }
     }
 }

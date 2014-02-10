@@ -28,8 +28,12 @@ public final class FlexiBigInt {
     public FlexiBigInt(byte[] randomData) {
         bigInt = new BigInteger(1,randomData);
     }
+    public FlexiBigInt(int numBits, SecureRandom flexiRand) {
+        JavaSecureRandom javaRand = new JavaSecureRandom(flexiRand);
+        bigInt = new BigInteger(numBits, javaRand);
+    }
 
-    public FlexiBigInt(BigInteger bigInt) {
+        public FlexiBigInt(BigInteger bigInt) {
         this.bigInt = bigInt;
     }
 

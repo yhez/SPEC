@@ -42,6 +42,22 @@
             android:background="@color/spec_blue" />
 
         <Button
+            android:padding="@dimen/default_gap"
+            android:id="@+id/button3"
+            android:onClick="onClickManage"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/move_key_to_nfc_and_such"
+            android:textColor="@color/spec_black" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue" />
+
+        <Button
             android:id="@+id/button2"
             android:onClick="onClickManage"
             style="?android:attr/buttonBarButtonStyle"
@@ -52,21 +68,6 @@
             android:text="@string/import_export_manage"
             android:textColor="@color/spec_black" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/spec_blue" />
-
-        <Button
-            android:padding="@dimen/default_gap"
-            android:id="@+id/button3"
-            android:onClick="onClickManage"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/move_key_to_nfc_and_such"
-            android:textColor="@color/spec_black" />
 
     </LinearLayout>
 

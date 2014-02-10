@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
     android:versionCode="33"
-    android:versionName="V 0.2.1">
+    android:versionName="V 0.2.4">
 
     <uses-sdk android:maxSdkVersion="19" />
 
@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <compatible-screens>
         <screen android:screenDensity="xhdpi" android:screenSize="large"/>
         <screen android:screenDensity="xhdpi" android:screenSize="normal"/>

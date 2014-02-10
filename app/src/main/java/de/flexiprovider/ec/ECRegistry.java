@@ -88,28 +88,28 @@ public abstract class ECRegistry extends Registry {
 
     private static void registerCommon() {
         add(KEY_PAIR_GENERATOR, ECKeyPairGenerator.class, new String[]{"EC",
-                "ECDSA", "ECNR", "ECDH", "ECIES", ECKeyFactory.OID});
+                /*"ECDSA", "ECNR",*/ "ECDH", "ECIES", ECKeyFactory.OID});
 
-        add(KEY_FACTORY, ECKeyFactory.class, new String[]{"EC", "ECDSA",
-                "ECNR", "ECDH", "ECIES", ECKeyFactory.OID});
+        add(KEY_FACTORY, ECKeyFactory.class, new String[]{"EC",/* "ECDSA",
+                "ECNR",*/ "ECDH", "ECIES", ECKeyFactory.OID});
 
         add(ALG_PARAM_SPEC, CurveParams.class, new String[]{"EC",
-                ECParameters.OID, ECKeyFactory.OID, "ECDSA", "SHA1withECDSA",
+                ECParameters.OID, ECKeyFactory.OID/*, "ECDSA", "SHA1withECDSA",
                 "SHA1/ECDSA", ECDSASignature.SHA1.OID, "SHA224withECDSA",
                 "SHA224/ECDSA", ECDSASignature.SHA224.OID, "SHA256withECDSA",
                 "SHA256/ECDSA", ECDSASignature.SHA256.OID, "SHA384withECDSA",
                 "SHA384/ECDSA", ECDSASignature.SHA384.OID, "SHA512withECDSA",
                 "SHA512/ECDSA", ECDSASignature.SHA512.OID, "RawECDSA",
-                "RAWECDSA", "ECNR", "SHA1withECNR", "SHA1/ECNR", "ECDH"});
+                "RAWECDSA", "ECNR", "SHA1withECNR", "SHA1/ECNR"*/, "ECDH"});
 
         add(ALG_PARAMS, ECParameters.class, new String[]{"EC",
-                ECParameters.OID, ECKeyFactory.OID, "ECDSA", "SHA1withECDSA",
+                ECParameters.OID, ECKeyFactory.OID/*, "ECDSA", "SHA1withECDSA",
                 "SHA1/ECDSA", ECDSASignature.SHA1.OID, "SHA224withECDSA",
                 "SHA224/ECDSA", ECDSASignature.SHA224.OID, "SHA256withECDSA",
                 "SHA256/ECDSA", ECDSASignature.SHA256.OID, "SHA384withECDSA",
                 "SHA384/ECDSA", ECDSASignature.SHA384.OID, "SHA512withECDSA",
                 "SHA512/ECDSA", ECDSASignature.SHA512.OID, "RawECDSA",
-                "RAWECDSA", "ECNR", "SHA1withECNR", "SHA1/ECNR", "ECDH"});
+                "RAWECDSA", "ECNR", "SHA1withECNR", "SHA1/ECNR"*/, "ECDH"});
 
 		/* Curves over GF(p) */
 
@@ -251,13 +251,13 @@ public abstract class ECRegistry extends Registry {
         add(ALG_PARAM_SPEC, PrimeCurve38.class, new String[]{"primeCurve38",
                 PrimeCurve38.OID});
 
-        addStandardAlgParams(new String[]{"EC", ECKeyFactory.OID, "ECDSA",
+        addStandardAlgParams(new String[]{"EC", ECKeyFactory.OID,/*, "ECDSA",
                 "SHA1withECDSA", "SHA1/ECDSA", ECDSASignature.SHA1.OID,
                 "SHA224withECDSA", "SHA224/ECDSA", ECDSASignature.SHA224.OID,
                 "SHA256withECDSA", "SHA256/ECDSA", ECDSASignature.SHA256.OID,
                 "SHA384withECDSA", "SHA384/ECDSA", ECDSASignature.SHA384.OID,
                 "SHA512withECDSA", "SHA512/ECDSA", ECDSASignature.SHA512.OID,
-                "RawECDSA", "RAWECDSA", "ECNR", "SHA1withECNR", "SHA1/ECNR",
+                "RawECDSA", "RAWECDSA", "ECNR", "SHA1withECNR", "SHA1/ECNR",*/
                 "ECDH"},
 
                 new String[]{/* Curves over GF(p) */

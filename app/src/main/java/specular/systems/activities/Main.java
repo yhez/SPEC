@@ -242,9 +242,10 @@ public class Main extends FragmentActivity {
                 String sss = contact != null ? contact.getSession().substring(0, contact.getSession().length() - 2) : group.getMentor();
                 MessageFormat msg = new MessageFormat(StaticVariables.fileContent, CryptMethods.getMyDetails(Main.this), fileName, userInput,
                         sss);
-                byte[] data = CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
-                        contact != null ? contact.getPublicKey() : group.getPublicKey()).getBytes();
-                sendMessage(data, type);
+                String data = CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
+                        contact != null ? contact.getPublicKey() : group.getPublicKey());
+                if(data!=null)
+                    sendMessage(data.getBytes(), type);
                 prgd.cancel();
             }
         }).start();

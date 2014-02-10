@@ -82,7 +82,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:textSize="21sp"
+            android:textSize="19sp"
             android:id="@+id/text_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

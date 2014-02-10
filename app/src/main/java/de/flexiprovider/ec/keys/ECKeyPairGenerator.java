@@ -13,6 +13,7 @@ import de.flexiprovider.common.math.ellipticcurves.ScalarMult;
 import de.flexiprovider.ec.parameters.CurveParams;
 import de.flexiprovider.ec.parameters.CurveRegistry;
 import specular.systems.CryptMethods;
+import specular.systems.StaticVariables;
 
 
 public class ECKeyPairGenerator extends KeyPairGenerator {
@@ -90,11 +91,16 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
         // find statistically unique and unpredictable integer s in the
         // interval [1, r - 1]
         FlexiBigInt s;
+        if(StaticVariables.creating_new_keys){
         CryptMethods.randomBits rb = new CryptMethods.randomBits(512);
         do {
             s = new FlexiBigInt(rb.getRandomBits());
         } while ((s.compareTo(FlexiBigInt.ONE) < 0) || (s.compareTo(r) >= 0));
-
+        }else{
+            do {
+                s = new FlexiBigInt(rLength,mRandom);
+            } while ((s.compareTo(FlexiBigInt.ONE) < 0) || (s.compareTo(r) >= 0));
+        }
         // create new ECPrivateKey with value s
         ECPrivateKey privKey = new ECPrivateKey(s, curveParams);
 
