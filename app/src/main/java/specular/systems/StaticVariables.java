@@ -35,5 +35,4 @@ public class StaticVariables {
     public static byte[] decryptedGroup;
     public static byte[] decryptedBackup;
     public static boolean msgSended = false;
-    public static boolean creating_new_keys = false;
 }

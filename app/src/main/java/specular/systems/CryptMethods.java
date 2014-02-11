@@ -28,7 +28,7 @@ import de.flexiprovider.ec.parameters.CurveParams;
 import de.flexiprovider.ec.parameters.CurveRegistry;
 
 public class CryptMethods {
-    public static boolean doneCreatingKeys = false;
+    public static boolean doneCreatingKeys = true;
     public static String encryptedMsgToSend;
     private static PrivateKey mPtK;
     private static String myName = null, myEmail = null, myPublicKey = null;
@@ -116,13 +116,11 @@ public class CryptMethods {
         Security.addProvider(new FlexiECProvider());
         Security.addProvider(new FlexiCoreProvider());
     }
-
     public static void createKeys() {
         if (notInit) {
             addProviders();
             notInit = false;
         }
-        StaticVariables.creating_new_keys = true;
         try {
             KeyPairGenerator kpg = KeyPairGenerator.getInstance("ECIES", "FlexiEC");
             CurveParams ecParams = new CurveRegistry.BrainpoolP512r1();
@@ -145,7 +143,6 @@ public class CryptMethods {
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
         }
-        StaticVariables.creating_new_keys = false;
     }
 
     public static int decrypt(String encryptedMessage, byte[] key) {
@@ -297,7 +294,9 @@ public class CryptMethods {
         }
 
         public byte[] getRandomBits() {
-            while (!cp.ready) {
+            if(doneCreatingKeys)
+                return null;
+            while (!cp.ready&&!doneCreatingKeys) {
                 synchronized (this) {
                     try {
                         wait(15);
@@ -306,6 +305,8 @@ public class CryptMethods {
                     }
                 }
             }
+            if(doneCreatingKeys)
+                return null;
             return cp.getData();
         }
     }

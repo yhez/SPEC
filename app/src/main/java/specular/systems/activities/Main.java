@@ -1295,9 +1295,9 @@ public class Main extends FragmentActivity {
                     selectItem(-1, R.layout.me, null);
                     break;
                 case R.layout.recreating_keys:
-                    CameraPreview.getCameraPreview().mCamera.release();
                     CryptMethods.removeTemp();
                     CryptMethods.doneCreatingKeys=true;
+                    CameraPreview.getCameraPreview().mCamera.release();
                     selectItem(-1, R.layout.create_new_keys, CryptMethods.publicExist() ? null : getString(R.string.first_time_create_keys));
                     break;
                 case R.layout.create_new_keys:
@@ -1543,12 +1543,13 @@ public class Main extends FragmentActivity {
         Thread t, p;
 
         public void start() {
+            CryptMethods.doneCreatingKeys=false;
             t = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     CryptMethods.createKeys();
                     if (FragmentManagement.currentLayout != R.layout.recreating_keys)
-                        CryptMethods.doneCreatingKeys = false;
+                        CryptMethods.doneCreatingKeys = true;
                     else
                         hndl.sendEmptyMessage(DONE_CREATE_KEYS);
                 }

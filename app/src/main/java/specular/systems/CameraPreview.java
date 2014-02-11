@@ -25,7 +25,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public CameraPreview(Context context) {
         super(context);
-        CryptMethods.doneCreatingKeys = false;
         cp = this;
         // Install a SurfaceHolder.Callback so we get notified when the
         // underlying surface is created and destroyed.
