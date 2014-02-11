@@ -18,11 +18,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public int currentSensor;
     public int progress = 0;
     private SurfaceHolder mHolder;
-    public Camera mCamera;
+    private Camera mCamera;
     private SensorManager mSensorManager;
     private ArrayList<Sensor> sensors;
     public String[] names;
-
+    public void finish(){
+        mCamera.release();
+        ready=false;
+    }
     public CameraPreview(Context context) {
         super(context);
         cp = this;
@@ -74,6 +77,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
+        finish();
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
@@ -145,8 +149,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public byte[] getData() {
         byte[] data = new byte[64];
-        SecureRandom sr = new SecureRandom();
-        sr.nextBytes(data);
+        new SecureRandom().nextBytes(data);
         for (byte[] sensorData : sensorsData)
             for (int a = 0; a < 64; a++)
                 data[a] = (byte) (data[a] ^ sensorData[a]);
