@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import specular.systems.activities.Demo;
 import specular.systems.activities.Main;
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
@@ -816,6 +817,14 @@ public class FragmentManagement extends Fragment {
                     }
                 });
                 ((ImageView) rootView.findViewById(R.id.my_qr_public_key)).setImageBitmap(FilesManagement.getMyQRPublicKey(getActivity()));
+                rootView.findViewById(R.id.my_qr_public_key).setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Intent i = new Intent(getActivity(),Demo.class);
+                        startActivity(i);
+                        return false;
+                    }
+                });
                 ((TextView) rootView.findViewById(R.id.my_public_key)).setText(myDetails[2]);
                 break;
         }

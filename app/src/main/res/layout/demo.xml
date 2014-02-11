@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    style="?android:attr/buttonBarButtonStyle"
+    android:layout_height="match_parent">
+    <ImageButton
+        android:onClick="onClick"
+        android:id="@+id/return_to_spec"
+        android:src="@drawable/normal_spec"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_weight="0.33"
+        android:layout_height="0dip" />
+    <ImageButton
+        android:onClick="onClick"
+        android:id="@+id/demo_bank"
+        android:src="@drawable/bank_mod"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_weight="0.33"
+        android:layout_height="0dip" />
+    <ImageButton
+        android:onClick="onClick"
+        android:id="@+id/safe"
+        android:src="@drawable/safe"
+        android:layout_weight="0.33"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dip" />
+</LinearLayout>

@@ -969,7 +969,7 @@ public class Main extends FragmentActivity {
                         menu = 1;
                         break;
                     case R.layout.profile:
-                        menu = 2;
+                        menu = 1;
                         break;
                     default:
                         menu = 0;
