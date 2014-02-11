@@ -1,6 +1,7 @@
 package de.flexiprovider.common.math.ellipticcurves;
 
-import de.flexiprovider.api.exceptions.InvalidParameterSpecException;
+import java.security.spec.InvalidParameterSpecException;
+
 import de.flexiprovider.common.exceptions.DifferentCurvesException;
 import de.flexiprovider.common.exceptions.InvalidFormatException;
 import de.flexiprovider.common.exceptions.InvalidPointException;

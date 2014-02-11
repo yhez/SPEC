@@ -1,10 +1,11 @@
 package de.flexiprovider.ec;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.InvalidParameterSpecException;
+
 import de.flexiprovider.api.KeyAgreement;
-import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
-import de.flexiprovider.api.exceptions.InvalidKeyException;
-import de.flexiprovider.api.exceptions.InvalidKeySpecException;
-import de.flexiprovider.api.exceptions.InvalidParameterSpecException;
 import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.keys.KeyFactory;
 import de.flexiprovider.api.keys.KeyPair;

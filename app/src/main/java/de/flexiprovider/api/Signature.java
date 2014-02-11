@@ -1,10 +1,10 @@
 package de.flexiprovider.api;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.SignatureException;
 import java.security.spec.AlgorithmParameterSpec;
 
-import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
-import de.flexiprovider.api.exceptions.InvalidKeyException;
-import de.flexiprovider.api.exceptions.SignatureException;
 import de.flexiprovider.api.keys.PrivateKey;
 import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.common.util.JavaSecureRandomWrapper;

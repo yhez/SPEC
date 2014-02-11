@@ -1,9 +1,9 @@
 package de.flexiprovider.api.keys;
 
-import javax.crypto.SecretKeyFactorySpi;
+import java.security.InvalidKeyException;
+import java.security.spec.InvalidKeySpecException;
 
-import de.flexiprovider.api.exceptions.InvalidKeyException;
-import de.flexiprovider.api.exceptions.InvalidKeySpecException;
+import javax.crypto.SecretKeyFactorySpi;
 
 public abstract class SecretKeyFactory extends SecretKeyFactorySpi {
 

@@ -1,6 +1,7 @@
 package de.flexiprovider.ec;
 
-import de.flexiprovider.api.exceptions.InvalidKeyException;
+import java.security.InvalidKeyException;
+
 import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.ec.keys.ECPublicKey;
 

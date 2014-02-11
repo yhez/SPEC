@@ -1,7 +1,8 @@
 package de.flexiprovider.api.keys;
 
-import de.flexiprovider.api.exceptions.InvalidKeyException;
-import de.flexiprovider.api.exceptions.InvalidKeySpecException;
+import java.security.InvalidKeyException;
+import java.security.spec.InvalidKeySpecException;
+
 import de.flexiprovider.pki.PKCS8EncodedKeySpec;
 import de.flexiprovider.pki.X509EncodedKeySpec;
 

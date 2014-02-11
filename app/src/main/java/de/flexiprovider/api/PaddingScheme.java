@@ -1,6 +1,6 @@
 package de.flexiprovider.api;
 
-import de.flexiprovider.api.exceptions.BadPaddingException;
+import javax.crypto.BadPaddingException;
 
 
 public abstract class PaddingScheme {

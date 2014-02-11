@@ -1,8 +1,9 @@
 package de.flexiprovider.ec.keys;
 
-import de.flexiprovider.api.exceptions.InvalidKeySpecException;
-import de.flexiprovider.api.exceptions.InvalidParameterException;
-import de.flexiprovider.api.exceptions.InvalidParameterSpecException;
+import java.security.InvalidParameterException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.InvalidParameterSpecException;
+
 import de.flexiprovider.api.keys.KeySpec;
 import de.flexiprovider.common.exceptions.InvalidFormatException;
 import de.flexiprovider.common.exceptions.InvalidPointException;

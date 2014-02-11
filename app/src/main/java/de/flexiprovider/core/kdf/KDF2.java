@@ -1,15 +1,16 @@
 package de.flexiprovider.core.kdf;
 
+import java.security.DigestException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.spec.AlgorithmParameterSpec;
 
 import de.flexiprovider.api.KeyDerivation;
 import de.flexiprovider.api.MessageDigest;
-import de.flexiprovider.api.exceptions.DigestException;
-import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
-import de.flexiprovider.api.exceptions.InvalidKeyException;
 import de.flexiprovider.common.util.BigEndianConversions;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.md.SHA1;
+
 
 public class KDF2 extends KeyDerivation {
 

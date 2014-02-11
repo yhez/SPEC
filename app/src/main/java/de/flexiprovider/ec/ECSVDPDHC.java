@@ -1,12 +1,13 @@
 package de.flexiprovider.ec;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
+
+import javax.crypto.ShortBufferException;
 
 import de.flexiprovider.api.KeyAgreement;
 import de.flexiprovider.api.SecureRandom;
-import de.flexiprovider.api.exceptions.InvalidKeyException;
-import de.flexiprovider.api.exceptions.NoSuchAlgorithmException;
-import de.flexiprovider.api.exceptions.ShortBufferException;
 import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.keys.PrivateKey;
 import de.flexiprovider.api.keys.PublicKey;

@@ -5,7 +5,7 @@
     tools:context="specular.systems.activities.Main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <specular.systems.CameraPreview
+    <FrameLayout
         android:id="@+id/camera"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -15,27 +15,35 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:background="@android:color/white"
             android:textColor="@android:color/black"
             android:padding="@dimen/default_gap"
             android:gravity="center"
             android:text="@string/recreating_keys_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-        <View
-            android:padding="@dimen/default_gap"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/spec_blue"
-            android:layout_width="240dp"
-            android:layout_height="1dp" />
-
+        <TextView
+            android:textSize="12sp"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:id="@+id/collecting_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <ProgressBar
             android:id="@+id/progress_bar"
             style="@android:style/Widget.Holo.ProgressBar.Horizontal"
             android:padding="@dimen/default_gap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
+        <ProgressBar
+            android:id="@+id/sec_progress_bar"
+            style="@android:style/Widget.Holo.ProgressBar.Horizontal"
+            android:padding="@dimen/default_gap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <ImageButton
             android:onClick="createKeysManager"
             style="?android:attr/borderlessButtonStyle"

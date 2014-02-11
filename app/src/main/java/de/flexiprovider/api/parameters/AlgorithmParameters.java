@@ -2,8 +2,7 @@ package de.flexiprovider.api.parameters;
 
 import java.io.IOException;
 import java.security.spec.AlgorithmParameterSpec;
-
-import de.flexiprovider.api.exceptions.InvalidParameterSpecException;
+import java.security.spec.InvalidParameterSpecException;
 
 
 public abstract class AlgorithmParameters extends

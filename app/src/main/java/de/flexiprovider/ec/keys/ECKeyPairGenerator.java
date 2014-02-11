@@ -1,10 +1,10 @@
 package de.flexiprovider.ec.keys;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.security.spec.AlgorithmParameterSpec;
 
 import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.SecureRandom;
-import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.api.keys.KeyPair;
 import de.flexiprovider.api.keys.KeyPairGenerator;
 import de.flexiprovider.common.math.FlexiBigInt;

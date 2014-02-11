@@ -1,17 +1,18 @@
 package de.flexiprovider.api;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.InvalidParameterException;
+import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidParameterSpecException;
 
-import de.flexiprovider.api.exceptions.BadPaddingException;
-import de.flexiprovider.api.exceptions.IllegalBlockSizeException;
-import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
-import de.flexiprovider.api.exceptions.InvalidKeyException;
-import de.flexiprovider.api.exceptions.InvalidParameterException;
-import de.flexiprovider.api.exceptions.NoSuchAlgorithmException;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.ShortBufferException;
+
 import de.flexiprovider.api.exceptions.NoSuchModeException;
-import de.flexiprovider.api.exceptions.NoSuchPaddingException;
-import de.flexiprovider.api.exceptions.ShortBufferException;
 import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.parameters.AlgorithmParameters;
 import de.flexiprovider.common.util.JavaSecureRandomWrapper;

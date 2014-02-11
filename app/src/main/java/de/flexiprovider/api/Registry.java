@@ -1,13 +1,14 @@
 package de.flexiprovider.api;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
-import de.flexiprovider.api.exceptions.NoSuchAlgorithmException;
+import javax.crypto.NoSuchPaddingException;
+
 import de.flexiprovider.api.exceptions.NoSuchModeException;
-import de.flexiprovider.api.exceptions.NoSuchPaddingException;
 import de.flexiprovider.api.exceptions.RegistrationException;
 import de.flexiprovider.api.keys.KeyFactory;
 import de.flexiprovider.api.keys.KeyPairGenerator;

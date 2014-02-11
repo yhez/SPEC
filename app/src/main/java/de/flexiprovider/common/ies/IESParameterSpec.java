@@ -1,8 +1,8 @@
 package de.flexiprovider.common.ies;
 
+import java.security.InvalidParameterException;
 import java.security.spec.AlgorithmParameterSpec;
 
-import de.flexiprovider.api.exceptions.InvalidParameterException;
 import de.flexiprovider.api.keys.KeyPair;
 import de.flexiprovider.common.util.ByteUtils;
 
@@ -42,12 +42,6 @@ public class IESParameterSpec implements AlgorithmParameterSpec {
         this(null, DEFAULT_SYM_CIPHER, DEFAULT_MAC, null, null);
     }
 
-
-    public IESParameterSpec(String symCipherName, String macName,
-                            byte[] macEncParam, byte[] sharedInfo)
-            throws InvalidParameterException {
-        this(null, symCipherName, macName, macEncParam, sharedInfo);
-    }
 
     public IESParameterSpec(KeyPair ephKeyPair, String symCipherName,
                             String macName, byte[] macEncParam, byte[] sharedInfo)

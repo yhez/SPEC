@@ -1,6 +1,6 @@
 package de.flexiprovider.api;
 
-import de.flexiprovider.api.exceptions.DigestException;
+import java.security.DigestException;
 
 public abstract class MessageDigest extends java.security.MessageDigestSpi {
 

@@ -1,14 +1,14 @@
 package de.flexiprovider.pki;
 
 import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
 
 import codec.asn1.ASN1;
 import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1ObjectIdentifier;
 import codec.asn1.ASN1Type;
 import de.flexiprovider.api.Registry;
-import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
-import de.flexiprovider.api.exceptions.NoSuchAlgorithmException;
 import de.flexiprovider.api.parameters.AlgorithmParameters;
 
 

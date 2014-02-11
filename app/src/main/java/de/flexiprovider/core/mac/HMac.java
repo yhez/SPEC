@@ -1,10 +1,10 @@
 package de.flexiprovider.core.mac;
 
+import java.security.InvalidKeyException;
 import java.security.spec.AlgorithmParameterSpec;
 
 import de.flexiprovider.api.Mac;
 import de.flexiprovider.api.MessageDigest;
-import de.flexiprovider.api.exceptions.InvalidKeyException;
 import de.flexiprovider.api.keys.SecretKey;
 
 

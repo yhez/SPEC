@@ -1,11 +1,12 @@
 package de.flexiprovider.ec.keys;
 
+import java.security.spec.InvalidParameterSpecException;
+
 import codec.asn1.ASN1Integer;
 import codec.asn1.ASN1ObjectIdentifier;
 import codec.asn1.ASN1OctetString;
 import codec.asn1.ASN1Sequence;
 import codec.asn1.ASN1Type;
-import de.flexiprovider.api.exceptions.InvalidParameterSpecException;
 import de.flexiprovider.api.keys.PrivateKey;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.util.ASN1Tools;

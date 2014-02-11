@@ -282,6 +282,7 @@
     <string name="backup_title">Backup</string>
     <string name="credits">Credits</string>
     <string name="failed_loading">There was a problem loading the file,\nit may have moved to another location.</string>
+    <string name="sensor_camera">camera</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>

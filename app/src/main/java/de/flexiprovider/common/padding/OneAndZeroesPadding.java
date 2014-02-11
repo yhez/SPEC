@@ -1,7 +1,8 @@
 package de.flexiprovider.common.padding;
 
+import javax.crypto.BadPaddingException;
+
 import de.flexiprovider.api.PaddingScheme;
-import de.flexiprovider.api.exceptions.BadPaddingException;
 
 public class OneAndZeroesPadding extends PaddingScheme {
 

@@ -1,7 +1,9 @@
 package de.flexiprovider.ec.parameters;
 
 import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.spec.AlgorithmParameterSpec;
+import java.security.spec.InvalidParameterSpecException;
 
 import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1Integer;
@@ -10,8 +12,6 @@ import codec.asn1.ASN1OctetString;
 import codec.asn1.ASN1Type;
 import codec.asn1.ResolverException;
 import de.flexiprovider.api.Registry;
-import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
-import de.flexiprovider.api.exceptions.InvalidParameterSpecException;
 import de.flexiprovider.api.parameters.AlgorithmParameters;
 import de.flexiprovider.common.exceptions.NoSuchBasisException;
 import de.flexiprovider.common.exceptions.PolynomialIsNotIrreducibleException;

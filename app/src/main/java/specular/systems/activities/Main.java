@@ -55,6 +55,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import specular.systems.Backup;
+import specular.systems.CameraPreview;
 import specular.systems.Contact;
 import specular.systems.ContactCard;
 import specular.systems.ContactsDataSource;
@@ -154,16 +155,16 @@ public class Main extends FragmentActivity {
                             } catch (WriterException e) {
                                 e.printStackTrace();
                             }
-                            avrg = System.currentTimeMillis() - startTime;
                             new createKeys().start();
                         }
                     }
                     break;
                 case PROGRESS:
                     if (FragmentManagement.currentLayout == R.layout.recreating_keys) {
-                        long tt = System.currentTimeMillis() - startTime;
-                        int prcnt = avrg == 0 ? (int) (tt / 10) : (int) (tt * 100 / avrg);
-                        ((ProgressBar) findViewById(R.id.progress_bar)).setProgress(prcnt);
+                        CameraPreview cp = CameraPreview.getCameraPreview();
+                        ((TextView)findViewById(R.id.collecting_data)).setText("collecting data from "+ cp.names[cp.currentSensor]);
+                        ((ProgressBar) findViewById(R.id.progress_bar)).setProgress((int)(((double)cp.progress)/64.0*100.0));
+                        ((ProgressBar) findViewById(R.id.sec_progress_bar)).setProgress((int)(((double)cp.currentSensor+1)/(double)cp.names.length*100.0));
                     }
                     break;
                 case CLEAR_FOCUS:
@@ -207,7 +208,6 @@ public class Main extends FragmentActivity {
     private String fileName = "";
     private Contact contact;
     private Group group;
-    private long startTime, avrg = 0;
 
     public void startCreateKeys() {
         selectItem(-1, R.layout.recreating_keys, getString(R.string.generator_menu_title));
@@ -1295,6 +1295,8 @@ public class Main extends FragmentActivity {
                     selectItem(-1, R.layout.me, null);
                     break;
                 case R.layout.recreating_keys:
+                    CameraPreview.getCameraPreview().mCamera.release();
+                    CryptMethods.removeTemp();
                     CryptMethods.doneCreatingKeys=true;
                     selectItem(-1, R.layout.create_new_keys, CryptMethods.publicExist() ? null : getString(R.string.first_time_create_keys));
                     break;
@@ -1541,7 +1543,6 @@ public class Main extends FragmentActivity {
         Thread t, p;
 
         public void start() {
-            startTime = System.currentTimeMillis();
             t = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -1562,7 +1563,7 @@ public class Main extends FragmentActivity {
                         hndl.sendEmptyMessage(PROGRESS);
                         synchronized (this) {
                             try {
-                                ((Object) this).wait(10);
+                                ((Object) this).wait(25);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }

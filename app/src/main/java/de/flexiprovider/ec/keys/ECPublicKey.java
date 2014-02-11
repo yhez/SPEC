@@ -1,10 +1,11 @@
 package de.flexiprovider.ec.keys;
 
+import java.security.InvalidKeyException;
+import java.security.spec.InvalidParameterSpecException;
+
 import codec.asn1.ASN1Null;
 import codec.asn1.ASN1ObjectIdentifier;
 import codec.asn1.ASN1Type;
-import de.flexiprovider.api.exceptions.InvalidKeyException;
-import de.flexiprovider.api.exceptions.InvalidParameterSpecException;
 import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.common.util.ByteUtils;

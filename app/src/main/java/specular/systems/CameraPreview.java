@@ -6,8 +6,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -16,38 +14,46 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback,SensorEventListener {
-    String TAG = "camera";
+public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback, SensorEventListener {
+    public int currentSensor;
+    public int progress = 0;
     private SurfaceHolder mHolder;
-    private static Camera mCamera;
+    public Camera mCamera;
     private SensorManager mSensorManager;
     private ArrayList<Sensor> sensors;
+    public String[] names;
 
-    public CameraPreview(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
+    public CameraPreview(Context context) {
+        super(context);
+        CryptMethods.doneCreatingKeys = false;
         cp = this;
-        mCamera = getCameraInstance();
         // Install a SurfaceHolder.Callback so we get notified when the
         // underlying surface is created and destroyed.
         mHolder = getHolder();
-        mHolder.addCallback(this);
+        if (mHolder != null) {
+            mHolder.addCallback(this);
+        }
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        List<Sensor> temp =  mSensorManager.getSensorList(Sensor.TYPE_ALL);
+        List<Sensor> temp = mSensorManager.getSensorList(Sensor.TYPE_ALL);
         sensors = new ArrayList<Sensor>();
-        for(Sensor s:temp){
-            if(s.getType()!=Sensor.TYPE_PROXIMITY&&s.getType()!=Sensor.TYPE_LIGHT&&s.getType()!=Sensor.TYPE_SIGNIFICANT_MOTION){
+        sensors.add(null);
+        for (Sensor s : temp) {
+            if (s.getType() != Sensor.TYPE_PROXIMITY && s.getType() != Sensor.TYPE_LIGHT && s.getType() != Sensor.TYPE_SIGNIFICANT_MOTION) {
                 sensors.add(s);
             }
         }
+        names = new String[sensors.size()];
+        for (int a = 1; a < names.length; a++)
+            names[a] = sensors.get(a).getName();
+        names[0] = context.getString(R.string.sensor_camera);
+        currentSensor = 0;
         sensorsData = new byte[sensors.size()][64];
         dataCollected = new int[sensors.size()];
-        for(int i=0;i<dataCollected.length;i++)
-            dataCollected[i]=0;
-        for(Sensor sensor:sensors)
-            mSensorManager.registerListener(this,sensor,50);
+        for (int i = 0; i < dataCollected.length; i++)
+            dataCollected[i] = 0;
     }
 
-    public static Camera getCameraInstance() {
+    public Camera getCameraInstance() {
         Camera c = null;
         try {
             c = Camera.open(); // attempt to get a Camera instance
@@ -60,18 +66,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceCreated(SurfaceHolder holder) {
         // The Surface has been created, now tell the camera where to draw the preview.
         try {
+            mCamera = getCameraInstance();
             mCamera.setPreviewDisplay(holder);
+            mCamera.setDisplayOrientation(90);
             mCamera.startPreview();
-        } catch (IOException e) {
-            Log.d(TAG, "Error setting camera preview: " + e.getMessage());
+        } catch (IOException ignored) {
         }
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
-        frame=null;
-        ready=false;
-        mCamera.release();
-        mSensorManager.unregisterListener(this);
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
@@ -98,64 +101,63 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setPreviewDisplay(mHolder);
             mCamera.setDisplayOrientation(90);
             mCamera.startPreview();
-            mCamera.setPreviewCallback(new Camera.PreviewCallback() {
-                @Override
-                public void onPreviewFrame(byte[] data, Camera camera) {
-                    frame = data;
-                    boolean found =false;
-                    for(int i:dataCollected)
-                        if(i<63){
-                            found=true;
-                            break;
-                        }
-                    if(!found)
-                        ready=true;
-                    else{
-                        for(int a=0;a<sensors.size();a++)
-                            Log.e("sensor status",sensors.get(a).getName()+" "+dataCollected[a]);
-                    }
-                }
-            });
+            mCamera.setPreviewCallback(callback);
 
-        } catch (Exception e) {
-            Log.d(TAG, "Error starting camera preview: " + e.getMessage());
+        } catch (Exception ignored) {
         }
     }
 
-    private byte[] frame;
+    private Camera.PreviewCallback callback = new Camera.PreviewCallback() {
+        @Override
+        public void onPreviewFrame(byte[] data, Camera camera) {
+            int block = data.length / 64;
+            if (progress == 0) {
+                for (int a = 0; a < 64; a++) {
+                    sensorsData[0][a] = data[block * a];
+                }
+                progress += 15;
+            } else if (progress < 63) {
+                for (int a = 0; a < 64; a++) {
+                    sensorsData[0][a] = (byte) (sensorsData[0][a] ^ data[block * a]);
+                }
+                progress += 15;
+            } else {
+                progress = 0;
+                currentSensor++;
+                mCamera.setPreviewCallback(null);
+                mSensorManager.registerListener(CameraPreview.this, sensors.get(currentSensor), 15);
+            }
+        }
+    };
     private byte[][] sensorsData;
     private int[] dataCollected;
-    public void reset(){
-        for(int a =0;a<dataCollected.length;a++)
-            dataCollected[a]=0;
-        for(int a=0;a<sensorsData.length;a++)
-            for(int b=0;b<sensorsData[a].length;b++)
-                sensorsData[a][b]=0;
-        for(Sensor sensor:sensors)
-            mSensorManager.registerListener(this,sensor,5);
-        ready=false;
 
+    public void reset() {
+        progress = 0;
+        currentSensor = 0;
+        for (int a = 0; a < dataCollected.length; a++)
+            dataCollected[a] = 0;
+        for (int a = 0; a < sensorsData.length; a++)
+            for (int b = 0; b < sensorsData[a].length; b++)
+                sensorsData[a][b] = 0;
+        mCamera.setPreviewCallback(callback);
+        ready = false;
     }
+
     public byte[] getData() {
         byte[] data = new byte[64];
-        int block = frame.length/64;
-        for (int a=0;a<64;a++) {
-            data[a] = frame[block*a];
-            for (byte[] aSensorsData : sensorsData)
-                data[a] = (byte) (data[a] ^ aSensorsData[a]);
-
-        }
-
         SecureRandom sr = new SecureRandom();
-        byte[] rand = new byte[64];
-        sr.nextBytes(rand);
-        for(int a=0;a<64;a++)
-            data[a] = (byte)(data[a]^rand[a]);
+        sr.nextBytes(data);
+        for (byte[] sensorData : sensorsData)
+            for (int a = 0; a < 64; a++)
+                data[a] = (byte) (data[a] ^ sensorData[a]);
         reset();
         return data;
     }
+
     private static CameraPreview cp;
-    public static CameraPreview getCameraPreview(){
+
+    public static CameraPreview getCameraPreview() {
         return cp;
     }
 
@@ -163,11 +165,20 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        progress++;
         int i = sensors.indexOf(event.sensor);
         dataCollected[i]++;
-        if(dataCollected[i]>=63)
-            mSensorManager.unregisterListener(this,event.sensor);
-        sensorsData[i][dataCollected[i]]=(byte)(event.values[0]*10000);
+        if (dataCollected[i] >= 63) {
+            mSensorManager.unregisterListener(this);
+            if (i + 1 == sensors.size()) {
+                ready = true;
+            } else {
+                progress = 0;
+                currentSensor++;
+                mSensorManager.registerListener(this, sensors.get(i + 1), 15);
+            }
+        } else
+            sensorsData[i][dataCollected[i]] = (byte) (event.values[0] * 10000.0);
     }
 
     @Override

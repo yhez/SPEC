@@ -1,11 +1,12 @@
 package de.flexiprovider.ec.keys;
 
+import java.security.InvalidKeyException;
+import java.security.spec.InvalidKeySpecException;
+
 import codec.asn1.ASN1OctetString;
 import codec.asn1.ASN1Sequence;
 import codec.pkcs8.PrivateKeyInfo;
 import codec.x509.SubjectPublicKeyInfo;
-import de.flexiprovider.api.exceptions.InvalidKeyException;
-import de.flexiprovider.api.exceptions.InvalidKeySpecException;
 import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.keys.KeyFactory;
 import de.flexiprovider.api.keys.KeySpec;

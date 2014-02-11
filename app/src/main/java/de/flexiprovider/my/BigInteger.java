@@ -20,19 +20,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
 
     final static long LONG_MASK = 0xffffffffL;
 
-    private BigInteger(int[] val) {
-        if (val.length == 0)
-            throw new NumberFormatException("Zero length BigInteger");
-
-        if (val[0] < 0) {
-            mag = makePositive(val);
-            signum = -1;
-        } else {
-            mag = trustedStripLeadingZeroInts(val);
-            signum = (mag.length == 0 ? 0 : 1);
-        }
-    }
-
     public BigInteger(int signum, byte[] magnitude) {
         this.mag = stripLeadingZeroBytes(magnitude);
 
@@ -189,10 +176,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
         this.signum = b.signum();
         byte bb[] = b.toByteArray();
         this.mag = stripLeadingZeroBytes(bb);
-    }
-
-    public static java.math.BigInteger get(BigInteger b) {
-        return new java.math.BigInteger(b.toByteArray());
     }
 
     public void delete() {

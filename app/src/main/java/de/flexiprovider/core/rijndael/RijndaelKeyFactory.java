@@ -1,7 +1,8 @@
 package de.flexiprovider.core.rijndael;
 
-import de.flexiprovider.api.exceptions.InvalidKeyException;
-import de.flexiprovider.api.exceptions.InvalidKeySpecException;
+import java.security.InvalidKeyException;
+import java.security.spec.InvalidKeySpecException;
+
 import de.flexiprovider.api.keys.KeySpec;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.keys.SecretKeyFactory;

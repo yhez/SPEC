@@ -1,8 +1,8 @@
 package de.flexiprovider.ec.parameters;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.util.Hashtable;
 
-import de.flexiprovider.api.exceptions.InvalidAlgorithmParameterException;
 import de.flexiprovider.ec.parameters.CurveParams.CurveParamsGFP;
 
 
