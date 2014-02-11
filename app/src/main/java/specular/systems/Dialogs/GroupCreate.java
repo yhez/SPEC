@@ -4,11 +4,15 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.security.KeyPair;
 
 import specular.systems.CryptMethods;
 import specular.systems.Group;
@@ -28,16 +32,23 @@ public class GroupCreate extends DialogFragment {
         v.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CryptMethods.createKeys();
-                String pub = CryptMethods.getPublicTmp();
-                byte[] pvt = CryptMethods.getPrivateTmp();
-               new Group(getActivity(),
-                        ((EditText)v.findViewById(R.id.name)).getText().toString(),
-                        ((EditText)v.findViewById(R.id.email)).getText().toString(),
-                        ((EditText)v.findViewById(R.id.session)).getText().toString(),
-                        pub,pvt,((CheckBox)v.findViewById(R.id.force)).isChecked(),
-                        ((CheckBox)v.findViewById(R.id.open)).isChecked());
-                GroupCreate.this.getDialog().cancel();
+                KeyPair kp = CryptMethods.createKeysForGroup();
+                String pub = Visual.bin2hex(kp.getPublic().getEncoded());
+                byte[] pvt = kp.getPrivate().getEncoded();
+                String name = ((EditText) v.findViewById(R.id.name)).getText().toString(),
+                        email = ((EditText) v.findViewById(R.id.email)).getText().toString(),
+                        session = ((EditText) v.findViewById(R.id.session)).getText().toString();
+                if (name.length() > 2 && email.length() > 2 && session.length() > 2) {
+                    new Group(getActivity(),
+                            name, email, session,
+                            pub, pvt, ((CheckBox) v.findViewById(R.id.force)).isChecked(),
+                            ((CheckBox) v.findViewById(R.id.open)).isChecked());
+                    GroupCreate.this.getDialog().cancel();
+                } else {
+                    Toast t = Toast.makeText(getActivity(), "Group details must contains at least 2 charectors", Toast.LENGTH_SHORT);
+                    t.setGravity(Gravity.CENTER, 0, 0);
+                    t.show();
+                }
             }
         });
         builder.setView(v);

@@ -116,7 +116,8 @@ public class CryptMethods {
         Security.addProvider(new FlexiECProvider());
         Security.addProvider(new FlexiCoreProvider());
     }
-    public static void createKeys() {
+
+    private static KeyPair createKeyPair() {
         if (notInit) {
             addProviders();
             notInit = false;
@@ -126,15 +127,8 @@ public class CryptMethods {
             CurveParams ecParams = new CurveRegistry.BrainpoolP512r1();
             try {
                 kpg.initialize(ecParams);
-                KeyPair keypair = kpg.generateKeyPair();
-                if (!doneCreatingKeys) {
-                    PrivateKey tmp = keypair.getPrivate();
-                    if (tmp != null) {
-                        tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
-                        tmpPtK = tmp;
-                        tmpPrivateKey = tmpPtK.getEncoded();
-                    }
-                }
+                return kpg.generateKeyPair();
+
             } catch (InvalidAlgorithmParameterException e) {
                 e.printStackTrace();
             }
@@ -142,6 +136,21 @@ public class CryptMethods {
             e.printStackTrace();
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+    public static KeyPair createKeysForGroup() {
+        return createKeyPair();
+    }
+    public static void createKeys() {
+        KeyPair keypair = createKeyPair();
+        if (!doneCreatingKeys) {
+            PrivateKey tmp = keypair.getPrivate();
+            if (tmp != null) {
+                tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
+                tmpPtK = tmp;
+                tmpPrivateKey = tmpPtK.getEncoded();
+            }
         }
     }
 
@@ -263,11 +272,13 @@ public class CryptMethods {
     public static byte[] getPrivateTmp() {
         return tmpPrivateKey;
     }
-    public static void removeTemp(){
+
+    public static void removeTemp() {
         tmpPtK = null;
         tmpPrivateKey = null;
-        tmpPublicKey=null;
+        tmpPublicKey = null;
     }
+
     public static String getMyLink() {
         return "specular.systems://?name=" + myName + "&email=" + myEmail + "&key=" + myPublicKey;
     }
@@ -282,7 +293,7 @@ public class CryptMethods {
     }
 
     public static class randomBits {
-        int numBytes,numBits;
+        int numBytes, numBits;
         byte[] randomBits;
         CameraPreview cp;
 
@@ -294,9 +305,9 @@ public class CryptMethods {
         }
 
         public byte[] getRandomBits() {
-            if(doneCreatingKeys)
+            if (doneCreatingKeys)
                 return null;
-            while (!cp.ready&&!doneCreatingKeys) {
+            while (!cp.ready && !doneCreatingKeys) {
                 synchronized (this) {
                     try {
                         wait(15);
@@ -305,7 +316,7 @@ public class CryptMethods {
                     }
                 }
             }
-            if(doneCreatingKeys)
+            if (doneCreatingKeys)
                 return null;
             return cp.getData();
         }
