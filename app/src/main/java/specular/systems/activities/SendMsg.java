@@ -7,6 +7,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.print.PrintHelper;
 import android.text.Html;
 import android.view.Gravity;
@@ -28,7 +29,6 @@ import java.util.List;
 
 import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
-import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.FilesManagement;
 import specular.systems.Group;
@@ -123,10 +123,9 @@ public class SendMsg extends Activity {
             etFile.setFilters(Visual.filters());
         }
         if (uris.get(1) != null) {
-            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(CryptMethods.encryptedMsgToSend, 76);
-            Bitmap bitmap;
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(StaticVariables.encryptedMsgToSend, 76);
             try {
-                bitmap = qrCodeEncoder.encodeAsBitmap();
+                Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
                 ((ImageView) findViewById(R.id.qr_icon)).setImageBitmap(bitmap);
             } catch (WriterException e) {
                 ((ImageView) findViewById(R.id.qr_icon)).setImageResource(R.drawable.logo);
@@ -222,8 +221,7 @@ public class SendMsg extends Activity {
             t.show();
             return;
         }
-        ComponentName cn;
-        cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
+        ComponentName cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
         Intent i = new Intent();
         if (type ==MESSAGE||type==MESSAGE_FOR_GROUP) {
             String email = contact!=null?contact.getEmail():group.getEmail();
@@ -272,7 +270,7 @@ public class SendMsg extends Activity {
         i.setComponent(cn);
         if (what == IMAGE || what == BOTH) {
             File f = new File(uris.get(1).getPath());
-            File newPath = new File(getFilesDir(), etImage.getText() + ".png");
+            File newPath = new File(new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments"), etImage.getText() + ".png");
             if (!f.equals(newPath)) {
                 if (newPath.exists())
                     newPath.delete();
@@ -282,7 +280,7 @@ public class SendMsg extends Activity {
         }
         if (what == FILE || what == BOTH) {
             File f = new File(uris.get(0).getPath());
-            File newPath = new File(getFilesDir(), etFile.getText() + ".SPEC");
+            File newPath = new File(new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments"), etFile.getText() + ".SPEC");
             if (!f.equals(newPath)) {
                 if (newPath.exists())
                     newPath.delete();

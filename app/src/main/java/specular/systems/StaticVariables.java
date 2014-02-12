@@ -35,4 +35,5 @@ public class StaticVariables {
     public static byte[] decryptedGroup;
     public static byte[] decryptedBackup;
     public static boolean msgSended = false;
+    public static String encryptedMsgToSend;
 }

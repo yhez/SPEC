@@ -12,6 +12,7 @@ import specular.systems.Backup;
 import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
 import specular.systems.R;
+import specular.systems.Visual;
 import specular.systems.activities.SendMsg;
 
 
@@ -41,8 +42,8 @@ public class BackupDialog extends DialogFragment {
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        byte[] data = CryptMethods.encrypt(Backup.backup(a), null, CryptMethods.getPublic()).getBytes();
-                                        boolean success = FilesManagement.createBackupFileToSend(a, data);
+                                        byte[] data = CryptMethods.encrypt(Backup.backup(a), CryptMethods.getPublic());
+                                        boolean success = FilesManagement.createBackupFileToSend(a, Visual.bin2hex(data).getBytes());
                                         if (success) {
                                             Intent intent = new Intent(a, SendMsg.class);
                                             intent.putExtra("type", SendMsg.BACKUP);

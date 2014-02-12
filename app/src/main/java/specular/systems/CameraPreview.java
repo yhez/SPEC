@@ -23,6 +23,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private ArrayList<Sensor> sensors;
     public String[] names;
     public void finish(){
+        mSensorManager.unregisterListener(this);
         mCamera.release();
         ready=false;
     }

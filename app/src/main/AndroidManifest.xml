@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
     android:versionCode="33"
-    android:versionName="V 0.2.7">
+    android:versionName="V 0.2.9">
 
     <uses-sdk android:maxSdkVersion="19" />
 
@@ -106,6 +106,8 @@
         <activity
             android:name=".activities.StartScan"
             android:screenOrientation="landscape"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
         <activity
             android:label="@string/choose_contact_for_widget"

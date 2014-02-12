@@ -29,7 +29,6 @@ import de.flexiprovider.ec.parameters.CurveRegistry;
 
 public class CryptMethods {
     public static boolean doneCreatingKeys = true;
-    public static String encryptedMsgToSend;
     private static PrivateKey mPtK;
     private static String myName = null, myEmail = null, myPublicKey = null;
     private static PrivateKey tmpPtK = null;
@@ -58,7 +57,7 @@ public class CryptMethods {
                 myPrivateKey = null;
             }
             MessageFormat.decryptedMsg = null;
-            LightMessage.decryptedLightMsg = null;
+            //AnonymousMessage.decryptedLightMsg = null;
             lock = true;
         }
     }
@@ -156,7 +155,7 @@ public class CryptMethods {
 
     public static int decrypt(String encryptedMessage, byte[] key) {
         MessageFormat.decryptedMsg = null;
-        LightMessage.decryptedLightMsg = null;
+        //AnonymousMessage.decryptedLightMsg = null;
         StaticVariables.decryptedBackup = null;
         StaticVariables.decryptedGroup = null;
         if (encryptedMessage == null) {
@@ -183,7 +182,7 @@ public class CryptMethods {
                 MessageFormat.decryptedMsg = new MessageFormat(decryptedBytes);
                 return result;
             case FileParser.ENCRYPTED_QR_MSG:
-                LightMessage.decryptedLightMsg = new LightMessage(decryptedBytes);
+                //AnonymousMessage.decryptedLightMsg = new AnonymousMessage(decryptedBytes);
                 return result;
             case FileParser.ENCRYPTED_BACKUP:
                 StaticVariables.decryptedBackup = decryptedBytes;
@@ -196,14 +195,6 @@ public class CryptMethods {
         }
     }
 
-    public static String encrypt(final byte[] msg, final byte[] light, final String friendPublicKey) {
-        if (light != null)
-            StaticVariables.encryptedLight = Visual.bin2hex(encrypt(light, friendPublicKey));
-        encryptedMsgToSend = Visual.bin2hex(encrypt(msg, friendPublicKey));
-        return encryptedMsgToSend;
-
-    }
-
     public static byte[] encrypt(byte[] b, String publicKey) {
         if (notInit) {
             addProviders();
@@ -213,8 +204,6 @@ public class CryptMethods {
             PublicKey frndPbK = KeyFactory.getInstance("ECIES", "FlexiEC")
                     .generatePublic(new X509EncodedKeySpec(Visual.hex2bin(publicKey)));
             Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
-            //SecureRandom sr = null;
-            //IESParameterSpec iesParams = null;//new IESParameterSpec("AES128_CBC", "HmacSHA1",null,null);
             cipher.init(Cipher.ENCRYPT_MODE, frndPbK);
             return cipher.doFinal(b);
         } catch (Exception ignore) {
@@ -233,7 +222,6 @@ public class CryptMethods {
             notInit = false;
         }
         try {
-            //IESParameterSpec iesParams = new IESParameterSpec("AES128_CBC",  "HmacSHA1",null,null);
             Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
             if (key == null)
                 cipher.init(Cipher.DECRYPT_MODE, mPtK);
@@ -278,11 +266,11 @@ public class CryptMethods {
         tmpPrivateKey = null;
         tmpPublicKey = null;
     }
-
+/*
     public static String getMyLink() {
         return "specular.systems://?name=" + myName + "&email=" + myEmail + "&key=" + myPublicKey;
     }
-
+*/
     public static byte[] getPrivateHash() {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");

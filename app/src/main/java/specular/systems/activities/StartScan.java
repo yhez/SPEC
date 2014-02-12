@@ -25,8 +25,7 @@ public class StartScan extends CaptureActivity {
                 setResult(RESULT_CANCELED);
             else
                 setResult(RESULT_OK);
-        }
-        else if(type==-1){
+        } else if (type == -1) {
             try {
                 File path = getFilesDir();
                 File file = new File(path, "temp_open_by_widget.spec");
@@ -41,10 +40,10 @@ public class StartScan extends CaptureActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             if (rawResult.getText() != null) {
                 getIntent().putExtra("barcode", rawResult.getText());
-                getIntent().putExtra("id",id);
+                getIntent().putExtra("id", id);
                 setResult(RESULT_OK, getIntent());
             } else {
                 setResult(RESULT_CANCELED);
@@ -66,13 +65,14 @@ public class StartScan extends CaptureActivity {
     public void onStart() {
         super.onStart();
         type = getIntent().getIntExtra("type", -1);
-        id = getIntent().getLongExtra("id",-1);
-        if (type != PRIVATE&&CryptMethods.publicExist())
-            ((TextView) findViewById(R.id.status_view)).setText(R.string.scan_any_qr_widget);
-        else if(!CryptMethods.publicExist()){
+        id = getIntent().getLongExtra("id", -1);
+        if (id != -1)
             ((TextView) findViewById(R.id.status_view)).setText(R.string.decrypt_qr_message_explain);
-        }
-        else {
+        else if (type != PRIVATE && CryptMethods.publicExist())
+            ((TextView) findViewById(R.id.status_view)).setText(R.string.scan_any_qr_widget);
+        else if (!CryptMethods.publicExist()) {
+            ((TextView) findViewById(R.id.status_view)).setText(R.string.decrypt_qr_message_explain);
+        } else {
             ((TextView) findViewById(R.id.status_view)).setText(R.string.private_scan_explain);
         }
     }

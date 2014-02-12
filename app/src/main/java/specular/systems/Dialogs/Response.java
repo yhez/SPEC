@@ -23,10 +23,10 @@ import specular.systems.FilesManagement;
 import specular.systems.FragmentManagement;
 import specular.systems.Group;
 import specular.systems.GroupDataSource;
-import specular.systems.LightMessage;
 import specular.systems.MessageFormat;
 import specular.systems.R;
 import specular.systems.StaticVariables;
+import specular.systems.Visual;
 import specular.systems.activities.SendMsg;
 
 
@@ -119,15 +119,15 @@ public class Response extends DialogFragment {
                 String sss = contact!=null?contact.getSession().substring(0,contact.getSession().length()-2):group.getMentor();
                 final MessageFormat msg = new MessageFormat(null, CryptMethods.getMyDetails(getActivity()), "", userInput + msgContent
                         , sss);
-                final LightMessage lightMessage = new LightMessage(userInput + msgContent);
+                //final AnonymousMessage anonymousMessage = new AnonymousMessage(userInput + msgContent);
                 final ProgressDlg prgd = new ProgressDlg(getActivity(), R.string.encrypting);
                 prgd.setCancelable(false);
                 prgd.show();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        byte[] data = CryptMethods.encrypt(msg.getFormatedMsg(), lightMessage.getFormatedMsg(),
-                                contact!=null?contact.getPublicKey():group.getPublicKey()).getBytes();
+                        byte[] data = Visual.bin2hex(CryptMethods.encrypt(msg.getFormatedMsg(),
+                                contact!=null?contact.getPublicKey():group.getPublicKey())).getBytes();
                         boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR, data);
                         prgd.cancel();
                         if (success) {

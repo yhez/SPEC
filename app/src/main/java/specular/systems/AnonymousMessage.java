@@ -1,23 +1,16 @@
 package specular.systems;
 
-import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.TimeZone;
-
-
-public class LightMessage {
-
-    public static LightMessage decryptedLightMsg = null;
+public class AnonymousMessage {
+/*
+    public static AnonymousMessage decryptedLightMsg = null;
     private String msgContent, sentTime;
     private String hash;
 
-    public LightMessage(byte[] raw) {
+    public AnonymousMessage(byte[] raw) {
         String data[];
         try {
             data = new String(raw, "UTF-8").split("\n");
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             data = new String(raw).split("\n");
         }
         sentTime = data[0];
@@ -37,7 +30,7 @@ public class LightMessage {
         return hash.equals(tmp);
     }
 
-    public LightMessage(String msgContent) {
+    public AnonymousMessage(String msgContent) {
         this.msgContent = msgContent;
         sentTime = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(Calendar
                 .getInstance().getTime());
@@ -60,7 +53,7 @@ public class LightMessage {
         byte[] msgContent;
         try {
             msgContent = this.msgContent.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             msgContent = this.msgContent.getBytes();
         }
         //light message contains short time stamp + msg + short hash
@@ -89,7 +82,6 @@ public class LightMessage {
         return value + "";
     }
 
-    public static final int NEW = 0, WEEK = 1, TWO_WEEKS = 2, MONTH = 3;
 
     public static int checkReplay(String time) {
         SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -108,9 +100,10 @@ public class LightMessage {
             if (gap < two_weeks)
                 return TWO_WEEKS;
             return MONTH;
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             return MONTH;
         }
-    }
+    }*/
+    public static final int NEW = 0, WEEK = 1, TWO_WEEKS = 2, MONTH = 3;
+
 }

@@ -97,7 +97,7 @@ public class FragmentManagement extends Fragment {
     public FragmentManagement() {
     }
 
-    public void updateDecryptedLight() {
+  /*  public void updateDecryptedLight() {
         ViewGroup gl = (ViewGroup) rootView.findViewById(R.id.top_pannel);
         gl.getChildAt(2).setVisibility(View.GONE);
         ImageView hs = (ImageView) rootView.findViewById(R.id.hash_check);
@@ -107,13 +107,13 @@ public class FragmentManagement extends Fragment {
                 unknown = R.drawable.ic_unknown, starting = R.drawable.ic_what;
         hs.setImageResource(StaticVariables.flag_hash ? ok : notOk);
         switch (StaticVariables.flag_replay) {
-            case LightMessage.NEW:
+            case AnonymousMessage.NEW:
                 rp.setImageResource(ok);
                 break;
-            case LightMessage.WEEK:
+            case AnonymousMessage.WEEK:
                 rp.setImageResource(unknown);
                 break;
-            case LightMessage.TWO_WEEKS:
+            case AnonymousMessage.TWO_WEEKS:
                 rp.setImageResource(starting);
                 break;
             default:
@@ -124,7 +124,7 @@ public class FragmentManagement extends Fragment {
         ((TextView) rootView.findViewById(R.id.flag_contact_exist)).setText(true + "");
         ((TextView) rootView.findViewById(R.id.decrypted_msg)).setText(StaticVariables.msg_content);
     }
-
+*/
     public void updateDecryptedScreen() {
         TextView tv = (TextView) rootView.findViewById(R.id.decrypted_msg);
         TextView contactExist = (TextView) rootView.findViewById(R.id.flag_contact_exist);
@@ -712,15 +712,15 @@ public class FragmentManagement extends Fragment {
                     StaticVariables.file_name = MessageFormat.decryptedMsg.getFileName();
                     StaticVariables.session = MessageFormat.decryptedMsg.getSession();
                     updateDecryptedScreen();
-                } else if (LightMessage.decryptedLightMsg != null) {
-                    StaticVariables.hash = LightMessage.decryptedLightMsg.getHash();
-                    StaticVariables.msg_content = LightMessage.decryptedLightMsg.getMsgContent();
-                    StaticVariables.timeStamp = LightMessage.decryptedLightMsg.getSentTime();
-                    StaticVariables.flag_hash = LightMessage.decryptedLightMsg.checkHash();
-                    StaticVariables.flag_replay = LightMessage.checkReplay(StaticVariables.timeStamp);
+                }/* else if (AnonymousMessage.decryptedLightMsg != null) {
+                    StaticVariables.hash = AnonymousMessage.decryptedLightMsg.getHash();
+                    StaticVariables.msg_content = AnonymousMessage.decryptedLightMsg.getMsgContent();
+                    StaticVariables.timeStamp = AnonymousMessage.decryptedLightMsg.getSentTime();
+                    StaticVariables.flag_hash = AnonymousMessage.decryptedLightMsg.checkHash();
+                    StaticVariables.flag_replay = AnonymousMessage.checkReplay(StaticVariables.timeStamp);
                     StaticVariables.flag_light_msg = true;
                     updateDecryptedLight();
-                } else if (StaticVariables.flag_msg == null || !StaticVariables.flag_msg) {
+                }*/ else if (StaticVariables.flag_msg == null || !StaticVariables.flag_msg) {
                     rootView.findViewById(R.id.top_pannel).setVisibility(View.GONE);
                     rootView.findViewById(R.id.open_file_rlt).setVisibility(View.GONE);
                     rootView.findViewById(R.id.from).setVisibility(View.GONE);

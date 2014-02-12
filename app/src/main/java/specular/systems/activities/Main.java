@@ -54,6 +54,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import specular.systems.AnonymousMessage;
 import specular.systems.Backup;
 import specular.systems.CameraPreview;
 import specular.systems.Contact;
@@ -86,7 +87,6 @@ import specular.systems.GroupDataSource;
 import specular.systems.GroupsAdapter;
 import specular.systems.KeysDeleter;
 import specular.systems.LeftMenu;
-import specular.systems.LightMessage;
 import specular.systems.MessageFormat;
 import specular.systems.MySimpleArrayAdapter;
 import specular.systems.R;
@@ -236,14 +236,16 @@ public class Main extends FragmentActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                LightMessage lMsg = null;
+                /*todo
+                AnonymousMessage lMsg = null;
                 if (StaticVariables.fileContent == null)
-                    lMsg = new LightMessage(userInput);
+                    lMsg = new AnonymousMessage(userInput);
+                    */
                 String sss = contact != null ? contact.getSession().substring(0, contact.getSession().length() - 2) : group.getMentor();
                 MessageFormat msg = new MessageFormat(StaticVariables.fileContent, CryptMethods.getMyDetails(Main.this), fileName, userInput,
                         sss);
-                String data = CryptMethods.encrypt(msg.getFormatedMsg(), lMsg == null ? null : lMsg.getFormatedMsg(),
-                        contact != null ? contact.getPublicKey() : group.getPublicKey());
+                String data = Visual.bin2hex(CryptMethods.encrypt(msg.getFormatedMsg(),
+                        contact != null ? contact.getPublicKey() : group.getPublicKey()));
                 if(data!=null)
                     sendMessage(data.getBytes(), type);
                 prgd.cancel();
@@ -384,16 +386,16 @@ public class Main extends FragmentActivity {
                     }
                 else
                     switch (StaticVariables.flag_replay) {
-                        case LightMessage.NEW:
+                        case AnonymousMessage.NEW:
                             replay += getString(R.string.light_msg_day);
                             break;
-                        case LightMessage.WEEK:
+                        case AnonymousMessage.WEEK:
                             replay += getString(R.string.light_msg_week);
                             break;
-                        case LightMessage.TWO_WEEKS:
+                        case AnonymousMessage.TWO_WEEKS:
                             replay += getString(R.string.light_msg_two_weeks);
                             break;
-                        case LightMessage.MONTH:
+                        case AnonymousMessage.MONTH:
                             replay += getString(R.string.light_msg_old);
                             break;
                     }
@@ -1282,7 +1284,7 @@ public class Main extends FragmentActivity {
                             || (StaticVariables.flag_light_msg != null && StaticVariables.flag_light_msg)) {
                         t.setText(R.string.notify_msg_deleted);
                         t.show();
-                        LightMessage.decryptedLightMsg = null;
+                        //AnonymousMessage.decryptedLightMsg = null;
                         MessageFormat.decryptedMsg = null;
                         FilesManagement.deleteTempDecryptedMSG(this);
                     }

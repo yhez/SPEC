@@ -19,12 +19,9 @@ import android.widget.TextView;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import specular.systems.activities.FilesOpener;
@@ -70,13 +67,13 @@ public final class FilesManagement {
             String name = MessageFormat.decryptedMsg.getFileName();
             String ext = name.substring(name.lastIndexOf(".") + 1);
             String type = m.getMimeTypeFromExtension(ext);
-            if (type.startsWith("image")||type.startsWith("audio")||type.equals("application/ogg")||type.equals("video/3gpp")) {
-                os = a.openFileOutput(name, a.MODE_PRIVATE);
+            if (type.startsWith("image") || type.startsWith("audio") || type.equals("application/ogg") || type.equals("video/3gpp")) {
+                os = a.openFileOutput(name, Context.MODE_PRIVATE);
             } else {
                 File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
                 if (!path.exists())
                     path.mkdirs();
-                File file = new File(path,name);
+                File file = new File(path, name);
                 os = new FileOutputStream(file);
             }
             os.write(MessageFormat.decryptedMsg.getFileContent());
@@ -94,7 +91,7 @@ public final class FilesManagement {
         MimeTypeMap m = MimeTypeMap.getSingleton();
         String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
         String type = m.getMimeTypeFromExtension(ext);
-        if (type.startsWith("image")||type.startsWith("audio")||type.equals("application/ogg")||type.equals("video/3gpp")) {
+        if (type.startsWith("image") || type.startsWith("audio") || type.equals("application/ogg") || type.equals("video/3gpp")) {
             path = a.getFilesDir();
             intent = new Intent(a, FilesOpener.class);
         } else {
@@ -108,8 +105,7 @@ public final class FilesManagement {
     }
 
     public static void saveTempDecryptedMSG(Activity a) {
-        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
-                .getApplicationContext());
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
         SharedPreferences.Editor edt = srp.edit();
         edt.putString("msg", StaticVariables.msg_content);
         edt.putString("file_name", StaticVariables.file_name);
@@ -121,8 +117,7 @@ public final class FilesManagement {
     }
 
     public static void deleteTempDecryptedMSG(Activity a) {
-        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
-                .getApplicationContext());
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
         SharedPreferences.Editor edt = srp.edit();
         edt.remove("msg");
         edt.remove("file_name");
@@ -146,16 +141,14 @@ public final class FilesManagement {
     }
 
     public static void getTempDecryptedMSG(Activity a) {
-        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
-                .getApplicationContext());
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
         StaticVariables.msg_content = srp.getString("msg", null);
         StaticVariables.session = srp.getString("session", null);
         StaticVariables.file_name = srp.getString("file_name", null);
     }
 
     public static boolean isItNewUser(Activity a) {
-        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
-                .getApplicationContext());
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
         if (srp.getBoolean("firstUse", true)) {
             srp.edit().putBoolean("firstUse", false).commit();
             return true;
@@ -163,22 +156,22 @@ public final class FilesManagement {
         return false;
     }
 
-    private static boolean saveQRToSend(Activity a) {
+    private static boolean saveQRToSend(Activity a, String data) {
         int qrCodeDimention = 500;
+        StaticVariables.encryptedMsgToSend = data.substring(data.length() / 4 * 3);
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(
-                StaticVariables.encryptedLight, qrCodeDimention);
+                data, qrCodeDimention);
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
             try {
-                FileOutputStream fos2;
-                fos2 = a.openFileOutput(a.getString(QR_NAME_SEND),
-                        Context.MODE_WORLD_READABLE);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos2);
-                fos2.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return false;
-            } catch (IOException e) {
+                File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/messages");
+                if (!path.exists())
+                    path.mkdirs();
+                File file = new File(path, a.getString(QR_NAME_SEND));
+                OutputStream os = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, os);
+                os.close();
+            } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
@@ -191,9 +184,13 @@ public final class FilesManagement {
 
     private static boolean saveFileToSend(Activity a, String fileName, byte[] fileData) {
         try {
-            FileOutputStream fos = a.openFileOutput(fileName, Context.MODE_WORLD_READABLE);
-            fos.write(fileData);
-            fos.close();
+            File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/messages");
+            if (!path.exists())
+                path.mkdirs();
+            File file = new File(path, fileName);
+            OutputStream os = new FileOutputStream(file);
+            os.write(fileData);
+            os.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -201,39 +198,35 @@ public final class FilesManagement {
         }
     }
 
-    // ORI : added new function to reuse old code
+    private static void cleanUp(Activity a) {
+        File root = new File(Environment.getExternalStorageDirectory() + "/SPEC/messages");
+        if (root.exists())
+            for (File f : root.listFiles())
+                f.delete();
+    }
+
     public static boolean createBackupFileToSend(Activity a, byte[] fileData) {
-        new File(a.getFilesDir(), a.getString(FILE_NAME_BACKUP)).delete();
-        new File(a.getFilesDir(), a.getString(FILE_NAME_GROUP)).delete();
-        new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
-        new File(a.getFilesDir(), a.getString(FILE_NAME_SEND)).delete();
+        cleanUp(a);
         return saveFileToSend(a, a.getString(FILE_NAME_BACKUP), fileData);
     }
 
     public static boolean createGroupFileToSend(Activity a, byte[] fileData) {
-        new File(a.getFilesDir(), a.getString(FILE_NAME_BACKUP)).delete();
-        new File(a.getFilesDir(), a.getString(FILE_NAME_GROUP)).delete();
-        new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
-        new File(a.getFilesDir(), a.getString(FILE_NAME_SEND)).delete();
+        cleanUp(a);
         return saveFileToSend(a, a.getString(FILE_NAME_GROUP), fileData);
     }
 
-    // ORI : took out the createfiletosend logic to savefiletosend function
     public static boolean createFilesToSend(Activity a, boolean qr, byte[] data) {
-        new File(a.getFilesDir(), a.getString(FILE_NAME_BACKUP)).delete();
-        new File(a.getFilesDir(), a.getString(FILE_NAME_GROUP)).delete();
-        new File(a.getFilesDir(), a.getString(QR_NAME_SEND)).delete();
-        new File(a.getFilesDir(), a.getString(FILE_NAME_SEND)).delete();
+        cleanUp(a);
         boolean qrSuccess = true, fileSuccess;
         if (qr)
-            qrSuccess = saveQRToSend(a);
+            qrSuccess = saveQRToSend(a, new String(data));
         fileSuccess = saveFileToSend(a, a.getString(FILE_NAME_SEND), data);
         return qrSuccess || fileSuccess;
     }
 
     public static ArrayList<Uri> getFilesToSend(Activity a) {
         try {
-            File root = a.getFilesDir();
+            File root = new File(Environment.getExternalStorageDirectory() + "/SPEC/messages");
             ArrayList<Uri> uris = new ArrayList<Uri>(2);
             if (new File(root, a.getString(FILE_NAME_SEND)).exists()) {
                 uris.add(Uri.parse(FILE + new File(root, a.getString(FILE_NAME_SEND))));
@@ -261,32 +254,24 @@ public final class FilesManagement {
         }
     }
 
-    // TODO : ORI merge getFileToShare and getFileToShare
-    public static Uri getBackupFileToShare(Activity a) {
-        try {
-            return Uri.parse(FILE + new File(a.getFilesDir(), a.getString(FILE_NAME_BACKUP)));
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     public static Uri getContactCardToShare(Activity a) {
         String name = ((EditText) a.findViewById(R.id.contact_name).findViewById(R.id.edit_text)).getText().toString();
         String email = ((EditText) a.findViewById(R.id.contact_email).findViewById(R.id.edit_text)).getText().toString();
         String publicKey = ((TextView) a.findViewById(R.id.contact_pb)).getText().toString();
         ContactCard pcc = new ContactCard(a, publicKey, email, name);
-        FileOutputStream fos = null;
         try {
-            fos = a.openFileOutput(a.getString(FRIEND_CONTACT_CARD),
-                    Context.MODE_WORLD_READABLE);
-            fos.write(pcc.getQRToPublish().getBytes("UTF-8"));
-            fos.close();
-        } catch (FileNotFoundException e) {
+            File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/messages");
+            if (!path.exists())
+                path.mkdirs();
+            File file = new File(path, a.getString(FRIEND_CONTACT_CARD));
+            OutputStream os = new FileOutputStream(file);
+            os.write(pcc.getQRToPublish().getBytes("UTF-8"));
+            os.close();
+            return Uri.fromFile(file);
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            return null;
         }
-        return Uri.parse(FILE + new File(a.getFilesDir(), a.getString(FRIEND_CONTACT_CARD)));
     }
 
     public static Uri getQRFriendToShare(Activity a) {
@@ -298,20 +283,18 @@ public final class FilesManagement {
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
             //Bitmap crop = crop(bitmap);
-            FileOutputStream fos = null;
-            try {
-                fos = a.openFileOutput(a.getString(FRIENDS_SHARE_QR),
-                        Context.MODE_WORLD_READABLE);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            if (fos != null) {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
-            }
+            File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/messages");
+            if (!path.exists())
+                path.mkdirs();
+            File file = new File(path, a.getString(FRIENDS_SHARE_QR));
+            OutputStream os = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, os);
+            os.close();
+            return Uri.fromFile(file);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return Uri.parse(FILE + new File(a.getFilesDir(), a.getString(FRIENDS_SHARE_QR)));
     }
 
     public static Uri getQRToShare(Activity a) {
@@ -323,8 +306,7 @@ public final class FilesManagement {
     }
 
     public static void getKeysFromSDCard(Activity a) {
-        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a
-                .getApplicationContext());
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
         CryptMethods.setPrivate(getPrivate(a));
         CryptMethods.setPublic(srp.getString(PUBLIC_KEY, null));
         CryptMethods.setDetails(srp.getString(NAME, null), srp.getString(EMAIL, null));
@@ -339,10 +321,7 @@ public final class FilesManagement {
                 byte[] b = new byte[(int) new File(a.getFilesDir(), PRIVATE_KEY).length()];
                 is.read(b);
                 return b;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return null;
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
@@ -354,9 +333,7 @@ public final class FilesManagement {
             FileOutputStream fos = a.openFileOutput(PRIVATE_KEY, Context.MODE_PRIVATE);
             fos.write(CryptMethods.getPrivateToSave());
             fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -371,7 +348,7 @@ public final class FilesManagement {
             if (!StaticVariables.NFCMode)
                 CryptMethods.moveKeysFromTmp();
             SharedPreferences srp = PreferenceManager
-                    .getDefaultSharedPreferences(a.getApplicationContext());
+                    .getDefaultSharedPreferences(a);
             SharedPreferences.Editor edt = srp.edit();
             ContactCard qrpk = new ContactCard(a);
             try {
@@ -379,11 +356,7 @@ public final class FilesManagement {
                         Context.MODE_WORLD_READABLE);
                 fos.write(qrpk.getQRToPublish().getBytes("UTF-8"));
                 fos.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             try {
@@ -394,14 +367,14 @@ public final class FilesManagement {
                     FileOutputStream fos = a.openFileOutput(a.getString(QR_NAME),
                             Context.MODE_WORLD_READABLE);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
-                } catch (FileNotFoundException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 try {
                     FileOutputStream fos = a.openFileOutput(QR_NAME_T,
                             Context.MODE_WORLD_READABLE);
                     crop.compress(Bitmap.CompressFormat.PNG, 90, fos);
-                } catch (FileNotFoundException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } catch (Exception e) {
@@ -422,7 +395,7 @@ public final class FilesManagement {
         if (a != null) {
             myQRPublicKey = null;
             SharedPreferences srp = PreferenceManager
-                    .getDefaultSharedPreferences(a.getApplicationContext());
+                    .getDefaultSharedPreferences(a);
             SharedPreferences.Editor edt = srp.edit();
             ContactCard qrpk = new ContactCard(a);
             FileOutputStream fos;
@@ -431,9 +404,7 @@ public final class FilesManagement {
                         Context.MODE_WORLD_READABLE);
                 fos.write(qrpk.getQRToPublish().getBytes("UTF-8"));
                 fos.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrpk.getQRToPublish(), 512);
@@ -446,7 +417,7 @@ public final class FilesManagement {
                     fos2 = a.openFileOutput(a.getString(QR_NAME),
                             Context.MODE_WORLD_READABLE);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos2);
-                } catch (FileNotFoundException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 FileOutputStream fos3;
@@ -454,7 +425,7 @@ public final class FilesManagement {
                     fos3 = a.openFileOutput(QR_NAME_T,
                             Context.MODE_WORLD_READABLE);
                     crop.compress(Bitmap.CompressFormat.PNG, 90, fos3);
-                } catch (FileNotFoundException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } catch (WriterException e) {
@@ -475,10 +446,7 @@ public final class FilesManagement {
                 size = ind.available();
                 ind.close();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return RESULT_ADD_FILE_FAILED;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return RESULT_ADD_FILE_FAILED;
         }
@@ -503,10 +471,7 @@ public final class FilesManagement {
                     input.close();
                 }
             }
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-            return RESULT_ADD_FILE_FAILED;
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             return RESULT_ADD_FILE_FAILED;
         }
@@ -527,10 +492,10 @@ public final class FilesManagement {
             }
         return Bitmap.createBitmap(bitmap, border, border, width - (border * 2), width - (border * 2));
     }
-
+/*
     public static void deleteKeys(Activity a) {
         SharedPreferences srp = PreferenceManager
-                .getDefaultSharedPreferences(a.getApplicationContext());
+                .getDefaultSharedPreferences(a);
         SharedPreferences.Editor edt = srp.edit();
         edt.clear();
         edt.commit();
@@ -538,15 +503,15 @@ public final class FilesManagement {
 
     public static void deleteContacts(Activity a) {
         a.deleteDatabase(MySQLiteHelper.DATABASE_NAME);
-    }
+    }*/
 
     public static String getlasts(Activity a) {
-        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a.getApplicationContext());
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
         return srp.getString("lasts", null);
     }
 
     public static void updateLasts(Activity a, String s) {
-        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a.getApplicationContext());
+        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
         SharedPreferences.Editor edt = srp.edit();
         edt.putString("lasts", s);
         edt.commit();
