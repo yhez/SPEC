@@ -33,7 +33,7 @@ public final class Hex {
         return out.toString();
     }
 
-    public static byte[] decode(String in) throws CorruptedCodeException {
+    public static byte[] decode(String in) throws Exception {
         byte[] buf;
         int a;
         int b;
@@ -46,7 +46,7 @@ public final class Hex {
         n = in.length();
 
         if ((n % 2) == 1) {
-            throw new CorruptedCodeException("uneven input length");
+            throw new Exception("uneven input length");
         }
         n = n / 2;
         buf = new byte[n];
@@ -62,7 +62,7 @@ public final class Hex {
             } else if (('A' <= a) && (a <= 'F')) {
                 a = a - 'A' + 10;
             } else {
-                throw new CorruptedCodeException("Illegal char: '" + a + "'");
+                throw new Exception("Illegal char: '" + a + "'");
             }
             if (('0' <= b) && (b <= '9')) {
                 b = b - '0';
@@ -71,7 +71,7 @@ public final class Hex {
             } else if (('A' <= b) && (b <= 'F')) {
                 b = b - 'A' + 10;
             } else {
-                throw new CorruptedCodeException("Illegal char: '" + b + "'");
+                throw new Exception("Illegal char: '" + b + "'");
             }
             buf[n] = (byte) ((a << 4) | b);
         }

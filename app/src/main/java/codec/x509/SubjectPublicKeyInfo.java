@@ -1,15 +1,7 @@
 package codec.x509;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-
-import codec.CorruptedCodeException;
-import codec.InconsistentStateException;
 import codec.asn1.ASN1BitString;
-import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1Sequence;
-import codec.asn1.ASN1Type;
-import codec.asn1.DERDecoder;
 
 
 public class SubjectPublicKeyInfo extends ASN1Sequence {
@@ -46,26 +38,6 @@ public class SubjectPublicKeyInfo extends ASN1Sequence {
         return encodedKey_.getBytes();
     }
 
-
-    public ASN1Type getDecodedRawKey() throws CorruptedCodeException {
-        DERDecoder dec;
-        ASN1Type raw;
-
-        try {
-            dec = new DERDecoder(new ByteArrayInputStream(encodedKey_
-                    .getBytes()));
-
-            raw = dec.readType();
-            dec.close();
-
-            return raw;
-        } catch (ASN1Exception e) {
-            throw new CorruptedCodeException("Cannot decode raw key!");
-        } catch (IOException e) {
-            throw new InconsistentStateException(
-                    "Internal, I/O exception caught!");
-        }
-    }
 
     public AlgorithmIdentifier getAlgorithmIdentifier() {
         return algorithm_;

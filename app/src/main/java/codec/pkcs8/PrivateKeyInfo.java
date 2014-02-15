@@ -3,8 +3,6 @@ package codec.pkcs8;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import codec.CorruptedCodeException;
-import codec.InconsistentStateException;
 import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1Integer;
 import codec.asn1.ASN1OctetString;
@@ -65,7 +63,7 @@ public class PrivateKeyInfo extends ASN1Sequence {
     }
 
 
-    public ASN1Type getDecodedRawKey() throws CorruptedCodeException {
+    public ASN1Type getDecodedRawKey() throws Exception {
         DERDecoder dec;
         ASN1Type raw;
 
@@ -78,9 +76,9 @@ public class PrivateKeyInfo extends ASN1Sequence {
 
             return raw;
         } catch (ASN1Exception e) {
-            throw new CorruptedCodeException("Cannot decode raw key!");
+            throw new Exception("Cannot decode raw key!");
         } catch (IOException e) {
-            throw new InconsistentStateException(
+            throw new Exception(
                     "Internal, I/O exception caught!");
         }
     }

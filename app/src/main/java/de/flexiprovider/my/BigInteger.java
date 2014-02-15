@@ -1615,31 +1615,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
     }
 
 
-    private static int[] makePositive(int a[]) {
-        int keep, j;
-
-        // Find first non-sign (0xffffffff) int of input
-        for (keep = 0; keep < a.length && a[keep] == -1; keep++)
-            ;
-
-        /* Allocate output array.  If all non-sign ints are 0x00, we must
-         * allocate space for one extra output int. */
-        for (j = keep; j < a.length && a[j] == 0; j++)
-            ;
-        int extraInt = (j == a.length ? 1 : 0);
-        int result[] = new int[a.length - keep + extraInt];
-
-        /* Copy one's complement of input into output, leaving extra
-         * int (if it exists) == 0x00 */
-        for (int i = keep; i < a.length; i++)
-            result[i - keep + extraInt] = ~a[i];
-
-        // Add one to one's complement to generate two's complement
-        for (int i = result.length - 1; ++result[i] == 0; i--)
-            ;
-
-        return result;
-    }
     private static int digitsPerLong[] = {0, 0,
             62, 39, 31, 27, 24, 22, 20, 19, 18, 18, 17, 17, 16, 16, 15, 15, 15, 14,
             14, 14, 14, 13, 13, 13, 13, 13, 13, 12, 12, 12, 12, 12, 12, 12, 12};

@@ -16,7 +16,6 @@ import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.common.mode.ModeParameterSpec;
 import de.flexiprovider.common.mode.OFB;
-import de.flexiprovider.common.util.JavaSecureRandomWrapper;
 
 
 public abstract class BlockCipher extends Cipher {
@@ -35,15 +34,12 @@ public abstract class BlockCipher extends Cipher {
 
     private boolean initialized = false;
 
-    protected SecureRandom random;
-
     protected final void engineInit(int opmode, java.security.Key key,
                                     java.security.spec.AlgorithmParameterSpec paramSpec,
                                     java.security.SecureRandom javaRand)
             throws java.security.InvalidKeyException,
             java.security.InvalidAlgorithmParameterException {
 
-        random = new JavaSecureRandomWrapper(javaRand);
         initModeAndPadding();
         opMode = opmode;
 
@@ -175,7 +171,6 @@ public abstract class BlockCipher extends Cipher {
                                   AlgorithmParameterSpec cipherParams, SecureRandom random)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
 
-        this.random = random != null ? random : Registry.getSecureRandom();
         initModeAndPadding();
         opMode = ENCRYPT_MODE;
 

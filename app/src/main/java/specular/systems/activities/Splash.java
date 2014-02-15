@@ -93,10 +93,6 @@ public class Splash extends Activity {
         }
 
         Intent intent = new Intent(Splash.this, Main.class);
-        if (StaticVariables.time == null || (System.currentTimeMillis() - StaticVariables.time) > (1000 * 60 * TIME_FOR_CLEAR_TASK)) {
-            FilesManagement.deleteTempDecryptedMSG(this);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        }
         if (getIntent().getParcelableExtra(Intent.EXTRA_STREAM) != null && getIntent().getAction().equals(Intent.ACTION_SEND))
             intent.putExtra("specattach", getIntent().getParcelableExtra(Intent.EXTRA_STREAM));
         startActivity(intent);

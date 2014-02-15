@@ -6,7 +6,6 @@ import java.security.AlgorithmParameters;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 
-import codec.InconsistentStateException;
 import codec.asn1.ASN1;
 import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1Null;
@@ -56,7 +55,7 @@ public class AlgorithmIdentifier extends ASN1Sequence {
 
 
     public AlgorithmIdentifier(ASN1ObjectIdentifier oid, ASN1Type params)
-            throws ASN1Exception {
+            throws Exception {
         super(2);
 
         DEREncoder enc;
@@ -82,7 +81,7 @@ public class AlgorithmIdentifier extends ASN1Sequence {
             add(algorithm_);
             add(parameters_);
         } catch (IOException e) {
-            throw new InconsistentStateException(
+            throw new Exception(
                     "Internal, caught IOException!");
         }
     }

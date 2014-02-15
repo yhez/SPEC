@@ -19,7 +19,6 @@ import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
 import android.provider.MediaStore;
@@ -193,7 +192,6 @@ public class Main extends FragmentActivity {
     };
     public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_FOR_GROUP = 2, SCAN_PRIVATE = 3
             , SCAN_CONTACT = 4,TAKE_PICTURE=5,RECORD_AUDIO=6;
-    public Handler handler;
     Thread addFile;
     private Toast t = null;
     private int defaultScreen;
@@ -549,7 +547,6 @@ public class Main extends FragmentActivity {
         }
         t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
         t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        handler = new Handler(Looper.getMainLooper());
         File folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports");
         if (folder.exists() && folder.list().length > 0) {
             Intent i = new Intent(this, SendReport.class);
@@ -1280,8 +1277,7 @@ public class Main extends FragmentActivity {
                         invalidateOptionsMenu();
                     break;
                 case R.layout.decrypted_msg:
-                    if ((StaticVariables.flag_msg != null && StaticVariables.flag_msg)
-                            || (StaticVariables.flag_light_msg != null && StaticVariables.flag_light_msg)) {
+                    if (StaticVariables.flag_msg != null && StaticVariables.flag_msg) {
                         t.setText(R.string.notify_msg_deleted);
                         t.show();
                         //AnonymousMessage.decryptedLightMsg = null;

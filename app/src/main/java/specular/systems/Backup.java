@@ -39,11 +39,11 @@ public class Backup {
         System.arraycopy(privateHash,0,finalResult,0,privateHash.length);
         System.arraycopy(my_details, 0, finalResult, privateHash.length, my_details.length);
         int location = my_details.length+privateHash.length;
-        for (int b = 0; b < contacts.length; b++) {
+        for (byte[] contact : contacts) {
             System.arraycopy(del, 0, finalResult, location, delSize);
             location += delSize;
-            System.arraycopy(contacts[b], 0, finalResult, location, contacts[b].length);
-            location += contacts[b].length;
+            System.arraycopy(contact, 0, finalResult, location, contact.length);
+            location += contact.length;
         }
         finalResult[finalResult.length-1]=(byte)FileParser.getFlag(FileParser.ENCRYPTED_BACKUP);
         byte[] hash;

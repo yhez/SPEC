@@ -66,17 +66,7 @@ public final class BitMatrix implements Cloneable {
     bits[offset] ^= 1 << (x & 0x1f);
   }
 
-  /**
-   * Clears all bits (sets to false).
-   */
-  public void clear() {
-    int max = bits.length;
-    for (int i = 0; i < max; i++) {
-      bits[i] = 0;
-    }
-  }
-
-  public void setRegion(int left, int top, int width, int height) {
+    public void setRegion(int left, int top, int width, int height) {
     if (top < 0 || left < 0) {
       throw new IllegalArgumentException("Left and top must be nonnegative");
     }

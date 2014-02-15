@@ -34,7 +34,7 @@ public class RFC2253Parser {
 
     public static final String WHITESPACE = SPC + LINEBREAK + RETURN;
 
-    public List parse(String rfc2253name) throws BadNameException {
+    public List parse(String rfc2253name) throws Exception {
         UTF8InputStreamReader utfReader;
         ByteArrayOutputStream baos;
         ByteArrayInputStream bais;
@@ -99,7 +99,7 @@ public class RFC2253Parser {
 
                             for (i = 1; i < chs.length; i++) {
                                 if (!Character.isDigit(chs[i]) && !(chs[i] == '.')) {
-                                    throw new BadNameException("(" + state
+                                    throw new Exception("(" + state
                                             + ") The key '" + tok
                                             + "' seems to be an OID, but it "
                                             + "contains the illegal character '"
@@ -113,7 +113,7 @@ public class RFC2253Parser {
                                 if (!Character.isDigit(chs[i])
                                         && !Character.isLetter(chs[i])
                                         && chs[i] != '-') {
-                                    throw new BadNameException("(" + state
+                                    throw new Exception("(" + state
                                             + ") The key '" + tok
                                             + "' contains the the illegal "
                                             + "character '" + chs[i] + "'!");
@@ -125,7 +125,7 @@ public class RFC2253Parser {
 
                         continue;
                     }
-                    throw new BadNameException("(" + state
+                    throw new Exception("(" + state
                             + ") Key starts with SPECIAL '" + tok + "'!");
 
                 case 1:
@@ -137,7 +137,7 @@ public class RFC2253Parser {
                         state = 2;
                         continue;
                     }
-                    throw new BadNameException("(" + state
+                    throw new Exception("(" + state
                             + ") '=' expected after '" + key + "'!");
 
                 case 2:
@@ -157,7 +157,7 @@ public class RFC2253Parser {
                 case 3:
 
                     if (!tok.equals(ESCAPE) && !utfParsed) {
-                        throw new BadNameException("(" + state
+                        throw new Exception("(" + state
                                 + ") Invalid UTF-8 code '"
                                 + Hex.encode(baos.toByteArray()) + "'!");
                     }
@@ -213,7 +213,7 @@ public class RFC2253Parser {
                     }
 		    if (tok.equals(QUOTE)) {
                         if (value.length() > 0) {
-                            throw new BadNameException("(" + state
+                            throw new Exception("(" + state
                                     + ") Only whitespace characters "
                                     + "are allowed before the first unescaped "
                                     + "quotation mark (\")!");
@@ -228,7 +228,7 @@ public class RFC2253Parser {
                         }
                         continue;
                     }
-                    throw new BadNameException("(" + state
+                    throw new Exception("(" + state
                             + ") Unquoted special character '" + tok + "' after '"
                             + key + "'!");
 
@@ -261,12 +261,12 @@ public class RFC2253Parser {
                                 } else {
                                     baos.write(b);
 
-                                    throw new BadNameException("(" + state
+                                    throw new Exception("(" + state
                                             + ") Invalid UTF-8 code '"
                                             + Hex.encode(baos.toByteArray()) + "'!");
                                 }
                             } catch (IllegalArgumentException iae) {
-                                throw new BadNameException("(" + state
+                                throw new Exception("(" + state
                                         + ") Invalid hex character '" + t + "'!");
                             }
                         } else {
@@ -291,7 +291,7 @@ public class RFC2253Parser {
                                     state = returnState;
                                     continue;
                                 }
-                                throw new BadNameException("(" + state
+                                throw new Exception("(" + state
                                         + ") Invalid UTF-8 code '"
                                         + Hex.encode(baos.toByteArray()) + "'!");
                             }
@@ -308,14 +308,14 @@ public class RFC2253Parser {
                         state = returnState;
                         continue;
                     }
-                    throw new BadNameException("(" + state
+                    throw new Exception("(" + state
                             + ") Can't ESCAPE non-special character '"
                             + tok.charAt(0) + "'!");
 
                 case 5:
 
                     if (!tok.equals(ESCAPE) && !utfParsed) {
-                        throw new BadNameException("(" + state
+                        throw new Exception("(" + state
                                 + ") Invalid UTF-8 code '"
                                 + Hex.encode(baos.toByteArray()) + "'!");
                     }
@@ -359,7 +359,7 @@ public class RFC2253Parser {
                         continue;
                     }
                     if (!WHITESPACE.contains(tok)) {
-                        throw new BadNameException("(" + state
+                        throw new Exception("(" + state
                                 + ") Only whitespace characters are "
                                 + "allowed after the second unescaped quotation "
                                 + "mark (\")!");
@@ -377,12 +377,12 @@ public class RFC2253Parser {
 
                             value.setLength(0);
                         } catch (Exception e) {
-                            throw new BadNameException("(" + state
+                            throw new Exception("(" + state
                                     + ") Bad hexadecimal code '" + value.toString()
                                     + "'!");
                         }
                         if (buf.length == 0) {
-                            throw new BadNameException("(" + state
+                            throw new Exception("(" + state
                                     + ") Empty hexadecimal code '"
                                     + value.toString() + "'!");
                         }
@@ -398,7 +398,7 @@ public class RFC2253Parser {
                         continue;
                     }
                     if (trunc != -1) {
-                        throw new BadNameException("(" + state
+                        throw new Exception("(" + state
                                 + ") Non-trailing whitespace characters "
                                 + "after hexadecimal code '" + value.toString()
                                 + "'!");
@@ -408,7 +408,7 @@ public class RFC2253Parser {
                         value.append(tok);
                         continue;
                     }
-                    throw new BadNameException("(" + state
+                    throw new Exception("(" + state
                             + ") Bad hexadecimal encoding '" + value.toString()
                             + "'!");
 
@@ -419,7 +419,7 @@ public class RFC2253Parser {
         }
 
         if (!utfParsed) {
-            throw new BadNameException("(" + state + ") Invalid UTF-8 code '"
+            throw new Exception("(" + state + ") Invalid UTF-8 code '"
                     + Hex.encode(baos.toByteArray()) + "'!");
         }
         if (trunc != -1) {
@@ -428,7 +428,7 @@ public class RFC2253Parser {
 
 
         if (state != 2 && state != 3 && state != 6 && state != 7) {
-            throw new BadNameException("(" + state + ") Not in a final state!");
+            throw new Exception("(" + state + ") Not in a final state!");
         }
         switch (state) {
             case 7:
@@ -436,11 +436,11 @@ public class RFC2253Parser {
                     val = value.toString();
                     buf = Hex.decode(val);
                 } catch (Exception e) {
-                    throw new BadNameException("(" + state
+                    throw new Exception("(" + state
                             + ") Bad hexadecimal code '" + value.toString() + "'!");
                 }
                 if (buf.length == 0) {
-                    throw new BadNameException("(" + state
+                    throw new Exception("(" + state
                             + ") Empty hexadecimal code '" + value.toString()
                             + "'!");
                 }

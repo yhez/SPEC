@@ -38,19 +38,13 @@ public class AddContactDlg extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        //pcc = StaticVariables.fileContactCard;
-        //StaticVariables.fileContactCard = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.dialogTransparent);
-        // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
         final View v = inflater.inflate(R.layout.add_contact_dlg, null);
         if (!(id < 0)) {
             v.findViewById(R.id.check_box_update).setVisibility(View.VISIBLE);
         }
         builder.setView(v)
-                // Add action buttons
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {

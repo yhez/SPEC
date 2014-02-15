@@ -25,21 +25,6 @@ public final class ScalarMult {
         return eval_SquareMultiply(N, P);
     }
 
-    public static Point multiply(FlexiBigInt[] b, Point[] p) {
-        int w = 5;
-        int[] W = new int[b.length];
-        for (int i = 0; i < W.length; i++) {
-            W[i] = w;
-        }
-        int[][] N = determineSimultaneousNaf(b, W);
-        Point[][] P = new Point[b.length][1 << (w - 1)];
-        for (int i = 0; i < b.length; i++) {
-            P[i] = precomputationCMO(p[i], w + 1, 0);
-        }
-        return eval_interleaving(N, P);
-    }
-
-
 
     public static Point[] pre_oddpowers(Point p, int w) {
         final int l = (1 << w) - 1;
@@ -423,50 +408,6 @@ public final class ScalarMult {
         return determineNaf(e, w, e.bitLength());
     }
 
-    private static void determineNaf(int[] N, FlexiBigInt e, int w) {
-
-        int power2wi = 1 << w;
-        int j, u;
-        FlexiBigInt c = e.abs();
-        int s = e.signum();
-
-        j = 0;
-        while (c.compareTo(FlexiBigInt.ZERO) > 0) {
-            if (c.testBit(0)) {
-                u = (c.intValue()) & ((power2wi << 1) - 1);
-                if ((u & power2wi) != 0) {
-                    u = u - (power2wi << 1);
-                }
-                c = c.subtract(FlexiBigInt.valueOf(u));
-            } else {
-                u = 0;
-            }
-
-            N[j++] = (s > 0) ? u : -u;
-
-            c = c.shiftRight(1);
-        }
-
-        // fill with zeros
-        while (j < N.length) {
-            N[j++] = 0;
-        }
-    }
-
-
-    public static int[][] determineSimultaneousNaf(FlexiBigInt[] e, int[] w) {
-        int b = 0;
-        for (int i = 0; i < e.length; i++) {
-            b = (b < e[i].bitLength()) ? e[i].bitLength() : b;
-        }
-
-        int[][] N = new int[e.length][b + 1];
-
-        for (int i = 0; i < e.length; i++) {
-            determineNaf(N[i], e[i], w[i]);
-        }
-        return N;
-    }
 
     public static Point eval_SquareMultiply(int[] N, Point[] P) {
         Point r = createZeroPoint(P[0], P[0], P[0].getE());
@@ -483,28 +424,6 @@ public final class ScalarMult {
         return r.getAffin();
     }
 
-
-    public static Point eval_interleaving(int[][] N, Point[][] P) {
-        Point r = createZeroPoint(P[0][0], P[0][0], P[0][0].getE());
-        int t = N[0].length - 1;
-        for (int i = 1; i < N.length; i++) {
-            t = (N[i].length - 1 > t) ? N[i].length - 1 : t;
-        }
-
-        for (int j = t; j >= 0; j--) {
-            r.multiplyThisBy2();
-            for (int i = 0; i < N.length; i++) {
-                if (j < N[i].length) {
-                    if (N[i][j] > 0) {
-                        r = P[i][(N[i][j] - 1) >> 1].add(r);
-                    } else if (N[i][j] < 0) {
-                        r = r.subtract(P[i][(-N[i][j] - 1) >> 1]);
-                    }
-                }
-            }
-        }
-        return r;
-    }
 
     private static Point createZeroPoint(Object type1, Object type2,
                                          Object curve) {

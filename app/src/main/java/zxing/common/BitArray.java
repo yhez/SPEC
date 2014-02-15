@@ -63,25 +63,6 @@ public final class BitArray implements Cloneable {
     return (bits[i / 32] & (1 << (i & 0x1F))) != 0;
   }
 
-  /**
-   * Sets bit i.
-   *
-   * @param i bit to set
-   */
-  public void set(int i) {
-    bits[i / 32] |= 1 << (i & 0x1F);
-  }
-
-    /**
-   * Clears all bits (sets to false).
-   */
-  public void clear() {
-    int max = bits.length;
-    for (int i = 0; i < max; i++) {
-      bits[i] = 0;
-    }
-  }
-
     public void appendBit(boolean bit) {
     ensureCapacity(size + 1);
     if (bit) {
@@ -124,14 +105,7 @@ public final class BitArray implements Cloneable {
     }
   }
 
-  /**
-   *
-   * @param bitOffset first bit to start writing
-   * @param array array to write into. Bytes are written most-significant byte first. This is the opposite
-   *  of the internal representation, which is exposed by {@link #getBitArray()}
-   * @param offset position in array to start writing
-   * @param numBytes how many bytes to write
-   */
+
   public void toBytes(int bitOffset, byte[] array, int offset, int numBytes) {
     for (int i = 0; i < numBytes; i++) {
       int theByte = 0;
@@ -143,14 +117,6 @@ public final class BitArray implements Cloneable {
       }
       array[offset + i] = (byte) theByte;
     }
-  }
-
-  /**
-   * @return underlying array of ints. The first element holds the first 32 bits, and the least
-   *         significant bit is bit 0.
-   */
-  public int[] getBitArray() {
-    return bits;
   }
 
     private static int[] makeArray(int size) {

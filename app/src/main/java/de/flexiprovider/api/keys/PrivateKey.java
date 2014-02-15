@@ -1,6 +1,5 @@
 package de.flexiprovider.api.keys;
 
-import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1ObjectIdentifier;
 import codec.asn1.ASN1Type;
 import codec.pkcs8.PrivateKeyInfo;
@@ -18,8 +17,8 @@ public abstract class PrivateKey implements Key, java.security.PrivateKey {
         AlgorithmIdentifier aid;
         try {
             aid = new AlgorithmIdentifier(getOID(), getAlgParams());
-        } catch (ASN1Exception asn1e) {
-            throw new RuntimeException("ASN1Exception: " + asn1e.getMessage());
+        } catch (Exception ignored) {
+            return null;
         }
         PrivateKeyInfo spki = new PrivateKeyInfo(aid, getKeyData());
         return ASN1Tools.derEncode(spki);

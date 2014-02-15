@@ -22,7 +22,7 @@ public class AlgorithmIdentifier extends codec.x509.AlgorithmIdentifier {
 
 
     public AlgorithmIdentifier(ASN1ObjectIdentifier oid, ASN1Type params)
-            throws ASN1Exception {
+            throws Exception {
         super(oid, params);
     }
 

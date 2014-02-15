@@ -72,11 +72,11 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
     List tmp_;
 
 
-    public Name(String rfc2253String) throws BadNameException {
+    public Name(String rfc2253String) throws Exception {
         this(rfc2253String, -1);
     }
 
-    private Name(String rfc2253String, int encType) throws BadNameException {
+    private Name(String rfc2253String, int encType) throws Exception {
         super(8);
 
         ASN1ObjectIdentifier oid;
@@ -93,7 +93,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         if (!(encType == -1)){
             if (encType != UTF8_ENCODING && encType != T61_ENCODING
                     && encType != PRINTABLE_ENCODING && encType != IA5_ENCODING) {
-                throw new BadNameException("Unknown EncodingType: " + encType);
+                throw new Exception("Unknown EncodingType: " + encType);
             }
         }
 
@@ -111,7 +111,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
                 try {
                     oid = new ASN1ObjectIdentifier(key);
                 } catch (Exception e) {
-                    throw new BadNameException("Unsupported attribute key: \""
+                    throw new Exception("Unsupported attribute key: \""
                             + key + "\"");
                 }
             }
@@ -131,7 +131,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
 
                     dec.close();
                 } catch (Exception e) {
-                    throw new BadNameException(
+                    throw new Exception(
                             "Binary data is not a valid BER encoding!");
                 }
                 seq.add(obj);
@@ -158,7 +158,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
                             if (checkPrintableSpelling(val)) {
                                 seq.add(new ASN1PrintableString(val));
                             } else {
-                                throw new BadNameException(
+                                throw new Exception(
                                         "Illegal characters for PrintableString "
                                                 + "in characters");
                             }
@@ -429,8 +429,6 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
         if (!(o instanceof Name)) {
             try {
                 q = new Name(((Principal) o).getName());
-            } catch (BadNameException e) {
-                return false;
             } catch (Exception e) {
                 return false;
             }

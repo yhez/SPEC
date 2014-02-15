@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:src="@drawable/wf_demo_in"
+        android:layout_weight="0.33"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+    <ImageView
+        android:src="@drawable/unnamed2"
+        android:layout_weight="0.33"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+    <ImageView
+        android:src="@drawable/unnamed4"
+        android:layout_weight="0.33"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+</LinearLayout>

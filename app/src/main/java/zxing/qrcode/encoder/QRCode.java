@@ -38,14 +38,6 @@ public final class QRCode {
     maskPattern = -1;
   }
 
-  public Mode getMode() {
-    return mode;
-  }
-
-    public Version getVersion() {
-    return version;
-  }
-
     public ByteMatrix getMatrix() {
     return matrix;
   }

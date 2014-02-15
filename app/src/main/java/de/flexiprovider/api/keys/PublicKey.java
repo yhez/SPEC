@@ -18,7 +18,7 @@ public abstract class PublicKey implements Key, java.security.PublicKey {
         AlgorithmIdentifier aid;
         try {
             aid = new AlgorithmIdentifier(getOID(), getAlgParams());
-        } catch (ASN1Exception asn1e) {
+        } catch (Exception asn1e) {
             throw new RuntimeException("ASN1Exception: " + asn1e.getMessage());
         }
         SubjectPublicKeyInfo spki = new SubjectPublicKeyInfo(aid, getKeyData());

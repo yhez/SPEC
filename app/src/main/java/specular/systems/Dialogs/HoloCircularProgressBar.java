@@ -25,11 +25,6 @@ import specular.systems.R;
 public class HoloCircularProgressBar extends View {
 
     /**
-     * The Constant TAG.
-     */
-    private static final String TAG = HoloCircularProgressBar.class.getSimpleName();
-
-    /**
      * used to save the super state on configuration change
      */
     private static final String INSTNACE_STATE_SAVEDSTATE = "saved_state";

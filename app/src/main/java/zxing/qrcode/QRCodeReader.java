@@ -25,12 +25,8 @@ public class QRCodeReader implements Reader {
 
   private final Decoder decoder = new Decoder();
 
-  protected final Decoder getDecoder() {
-    return decoder;
-  }
 
-
-  @Override
+    @Override
   public Result decode(BinaryBitmap image) throws NotFoundException, ChecksumException, FormatException {
     return decode(image, null);
   }

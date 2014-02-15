@@ -28,14 +28,6 @@ public class ASN1Integer extends ASN1AbstractType {
     }
 
 
-    public ASN1Integer(BigInteger val) {
-        if (val == null)
-            throw new NullPointerException("Need a number!");
-
-        value_ = val;
-    }
-
-
     public ASN1Integer(byte[] val) throws NumberFormatException {
         value_ = new BigInteger(val);
     }
