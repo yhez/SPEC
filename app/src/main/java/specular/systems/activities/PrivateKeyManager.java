@@ -148,19 +148,8 @@ public class PrivateKeyManager extends Activity {
                             // work out how much space we need for the data
                             int size = message.toByteArray().length;
                             if (ndef.getMaxSize() < size) {
-                                // attempt to format tag
-                                NdefFormatable format = NdefFormatable.get(tag);
-                                if (format != null) {
-                                    try {
-                                        format.connect();
-                                        format.format(message);
-                                        t.setText(R.string.tag_formatted);
-                                    } catch (IOException e) {
-                                        t.setText(R.string.cant_format);
-                                    }
-                                } else {
-                                    t.setText(R.string.tag_not_supported);
-                                }
+                                ndef.close();
+                                t.setText(R.string.too_small_tag);
                             } else {
                                 ndef.writeNdefMessage(message);
                                 t.setText(R.string.tag_written);

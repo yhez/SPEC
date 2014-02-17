@@ -564,6 +564,7 @@ public class Main extends FragmentActivity {
     @Override
     public void onNewIntent(Intent i) {
         super.onNewIntent(i);
+        if(i.getAction()!=null&&i.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED))
         if (FragmentManagement.currentLayout == R.layout.wait_nfc_to_write) {
             Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             if (tag != null) {

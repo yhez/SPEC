@@ -56,7 +56,10 @@ public class Demo extends Activity {
     }
     @Override
     public void onNewIntent(Intent i){
-        new keyDialog().show(getFragmentManager(),"gg");
+        if(i.getAction()!=null&&i.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)){
+            if(getFragmentManager().findFragmentByTag("gg")==null)
+                new keyDialog().show(getFragmentManager(),"gg");
+        }
     }
     @Override
     public void onBackPressed(){
