@@ -32,7 +32,7 @@ public class LockPatternView extends View {
 
     private static final int ASPECT_LOCK_HEIGHT = 2;
 
-    public static final int MATRIX_WIDTH = 3;
+    public static final int MATRIX_WIDTH = 4;
 
     public static final int MATRIX_SIZE = MATRIX_WIDTH * MATRIX_WIDTH;
 
