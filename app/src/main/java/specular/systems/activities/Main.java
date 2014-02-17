@@ -98,7 +98,7 @@ import zxing.WriterException;
 
 public class Main extends FragmentActivity {
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2,
-            DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_FOCUS = 76,
+            DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_AND_SEND = 76,
             RESTORE = 45, ADD_GROUP = 46;
     public static Main main;
     public static boolean exit = false;
@@ -161,13 +161,13 @@ public class Main extends FragmentActivity {
                 case PROGRESS:
                     if (FragmentManagement.currentLayout == R.layout.recreating_keys) {
                         CameraPreview cp = CameraPreview.getCameraPreview();
-                        ((TextView)findViewById(R.id.collecting_data)).setText("collecting data from "+ cp.names[cp.currentSensor]);
-                        ((ProgressBar) findViewById(R.id.progress_bar)).setProgress((int)(((double)cp.progress)/64.0*100.0));
-                        ((ProgressBar) findViewById(R.id.sec_progress_bar)).setProgress((int)(((double)cp.currentSensor+1)/(double)cp.names.length*100.0));
+                        ((TextView) findViewById(R.id.collecting_data)).setText("collecting data from " + cp.names[cp.currentSensor]);
+                        ((ProgressBar) findViewById(R.id.progress_bar)).setProgress((int) (((double) cp.progress) / 64.0 * 100.0));
+                        ((ProgressBar) findViewById(R.id.sec_progress_bar)).setProgress((int) (((double) cp.currentSensor + 1) / (double) cp.names.length * 100.0));
                     }
                     break;
-                case CLEAR_FOCUS:
-                    findViewById(R.id.message).clearFocus();
+                case CLEAR_AND_SEND:
+                    clearFields(msg.arg1,msg.arg2==1);
                     break;
                 case 551:
                     t.setText(R.string.bad_data);
@@ -190,8 +190,7 @@ public class Main extends FragmentActivity {
             }
         }
     };
-    public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_FOR_GROUP = 2, SCAN_PRIVATE = 3
-            , SCAN_CONTACT = 4,TAKE_PICTURE=5,RECORD_AUDIO=6;
+    public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_FOR_GROUP = 2, SCAN_PRIVATE = 3, SCAN_CONTACT = 4, TAKE_PICTURE = 5, RECORD_AUDIO = 6;
     Thread addFile;
     private Toast t = null;
     private int defaultScreen;
@@ -244,7 +243,7 @@ public class Main extends FragmentActivity {
                         sss);
                 String data = Visual.bin2hex(CryptMethods.encrypt(msg.getFormatedMsg(),
                         contact != null ? contact.getPublicKey() : group.getPublicKey()));
-                if(data!=null)
+                if (data != null)
                     sendMessage(data.getBytes(), type);
                 prgd.cancel();
             }
@@ -268,7 +267,7 @@ public class Main extends FragmentActivity {
                 encryptManager(SendMsg.MESSAGE);
                 break;
             case R.id.open_file:
-                Intent oi = FilesManagement.openFile(this,StaticVariables.file_name);
+                Intent oi = FilesManagement.openFile(this, StaticVariables.file_name);
                 try {
                     startActivity(oi);
                 } catch (Exception e) {
@@ -415,7 +414,7 @@ public class Main extends FragmentActivity {
                     loadingFile = false;
                     if (r == FilesManagement.RESULT_ADD_FILE_OK) {
                         fileName = Visual.getFileName(Main.this, uri);
-                        if(pic!=null)
+                        if (pic != null)
                             new File(pic.getPath()).delete();
                         hndl.sendEmptyMessage(REPLACE_PHOTO);
                     } else {
@@ -433,13 +432,13 @@ public class Main extends FragmentActivity {
             if (requestCode == ATTACH_FILE) {
                 attachFile(intent.getData());
                 intent.setData(null);
-            }else if(requestCode==TAKE_PICTURE){
+            } else if (requestCode == TAKE_PICTURE) {
                 attachFile(pic);
-            } else if(requestCode==RECORD_AUDIO){
+            } else if (requestCode == RECORD_AUDIO) {
                 pic = intent.getData();
                 attachFile(intent.getData());
                 intent.setData(null);
-            }else {
+            } else {
                 String result = intent.getStringExtra("barcode");
                 if (requestCode == SCAN_PRIVATE) {
                     t.setText(R.string.load_private_from_qr);
@@ -455,7 +454,7 @@ public class Main extends FragmentActivity {
                         }
                     } else {
                         getIntent().putExtra("message", result);
-                        if(requestCode==SCAN_FOR_GROUP)
+                        if (requestCode == SCAN_FOR_GROUP)
                             getIntent().putExtra("id", intent.getLongExtra("id", -1));
                         setUpViews();
                     }
@@ -542,7 +541,7 @@ public class Main extends FragmentActivity {
             GroupDataSource.groupDataSource = new GroupDataSource(this);
             GroupDataSource.fullListG = GroupDataSource.groupDataSource.getAllGroups();
         }
-        if(MySimpleArrayAdapter.getAdapter()==null){
+        if (MySimpleArrayAdapter.getAdapter() == null) {
             new MySimpleArrayAdapter(this);
         }
         t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
@@ -564,93 +563,93 @@ public class Main extends FragmentActivity {
     @Override
     public void onNewIntent(Intent i) {
         super.onNewIntent(i);
-        if(i.getAction()!=null&&i.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED))
-        if (FragmentManagement.currentLayout == R.layout.wait_nfc_to_write) {
-            Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            if (tag != null) {
-                byte[] bin = CryptMethods.getPrivateTmp();
-                // record to launch Play Store if app is not installed
-                NdefRecord appRecord = NdefRecord
-                        .createApplicationRecord(this.getPackageName());
-                byte[] mimeBytes = ("application/" + this.getPackageName())
-                        .getBytes(Charset.forName("US-ASCII"));
-                NdefRecord cardRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-                        mimeBytes, new byte[0], bin);
-                NdefMessage message = new NdefMessage(new NdefRecord[]{cardRecord,
-                        appRecord});
-                Ndef ndef=null;
-                try {
-                    // see if tag is already NDEF formatted
-                    ndef = Ndef.get(tag);
-                    ndef.connect();
-                    if (!ndef.isWritable()) {
-                        t.setText(R.string.failed_read_only);
-                    } else {
-                        // work out how much space we need for the data
-                        int size = message.toByteArray().length;
-                        if (ndef.getMaxSize() < size) {
-                            // attempt to format tag
-                            NdefFormatable format = NdefFormatable.get(tag);
-                            if (format != null) {
-                                try {
-                                    format.connect();
-                                    format.format(message);
-                                    t.setText(R.string.tag_formatted);
-                                } catch (IOException e) {
-                                    t.setText(R.string.cant_format);
+        if (i.getAction() != null && i.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED))
+            if (FragmentManagement.currentLayout == R.layout.wait_nfc_to_write) {
+                Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                if (tag != null) {
+                    byte[] bin = CryptMethods.getPrivateTmp();
+                    // record to launch Play Store if app is not installed
+                    NdefRecord appRecord = NdefRecord
+                            .createApplicationRecord(this.getPackageName());
+                    byte[] mimeBytes = ("application/" + this.getPackageName())
+                            .getBytes(Charset.forName("US-ASCII"));
+                    NdefRecord cardRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
+                            mimeBytes, new byte[0], bin);
+                    NdefMessage message = new NdefMessage(new NdefRecord[]{cardRecord,
+                            appRecord});
+                    Ndef ndef = null;
+                    try {
+                        // see if tag is already NDEF formatted
+                        ndef = Ndef.get(tag);
+                        ndef.connect();
+                        if (!ndef.isWritable()) {
+                            t.setText(R.string.failed_read_only);
+                        } else {
+                            // work out how much space we need for the data
+                            int size = message.toByteArray().length;
+                            if (ndef.getMaxSize() < size) {
+                                // attempt to format tag
+                                NdefFormatable format = NdefFormatable.get(tag);
+                                if (format != null) {
+                                    try {
+                                        format.connect();
+                                        format.format(message);
+                                        t.setText(R.string.tag_formatted);
+                                    } catch (IOException e) {
+                                        t.setText(R.string.cant_format);
+                                    }
+                                } else {
+                                    t.setText(R.string.tag_not_supported);
                                 }
                             } else {
-                                t.setText(R.string.tag_not_supported);
+                                ndef.writeNdefMessage(message);
+                                t.setText(R.string.tag_written);
+                                StaticVariables.NFCMode = true;
+                                CryptMethods.moveKeysFromTmp();
+                                onClickSkipNFC(null);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        if (ndef != null && ndef.isConnected())
+                            try {
+                                ndef.close();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        NdefFormatable format = NdefFormatable.get(tag);
+                        if (format != null) {
+                            try {
+                                format.connect();
+                                format.format(message);
+                                t.setText(R.string.tag_formatted);
+                            } catch (IOException ew) {
+                                t.setText(getString(R.string.io_exception_format));
+                            } catch (FormatException e1) {
+                                t.setText(R.string.cant_format);
                             }
                         } else {
-                            ndef.writeNdefMessage(message);
-                            t.setText(R.string.tag_written);
-                            StaticVariables.NFCMode = true;
-                            CryptMethods.moveKeysFromTmp();
-                            onClickSkipNFC(null);
+                            t.setText(R.string.tag_not_supported);
                         }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if(ndef!=null&&ndef.isConnected())
-                        try {
-                            ndef.close();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                    NdefFormatable format = NdefFormatable.get(tag);
-                    if (format != null) {
-                        try {
-                            format.connect();
-                            format.format(message);
-                            t.setText(R.string.tag_formatted);
-                        } catch (IOException ew) {
-                            t.setText(getString(R.string.io_exception_format));
-                        } catch (FormatException e1) {
-                            t.setText(R.string.cant_format);
-                        }
-                    } else {
-                        t.setText(R.string.tag_not_supported);
-                    }
-                }
-                t.show();
-            }
-        } else {
-            Parcelable raw[] = i.getParcelableArrayExtra(
-                    NfcAdapter.EXTRA_NDEF_MESSAGES);
-            if (raw != null) {
-                NdefMessage msg = (NdefMessage) raw[0];
-                NdefRecord pvk = msg.getRecords()[0];
-                if (!CryptMethods.setPrivate(pvk
-                        .getPayload())) {
-                    t.setText(R.string.cant_find_private_key);
                     t.show();
                 }
             } else {
-                t.setText(R.string.cant_find_data);
-                t.show();
+                Parcelable raw[] = i.getParcelableArrayExtra(
+                        NfcAdapter.EXTRA_NDEF_MESSAGES);
+                if (raw != null) {
+                    NdefMessage msg = (NdefMessage) raw[0];
+                    NdefRecord pvk = msg.getRecords()[0];
+                    if (!CryptMethods.setPrivate(pvk
+                            .getPayload())) {
+                        t.setText(R.string.cant_find_private_key);
+                        t.show();
+                    }
+                } else {
+                    t.setText(R.string.cant_find_data);
+                    t.show();
+                }
             }
-        }
     }
 
     @Override
@@ -707,9 +706,11 @@ public class Main extends FragmentActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    Uri pic=null;
+
+    Uri pic = null;
+
     private void showPictureialog() {
-        final Dialog dialog = new Dialog(this,R.style.menu);
+        final Dialog dialog = new Dialog(this, R.style.menu);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.TOP | Gravity.RIGHT);
         window.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -736,10 +737,10 @@ public class Main extends FragmentActivity {
             public void onClick(View v) {
                 dialog.cancel();
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE);
-                File f = new File(Environment.getExternalStorageDirectory()+"/SPEC/attachments",System.currentTimeMillis()+".jpg");
+                File f = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments", System.currentTimeMillis() + ".jpg");
                 pic = Uri.fromFile(f);
                 i.putExtra(MediaStore.EXTRA_OUTPUT, pic);
-                startActivityForResult(i,TAKE_PICTURE);
+                startActivityForResult(i, TAKE_PICTURE);
             }
         });
         dialog.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
@@ -747,7 +748,7 @@ public class Main extends FragmentActivity {
             public void onClick(View v) {
                 dialog.cancel();
                 Intent i = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-                startActivityForResult(i,RECORD_AUDIO);
+                startActivityForResult(i, RECORD_AUDIO);
             }
         });
         dialog.findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
@@ -1106,7 +1107,7 @@ public class Main extends FragmentActivity {
                 }
                 break;
             case PV:
-                layouts = new int[]{ allLayouts[LEARN], allLayouts[SETUP]};
+                layouts = new int[]{allLayouts[LEARN], allLayouts[SETUP]};
                 if (!openByFile()) {
                     selectItem(0, R.layout.decrypt, null);
                     defaultScreen = R.layout.decrypt;
@@ -1166,7 +1167,8 @@ public class Main extends FragmentActivity {
             }).start();
             getIntent().setData(null);
             return true;
-        } else if (StaticVariables.fileContactCard != null) {
+        }
+        if (StaticVariables.fileContactCard != null) {
             if (CryptMethods.publicExist() && CryptMethods.privateExist()) {
                 FragmentManagement.currentPage = 0;
                 selectItem(0, R.layout.encrypt, null);
@@ -1205,6 +1207,13 @@ public class Main extends FragmentActivity {
             StaticVariables.fileContactCard = null;
             t.setText(R.string.no_account_trying_add_contact);
             t.show();
+            return true;
+        }
+        //this is for when coming to the app from share
+        if (getIntent().getParcelableExtra("specattach") != null) {
+            if (FragmentManagement.currentLayout != R.layout.encrypt)
+                selectItem(-1, R.layout.encrypt, null);
+            attachFile((Uri)getIntent().getParcelableExtra("specattach"));
             return true;
         }
         return false;
@@ -1295,7 +1304,7 @@ public class Main extends FragmentActivity {
                     break;
                 case R.layout.recreating_keys:
                     CryptMethods.removeTemp();
-                    CryptMethods.doneCreatingKeys=true;
+                    CryptMethods.doneCreatingKeys = true;
                     CameraPreview.getCameraPreview().finish();
                     selectItem(-1, R.layout.create_new_keys, CryptMethods.publicExist() ? null : getString(R.string.first_time_create_keys));
                     break;
@@ -1342,15 +1351,8 @@ public class Main extends FragmentActivity {
                 (StaticVariables.fileContent != null ?
                         StaticVariables.fileContent.length : 0)) <
                 StaticVariables.MSG_LIMIT_FOR_QR, data);
-        if (success) {
-            hndl.sendEmptyMessage(CLEAR_FOCUS);
-            Intent intent = new Intent(this, SendMsg.class);
-            intent.putExtra("contactId", contact != null ? contact.getId() : group.getId());
-            intent.putExtra("type", type);
-            startActivity(intent);
-        } else {
-            Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
-        }
+        Message msg = hndl.obtainMessage(CLEAR_AND_SEND,type,success?1:0);
+        hndl.sendMessage(msg);
     }
 
 
@@ -1391,25 +1393,14 @@ public class Main extends FragmentActivity {
             KeysDeleter.stop();
         }
         int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
-        if (newkeys != KeysDeleter.oldStatus) {
+        if (newkeys != KeysDeleter.oldStatus||Splash.file) {
             setUpViews();
-        }
-        if (StaticVariables.msgSended) {
-            StaticVariables.msgSended = false;
-            clearFields();
-        }
-        //this is for when coming to the app from share
-        Uri uri = getIntent().getParcelableExtra("specattach");
-        getIntent().setData(null);
-        if (uri != null) {
-            if (FragmentManagement.currentLayout != R.layout.encrypt)
-                selectItem(-1, R.layout.encrypt, null);
-            attachFile(uri);
         }
     }
 
-    private void clearFields() {
+    private void clearFields(int type,boolean success) {
         if (FragmentManagement.currentLayout == R.layout.encrypt) {
+            findViewById(R.id.message).clearFocus();
             ((TextView) findViewById(R.id.file_content_length)).setText("");
             ((TextView) findViewById(R.id.contact_id_to_send)).setText("");
             ((TextView) findViewById(R.id.message)).setText("");
@@ -1419,6 +1410,14 @@ public class Main extends FragmentActivity {
             findViewById(R.id.en_contact).setVisibility(View.GONE);
             StaticVariables.luc.showIfNeeded(this, null);
             invalidateOptionsMenu();
+            if (success) {
+                Intent intent = new Intent(this, SendMsg.class);
+                intent.putExtra("contactId", contact != null ? contact.getId() : group.getId());
+                intent.putExtra("type", type);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -1542,7 +1541,7 @@ public class Main extends FragmentActivity {
         Thread t, p;
 
         public void start() {
-            CryptMethods.doneCreatingKeys=false;
+            CryptMethods.doneCreatingKeys = false;
             t = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -1558,7 +1557,7 @@ public class Main extends FragmentActivity {
                 @Override
                 public void run() {
                     while (true) {
-                        if(CryptMethods.doneCreatingKeys)
+                        if (CryptMethods.doneCreatingKeys)
                             break;
                         hndl.sendEmptyMessage(PROGRESS);
                         synchronized (this) {

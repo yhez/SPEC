@@ -38,7 +38,7 @@ public class Splash extends Activity {
 
 
     private final static int TIME_FOR_SPLASH = 3500;
-    private final static long TIME_FOR_CLEAR_TASK = 15;//in minute
+    public static boolean file=false;
     private final Thread waitForSplash = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -93,8 +93,10 @@ public class Splash extends Activity {
         }
 
         Intent intent = new Intent(Splash.this, Main.class);
-        if (getIntent().getParcelableExtra(Intent.EXTRA_STREAM) != null && getIntent().getAction().equals(Intent.ACTION_SEND))
+        if (getIntent().getParcelableExtra(Intent.EXTRA_STREAM) != null && getIntent().getAction().equals(Intent.ACTION_SEND)){
+            file=true;
             intent.putExtra("specattach", getIntent().getParcelableExtra(Intent.EXTRA_STREAM));
+        }
         startActivity(intent);
     }
 
@@ -193,9 +195,12 @@ public class Splash extends Activity {
                         finish();
                     } else {
                         int typeFile = FileParser.getType(data);
-                        if (typeFile == FileParser.CONTACT_CARD)
+                        if (typeFile == FileParser.CONTACT_CARD){
+                            file=true;
                             StaticVariables.fileContactCard = new ContactCard(Splash.this, data);
+                        }
                         else if (typeFile == -1) {
+                            file=true;
                             StaticVariables.message = data;
                         }
                         go();

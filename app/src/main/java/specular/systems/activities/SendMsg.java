@@ -42,6 +42,7 @@ import zxing.WriterException;
 
 public class SendMsg extends Activity {
     private static final int FILE = 0, IMAGE = 1, BOTH = 2;
+    public static boolean msgSended;
     public static final int CONTACT=1,MESSAGE=2,INVITE_GROUP=3,MESSAGE_FOR_GROUP=4,BACKUP=5;
     private static List<ResolveInfo> file, image, both;
     ArrayList<Uri> uris;
@@ -53,7 +54,7 @@ public class SendMsg extends Activity {
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
-        StaticVariables.msgSended = false;
+        msgSended = false;
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
@@ -101,7 +102,7 @@ public class SendMsg extends Activity {
                 }
             }
             try {
-                StaticVariables.msgSended = true;
+                msgSended = true;
                 startActivity(i);
                 if (contact != null)
                     contact.update(this);
@@ -307,7 +308,7 @@ public class SendMsg extends Activity {
                 break;
         }
         try {
-            StaticVariables.msgSended = true;
+            msgSended = true;
             startActivity(i);
             if (contact != null)
                 contact.update(this);
@@ -417,7 +418,7 @@ public class SendMsg extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        if (StaticVariables.msgSended) {
+        if (msgSended) {
             finish();
         } else
             KeysDeleter.stop();
