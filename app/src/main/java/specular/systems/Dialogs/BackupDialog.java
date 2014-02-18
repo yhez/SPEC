@@ -58,7 +58,12 @@ public class BackupDialog extends DialogFragment {
                                 break;
                         }
                     }
-                }).setTitle(R.string.backup_title).setMessage(message);
+                }).setNegativeButton(R.string.no,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getDialog().cancel();
+            }
+        }).setTitle(R.string.backup_title).setMessage(message);
         return builder.create();
     }
 }

@@ -1006,10 +1006,10 @@ public class Main extends FragmentActivity {
     }
 
     private void setUpViews() {
-        final int ENCRYPT = 0, SHARE = 1, LEARN = 2, SETUP = 3, EXPLORER = 4;
+        final int CONTACTS = 0, SHARE = 1, EXPLORER = 2, SETUP = 3, LEARN = 4;
         final String[] allMenus = getResources().getStringArray(R.array.menus);
         final int[] allDrb = {R.drawable.encrypt, R.drawable.share
-                , R.drawable.learn, R.drawable.manage, R.drawable.explore};
+                , R.drawable.explore, R.drawable.manage, R.drawable.learn};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? BOTH : CryptMethods.privateExist() ? PV : CryptMethods.publicExist() ? PB : NONE;
         mTitle = getTitle();
@@ -1027,9 +1027,9 @@ public class Main extends FragmentActivity {
                 menuDrawables = allDrb;
                 break;
             case PB:
-                menuTitles = new String[]{allMenus[ENCRYPT], allMenus[SHARE],
+                menuTitles = new String[]{allMenus[CONTACTS], allMenus[SHARE],
                         allMenus[LEARN], allMenus[SETUP]};
-                menuDrawables = new int[]{allDrb[ENCRYPT], allDrb[SHARE],
+                menuDrawables = new int[]{allDrb[CONTACTS], allDrb[SHARE],
                         allDrb[LEARN], allDrb[SETUP]};
                 break;
             case PV:
@@ -1077,8 +1077,8 @@ public class Main extends FragmentActivity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         final int allLayouts[] = {R.layout.encrypt,
-                R.layout.me, R.layout.learn,
-                R.layout.setup, R.layout.explorer};
+                R.layout.me, R.layout.explorer,
+                R.layout.setup, R.layout.learn};
         switch (status) {
             case BOTH:
                 layouts = allLayouts;
@@ -1091,7 +1091,7 @@ public class Main extends FragmentActivity {
                 }
                 break;
             case PB:
-                layouts = new int[]{allLayouts[ENCRYPT], allLayouts[SHARE],
+                layouts = new int[]{allLayouts[CONTACTS], allLayouts[SHARE],
                         allLayouts[LEARN], allLayouts[SETUP]};
                 String msg = getIntent().getStringExtra("message");
                 if (StaticVariables.message != null || msg != null
