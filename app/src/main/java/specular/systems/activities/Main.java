@@ -41,6 +41,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -727,12 +728,6 @@ public class Main extends FragmentActivity {
                 startActivityForResult(i, ATTACH_FILE);
             }
         });
-        dialog.findViewById(R.id.dlg_attach).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-            }
-        });
         dialog.findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -759,6 +754,9 @@ public class Main extends FragmentActivity {
                 notImp(null);
             }
         });
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0,getActionBar().getHeight(),0,0);
+        dialog.findViewById(R.id.dlg_attach).setLayoutParams(lp);
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
         dialog.show();

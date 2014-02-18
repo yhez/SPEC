@@ -1,70 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:background="@android:color/white"
-    style="?android:attr/buttonBarStyle"
+    android:background="@android:drawable/dialog_holo_light_frame"
     android:id="@+id/dlg_attach"
-    android:layout_marginTop="50dp"
+    android:rowCount="2"
+    android:columnCount="2"
     android:layout_height="wrap_content">
-    <Button
+    <ImageButton
+        android:layout_row="0"
+        android:layout_column="0"
+        android:scaleType="centerCrop"
+        android:background="@drawable/border_botom"
+        android:src="@drawable/take_picture"
         android:id="@+id/button1"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:layout_gravity="center"
-        android:padding="@dimen/default_gap"
-        android:text="take a picture"
-        android:textColor="@color/spec_black" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/spec_blue" />
-    <Button
+        android:padding="@dimen/default_gap"/>
+    <ImageButton
+        android:layout_row="0"
+        android:layout_column="1"
+        android:scaleType="centerCrop"
+        android:background="@drawable/border_botom"
+        android:src="@drawable/record_voice"
         android:id="@+id/button2"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:layout_gravity="center"
-        android:padding="@dimen/default_gap"
-        android:text="record voice"
-        android:textColor="@color/spec_black" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/spec_blue" />
-    <Button
+        android:padding="@dimen/default_gap" />
+    <ImageButton
+        android:layout_row="1"
+        android:layout_column="0"
+        android:scaleType="centerCrop"
+        android:background="@drawable/border_botom"
+        android:src="@drawable/file_from_device"
         android:id="@+id/button3"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:layout_gravity="center"
-        android:padding="@dimen/default_gap"
-        android:text="file from device"
-        android:textColor="@color/spec_black" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/spec_blue" />
-    <Button
+        android:padding="@dimen/default_gap" />
+    <ImageButton
+        android:layout_row="1"
+        android:layout_column="1"
+        android:scaleType="centerCrop"
+        android:background="@drawable/border_botom"
+        android:src="@drawable/from_safe"
         android:id="@+id/button4"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:layout_gravity="center"
-        android:padding="@dimen/default_gap"
-        android:text="file from safe"
-        android:textColor="@color/spec_black" />
+        android:padding="@dimen/default_gap" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/spec_blue" />
-
-
-
-</LinearLayout>
+</GridLayout>
