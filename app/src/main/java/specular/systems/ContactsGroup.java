@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 public class ContactsGroup extends FragmentStatePagerAdapter {
     public static final int CONTACTS = 97978, GROUPS = 97979;
-
+    public static int currentPage = 0;
     public ContactsGroup(FragmentManager fm) {
         super(fm);
     }

@@ -2,10 +2,10 @@ package specular.systems;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Context;
+import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
@@ -26,8 +26,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -35,15 +33,11 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import specular.systems.Dialogs.NotImplemented;
 import specular.systems.activities.Demo;
 import specular.systems.activities.Main;
 import zxing.QRCodeEncoder;
@@ -59,7 +53,6 @@ import static specular.systems.R.layout.wait_nfc_decrypt;
 import static specular.systems.R.layout.wait_nfc_to_write;
 
 public class FragmentManagement extends Fragment {
-    public static int currentPage = 0;
     public static int currentLayout = -1;
     private final Handler hndl = new Handler() {
         @Override
@@ -511,7 +504,7 @@ public class FragmentManagement extends Fragment {
                     @Override
                     public void run() {
                         ContactsGroup cg = new ContactsGroup(Main.main.getSupportFragmentManager());
-                        vp.setCurrentItem(currentPage);
+                        vp.setCurrentItem(ContactsGroup.currentPage);
                         vp.setAdapter(cg);
                         vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                             @Override
@@ -521,7 +514,7 @@ public class FragmentManagement extends Fragment {
 
                             @Override
                             public void onPageSelected(int i) {
-                                currentPage = i;
+                                ContactsGroup.currentPage = i;
                                 getActivity().invalidateOptionsMenu();
                                 StaticVariables.luc.showIfNeeded(getActivity(), null);
                             }
@@ -679,38 +672,48 @@ public class FragmentManagement extends Fragment {
                 rootView.findViewById(R.id.image_public).setClickable(false);
                 break;
             case R.layout.explorer:
-                ListView lv = (ListView) rootView.findViewById(R.id.list);
-                final ArrayList<String> files = new ArrayList<String>();
-                SharedPreferences sp = getActivity().getSharedPreferences("saved_files", Context.MODE_APPEND);
-                Map m = sp.getAll();
-                Object[] o = m.values().toArray();
-                for(int a=0;a<o.length;a++)
-                    files.add((String)o[a]);
-                final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, files);
-                lv.setAdapter(adapter);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.pager);
+                Safe safe = new Safe(Main.main.getSupportFragmentManager());
+                final ActionBar actionBar = getActivity().getActionBar();
+                viewPager.setCurrentItem(Safe.currentPage);
+                viewPager.setAdapter(safe);
+                viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                            @Override
+                            public void onPageScrolled(int i, float v, int i2) {
+
+                            }
+
+                            @Override
+                            public void onPageSelected(int i) {
+                                Safe.currentPage = i;
+                                actionBar.setSelectedNavigationItem(i);
+                            }
+
+                            @Override
+                            public void onPageScrollStateChanged(int i) {
+
+                            }
+                        });
+                actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+                ActionBar.TabListener t = new ActionBar.TabListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        NotImplemented ni = new NotImplemented();
-                        ni.show(getActivity().getFragmentManager(), "hfhf");
-                        /*
-                        String fname = ((TextView) view).getText().toString();
-                        File f = new File(StaticVariables.path, fname);
-                            String ext = fname.substring(fname.lastIndexOf('.') + 1);
-                            MimeTypeMap mtm = MimeTypeMap.getSingleton();
-                            String type = mtm.getMimeTypeFromExtension(ext);
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            Uri uri = Uri.fromFile(f);
-                            if (type == null)
-                                if (ext.toLowerCase().equals("spec")) {
-                                    type = "application/SPEC";
-                                } else {
-                                    type = "*//*";
-                                }
-                            intent.setDataAndType(uri, type);
-                            startActivity(intent);*/
+                    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+                        viewPager.setCurrentItem(tab.getPosition());
+                        Safe.currentPage = tab.getPosition();
                     }
-                });
+
+                    @Override
+                    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+                    }
+
+                    @Override
+                    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+                    }
+                };
+                actionBar.addTab(actionBar.newTab().setText(safe.getPageTitle(0)).setTabListener(t));
+                actionBar.addTab(actionBar.newTab().setText(safe.getPageTitle(1)).setTabListener(t));
                 break;
             case R.layout.profile:
                 final ImageButton ibMyName = (ImageButton) rootView.findViewById(R.id.test).findViewById(R.id.image_button);

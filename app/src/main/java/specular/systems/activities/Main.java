@@ -99,7 +99,7 @@ import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
 
-public class Main extends FragmentActivity {
+public class Main extends FragmentActivity{
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2,
             DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_AND_SEND = 76,
             RESTORE = 45, ADD_GROUP = 46;
@@ -183,7 +183,7 @@ public class Main extends FragmentActivity {
                     dr.show(getFragmentManager(), "dr");
                     break;
                 case ADD_GROUP:
-                    FragmentManagement.currentPage = 1;
+                    ContactsGroup.currentPage = 1;
                     selectItem(1, R.layout.encrypt, null);
                     DialogAddGroup dag = new DialogAddGroup();
                     dag.show(getFragmentManager(), "dag");
@@ -411,7 +411,7 @@ public class Main extends FragmentActivity {
                     @Override
                     public void onClick(View v) {
                         String name = ((EditText)dialog.findViewById(R.id.name_of_file)).getText().toString();
-                        SharedPreferences sp = getSharedPreferences("saved_files",MODE_PRIVATE);
+                        SharedPreferences sp = getSharedPreferences("saved_files", MODE_PRIVATE);
                         Map m = sp.getAll();
                         if(m!=null&&m.containsValue(name)){
                             t.setText("file with the same name already exist");
@@ -1201,7 +1201,7 @@ public class Main extends FragmentActivity {
         }
         if (StaticVariables.fileContactCard != null) {
             if (CryptMethods.publicExist() && CryptMethods.privateExist()) {
-                FragmentManagement.currentPage = 0;
+                ContactsGroup.currentPage = 0;
                 selectItem(0, R.layout.encrypt, null);
                 final Contact c = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.fileContactCard.getPublicKey());
                 if (c == null) {
