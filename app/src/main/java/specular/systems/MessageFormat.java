@@ -8,12 +8,9 @@ import java.util.TimeZone;
 
 public class MessageFormat {
     public static final int NOT_RELEVANT = 0, OK = 1, NOT_LATEST = 2, OLD = 3, FAILED = 4;
-    //from CryptoMethods
     public static MessageFormat decryptedMsg = null;
     private String name, email, msgContent, session, sentTime, fileName;
-    byte[] publicKey;
-    byte[] hash;
-    private byte[] fileContent = null;
+    private byte[] publicKey,hash,fileContent;
 
     public MessageFormat(byte[] raw) {
         int loc = 0;
@@ -32,7 +29,7 @@ public class MessageFormat {
         String data[];
         try {
             data = new String(b, "UTF-8").split("\n");
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             data = new String(b).split("\n");
         }
         if (!(data.length < 6)) {
@@ -48,8 +45,9 @@ public class MessageFormat {
             hash = new byte[]{raw[raw.length-9],raw[raw.length-8],raw[raw.length-7],raw[raw.length-6]};
             publicKey = new byte[keyLen];
             System.arraycopy(raw,raw.length-9-keyLen,publicKey,0,publicKey.length);
+            int fileLength = raw.length-(loc+15+keyLen);
             if (raw.length > loc + 15+keyLen) {
-                fileContent = new byte[raw.length - (loc + 7)];
+                fileContent = new byte[fileLength];
                 System.arraycopy(raw,loc+6,fileContent,0,fileContent.length);
             }
         }
@@ -103,7 +101,7 @@ public class MessageFormat {
         System.arraycopy(publicKey,0,msg,b,publicKey.length);
         if(fileContent!=null)
             System.arraycopy(fileContent,0,msg,b+publicKey.length,fileContent.length);
-        return checkHash(hash, msg);
+        return checkHash(hash, hashing(msg));
     }
 
     public static int checkReplay(Contact c, String sentTime) {
@@ -129,9 +127,8 @@ public class MessageFormat {
     }
 
     private boolean checkHash(byte[] hash, byte[] msg) {
-        byte[] sig = hashing(msg);
         for(int a=0;a<4;a++)
-            if(sig[a]!=hash[a])
+            if(msg[a]!=hash[a])
                 return false;
         return true;
     }

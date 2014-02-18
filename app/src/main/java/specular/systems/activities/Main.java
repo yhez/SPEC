@@ -110,7 +110,8 @@ public class Main extends FragmentActivity {
                 case FAILED:
                     break;
                 case REPLACE_PHOTO:
-                    ((TextView) findViewById(R.id.file_content_length)).setText(StaticVariables.fileContent.length + "");
+                    TextView tv = (TextView) findViewById(R.id.file_content_length);
+                    if(tv!=null)tv.setText(StaticVariables.fileContent.length + "");
                     invalidateOptionsMenu();
                     break;
                 case CANT_DECRYPT:
@@ -1394,6 +1395,7 @@ public class Main extends FragmentActivity {
         }
         int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         if (newkeys != KeysDeleter.oldStatus||Splash.file) {
+            Splash.file=false;
             setUpViews();
         }
     }
