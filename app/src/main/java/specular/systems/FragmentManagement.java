@@ -3,14 +3,14 @@ package specular.systems;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -39,11 +39,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import specular.systems.Dialogs.NotImplemented;
 import specular.systems.activities.Demo;
 import specular.systems.activities.Main;
 import zxing.QRCodeEncoder;
@@ -82,6 +82,7 @@ public class FragmentManagement extends Fragment {
         TextView contactExist = (TextView) rootView.findViewById(R.id.flag_contact_exist);
         TextView sender = (TextView) rootView.findViewById(R.id.general_details);
         View fileAttach = rootView.findViewById(R.id.open_file_rlt);
+        View saveAttach = rootView.findViewById(R.id.save_attachment);
         ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.open_file);
         TextView fileName = (TextView) rootView.findViewById(R.id.file_name);
         ImageView hs = (ImageView) rootView.findViewById(R.id.hash_check);
@@ -103,8 +104,10 @@ public class FragmentManagement extends Fragment {
         }
         if (StaticVariables.file_name == null || StaticVariables.file_name.length() == 0) {
             fileAttach.setVisibility(View.GONE);
+            saveAttach.setVisibility(View.GONE);
         } else {
             fileAttach.setVisibility(View.VISIBLE);
+            saveAttach.setVisibility(View.VISIBLE);
             String ext = StaticVariables.file_name.substring(StaticVariables.file_name.lastIndexOf('.') + 1);
             MimeTypeMap mtm = MimeTypeMap.getSingleton();
             String type = mtm.getMimeTypeFromExtension(ext);
@@ -660,6 +663,7 @@ public class FragmentManagement extends Fragment {
                 }else if (StaticVariables.flag_msg == null || !StaticVariables.flag_msg) {
                     rootView.findViewById(R.id.top_pannel).setVisibility(View.GONE);
                     rootView.findViewById(R.id.open_file_rlt).setVisibility(View.GONE);
+                    rootView.findViewById(R.id.save_attachment).setVisibility(View.GONE);
                     rootView.findViewById(R.id.from).setVisibility(View.GONE);
                     ((TextView) rootView.findViewById(R.id.flag_contact_exist)).setText(true + "");
                     ((TextView) rootView.findViewById(R.id.decrypted_msg)).setText(R.string.cant_decrypt);
@@ -676,18 +680,22 @@ public class FragmentManagement extends Fragment {
                 break;
             case R.layout.explorer:
                 ListView lv = (ListView) rootView.findViewById(R.id.list);
-                if (StaticVariables.path == null)
-                    StaticVariables.path = Environment.getExternalStorageDirectory();
                 final ArrayList<String> files = new ArrayList<String>();
-                Collections.addAll(files, StaticVariables.path.list());
+                SharedPreferences sp = getActivity().getSharedPreferences("saved_files", Context.MODE_APPEND);
+                Map m = sp.getAll();
+                Object[] o = m.values().toArray();
+                for(int a=0;a<o.length;a++)
+                    files.add((String)o[a]);
                 final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, files);
                 lv.setAdapter(adapter);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        NotImplemented ni = new NotImplemented();
+                        ni.show(getActivity().getFragmentManager(), "hfhf");
+                        /*
                         String fname = ((TextView) view).getText().toString();
                         File f = new File(StaticVariables.path, fname);
-                        if (f.isFile()) {
                             String ext = fname.substring(fname.lastIndexOf('.') + 1);
                             MimeTypeMap mtm = MimeTypeMap.getSingleton();
                             String type = mtm.getMimeTypeFromExtension(ext);
@@ -697,17 +705,10 @@ public class FragmentManagement extends Fragment {
                                 if (ext.toLowerCase().equals("spec")) {
                                     type = "application/SPEC";
                                 } else {
-                                    type = "*/*";
+                                    type = "*//*";
                                 }
                             intent.setDataAndType(uri, type);
-                            startActivity(intent);
-                        } else if (f.isDirectory()) {
-                            files.clear();
-                            Collections.addAll(files, f.list());
-                            StaticVariables.path = new File(StaticVariables.path, fname);
-                            adapter.notifyDataSetChanged();
-                        }
-
+                            startActivity(intent);*/
                     }
                 });
                 break;

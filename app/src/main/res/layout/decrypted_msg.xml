@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:alpha="0"
+    android:alpha="1"
     android:background="@android:color/white"
     android:orientation="vertical"
     tools:context=".activities.Main">
@@ -123,6 +123,21 @@
         android:layout_alignWithParentIfMissing="true"
         android:padding="@dimen/default_gap">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top">
+
+            <TextView
+                android:textIsSelectable="true"
+                android:id="@+id/decrypted_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="all"
+                android:gravity="start"
+                android:textColor="@color/spec_black"
+                android:textSize="25sp" />
+        </ScrollView>
         <RelativeLayout
             android:id="@+id/open_file_rlt"
             android:layout_width="wrap_content"
@@ -147,22 +162,16 @@
                 android:layout_above="@id/file_name"
                 android:onClick="decryptedMsgClick" />
         </RelativeLayout>
+        <ImageButton
+            android:id="@+id/save_attachment"
+            android:onClick="decryptedMsgClick"
+            android:background="@drawable/border_botom"
+            android:scaleType="center"
+            android:src="@drawable/save"
+            android:layout_gravity="bottom|left"
+            android:layout_width="96dp"
+            android:layout_height="96dp" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top">
-
-            <TextView
-                android:textIsSelectable="true"
-                android:id="@+id/decrypted_msg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autoLink="all"
-                android:gravity="start"
-                android:textColor="@color/spec_black"
-                android:textSize="25sp" />
-        </ScrollView>
     </FrameLayout>
 
     <TextView

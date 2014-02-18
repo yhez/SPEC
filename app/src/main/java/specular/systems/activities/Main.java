@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.nfc.FormatException;
@@ -53,6 +54,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 import specular.systems.AnonymousMessage;
 import specular.systems.Backup;
@@ -400,6 +402,36 @@ public class Main extends FragmentActivity {
                     }
                 ExplainDialog ed = new ExplainDialog(this, lightMsg ? ExplainDialog.REPLAY : ExplainDialog.REPLAY_QR, replay);
                 ed.show(getFragmentManager(), "replay");
+                break;
+            case R.id.save_attachment:
+                final Dialog dialog = new Dialog(this,android.R.style.Theme_Holo_Light_Dialog_MinWidth);
+                dialog.setContentView(R.layout.add_to_save);
+                dialog.setTitle("save attachment in safe");
+                dialog.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String name = ((EditText)dialog.findViewById(R.id.name_of_file)).getText().toString();
+                        SharedPreferences sp = getSharedPreferences("saved_files",MODE_PRIVATE);
+                        Map m = sp.getAll();
+                        if(m!=null&&m.containsValue(name)){
+                            t.setText("file with the same name already exist");
+                            t.show();
+                            return;
+                        }
+                        SharedPreferences.Editor edt = sp.edit();
+                        edt.putString(System.currentTimeMillis()+"",name);
+                        edt.commit();
+                        dialog.cancel();
+                        findViewById(R.id.save_attachment).setVisibility(View.GONE);
+                    }
+                });
+                dialog.findViewById(R.id.no_button).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.show();
                 break;
         }
     }
@@ -1313,27 +1345,11 @@ public class Main extends FragmentActivity {
                     else
                         new prepareToExit();
                     break;
-                case R.layout.wait_nfc_decrypt:
-                    new prepareToExit();
-                    break;
                 case R.layout.wait_nfc_to_write:
                     if (CryptMethods.publicExist())
                         selectItem(-1, R.layout.create_new_keys, null);
                     else
                         new prepareToExit();
-                    break;
-                case R.layout.explorer:
-                    if (StaticVariables.path == null) {
-                        setUpViews();
-                    } else {
-                        String root = Environment.getExternalStorageDirectory().getPath();
-                        if (StaticVariables.path.getPath().equals(root)) {
-                            setUpViews();
-                        } else {
-                            StaticVariables.path = StaticVariables.path.getParentFile();
-                            selectItem(-1, FragmentManagement.currentLayout, null);
-                        }
-                    }
                     break;
                 default:
                     if (FragmentManagement.currentLayout == defaultScreen)

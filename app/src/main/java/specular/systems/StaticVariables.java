@@ -2,8 +2,6 @@ package specular.systems;
 
 import android.text.method.KeyListener;
 
-import java.io.File;
-
 public class StaticVariables {
     //defines how long does the list have to be to show the last used contacts
     public static final int minContactSize = 10;
@@ -28,7 +26,6 @@ public class StaticVariables {
     //should be delete when goes to background
     public static String msg_content = null, file_name = null, session = null;
     public static long orig_msg_size, encrypted_msg_size;
-    public static File path;
     public static byte[] decryptedGroup;
     public static byte[] decryptedBackup;
     public static String encryptedMsgToSend;

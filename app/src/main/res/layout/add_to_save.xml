@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/name_of_file"
+        android:hint="enter name for the file..."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:padding="@dimen/default_gap"
+        android:orientation="horizontal"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/no_button"
+            android:text="@string/no"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_weight="1"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/spec_blue" />
+
+        <Button
+            android:id="@+id/ok_button"
+            android:text="@string/ok"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_weight="1"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>
