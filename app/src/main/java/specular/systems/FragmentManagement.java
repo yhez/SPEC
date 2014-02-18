@@ -57,10 +57,10 @@ public class FragmentManagement extends Fragment {
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-                    EditText et = (EditText) rootView.findViewById(R.id.message);
-                    String ss = et.getText() + "";
-                    et.setText(" " + ss);
-                    et.setText(ss);
+            EditText et = (EditText) rootView.findViewById(R.id.message);
+            String ss = et.getText() + "";
+            et.setText(" " + ss);
+            et.setText(ss);
         }
     };
     View rootView;
@@ -106,7 +106,7 @@ public class FragmentManagement extends Fragment {
             String type = mtm.getMimeTypeFromExtension(ext);
             if (type == null)
                 imageButton.setImageResource(R.drawable.unknown2);
-            else if (type.startsWith("audio") || type.equals("application/ogg")||type.equals("video/3gpp"))
+            else if (type.startsWith("audio") || type.equals("application/ogg") || type.equals("video/3gpp"))
                 imageButton.setImageResource(R.drawable.music);
             else if (type.startsWith("video"))
                 imageButton.setImageResource(R.drawable.movie);
@@ -163,6 +163,8 @@ public class FragmentManagement extends Fragment {
                 container, false);
         if (StaticVariables.luc == null)
             StaticVariables.luc = new LastUsedContacts(getActivity());
+        if (!(currentLayout == R.layout.explorer))
+            getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         switch (currentLayout) {
             case create_new_keys:
                 addSocialLogin();
@@ -653,7 +655,7 @@ public class FragmentManagement extends Fragment {
                     StaticVariables.file_name = MessageFormat.decryptedMsg.getFileName();
                     StaticVariables.session = MessageFormat.decryptedMsg.getSession();
                     updateDecryptedScreen();
-                }else if (StaticVariables.flag_msg == null || !StaticVariables.flag_msg) {
+                } else if (StaticVariables.flag_msg == null || !StaticVariables.flag_msg) {
                     rootView.findViewById(R.id.top_pannel).setVisibility(View.GONE);
                     rootView.findViewById(R.id.open_file_rlt).setVisibility(View.GONE);
                     rootView.findViewById(R.id.save_attachment).setVisibility(View.GONE);
@@ -665,7 +667,7 @@ public class FragmentManagement extends Fragment {
                 }
                 break;
             case R.layout.recreating_keys:
-                FrameLayout f = (FrameLayout)rootView.findViewById(R.id.camera);
+                FrameLayout f = (FrameLayout) rootView.findViewById(R.id.camera);
                 f.addView(new CameraPreview(getActivity()));
                 Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
                 rootView.findViewById(R.id.image_public).setAnimation(anim);
@@ -675,25 +677,25 @@ public class FragmentManagement extends Fragment {
                 final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.pager);
                 Safe safe = new Safe(Main.main.getSupportFragmentManager());
                 final ActionBar actionBar = getActivity().getActionBar();
-                viewPager.setCurrentItem(Safe.currentPage);
                 viewPager.setAdapter(safe);
+                viewPager.setCurrentItem(Safe.currentPage);
                 viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                            @Override
-                            public void onPageScrolled(int i, float v, int i2) {
+                    @Override
+                    public void onPageScrolled(int i, float v, int i2) {
 
-                            }
+                    }
 
-                            @Override
-                            public void onPageSelected(int i) {
-                                Safe.currentPage = i;
-                                actionBar.setSelectedNavigationItem(i);
-                            }
+                    @Override
+                    public void onPageSelected(int i) {
+                        Safe.currentPage = i;
+                        actionBar.setSelectedNavigationItem(i);
+                    }
 
-                            @Override
-                            public void onPageScrollStateChanged(int i) {
+                    @Override
+                    public void onPageScrollStateChanged(int i) {
 
-                            }
-                        });
+                    }
+                });
                 actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
                 ActionBar.TabListener t = new ActionBar.TabListener() {
                     @Override
@@ -712,8 +714,14 @@ public class FragmentManagement extends Fragment {
 
                     }
                 };
-                actionBar.addTab(actionBar.newTab().setText(safe.getPageTitle(0)).setTabListener(t));
-                actionBar.addTab(actionBar.newTab().setText(safe.getPageTitle(1)).setTabListener(t));
+                if (actionBar.getTabCount() == 0) {
+                    actionBar.addTab(actionBar.newTab().setText(safe.getPageTitle(0)).setTabListener(t));
+                    actionBar.addTab(actionBar.newTab().setText(safe.getPageTitle(1)).setTabListener(t));
+                } else {
+                    actionBar.getTabAt(0).setTabListener(t);
+                    actionBar.getTabAt(1).setTabListener(t);
+                    actionBar.setSelectedNavigationItem(Safe.currentPage);
+                }
                 break;
             case R.layout.profile:
                 final ImageButton ibMyName = (ImageButton) rootView.findViewById(R.id.test).findViewById(R.id.image_button);
@@ -761,7 +769,7 @@ public class FragmentManagement extends Fragment {
                 rootView.findViewById(R.id.my_qr_public_key).setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        Intent i = new Intent(getActivity(),Demo.class);
+                        Intent i = new Intent(getActivity(), Demo.class);
                         startActivity(i);
                         return false;
                     }

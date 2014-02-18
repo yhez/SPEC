@@ -2,20 +2,16 @@ package specular.systems;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
-import android.view.Gravity;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -23,7 +19,7 @@ import java.util.Map;
 import specular.systems.Dialogs.NotImplemented;
 
 
-public class Safe extends FragmentPagerAdapter {
+public class Safe extends FragmentStatePagerAdapter {
     public static int currentPage = 0;
 
     public Safe(FragmentManager fm) {
@@ -48,8 +44,8 @@ public class Safe extends FragmentPagerAdapter {
     public static class SectionSafe extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-            final ListView lv = new ListView(getActivity());
-            lv.setBackgroundColor(Color.GRAY);
+            View rootView = inflater.inflate(R.layout.list_files,container,false);
+            ListView lv = (ListView)rootView.findViewById(R.id.list);
             final ArrayList<String> files = new ArrayList<String>();
             SharedPreferences sp = getActivity().getSharedPreferences("saved_files", Context.MODE_PRIVATE);
             Map m = sp.getAll();
@@ -65,21 +61,14 @@ public class Safe extends FragmentPagerAdapter {
                     ni.show(getActivity().getFragmentManager(), "hfhf");
                 }
             });
-            Log.e("list",files.size()+"");
-            return lv;
+            return rootView;
         }
     }
 
     public static class SectionNotes extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-            TextView tv = new TextView(getActivity());
-            tv.setText("notes hasn't been implemented yet");
-            tv.setGravity(Gravity.CENTER);
-            tv.setTextSize(25);
-            tv.setTextColor(Color.WHITE);
-            tv.setBackgroundColor(Color.GRAY);
-            return tv;
+            return inflater.inflate(R.layout.text_view,container,false);
         }
     }
 }
