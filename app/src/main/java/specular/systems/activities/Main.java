@@ -122,11 +122,13 @@ public class Main extends FragmentActivity{
                     ((TextView) findViewById(R.id.decrypted_msg)).setText(s);
                     break;
                 case DECRYPT_SCREEN:
-                    if (MessageFormat.decryptedMsg != null && MessageFormat.decryptedMsg.getFileContent() != null)
-                        if (!FilesManagement.createFileToOpen(Main.this)) {
+                    if (MessageFormat.decryptedMsg != null){
+                        byte[] file = MessageFormat.decryptedMsg.getFileContent();
+                        if (!FilesManagement.createFileToOpen(Main.this,file,MessageFormat.decryptedMsg.getFileName())) {
                             t.setText(R.string.failed_to_create_file_to_open);
                             t.show();
                         }
+                    }
                     selectItem(1, R.layout.decrypted_msg, null);
                     break;
                 case FilesManagement.RESULT_ADD_FILE_TO_BIG:
@@ -271,14 +273,9 @@ public class Main extends FragmentActivity{
                 encryptManager(SendMsg.MESSAGE);
                 break;
             case R.id.open_file:
-                Intent oi = FilesManagement.openFile(this, StaticVariables.file_name);
-                try {
-                    startActivity(oi);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    t.setText(R.string.cant_find_an_app_to_open_file);
-                    t.show();
-                }
+                Intent oi = new Intent(this,FilesOpener.class);
+                oi.putExtra("file_name",StaticVariables.file_name);
+                startActivity(oi);
                 break;
             case R.id.answer:
                 if (((TextView) findViewById(R.id.flag_contact_exist)).getText().toString().equals(false + "")) {

@@ -2,6 +2,7 @@ package specular.systems.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -12,9 +13,10 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.os.Environment;
 import android.os.Parcelable;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -28,30 +30,44 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Scroller;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
+import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
-import specular.systems.Visual;
+import specular.systems.R;
 
 
 public class FilesOpener extends Activity {
+    public static boolean locationPrivate;
+    public static String type;
     String path;
-    ProgressBar pd;
-    private Handler hndl = new Handler(){
-        @Override
-        public void handleMessage(Message msg){
-            pd.setProgress(msg.what);
-        }
-    };
+    MediaPlayer mp;
+    boolean done;
+
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
-        path = getIntent().getData().getPath();
-        String fileName = Visual.getFileName(this, getIntent().getData());
-        MimeTypeMap m = MimeTypeMap.getSingleton();
-        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
-        String type = m.getMimeTypeFromExtension(ext);
+        String fileName = getIntent().getStringExtra("file_name");
+        if (!locationPrivate) {
+            File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
+            File f = new File(path, fileName);
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setDataAndType(Uri.fromFile(f), type);
+            finish();
+            try {
+                startActivity(i);
+            } catch (Exception e) {
+                Toast t = Toast.makeText(this, R.string.cant_find_an_app_to_open_file, Toast.LENGTH_SHORT);
+                t.setGravity(Gravity.CENTER, 0, 0);
+                t.show();
+            }
+            return;
+        }
+        path = new File(getFilesDir(), fileName).getPath();
         if (type.startsWith("image")) {
             Bitmap bm = BitmapFactory.decodeFile(path);
             TouchImageView iv = new TouchImageView(this);
@@ -70,35 +86,28 @@ public class FilesOpener extends Activity {
             tv.setText(path.substring(path.lastIndexOf("/") + 1));
             fl.addView(tv);
             setContentView(fl);
-        } else if (type.startsWith("audio")||type.equals("application/ogg")||type.equals("video/3gpp")) {
-            pd = new ProgressBar(this, null, android.R.attr.progressBarStyle);
-            pd.setMax(100);
-            pd.setKeepScreenOn(true);
-            setContentView(pd);
+        } else if (type.startsWith("audio") || type.equals("application/ogg") || type.equals("video/3gpp")) {
+            setContentView(R.layout.player_progress);
+            startPlay();
+        } else if (type.startsWith("text")) {
             try {
-                final MediaPlayer mp = new MediaPlayer();
-                mp.setScreenOnWhilePlaying(true);
-                mp.setDataSource(path);
-                mp.prepare();
-                mp.start();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (mp.isPlaying()){
-                            synchronized (this){
-                                try {
-                                    ((Object)this).wait(25);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            hndl.sendEmptyMessage(mp.getCurrentPosition()/mp.getDuration()*100);
-                        }
-                        finish();
-                    }
-                }).start();
-            } catch (IOException e) {
-                e.printStackTrace();
+                InputStream is = openFileInput(fileName);
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+                TextView tv = new TextView(this);
+                tv.setText(Html.fromHtml(new String(buffer)));
+                tv.setPadding(32, 32, 32, 32);
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextIsSelectable(true);
+                tv.setMovementMethod(LinkMovementMethod.getInstance());
+                setContentView(tv);
+            } catch (Exception e) {
+                Toast t = Toast.makeText(this, "failed to read file", Toast.LENGTH_SHORT);
+                t.setGravity(Gravity.CENTER, 0, 0);
+                t.show();
+                finish();
             }
         }
     }
@@ -106,6 +115,11 @@ public class FilesOpener extends Activity {
     @Override
     public void onPause() {
         super.onPause();
+        if (mp != null) {
+            mp.stop();
+            done=true;
+            mp.release();
+        }
         new KeysDeleter();
     }
 
@@ -115,7 +129,118 @@ public class FilesOpener extends Activity {
         KeysDeleter.stop();
     }
 
+    public void play(View v) {
+        if (mp != null) {
+            if(done){
+                done=false;
+                mp.reset();
+                try {
+                    mp.setDataSource(path);
+                    mp.prepare();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            mp.start();
+            v.setEnabled(false);
+            findViewById(R.id.pause).setEnabled(true);
+            progress(mp);
+        }
+    }
+
+    private void startPlay() {
+        try {
+            mp = new MediaPlayer();
+            mp.setScreenOnWhilePlaying(true);
+            mp.setDataSource(path);
+            mp.prepare();
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    findViewById(R.id.play).setEnabled(true);
+                    findViewById(R.id.pause).setEnabled(false);
+                    done = true;
+                    ((TextView) findViewById(R.id.current_time)).setText(time(0));
+                    ((ProgressBar) findViewById(R.id.progress_bar)).setProgress(0);
+                }
+            });
+            ((TextView) findViewById(R.id.total_time)).setText(time(mp.getDuration()));
+            findViewById(R.id.play).setEnabled(false);
+            mp.start();
+            int duration = mp.getDuration();
+            ((ProgressBar) findViewById(R.id.progress_bar)).setMax(duration);
+            progress(mp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void progress(final MediaPlayer mp) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!done&&mp.isPlaying()) {
+                    final int currentPosition = mp.getCurrentPosition();
+                    synchronized (this) {
+                        try {
+                            ((Object) this).wait(25);
+                        } catch (Exception e) {
+                        }
+                    }
+                    findViewById(R.id.current_time).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(!done)
+                            ((TextView) findViewById(R.id.current_time)).setText(time(currentPosition));
+                        }
+                    });
+                    findViewById(R.id.progress_bar).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(!done)
+                            ((ProgressBar) findViewById(R.id.progress_bar)).setProgress(currentPosition);
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
+    public void pause(View v) {
+        if (mp != null) {
+            mp.pause();
+            v.setEnabled(false);
+            findViewById(R.id.play).setEnabled(true);
+        }
+    }
+
+    private String time(int length) {
+        length /= 1000;
+        int sec = length % 60;
+        length /= 60;
+        int min = length % 60;
+        length /= 60;
+        int h = length;
+        return h + ":" + min + ":" + sec;
+    }
+
     enum State {NONE, DRAG, ZOOM, FLING, ANIMATE_ZOOM}
+
+    public static boolean saveFileToOpen(Activity a, byte[] file, String name) {
+        MimeTypeMap m = MimeTypeMap.getSingleton();
+        String ext = name.substring(name.lastIndexOf(".") + 1);
+        type = m.getMimeTypeFromExtension(ext);
+        if (type != null && (type.startsWith("image")
+                || type.startsWith("audio")
+                || type.equals("application/ogg")
+                || type.equals("video/3gpp")
+                || type.startsWith("text"))) {
+            locationPrivate = true;
+            return FilesManagement.saveFileOnDevice(a, file, name);
+        }
+        locationPrivate = false;
+        return FilesManagement.saveFileOnPublicFolder(a, file, name);
+    }
 
     public class TouchImageView extends ImageView {
         private static final float SUPER_MIN_MULTIPLIER = .75f;

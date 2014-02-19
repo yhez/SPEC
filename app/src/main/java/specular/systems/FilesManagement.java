@@ -3,7 +3,6 @@ package specular.systems;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,7 +11,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -58,50 +56,8 @@ public final class FilesManagement {
         return tfos;
     }
 
-    public static boolean createFileToOpen(Activity a) {
-        if (MessageFormat.decryptedMsg.getFileContent() == null)
-            return false;
-        try {
-            OutputStream os;
-            MimeTypeMap m = MimeTypeMap.getSingleton();
-            String name = MessageFormat.decryptedMsg.getFileName();
-            String ext = name.substring(name.lastIndexOf(".") + 1);
-            String type = m.getMimeTypeFromExtension(ext);
-            if (type!=null&&(type.startsWith("image") || type.startsWith("audio") || type.equals("application/ogg") || type.equals("video/3gpp"))) {
-                os = a.openFileOutput(name, Context.MODE_PRIVATE);
-            } else {
-                File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
-                if (!path.exists())
-                    path.mkdirs();
-                File file = new File(path, name);
-                os = new FileOutputStream(file);
-            }
-            os.write(MessageFormat.decryptedMsg.getFileContent());
-            os.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    public static Intent openFile(Activity a, String fileName) {
-        File path;
-        Intent intent;
-        MimeTypeMap m = MimeTypeMap.getSingleton();
-        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
-        String type = m.getMimeTypeFromExtension(ext);
-        if (type!=null&&(type.startsWith("image") || type.startsWith("audio") || type.equals("application/ogg") || type.equals("video/3gpp"))) {
-            path = a.getFilesDir();
-            intent = new Intent(a, FilesOpener.class);
-        } else {
-            path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
-            intent = new Intent(Intent.ACTION_VIEW);
-        }
-        File f = new File(path, fileName);
-        Uri uri = Uri.fromFile(f);
-        intent.setDataAndType(uri, type);
-        return intent;
+    public static boolean createFileToOpen(Activity a,byte[] file,String name) {
+        return file != null && FilesOpener.saveFileToOpen(a, file, name);
     }
 
     public static void saveTempDecryptedMSG(Activity a) {
@@ -532,5 +488,33 @@ public final class FilesManagement {
             if (p[aa] != cp[aa])
                 return false;
         return true;
+    }
+
+    public static boolean saveFileOnDevice(Activity a, byte[] file, String name) {
+        try {
+            OutputStream os = a.openFileOutput(name,Context.MODE_PRIVATE);
+            os.write(file);
+            os.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static boolean saveFileOnPublicFolder(Activity a, byte[] file, String name) {
+        File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
+        if (!path.exists())
+            path.mkdirs();
+        File f = new File(path, name);
+        try {
+            OutputStream os = new FileOutputStream(f);
+            os.write(file);
+            os.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+
     }
 }

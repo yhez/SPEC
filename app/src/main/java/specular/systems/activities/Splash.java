@@ -154,11 +154,14 @@ public class Splash extends Activity {
                 }
             }
             final Uri ur = uri;
+            File f = new File(ur.getPath());
             final ProgressDialog pd = new ProgressDialog(this, R.style.dialogTransparent);
-            pd.setTitle(R.string.loading_title);
-            pd.setMessage(getString(R.string.loading_msg));
-            pd.setCancelable(false);
-            pd.show();
+            if(f.length()>500000){
+                pd.setTitle(R.string.loading_title);
+                pd.setMessage(getString(R.string.loading_msg));
+                pd.setCancelable(false);
+                pd.show();
+            }
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -183,7 +186,8 @@ public class Splash extends Activity {
                                 }
                                 buf.deleteCharAt(buf.length() - 1);
                                 data = buf.toString();
-                                pd.cancel();
+                                if(pd.isShowing())
+                                    pd.cancel();
                                 reader.close();
                                 is.close();
                             } catch (IOException ignored) {
