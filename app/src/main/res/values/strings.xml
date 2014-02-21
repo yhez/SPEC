@@ -14,7 +14,7 @@
     <string name="cant_format">Unable to format tag to NDEF.\nTry another tag.</string>
     <string name="tag_not_supported">Tag doesn\'t appear to support NDEF format.\nTry another tag.</string>
     <string name="tag_written">Tag written successfully.</string>
-    <string name="io_exception_format">Trouble formatting before saving key.\nTry again.</string>
+    <string name="io_exception_format">Trouble formatting before saving key.\nTap again.</string>
     <string name="cant_find_private_key">Can\'t find a valid Private Key on the NFC tag.\nTry another one.</string>
     <string name="cant_find_data">This tag is empty.\nTry another one.</string>
     <string name="wait_for_nfc_to_read">Waiting for NFC&#8230;</string>
@@ -113,7 +113,7 @@
     <string name="ok">OK</string>
     <string name="hint_enter_your_name">name (optional)&#8230;</string>
     <string name="hint_enter_your_email">email&#8230;</string>
-    <string name="wait_for_nfc_to_write">Tap NFC to store Private Decryption Key\n(provides additional security)</string>
+    <string name="wait_for_nfc_to_write">Tap NFC to store Private Decryption Key externally</string>
     <string name="skip_save_to_phone">Skip and save key on device</string>
     <string name="explain_and_about">LEARN ABOUT SPEC</string>
     <string name="create_keys">Generate New Keys</string>
