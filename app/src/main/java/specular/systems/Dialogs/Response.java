@@ -119,7 +119,6 @@ public class Response extends DialogFragment {
                 String sss = contact!=null?contact.getSession().substring(0,contact.getSession().length()-2):group.getMentor();
                 final MessageFormat msg = new MessageFormat(null, CryptMethods.getMyDetails(getActivity()), "", userInput + msgContent
                         , sss);
-                //final AnonymousMessage anonymousMessage = new AnonymousMessage(userInput + msgContent);
                 final ProgressDlg prgd = new ProgressDlg(getActivity(), R.string.encrypting);
                 prgd.setCancelable(false);
                 prgd.show();

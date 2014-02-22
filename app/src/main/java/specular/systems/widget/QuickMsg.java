@@ -101,7 +101,6 @@ public class QuickMsg extends Activity {
                             final String userInput = et.getText().toString();
                             final MessageFormat msg = new MessageFormat(null, CryptMethods.getMyDetails(QuickMsg.this), "", userInput
                                     , contact.getSession().substring(0,contact.getSession().length()-2));
-                            //final AnonymousMessage anonymousMessage = new AnonymousMessage(userInput);
                             final ProgressDlg prgd = new ProgressDlg(QuickMsg.this, R.string.encrypting);
                             prgd.setCancelable(false);
                             prgd.show();

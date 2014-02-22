@@ -57,7 +57,6 @@ public class CryptMethods {
                 myPrivateKey = null;
             }
             MessageFormat.decryptedMsg = null;
-            //AnonymousMessage.decryptedLightMsg = null;
             lock = true;
         }
     }
@@ -155,7 +154,6 @@ public class CryptMethods {
 
     public static int decrypt(String encryptedMessage, byte[] key) {
         MessageFormat.decryptedMsg = null;
-        //AnonymousMessage.decryptedLightMsg = null;
         StaticVariables.decryptedBackup = null;
         StaticVariables.decryptedGroup = null;
         if (encryptedMessage == null) {
@@ -182,7 +180,6 @@ public class CryptMethods {
                 MessageFormat.decryptedMsg = new MessageFormat(decryptedBytes);
                 return result;
             case FileParser.ENCRYPTED_QR_MSG:
-                //AnonymousMessage.decryptedLightMsg = new AnonymousMessage(decryptedBytes);
                 return result;
             case FileParser.ENCRYPTED_BACKUP:
                 StaticVariables.decryptedBackup = decryptedBytes;
