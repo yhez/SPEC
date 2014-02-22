@@ -18,7 +18,6 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
@@ -554,12 +553,12 @@ public class Main extends FragmentActivity{
         }
         t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
         t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        File folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports");
+        File folder = new File(getFilesDir() + "/reports");
         if (folder.exists() && folder.list().length > 0) {
             Intent i = new Intent(this, SendReport.class);
             startActivity(i);
         }
-        folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
+        folder = new File(getFilesDir() + "/attachments");
         if (folder.exists() && folder.list().length > 0)
             for (String s : folder.list())
                 new File(folder, s).delete();
@@ -739,7 +738,7 @@ public class Main extends FragmentActivity{
             public void onClick(View v) {
                 dialog.cancel();
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE);
-                File f = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments", System.currentTimeMillis() + ".jpg");
+                File f = new File(getFilesDir() + "/attachments", System.currentTimeMillis() + ".jpg");
                 pic = Uri.fromFile(f);
                 i.putExtra(MediaStore.EXTRA_OUTPUT, pic);
                 startActivityForResult(i, TAKE_PICTURE);

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcelable;
 import android.view.View;
 
@@ -38,7 +37,7 @@ public class SendReport extends Activity {
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
-        File folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports");
+        File folder = new File(getFilesDir() + "/reports");
         for (String f : folder.list(filterreported)) {
             new File(folder, f).delete();
         }
@@ -57,23 +56,24 @@ public class SendReport extends Activity {
         ArrayList<String> txt = new ArrayList<String>();
         txt.add(getString(R.string.send_report_content));
         i.putExtra(Intent.EXTRA_TEXT,txt);
-        File folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports");
+        File folder = new File(getFilesDir() + "/reports");
         ArrayList<Parcelable> uris = new ArrayList<Parcelable>();
         for (String s : folder.list(filterNotReported)) {
-            File oldname = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports", s);
-            File newNmae = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports", s.split("\\.")[0] + ".txt");
+            File oldname = new File(getFilesDir() + "/reports", s);
+            File newNmae = new File(getFilesDir() + "/reports", s.split("\\.")[0] + ".txt");
             oldname.renameTo(newNmae);
             uris.add(Uri.fromFile(newNmae));
         }
         i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(i);
         finish();
     }
 
     public void finish(View v) {
-        File folder = new File(Environment.getExternalStorageDirectory() + "/SPEC/reports");
+        File folder = new File(getFilesDir() + "/reports");
         for (String s : folder.list()) {
-            new File(Environment.getExternalStorageDirectory() + "/SPEC/reports", s).delete();
+            new File(getFilesDir() + "/reports", s).delete();
         }
         finish();
     }

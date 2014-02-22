@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<paths>
+    <files-path path="messages/" name="message" />
+    <files-path path="reports/" name="report" />
+    <files-path path="attachments/" name="attachment" />
+</paths>

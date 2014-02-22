@@ -13,7 +13,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcelable;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -43,7 +42,7 @@ import specular.systems.R;
 
 
 public class FilesOpener extends Activity {
-    public static boolean locationPrivate;
+    public static boolean ableToHandle;
     public static String type;
     String path;
     MediaPlayer mp;
@@ -53,11 +52,13 @@ public class FilesOpener extends Activity {
     public void onCreate(Bundle b) {
         super.onCreate(b);
         String fileName = getIntent().getStringExtra("file_name");
-        if (!locationPrivate) {
-            File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
+        if (!ableToHandle) {
+            File path = new File(getFilesDir() + "/attachments");
             File f = new File(path, fileName);
             Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setDataAndType(Uri.fromFile(f), type);
+            i.setType(type);
+            i.setData(Uri.fromFile(f));
+            i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             finish();
             try {
                 startActivity(i);
@@ -231,16 +232,12 @@ public class FilesOpener extends Activity {
         MimeTypeMap m = MimeTypeMap.getSingleton();
         String ext = name.substring(name.lastIndexOf(".") + 1);
         type = m.getMimeTypeFromExtension(ext);
-        if (type != null && (type.startsWith("image")
+        ableToHandle = type != null && (type.startsWith("image")
                 || type.startsWith("audio")
                 || type.equals("application/ogg")
                 || type.equals("video/3gpp")
-                || type.startsWith("text"))) {
-            locationPrivate = true;
-            return FilesManagement.saveFileOnDevice(a, file, name);
-        }
-        locationPrivate = false;
-        return FilesManagement.saveFileOnPublicFolder(a, file, name);
+                || type.startsWith("text"));
+        return FilesManagement.saveFileForOpen(a, file, name);
     }
 
     public class TouchImageView extends ImageView {

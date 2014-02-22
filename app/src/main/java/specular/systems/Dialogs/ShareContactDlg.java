@@ -51,7 +51,7 @@ public class ShareContactDlg extends DialogFragment {
                     i.setComponent(cn);
                     i.setType("file/*");
                     i.setAction(Intent.ACTION_SEND);
-                    i.putExtra(Intent.EXTRA_STREAM, FilesManagement.getContactCardToShare(getActivity()));
+                    i.putExtra(Intent.EXTRA_STREAM, FilesManagement.getContactCardToShare(getActivity(),cn));
                     try {
                         InputStream is = getActivity().getAssets().open("spec_temp_share_contact.html");
                         int size = is.available();
@@ -86,7 +86,7 @@ public class ShareContactDlg extends DialogFragment {
                     i.setComponent(cn);
                     i.setType("image/png");
                     i.setAction(Intent.ACTION_SEND);
-                    i.putExtra(Intent.EXTRA_STREAM, FilesManagement.getQRFriendToShare(getActivity()));
+                    i.putExtra(Intent.EXTRA_STREAM, FilesManagement.getQRFriendToShare(getActivity(),cn));
                     try {
                         InputStream is = getActivity().getAssets().open("spec_temp_share_contact.html");
                         int size = is.available();

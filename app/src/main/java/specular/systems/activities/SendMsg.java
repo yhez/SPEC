@@ -8,7 +8,6 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.print.PrintHelper;
 import android.text.Html;
 import android.util.Log;
@@ -51,6 +50,8 @@ import specular.systems.StaticVariables;
 import specular.systems.Visual;
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
+
+import static android.support.v4.content.FileProvider.getUriForFile;
 
 public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -128,7 +129,7 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
         setContentView(R.layout.send_msg_dlg);
         updateViews();
         if (uris.get(0) != null) {
-            ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(uris.get(0).getPath()).length()).replace(" ", "\n"));
+            ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(getFilesDir()+"/messages",getString(R.string.file_name_secure_msg)).length()).replace(" ", "\n"));
             ((ImageView) findViewById(R.id.file_icon)).setImageResource(R.drawable.logo);
             EditText etFile = (EditText) findViewById(R.id.name_file);
             etFile.setText(getName(FILE));
@@ -144,7 +145,7 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
                 ((ImageView) findViewById(R.id.qr_icon)).setImageResource(R.drawable.logo);
                 e.printStackTrace();
             }
-            ((TextView) findViewById(R.id.qr_size)).setText(Visual.getSize(new File(uris.get(1).getPath()).length()).replace(" ", "\n"));
+            ((TextView) findViewById(R.id.qr_size)).setText(Visual.getSize(new File(getFilesDir()+"/messages",getString(R.string.file_name_qr_msg)).length()).replace(" ", "\n"));
             EditText etImage = (EditText) findViewById(R.id.qr_name_file);
             etImage.setText(getName(IMAGE));
             etImage.setSelection(etImage.getText().length());
@@ -300,23 +301,23 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
         }
         i.setComponent(cn);
         if (what == IMAGE || what == BOTH) {
-            File f = new File(uris.get(1).getPath());
-            File newPath = new File(new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments"), etImage.getText() + ".png");
-            if (!f.equals(newPath)) {
+            if(!(etImage.getText() + ".png").equals(getString(R.string.file_name_qr_msg))){
+                File newPath = new File(getFilesDir(),etImage.getText()+".png");
                 if (newPath.exists())
                     newPath.delete();
-                f.renameTo(newPath);
-                uris.set(1, Uri.parse("file://" + newPath));
+                File oldPath = new File(getFilesDir()+"/messages",getString(R.string.file_name_qr_msg));
+                oldPath.renameTo(newPath);
+                uris.set(1, getUriForFile(this, getPackageName(), newPath));
             }
         }
         if (what == FILE || what == BOTH) {
-            File f = new File(uris.get(0).getPath());
-            File newPath = new File(new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments"), etFile.getText() + ".SPEC");
-            if (!f.equals(newPath)) {
+            if(!(etFile.getText() + ".SPEC").equals(getString(R.string.file_name_secure_msg))){
+                File newPath = new File(getFilesDir(),etFile.getText()+".SPEC");
                 if (newPath.exists())
                     newPath.delete();
-                f.renameTo(newPath);
-                uris.set(0, Uri.parse("file://" + newPath));
+                File oldPath = new File(getFilesDir()+"/messages",getString(R.string.file_name_secure_msg));
+                oldPath.renameTo(newPath);
+                uris.set(0, getUriForFile(this, getPackageName(), newPath));
             }
         }
         if (what == FILE || what == IMAGE)

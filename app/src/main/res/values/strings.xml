@@ -99,7 +99,7 @@
     <string name="file_name_my_qr_key">ContactCardQR.SPEC.png</string>
     <string name="file_name_secure_msg">SecureMessage.SPEC</string>
     <string name="file_name_Backup_msg">SecureBackup.SPEC</string>
-    <string name="file_name_qr_msg">SecureQRMessage.SPEC.png</string>
+    <string name="file_name_qr_msg">SecureQRMessageSPEC.png</string>
 
     <!--general-->
     <string name="welcome"><b>Let the SPEC magic begin.</b>\nStart bringing privacy and security to your online life.\nEnter email and swipe arrow to the left to generate keys.</string>

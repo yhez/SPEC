@@ -1,6 +1,7 @@
 package specular.systems;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,6 +28,7 @@ import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
 import static android.graphics.Typeface.createFromAsset;
+import static android.support.v4.content.FileProvider.getUriForFile;
 
 public final class FilesManagement {
     public final static int RESULT_ADD_FILE_FAILED = 5, RESULT_ADD_FILE_TO_BIG = 10, RESULT_ADD_FILE_EMPTY = 20, RESULT_ADD_FILE_OK = 40;
@@ -41,7 +42,6 @@ public final class FilesManagement {
     private final static int FILE_NAME_BACKUP = R.string.file_name_Backup_msg;
     private final static int FILE_NAME_GROUP = R.string.file_name_group;
     private final static String PUBLIC_KEY = "public_key", PRIVATE_KEY = "private_key", NAME = "name", EMAIL = "email";
-    private static final String FILE = "file://";
     private static Bitmap myQRPublicKey;
     private static Typeface tfos = null;
 
@@ -81,7 +81,7 @@ public final class FilesManagement {
         edt.remove("session");
         edt.commit();
         try {
-            File[] files = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments").listFiles();
+            File[] files = new File(a.getFilesDir() + "/attachments").listFiles();
             if (files != null)
                 for (File f : files)
                     f.delete();
@@ -121,7 +121,7 @@ public final class FilesManagement {
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
             try {
-                File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/messages");
+                File path = new File(a.getFilesDir() + "/messages");
                 if (!path.exists())
                     path.mkdirs();
                 File file = new File(path, a.getString(QR_NAME_SEND));
@@ -145,7 +145,7 @@ public final class FilesManagement {
 
     private static boolean saveFileToSend(Activity a, String fileName, byte[] fileData) {
         try {
-            File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/messages");
+            File path = new File(a.getFilesDir() + "/messages");
             if (!path.exists())
                 path.mkdirs();
             File file = new File(path, fileName);
@@ -160,7 +160,7 @@ public final class FilesManagement {
     }
 
     private static void cleanUp(Activity a) {
-        File root = new File(Environment.getExternalStorageDirectory() + "/SPEC/messages");
+        File root = new File(a.getFilesDir() + "/messages");
         if (root.exists())
             for (File f : root.listFiles())
                 f.delete();
@@ -189,18 +189,18 @@ public final class FilesManagement {
 
     public static ArrayList<Uri> getFilesToSend(Activity a) {
         try {
-            File root = new File(Environment.getExternalStorageDirectory() + "/SPEC/messages");
+            File root = new File(a.getFilesDir() + "/messages");
             ArrayList<Uri> uris = new ArrayList<Uri>(2);
             if (new File(root, a.getString(FILE_NAME_SEND)).exists()) {
-                uris.add(Uri.parse(FILE + new File(root, a.getString(FILE_NAME_SEND))));
+                uris.add(getUriForFile(a,a.getPackageName(),new File(root, a.getString(FILE_NAME_SEND))));
             } else if (new File(root, a.getString(FILE_NAME_BACKUP)).exists()) {
-                uris.add(Uri.parse(FILE + new File(root, a.getString(FILE_NAME_BACKUP))));
+                uris.add(getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_BACKUP))));
             } else {
-                uris.add(Uri.parse(FILE + new File(root, a.getString(FILE_NAME_GROUP))));
+                uris.add(getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_GROUP))));
             }
             File f = new File(root, a.getString(QR_NAME_SEND));
             if (f.exists())
-                uris.add(Uri.parse(FILE + f));
+                uris.add(getUriForFile(a, a.getPackageName(), f));
             else
                 uris.add(null);
             return uris;
@@ -211,33 +211,33 @@ public final class FilesManagement {
 
     public static Uri getFileToShare(Activity a) {
         try {
-            return Uri.parse(FILE + new File(a.getFilesDir(), a.getString(FILE_NAME)));
+            return Uri.parse("file//" + new File(a.getFilesDir(), a.getString(FILE_NAME)));
         } catch (Exception e) {
             return null;
         }
     }
 
-    public static Uri getContactCardToShare(Activity a) {
+    public static Uri getContactCardToShare(Activity a,ComponentName cn) {
         String name = ((EditText) a.findViewById(R.id.contact_name).findViewById(R.id.edit_text)).getText().toString();
         String email = ((EditText) a.findViewById(R.id.contact_email).findViewById(R.id.edit_text)).getText().toString();
         String publicKey = ((TextView) a.findViewById(R.id.contact_pb)).getText().toString();
         ContactCard pcc = new ContactCard(a, publicKey, email, name);
         try {
-            File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/messages");
+            File path = new File(a.getFilesDir() + "/messages");
             if (!path.exists())
                 path.mkdirs();
             File file = new File(path, a.getString(FRIEND_CONTACT_CARD));
             OutputStream os = new FileOutputStream(file);
             os.write(pcc.getQRToPublish().getBytes("UTF-8"));
             os.close();
-            return Uri.fromFile(file);
+            return getUriForFile(a,cn.getPackageName(),file);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public static Uri getQRFriendToShare(Activity a) {
+    public static Uri getQRFriendToShare(Activity a,ComponentName cn) {
         String name = ((EditText) a.findViewById(R.id.contact_name).findViewById(R.id.edit_text)).getText().toString();
         String email = ((EditText) a.findViewById(R.id.contact_email).findViewById(R.id.edit_text)).getText().toString();
         String publicKey = ((TextView) a.findViewById(R.id.contact_pb)).getText().toString();
@@ -246,14 +246,14 @@ public final class FilesManagement {
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
             //Bitmap crop = crop(bitmap);
-            File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/messages");
+            File path = new File(a.getFilesDir() + "/messages");
             if (!path.exists())
                 path.mkdirs();
             File file = new File(path, a.getString(FRIENDS_SHARE_QR));
             OutputStream os = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, os);
             os.close();
-            return Uri.fromFile(file);
+            return getUriForFile(a,cn.getPackageName(),file);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -262,7 +262,7 @@ public final class FilesManagement {
 
     public static Uri getQRToShare(Activity a) {
         try {
-            return Uri.parse(FILE + new File(a.getFilesDir(), a.getString(QR_NAME)));
+            return Uri.parse("file//" + new File(a.getFilesDir(), a.getString(QR_NAME)));
         } catch (Exception e) {
             return null;
         }
@@ -497,19 +497,8 @@ public final class FilesManagement {
         return true;
     }
 
-    public static boolean saveFileOnDevice(Activity a, byte[] file, String name) {
-        try {
-            OutputStream os = a.openFileOutput(name,Context.MODE_PRIVATE);
-            os.write(file);
-            os.close();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static boolean saveFileOnPublicFolder(Activity a, byte[] file, String name) {
-        File path = new File(Environment.getExternalStorageDirectory() + "/SPEC/attachments");
+    public static boolean saveFileForOpen(Activity a, byte[] file, String name) {
+        File path = new File(a.getFilesDir() + "/attachments");
         if (!path.exists())
             path.mkdirs();
         File f = new File(path, name);
