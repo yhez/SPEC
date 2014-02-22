@@ -15,8 +15,8 @@
         android:background="@drawable/border_botom"
         android:src="@drawable/take_picture"
         android:id="@+id/button1"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_gravity="center"
         android:padding="@dimen/default_gap"/>
     <ImageButton
@@ -26,8 +26,8 @@
         android:background="@drawable/border_botom"
         android:src="@drawable/record_voice"
         android:id="@+id/button2"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_gravity="center"
         android:padding="@dimen/default_gap" />
     <ImageButton
@@ -37,8 +37,8 @@
         android:background="@drawable/border_botom"
         android:src="@drawable/file_from_device"
         android:id="@+id/button3"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_gravity="center"
         android:padding="@dimen/default_gap" />
     <ImageButton
@@ -48,8 +48,8 @@
         android:background="@drawable/border_botom"
         android:src="@drawable/from_safe"
         android:id="@+id/button4"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_gravity="center"
         android:padding="@dimen/default_gap" />
 
