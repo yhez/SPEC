@@ -29,4 +29,6 @@ public class StaticVariables {
     public static byte[] decryptedGroup;
     public static byte[] decryptedBackup;
     public static String encryptedMsgToSend;
+    public static byte[] dataRaw;
+    public static byte[] qrData;
 }

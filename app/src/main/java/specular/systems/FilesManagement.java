@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -124,8 +125,12 @@ public final class FilesManagement {
                 if (!path.exists())
                     path.mkdirs();
                 File file = new File(path, a.getString(QR_NAME_SEND));
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, baos);
+                StaticVariables.qrData = baos.toByteArray();
+                baos.close();
                 OutputStream os = new FileOutputStream(file);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 90, os);
+                os.write(StaticVariables.qrData);
                 os.close();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -177,6 +182,8 @@ public final class FilesManagement {
         if (qr)
             qrSuccess = saveQRToSend(a, new String(data));
         fileSuccess = saveFileToSend(a, a.getString(FILE_NAME_SEND), data);
+        //todo delete it
+        StaticVariables.dataRaw = data;
         return qrSuccess || fileSuccess;
     }
 

@@ -249,6 +249,16 @@ public class Visual {
                 .getInstance().getTime());
         return "<br><br>" + timestamp;
     }
+
+    public static void hideKeyBord(Activity activity) {
+        View vf = activity.getCurrentFocus();
+        if (vf != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(vf.getWindowToken(), 0);
+        }
+    }
+
     public static enum types{
         IMAGE,VIDEO,AUDIO,ZIP,TEXT,UNKNOWN,APK,PDF,DOC
     }

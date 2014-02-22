@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
     android:versionCode="33"
-    android:versionName="V 0.3.4">
+    android:versionName="V 0.3.5">
 
     <uses-sdk android:maxSdkVersion="19" />
 
@@ -133,10 +133,13 @@
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
 
         <activity
-            android:noHistory="true"
             android:excludeFromRecents="true"
             android:name=".activities.SendMsg"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" >
+            <meta-data
+                android:name="com.google.android.apps.drive.APP_ID"
+                android:value="id=46898931568" />
+            </activity>
 
         <activity
             android:noHistory="true"
@@ -158,5 +161,7 @@
             android:launchMode="singleTask"
             android:exported="false"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 </manifest>

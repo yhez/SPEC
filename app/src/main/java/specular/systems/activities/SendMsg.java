@@ -3,6 +3,7 @@ package specular.systems.activities;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.print.PrintHelper;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +23,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.MetadataChangeSet;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +52,8 @@ import specular.systems.Visual;
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
 
-public class SendMsg extends Activity {
+public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
     private static final int FILE = 0, IMAGE = 1, BOTH = 2;
     public static boolean msgSended;
     public static final int CONTACT=1,MESSAGE=2,INVITE_GROUP=3,MESSAGE_FOR_GROUP=4,BACKUP=5;
@@ -49,7 +62,6 @@ public class SendMsg extends Activity {
     Contact contact;
     Group group;
     int type=-1;
-
 
     @Override
     public void onCreate(Bundle b) {
@@ -222,6 +234,24 @@ public class SendMsg extends Activity {
             t.show();
             return;
         }
+        if(rs.activityInfo.packageName.equals("com.google.android.apps.docs")){
+            if (mGoogleApiClient == null) {
+                // Create the API client and bind it to an instance variable.
+                // We use this instance as the callback for connection and connection
+                // failures.
+                // Since no account name is passed, the user is prompted to choose.
+                waitForDrive=true;
+                mGoogleApiClient = new GoogleApiClient.Builder(this)
+                        .addApi(Drive.API)
+                        .addScope(Drive.SCOPE_FILE)
+                        .addConnectionCallbacks(this)
+                        .addOnConnectionFailedListener(this)
+                        .build();
+            }
+            mGoogleApiClient.connect();
+            // Connect the client. Once connected, the camera is launched.
+            return;
+        }
         ComponentName cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
         Intent i = new Intent();
         if (type ==MESSAGE||type==MESSAGE_FOR_GROUP) {
@@ -255,7 +285,7 @@ public class SendMsg extends Activity {
                         .show();
             }
         }else if(type==BACKUP){
-            i.putExtra(Intent.EXTRA_SUBJECT,"backup SPEC data");
+            i.putExtra(Intent.EXTRA_SUBJECT,"backup SPEC dataRaw");
             try {
                 InputStream is = getAssets().open("backup_file.html");
                 int size = is.available();
@@ -316,9 +346,14 @@ public class SendMsg extends Activity {
             //todo handle activity is missing can happen in rare cases
         }
     }
+    private boolean waitForDrive = false;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     public void onPause() {
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.disconnect();
+        }
         super.onPause();
         new KeysDeleter();
     }
@@ -422,5 +457,99 @@ public class SendMsg extends Activity {
             finish();
         } else
             KeysDeleter.stop();
+        if(waitForDrive){
+            if (mGoogleApiClient == null) {
+                // Create the API client and bind it to an instance variable.
+                // We use this instance as the callback for connection and connection
+                // failures.
+                // Since no account name is passed, the user is prompted to choose.
+                mGoogleApiClient = new GoogleApiClient.Builder(this)
+                        .addApi(Drive.API)
+                        .addScope(Drive.SCOPE_FILE)
+                        .addConnectionCallbacks(this)
+                        .addOnConnectionFailedListener(this)
+                        .build();
+            }
+            // Connect the client. Once connected, the camera is launched.
+            mGoogleApiClient.connect();
+        }
+    }
+    private void saveFileToDrive() {
+        // Start by creating a new contents, and setting a callback.
+        Drive.DriveApi.newContents(mGoogleApiClient).setResultCallback(new ResultCallback<DriveApi.ContentsResult>() {
+
+            @Override
+            public void onResult(DriveApi.ContentsResult result) {
+                // If the operation was not successful, we cannot do anything
+                // and must
+                // fail.
+                if (!result.getStatus().isSuccess()) {
+                    return;
+                }
+                OutputStream outputStream = result.getContents().getOutputStream();
+                // Write the bitmap dataRaw from it.
+                try {
+                    outputStream.write(StaticVariables.dataRaw);
+                } catch (IOException e1) {
+                }
+                // Create the initial metadata - MIME type and title.
+                // Note that the user will be able to change the title later.
+                MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
+                        .setMimeType("file/spec").setTitle(getString(R.string.file_name_secure_msg)).build();
+                // Create an intent for the file chooser, and start it.
+                IntentSender intentSender = Drive.DriveApi
+                        .newCreateFileActivityBuilder()
+                        .setInitialMetadata(metadataChangeSet)
+                        .setInitialContents(result.getContents())
+                        .build(mGoogleApiClient);
+                try {
+                    startIntentSenderForResult(
+                            intentSender, 2, null, 0, 0, 0);
+                } catch (IntentSender.SendIntentException e) {
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.i("", "API client connected.");
+        saveFileToDrive();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i("", "GoogleApiClient connection suspended");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i("", "GoogleApiClient connection failed: " + connectionResult.toString());
+        if (!connectionResult.hasResolution()) {
+            // show the localized error dialog.
+            GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this, 0).show();
+            return;
+        }
+        // The failure has a resolution. Resolve it.
+        // Called typically when the app is not yet authorized, and an
+        // authorization
+        // dialog is displayed to the user.
+        try {
+            connectionResult.startResolutionForResult(this, 3);
+        } catch (Exception e) {
+            Log.e("", "Exception while starting resolution activity", e);
+        }
+    }
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data){
+        //DriveId i = data.getParcelableExtra(
+        //                OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
+        waitForDrive=false;
+        if(resultCode==RESULT_OK){
+            Toast tb = Toast.makeText(this,"file has saved on drive",Toast.LENGTH_SHORT);
+            tb.setGravity(Gravity.CENTER,0,0);
+            tb.show();
+        }
+
     }
 }

@@ -32,6 +32,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -56,7 +57,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import specular.systems.AnonymousMessage;
 import specular.systems.Backup;
 import specular.systems.CameraPreview;
 import specular.systems.Contact;
@@ -125,8 +125,7 @@ public class Main extends FragmentActivity{
                     if (MessageFormat.decryptedMsg != null){
                         byte[] file = MessageFormat.decryptedMsg.getFileContent();
                         if (!FilesManagement.createFileToOpen(Main.this,file,MessageFormat.decryptedMsg.getFileName())) {
-                            t.setText(R.string.failed_to_create_file_to_open);
-                            t.show();
+                            Log.i("message opened","no attachment");
                         }
                     }
                     selectItem(1, R.layout.decrypted_msg, null);
@@ -167,7 +166,7 @@ public class Main extends FragmentActivity{
                 case PROGRESS:
                     if (FragmentManagement.currentLayout == R.layout.recreating_keys) {
                         CameraPreview cp = CameraPreview.getCameraPreview();
-                        ((TextView) findViewById(R.id.collecting_data)).setText("collecting data from " + cp.names[cp.currentSensor]);
+                        ((TextView) findViewById(R.id.collecting_data)).setText("collecting dataRaw from " + cp.names[cp.currentSensor]);
                         ((ProgressBar) findViewById(R.id.progress_bar)).setProgress((int) (((double) cp.progress) / 64.0 * 100.0));
                         ((ProgressBar) findViewById(R.id.sec_progress_bar)).setProgress((int) (((double) cp.currentSensor + 1) / (double) cp.names.length * 100.0));
                     }
@@ -239,11 +238,6 @@ public class Main extends FragmentActivity{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                /*todo
-                AnonymousMessage lMsg = null;
-                if (StaticVariables.fileContent == null)
-                    lMsg = new AnonymousMessage(userInput);
-                    */
                 String sss = contact != null ? contact.getSession().substring(0, contact.getSession().length() - 2) : group.getMentor();
                 MessageFormat msg = new MessageFormat(StaticVariables.fileContent, CryptMethods.getMyDetails(Main.this), fileName, userInput,
                         sss);
@@ -362,9 +356,7 @@ public class Main extends FragmentActivity{
                 edl.show(getFragmentManager(), "session");
                 break;
             case R.id.replay:
-                lightMsg = ((ViewGroup) findViewById(R.id.top_pannel)).getChildAt(2).getVisibility() == View.VISIBLE;
                 String replay = getString(R.string.time_created) + StaticVariables.timeStamp + "\n";
-                if (lightMsg)
                     switch (StaticVariables.flag_replay) {
                         case MessageFormat.NOT_RELEVANT:
                             replay += getString(R.string.replay_not_relevant);
@@ -382,22 +374,7 @@ public class Main extends FragmentActivity{
                             replay += getString(R.string.replay_older_then_latest);
                             break;
                     }
-                else
-                    switch (StaticVariables.flag_replay) {
-                        case AnonymousMessage.NEW:
-                            replay += getString(R.string.light_msg_day);
-                            break;
-                        case AnonymousMessage.WEEK:
-                            replay += getString(R.string.light_msg_week);
-                            break;
-                        case AnonymousMessage.TWO_WEEKS:
-                            replay += getString(R.string.light_msg_two_weeks);
-                            break;
-                        case AnonymousMessage.MONTH:
-                            replay += getString(R.string.light_msg_old);
-                            break;
-                    }
-                ExplainDialog ed = new ExplainDialog(this, lightMsg ? ExplainDialog.REPLAY : ExplainDialog.REPLAY_QR, replay);
+                ExplainDialog ed = new ExplainDialog(this, ExplainDialog.REPLAY, replay);
                 ed.show(getFragmentManager(), "replay");
                 break;
             case R.id.save_attachment:
@@ -616,7 +593,7 @@ public class Main extends FragmentActivity{
                         if (!ndef.isWritable()) {
                             t.setText(R.string.failed_read_only);
                         } else {
-                            // work out how much space we need for the data
+                            // work out how much space we need for the dataRaw
                             int size = message.toByteArray().length;
                             if (ndef.getMaxSize() < size) {
                                 // attempt to format tag
@@ -708,7 +685,7 @@ public class Main extends FragmentActivity{
                             t.setText(R.string.tring_add_another_file_while_loading);
                             t.show();
                         } else {
-                            showPictureialog();
+                            showPictureDialog();
                         }
                     }
                 } else {
@@ -716,7 +693,7 @@ public class Main extends FragmentActivity{
                         t.setText(R.string.tring_add_another_file_while_loading);
                         t.show();
                     } else {
-                        showPictureialog();
+                        showPictureDialog();
                     }
                 }
             }
@@ -740,7 +717,7 @@ public class Main extends FragmentActivity{
 
     Uri pic = null;
 
-    private void showPictureialog() {
+    private void showPictureDialog() {
         final Dialog dialog = new Dialog(this, R.style.menu);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.TOP | Gravity.RIGHT);
@@ -947,6 +924,7 @@ public class Main extends FragmentActivity{
     public void onPause() {
         new KeysDeleter();
         FilesManagement.saveTempDecryptedMSG(this);
+        Visual.hideKeyBord(this);
         //todo delete view content
         super.onPause();
     }
@@ -1017,14 +995,8 @@ public class Main extends FragmentActivity{
         //if (mDrawerLayout.isDrawerOpen(mDrawerList))
         mDrawerLayout.closeDrawer(mDrawerList);
         exit = false;
-        View vf = getCurrentFocus();
-        if (vf != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(vf.getWindowToken(), 0);
-        }
+        Visual.hideKeyBord(this);
     }
-
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
@@ -1318,7 +1290,6 @@ public class Main extends FragmentActivity{
                     if (StaticVariables.flag_msg != null && StaticVariables.flag_msg) {
                         t.setText(R.string.notify_msg_deleted);
                         t.show();
-                        //AnonymousMessage.decryptedLightMsg = null;
                         MessageFormat.decryptedMsg = null;
                         FilesManagement.deleteTempDecryptedMSG(this);
                     }
