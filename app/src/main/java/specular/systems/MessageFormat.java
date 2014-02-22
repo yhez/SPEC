@@ -32,7 +32,7 @@ public class MessageFormat {
         } catch (Exception e) {
             data = new String(b).split("\n");
         }
-        if (!(data.length < 6)) {
+        if (!(data.length < 5)) {
             name = data[0];
             email = data[1];
             session = data[2];
