@@ -7,8 +7,11 @@ import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -60,11 +63,23 @@ public class Demo extends Activity {
         t.show();
     }
 
+    byte[] nfcContent;
+
     @Override
     public void onNewIntent(Intent i) {
         if (i.getAction() != null && i.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
-            if (getFragmentManager().findFragmentByTag("gg") == null)
+            if (getFragmentManager().findFragmentByTag("gg") == null) {
                 new keyDialog().show(getFragmentManager(), "gg");
+            }
+            Parcelable raw[] = i.getParcelableArrayExtra(
+                    NfcAdapter.EXTRA_NDEF_MESSAGES);
+            if (raw == null)
+                return;
+            NdefMessage msg = (NdefMessage) raw[0];
+            NdefRecord pvk = msg.getRecords()[0];
+            if (pvk == null)
+                return;
+            nfcContent = pvk.getPayload();
         }
     }
 
@@ -98,7 +113,7 @@ public class Demo extends Activity {
         }
     }
 
-    class keyDialog extends DialogFragment {
+    public class keyDialog extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
