@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.os.Parcelable;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.FloatMath;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -96,7 +97,7 @@ public class FilesOpener extends Activity {
                 byte[] buffer = new byte[size];
                 is.read(buffer);
                 is.close();
-                TextView tv = new TextView(this);
+                TouchText tv = new TouchText(this);
                 tv.setText(Html.fromHtml(new String(buffer)));
                 tv.setPadding(32, 32, 32, 32);
                 tv.setGravity(Gravity.CENTER);
@@ -909,5 +910,66 @@ public class FilesOpener extends Activity {
                 postDelayed(runnable, 1000 / 60);
             }
         }
+    }
+
+    public class TouchText extends TextView{
+        private float spacing(MotionEvent event) {
+            float x = event.getX(0) - event.getX(1);
+            float y = event.getY(0) - event.getY(1);
+            return FloatMath.sqrt(x * x + y * y);
+        }
+        public TouchText(Context context) {
+            super(context);
+            setOnTouchListener(new OnTouchListener() {
+
+                // We can be in one of these 2 states
+                static final int NONE = 0;
+                static final int ZOOM = 1;
+                int mode = NONE;
+
+                static final int MIN_FONT_SIZE = 10;
+                static final int MAX_FONT_SIZE = 200;
+
+                float oldDist = 1f;
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                        case MotionEvent.ACTION_POINTER_DOWN:
+                            oldDist = spacing(event);
+                            if (oldDist > 10f) {
+                                mode = ZOOM;
+                            }
+                            break;
+                        case MotionEvent.ACTION_POINTER_UP:
+                            mode = NONE;
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            if (mode == ZOOM) {
+                                float newDist = spacing(event);
+                                // If you want to tweak font scaling, this is the place to go.
+                                if (newDist > 10f) {
+                                    float scale = newDist / oldDist;
+
+                                    if (scale > 1) {
+                                        scale = 1.1f;
+                                    } else if (scale < 1) {
+                                        scale = 0.95f;
+                                    }
+
+                                    float currentSize = getTextSize() * scale;
+                                    if ((currentSize < MAX_FONT_SIZE && currentSize > MIN_FONT_SIZE)
+                                            ||(currentSize >= MAX_FONT_SIZE && scale < 1)
+                                            || (currentSize <= MIN_FONT_SIZE && scale > 1)) {
+                                        setTextSize(TypedValue.COMPLEX_UNIT_PX, currentSize);
+                                    }
+                                }
+                            }
+                            break;
+                    }
+                    return false;
+                }
+        });
+    }
     }
 }
