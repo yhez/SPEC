@@ -69,7 +69,7 @@ public class FilesOpener extends Activity {
             }
             return;
         }
-        path = new File(getFilesDir(), fileName).getPath();
+        path = new File(getFilesDir()+"/attachments", fileName).getPath();
         if (type.startsWith("image")) {
             Bitmap bm = BitmapFactory.decodeFile(path);
             TouchImageView iv = new TouchImageView(this);

@@ -18,6 +18,7 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
@@ -421,8 +422,9 @@ public class Main extends FragmentActivity{
                     loadingFile = false;
                     if (r == FilesManagement.RESULT_ADD_FILE_OK) {
                         fileName = Visual.getFileName(Main.this, uri);
-                        if (pic != null)
-                            new File(pic.getPath()).delete();
+                        if (pic != null){
+                            new File(Environment.getExternalStorageDirectory(),Visual.getFileName(Main.this,pic)).delete();
+                        }
                         hndl.sendEmptyMessage(REPLACE_PHOTO);
                     } else {
                         hndl.sendEmptyMessage(r);
@@ -443,7 +445,7 @@ public class Main extends FragmentActivity{
                 attachFile(pic);
             } else if (requestCode == RECORD_AUDIO) {
                 pic = intent.getData();
-                attachFile(intent.getData());
+                attachFile(pic);
                 intent.setData(null);
             } else {
                 String result = intent.getStringExtra("barcode");
@@ -738,7 +740,7 @@ public class Main extends FragmentActivity{
             public void onClick(View v) {
                 dialog.cancel();
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE);
-                File f = new File(getFilesDir() + "/attachments", System.currentTimeMillis() + ".jpg");
+                File f = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
                 pic = Uri.fromFile(f);
                 i.putExtra(MediaStore.EXTRA_OUTPUT, pic);
                 startActivityForResult(i, TAKE_PICTURE);
