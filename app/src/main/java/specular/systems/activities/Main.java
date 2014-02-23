@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.nfc.FormatException;
@@ -97,6 +98,8 @@ import specular.systems.StaticVariables;
 import specular.systems.Visual;
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
+
+import static android.support.v4.content.FileProvider.getUriForFile;
 
 
 public class Main extends FragmentActivity{
@@ -423,7 +426,8 @@ public class Main extends FragmentActivity{
                     if (r == FilesManagement.RESULT_ADD_FILE_OK) {
                         fileName = Visual.getFileName(Main.this, uri);
                         if (pic != null){
-                            new File(Environment.getExternalStorageDirectory(),Visual.getFileName(Main.this,pic)).delete();
+                            if(!new File(Environment.getExternalStorageDirectory(),Visual.getFileName(Main.this,pic)).delete())
+                                new File(getFilesDir()+"/temp",Visual.getFileName(Main.this,pic)).delete();
                         }
                         hndl.sendEmptyMessage(REPLACE_PHOTO);
                     } else {
@@ -740,8 +744,11 @@ public class Main extends FragmentActivity{
             public void onClick(View v) {
                 dialog.cancel();
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE);
-                File f = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
-                pic = Uri.fromFile(f);
+                File f = new File(getFilesDir()+"/temp", System.currentTimeMillis() + ".jpg");
+                pic = getUriForFile(Main.this,getPackageName(),f);
+                ResolveInfo lk = getPackageManager().resolveActivity(i,0);
+                grantUriPermission(lk.activityInfo.packageName,pic,Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                i.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 i.putExtra(MediaStore.EXTRA_OUTPUT, pic);
                 startActivityForResult(i, TAKE_PICTURE);
             }
@@ -751,7 +758,8 @@ public class Main extends FragmentActivity{
             public void onClick(View v) {
                 dialog.cancel();
                 Intent i = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-                startActivityForResult(i, RECORD_AUDIO);
+                if(getPackageManager().queryIntentActivities(i,0).size()>0)
+                    startActivityForResult(i, RECORD_AUDIO);
             }
         });
         dialog.findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {

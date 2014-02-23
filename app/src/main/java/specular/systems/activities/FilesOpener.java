@@ -1,8 +1,11 @@
 package specular.systems.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -23,10 +26,15 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Scroller;
 import android.widget.TextView;
@@ -35,49 +43,59 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
+import specular.systems.Visual;
+
+import static android.support.v4.content.FileProvider.getUriForFile;
 
 
 public class FilesOpener extends Activity {
     public static boolean ableToHandle;
     public static String type;
     String path;
+    String fileName;
     MediaPlayer mp;
     boolean done;
 
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
-        String fileName = getIntent().getStringExtra("file_name");
+        fileName = getIntent().getStringExtra("file_name");
+        path = new File(getFilesDir()+"/attachments", fileName).getPath();
         if (!ableToHandle) {
-            File path = new File(getFilesDir() + "/attachments");
-            File f = new File(path, fileName);
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setType(type);
-            i.setData(Uri.fromFile(f));
-            i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            finish();
-            try {
+            openByOutApp();
+
+            /*try {
                 startActivity(i);
             } catch (Exception e) {
                 Toast t = Toast.makeText(this, R.string.cant_find_an_app_to_open_file, Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER, 0, 0);
                 t.show();
-            }
+            }*/
             return;
         }
-        path = new File(getFilesDir()+"/attachments", fileName).getPath();
         if (type.startsWith("image")) {
             Bitmap bm = BitmapFactory.decodeFile(path);
             TouchImageView iv = new TouchImageView(this);
             iv.setImageBitmap(bm);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
             iv.setLayoutParams(params);
+            Button bt = new Button(this);
+            bt.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            bt.setText("open by out app");
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openByOutApp();
+                }
+            });
             FrameLayout fl = new FrameLayout(this);
             fl.addView(iv);
+            fl.addView(bt);
             TextView tv = new TextView(this);
             params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
             tv.setLayoutParams(params);
@@ -85,7 +103,7 @@ public class FilesOpener extends Activity {
             tv.setBackgroundColor(Color.BLACK);
             tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             tv.setPadding(20, 20, 20, 0);
-            tv.setText(path.substring(path.lastIndexOf("/") + 1));
+            tv.setText(fileName);
             fl.addView(tv);
             setContentView(fl);
         } else if (type.startsWith("audio") || type.equals("application/ogg") || type.equals("video/3gpp")) {
@@ -131,6 +149,44 @@ public class FilesOpener extends Activity {
         KeysDeleter.stop();
     }
 
+
+    private void openByOutApp(){
+        File f = new File(getFilesDir()+"/attachments",fileName);
+        final Intent i = new Intent(Intent.ACTION_VIEW);
+        if(type!=null)
+            i.setType(type);
+        final Uri uri  = getUriForFile(this, getPackageName(), f);
+        final Dialog d = new Dialog(this,R.style.dialogTransparent);
+        LinearLayout fl = new LinearLayout(this);
+        fl.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        GridLayout gl = new GridLayout(this);
+        d.setTitle("warning open by another app can be dangerous");
+        fl.addView(gl);
+        List<ResolveInfo> ri = getPackageManager().queryIntentActivities(i,0);
+        if(ri.size()==0){
+            i.setType("*/*");
+            ri = getPackageManager().queryIntentActivities(i,0);
+        }
+        for(final ResolveInfo r:ri){
+            ImageButton ib = Visual.glow(r.loadIcon(getPackageManager()), this);
+            ib.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ComponentName cn = new ComponentName(r.activityInfo.packageName,r.activityInfo.name);
+                    i.setComponent(cn);
+                    grantUriPermission(r.activityInfo.packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    i.setData(uri);
+                    i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    d.cancel();
+                    startActivity(i);
+                    finish();
+                }
+            });
+            gl.addView(ib);
+        }
+        d.setContentView(fl);
+        d.show();
+    }
     public void play(View v) {
         if (mp != null) {
             if(done){

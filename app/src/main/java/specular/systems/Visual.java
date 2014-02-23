@@ -216,7 +216,7 @@ public class Visual {
             return rs;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return contentURI.getLastPathSegment();
         }
     }
 

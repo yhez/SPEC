@@ -73,13 +73,13 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
-        uris = FilesManagement.getFilesToSend(this);
-        long id = getIntent().getLongExtra("contactId", -1);
         type= getIntent().getIntExtra("type",-1);
         if(type==REPORT){
             show();
             return;
         }
+        uris = FilesManagement.getFilesToSend(this);
+        long id = getIntent().getLongExtra("contactId", -1);
         if (type==MESSAGE||type==INVITE_GROUP)
             contact = ContactsDataSource.contactsDataSource.findContact(id);
         else if(type==MESSAGE_FOR_GROUP){
@@ -134,6 +134,7 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
     private void show() {
         setContentView(R.layout.send_msg_dlg);
         updateViews();
+        if(uris!=null){
         if (uris.get(0) != null) {
             ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(getFilesDir()+"/messages",getString(R.string.file_name_secure_msg)).length()).replace(" ", "\n"));
             ((ImageView) findViewById(R.id.file_icon)).setImageResource(R.drawable.logo);
@@ -156,7 +157,7 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
             etImage.setText(getName(IMAGE));
             etImage.setSelection(etImage.getText().length());
             etImage.setFilters(Visual.filters());
-        }
+        }}
         Visual.setAllFonts(this, (ViewGroup) findViewById(android.R.id.content));
     }
 
