@@ -2,14 +2,11 @@ package specular.systems.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
 
 import specular.systems.CustomExceptionHandler;
 import specular.systems.KeysDeleter;
@@ -23,12 +20,7 @@ public class SendReport extends Activity {
             return !s.endsWith(".stacktrace");
         }
     };
-    final FilenameFilter filterNotReported = new FilenameFilter() {
-        @Override
-        public boolean accept(File file, String s) {
-            return s.endsWith(".stacktrace");
-        }
-    };
+
 
 
     @Override
@@ -49,25 +41,10 @@ public class SendReport extends Activity {
     }
 
     public void send(View v) {
-        Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);
-        i.setType("*/*");
-        i.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.email_for_reports)});
-        i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.send_report_subject));
-        ArrayList<String> txt = new ArrayList<String>();
-        txt.add(getString(R.string.send_report_content));
-        i.putExtra(Intent.EXTRA_TEXT,txt);
-        File folder = new File(getFilesDir() + "/reports");
-        ArrayList<Parcelable> uris = new ArrayList<Parcelable>();
-        for (String s : folder.list(filterNotReported)) {
-            File oldname = new File(getFilesDir() + "/reports", s);
-            File newNmae = new File(getFilesDir() + "/reports", s.split("\\.")[0] + ".txt");
-            oldname.renameTo(newNmae);
-            uris.add(Uri.fromFile(newNmae));
-        }
-        i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-        i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivity(i);
+        Intent i = new Intent(this,SendMsg.class);
+        i.putExtra("type",SendMsg.REPORT);
         finish();
+        startActivity(i);
     }
 
     public void finish(View v) {

@@ -8,6 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.print.PrintHelper;
 import android.text.Html;
 import android.util.Log;
@@ -32,6 +33,7 @@ import com.google.android.gms.drive.MetadataChangeSet;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -57,7 +59,7 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
         GoogleApiClient.OnConnectionFailedListener {
     private static final int FILE = 0, IMAGE = 1, BOTH = 2;
     public static boolean msgSended;
-    public static final int CONTACT=1,MESSAGE=2,INVITE_GROUP=3,MESSAGE_FOR_GROUP=4,BACKUP=5;
+    public static final int CONTACT=1,MESSAGE=2,INVITE_GROUP=3,MESSAGE_FOR_GROUP=4,BACKUP=5,REPORT=6;
     private static List<ResolveInfo> file, image, both;
     ArrayList<Uri> uris;
     Contact contact;
@@ -74,6 +76,10 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
         uris = FilesManagement.getFilesToSend(this);
         long id = getIntent().getLongExtra("contactId", -1);
         type= getIntent().getIntExtra("type",-1);
+        if(type==REPORT){
+            show();
+            return;
+        }
         if (type==MESSAGE||type==INVITE_GROUP)
             contact = ContactsDataSource.contactsDataSource.findContact(id);
         else if(type==MESSAGE_FOR_GROUP){
@@ -220,8 +226,35 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
                 }
         }
     }
-
+    final FilenameFilter filterNotReported = new FilenameFilter() {
+        @Override
+        public boolean accept(File file, String s) {
+            return s.endsWith(".stacktrace");
+        }
+    };
     private void startOnClick(int what, ResolveInfo rs) {
+        if(type==REPORT){
+            ComponentName cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_SEND_MULTIPLE);
+            i.setComponent(cn);
+            i.setType("*/*");
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.email_for_reports)});
+            i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.send_report_subject));
+            i.putExtra(Intent.EXTRA_TEXT,getString(R.string.send_report_content));
+            File folder = new File(getFilesDir() + "/reports");
+            ArrayList<Parcelable> uris = new ArrayList<Parcelable>();
+            for (String s : folder.list(filterNotReported)) {
+                File oldname = new File(getFilesDir() + "/reports", s);
+                File newNmae = new File(getFilesDir() + "/reports", s.split("\\.")[0] + ".txt");
+                oldname.renameTo(newNmae);
+                uris.add(getUriForFile(this, getPackageName(), newNmae));
+            }
+            i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+            finish();
+            startActivity(i);
+            return;
+        }
         if (contact != null)
             if (((CheckBox) findViewById(R.id.check_default)).isChecked()) {
                 contact.update(rs.activityInfo.packageName + "\n" + rs.activityInfo.name, null);
@@ -360,6 +393,23 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
     }
 
     private void updateViews() {
+        if(type==REPORT){
+            findViewById(R.id.title_file_details).setVisibility(View.GONE);
+            findViewById(R.id.title_divider).setVisibility(View.GONE);
+            findViewById(R.id.files_names).setVisibility(View.GONE);
+            findViewById(R.id.check_default).setVisibility(View.GONE);
+            findViewById(R.id.gl_app_image).setVisibility(View.GONE);
+            findViewById(R.id.divider3).setVisibility(View.GONE);
+            findViewById(R.id.title_image).setVisibility(View.GONE);
+            findViewById(R.id.qr_details).setVisibility(View.GONE);
+            findViewById(R.id.gl_app_file).setVisibility(View.GONE);
+            findViewById(R.id.divider2).setVisibility(View.GONE);
+            findViewById(R.id.title_file).setVisibility(View.GONE);
+            findViewById(R.id.file_details).setVisibility(View.GONE);
+            ((TextView)findViewById(R.id.text_both_share)).setText("Share stack trace files VIA...");
+            loadIcons(BOTH);
+            return;
+        }
         if (uris.get(0) == null || uris.get(1) == null) {
             findViewById(R.id.gl_both).setVisibility(View.GONE);
             findViewById(R.id.text_both_share).setVisibility(View.GONE);
