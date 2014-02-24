@@ -278,12 +278,12 @@
     <string name="tring_add_another_file_while_loading">Loading file…</string>
     <string name="version">SPEC version:</string>
     <string name="backup_no_public">you cannot create a backup without having your public key</string>
-    <string name="backup_explain">1. the backup option will use your public key to encrypt the data.\n2. we\'ll add hash signature of your private key to verify that it was created by you.\n3. we\'ll add hash signature of the entire data to verify that it hasn\'t be changed</string>
-    <string name="backup_title">Backup</string>
+    <string name="backup_explain">This function will backup your SPEC data (contacts, saved files and notes) in a secure fashion. The output of this funtion will be a protected file that you can later load into the SPEC app in order to retrieve your data.</string>
+    <string name="backup_title">Backup SPEC Data</string>
     <string name="credits">Credits</string>
-    <string name="failed_loading">There was a problem loading the file,\nit may have moved to another location.</string>
-    <string name="sensor_camera">camera</string>
-    <string name="too_small_tag">Tag does\'nt have enough space</string>
+    <string name="failed_loading">There was a problem loading the file,\nit may have moved to a different location.</string>
+    <string name="sensor_camera">Camera</string>
+    <string name="too_small_tag">Tag does\'nt have enough space.</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
