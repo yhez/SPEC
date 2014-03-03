@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.print.PrintHelper;
 import android.text.Html;
@@ -23,6 +24,8 @@ import java.util.List;
 import specular.systems.FilesManagement;
 import specular.systems.R;
 import specular.systems.Visual;
+
+import static android.support.v4.content.FileProvider.getUriForFile;
 
 
 public class ShareCustomDialog extends DialogFragment {
@@ -50,7 +53,10 @@ public class ShareCustomDialog extends DialogFragment {
                     i.setComponent(cn);
                     i.setType("file/*");
                     i.setAction(Intent.ACTION_SEND);
-                    i.putExtra(Intent.EXTRA_STREAM, FilesManagement.getFileToShare(getActivity()));
+                    Uri uri =  getUriForFile(getActivity(), getActivity().getPackageName(), FilesManagement.getFileToShare(getActivity()));
+                    getActivity().grantUriPermission(rs.activityInfo.packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    i.putExtra(Intent.EXTRA_STREAM,uri);
                     try {
                         InputStream is = getActivity().getAssets().open("spec_temp_share.html");
                         int size = is.available();
@@ -85,7 +91,10 @@ public class ShareCustomDialog extends DialogFragment {
                     i.setComponent(cn);
                     i.setType("image/png");
                     i.setAction(Intent.ACTION_SEND);
-                    i.putExtra(Intent.EXTRA_STREAM, FilesManagement.getQRToShare(getActivity()));
+                    Uri uri = getUriForFile(getActivity(),getActivity().getPackageName(),FilesManagement.getQRToShare(getActivity()));
+                    getActivity().grantUriPermission(cn.getPackageName(),uri,Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    i.putExtra(Intent.EXTRA_STREAM, uri);
+                    i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     try {
                         InputStream is = getActivity().getAssets().open("spec_temp_share.html");
                         int size = is.available();
@@ -114,7 +123,7 @@ public class ShareCustomDialog extends DialogFragment {
                 public void onClick(View view) {
                     photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
                     try {
-                        photoPrinter.printBitmap(getString(R.string.subject_share), FilesManagement.getQRToShare(getActivity()));
+                        photoPrinter.printBitmap(getString(R.string.subject_share), Uri.fromFile(FilesManagement.getQRToShare(getActivity())));
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }

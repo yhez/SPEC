@@ -57,7 +57,7 @@ public final class FilesManagement {
         return tfos;
     }
 
-    public static boolean createFileToOpen(Activity a,byte[] file,String name) {
+    public static boolean createFileToOpen(Activity a, byte[] file, String name) {
         return file != null && FilesOpener.saveFileToOpen(a, file, name);
     }
 
@@ -192,7 +192,7 @@ public final class FilesManagement {
             File root = new File(a.getFilesDir() + "/messages");
             ArrayList<Uri> uris = new ArrayList<Uri>(2);
             if (new File(root, a.getString(FILE_NAME_SEND)).exists()) {
-                uris.add(getUriForFile(a,a.getPackageName(),new File(root, a.getString(FILE_NAME_SEND))));
+                uris.add(getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_SEND))));
             } else if (new File(root, a.getString(FILE_NAME_BACKUP)).exists()) {
                 uris.add(getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_BACKUP))));
             } else {
@@ -209,15 +209,28 @@ public final class FilesManagement {
         }
     }
 
-    public static Uri getFileToShare(Activity a) {
+    public static File getFileToShare(Activity a) {
         try {
-            return Uri.parse("file//" + new File(a.getFilesDir(), a.getString(FILE_NAME)));
+            File f = new File(a.getFilesDir() + "/temp", a.getString(FILE_NAME));
+            if (!f.exists()) {
+                FileInputStream fis = a.openFileInput(a.getString(FILE_NAME));
+                byte[] b = new byte[fis.available()];
+                fis.read(b);
+                fis.close();
+                File path = new File(a.getFilesDir() + "/temp");
+                if (!path.exists())
+                    path.mkdir();
+                OutputStream os = new FileOutputStream(f);
+                os.write(b);
+                os.close();
+            }
+            return f;
         } catch (Exception e) {
             return null;
         }
     }
 
-    public static Uri getContactCardToShare(Activity a,ComponentName cn) {
+    public static File getContactCardToShare(Activity a) {
         String name = ((EditText) a.findViewById(R.id.contact_name).findViewById(R.id.edit_text)).getText().toString();
         String email = ((EditText) a.findViewById(R.id.contact_email).findViewById(R.id.edit_text)).getText().toString();
         String publicKey = ((TextView) a.findViewById(R.id.contact_pb)).getText().toString();
@@ -230,14 +243,14 @@ public final class FilesManagement {
             OutputStream os = new FileOutputStream(file);
             os.write(pcc.getQRToPublish().getBytes("UTF-8"));
             os.close();
-            return getUriForFile(a,cn.getPackageName(),file);
+            return file;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public static Uri getQRFriendToShare(Activity a,ComponentName cn) {
+    public static Uri getQRFriendToShare(Activity a, ComponentName cn) {
         String name = ((EditText) a.findViewById(R.id.contact_name).findViewById(R.id.edit_text)).getText().toString();
         String email = ((EditText) a.findViewById(R.id.contact_email).findViewById(R.id.edit_text)).getText().toString();
         String publicKey = ((TextView) a.findViewById(R.id.contact_pb)).getText().toString();
@@ -253,16 +266,29 @@ public final class FilesManagement {
             OutputStream os = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, os);
             os.close();
-            return getUriForFile(a,cn.getPackageName(),file);
+            return getUriForFile(a, cn.getPackageName(), file);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public static Uri getQRToShare(Activity a) {
+    public static File getQRToShare(Activity a) {
         try {
-            return Uri.parse("file//" + new File(a.getFilesDir(), a.getString(QR_NAME)));
+            File f = new File(a.getFilesDir() + "/temp", a.getString(QR_NAME));
+            if (!f.exists()) {
+                FileInputStream fis = a.openFileInput(a.getString(QR_NAME));
+                byte[] b = new byte[fis.available()];
+                fis.read(b);
+                fis.close();
+                File path = new File(a.getFilesDir() + "/temp");
+                if (!path.exists())
+                    path.mkdir();
+                OutputStream os = new FileOutputStream(f);
+                os.write(b);
+                os.close();
+            }
+            return f;
         } catch (Exception e) {
             return null;
         }

@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -22,6 +23,8 @@ import java.util.List;
 import specular.systems.FilesManagement;
 import specular.systems.R;
 import specular.systems.Visual;
+
+import static android.support.v4.content.FileProvider.getUriForFile;
 
 
 public class ShareContactDlg extends DialogFragment {
@@ -51,7 +54,10 @@ public class ShareContactDlg extends DialogFragment {
                     i.setComponent(cn);
                     i.setType("file/*");
                     i.setAction(Intent.ACTION_SEND);
-                    i.putExtra(Intent.EXTRA_STREAM, FilesManagement.getContactCardToShare(getActivity(),cn));
+                    Uri uri = getUriForFile(getActivity(),getActivity().getPackageName(),FilesManagement.getContactCardToShare(getActivity()));
+                    getActivity().grantUriPermission(cn.getPackageName(),uri,Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    i.putExtra(Intent.EXTRA_STREAM, uri);
                     try {
                         InputStream is = getActivity().getAssets().open("spec_temp_share_contact.html");
                         int size = is.available();

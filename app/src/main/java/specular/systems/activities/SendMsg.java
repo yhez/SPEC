@@ -477,7 +477,7 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
                     public void onClick(View view) {
                         photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
                         try {
-                            photoPrinter.printBitmap(getString(R.string.subject_encrypt), FilesManagement.getQRToShare(SendMsg.this));
+                            photoPrinter.printBitmap(getString(R.string.subject_encrypt), Uri.fromFile(FilesManagement.getQRToShare(SendMsg.this)));
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }

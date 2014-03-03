@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
     android:versionCode="33"
-    android:versionName="V 0.3.6">
+    android:versionName="V 0.3.8">
 
     <uses-sdk android:maxSdkVersion="19" />
 
@@ -164,12 +164,6 @@
             android:exported="false"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
 
-        <activity android:name=".activities.Demo"
-            android:label="Demo"
-            android:screenOrientation="landscape"
-            android:launchMode="singleTask"
-            android:exported="false"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"/>
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
     </application>
