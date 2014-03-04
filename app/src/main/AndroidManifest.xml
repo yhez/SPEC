@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
     android:versionCode="33"
-    android:versionName="V 0.3.8">
+    android:versionName="V 0.3.9">
 
     <uses-sdk android:maxSdkVersion="19" />
 

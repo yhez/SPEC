@@ -202,7 +202,7 @@ public class Visual {
 
     public static String getFileName(Activity a, Uri contentURI) {
         try {
-            Cursor cursor = a.getContentResolver().query(contentURI, null, null, null, null);
+            Cursor cursor = a.getContentResolver().query(contentURI, new String[]{MediaStore.MediaColumns.DISPLAY_NAME,MediaStore.MediaColumns.MIME_TYPE}, null, null, null);
             if (cursor == null) {
                 return contentURI.getLastPathSegment();
             }
@@ -220,10 +220,10 @@ public class Visual {
         }
     }
 
-    public static void hideAllChildes(Activity act, ViewGroup v) {
+    public static void hideAllChildes(ViewGroup v) {
         for (int a = 0; a < v.getChildCount(); a++)
             try {
-                hideAllChildes(act, (ViewGroup) v.getChildAt(a));
+                hideAllChildes((ViewGroup) v.getChildAt(a));
             } catch (Exception e) {
                 try {
                     v.getChildAt(a).setVisibility(View.GONE);

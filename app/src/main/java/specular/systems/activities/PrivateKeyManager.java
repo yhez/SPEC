@@ -252,7 +252,7 @@ public class PrivateKeyManager extends Activity {
             switch (v.getId()) {
                 case R.id.p_button1:
                     status = MOVE_TO_NFC;
-                    Visual.hideAllChildes(PrivateKeyManager.this, (ViewGroup) findViewById(android.R.id.content));
+                    Visual.hideAllChildes((ViewGroup) findViewById(android.R.id.content));
                     tv.setVisibility(View.VISIBLE);
                     divider.setVisibility(View.VISIBLE);
                     tv.setText(R.string.tab_nfc_move_to_nfc);
@@ -260,7 +260,7 @@ public class PrivateKeyManager extends Activity {
                     break;
                 case R.id.p_button2:
                     status = GET_FROM_NFC;
-                    Visual.hideAllChildes(this, (ViewGroup) findViewById(android.R.id.content));
+                    Visual.hideAllChildes((ViewGroup) findViewById(android.R.id.content));
                     tv.setVisibility(View.VISIBLE);
                     divider.setVisibility(View.VISIBLE);
                     tv.setText(R.string.tab_nfc_get_from_nfc);
