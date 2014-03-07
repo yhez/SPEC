@@ -44,8 +44,11 @@ public class ContactsDataSource {
         values.put(MySQLiteHelper.COLUMN_DEFAULT_APP, "");
 
         database = dbHelper.getWritableDatabase();
-        long l = database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
-                values);
+        long l = 0;
+        if (database != null) {
+            l = database.insert(MySQLiteHelper.TABLE_CONTACTS, null,
+                    values);
+        }
         dbHelper.close();
         if(MySimpleArrayAdapter.getAdapter()!=null)
             MySimpleArrayAdapter.getAdapter().addCont(a, contact);
@@ -61,17 +64,21 @@ public class ContactsDataSource {
                 break;
             }
         database = dbHelper.getWritableDatabase();
-        database.delete(MySQLiteHelper.TABLE_CONTACTS, MySQLiteHelper.COLUMN_ID
-                + " = " + id, null);
+        if (database != null) {
+            database.delete(MySQLiteHelper.TABLE_CONTACTS, MySQLiteHelper.COLUMN_ID
+                    + " = " + id, null);
+        }
         dbHelper.close();
         if (!(position < 0)) {
             if(MySimpleArrayAdapter.getAdapter()!=null)
                 MySimpleArrayAdapter.getAdapter().removeCont(aa, position);
         }
     }
-    public void deleteAllContact(Activity aa) {
+    public void deleteAllContact() {
         database = dbHelper.getWritableDatabase();
-        database.delete(MySQLiteHelper.TABLE_CONTACTS, "1 = 1", null);
+        if (database != null) {
+            database.delete(MySQLiteHelper.TABLE_CONTACTS, "1 = 1", null);
+        }
         dbHelper.close();
         MySimpleArrayAdapter.clearAll();
     }
@@ -88,8 +95,10 @@ public class ContactsDataSource {
         if (session != null)
             cv.put(MySQLiteHelper.COLUMN_SESSION, session);
         database = dbHelper.getWritableDatabase();
-        database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
-        database.close();
+        if (database != null) {
+            database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
+            database.close();
+        }
     }
 
     public void updateDB(long id, long last, int received) {
@@ -99,16 +108,20 @@ public class ContactsDataSource {
         if (received > 0)
             cv.put(MySQLiteHelper.MSG_RECEIVED, received);
         database = dbHelper.getWritableDatabase();
-        database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
-        database.close();
+        if (database != null) {
+            database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
+            database.close();
+        }
     }
 
     public void updateDB(long id, int sent) {
         ContentValues cv = new ContentValues();
         cv.put(MySQLiteHelper.MSG_I_SEND, sent);
         database = dbHelper.getWritableDatabase();
-        database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
-        database.close();
+        if (database != null) {
+            database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
+            database.close();
+        }
     }
 
     public Contact findContact(long id) {
@@ -118,58 +131,67 @@ public class ContactsDataSource {
                 if (c.getId() == id)
                     return c;
         database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
-                allColumns, MySQLiteHelper.COLUMN_ID + " = " + id, null, null,
-                null, null);
-        cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-            Contact c = new Contact(cursor.getLong(0), cursor.getString(1)
-                    , cursor.getString(2), cursor.getInt(3)
-                    , cursor.getLong(4), cursor.getInt(5)
-                    , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8), cursor.getString(9));
+        Cursor cursor;
+        if (database != null) {
+            cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
+                    allColumns, MySQLiteHelper.COLUMN_ID + " = " + id, null, null,
+                    null, null);
+            cursor.moveToFirst();
+            if (cursor.getCount() > 0) {
+                Contact c = new Contact(cursor.getLong(0), cursor.getString(1)
+                        , cursor.getString(2), cursor.getInt(3)
+                        , cursor.getLong(4), cursor.getInt(5)
+                        , cursor.getInt(6), cursor.getString(7),
+                        cursor.getString(8), cursor.getString(9));
+                dbHelper.close();
+                return c;
+            }
             dbHelper.close();
-            return c;
         }
-        dbHelper.close();
         return null;
     }
 
     public Contact findContactByEmail(String email) {
         database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
-                allColumns, MySQLiteHelper.COLUMN_EMAIL + " = '" + email
-                + "' ", null, null, null, null);
-        cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-            Contact c = new Contact(cursor.getLong(0), cursor.getString(1)
-                    , cursor.getString(2), cursor.getInt(3)
-                    , cursor.getLong(4), cursor.getInt(5)
-                    , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8), cursor.getString(9));
+        Cursor cursor;
+        if (database != null) {
+            cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
+                    allColumns, MySQLiteHelper.COLUMN_EMAIL + " = '" + email
+                    + "' ", null, null, null, null);
+            cursor.moveToFirst();
+            if (cursor.getCount() > 0) {
+                Contact c = new Contact(cursor.getLong(0), cursor.getString(1)
+                        , cursor.getString(2), cursor.getInt(3)
+                        , cursor.getLong(4), cursor.getInt(5)
+                        , cursor.getInt(6), cursor.getString(7),
+                        cursor.getString(8), cursor.getString(9));
+                dbHelper.close();
+                return c;
+            }
             dbHelper.close();
-            return c;
         }
-        dbHelper.close();
         return null;
     }
 
     public Contact findContactByKey(String pbk) {
         database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
-                allColumns, MySQLiteHelper.COLUMN_PUBLIC_KEY + " = '" + pbk
-                + "' ", null, null, null, null);
-        cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-            Contact c = new Contact(cursor.getLong(0), cursor.getString(1)
-                    , cursor.getString(2), cursor.getInt(3)
-                    , cursor.getLong(4), cursor.getInt(5)
-                    , cursor.getInt(6), cursor.getString(7),
-                    cursor.getString(8), cursor.getString(9));
+        Cursor cursor;
+        if (database != null) {
+            cursor = database.query(MySQLiteHelper.TABLE_CONTACTS,
+                    allColumns, MySQLiteHelper.COLUMN_PUBLIC_KEY + " = '" + pbk
+                    + "' ", null, null, null, null);
+            cursor.moveToFirst();
+            if (cursor.getCount() > 0) {
+                Contact c = new Contact(cursor.getLong(0), cursor.getString(1)
+                        , cursor.getString(2), cursor.getInt(3)
+                        , cursor.getLong(4), cursor.getInt(5)
+                        , cursor.getInt(6), cursor.getString(7),
+                        cursor.getString(8), cursor.getString(9));
+                dbHelper.close();
+                return c;
+            }
             dbHelper.close();
-            return c;
         }
-        dbHelper.close();
         return null;
     }
 
@@ -205,7 +227,9 @@ public class ContactsDataSource {
         ContentValues cv = new ContentValues();
         cv.put(MySQLiteHelper.COLUMN_DEFAULT_APP, defaultApp);
         database = dbHelper.getWritableDatabase();
-        database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
-        database.close();
+        if (database != null) {
+            database.update(MySQLiteHelper.TABLE_CONTACTS, cv, "_id " + "=" + id, null);
+            database.close();
+        }
     }
 }

@@ -33,19 +33,21 @@ public class Contact {
             this.session = session != null ? new Session(session).toString() : new Session().toString();
             this.sent = 0;
             this.received = session != null ? 1 : 0;
-            long timeStamp=0;
-            if(session!=null){
+            long timeStamp = 0;
+            if (session != null) {
                 SimpleDateFormat parser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 parser.setTimeZone(TimeZone.getTimeZone("GMT"));
                 try {
                     timeStamp = parser.parse(StaticVariables.timeStamp).getTime();
-            }catch (Exception e){}
+                } catch (Exception ignore) {
+                }
             }
             this.last = timeStamp;
             this.id = ContactsDataSource.contactsDataSource.createContact(a, this);
         }
     }
-    public Contact(Activity a,Contact c){
+
+    public Contact(Activity a, Contact c) {
         contactName = c.contactName;
         publicKey = c.publicKey;
         email = c.email;
@@ -54,7 +56,7 @@ public class Contact {
         last = c.last;
         received = c.received;
         sent = c.sent;
-        cn=null;
+        cn = null;
         id = ContactsDataSource.contactsDataSource.createContact(a, this);
     }
 
@@ -162,7 +164,7 @@ public class Contact {
             this.session = session;
         ContactsDataSource.contactsDataSource.updateDB(id,
                 contactName, email, publicKey, session);
-        if(MySimpleArrayAdapter.getAdapter()!=null)
+        if (MySimpleArrayAdapter.getAdapter() != null)
             MySimpleArrayAdapter.getAdapter().updateCont(a, this);
     }
 
@@ -171,7 +173,7 @@ public class Contact {
         sent++;
         Session.updateFlag(a, this);
         ContactsDataSource.contactsDataSource.updateDB(id, sent);
-        if(MySimpleArrayAdapter.getAdapter()!=null)
+        if (MySimpleArrayAdapter.getAdapter() != null)
             MySimpleArrayAdapter.getAdapter().updateCont(a, this);
     }
 
@@ -186,20 +188,21 @@ public class Contact {
         if (defaultApp != null) {
             cn = new ComponentName(defaultApp.split("\n")[0], defaultApp.split("\n")[1]);
             ContactsDataSource.contactsDataSource.updateDB(id, defaultApp);
-            if(MySimpleArrayAdapter.getAdapter()!=null)
+            if (MySimpleArrayAdapter.getAdapter() != null)
                 MySimpleArrayAdapter.getAdapter().updateCont(a, this);
         } else {
             cn = null;
             ContactsDataSource.contactsDataSource.updateDB(id, "");
-            if(MySimpleArrayAdapter.getAdapter()!=null)
+            if (MySimpleArrayAdapter.getAdapter() != null)
                 MySimpleArrayAdapter.getAdapter().updateCont(a, this);
         }
     }
+
     @Override
-    public boolean equals(Object obj){
-        if(!(obj instanceof Contact))
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Contact))
             return false;
-        Contact c = (Contact)obj;
-        return c.publicKey.equals(publicKey)&&c.contactName.equals(contactName) && c.email.equals(email)&&c.session.equals(session);
+        Contact c = (Contact) obj;
+        return c.publicKey.equals(publicKey) && c.contactName.equals(contactName) && c.email.equals(email) && c.session.equals(session);
     }
 }

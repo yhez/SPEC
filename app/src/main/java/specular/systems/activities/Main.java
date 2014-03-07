@@ -183,7 +183,7 @@ public class Main extends FragmentActivity{
                     break;
                 case RESTORE:
                     setUpViews();
-                    DialogRestore dr = new DialogRestore(Backup.restore(), null);
+                    DialogRestore dr = new DialogRestore(Backup.restore());
                     dr.show(getFragmentManager(), "dr");
                     break;
                 case ADD_GROUP:

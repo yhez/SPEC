@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ContactsGroup">
+    tools:context="specular.systems.ContactsGroup">
 
     <FrameLayout
         android:id="@+id/frame_grid_last"
@@ -26,6 +26,7 @@
                 android:orientation="vertical">
 
                 <ImageButton
+                    android:contentDescription="@null"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -48,6 +49,7 @@
                 android:orientation="vertical">
 
                 <ImageButton
+                    android:contentDescription="@null"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -70,6 +72,7 @@
                 android:orientation="vertical">
 
                 <ImageButton
+                    android:contentDescription="@null"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -94,7 +97,8 @@
                 <ImageButton
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@null" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -148,6 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
+                    android:contentDescription="@null"
                     android:padding="6dp" />
 
                 <LinearLayout
@@ -182,6 +187,7 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@null"
                 android:adjustViewBounds="true"
                 android:padding="6dp"
                 android:layout_gravity="right|top"

@@ -61,7 +61,7 @@ public class Backup {
 
     //TODO:4. groups support
     public static ArrayList<Contact> restore() {
-        byte[] del = ContactDelimiter.getBytes();
+        //byte[] del = ContactDelimiter.getBytes();
         byte[] currHash = new byte[32];
         System.arraycopy(StaticVariables.decryptedBackup,0,currHash,0,currHash.length);
         byte[] dataToHash = new byte[StaticVariables.decryptedBackup.length-32];
@@ -86,7 +86,7 @@ public class Backup {
         byte[] data = new byte[dataToHash.length-32];
         System.arraycopy(dataToHash,32,data,0,data.length);
         String DataTemp = new String(data);
-        boolean myDetails = false;
+        //boolean myDetails = false;
         ArrayList<Contact> contactList = new ArrayList<Contact>();
         Pattern pattern = Pattern.compile(ContactDelimiter, Pattern.LITERAL);
         String[] contactsString = pattern.split(DataTemp, -1);

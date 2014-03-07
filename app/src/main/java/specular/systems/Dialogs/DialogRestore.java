@@ -15,7 +15,6 @@ import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
 import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
-import specular.systems.Group;
 import specular.systems.R;
 import specular.systems.StaticVariables;
 import specular.systems.activities.Main;
@@ -25,7 +24,7 @@ public class DialogRestore extends DialogFragment {
     private ArrayList<Contact> cn;
     String myDetails[];
 
-    public DialogRestore(ArrayList<Contact> cn, ArrayList<Group> gr) {
+    public DialogRestore(ArrayList<Contact> cn) {
         this.cn = cn;
         Contact me = cn.get(0);
         myDetails = new String[]{me.getContactName(),me.getEmail(),me.getPublicKey()};
@@ -45,7 +44,7 @@ public class DialogRestore extends DialogFragment {
                         }).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                ContactsDataSource.contactsDataSource.deleteAllContact(getActivity());
+                ContactsDataSource.contactsDataSource.deleteAllContact();
                 for(Contact c:cn)
                     new Contact(getActivity(),c);
                 CryptMethods.setDetails(myDetails[0],myDetails[1]);
