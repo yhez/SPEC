@@ -1,9 +1,11 @@
 package specular.systems.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.nfc.FormatException;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -11,6 +13,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.print.PrintHelper;
@@ -31,6 +34,7 @@ import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
 import specular.systems.Visual;
+import zxing.QRCodeEncoder;
 
 
 public class PrivateKeyManager extends Activity {
@@ -38,8 +42,8 @@ public class PrivateKeyManager extends Activity {
     int status = NO_CHOICE;
     Button bt1;
     Button bt2;
-    //Button bt3;
-    //Button bt4;
+    Button bt3;
+    Button bt4;
 
     @Override
     public void onCreate(Bundle b) {
@@ -47,8 +51,8 @@ public class PrivateKeyManager extends Activity {
         setContentView(R.layout.private_key_manager);
         bt1 = (Button) findViewById(R.id.p_button1);
         bt2 = (Button) findViewById(R.id.p_button2);
-        // bt3 = (Button) findViewById(R.id.p_button3);
-        // bt4 = (Button) findViewById(R.id.p_button4);
+        bt3 = (Button) findViewById(R.id.p_button3);
+        bt4 = (Button) findViewById(R.id.p_button4);
         updateViews();
         Visual.setAllFonts(this, (ViewGroup) findViewById(android.R.id.content));
     }
@@ -58,17 +62,18 @@ public class PrivateKeyManager extends Activity {
         if (status == NO_CHOICE)
             if (!CryptMethods.privateExist()) {
                 disableButton(bt1, R.string.cant_find_key_on_device);
-                //disableButton(bt4, R.string.cant_find_private_key);
+                disableButton(bt4, R.string.cant_find_private_key);
             }
-        if (NfcAdapter.getDefaultAdapter(this) == null) {
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (nfcAdapter == null) {
             disableButton(bt1, R.string.cant_connect_nfc_adapter);
             disableButton(bt2, R.string.cant_connect_nfc_adapter);
-        } else if (!NfcAdapter.getDefaultAdapter(this).isEnabled()) {
+        } else if (nfcAdapter.isEnabled()) {
             disabledNFC(bt1);
             disabledNFC(bt2);
         }
         if (!PrintHelper.systemSupportsPrint()) {
-            //disableButton(bt4, R.string.no_support_print);
+            disableButton(bt4, R.string.no_support_print);
         }
     }
 
@@ -137,29 +142,31 @@ public class PrivateKeyManager extends Activity {
                             mimeBytes, new byte[0], bin);
                     NdefMessage message = new NdefMessage(new NdefRecord[]{cardRecord,
                             appRecord});
-                    Ndef ndef=null;
+                    Ndef ndef = null;
                     try {
                         // see if tag is already NDEF formatted
                         ndef = Ndef.get(tag);
-                        ndef.connect();
-                        if (!ndef.isWritable()) {
-                            t.setText(R.string.failed_read_only);
-                        } else {
-                            // work out how much space we need for the data
-                            int size = message.toByteArray().length;
-                            if (ndef.getMaxSize() < size) {
-                                ndef.close();
-                                t.setText(R.string.too_small_tag);
+                        if (ndef != null) {
+                            ndef.connect();
+                            if (!ndef.isWritable()) {
+                                t.setText(R.string.failed_read_only);
                             } else {
-                                ndef.writeNdefMessage(message);
-                                t.setText(R.string.tag_written);
-                                FilesManagement.removePrivate(this);
-                                finish();
+                                // work out how much space we need for the data
+                                int size = message.toByteArray().length;
+                                if (ndef.getMaxSize() < size) {
+                                    ndef.close();
+                                    t.setText(R.string.too_small_tag);
+                                } else {
+                                    ndef.writeNdefMessage(message);
+                                    t.setText(R.string.tag_written);
+                                    FilesManagement.removePrivate(this);
+                                    finish();
+                                }
                             }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        if(ndef!=null&&ndef.isConnected())
+                        if (ndef != null && ndef.isConnected())
                             try {
                                 ndef.close();
                             } catch (IOException e1) {
@@ -226,20 +233,21 @@ public class PrivateKeyManager extends Activity {
     public void onResume() {
         super.onResume();
         KeysDeleter.stop();
-        if (NfcAdapter.getDefaultAdapter(this) != null && NfcAdapter.getDefaultAdapter(this).isEnabled()) {
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (nfcAdapter != null && nfcAdapter.isEnabled()) {
             PendingIntent pi = PendingIntent.getActivity(this, 0,
                     new Intent(this, getClass())
-                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0
+            );
             IntentFilter tagDetected = new IntentFilter(
                     NfcAdapter.ACTION_TAG_DISCOVERED);
             IntentFilter[] filters = new IntentFilter[]{tagDetected};
-            NfcAdapter
-                    .getDefaultAdapter(this)
-                    .enableForegroundDispatch(this, pi, filters, null);
+            nfcAdapter.enableForegroundDispatch(this, pi, filters, null);
         }
         updateViews();
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public void onClick(View v) {
         final TextView tv = (TextView) findViewById(R.id.p_text);
         final View divider = findViewById(R.id.text_view_divide);
@@ -266,7 +274,7 @@ public class PrivateKeyManager extends Activity {
                     tv.setText(R.string.tab_nfc_get_from_nfc);
                     v.setVisibility(View.VISIBLE);
                     break;
-               /* case R.id.p_button3:
+                case R.id.p_button3:
                     Intent i = new Intent(this, StartScan.class);
                     i.putExtra("type", StartScan.PRIVATE);
                     startActivityForResult(i, Main.SCAN_PRIVATE);
@@ -277,21 +285,21 @@ public class PrivateKeyManager extends Activity {
                         String key = Visual.bin2hex(p);
                         QRCodeEncoder qr = new QRCodeEncoder(key, 512);
                         Bitmap b = qr.encodeAsBitmap();
-                        final PrintHelper photoPrinter = new PrintHelper(this);
-                        photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
-                        photoPrinter.setColorMode(PrintHelper.COLOR_MODE_MONOCHROME);
-                        photoPrinter.printBitmap("My Private Key", b);
-                    } catch (WriterException e) {
+                        PrintHelper ph = new PrintHelper(this);
+                        ph.setColorMode(PrintHelper.COLOR_MODE_MONOCHROME);
+                        ph.setOrientation(PrintHelper.ORIENTATION_PORTRAIT);
+                        ph.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+                        ph.printBitmap("PK-backup-", b);
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    break;*/
+                    break;
                 default:
                     NotImplemented nimp = new NotImplemented();
                     nimp.show(getFragmentManager(), "nimp");
             }
         }
     }
-
     @Override
     public void onActivityResult(int req, int res, Intent i) {
         super.onActivityResult(req, res, i);

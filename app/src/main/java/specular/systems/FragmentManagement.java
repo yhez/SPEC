@@ -625,11 +625,12 @@ public class FragmentManagement extends Fragment {
                 }
                 break;
             case wait_nfc_decrypt:
-                if (NfcAdapter.getDefaultAdapter(getActivity()) == null) {
+                NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
+                if (nfcAdapter == null) {
                     Toast t = Toast.makeText(getActivity(), R.string.cant_connect_nfc_adapter, Toast.LENGTH_LONG);
                     t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     t.show();
-                } else if (!NfcAdapter.getDefaultAdapter(getActivity()).isEnabled())
+                } else if (!nfcAdapter.isEnabled())
                     rootView.findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
                 break;
             case setup:
@@ -675,7 +676,6 @@ public class FragmentManagement extends Fragment {
             case R.layout.explorer:
                 final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.pager);
                 Safe safe = new Safe(Main.main.getSupportFragmentManager());
-                final ActionBar actionBar = getActivity().getActionBar();
                 viewPager.setAdapter(safe);
                 viewPager.setCurrentItem(Safe.currentPage);
                 viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -687,7 +687,9 @@ public class FragmentManagement extends Fragment {
                     @Override
                     public void onPageSelected(int i) {
                         Safe.currentPage = i;
-                        actionBar.setSelectedNavigationItem(i);
+                        ActionBar actionBar = getActivity().getActionBar();
+                        if(actionBar!=null)
+                            actionBar.setSelectedNavigationItem(i);
                     }
 
                     @Override
@@ -695,7 +697,9 @@ public class FragmentManagement extends Fragment {
 
                     }
                 });
-                actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+                ActionBar actionBar = getActivity().getActionBar();
+                if(actionBar!=null)
+                    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
                 ActionBar.TabListener t = new ActionBar.TabListener() {
                     @Override
                     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -823,7 +827,7 @@ public class FragmentManagement extends Fragment {
                         });
                         ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
                     } else {
-                        //todo add exchange app
+                        //todo add exchange app account
                     }
                 } else {
                     String company = acc.type.split("\\.")[1];

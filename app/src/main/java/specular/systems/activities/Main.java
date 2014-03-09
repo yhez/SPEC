@@ -1434,7 +1434,7 @@ public class Main extends FragmentActivity{
                 } else {
                     message = R.string.backup_explain;
                 }
-                BackupDialog bd = new BackupDialog(message);
+                BackupDialog bd = new BackupDialog(this,message);
                 bd.show(getFragmentManager(), "bd");
                 break;
             case R.id.button3:

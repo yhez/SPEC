@@ -55,16 +55,16 @@ import zxing.WriterException;
 
 import static android.support.v4.content.FileProvider.getUriForFile;
 
-public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCallbacks,
+public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final int FILE = 0, IMAGE = 1, BOTH = 2;
     public static boolean msgSended;
-    public static final int CONTACT=1,MESSAGE=2,INVITE_GROUP=3,MESSAGE_FOR_GROUP=4,BACKUP=5,REPORT=6;
+    public static final int CONTACT = 1, MESSAGE = 2, INVITE_GROUP = 3, MESSAGE_FOR_GROUP = 4, BACKUP = 5, REPORT = 6;
     private static List<ResolveInfo> file, image, both;
     ArrayList<Uri> uris;
     Contact contact;
     Group group;
-    int type=-1;
+    int type = -1;
 
     @Override
     public void onCreate(Bundle b) {
@@ -73,16 +73,16 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
-        type= getIntent().getIntExtra("type",-1);
-        if(type==REPORT){
+        type = getIntent().getIntExtra("type", -1);
+        if (type == REPORT) {
             show();
             return;
         }
         uris = FilesManagement.getFilesToSend(this);
         long id = getIntent().getLongExtra("contactId", -1);
-        if (type==MESSAGE||type==INVITE_GROUP)
+        if (type == MESSAGE || type == INVITE_GROUP)
             contact = ContactsDataSource.contactsDataSource.findContact(id);
-        else if(type==MESSAGE_FOR_GROUP){
+        else if (type == MESSAGE_FOR_GROUP) {
             group = GroupDataSource.groupDataSource.findGroup(id);
         }
         if (contact == null || contact.getDefaultApp() == null) {
@@ -114,7 +114,7 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
                     byte[] buffer = new byte[size];
                     is.read(buffer);
                     is.close();
-                    i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()));
+                    i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer) + Visual.timeAndDate()));
                 } catch (Exception e) {
                     Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
                             .show();
@@ -134,30 +134,34 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
     private void show() {
         setContentView(R.layout.send_msg_dlg);
         updateViews();
-        if(uris!=null){
-        if (uris.get(0) != null) {
-            ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(getFilesDir()+"/messages",getString(R.string.file_name_secure_msg)).length()).replace(" ", "\n"));
-            ((ImageView) findViewById(R.id.file_icon)).setImageResource(R.drawable.logo);
-            EditText etFile = (EditText) findViewById(R.id.name_file);
-            etFile.setText(getName(FILE));
-            etFile.setSelection(etFile.getText().length());
-            etFile.setFilters(Visual.filters());
-        }
-        if (uris.get(1) != null) {
-            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(StaticVariables.encryptedMsgToSend, 76);
-            try {
-                Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
-                ((ImageView) findViewById(R.id.qr_icon)).setImageBitmap(bitmap);
-            } catch (WriterException e) {
-                ((ImageView) findViewById(R.id.qr_icon)).setImageResource(R.drawable.logo);
-                e.printStackTrace();
+        if (uris != null) {
+            if (uris.get(0) != null) {
+                if(type==BACKUP)
+                    ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(getFilesDir() + "/messages", getString(R.string.file_name_Backup_msg)).length()).replace(" ", "\n"));
+                else
+                    ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(getFilesDir() + "/messages", getString(R.string.file_name_secure_msg)).length()).replace(" ", "\n"));
+                ((ImageView) findViewById(R.id.file_icon)).setImageResource(R.drawable.logo);
+                EditText etFile = (EditText) findViewById(R.id.name_file);
+                etFile.setText(getName(FILE));
+                etFile.setSelection(etFile.getText().length());
+                etFile.setFilters(Visual.filters());
             }
-            ((TextView) findViewById(R.id.qr_size)).setText(Visual.getSize(new File(getFilesDir()+"/messages",getString(R.string.file_name_qr_msg)).length()).replace(" ", "\n"));
-            EditText etImage = (EditText) findViewById(R.id.qr_name_file);
-            etImage.setText(getName(IMAGE));
-            etImage.setSelection(etImage.getText().length());
-            etImage.setFilters(Visual.filters());
-        }}
+            if (uris.get(1) != null) {
+                QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(StaticVariables.encryptedMsgToSend, 76);
+                try {
+                    Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
+                    ((ImageView) findViewById(R.id.qr_icon)).setImageBitmap(bitmap);
+                } catch (WriterException e) {
+                    ((ImageView) findViewById(R.id.qr_icon)).setImageResource(R.drawable.logo);
+                    e.printStackTrace();
+                }
+                ((TextView) findViewById(R.id.qr_size)).setText(Visual.getSize(new File(getFilesDir() + "/messages", getString(R.string.file_name_qr_msg)).length()).replace(" ", "\n"));
+                EditText etImage = (EditText) findViewById(R.id.qr_name_file);
+                etImage.setText(getName(IMAGE));
+                etImage.setSelection(etImage.getText().length());
+                etImage.setFilters(Visual.filters());
+            }
+        }
         Visual.setAllFonts(this, (ViewGroup) findViewById(android.R.id.content));
     }
 
@@ -227,14 +231,16 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
                 }
         }
     }
+
     final FilenameFilter filterNotReported = new FilenameFilter() {
         @Override
         public boolean accept(File file, String s) {
             return s.endsWith(".stacktrace");
         }
     };
+
     private void startOnClick(int what, ResolveInfo rs) {
-        if(type==REPORT){
+        if (type == REPORT) {
             ComponentName cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
             Intent i = new Intent();
             i.setAction(Intent.ACTION_SEND_MULTIPLE);
@@ -242,7 +248,7 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
             i.setType("*/*");
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.email_for_reports)});
             i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.send_report_subject));
-            i.putExtra(Intent.EXTRA_TEXT,getString(R.string.send_report_content));
+            i.putExtra(Intent.EXTRA_TEXT, getString(R.string.send_report_content));
             File folder = new File(getFilesDir() + "/reports");
             ArrayList<Parcelable> uris = new ArrayList<Parcelable>();
             for (String s : folder.list(filterNotReported)) {
@@ -269,13 +275,13 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
             t.show();
             return;
         }
-        if(rs.activityInfo.packageName.equals("com.google.android.apps.docs")){
+        if (rs.activityInfo.packageName.equals("com.google.android.apps.docs")) {
             if (mGoogleApiClient == null) {
                 // Create the API client and bind it to an instance variable.
                 // We use this instance as the callback for connection and connection
                 // failures.
                 // Since no account name is passed, the user is prompted to choose.
-                waitForDrive=true;
+                waitForDrive = true;
                 mGoogleApiClient = new GoogleApiClient.Builder(this)
                         .addApi(Drive.API)
                         .addScope(Drive.SCOPE_FILE)
@@ -289,8 +295,8 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
         }
         ComponentName cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
         Intent i = new Intent();
-        if (type ==MESSAGE||type==MESSAGE_FOR_GROUP) {
-            String email = contact!=null?contact.getEmail():group.getEmail();
+        if (type == MESSAGE || type == MESSAGE_FOR_GROUP) {
+            String email = contact != null ? contact.getEmail() : group.getEmail();
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
             i.putExtra(Intent.EXTRA_SUBJECT,
                     getResources().getString(R.string.subject_encrypt));
@@ -300,34 +306,34 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
                 byte[] buffer = new byte[size];
                 is.read(buffer);
                 is.close();
-                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()));
+                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer) + Visual.timeAndDate()));
             } catch (Exception e) {
                 Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
                         .show();
             }
-        }else if(type==INVITE_GROUP){
+        } else if (type == INVITE_GROUP) {
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
-            i.putExtra(Intent.EXTRA_SUBJECT,"attached a group");
+            i.putExtra(Intent.EXTRA_SUBJECT, "attached a group");
             try {
                 InputStream is = getAssets().open("spec_tmp_invite.html");
                 int size = is.available();
                 byte[] buffer = new byte[size];
                 is.read(buffer);
                 is.close();
-                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()));
+                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer) + Visual.timeAndDate()));
             } catch (Exception e) {
                 Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
                         .show();
             }
-        }else if(type==BACKUP){
-            i.putExtra(Intent.EXTRA_SUBJECT,"backup SPEC dataRaw");
+        } else if (type == BACKUP) {
+            i.putExtra(Intent.EXTRA_SUBJECT, "backup SPEC data");
             try {
                 InputStream is = getAssets().open("backup_file.html");
                 int size = is.available();
                 byte[] buffer = new byte[size];
                 is.read(buffer);
                 is.close();
-                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()));
+                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer) + Visual.timeAndDate()));
             } catch (Exception e) {
                 Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
                         .show();
@@ -335,21 +341,26 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
         }
         i.setComponent(cn);
         if (what == IMAGE || what == BOTH) {
-            if(!(etImage.getText() + ".png").equals(getString(R.string.file_name_qr_msg))){
-                File newPath = new File(getFilesDir(),etImage.getText()+".png");
+            if (!(etImage.getText() + ".png").equals(getString(R.string.file_name_qr_msg))) {
+                File newPath = new File(getFilesDir(), etImage.getText() + ".png");
                 if (newPath.exists())
                     newPath.delete();
-                File oldPath = new File(getFilesDir()+"/messages",getString(R.string.file_name_qr_msg));
+                File oldPath = new File(getFilesDir() + "/messages", getString(R.string.file_name_qr_msg));
                 oldPath.renameTo(newPath);
                 uris.set(1, getUriForFile(this, getPackageName(), newPath));
             }
         }
         if (what == FILE || what == BOTH) {
-            if(!(etFile.getText() + ".SPEC").equals(getString(R.string.file_name_secure_msg))){
-                File newPath = new File(getFilesDir(),etFile.getText()+".SPEC");
+            if (((type==MESSAGE||type==MESSAGE_FOR_GROUP)&&!(etFile.getText() + ".SPEC").equals(getString(R.string.file_name_secure_msg)))
+                    ||(type==BACKUP&&!(etFile.getText() + ".SPEC").equals(getString(R.string.file_name_Backup_msg)))) {
+                File newPath = new File(getFilesDir(), etFile.getText() + ".SPEC");
                 if (newPath.exists())
                     newPath.delete();
-                File oldPath = new File(getFilesDir()+"/messages",getString(R.string.file_name_secure_msg));
+                File oldPath;
+                if(type==BACKUP)
+                    oldPath = new File(getFilesDir() + "/messages", getString(R.string.file_name_Backup_msg));
+                else
+                    oldPath = new File(getFilesDir() + "/messages", getString(R.string.file_name_secure_msg));
                 oldPath.renameTo(newPath);
                 uris.set(0, getUriForFile(this, getPackageName(), newPath));
             }
@@ -381,6 +392,7 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
             //todo handle activity is missing can happen in rare cases
         }
     }
+
     private boolean waitForDrive = false;
     private GoogleApiClient mGoogleApiClient;
 
@@ -394,7 +406,7 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
     }
 
     private void updateViews() {
-        if(type==REPORT){
+        if (type == REPORT) {
             findViewById(R.id.title_file_details).setVisibility(View.GONE);
             findViewById(R.id.title_divider).setVisibility(View.GONE);
             findViewById(R.id.files_names).setVisibility(View.GONE);
@@ -407,7 +419,7 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
             findViewById(R.id.divider2).setVisibility(View.GONE);
             findViewById(R.id.title_file).setVisibility(View.GONE);
             findViewById(R.id.file_details).setVisibility(View.GONE);
-            ((TextView)findViewById(R.id.text_both_share)).setText("Share stack trace files VIA...");
+            ((TextView) findViewById(R.id.text_both_share)).setText("Share stack trace files VIA...");
             loadIcons(BOTH);
             return;
         }
@@ -509,7 +521,7 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
             finish();
         } else
             KeysDeleter.stop();
-        if(waitForDrive){
+        if (waitForDrive) {
             if (mGoogleApiClient == null) {
                 // Create the API client and bind it to an instance variable.
                 // We use this instance as the callback for connection and connection
@@ -526,6 +538,7 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
             mGoogleApiClient.connect();
         }
     }
+
     private void saveFileToDrive() {
         // Start by creating a new contents, and setting a callback.
         Drive.DriveApi.newContents(mGoogleApiClient).setResultCallback(new ResultCallback<DriveApi.ContentsResult>() {
@@ -592,14 +605,15 @@ public class SendMsg extends Activity  implements GoogleApiClient.ConnectionCall
             Log.e("", "Exception while starting resolution activity", e);
         }
     }
+
     @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data){
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         //DriveId i = data.getParcelableExtra(
         //                OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
-        waitForDrive=false;
-        if(resultCode==RESULT_OK){
-            Toast tb = Toast.makeText(this,"file has saved on drive",Toast.LENGTH_SHORT);
-            tb.setGravity(Gravity.CENTER,0,0);
+        waitForDrive = false;
+        if (resultCode == RESULT_OK) {
+            Toast tb = Toast.makeText(this, "file has saved on drive", Toast.LENGTH_SHORT);
+            tb.setGravity(Gravity.CENTER, 0, 0);
             tb.show();
         }
 

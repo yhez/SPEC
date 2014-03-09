@@ -18,7 +18,7 @@ final public class QRCodeEncoder {
 
     public QRCodeEncoder(String data, int dimension) {
         this.dimension = dimension;
-        //todo prevent too light colors
+        //to prevent too light colors
         int red = Integer.parseInt(data.substring(data.length() - 2), 16);
         int green = Integer.parseInt(data.substring(data.length() - 4,data.length()-2), 16);
         int blue = Integer.parseInt(data.substring(data.length() - 6,data.length()-4), 16);

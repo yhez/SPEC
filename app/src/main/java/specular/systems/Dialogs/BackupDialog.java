@@ -20,13 +20,12 @@ public class BackupDialog extends DialogFragment {
    private int message;
     private Activity a;
 
-    public BackupDialog(int str) {
-        message=str;
+    public BackupDialog(Activity a,int str) {
+        message=str;this.a=a;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        a= getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(a, R.style.dialogTransparent);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
