@@ -222,8 +222,9 @@ public class Main extends FragmentActivity{
     public void createKeysManager(View v) {
         CryptMethods.doneCreatingKeys = true;
         selectItem(-1, R.layout.wait_nfc_to_write, getString(R.string.save_keys_menu_title));
-        if (NfcAdapter.getDefaultAdapter(this) != null) {
-            if (!NfcAdapter.getDefaultAdapter(this).isEnabled()) {
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (nfcAdapter != null) {
+            if (!nfcAdapter.isEnabled()) {
                 TurnNFCOn tno = new TurnNFCOn();
                 tno.show(getFragmentManager(), "nfc");
             }
@@ -395,9 +396,8 @@ public class Main extends FragmentActivity{
                             t.show();
                             return;
                         }
-                        SharedPreferences.Editor edt = sp.edit();
-                        edt.putString(System.currentTimeMillis()+"",name);
-                        edt.commit();
+                        String ext = StaticVariables.file_name.substring(StaticVariables.file_name.lastIndexOf('.') + 1);
+                        FilesManagement.saveToSafe(Main.this,name+"."+ext);
                         dialog.cancel();
                         findViewById(R.id.save_attachment).setVisibility(View.GONE);
                     }

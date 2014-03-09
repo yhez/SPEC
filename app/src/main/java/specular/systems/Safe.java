@@ -1,6 +1,7 @@
 package specular.systems;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,7 +17,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Map;
 
-import specular.systems.Dialogs.NotImplemented;
+import specular.systems.activities.FilesOpener;
 
 
 public class Safe extends FragmentStatePagerAdapter {
@@ -49,7 +50,7 @@ public class Safe extends FragmentStatePagerAdapter {
             final ArrayList<String> files = new ArrayList<String>();
             SharedPreferences sp = getActivity().getSharedPreferences("saved_files", Context.MODE_PRIVATE);
             Map m = sp.getAll();
-            Object[] o = m.values().toArray();
+            final Object[] o = m.values().toArray();
             for (int a = 0; a < o.length; a++)
                 files.add((String) o[a]);
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, files);
@@ -57,8 +58,15 @@ public class Safe extends FragmentStatePagerAdapter {
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    NotImplemented ni = new NotImplemented();
-                    ni.show(getActivity().getFragmentManager(), "hfhf");
+                    String name = (String)o[i];
+                    try {
+                        FilesManagement.getFromSafe(getActivity(),name);
+                        Intent in = new Intent(getActivity(), FilesOpener.class);
+                        in.putExtra("file_name",name);
+                        startActivity(in);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             return rootView;

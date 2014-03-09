@@ -27,7 +27,8 @@
                 android:id="@+id/hash_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|right" />
+                android:layout_gravity="top|right"
+                android:contentDescription="@null" />
 
             <ImageButton
                 android:id="@+id/hash"
@@ -36,7 +37,8 @@
                 android:layout_height="wrap_content"
                 android:onClick="decryptedMsgClick"
                 android:padding="@dimen/default_gap"
-                android:src="@drawable/hash" />
+                android:src="@drawable/hash"
+                android:contentDescription="@null" />
         </FrameLayout>
         <!--replay attack-->
         <FrameLayout
@@ -48,9 +50,11 @@
                 android:id="@+id/replay_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|right" />
+                android:layout_gravity="top|right"
+                android:contentDescription="@null" />
 
             <ImageButton
+                android:contentDescription="@null"
                 android:id="@+id/replay"
                 style="@android:style/Widget.Holo.Button.Borderless"
                 android:layout_width="wrap_content"
@@ -66,12 +70,14 @@
             android:layout_column="3">
 
             <ImageView
+                android:contentDescription="@null"
                 android:id="@+id/session_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|right" />
 
             <ImageButton
+                android:contentDescription="@null"
                 android:id="@+id/session"
                 style="@android:style/Widget.Holo.Button.Borderless"
                 android:layout_width="wrap_content"
@@ -91,6 +97,7 @@
         android:layout_below="@id/top_pannel">
 
         <ImageButton
+            android:contentDescription="@null"
             android:id="@+id/answer"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
@@ -155,6 +162,7 @@
                 android:layout_height="wrap_content" />
 
             <ImageButton
+                android:contentDescription="@null"
                 style="?android:attr/borderlessButtonStyle"
                 android:id="@+id/open_file"
                 android:layout_width="wrap_content"
@@ -163,6 +171,7 @@
                 android:onClick="decryptedMsgClick" />
         </RelativeLayout>
         <ImageButton
+            android:contentDescription="@null"
             android:id="@+id/save_attachment"
             android:onClick="decryptedMsgClick"
             android:background="@drawable/border_botom"

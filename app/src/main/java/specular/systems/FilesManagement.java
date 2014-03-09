@@ -379,7 +379,31 @@ public final class FilesManagement {
             edt.commit();
         }
     }
-
+    public static void saveToSafe(Activity a,String name){
+        try {
+            File path = new File(a.getFilesDir()+"/safe");
+            if(!path.exists())
+                path.mkdir();
+            File file = new File(path,name);
+            OutputStream os = new FileOutputStream(file);
+            os.write(CryptMethods.encrypt(MessageFormat.decryptedMsg.getFileContent(),CryptMethods.getPublic()));
+            os.close();
+            a
+                    .getSharedPreferences("saved_files", Context.MODE_PRIVATE)
+                    .edit()
+                    .putString(System.currentTimeMillis() + "", name)
+                    .commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static void getFromSafe(Activity a,String name) throws Exception {
+        InputStream is=new FileInputStream(new File(a.getFilesDir()+"/safe",name));
+        byte[] data = new byte[is.available()];
+        is.read(data);
+        byte[] b = CryptMethods.decrypt(data);
+        FilesManagement.saveFileForOpen(a,b,name);
+    }
     public static void edit(Activity a) {
         if (a != null) {
             myQRPublicKey = null;
