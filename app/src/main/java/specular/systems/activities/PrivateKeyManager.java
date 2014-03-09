@@ -304,8 +304,7 @@ public class PrivateKeyManager extends Activity {
     public void onActivityResult(int req, int res, Intent i) {
         super.onActivityResult(req, res, i);
         if (res == RESULT_OK) {
-            byte[] p = Visual.hex2bin(i.getStringExtra("barcode"));
-            if (CryptMethods.setPrivate(p)) {
+            if (CryptMethods.privateExist()) {
                 FilesManagement.savePrivate(this);
                 Toast t = Toast.makeText(this, R.string.private_key_loaded_from_qr, Toast.LENGTH_SHORT);
                 t.setGravity(Gravity.CENTER, 0, 0);
