@@ -402,7 +402,7 @@ public final class FilesManagement {
         byte[] data = new byte[is.available()];
         is.read(data);
         byte[] b = CryptMethods.decrypt(data);
-        FilesManagement.saveFileForOpen(a,b,name);
+        FilesManagement.createFileToOpen(a,b,name);
     }
     public static void edit(Activity a) {
         if (a != null) {

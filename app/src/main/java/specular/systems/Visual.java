@@ -25,7 +25,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -262,11 +261,8 @@ public class Visual {
     public static enum types{
         IMAGE,VIDEO,AUDIO,ZIP,TEXT,UNKNOWN,APK,PDF,DOC
     }
-    public static types getType(File f){
-        if(f.isDirectory())
-            return null;
-        String name = f.getName();
-        String ext = StaticVariables.file_name.substring(StaticVariables.file_name.lastIndexOf('.') + 1);
+    public static types getType(String name){
+        String ext = name.substring(name.lastIndexOf('.') + 1);
         MimeTypeMap mtm = MimeTypeMap.getSingleton();
         String type = mtm.getMimeTypeFromExtension(ext);
         if(type==null)

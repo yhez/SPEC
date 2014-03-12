@@ -18,8 +18,10 @@
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_gravity="center"
-        android:padding="@dimen/default_gap"/>
+        android:padding="@dimen/default_gap"
+        android:contentDescription="@null" />
     <ImageButton
+        android:contentDescription="@null"
         android:layout_row="0"
         android:layout_column="1"
         android:scaleType="centerCrop"
@@ -31,6 +33,7 @@
         android:layout_gravity="center"
         android:padding="@dimen/default_gap" />
     <ImageButton
+        android:contentDescription="@null"
         android:layout_row="1"
         android:layout_column="0"
         android:scaleType="centerCrop"
@@ -42,6 +45,7 @@
         android:layout_gravity="center"
         android:padding="@dimen/default_gap" />
     <ImageButton
+        android:contentDescription="@null"
         android:layout_row="1"
         android:layout_column="1"
         android:scaleType="centerCrop"
