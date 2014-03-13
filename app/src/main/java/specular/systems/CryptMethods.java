@@ -4,6 +4,8 @@ package specular.systems;
 import android.app.Activity;
 import android.util.Log;
 
+import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -46,7 +48,17 @@ public class CryptMethods {
         if (lock) {
             lock = false;
             if (mPtK != null) {
-                ((ECPrivateKey) mPtK).getS().bigInt.delete();
+                BigInteger bi = ((ECPrivateKey) mPtK).getS().bigInt;
+                try {
+                    Field f = bi.getClass().getDeclaredField("bigInt");
+                    f.setAccessible(true);
+                    Object bigInt = f.get(bi);
+                    long addr = (Long)bigInt.getClass().getDeclaredField("bignum").get(bigInt);
+                    new NativeDelete().delete(addr,bi.bitLength());
+                    Log.d("keys manager","keys has been successfully cleared from memory");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 mPtK = null;
             }
             if (myPrivateKey != null) {

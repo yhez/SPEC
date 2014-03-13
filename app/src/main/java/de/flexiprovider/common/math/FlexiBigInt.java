@@ -1,7 +1,8 @@
 package de.flexiprovider.common.math;
 
+import java.math.BigInteger;
+
 import de.flexiprovider.api.SecureRandom;
-import de.flexiprovider.my.BigInteger;
 
 public final class FlexiBigInt {
 
@@ -35,10 +36,6 @@ public final class FlexiBigInt {
 
         public FlexiBigInt(BigInteger bigInt) {
         this.bigInt = bigInt;
-    }
-
-    public FlexiBigInt(java.math.BigInteger bigInt) {
-        this.bigInt = new BigInteger(bigInt);
     }
 
     public static FlexiBigInt valueOf(long val) {
