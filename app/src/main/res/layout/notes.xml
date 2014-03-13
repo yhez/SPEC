@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="@dimen/default_gap"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:textColor="@color/spec_black"
+            android:id="@+id/note"
+            android:imeOptions="actionDone"
+            android:hint="write your note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress" />
+
+        <LinearLayout
+            android:id="@+id/main"
+            android:paddingTop="@dimen/default_gap"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/left"
+                android:layout_weight="1"
+                android:layout_width="0dip"
+                android:paddingRight="4dp"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:paddingLeft="4dp"
+                android:orientation="vertical"
+                android:id="@+id/right"
+                android:layout_weight="1"
+                android:layout_width="0dip"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

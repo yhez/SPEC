@@ -397,10 +397,36 @@ public final class FilesManagement {
             e.printStackTrace();
         }
     }
+    public static void saveNoteToSafe(Activity a,String data){
+        try {
+            String fileName = System.currentTimeMillis()+"";
+            File path = new File(a.getFilesDir()+"/notes");
+            if(!path.exists())
+                path.mkdir();
+            File file = new File(path,fileName);
+            OutputStream os = new FileOutputStream(file);
+            byte[] dat = data.getBytes("UTF-8");
+            os.write(CryptMethods.encrypt(dat,CryptMethods.getPublic()));
+            os.close();
+            a.getSharedPreferences("notes",Context.MODE_PRIVATE)
+            .edit().putString(fileName,fileName).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static String getNoteFromSafe(Activity a, String name) throws Exception {
+        InputStream is=new FileInputStream(new File(a.getFilesDir()+"/notes",name));
+        byte[] data = new byte[is.available()];
+        is.read(data);
+        is.close();
+        byte[] b = CryptMethods.decrypt(data);
+        return new String(b,"UTF-8");
+    }
     public static void getFromSafe(Activity a,String name) throws Exception {
         InputStream is=new FileInputStream(new File(a.getFilesDir()+"/safe",name));
         byte[] data = new byte[is.available()];
         is.read(data);
+        is.close();
         byte[] b = CryptMethods.decrypt(data);
         FilesManagement.createFileToOpen(a,b,name);
     }

@@ -3,16 +3,21 @@ package specular.systems;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -53,39 +58,51 @@ public class Safe extends FragmentStatePagerAdapter {
             final ArrayList<ListFiles.FilesRows> files = new ArrayList<ListFiles.FilesRows>();
             SharedPreferences sp = getActivity().getSharedPreferences("saved_files", Context.MODE_PRIVATE);
             Map m = sp.getAll();
+            if(m==null){
+                TextView tv = new TextView(getActivity());
+                tv.setText("no files in safe yet, if you received an attachment in a message you can keep it here");
+                tv.setTextColor(Color.BLACK);
+                tv.setTextSize(25);
+                tv.setPadding(25,25,25,25);
+                return tv;
+            }
             Object[] o = m.values().toArray();
-            for (int a = 0; a < o.length; a++)
-                files.add(new ListFiles.FilesRows((String) o[a]));
+            for (Object anO : o) files.add(new ListFiles.FilesRows((String) anO));
             final ListFiles adapter = new ListFiles(getActivity(),files);
             lv.setAdapter(adapter);
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    String name = ((TextView)view.findViewById(R.id.text1)).getText().toString();
-                    try {
-                        FilesManagement.getFromSafe(getActivity(), name);
-                        Intent in = new Intent(getActivity(), FilesOpener.class);
-                        in.putExtra("file_name", name);
-                        startActivity(in);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if (CryptMethods.privateExist()) {
+                        String name = ((TextView) view.findViewById(R.id.text1)).getText().toString();
+                        try {
+                            FilesManagement.getFromSafe(getActivity(), name);
+                            Intent in = new Intent(getActivity(), FilesOpener.class);
+                            in.putExtra("file_name", name);
+                            startActivity(in);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
             lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    final FileDlg fd = new FileDlg(((TextView)view.findViewById(R.id.text1)).getText().toString());
-                    fd.show(getActivity().getFragmentManager(),"fd");
-                    Handler h = new Handler();
-                    h.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            fd.getDialog().getWindow().clearFlags(
-                                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                                            | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-                        }
-                    },700);
+                    if(CryptMethods.privateExist()) {
+                        final FileDlg fd = new FileDlg(((TextView) view.findViewById(R.id.text1)).getText().toString());
+                        fd.show(getActivity().getFragmentManager(), "fd");
+                        Handler h = new Handler();
+                        h.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                fd.getDialog().getWindow().clearFlags(
+                                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                                                | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
+                                );
+                            }
+                        }, 700);
+                    }
                     return true;
                 }
             });
@@ -94,9 +111,101 @@ public class Safe extends FragmentStatePagerAdapter {
     }
 
     public static class SectionNotes extends Fragment {
+
+
+        ArrayList<TextView> textViews;
+        LinearLayout main;
+        Object[] o;
+        int a = 0;
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    textViews.get(a).setText(FilesManagement.getNoteFromSafe(getActivity(),(String)o[a]));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if(++a<textViews.size())
+                    main.post(r);
+            }
+        };
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-            return inflater.inflate(R.layout.text_view, container, false);
+            View v = inflater.inflate(R.layout.notes, container, false);
+            main = (LinearLayout)v.findViewById(R.id.main);
+            final EditText et = (EditText)v.findViewById(R.id.note);
+            et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE && et.getText().length() > 0) {
+                        final String text = et.getText().toString();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                FilesManagement.saveNoteToSafe(getActivity(), text);
+                            }
+                        }).start();
+                        et.getText().clear();
+                        addNote(text);
+                    }
+                    return false;
+                }
+            });
+            Map m = getActivity().getSharedPreferences("notes", Context.MODE_PRIVATE).getAll();
+            if(m==null||m.values().size()==0){
+                TextView tv = new TextView(getActivity());
+                tv.setId(8777);
+                tv.setPadding(20,20,20,20);
+                tv.setText("no notes added yet");
+                tv.setTextColor(Color.BLACK);
+                tv.setTextSize(25);
+                main.addView(tv);
+            }else {
+                o = m.values().toArray();
+                textViews = new ArrayList<TextView>();
+                for (Object ignored : o) {
+                    try {
+                        TextView tv = new TextView(getActivity());
+                        tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        tv.setTextColor(Color.BLACK);
+                        tv.setBackgroundResource(R.drawable.border_botom);
+                        textViews.add(tv);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                LinearLayout left = (LinearLayout) v.findViewById(R.id.left);
+                LinearLayout right = (LinearLayout) v.findViewById(R.id.right);
+                for (int a = 0; a < textViews.size(); a++) {
+                    TextView tv = textViews.get(a);
+                    if (a % 2 == 0)
+                        left.addView(tv);
+                    else
+                        right.addView(tv);
+                }
+                main.postDelayed(r,500);
+            }
+            return v;
+        }
+        private void addNote(String note){
+            TextView tv = new TextView(getActivity());
+            tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            tv.setTextColor(Color.BLACK);
+            tv.setBackgroundResource(R.drawable.border_botom);
+            tv.setText(note);
+            View v = main.findViewById(8777);
+            if(v!=null) {
+                main.removeView(v);
+            }
+            LinearLayout left = (LinearLayout) main.findViewById(R.id.left);
+            LinearLayout right = (LinearLayout) main.findViewById(R.id.right);
+            if(left.getChildCount()>right.getChildCount()){
+                right.addView(tv);
+            }else{
+                left.addView(tv);
+            }
         }
     }
 }
