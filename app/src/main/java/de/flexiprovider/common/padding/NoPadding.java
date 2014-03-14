@@ -1,7 +1,5 @@
 package de.flexiprovider.common.padding;
 
-import javax.crypto.BadPaddingException;
-
 import de.flexiprovider.api.PaddingScheme;
 
 public class NoPadding extends PaddingScheme {
@@ -10,8 +8,7 @@ public class NoPadding extends PaddingScheme {
         return 0;
     }
 
-    protected void pad(byte[] input, int inOff, int inLen)
-            throws BadPaddingException {
+    protected void pad(byte[] input, int inOff, int inLen) {
 
     }
 

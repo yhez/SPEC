@@ -14,14 +14,6 @@ public final class BinaryBitmap {
     this.binarizer = binarizer;
   }
 
-  public int getWidth() {
-    return binarizer.getWidth();
-  }
-
-  public int getHeight() {
-    return binarizer.getHeight();
-  }
-
 
     public BitMatrix getBlackMatrix() throws NotFoundException {
     // The matrix is created on demand the first time it is requested, then cached. There are two

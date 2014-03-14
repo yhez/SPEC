@@ -16,7 +16,7 @@ public abstract class PaddingScheme {
     protected abstract int padLength(int inLen);
 
     protected abstract void pad(byte[] input, int inOff, int inLen)
-            throws BadPaddingException;
+            ;
 
     protected abstract int unpad(byte[] input, int inOff, int inLen)
             throws BadPaddingException;

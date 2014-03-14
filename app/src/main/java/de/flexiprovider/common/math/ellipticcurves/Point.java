@@ -60,9 +60,6 @@ public abstract class Point {
     public abstract void addToThis(Point other) throws DifferentCurvesException;
 
 
-    public abstract Point subtract(Point other) throws DifferentCurvesException;
-
-
     public abstract void subtractFromThis(Point other)
             throws DifferentCurvesException;
     public abstract Point multiplyBy2();

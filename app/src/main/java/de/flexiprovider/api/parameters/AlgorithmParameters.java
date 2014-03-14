@@ -60,7 +60,7 @@ public abstract class AlgorithmParameters extends
             throws IOException;
 
 
-    public abstract byte[] getEncoded() throws IOException;
+    public abstract byte[] getEncoded();
 
 
     public abstract byte[] getEncoded(String format) throws IOException;

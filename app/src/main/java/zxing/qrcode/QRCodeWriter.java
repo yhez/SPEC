@@ -36,15 +36,7 @@ public final class QRCodeWriter implements Writer {
 
   private static final int QUIET_ZONE_SIZE = 4;
 
-  @Override
-  public BitMatrix encode(String contents, int width, int height)
-      throws WriterException {
-
-    return encode(contents, width, height, null);
-  }
-
-  @Override
-  public BitMatrix encode(String contents,
+    public BitMatrix encode(String contents,
                           int width,
                           int height,
                           Map<EncodeHintType,?> hints) throws WriterException {

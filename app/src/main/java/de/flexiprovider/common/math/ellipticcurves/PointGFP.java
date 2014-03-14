@@ -523,13 +523,6 @@ public class PointGFP extends Point {
     }
 
 
-    public Point subtract(Point other) {
-        PointGFP result = new PointGFP(this);
-        result.subtractFromThis(other);
-        return result;
-    }
-
-
     public void subtractFromThis(Point other) {
 
         if (!(other instanceof PointGFP)) {

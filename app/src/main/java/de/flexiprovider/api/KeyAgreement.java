@@ -1,6 +1,5 @@
 package de.flexiprovider.api;
 
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
@@ -27,7 +26,7 @@ public abstract class KeyAgreement extends KeyAgreementSpi {
         try {
             SecureRandom flexiRand = new JavaSecureRandomWrapper(javaRand);
             init((PrivateKey) key, null, flexiRand);
-        } catch (InvalidAlgorithmParameterException e) {
+        } catch (Exception e) {
             throw new RuntimeException("algorithm parameters required");
         }
     }
@@ -72,7 +71,7 @@ public abstract class KeyAgreement extends KeyAgreementSpi {
     }
     public abstract void init(PrivateKey privKey,
                               AlgorithmParameterSpec params, SecureRandom random)
-            throws InvalidKeyException, InvalidAlgorithmParameterException;
+            throws InvalidKeyException;
 
     public abstract byte[] generateSecret() throws IllegalStateException;
 

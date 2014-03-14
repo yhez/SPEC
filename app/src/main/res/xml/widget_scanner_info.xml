@@ -9,4 +9,4 @@
     android:initialLayout="@layout/widget_scanner"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
-    android:initialKeyguardLayout="@layout/widget_scanner"></appwidget-provider>
+    android:initialKeyguardLayout="@layout/widget_scanner"/>

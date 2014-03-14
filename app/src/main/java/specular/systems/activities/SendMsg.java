@@ -555,7 +555,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                 // Write the bitmap dataRaw from it.
                 try {
                     outputStream.write(StaticVariables.dataRaw);
-                } catch (IOException e1) {
+                } catch (IOException ignored) {
                 }
                 // Create the initial metadata - MIME type and title.
                 // Note that the user will be able to change the title later.
@@ -570,7 +570,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                 try {
                     startIntentSenderForResult(
                             intentSender, 2, null, 0, 0, 0);
-                } catch (IntentSender.SendIntentException e) {
+                } catch (IntentSender.SendIntentException ignored) {
                 }
             }
         });

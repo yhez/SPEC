@@ -1,6 +1,5 @@
 package de.flexiprovider.api;
 
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.SignatureException;
 import java.security.spec.AlgorithmParameterSpec;
@@ -94,27 +93,27 @@ public abstract class Signature extends java.security.SignatureSpi {
 
 
     public abstract void initSign(PrivateKey privKey, SecureRandom random)
-            throws InvalidKeyException;
+            ;
 
 
     public abstract void initVerify(PublicKey pubKey)
-            throws InvalidKeyException;
+            ;
 
 
     public abstract void setParameters(AlgorithmParameterSpec params)
-            throws InvalidAlgorithmParameterException;
+            ;
 
 
-    public abstract void update(byte input) throws SignatureException;
+    public abstract void update(byte input);
 
 
     public abstract void update(byte[] input, int inOff, int inLen)
-            throws SignatureException;
+            ;
 
-    public abstract byte[] sign() throws SignatureException;
+    public abstract byte[] sign();
 
 
-    public abstract boolean verify(byte[] signature) throws SignatureException;
+    public abstract boolean verify(byte[] signature);
 
 
     public final boolean verify(byte[] signature, int sigOff, int sigLen)

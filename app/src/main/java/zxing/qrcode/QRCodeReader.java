@@ -27,11 +27,6 @@ public class QRCodeReader implements Reader {
 
 
     @Override
-  public Result decode(BinaryBitmap image) throws NotFoundException, ChecksumException, FormatException {
-    return decode(image, null);
-  }
-
-  @Override
   public final Result decode(BinaryBitmap image, Map<DecodeHintType,?> hints)
       throws NotFoundException, ChecksumException, FormatException {
     DecoderResult decoderResult;

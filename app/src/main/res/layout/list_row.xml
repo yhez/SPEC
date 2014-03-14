@@ -7,6 +7,7 @@
     android:paddingRight="6dip">
 
     <ImageButton
+        android:contentDescription="@null"
         android:id="@+id/edit"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
@@ -15,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <ImageButton
+        android:contentDescription="@null"
         android:visibility="gone"
         android:id="@+id/scan"
         android:layout_toLeftOf="@id/edit"
@@ -25,6 +27,7 @@
         android:layout_height="wrap_content" />
 
     <ImageView
+        android:contentDescription="@null"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

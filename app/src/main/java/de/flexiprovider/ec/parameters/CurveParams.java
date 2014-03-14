@@ -172,13 +172,6 @@ public abstract class CurveParams implements java.security.spec.AlgorithmParamet
         }
 
         /**
-         * @return the hash code of these curve parameters
-         */
-        public int hashCode() {
-            return super.hashCode();
-        }
-
-        /**
          * Compare these parameters with another object.
          *
          * @param other the other object
@@ -252,13 +245,6 @@ public abstract class CurveParams implements java.security.spec.AlgorithmParamet
          */
         public CurveParamsGF2nONB(PointGF2n g, FlexiBigInt r, int n, int k) {
             super(g, r, n, k);
-        }
-
-        /**
-         * @return the hash code of these curve parameters
-         */
-        public int hashCode() {
-            return super.hashCode();
         }
 
         /**

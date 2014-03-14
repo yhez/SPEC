@@ -100,6 +100,7 @@
                     android:visibility="gone">
 
                     <ImageButton
+                        android:contentDescription="@null"
                         android:id="@+id/default_app_send"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_width="wrap_content"
@@ -115,6 +116,7 @@
                 </LinearLayout>
 
                 <ImageButton
+                    android:contentDescription="@null"
                     android:id="@+id/contact_picture"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
@@ -131,6 +133,7 @@
                 android:orientation="vertical">
 
                 <ImageButton
+                    android:contentDescription="@null"
                     android:id="@+id/answer"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
@@ -141,6 +144,7 @@
                     android:src="@drawable/respond" />
 
                 <ImageButton
+                    android:contentDescription="@null"
                     android:id="@+id/delete"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"

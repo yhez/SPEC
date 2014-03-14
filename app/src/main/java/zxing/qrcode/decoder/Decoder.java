@@ -19,30 +19,8 @@ public final class Decoder {
     rsDecoder = new ReedSolomonDecoder(GenericGF.QR_CODE_FIELD_256);
   }
 
-  public DecoderResult decode(boolean[][] image) throws ChecksumException, FormatException {
-    return decode(image, null);
-  }
 
-  public DecoderResult decode(boolean[][] image, Map<DecodeHintType,?> hints)
-      throws ChecksumException, FormatException {
-    int dimension = image.length;
-    BitMatrix bits = new BitMatrix(dimension);
-    for (int i = 0; i < dimension; i++) {
-      for (int j = 0; j < dimension; j++) {
-        if (image[i][j]) {
-          bits.set(j, i);
-        }
-      }
-    }
-    return decode(bits, hints);
-  }
-
-  public DecoderResult decode(BitMatrix bits) throws ChecksumException, FormatException {
-    return decode(bits, null);
-  }
-
-
-  public DecoderResult decode(BitMatrix bits, Map<DecodeHintType,?> hints)
+    public DecoderResult decode(BitMatrix bits, Map<DecodeHintType,?> hints)
       throws FormatException, ChecksumException {
 
     // Construct a parser and read version, error-correction level

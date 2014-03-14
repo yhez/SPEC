@@ -65,6 +65,7 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:contentDescription="@null"
             android:id="@+id/my_qr_public_key"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

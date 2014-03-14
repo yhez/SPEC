@@ -34,22 +34,7 @@ public final class MultiFormatReader implements Reader {
   private Map<DecodeHintType,?> hints;
   private Reader[] readers;
 
-  /**
-   * This version of decode honors the intent of Reader.decode(BinaryBitmap) in that it
-   * passes null as a hint to the decoders. However, that makes it inefficient to call repeatedly.
-   * Use setHints() followed by decodeWithState() for continuous scan applications.
-   *
-   * @param image The pixel data to decode
-   * @return The contents of the image
-   * @throws NotFoundException Any errors which occurred
-   */
-  @Override
-  public Result decode(BinaryBitmap image) throws NotFoundException {
-    setHints(null);
-    return decodeInternal(image);
-  }
-
-  /**
+    /**
    * Decode an image using the hints provided. Does not honor existing state.
    *
    * @param image The pixel data to decode

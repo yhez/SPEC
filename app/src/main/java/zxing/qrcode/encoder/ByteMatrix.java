@@ -53,11 +53,7 @@ public final class ByteMatrix {
     return bytes;
   }
 
-  public void set(int x, int y, byte value) {
-    bytes[y][x] = value;
-  }
-
-  public void set(int x, int y, int value) {
+    public void set(int x, int y, int value) {
     bytes[y][x] = (byte) value;
   }
 

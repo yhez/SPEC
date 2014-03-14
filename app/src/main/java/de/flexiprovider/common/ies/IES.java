@@ -179,12 +179,12 @@ public abstract class IES extends AsymmetricHybridCipher {
         opMode = DECRYPT_MODE;
     }
 
-    protected int decryptOutputSize(int inLen) {
+    protected int decryptOutputSize() {
         // TODO integrate correct computation
         return 0;
     }
 
-    protected int encryptOutputSize(int inLen) {
+    protected int encryptOutputSize() {
         // TODO integrate correct computation
         return 0;
     }

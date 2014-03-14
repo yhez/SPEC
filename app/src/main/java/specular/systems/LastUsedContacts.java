@@ -53,6 +53,7 @@ public class LastUsedContacts {
     public void showIfNeeded(Activity a, View v) {
         TextView tv = (TextView)a.findViewById(R.id.contact_id_to_send);
         ViewPager vp = (ViewPager) a.findViewById(R.id.pager);
+        View nv = a.findViewById(R.id.frame_grid_last);
         if (ContactsDataSource.fullList.size() < StaticVariables.minContactSize
                 || lasts.length == 0 || lasts[0] == null
                 || (tv!=null&&tv.getText().toString().length()!=0)
@@ -60,7 +61,6 @@ public class LastUsedContacts {
             if (v != null)
                 v.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);
             else {
-                View nv = a.findViewById(R.id.frame_grid_last);
                 if (nv != null) nv.setVisibility(View.GONE);
             }
             return;
@@ -68,10 +68,9 @@ public class LastUsedContacts {
         final ViewGroup vg = (ViewGroup) a.findViewById(R.id.grid_lasts);
         if(vg==null)
             return;
-        View vv = a.findViewById(R.id.frame_grid_last);
-        if(vv==null)
+        if(nv==null)
             return;
-        vv.setVisibility(View.VISIBLE);
+        nv.setVisibility(View.VISIBLE);
         vlc = new ViewLastContact[NUM_LASTS];
         for (int c = 0; c < NUM_LASTS; c++) {
             vlc[c] = new ViewLastContact((LinearLayout) ((GridLayout) a.findViewById(R.id.grid_lasts)).getChildAt(c));

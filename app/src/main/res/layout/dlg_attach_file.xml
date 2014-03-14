@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:background="@android:drawable/dialog_holo_light_frame"
     android:id="@+id/dlg_attach"
     android:rowCount="2"
     android:columnCount="2"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:context="specular.systems.activities.Main">
     <ImageButton
         android:layout_row="0"
         android:layout_column="0"

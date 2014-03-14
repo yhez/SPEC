@@ -86,7 +86,7 @@ public class ProgressDlg extends ProgressDialog {
                     synchronized (this) {
                         hndl.sendEmptyMessage(0);
                         try {
-                            wait(100);
+                            ((Object)this).wait(100);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

@@ -15,7 +15,7 @@
             android:textColor="@color/spec_black"
             android:id="@+id/note"
             android:imeOptions="actionDone"
-            android:hint="write your note"
+            android:hint="@string/hint_enter_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress" />

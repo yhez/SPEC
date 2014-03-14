@@ -61,11 +61,7 @@ public final class Encoder {
         + MaskUtil.applyMaskPenaltyRule4(matrix);
   }
 
-  public static QRCode encode(String content, ErrorCorrectionLevel ecLevel) throws WriterException {
-    return encode(content, ecLevel, null);
-  }
-
-  public static QRCode encode(String content,
+    public static QRCode encode(String content,
                               ErrorCorrectionLevel ecLevel,
                               Map<EncodeHintType,?> hints) throws WriterException {
 

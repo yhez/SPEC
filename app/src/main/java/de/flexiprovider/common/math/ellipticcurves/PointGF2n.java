@@ -534,11 +534,7 @@ public class PointGF2n extends Point {
 
         return new PointGF2n(x, y, (EllipticCurveGF2n) mE);
     }
-    public Point subtract(Point other) throws DifferentCurvesException {
-        PointGF2n result = new PointGF2n(this);
-        result.subtractFromThis(other);
-        return result;
-    }
+
     public void subtractFromThis(Point other) throws DifferentCurvesException {
 
         if (!(other instanceof PointGF2n)) {

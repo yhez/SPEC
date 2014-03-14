@@ -1,6 +1,5 @@
 package de.flexiprovider.api.keys;
 
-import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1ObjectIdentifier;
 import codec.asn1.ASN1Type;
 import codec.x509.SubjectPublicKeyInfo;

@@ -97,6 +97,7 @@
             android:layout_height="wrap_content" />
 
         <ImageButton
+            android:contentDescription="@null"
             android:onClick="addUs"
             android:padding="@dimen/default_gap"
             android:layout_gravity="center"

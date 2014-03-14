@@ -3,7 +3,8 @@
 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:id="@+id/widget_ll_scanner"
+    android:contentDescription="@null"
     android:layout_width="match_parent"
     style="?android:attr/borderlessButtonStyle"
     android:src="@drawable/widget_scanner"
-    android:layout_height="match_parent"></ImageButton>
+    android:layout_height="match_parent"/>

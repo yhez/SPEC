@@ -18,12 +18,4 @@ public abstract class Binarizer {
 
     public abstract BitMatrix getBlackMatrix() throws NotFoundException;
 
-    public final int getWidth() {
-    return source.getWidth();
-  }
-
-  public final int getHeight() {
-    return source.getHeight();
-  }
-
 }

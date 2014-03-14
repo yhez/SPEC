@@ -1,6 +1,5 @@
 package de.flexiprovider.api;
 
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.spec.AlgorithmParameterSpec;
 
@@ -48,13 +47,13 @@ public abstract class Mac extends javax.crypto.MacSpi {
     public final void init(SecretKey key) throws InvalidKeyException {
         try {
             init(key, null);
-        } catch (InvalidAlgorithmParameterException iape) {
+        } catch (Exception iape) {
             throw new IllegalArgumentException("This MAC needs parameters");
         }
     }
 
     public abstract void init(SecretKey key, AlgorithmParameterSpec params)
-            throws InvalidAlgorithmParameterException, InvalidKeyException;
+            throws InvalidKeyException;
 
     public abstract void update(byte input);
 

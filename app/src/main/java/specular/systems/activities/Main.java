@@ -1364,16 +1364,15 @@ public class Main extends FragmentActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        if (NfcAdapter.getDefaultAdapter(this) != null && NfcAdapter.getDefaultAdapter(this).isEnabled()) {
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (nfcAdapter != null && nfcAdapter.isEnabled()) {
             PendingIntent pi = PendingIntent.getActivity(this, 0,
                     new Intent(this, getClass())
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), 0);
             IntentFilter tagDetected = new IntentFilter(
                     NfcAdapter.ACTION_TAG_DISCOVERED);
             IntentFilter[] filters = new IntentFilter[]{tagDetected};
-            NfcAdapter
-                    .getDefaultAdapter(this)
-                    .enableForegroundDispatch(this, pi, filters, null);
+            nfcAdapter.enableForegroundDispatch(this, pi, filters, null);
         }
         if (StaticVariables.flag_msg != null && StaticVariables.flag_msg) {
             FilesManagement.getTempDecryptedMSG(this);

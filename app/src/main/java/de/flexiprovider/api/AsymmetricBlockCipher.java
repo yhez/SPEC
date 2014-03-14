@@ -153,19 +153,18 @@ public abstract class AsymmetricBlockCipher extends Cipher {
 
     protected abstract void initCipherEncrypt(Key key,
                                               AlgorithmParameterSpec params, SecureRandom sr)
-            throws InvalidKeyException, InvalidAlgorithmParameterException;
+            ;
 
 
     protected abstract void initCipherDecrypt(Key key,
-                                              AlgorithmParameterSpec params) throws InvalidKeyException,
-            InvalidAlgorithmParameterException;
+                                              AlgorithmParameterSpec params);
 
 
     protected abstract byte[] messageEncrypt(byte[] input)
-            throws IllegalBlockSizeException, BadPaddingException;
+            ;
 
 
     protected abstract byte[] messageDecrypt(byte[] input)
-            throws IllegalBlockSizeException, BadPaddingException;
+            ;
 
 }

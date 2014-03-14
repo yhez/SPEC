@@ -72,6 +72,7 @@
                 android:visibility="gone" />
 
             <ImageButton
+                android:contentDescription="@null"
                 android:id="@+id/send"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"

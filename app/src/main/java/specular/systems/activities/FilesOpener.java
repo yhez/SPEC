@@ -242,7 +242,7 @@ public class FilesOpener extends Activity {
                     synchronized (this) {
                         try {
                             ((Object) this).wait(25);
-                        } catch (Exception e) {
+                        } catch (Exception ignored) {
                         }
                     }
                     findViewById(R.id.current_time).post(new Runnable() {

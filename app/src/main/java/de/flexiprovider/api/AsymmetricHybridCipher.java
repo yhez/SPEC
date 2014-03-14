@@ -33,8 +33,8 @@ public abstract class AsymmetricHybridCipher extends Cipher {
 
 
     public final int getOutputSize(int inLen) {
-        return opMode == ENCRYPT_MODE ? encryptOutputSize(inLen)
-                : decryptOutputSize(inLen);
+        return opMode == ENCRYPT_MODE ? encryptOutputSize()
+                : decryptOutputSize();
     }
 
 
@@ -81,10 +81,10 @@ public abstract class AsymmetricHybridCipher extends Cipher {
         return out.length;
     }
 
-    protected abstract int encryptOutputSize(int inLen);
+    protected abstract int encryptOutputSize();
 
 
-    protected abstract int decryptOutputSize(int inLen);
+    protected abstract int decryptOutputSize();
 
     protected abstract void initCipherEncrypt(Key key,
                                               AlgorithmParameterSpec params, SecureRandom sr)

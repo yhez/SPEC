@@ -57,10 +57,6 @@ public class FinderPatternFinder {
     this.resultPointCallback = resultPointCallback;
   }
 
-  protected final BitMatrix getImage() {
-    return image;
-  }
-
     final FinderPatternInfo find(Map<DecodeHintType,?> hints) throws NotFoundException {
     boolean tryHarder = hints != null && hints.containsKey(DecodeHintType.TRY_HARDER);
     int maxI = image.getHeight();
