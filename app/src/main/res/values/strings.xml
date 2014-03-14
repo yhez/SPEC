@@ -128,7 +128,7 @@
     <string name="not_editable_fields">Security Audit Info:</string>
     <string name="response">Respond</string>
     <string name="new_contact_to_add">Would you like to approve this contact?\nAfter approval you\'ll be able to send this contact secure content.</string>
-    <string name="no">NO</string>
+    <string name="no">Cancel</string>
     <string name="yes">YES</string>
     <string name="verify_delete_msg">Are you sure you want to delete this contact?</string>
     <string name="no_contacts">"You don\'t have any contacts.\nTo <b>add contacts</b>, share your Public Key under My SPEC, scan a contact\'s QR code or ask a contact to send you their Public Key (Contact Card) to your email.</string>
