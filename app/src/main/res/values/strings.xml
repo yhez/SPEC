@@ -244,12 +244,12 @@
     <string name="failed_loading">There was a problem loading the file,\nit may have moved to a different location.</string>
     <string name="sensor_camera">Camera</string>
     <string name="too_small_tag">Tag does\'nt have enough space.</string>
-    <string name="hint_save_to_safe">enter name for the file…</string>
+    <string name="hint_save_to_safe">enter file name…</string>
     <string name="file_details_time">time created:</string>
     <string name="file_details_size">size:</string>
     <string name="file_details_from">sender:</string>
     <string name="delete_file_verify">verify</string>
-    <string name="hint_enter_note">write your note</string>
+    <string name="hint_enter_note">Write your note&#8230;</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
