@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -53,8 +54,7 @@ public class Safe extends FragmentStatePagerAdapter {
     public static class SectionSafe extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-            //View rootView = inflater.inflate(R.layout.list_files, container, false);
-            ListView lv = new ListView(getActivity());//(ListView) rootView.findViewById(R.id.list);
+            ListView lv = new ListView(getActivity());
             final ArrayList<ListFiles.FilesRows> files = new ArrayList<ListFiles.FilesRows>();
             SharedPreferences sp = getActivity().getSharedPreferences("saved_files", Context.MODE_PRIVATE);
             Map m = sp.getAll();
@@ -111,29 +111,15 @@ public class Safe extends FragmentStatePagerAdapter {
     }
 
     public static class SectionNotes extends Fragment {
-
-
         ArrayList<TextView> textViews;
         LinearLayout main;
+        ArrayList<String> texts;
         Object[] o;
-        int a = 0;
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    textViews.get(a).setText(FilesManagement.getNoteFromSafe(getActivity(),(String)o[a]));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                if(++a<textViews.size())
-                    main.post(r);
-            }
-        };
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
             View v = inflater.inflate(R.layout.notes, container, false);
+            texts = new ArrayList<String>();
             main = (LinearLayout)v.findViewById(R.id.main);
             final EditText et = (EditText)v.findViewById(R.id.note);
             et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -170,6 +156,7 @@ public class Safe extends FragmentStatePagerAdapter {
                         TextView tv = new TextView(getActivity());
                         tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                         tv.setTextColor(Color.BLACK);
+                        tv.setPadding(20,20,20,20);
                         tv.setBackgroundResource(R.drawable.border_botom);
                         textViews.add(tv);
                     } catch (Exception e) {
@@ -185,16 +172,35 @@ public class Safe extends FragmentStatePagerAdapter {
                     else
                         right.addView(tv);
                 }
-                main.postDelayed(r,500);
+                at.execute();
             }
             return v;
         }
+        AsyncTask<Void,Integer,Long> at = new AsyncTask<Void, Integer, Long>() {
+            @Override
+            protected Long doInBackground(Void... params) {
+                for(int a=0;a<textViews.size();a++){
+                    try {
+                        texts.add(FilesManagement.getNoteFromSafe(getActivity(),(String)o[a]));
+                        publishProgress(a);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
+            @Override
+            protected void onProgressUpdate(Integer... progress) {
+                textViews.get(progress[0]).setText(texts.get(progress[0]));
+            }
+        };
         private void addNote(String note){
             TextView tv = new TextView(getActivity());
             tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             tv.setTextColor(Color.BLACK);
             tv.setBackgroundResource(R.drawable.border_botom);
             tv.setText(note);
+            tv.setPadding(20,20,20,20);
             View v = main.findViewById(8777);
             if(v!=null) {
                 main.removeView(v);
