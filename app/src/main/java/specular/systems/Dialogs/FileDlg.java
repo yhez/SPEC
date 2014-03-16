@@ -51,7 +51,7 @@ public class FileDlg extends DialogFragment {
                     NotImplemented no = new NotImplemented();
                     no.show(getActivity().getFragmentManager(),"kk");
                 }else{
-                    Toast.makeText(getActivity(),"verify delete first",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),R.string.verify_delete,Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -25,16 +25,19 @@ public class ListFiles extends ArrayAdapter<ListFiles.FilesRows> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.row_files, parent, false);
-        ((ImageView) rowView.findViewById(R.id.image)).setImageResource(s.get(position).drb);
-        TextView tv = (TextView) rowView.findViewById(R.id.text1);
-        tv.setText(s.get(position).name);
-        TextView tv2 = (TextView) rowView.findViewById(R.id.text2);
-        tv2.setText(Visual.getSize(new File(context.getFilesDir()+"/safe",s.get(position).name).length()));
-        tv2.setTypeface(FilesManagement.getOs(context));
-        return rowView;
+        if(convertView==null) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.row_files, parent, false);
+            ((ImageView) rowView.findViewById(R.id.image)).setImageResource(s.get(position).drb);
+            TextView tv = (TextView) rowView.findViewById(R.id.text1);
+            tv.setText(s.get(position).name);
+            TextView tv2 = (TextView) rowView.findViewById(R.id.text2);
+            tv2.setText(Visual.getSize(new File(context.getFilesDir() + "/safe", s.get(position).name).length()));
+            tv2.setTypeface(FilesManagement.getOs(context));
+            return rowView;
+        }
+        return convertView;
     }
     public static class FilesRows{
         public String name;

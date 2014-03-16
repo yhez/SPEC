@@ -59,12 +59,13 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
         GoogleApiClient.OnConnectionFailedListener {
     private static final int FILE = 0, IMAGE = 1, BOTH = 2;
     public static boolean msgSended;
-    public static final int CONTACT = 1, MESSAGE = 2, INVITE_GROUP = 3, MESSAGE_FOR_GROUP = 4, BACKUP = 5, REPORT = 6;
+    public static final int CONTACT = 1, MESSAGE = 2, INVITE_GROUP = 3, MESSAGE_FOR_GROUP = 4, BACKUP = 5, REPORT = 6,OPEN_FILE=7;
     private static List<ResolveInfo> file, image, both;
     ArrayList<Uri> uris;
     Contact contact;
     Group group;
     int type = -1;
+    String mimetype;
 
     @Override
     public void onCreate(Bundle b) {
@@ -74,7 +75,8 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
         type = getIntent().getIntExtra("type", -1);
-        if (type == REPORT) {
+        mimetype = getIntent().getStringExtra("mimetype");
+        if (type == REPORT||type==OPEN_FILE) {
             show();
             return;
         }
@@ -203,6 +205,20 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                 }
                 return;
             case BOTH:
+                if(type==OPEN_FILE){
+                    intent = new Intent(Intent.ACTION_VIEW);
+                    if(mimetype==null)
+                        intent.setType("*/*");
+                    else
+                        intent.setType(mimetype);
+                    both = getPackageManager().queryIntentActivities(intent, 0);
+                   for (a = 0; a < both.size(); a++)
+                        if (both.get(a).activityInfo.packageName.equals(getPackageName())) {
+                            both.remove(a);
+                            break;
+                        }
+                    return;
+                }
                 if (both != null)
                     return;
                 if (image == null)
@@ -260,6 +276,21 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
             i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
             finish();
             startActivity(i);
+            return;
+        }
+        if(type==OPEN_FILE){
+            ComponentName cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_VIEW);
+            i.setComponent(cn);
+            i.setType(mimetype == null ? "*/*" : mimetype);
+            File folder = new File(getFilesDir() + "/attachments");
+            File f = new File(folder,folder.list()[0]);
+            Uri uri = getUriForFile(this,getPackageName(),f);
+            grantUriPermission(rs.activityInfo.packageName,uri,Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            i.setData(uri);
+            startActivity(i);
+            finish();
             return;
         }
         if (contact != null)
@@ -406,7 +437,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
     }
 
     private void updateViews() {
-        if (type == REPORT) {
+        if (type == REPORT||type==OPEN_FILE) {
             findViewById(R.id.title_file_details).setVisibility(View.GONE);
             findViewById(R.id.title_divider).setVisibility(View.GONE);
             findViewById(R.id.files_names).setVisibility(View.GONE);
@@ -419,7 +450,14 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
             findViewById(R.id.divider2).setVisibility(View.GONE);
             findViewById(R.id.title_file).setVisibility(View.GONE);
             findViewById(R.id.file_details).setVisibility(View.GONE);
+        }
+        if(type==REPORT){
             ((TextView) findViewById(R.id.text_both_share)).setText("Share stack trace files VIA...");
+            loadIcons(BOTH);
+            return;
+        }
+        if(type==OPEN_FILE){
+            ((TextView) findViewById(R.id.text_both_share)).setText("Open file VIA external app.\nIt can be dangerous to give access to the data to another application");
             loadIcons(BOTH);
             return;
         }

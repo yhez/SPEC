@@ -575,7 +575,10 @@ public final class FilesManagement {
 
     public static boolean saveFileForOpen(Activity a, byte[] file, String name) {
         File path = new File(a.getFilesDir() + "/attachments");
-        if (!path.exists())
+        for (String f:path.list()) {
+            new File(path,f).delete();
+        }
+            if (!path.exists())
             path.mkdirs();
         File f = new File(path, name);
         try {

@@ -1,5 +1,6 @@
 package specular.systems;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,13 +27,15 @@ import java.util.Map;
 
 import specular.systems.Dialogs.FileDlg;
 import specular.systems.activities.FilesOpener;
+import specular.systems.activities.Main;
 
 
 public class Safe extends FragmentStatePagerAdapter {
     public static int currentPage = 0;
-
-    public Safe(FragmentManager fm) {
-        super(fm);
+    Activity a;
+    public Safe(Main fm) {
+        super(fm.getSupportFragmentManager());
+        this.a=fm;
     }
 
     @Override
@@ -48,7 +50,7 @@ public class Safe extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return position == 0 ? "Files" : "Notes";
+        return position == 0 ? a.getString(R.string.files_title_safe) : a.getString(R.string.safe_title_notes);
     }
 
     public static class SectionSafe extends Fragment {
@@ -60,7 +62,7 @@ public class Safe extends FragmentStatePagerAdapter {
             Map m = sp.getAll();
             if(m==null){
                 TextView tv = new TextView(getActivity());
-                tv.setText("no files in safe yet, if you received an attachment in a message you can keep it here");
+                tv.setText(R.string.no_file_safe);
                 tv.setTextColor(Color.BLACK);
                 tv.setTextSize(25);
                 tv.setPadding(25,25,25,25);
@@ -144,7 +146,7 @@ public class Safe extends FragmentStatePagerAdapter {
                 TextView tv = new TextView(getActivity());
                 tv.setId(8777);
                 tv.setPadding(20,20,20,20);
-                tv.setText("no notes added yet");
+                tv.setText(getActivity().getString(R.string.no_notes_yet));
                 tv.setTextColor(Color.BLACK);
                 tv.setTextSize(25);
                 main.addView(tv);

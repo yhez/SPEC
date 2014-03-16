@@ -1,11 +1,8 @@
 package specular.systems.activities;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -31,8 +28,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.GridLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -43,14 +38,10 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
-import specular.systems.Visual;
-
-import static android.support.v4.content.FileProvider.getUriForFile;
 
 
 public class FilesOpener extends Activity {
@@ -68,14 +59,6 @@ public class FilesOpener extends Activity {
         path = new File(getFilesDir()+"/attachments", fileName).getPath();
         if (!ableToHandle) {
             openByOutApp();
-
-            /*try {
-                startActivity(i);
-            } catch (Exception e) {
-                Toast t = Toast.makeText(this, R.string.cant_find_an_app_to_open_file, Toast.LENGTH_SHORT);
-                t.setGravity(Gravity.CENTER, 0, 0);
-                t.show();
-            }*/
             return;
         }
         if (type.startsWith("image")) {
@@ -151,41 +134,10 @@ public class FilesOpener extends Activity {
 
 
     private void openByOutApp(){
-        File f = new File(getFilesDir()+"/attachments",fileName);
-        final Intent i = new Intent(Intent.ACTION_VIEW);
-        if(type!=null)
-            i.setType(type);
-        final Uri uri  = getUriForFile(this, getPackageName(), f);
-        final Dialog d = new Dialog(this,R.style.dialogTransparent);
-        LinearLayout fl = new LinearLayout(this);
-        fl.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        GridLayout gl = new GridLayout(this);
-        d.setTitle("warning open by another app can be dangerous");
-        fl.addView(gl);
-        List<ResolveInfo> ri = getPackageManager().queryIntentActivities(i,0);
-        if(ri.size()==0){
-            i.setType("*/*");
-            ri = getPackageManager().queryIntentActivities(i,0);
-        }
-        for(final ResolveInfo r:ri){
-            ImageButton ib = Visual.glow(r.loadIcon(getPackageManager()), this);
-            ib.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ComponentName cn = new ComponentName(r.activityInfo.packageName,r.activityInfo.name);
-                    i.setComponent(cn);
-                    grantUriPermission(r.activityInfo.packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    i.setData(uri);
-                    i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    d.cancel();
-                    startActivity(i);
-                    finish();
-                }
-            });
-            gl.addView(ib);
-        }
-        d.setContentView(fl);
-        d.show();
+        Intent i = new Intent(this,SendMsg.class);
+        i.putExtra("type",SendMsg.OPEN_FILE);
+        i.putExtra("mimetype",type);
+        startActivity(i);
     }
     public void play(View v) {
         if (mp != null) {

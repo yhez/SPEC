@@ -169,7 +169,7 @@ public class Main extends FragmentActivity{
                 case PROGRESS:
                     if (FragmentManagement.currentLayout == R.layout.recreating_keys) {
                         CameraPreview cp = CameraPreview.getCameraPreview();
-                        ((TextView) findViewById(R.id.collecting_data)).setText("collecting dataRaw from " + cp.names[cp.currentSensor]);
+                        ((TextView) findViewById(R.id.collecting_data)).setText(getString(R.string.collecting_data) + cp.names[cp.currentSensor]);
                         ((ProgressBar) findViewById(R.id.progress_bar)).setProgress((int) (((double) cp.progress) / 64.0 * 100.0));
                         ((ProgressBar) findViewById(R.id.sec_progress_bar)).setProgress((int) (((double) cp.currentSensor + 1) / (double) cp.names.length * 100.0));
                     }
@@ -384,7 +384,7 @@ public class Main extends FragmentActivity{
             case R.id.save_attachment:
                 final Dialog dialog = new Dialog(this,android.R.style.Theme_Holo_Light_Dialog_MinWidth);
                 dialog.setContentView(R.layout.add_to_save);
-                dialog.setTitle("save attachment in safe");
+                dialog.setTitle(R.string.save_to_safe);
                 dialog.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -392,7 +392,7 @@ public class Main extends FragmentActivity{
                         SharedPreferences sp = getSharedPreferences("saved_files", MODE_PRIVATE);
                         Map m = sp.getAll();
                         if(m!=null&&m.containsValue(name)){
-                            t.setText("file with the same name already exist");
+                            t.setText(R.string.name_allready_exist);
                             t.show();
                             return;
                         }

@@ -157,8 +157,8 @@ public class Splash extends Activity {
             File f = new File(ur.getPath());
             final ProgressDialog pd = new ProgressDialog(this, R.style.dialogTransparent);
             if(f.length()>500000){
-                pd.setTitle(R.string.loading_title);
-                pd.setMessage(getString(R.string.loading_msg));
+                pd.setTitle(R.string.loading);
+                pd.setMessage(getString(R.string.loading));
                 pd.setCancelable(false);
                 pd.show();
             }

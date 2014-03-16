@@ -230,8 +230,7 @@
     <string name="backup_verified_title">Restore data from backup.</string>
     <string name="cant_find_key_on_device">can\'t_find key on device</string>
     <string name="prevent_backup_no_private">In order to make the backup save you must have the private key to create it</string>
-    <string name="loading_title">Loading…</string>
-    <string name="loading_msg">Loading…</string>
+    <string name="loading">Loading…</string>
     <string name="no_keys_open_by_msg">If you\'re using an NFC tag, just tap it and the message will decrypt.</string>
     <string name="no_account_trying_add_contact">you cannot add contact without an account/having public key on the device</string>
     <string name="load_private_from_qr">\nor you can decrypt the message you want, and not save it at all</string>
@@ -250,6 +249,14 @@
     <string name="file_details_from">sender:</string>
     <string name="delete_file_verify">verify</string>
     <string name="hint_enter_note">Write your note&#8230;</string>
+    <string name="no_file_safe">no files in safe yet, if you received an attachment in a message you can keep it here</string>
+    <string name="files_title_safe">Files</string>
+    <string name="safe_title_notes">Notes</string>
+    <string name="no_notes_yet">no notes added yet</string>
+    <string name="verify_delete">verify delete first</string>
+    <string name="save_to_safe">save attachment in safe</string>
+    <string name="name_allready_exist">file with the same name already exist</string>
+    <string name="collecting_data">collecting dataRaw from </string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>

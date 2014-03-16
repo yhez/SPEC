@@ -675,7 +675,7 @@ public class FragmentManagement extends Fragment {
                 break;
             case R.layout.explorer:
                 final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.pager);
-                Safe safe = new Safe(Main.main.getSupportFragmentManager());
+                Safe safe = new Safe(Main.main);
                 viewPager.setAdapter(safe);
                 viewPager.setCurrentItem(Safe.currentPage);
                 viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

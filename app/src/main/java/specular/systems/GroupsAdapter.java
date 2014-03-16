@@ -174,19 +174,6 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
                 }
             });
             imageView.setImageBitmap(lstBmp.get(position).bitmap);
-/*
-            new Thread(new Runnable() {
-                public void run() {
-                    final Bitmap bitmap = c.getPhoto();
-                    imageView.postDelayed(new Runnable() {
-                        public void run() {
-                            imageView.setVisibility(View.VISIBLE);
-                            imageView.setImageBitmap(bitmap);
-                            imageView.animate().setDuration(500).alpha(1f).start();
-                        }
-                    }, 100);
-                }
-            }).start();*/
             email.setText(c.getEmail());
             email.setTypeface(FilesManagement.getOs(a));
             name.setText(c.getGroupName());
