@@ -13,11 +13,21 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <compatible-screens>
-        <screen android:screenDensity="xhdpi" android:screenSize="large"/>
-        <screen android:screenDensity="xhdpi" android:screenSize="normal"/>
-        <screen android:screenDensity="mdpi" android:screenSize="large"/>
-        <screen android:screenDensity="ldpi" android:screenSize="large"/>
-        <screen android:screenDensity="hdpi" android:screenSize="large"/>
+        <screen
+            android:screenDensity="xhdpi"
+            android:screenSize="large" />
+        <screen
+            android:screenDensity="xhdpi"
+            android:screenSize="normal" />
+        <screen
+            android:screenDensity="mdpi"
+            android:screenSize="large" />
+        <screen
+            android:screenDensity="ldpi"
+            android:screenSize="large" />
+        <screen
+            android:screenDensity="hdpi"
+            android:screenSize="large" />
     </compatible-screens>
     <application
         android:allowBackup="true"
@@ -33,6 +43,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+
         <receiver
             android:name=".widget.WidgetContact"
             android:label="@string/widget_label">
@@ -142,21 +153,19 @@
             android:label="@string/send_report_title"
             android:name=".activities.SendReport"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
-
         <activity
             android:excludeFromRecents="true"
             android:name=".activities.SendMsg"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" >
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth">
             <meta-data
                 android:name="com.google.android.apps.drive.APP_ID"
                 android:value="id=46898931568" />
-            </activity>
-
+        </activity>
+        <activity android:name="zxing.scanqr.CaptureActivity" />
         <activity
             android:excludeFromRecents="true"
             android:name=".activities.PrivateKeyManager"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
-
         <activity
             android:name=".activities.FilesOpener"
             android:noHistory="true"
@@ -165,7 +174,8 @@
             android:exported="false"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
 
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
     </application>
 </manifest>

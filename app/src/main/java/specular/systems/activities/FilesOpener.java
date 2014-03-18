@@ -236,7 +236,7 @@ public class FilesOpener extends Activity {
 
     enum State {NONE, DRAG, ZOOM, FLING, ANIMATE_ZOOM}
 
-    public static boolean saveFileToOpen(Activity a, byte[] file, String name) {
+    public static void saveFileToOpen(Activity a, byte[] file, String name) {
         MimeTypeMap m = MimeTypeMap.getSingleton();
         String ext = name.substring(name.lastIndexOf(".") + 1);
         type = m.getMimeTypeFromExtension(ext);
@@ -245,7 +245,7 @@ public class FilesOpener extends Activity {
                 || type.equals("application/ogg")
                 || type.equals("video/3gpp")
                 || type.startsWith("text"));
-        return FilesManagement.saveFileForOpen(a, file, name);
+        FilesManagement.saveFileForOpen(a, file, name);
     }
 
     public class TouchImageView extends ImageView {

@@ -33,7 +33,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -127,9 +126,7 @@ public class Main extends FragmentActivity{
                 case DECRYPT_SCREEN:
                     if (MessageFormat.decryptedMsg != null){
                         byte[] file = MessageFormat.decryptedMsg.getFileContent();
-                        if (!FilesManagement.createFileToOpen(Main.this,file,MessageFormat.decryptedMsg.getFileName())) {
-                            Log.i("message opened","no attachment");
-                        }
+                        FilesManagement.createFileToOpen(Main.this,file,MessageFormat.decryptedMsg.getFileName());
                     }
                     selectItem(1, R.layout.decrypted_msg, null);
                     break;
@@ -427,7 +424,7 @@ public class Main extends FragmentActivity{
                         fileName = Visual.getFileName(Main.this, uri);
                         if (pic != null){
                             if(!new File(Environment.getExternalStorageDirectory(),Visual.getFileName(Main.this,pic)).delete())
-                                new File(getFilesDir()+"/temp",Visual.getFileName(Main.this,pic)).delete();
+                                new File(getFilesDir()+FilesManagement.TEMP,Visual.getFileName(Main.this,pic)).delete();
                         }
                         hndl.sendEmptyMessage(REPLACE_PHOTO);
                     } else {
@@ -559,12 +556,12 @@ public class Main extends FragmentActivity{
         }
         t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
         t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        File folder = new File(getFilesDir() + "/reports");
+        File folder = new File(getFilesDir() + FilesManagement.REPORTS);
         if (folder.exists() && folder.list().length > 0) {
             Intent i = new Intent(this, SendReport.class);
             startActivity(i);
         }
-        folder = new File(getFilesDir() + "/attachments");
+        folder = new File(getFilesDir() + FilesManagement.ATTACHMENTS);
         if (folder.exists() && folder.list().length > 0)
             for (String s : folder.list())
                 new File(folder, s).delete();
@@ -744,7 +741,7 @@ public class Main extends FragmentActivity{
             public void onClick(View v) {
                 dialog.cancel();
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE);
-                File f = new File(getFilesDir()+"/temp", System.currentTimeMillis() + ".jpg");
+                File f = new File(getFilesDir()+FilesManagement.TEMP, System.currentTimeMillis() + ".jpg");
                 pic = getUriForFile(Main.this,getPackageName(),f);
                 ResolveInfo lk = getPackageManager().resolveActivity(i,0);
                 grantUriPermission(lk.activityInfo.packageName,pic,Intent.FLAG_GRANT_WRITE_URI_PERMISSION);

@@ -41,6 +41,8 @@ public final class FilesManagement {
     private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
     private final static int FILE_NAME_BACKUP = R.string.file_name_Backup_msg;
     private final static int FILE_NAME_GROUP = R.string.file_name_group;
+    public final static String ATTACHMENTS = "/attachments", MESSAGES = "/messages", TEMP = "/temp"
+            , SAFE = "/safe", NOTES = "/notes",REPORTS="/reports";
     private final static String PUBLIC_KEY = "public_key", PRIVATE_KEY = "private_key", NAME = "name", EMAIL = "email";
     private static Bitmap myQRPublicKey;
     private static Typeface tfos = null;
@@ -57,8 +59,8 @@ public final class FilesManagement {
         return tfos;
     }
 
-    public static boolean createFileToOpen(Activity a, byte[] file, String name) {
-        return file != null && FilesOpener.saveFileToOpen(a, file, name);
+    public static void createFileToOpen(Activity a, byte[] file, String name) {
+        FilesOpener.saveFileToOpen(a, file, name);
     }
 
     public static void saveTempDecryptedMSG(Activity a) {
@@ -81,7 +83,7 @@ public final class FilesManagement {
         edt.remove("session");
         edt.commit();
         try {
-            File[] files = new File(a.getFilesDir() + "/attachments").listFiles();
+            File[] files = new File(a.getFilesDir() + ATTACHMENTS).listFiles();
             if (files != null)
                 for (File f : files)
                     f.delete();
@@ -121,7 +123,7 @@ public final class FilesManagement {
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
             try {
-                File path = new File(a.getFilesDir() + "/messages");
+                File path = new File(a.getFilesDir() + MESSAGES);
                 if (!path.exists())
                     path.mkdirs();
                 File file = new File(path, a.getString(QR_NAME_SEND));
@@ -145,7 +147,7 @@ public final class FilesManagement {
 
     private static boolean saveFileToSend(Activity a, String fileName, byte[] fileData) {
         try {
-            File path = new File(a.getFilesDir() + "/messages");
+            File path = new File(a.getFilesDir() + MESSAGES);
             if (!path.exists())
                 path.mkdirs();
             File file = new File(path, fileName);
@@ -160,7 +162,7 @@ public final class FilesManagement {
     }
 
     private static void cleanUp(Activity a) {
-        File root = new File(a.getFilesDir() + "/messages");
+        File root = new File(a.getFilesDir() + MESSAGES);
         if (root.exists())
             for (File f : root.listFiles())
                 f.delete();
@@ -171,9 +173,9 @@ public final class FilesManagement {
         return saveFileToSend(a, a.getString(FILE_NAME_BACKUP), fileData);
     }
 
-    public static boolean createGroupFileToSend(Activity a, byte[] fileData) {
+    public static void createGroupFileToSend(Activity a, byte[] fileData) {
         cleanUp(a);
-        return saveFileToSend(a, a.getString(FILE_NAME_GROUP), fileData);
+        saveFileToSend(a, a.getString(FILE_NAME_GROUP), fileData);
     }
 
     public static boolean createFilesToSend(Activity a, boolean qr, byte[] data) {
@@ -189,7 +191,7 @@ public final class FilesManagement {
 
     public static ArrayList<Uri> getFilesToSend(Activity a) {
         try {
-            File root = new File(a.getFilesDir() + "/messages");
+            File root = new File(a.getFilesDir() + MESSAGES);
             ArrayList<Uri> uris = new ArrayList<Uri>(2);
             if (new File(root, a.getString(FILE_NAME_SEND)).exists()) {
                 uris.add(getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_SEND))));
@@ -211,13 +213,13 @@ public final class FilesManagement {
 
     public static File getFileToShare(Activity a) {
         try {
-            File f = new File(a.getFilesDir() + "/temp", a.getString(FILE_NAME));
+            File f = new File(a.getFilesDir() + TEMP, a.getString(FILE_NAME));
             if (!f.exists()) {
                 FileInputStream fis = a.openFileInput(a.getString(FILE_NAME));
                 byte[] b = new byte[fis.available()];
                 fis.read(b);
                 fis.close();
-                File path = new File(a.getFilesDir() + "/temp");
+                File path = new File(a.getFilesDir() + TEMP);
                 if (!path.exists())
                     path.mkdir();
                 OutputStream os = new FileOutputStream(f);
@@ -236,7 +238,7 @@ public final class FilesManagement {
         String publicKey = ((TextView) a.findViewById(R.id.contact_pb)).getText().toString();
         ContactCard pcc = new ContactCard(a, publicKey, email, name);
         try {
-            File path = new File(a.getFilesDir() + "/messages");
+            File path = new File(a.getFilesDir() + MESSAGES);
             if (!path.exists())
                 path.mkdirs();
             File file = new File(path, a.getString(FRIEND_CONTACT_CARD));
@@ -259,7 +261,7 @@ public final class FilesManagement {
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
             //Bitmap crop = crop(bitmap);
-            File path = new File(a.getFilesDir() + "/messages");
+            File path = new File(a.getFilesDir() + MESSAGES);
             if (!path.exists())
                 path.mkdirs();
             File file = new File(path, a.getString(FRIENDS_SHARE_QR));
@@ -275,13 +277,13 @@ public final class FilesManagement {
 
     public static File getQRToShare(Activity a) {
         try {
-            File f = new File(a.getFilesDir() + "/temp", a.getString(QR_NAME));
+            File f = new File(a.getFilesDir() + TEMP, a.getString(QR_NAME));
             if (!f.exists()) {
                 FileInputStream fis = a.openFileInput(a.getString(QR_NAME));
                 byte[] b = new byte[fis.available()];
                 fis.read(b);
                 fis.close();
-                File path = new File(a.getFilesDir() + "/temp");
+                File path = new File(a.getFilesDir() + TEMP);
                 if (!path.exists())
                     path.mkdir();
                 OutputStream os = new FileOutputStream(f);
@@ -379,14 +381,15 @@ public final class FilesManagement {
             edt.commit();
         }
     }
-    public static void saveToSafe(Activity a,String name){
+
+    public static void saveToSafe(Activity a, String name) {
         try {
-            File path = new File(a.getFilesDir()+"/safe");
-            if(!path.exists())
+            File path = new File(a.getFilesDir() + SAFE);
+            if (!path.exists())
                 path.mkdir();
-            File file = new File(path,name);
+            File file = new File(path, name);
             OutputStream os = new FileOutputStream(file);
-            os.write(CryptMethods.encrypt(MessageFormat.decryptedMsg.getFileContent(),CryptMethods.getPublic()));
+            os.write(CryptMethods.encrypt(MessageFormat.decryptedMsg.getFileContent(), CryptMethods.getPublic()));
             os.close();
             a
                     .getSharedPreferences("saved_files", Context.MODE_PRIVATE)
@@ -397,39 +400,43 @@ public final class FilesManagement {
             e.printStackTrace();
         }
     }
-    public static void saveNoteToSafe(Activity a,String data){
+
+    public static void saveNoteToSafe(Activity a, String data) {
         try {
-            String fileName = System.currentTimeMillis()+"";
-            File path = new File(a.getFilesDir()+"/notes");
-            if(!path.exists())
+            String fileName = System.currentTimeMillis() + "";
+            File path = new File(a.getFilesDir() + NOTES);
+            if (!path.exists())
                 path.mkdir();
-            File file = new File(path,fileName);
+            File file = new File(path, fileName);
             OutputStream os = new FileOutputStream(file);
             byte[] dat = data.getBytes("UTF-8");
-            os.write(CryptMethods.encrypt(dat,CryptMethods.getPublic()));
+            os.write(CryptMethods.encrypt(dat, CryptMethods.getPublic()));
             os.close();
-            a.getSharedPreferences("notes",Context.MODE_PRIVATE)
-            .edit().putString(fileName,fileName).commit();
+            a.getSharedPreferences("notes", Context.MODE_PRIVATE)
+                    .edit().putString(fileName, fileName).commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public static String getNoteFromSafe(Activity a, String name) throws Exception {
-        InputStream is=new FileInputStream(new File(a.getFilesDir()+"/notes",name));
+        InputStream is = new FileInputStream(new File(a.getFilesDir() + NOTES, name));
         byte[] data = new byte[is.available()];
         is.read(data);
         is.close();
         byte[] b = CryptMethods.decrypt(data);
-        return new String(b,"UTF-8");
+        return new String(b, "UTF-8");
     }
-    public static void getFromSafe(Activity a,String name) throws Exception {
-        InputStream is=new FileInputStream(new File(a.getFilesDir()+"/safe",name));
+
+    public static void getFromSafe(Activity a, String name) throws Exception {
+        InputStream is = new FileInputStream(new File(a.getFilesDir() + SAFE, name));
         byte[] data = new byte[is.available()];
         is.read(data);
         is.close();
         byte[] b = CryptMethods.decrypt(data);
-        FilesManagement.createFileToOpen(a,b,name);
+        FilesManagement.createFileToOpen(a, b, name);
     }
+
     public static void edit(Activity a) {
         if (a != null) {
             myQRPublicKey = null;
@@ -574,11 +581,11 @@ public final class FilesManagement {
     }
 
     public static boolean saveFileForOpen(Activity a, byte[] file, String name) {
-        File path = new File(a.getFilesDir() + "/attachments");
-        for (String f:path.list()) {
-            new File(path,f).delete();
+        File path = new File(a.getFilesDir() + ATTACHMENTS);
+        for (String f : path.list()) {
+            new File(path, f).delete();
         }
-            if (!path.exists())
+        if (!path.exists())
             path.mkdirs();
         File f = new File(path, name);
         try {

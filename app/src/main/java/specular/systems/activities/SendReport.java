@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 import specular.systems.CustomExceptionHandler;
+import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
 import specular.systems.Visual;
@@ -29,7 +30,7 @@ public class SendReport extends Activity {
         if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
-        File folder = new File(getFilesDir() + "/reports");
+        File folder = new File(getFilesDir() + FilesManagement.REPORTS);
         for (String f : folder.list(filterreported)) {
             new File(folder, f).delete();
         }
@@ -48,9 +49,9 @@ public class SendReport extends Activity {
     }
 
     public void finish(View v) {
-        File folder = new File(getFilesDir() + "/reports");
+        File folder = new File(getFilesDir() + FilesManagement.REPORTS);
         for (String s : folder.list()) {
-            new File(getFilesDir() + "/reports", s).delete();
+            new File(getFilesDir() + FilesManagement.REPORTS, s).delete();
         }
         finish();
     }

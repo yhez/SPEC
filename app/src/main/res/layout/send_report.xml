@@ -19,8 +19,8 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:onClick="send"
-            android:text="@string/send_report_button"
+            android:onClick="finish"
+            android:text="@string/no"
             style="?android:attr/borderlessButtonStyle"
             android:layout_weight="1"
             android:layout_width="0dip"
@@ -32,8 +32,8 @@
             android:background="@color/spec_blue" />
 
         <Button
-            android:onClick="finish"
-            android:text="@string/no"
+            android:onClick="send"
+            android:text="@string/send_report_button"
             style="?android:attr/borderlessButtonStyle"
             android:layout_weight="1"
             android:layout_width="0dip"

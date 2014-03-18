@@ -139,9 +139,9 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
         if (uris != null) {
             if (uris.get(0) != null) {
                 if(type==BACKUP)
-                    ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(getFilesDir() + "/messages", getString(R.string.file_name_Backup_msg)).length()).replace(" ", "\n"));
+                    ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(getFilesDir() + FilesManagement.MESSAGES, getString(R.string.file_name_Backup_msg)).length()).replace(" ", "\n"));
                 else
-                    ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(getFilesDir() + "/messages", getString(R.string.file_name_secure_msg)).length()).replace(" ", "\n"));
+                    ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(getFilesDir() + FilesManagement.MESSAGES, getString(R.string.file_name_secure_msg)).length()).replace(" ", "\n"));
                 ((ImageView) findViewById(R.id.file_icon)).setImageResource(R.drawable.logo);
                 EditText etFile = (EditText) findViewById(R.id.name_file);
                 etFile.setText(getName(FILE));
@@ -157,7 +157,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                     ((ImageView) findViewById(R.id.qr_icon)).setImageResource(R.drawable.logo);
                     e.printStackTrace();
                 }
-                ((TextView) findViewById(R.id.qr_size)).setText(Visual.getSize(new File(getFilesDir() + "/messages", getString(R.string.file_name_qr_msg)).length()).replace(" ", "\n"));
+                ((TextView) findViewById(R.id.qr_size)).setText(Visual.getSize(new File(getFilesDir() + FilesManagement.MESSAGES, getString(R.string.file_name_qr_msg)).length()).replace(" ", "\n"));
                 EditText etImage = (EditText) findViewById(R.id.qr_name_file);
                 etImage.setText(getName(IMAGE));
                 etImage.setSelection(etImage.getText().length());
@@ -265,11 +265,11 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.email_for_reports)});
             i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.send_report_subject));
             i.putExtra(Intent.EXTRA_TEXT, getString(R.string.send_report_content));
-            File folder = new File(getFilesDir() + "/reports");
+            File folder = new File(getFilesDir() + FilesManagement.REPORTS);
             ArrayList<Parcelable> uris = new ArrayList<Parcelable>();
             for (String s : folder.list(filterNotReported)) {
-                File oldname = new File(getFilesDir() + "/reports", s);
-                File newNmae = new File(getFilesDir() + "/reports", s.split("\\.")[0] + ".txt");
+                File oldname = new File(getFilesDir() + FilesManagement.REPORTS, s);
+                File newNmae = new File(getFilesDir() + FilesManagement.REPORTS, s.split("\\.")[0] + ".txt");
                 oldname.renameTo(newNmae);
                 uris.add(getUriForFile(this, getPackageName(), newNmae));
             }
@@ -284,7 +284,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
             i.setAction(Intent.ACTION_VIEW);
             i.setComponent(cn);
             i.setType(mimetype == null ? "*/*" : mimetype);
-            File folder = new File(getFilesDir() + "/attachments");
+            File folder = new File(getFilesDir() + FilesManagement.ATTACHMENTS);
             File f = new File(folder,folder.list()[0]);
             Uri uri = getUriForFile(this,getPackageName(),f);
             grantUriPermission(rs.activityInfo.packageName,uri,Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -376,7 +376,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                 File newPath = new File(getFilesDir(), etImage.getText() + ".png");
                 if (newPath.exists())
                     newPath.delete();
-                File oldPath = new File(getFilesDir() + "/messages", getString(R.string.file_name_qr_msg));
+                File oldPath = new File(getFilesDir() + FilesManagement.MESSAGES, getString(R.string.file_name_qr_msg));
                 oldPath.renameTo(newPath);
                 uris.set(1, getUriForFile(this, getPackageName(), newPath));
             }
@@ -389,9 +389,9 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                     newPath.delete();
                 File oldPath;
                 if(type==BACKUP)
-                    oldPath = new File(getFilesDir() + "/messages", getString(R.string.file_name_Backup_msg));
+                    oldPath = new File(getFilesDir() + FilesManagement.MESSAGES, getString(R.string.file_name_Backup_msg));
                 else
-                    oldPath = new File(getFilesDir() + "/messages", getString(R.string.file_name_secure_msg));
+                    oldPath = new File(getFilesDir() + FilesManagement.MESSAGES, getString(R.string.file_name_secure_msg));
                 oldPath.renameTo(newPath);
                 uris.set(0, getUriForFile(this, getPackageName(), newPath));
             }

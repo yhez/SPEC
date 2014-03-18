@@ -33,7 +33,7 @@ public class ListFiles extends ArrayAdapter<ListFiles.FilesRows> {
             TextView tv = (TextView) rowView.findViewById(R.id.text1);
             tv.setText(s.get(position).name);
             TextView tv2 = (TextView) rowView.findViewById(R.id.text2);
-            tv2.setText(Visual.getSize(new File(context.getFilesDir() + "/safe", s.get(position).name).length()));
+            tv2.setText(Visual.getSize(new File(context.getFilesDir() + FilesManagement.SAFE, s.get(position).name).length()));
             tv2.setTypeface(FilesManagement.getOs(context));
             return rowView;
         }

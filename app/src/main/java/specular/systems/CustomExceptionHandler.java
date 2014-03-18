@@ -52,10 +52,10 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
     private void writeToFile(String stacktrace) {
         try {
             File path = a.getFilesDir();
-            File folder = new File(path.getPath() + "/reports");
+            File folder = new File(path.getPath() + FilesManagement.REPORTS);
             if (!folder.exists())
                 folder.mkdirs();
-            File file = new File(path.getPath() + "/reports", filename);
+            File file = new File(path.getPath() + FilesManagement.REPORTS, filename);
             OutputStream os = new FileOutputStream(file);
             os.write(stacktrace.getBytes());
             os.close();
