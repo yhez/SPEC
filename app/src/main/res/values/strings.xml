@@ -7,7 +7,7 @@
 
     <!--strings related to writing/reading private key to/from the nfc tag-->
     <string name="tab_nfc_title">Tap NFC</string>
-    <string name="cant_connect_nfc_adapter">Something went wrong.</string>
+    <string name="cant_connect_nfc_adapter">Something went wrong. Try again.</string>
     <string name="turn_nfc_on_nfc_wait">NFC is OFF, go to settings and turn it ON.</string>
     <string name="failed_read_only">Read-only tag.\nUse another tag.</string>
     <string name="tag_formatted">Tag has been formatted.\nTap again to save key.</string>
