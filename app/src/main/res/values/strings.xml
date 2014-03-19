@@ -237,7 +237,7 @@
     <string name="tring_add_another_file_while_loading">Loading file…</string>
     <string name="version">SPEC version:</string>
     <string name="backup_no_public">you cannot create a backup without having your public key</string>
-    <string name="backup_explain">This function will backup your SPEC data (contacts, saved files and notes) in a secure fashion.\n\nThe output of this funtion will be a protected file that you can later load into the SPEC app in order to retrieve your data.</string>
+    <string name="backup_explain">This function will backup your SPEC data (contacts, saved files and notes) in a secure fashion.\n\nThe output of this function will be a protected file that you can later load into the SPEC app in order to retrieve your data.</string>
     <string name="backup_title">Backup SPEC Data</string>
     <string name="credits">Credits</string>
     <string name="failed_loading">There was a problem loading the file,\nit may have moved to a different location.</string>
