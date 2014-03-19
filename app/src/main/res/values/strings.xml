@@ -80,7 +80,7 @@
     <!--attach file strings-->
     <string name="choose_file_to_attach">Choose file to attach.</string>
     <string name="file_to_big">Sorry.\nCan\'t attach file.\nCurrent limit is 50 MB.</string>
-    <string name="file_is_empty">File is empty</string>
+    <string name="file_is_empty">File is empty.</string>
 
     <!--default files names do not change!!!-->
     <string name="file_name_shared_contact_card">SharedContactCard.SPEC</string>
@@ -100,8 +100,8 @@
     <string name="hint_msg">Enter message&#8230;</string>
     <string name="explain">SPEC Public Encryption Key.</string>
     <string name="ok">OK</string>
-    <string name="hint_enter_your_name">name (optional)&#8230;</string>
-    <string name="hint_enter_your_email">email&#8230;</string>
+    <string name="hint_enter_your_name">Name (optional)&#8230;</string>
+    <string name="hint_enter_your_email">Email&#8230;</string>
     <string name="wait_for_nfc_to_write">Tap NFC to store Private Decryption Key externally</string>
     <string name="skip_save_to_phone">Skip and save key on device</string>
     <string name="create_keys">Generate New Keys</string>
@@ -122,8 +122,8 @@
     <string name="encrypting">Encrypting&#8230;</string>
     <string name="backup">Backup ops&#8230;</string>
     <string name="exit_by_back_notify">Press back again to exit.</string>
-    <string name="edit_email">email: </string>
-    <string name="edit_name">name: </string>
+    <string name="edit_email">Email: </string>
+    <string name="edit_name">Name: </string>
     <string name="editable_fields">Contact\'s Info:</string>
     <string name="not_editable_fields">Security Audit Info:</string>
     <string name="response">Respond</string>
@@ -139,17 +139,17 @@
     <string name="send_another_msg">Send another message</string>
     <string name="send_orders">Sending a SECURE message:\n------\n1. Choose contact\n2. Enter message\n3. Add file (optional)</string>
     <string name="backup_profile">Backup Profile</string>
-    <string name="share_file">share file via:</string>
+    <string name="share_file">Share file via:</string>
     <string name="my_details">My Details</string>
-    <string name="share_image">share QR code via:</string>
-    <string name="edit_contact_title_pbk">public key:</string>
-    <string name="both_qr_file">send both file and QR code via:</string>
-    <string name="files_details">file details:</string>
+    <string name="share_image">Share QR code via:</string>
+    <string name="edit_contact_title_pbk">Public Key:</string>
+    <string name="both_qr_file">Send both file and QR code via:</string>
+    <string name="files_details">File details:</string>
     <string name="no_result_filter">No result, please search again.</string>
-    <string name="profile_my_name">my name:</string>
-    <string name="profile_my_email">my email:</string>
-    <string name="send_file">send file via:</string>
-    <string name="send_image">send QR code via:</string>
+    <string name="profile_my_name">My name:</string>
+    <string name="profile_my_email">My email:</string>
+    <string name="send_file">Send file via:</string>
+    <string name="send_image">Send QR code via:</string>
     <string name="too_short_name">Name should be at least 3 characters long.</string>
     <string name="contact_with_same_email_exist">A contact with the same email already exists.\nDo you want to update their Public Encryption Key?</string>
     <string name="quote">Quote conversation</string>
@@ -209,16 +209,16 @@
     <string name="force_nfc">Force NFC</string>
     <string name="limited_group">Limit Group Size</string>
     <string name="group_owmer_detailes_title">Group creator Details:</string>
-    <string name="invite_not_available">invitation disabled</string>
+    <string name="invite_not_available">Invitation disabled</string>
     <string name="nfc_is_required">NFC required</string>
-    <string name="invite_to_the_group">invite a friend to the group</string>
-    <string name="add_group_owner_to_contact">add owner to your contacts</string>
-    <string name="session_words">session words:</string>
-    <string name="secret_sign">secret sign:</string>
-    <string name="session_status">session status:</string>
-    <string name="session_verified">session has been verified.</string>
-    <string name="just_added">contact just added.</string>
-    <string name="sent_but_not_recieved">you sent your session, but didn\'t get one back yet from contact.</string>
+    <string name="invite_to_the_group">Invite a friend to the group</string>
+    <string name="add_group_owner_to_contact">Add group owner to your contacts</string>
+    <string name="session_words">Session words:</string>
+    <string name="secret_sign">Secret sign:</string>
+    <string name="session_status">Session status:</string>
+    <string name="session_verified">Session has been verified.</string>
+    <string name="just_added">Contact just added.</string>
+    <string name="sent_but_not_recieved">You sent your session, but didn\'t get one back yet from contact.</string>
     <string name="hide_session_words" tools:ignore="Typos">-xxx xxx-</string>
     <string name="hide_secret_sign">-x-</string>
     <string name="backup_progress">Backing Up SPEC Data…</string>
@@ -228,11 +228,11 @@
     <string name="backup_found_old_data">Are you sure?\nby restoring your backup all other data you\'ve saved will be lost</string>
     <string name="backup_not_found_old_data">Restoring the data will put you in the same position you left.</string>
     <string name="backup_verified_title">Restore data from backup.</string>
-    <string name="cant_find_key_on_device">can\'t_find key on device</string>
+    <string name="cant_find_key_on_device">Can\'t find key on device.</string>
     <string name="prevent_backup_no_private">In order to make the backup save you must have the private key to create it</string>
     <string name="loading">Loading…</string>
     <string name="no_keys_open_by_msg">If you\'re using an NFC tag, just tap it and the message will decrypt.</string>
-    <string name="no_account_trying_add_contact">you cannot add contact without an account/having public key on the device</string>
+    <string name="no_account_trying_add_contact">You cannot add a contact without having a Public Key on the device.</string>
     <string name="load_private_from_qr">\nor you can decrypt the message you want, and not save it at all</string>
     <string name="tring_add_another_file_while_loading">Loading file…</string>
     <string name="version">SPEC version:</string>
@@ -243,18 +243,18 @@
     <string name="failed_loading">There was a problem loading the file,\nit may have moved to a different location.</string>
     <string name="sensor_camera">Camera</string>
     <string name="too_small_tag">Tag does\'nt have enough space.</string>
-    <string name="hint_save_to_safe">enter file name…</string>
-    <string name="file_details_time">time created:</string>
-    <string name="file_details_size">size:</string>
-    <string name="file_details_from">sender:</string>
-    <string name="delete_file_verify">verify</string>
+    <string name="hint_save_to_safe">Enter file name…</string>
+    <string name="file_details_time">Time-stamp:</string>
+    <string name="file_details_size">Size:</string>
+    <string name="file_details_from">Sender:</string>
+    <string name="delete_file_verify">Verify</string>
     <string name="hint_enter_note">Write your note&#8230;</string>
-    <string name="no_file_safe">no files in safe yet, if you received an attachment in a message you can keep it here</string>
+    <string name="no_file_safe">No files in safe yet, if you received an attachment in a message you can keep it here</string>
     <string name="files_title_safe">Files</string>
     <string name="safe_title_notes">Notes</string>
-    <string name="no_notes_yet">no notes added yet</string>
-    <string name="verify_delete">verify delete first</string>
-    <string name="save_to_safe">save attachment in safe</string>
+    <string name="no_notes_yet">No notes added yet</string>
+    <string name="verify_delete">Verify delete first</string>
+    <string name="save_to_safe">Save attachment to Safe</string>
     <string name="name_allready_exist">file with the same name already exist</string>
     <string name="collecting_data">collecting dataRaw from </string>
 
