@@ -1053,7 +1053,7 @@ public class Rijndael extends BlockCipher {
             output[outOff++] = (byte) (S[(d3 >>> 24) & 0xff] ^ (K[i] >>> 24));
             output[outOff++] = (byte) (S[(d0 >>> 16) & 0xff] ^ (K[i] >>> 16));
             output[outOff++] = (byte) (S[(d1 >>> 8) & 0xff] ^ (K[i] >>> 8));
-            output[outOff++] = (byte) (S[d2 & 0xff] ^ K[i]);
+            output[outOff] = (byte) (S[d2 & 0xff] ^ K[i]);
         } else
 
             // check if block length = 24 bytes
@@ -1127,7 +1127,7 @@ public class Rijndael extends BlockCipher {
                 output[outOff++] = (byte) (S[(d5 >>> 24) & 0xff] ^ (K[i] >>> 24));
                 output[outOff++] = (byte) (S[(d0 >>> 16) & 0xff] ^ (K[i] >>> 16));
                 output[outOff++] = (byte) (S[(d1 >>> 8) & 0xff] ^ (K[i] >>> 8));
-                output[outOff++] = (byte) (S[d2 & 0xff] ^ K[i]);
+                output[outOff] = (byte) (S[d2 & 0xff] ^ K[i]);
             } else
 
                 // check if block length = 32 bytes
@@ -1221,7 +1221,7 @@ public class Rijndael extends BlockCipher {
                     output[outOff++] = (byte) (S[(d7 >>> 24) & 0xff] ^ (K[i] >>> 24));
                     output[outOff++] = (byte) (S[(d0 >>> 16) & 0xff] ^ (K[i] >>> 16));
                     output[outOff++] = (byte) (S[(d2 >>> 8) & 0xff] ^ (K[i] >>> 8));
-                    output[outOff++] = (byte) (S[d3 & 0xff] ^ K[i]);
+                    output[outOff] = (byte) (S[d3 & 0xff] ^ K[i]);
                 }
     }
 
@@ -1284,7 +1284,7 @@ public class Rijndael extends BlockCipher {
             output[outOff++] = (byte) (Si[(d3 >>> 24) & 0xff] ^ (Ki[i] >>> 24));
             output[outOff++] = (byte) (Si[(d2 >>> 16) & 0xff] ^ (Ki[i] >>> 16));
             output[outOff++] = (byte) (Si[(d1 >>> 8) & 0xff] ^ (Ki[i] >>> 8));
-            output[outOff++] = (byte) (Si[d0 & 0xff] ^ Ki[i]);
+            output[outOff] = (byte) (Si[d0 & 0xff] ^ Ki[i]);
         } else
 
             // check if block length = 24 bytes
@@ -1358,7 +1358,7 @@ public class Rijndael extends BlockCipher {
                 output[outOff++] = (byte) (Si[(d5 >>> 24) & 0xff] ^ (Ki[i] >>> 24));
                 output[outOff++] = (byte) (Si[(d4 >>> 16) & 0xff] ^ (Ki[i] >>> 16));
                 output[outOff++] = (byte) (Si[(d3 >>> 8) & 0xff] ^ (Ki[i] >>> 8));
-                output[outOff++] = (byte) (Si[d2 & 0xff] ^ Ki[i]);
+                output[outOff] = (byte) (Si[d2 & 0xff] ^ Ki[i]);
             } else
 
                 // check if block length = 32 bytes
@@ -1452,7 +1452,7 @@ public class Rijndael extends BlockCipher {
                     output[outOff++] = (byte) (Si[(d7 >>> 24) & 0xff] ^ (Ki[i] >>> 24));
                     output[outOff++] = (byte) (Si[(d6 >>> 16) & 0xff] ^ (Ki[i] >>> 16));
                     output[outOff++] = (byte) (Si[(d4 >>> 8) & 0xff] ^ (Ki[i] >>> 8));
-                    output[outOff++] = (byte) (Si[d3 & 0xff] ^ Ki[i]);
+                    output[outOff] = (byte) (Si[d3 & 0xff] ^ Ki[i]);
                 }
     }
     private int computeNumRounds() {

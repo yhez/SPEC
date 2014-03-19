@@ -20,7 +20,11 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        return new PageList(i == 0 ? CONTACTS : GROUPS);
+        PageList pl = new PageList();
+        Bundle b = new Bundle();
+        b.putInt("a",i == 0 ? CONTACTS : GROUPS);
+        pl.setArguments(b);
+        return pl;
     }
 
     @Override
@@ -34,15 +38,8 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
     }
 
     public static class PageList extends Fragment {
-        private int currentLayout=CONTACTS;
-
-        public PageList(int currentLayout) {
-            super();
-            this.currentLayout = currentLayout;
-        }
         public PageList(){
             super();
-            this.currentLayout = CONTACTS;
         }
 
         @Override
@@ -51,6 +48,7 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
             StaticVariables.luc.showIfNeeded(getActivity(), rootView);
             TextView tv = (TextView) rootView.findViewById(R.id.no_contacts);
             final ListView lv = (ListView) rootView.findViewById(R.id.list);
+            int currentLayout = getArguments().getInt("a",CONTACTS);
             if (currentLayout == CONTACTS) {
                 rootView.setId(CONTACTS);
                 MySimpleArrayAdapter ms = MySimpleArrayAdapter.getAdapter();

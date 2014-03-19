@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
@@ -40,4 +40,4 @@
         android:padding="@dimen/default_gap"
         android:text="@string/scan_contact_explain" />
 
-</FrameLayout>
+</merge>

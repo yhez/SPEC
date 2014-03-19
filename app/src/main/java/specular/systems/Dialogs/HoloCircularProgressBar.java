@@ -385,7 +385,7 @@ public class HoloCircularProgressBar extends View {
      */
     // @SuppressLint("NewApi")
     private void computeInsets(final int dx, final int dy) {
-        final int layoutDirection;
+        //final int layoutDirection;
         int absoluteGravity = mGravity;
 
         switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
@@ -484,11 +484,6 @@ public class HoloCircularProgressBar extends View {
         invalidate();
     }
 
-    /**
-     * similar to {@link }
-     *
-     * @return
-     */
     public float getMarkerProgress() {
         return mMarkerProgress;
     }

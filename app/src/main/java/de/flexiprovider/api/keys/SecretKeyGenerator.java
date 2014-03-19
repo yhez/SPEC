@@ -24,9 +24,6 @@ public abstract class SecretKeyGenerator extends javax.crypto.KeyGeneratorSpi {
     protected void engineInit(java.security.spec.AlgorithmParameterSpec params,
                               java.security.SecureRandom javaRand)
             throws java.security.InvalidAlgorithmParameterException {
-        if (params != null && !(params instanceof AlgorithmParameterSpec)) {
-            throw new java.security.InvalidAlgorithmParameterException();
-        }
         init(params, new JavaSecureRandomWrapper(
                 javaRand));
     }

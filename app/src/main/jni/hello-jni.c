@@ -6,8 +6,8 @@ Java_specular_systems_NativeDelete_nativeDelete( JNIEnv* env,
 {
     int start;
     int end = bitsize/sizeof(int);
-    int* y= (int*)x;
-    for(start=0;start<end;start++){
+    int* y= x;
+    for(start=0;start<end;start++)
         y[start]=0;
-    }
+
 }

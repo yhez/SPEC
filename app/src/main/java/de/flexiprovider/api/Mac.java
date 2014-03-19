@@ -20,9 +20,6 @@ public abstract class Mac extends javax.crypto.MacSpi {
         if (!(key instanceof SecretKey)) {
             throw new java.security.InvalidKeyException();
         }
-        if ((params != null) && !(params instanceof AlgorithmParameterSpec)) {
-            throw new java.security.InvalidAlgorithmParameterException();
-        }
         init((SecretKey) key, params);
     }
 

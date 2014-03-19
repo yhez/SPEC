@@ -433,7 +433,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
             mGoogleApiClient.disconnect();
         }
         super.onPause();
-        new KeysDeleter();
+        new KeysDeleter(this);
     }
 
     private void updateViews() {
@@ -477,9 +477,9 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                 findViewById(R.id.divider2).setVisibility(View.GONE);
                 findViewById(R.id.title_file).setVisibility(View.GONE);
                 findViewById(R.id.file_details).setVisibility(View.GONE);
-            } else {
+            } /*else {
                 //todo both null, shouldn't happen
-            }
+            }*/
         } else {
             findViewById(R.id.gl_app_file).setVisibility(View.GONE);
             findViewById(R.id.divider2).setVisibility(View.GONE);

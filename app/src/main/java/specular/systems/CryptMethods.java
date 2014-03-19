@@ -53,9 +53,8 @@ public class CryptMethods {
                     Field f = bi.getClass().getDeclaredField("bigInt");
                     f.setAccessible(true);
                     Object bigInt = f.get(bi);
-                    long addr = (Long)bigInt.getClass().getDeclaredField("bignum").get(bigInt);
-                    new NativeDelete().delete(addr,bi.bitLength());
-                    Log.d("keys manager","keys has been successfully cleared from memory");
+                    long addr = (Long) bigInt.getClass().getDeclaredField("bignum").get(bigInt);
+                    //todo new NativeDelete().delete(addr, bi.bitLength());for some reason the crash happened while im starting the app again
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -65,12 +64,16 @@ public class CryptMethods {
                 for (int a = 0; a < myPrivateKey.length; a++) {
                     myPrivateKey[a] = (byte) (System.currentTimeMillis() * new Random().nextLong());
                 }
-                Log.d("to prevent java from skipping it", "" + myPrivateKey[new Random().nextInt(myPrivateKey.length)]);
+                log(myPrivateKey[new Random().nextInt(myPrivateKey.length)]);
                 myPrivateKey = null;
             }
             MessageFormat.decryptedMsg = null;
             lock = true;
         }
+    }
+
+    private static void log(int a) {
+        Log.d("prevent from skip", "" + a);
     }
 
     public static boolean setPrivate(byte[] p) {
@@ -149,9 +152,11 @@ public class CryptMethods {
         }
         return null;
     }
+
     public static KeyPair createKeysForGroup() {
         return createKeyPair();
     }
+
     public static void createKeys() {
         KeyPair keypair = createKeyPair();
         if (!doneCreatingKeys) {
@@ -275,11 +280,12 @@ public class CryptMethods {
         tmpPrivateKey = null;
         tmpPublicKey = null;
     }
-/*
-    public static String getMyLink() {
-        return "specular.systems://?name=" + myName + "&email=" + myEmail + "&key=" + myPublicKey;
-    }
-*/
+
+    /*
+        public static String getMyLink() {
+            return "specular.systems://?name=" + myName + "&email=" + myEmail + "&key=" + myPublicKey;
+        }
+    */
     public static byte[] getPrivateHash() {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");

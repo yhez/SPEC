@@ -24,13 +24,6 @@ public class ModeParameters extends AlgorithmParameters {
         if (params == null) {
             throw new java.security.spec.InvalidParameterSpecException();
         }
-        if (!(params instanceof AlgorithmParameterSpec)) {
-            if (params instanceof IvParameterSpec) {
-                iv = ((IvParameterSpec) params).getIV();
-                return;
-            }
-            throw new java.security.spec.InvalidParameterSpecException();
-        }
 
         init(params);
     }

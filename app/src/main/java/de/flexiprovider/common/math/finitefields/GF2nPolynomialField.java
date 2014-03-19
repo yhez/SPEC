@@ -139,7 +139,7 @@ public class GF2nPolynomialField extends GF2nField {
             if (done) {
                 isTrinomial = true;
                 tc = i;
-                return done;
+                return true;
             }
             fieldPolynomial.resetBit(i);
             done = fieldPolynomial.isIrreducible();
@@ -156,11 +156,11 @@ public class GF2nPolynomialField extends GF2nField {
         fieldPolynomial = new GF2Polynomial(mDegree + 1);
         fieldPolynomial.setBit(0);
         fieldPolynomial.setBit(mDegree);
-        for (i = 1; (i <= (mDegree - 3)) && !done; i++) {
+        for (i = 1; (i <= (mDegree - 3)); i++) {
             fieldPolynomial.setBit(i);
-            for (j = i + 1; (j <= (mDegree - 2)) && !done; j++) {
+            for (j = i + 1; (j <= (mDegree - 2)); j++) {
                 fieldPolynomial.setBit(j);
-                for (k = j + 1; (k <= (mDegree - 1)) && !done; k++) {
+                for (k = j + 1; (k <= (mDegree - 1)); k++) {
                     fieldPolynomial.setBit(k);
                     if (((mDegree & 1) != 0) | ((i & 1) != 0) | ((j & 1) != 0)
                             | ((k & 1) != 0)) {
@@ -170,7 +170,7 @@ public class GF2nPolynomialField extends GF2nField {
                             pc[0] = i;
                             pc[1] = j;
                             pc[2] = k;
-                            return done;
+                            return true;
                         }
                     }
                     fieldPolynomial.resetBit(k);
@@ -180,25 +180,20 @@ public class GF2nPolynomialField extends GF2nField {
             fieldPolynomial.resetBit(i);
         }
 
-        return done;
+        return false;
     }
 
 
     private boolean testRandom() {
-        boolean done = false;
-
         fieldPolynomial = new GF2Polynomial(mDegree + 1);
-        while (!done) {
+        while (true) {
             fieldPolynomial.randomize();
             fieldPolynomial.setBit(mDegree);
             fieldPolynomial.setBit(0);
             if (fieldPolynomial.isIrreducible()) {
-                done = true;
-                return done;
+                return true;
             }
         }
-
-        return done;
     }
 
 }

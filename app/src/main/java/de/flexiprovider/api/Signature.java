@@ -54,9 +54,6 @@ public abstract class Signature extends java.security.SignatureSpi {
     protected void engineSetParameter(
             java.security.spec.AlgorithmParameterSpec params)
             throws java.security.InvalidAlgorithmParameterException {
-        if (params != null && !(params instanceof AlgorithmParameterSpec)) {
-            throw new java.security.InvalidAlgorithmParameterException();
-        }
         setParameters(params);
     }
 

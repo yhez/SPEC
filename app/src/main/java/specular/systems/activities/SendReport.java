@@ -59,7 +59,7 @@ public class SendReport extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        new KeysDeleter();
+        new KeysDeleter(this);
     }
 
     @Override

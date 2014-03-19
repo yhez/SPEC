@@ -73,10 +73,6 @@ public abstract class Cipher extends javax.crypto.CipherSpi {
             throws java.security.InvalidKeyException,
             java.security.InvalidAlgorithmParameterException {
 
-        if ((params != null) && !(params instanceof AlgorithmParameterSpec)) {
-            throw new java.security.InvalidAlgorithmParameterException();
-        }
-
         if ((key == null) || !(key instanceof Key)) {
             throw new java.security.InvalidKeyException();
         }

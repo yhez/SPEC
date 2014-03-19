@@ -208,20 +208,16 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
     }
 
     private boolean checkPrintableSpelling(String val) {
-        boolean result;
         char[] allowed;
         char[] value;
-
-        result = true;
-
         allowed = ("abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789 (),-./:=?").toCharArray();
 
         value = val.toCharArray();
 
-        for (int i = 0; i < value.length; i++) {
+        for (char aValue : value) {
             for (int j = 0; j < allowed.length; j++) {
-                if (value[i] == allowed[j]) {
+                if (aValue == allowed[j]) {
                     break;
                 }
                 if (j == allowed.length - 1) {
@@ -229,8 +225,7 @@ public class Name extends ASN1SequenceOf implements Principal, Resolver {
                 }
             }
         }
-
-        return result;
+        return true;
     }
 
     public String toString() {

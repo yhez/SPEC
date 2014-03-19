@@ -94,7 +94,7 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         SharedPreferences srp = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext());
+                .getDefaultSharedPreferences(this);
        cameraTime= srp.getLong("camera_time",-1);
         startCamera = System.currentTimeMillis();
         setContentView(R.layout.capture);
@@ -122,7 +122,9 @@ public class CaptureActivity extends Activity implements SurfaceHolder.Callback 
             initCamera(surfaceHolder);
         } else {
             // Install the callback and wait for surfaceCreated() to init the camera.
-            surfaceHolder.addCallback(this);
+            if (surfaceHolder != null) {
+                surfaceHolder.addCallback(this);
+            }
         }
         inactivityTimer.onResume();
         Intent intent = getIntent();

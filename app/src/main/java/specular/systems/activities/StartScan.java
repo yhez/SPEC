@@ -80,7 +80,7 @@ public class StartScan extends CaptureActivity {
     @Override
     public void onPause() {
         super.onPause();
-        new KeysDeleter();
+        new KeysDeleter(this);
     }
 
     @Override

@@ -12,7 +12,7 @@ public abstract class AlgorithmParameters extends
     protected void engineInit(java.security.spec.AlgorithmParameterSpec params)
             throws java.security.spec.InvalidParameterSpecException {
 
-        if ((params == null) || !(params instanceof AlgorithmParameterSpec)) {
+        if ((params == null)) {
             throw new java.security.spec.InvalidParameterSpecException();
         }
         init(params);

@@ -1,5 +1,7 @@
 package de.flexiprovider.common.math.finitefields;
 
+import java.util.Arrays;
+
 import de.flexiprovider.common.exceptions.DifferentFieldsException;
 import de.flexiprovider.common.exceptions.NoSolutionException;
 import de.flexiprovider.common.math.FlexiBigInt;
@@ -199,7 +201,7 @@ public class GF2nONBElement extends GF2nElement {
     }
 
     public int hashCode() {
-        return mPol.hashCode();
+        return Arrays.hashCode(mPol);
     }
     public boolean testRightmostBit() {
         return (mPol[mLength - 1] & mBitmask[mBit - 1]) != 0L;

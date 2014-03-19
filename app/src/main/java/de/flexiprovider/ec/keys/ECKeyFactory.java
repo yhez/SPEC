@@ -172,33 +172,14 @@ public class ECKeyFactory extends KeyFactory {
 
     public Key translateKey(Key key) throws InvalidKeyException {
 
-        try {
-            if (key instanceof ECPublicKey) {
-                // Check if key originates from this factory
-                if (key instanceof ECPublicKey) {
-                    return key;
-                }
-                // Convert key to spec
-                ECPublicKeySpec ecPubKeySpec = (ECPublicKeySpec) getKeySpec(
-                        key, ECPublicKeySpec.class);
-                // Create key from spec, and return it
-                return generatePublic(ecPubKeySpec);
-            } else if (key instanceof ECPrivateKey) {
-                // Check if key originates from this factory
-                if (key instanceof ECPrivateKey) {
-                    return key;
-                }
-                // Convert key to spec
-                ECPrivateKeySpec ecPrivKeySpec = (ECPrivateKeySpec) getKeySpec(
-                        key, ECPrivateKeySpec.class);
-                // Create key from spec, and return it
-                return generatePrivate(ecPrivKeySpec);
-            } else {
-                throw new InvalidKeyException("Wrong algorithm type");
-            }
-        } catch (InvalidKeySpecException e) {
-            throw new InvalidKeyException("Cannot translate key: "
-                    + e.getMessage());
+        if (key instanceof ECPublicKey) {
+            // Check if key originates from this factory
+            return key;
+        } else if (key instanceof ECPrivateKey) {
+            // Check if key originates from this factory
+            return key;
+        } else {
+            throw new InvalidKeyException("Wrong algorithm type");
         }
     }
 

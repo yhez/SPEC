@@ -55,7 +55,6 @@ public class ShareCustomDialog extends DialogFragment {
                     i.setAction(Intent.ACTION_SEND);
                     Uri uri =  getUriForFile(getActivity(), getActivity().getPackageName(), FilesManagement.getFileToShare(getActivity()));
                     getActivity().grantUriPermission(rs.activityInfo.packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     i.putExtra(Intent.EXTRA_STREAM,uri);
                     try {
                         InputStream is = getActivity().getAssets().open("spec_temp_share.html");
@@ -94,7 +93,6 @@ public class ShareCustomDialog extends DialogFragment {
                     Uri uri = getUriForFile(getActivity(),getActivity().getPackageName(),FilesManagement.getQRToShare(getActivity()));
                     getActivity().grantUriPermission(cn.getPackageName(),uri,Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     i.putExtra(Intent.EXTRA_STREAM, uri);
-                    i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     try {
                         InputStream is = getActivity().getAssets().open("spec_temp_share.html");
                         int size = is.available();

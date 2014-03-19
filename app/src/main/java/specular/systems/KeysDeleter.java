@@ -1,12 +1,17 @@
 package specular.systems;
 
 
+import android.app.Activity;
+import android.preference.PreferenceManager;
+
 public class KeysDeleter {
     public static boolean keysDeleted = true;
     public static int oldStatus;
     private static Thread t;
+    private static Activity activity;
 
-    public KeysDeleter() {
+    public KeysDeleter(Activity activity) {
+        KeysDeleter.activity=activity;
         oldStatus = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         if (CryptMethods.privateExist()) {
             keysDeleted=false;
@@ -38,6 +43,7 @@ public class KeysDeleter {
     }
 
     public static void delete() {
+        PreferenceManager.getDefaultSharedPreferences(activity).edit().putLong("onPause",System.currentTimeMillis()).commit();
         CryptMethods.deleteKeys();
         keysDeleted=true;
     }

@@ -123,7 +123,7 @@ public class FilesOpener extends Activity {
             done=true;
             mp.release();
         }
-        new KeysDeleter();
+        new KeysDeleter(this);
     }
 
     @Override

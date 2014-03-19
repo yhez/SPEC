@@ -56,10 +56,6 @@ public abstract class BlockCipher extends Cipher {
             cipherParams = null;
 
         } else {
-            if (!(paramSpec instanceof AlgorithmParameterSpec)) {
-                throw new java.security.InvalidAlgorithmParameterException(
-                        "unsupported type");
-            }
             cipherParams = paramSpec;
 
             byte[] iv;

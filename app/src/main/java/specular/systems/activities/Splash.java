@@ -5,14 +5,11 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
-import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.view.Gravity;
+import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +27,7 @@ import specular.systems.CustomExceptionHandler;
 import specular.systems.FileParser;
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
+import specular.systems.NfcStuff;
 import specular.systems.R;
 import specular.systems.StaticVariables;
 import specular.systems.Visual;
@@ -59,7 +57,9 @@ public class Splash extends Activity {
             if (msg.what == 500) {
                 setContentView(R.layout.splash);
                 ((TextView) findViewById(R.id.company)).setTypeface(FilesManagement.getOs(Splash.this));
-                findViewById(R.id.splash).animate().setDuration(TIME_FOR_SPLASH).alpha(1).start();
+                View vg  = findViewById(android.R.id.content);
+                vg.setAlpha(0);
+                vg.animate().setDuration(TIME_FOR_SPLASH).alpha(1).start();
                 waitForSplash.start();
             } else {
                 Toast t = Toast.makeText(Splash.this, R.string.failed, Toast.LENGTH_SHORT);
@@ -82,13 +82,9 @@ public class Splash extends Activity {
         }
         FilesManagement.getKeysFromSDCard(this);
         if (!CryptMethods.privateExist() && getIntent().getType() != null) {
-            Parcelable raw[] = getIntent().getParcelableArrayExtra(
-                    NfcAdapter.EXTRA_NDEF_MESSAGES);
+            byte[] raw = NfcStuff.getData(getIntent());
             if (raw != null) {
-                NdefMessage msg = (NdefMessage) raw[0];
-                NdefRecord pvk = msg.getRecords()[0];
-                CryptMethods.setPrivate(pvk
-                        .getPayload());
+                CryptMethods.setPrivate(raw);
             }
         }
 
@@ -97,6 +93,8 @@ public class Splash extends Activity {
             file=true;
             intent.putExtra("specattach", getIntent().getParcelableExtra(Intent.EXTRA_STREAM));
         }
+        if(FilesManagement.isItOnPauseForALongTime(this))
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
@@ -217,7 +215,7 @@ public class Splash extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        new KeysDeleter();
+        new KeysDeleter(this);
     }
 
     @Override

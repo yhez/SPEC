@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -134,7 +133,7 @@ public class FragmentManagement extends Fragment {
         fileName.setText(StaticVariables.file_name);
         tv.setText(StaticVariables.msg_content);
         int ok = R.drawable.ic_ok, notOk = R.drawable.ic_bad,
-                unknown = R.drawable.ic_unknown, starting = R.drawable.ic_what;
+                /*unknown = R.drawable.ic_unknown,*/ starting = R.drawable.ic_what;
         hs.setImageResource(StaticVariables.flag_hash ? ok : notOk);
         if (StaticVariables.flag_session == Session.KNOWN
                 || StaticVariables.flag_session == Session.JUST_KNOWN
@@ -625,12 +624,11 @@ public class FragmentManagement extends Fragment {
                 }
                 break;
             case wait_nfc_decrypt:
-                NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
-                if (nfcAdapter == null) {
+                if (NfcStuff.nfcIsntAvailable(getActivity())) {
                     Toast t = Toast.makeText(getActivity(), R.string.cant_connect_nfc_adapter, Toast.LENGTH_LONG);
                     t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     t.show();
-                } else if (!nfcAdapter.isEnabled())
+                } else if (NfcStuff.nfcIsOff(getActivity()))
                     rootView.findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
                 break;
             case setup:
@@ -826,9 +824,9 @@ public class FragmentManagement extends Fragment {
                             }
                         });
                         ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);
-                    } else {
+                    } /*else {
                         //todo add exchange app account
-                    }
+                    }*/
                 } else {
                     String company = acc.type.split("\\.")[1];
                     for (ResolveInfo pi : rs) {

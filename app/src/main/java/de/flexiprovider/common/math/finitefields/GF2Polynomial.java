@@ -1,5 +1,6 @@
 package de.flexiprovider.common.math.finitefields;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import de.flexiprovider.common.exceptions.BitDoesNotExistException;
@@ -306,7 +307,7 @@ public class GF2Polynomial {
         return true;
     }
     public int hashCode() {
-        return len + value.hashCode();
+        return len + Arrays.hashCode(value);
     }
 
 

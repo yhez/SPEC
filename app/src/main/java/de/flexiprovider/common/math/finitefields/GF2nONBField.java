@@ -221,13 +221,6 @@ public class GF2nONBField extends GF2nField {
         int l = IntegerFunctions.order(m, p);
 
         while (l % k != 0 || l == 0) {
-            while (m == 0) {
-                m = random.nextInt();
-                m %= p - 1;
-                if (m < 0) {
-                    m += p - 1;
-                }
-            }
             l = IntegerFunctions.order(m, p);
         }
         int r = m;

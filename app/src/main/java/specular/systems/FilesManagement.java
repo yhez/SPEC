@@ -114,7 +114,12 @@ public final class FilesManagement {
         }
         return false;
     }
-
+    public static boolean isItOnPauseForALongTime(Activity a){
+        long limit = 900000;//15 minutes
+        long current = System.currentTimeMillis();
+        long oldTime = PreferenceManager.getDefaultSharedPreferences(a).getLong("onPause", current);
+        return current - oldTime > limit;
+    }
     private static boolean saveQRToSend(Activity a, String data) {
         int qrCodeDimention = 500;
         StaticVariables.encryptedMsgToSend = data.substring(data.length() / 4 * 3);
@@ -344,7 +349,7 @@ public final class FilesManagement {
             ContactCard qrpk = new ContactCard(a);
             try {
                 FileOutputStream fos = a.openFileOutput(a.getString(FILE_NAME),
-                        Context.MODE_WORLD_READABLE);
+                        Context.MODE_PRIVATE);
                 fos.write(qrpk.getQRToPublish().getBytes("UTF-8"));
                 fos.close();
             } catch (Exception e) {
@@ -356,14 +361,14 @@ public final class FilesManagement {
                 Bitmap crop = crop(bitmap);
                 try {
                     FileOutputStream fos = a.openFileOutput(a.getString(QR_NAME),
-                            Context.MODE_WORLD_READABLE);
+                            Context.MODE_PRIVATE);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 try {
                     FileOutputStream fos = a.openFileOutput(QR_NAME_T,
-                            Context.MODE_WORLD_READABLE);
+                            Context.MODE_PRIVATE);
                     crop.compress(Bitmap.CompressFormat.PNG, 90, fos);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -447,7 +452,7 @@ public final class FilesManagement {
             FileOutputStream fos;
             try {
                 fos = a.openFileOutput(a.getString(FILE_NAME),
-                        Context.MODE_WORLD_READABLE);
+                        Context.MODE_PRIVATE);
                 fos.write(qrpk.getQRToPublish().getBytes("UTF-8"));
                 fos.close();
             } catch (Exception e) {
@@ -461,7 +466,7 @@ public final class FilesManagement {
                 FileOutputStream fos2;
                 try {
                     fos2 = a.openFileOutput(a.getString(QR_NAME),
-                            Context.MODE_WORLD_READABLE);
+                            Context.MODE_PRIVATE);
                     bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos2);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -469,7 +474,7 @@ public final class FilesManagement {
                 FileOutputStream fos3;
                 try {
                     fos3 = a.openFileOutput(QR_NAME_T,
-                            Context.MODE_WORLD_READABLE);
+                            Context.MODE_PRIVATE);
                     crop.compress(Bitmap.CompressFormat.PNG, 90, fos3);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -582,11 +587,11 @@ public final class FilesManagement {
 
     public static boolean saveFileForOpen(Activity a, byte[] file, String name) {
         File path = new File(a.getFilesDir() + ATTACHMENTS);
+        if(!path.exists())
+            path.mkdir();
         for (String f : path.list()) {
             new File(path, f).delete();
         }
-        if (!path.exists())
-            path.mkdirs();
         File f = new File(path, name);
         try {
             OutputStream os = new FileOutputStream(f);

@@ -14,9 +14,6 @@ public abstract class KeyPairGenerator extends
                            java.security.SecureRandom javaRand)
             throws java.security.InvalidAlgorithmParameterException {
 
-        if (params != null && !(params instanceof AlgorithmParameterSpec)) {
-            throw new java.security.InvalidAlgorithmParameterException();
-        }
         SecureRandom flexiRand = new JavaSecureRandomWrapper(javaRand);
         initialize(params, flexiRand);
     }

@@ -3,26 +3,17 @@ package specular.systems.activities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.nfc.FormatException;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.Ndef;
-import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -53,8 +44,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Map;
 
 import specular.systems.Backup;
@@ -91,6 +80,7 @@ import specular.systems.KeysDeleter;
 import specular.systems.LeftMenu;
 import specular.systems.MessageFormat;
 import specular.systems.MySimpleArrayAdapter;
+import specular.systems.NfcStuff;
 import specular.systems.R;
 import specular.systems.Session;
 import specular.systems.StaticVariables;
@@ -101,7 +91,7 @@ import zxing.WriterException;
 import static android.support.v4.content.FileProvider.getUriForFile;
 
 
-public class Main extends FragmentActivity{
+public class Main extends FragmentActivity {
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2,
             DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_AND_SEND = 76,
             RESTORE = 45, ADD_GROUP = 46;
@@ -116,7 +106,7 @@ public class Main extends FragmentActivity{
                     break;
                 case REPLACE_PHOTO:
                     TextView tv = (TextView) findViewById(R.id.file_content_length);
-                    if(tv!=null)tv.setText(StaticVariables.fileContent.length + "");
+                    if (tv != null) tv.setText(StaticVariables.fileContent.length + "");
                     invalidateOptionsMenu();
                     break;
                 case CANT_DECRYPT:
@@ -124,9 +114,9 @@ public class Main extends FragmentActivity{
                     ((TextView) findViewById(R.id.decrypted_msg)).setText(s);
                     break;
                 case DECRYPT_SCREEN:
-                    if (MessageFormat.decryptedMsg != null){
+                    if (MessageFormat.decryptedMsg != null) {
                         byte[] file = MessageFormat.decryptedMsg.getFileContent();
-                        FilesManagement.createFileToOpen(Main.this,file,MessageFormat.decryptedMsg.getFileName());
+                        FilesManagement.createFileToOpen(Main.this, file, MessageFormat.decryptedMsg.getFileName());
                     }
                     selectItem(1, R.layout.decrypted_msg, null);
                     break;
@@ -172,7 +162,7 @@ public class Main extends FragmentActivity{
                     }
                     break;
                 case CLEAR_AND_SEND:
-                    clearFields(msg.arg1,msg.arg2==1);
+                    clearFields(msg.arg1, msg.arg2 == 1);
                     break;
                 case 551:
                     t.setText(R.string.bad_data);
@@ -219,14 +209,11 @@ public class Main extends FragmentActivity{
     public void createKeysManager(View v) {
         CryptMethods.doneCreatingKeys = true;
         selectItem(-1, R.layout.wait_nfc_to_write, getString(R.string.save_keys_menu_title));
-        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (nfcAdapter != null) {
-            if (!nfcAdapter.isEnabled()) {
-                TurnNFCOn tno = new TurnNFCOn();
-                tno.show(getFragmentManager(), "nfc");
-            }
-        } else {
+        if (NfcStuff.nfcIsntAvailable(this))
             onClickSkipNFC(null);
+        else if(NfcStuff.nfcIsOff(this)){
+            TurnNFCOn tno = new TurnNFCOn();
+            tno.show(getFragmentManager(), "nfc");
         }
     }
 
@@ -268,8 +255,8 @@ public class Main extends FragmentActivity{
                 encryptManager(SendMsg.MESSAGE);
                 break;
             case R.id.open_file:
-                Intent oi = new Intent(this,FilesOpener.class);
-                oi.putExtra("file_name",StaticVariables.file_name);
+                Intent oi = new Intent(this, FilesOpener.class);
+                oi.putExtra("file_name", StaticVariables.file_name);
                 startActivity(oi);
                 break;
             case R.id.answer:
@@ -358,43 +345,43 @@ public class Main extends FragmentActivity{
                 break;
             case R.id.replay:
                 String replay = getString(R.string.time_created) + StaticVariables.timeStamp + "\n";
-                    switch (StaticVariables.flag_replay) {
-                        case MessageFormat.NOT_RELEVANT:
-                            replay += getString(R.string.replay_not_relevant);
-                            break;
-                        case MessageFormat.OK:
-                            replay += getString(R.string.replay_ok);
-                            break;
-                        case MessageFormat.FAILED:
-                            replay += getString(R.string.replay_check_failed);
-                            break;
-                        case MessageFormat.OLD:
-                            replay += getString(R.string.replay_old);
-                            break;
-                        case MessageFormat.NOT_LATEST:
-                            replay += getString(R.string.replay_older_then_latest);
-                            break;
-                    }
+                switch (StaticVariables.flag_replay) {
+                    case MessageFormat.NOT_RELEVANT:
+                        replay += getString(R.string.replay_not_relevant);
+                        break;
+                    case MessageFormat.OK:
+                        replay += getString(R.string.replay_ok);
+                        break;
+                    case MessageFormat.FAILED:
+                        replay += getString(R.string.replay_check_failed);
+                        break;
+                    case MessageFormat.OLD:
+                        replay += getString(R.string.replay_old);
+                        break;
+                    case MessageFormat.NOT_LATEST:
+                        replay += getString(R.string.replay_older_then_latest);
+                        break;
+                }
                 ExplainDialog ed = new ExplainDialog(this, ExplainDialog.REPLAY, replay);
                 ed.show(getFragmentManager(), "replay");
                 break;
             case R.id.save_attachment:
-                final Dialog dialog = new Dialog(this,android.R.style.Theme_Holo_Light_Dialog_MinWidth);
+                final Dialog dialog = new Dialog(this, android.R.style.Theme_Holo_Light_Dialog_MinWidth);
                 dialog.setContentView(R.layout.add_to_save);
                 dialog.setTitle(R.string.save_to_safe);
                 dialog.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String name = ((EditText)dialog.findViewById(R.id.name_of_file)).getText().toString();
+                        String name = ((EditText) dialog.findViewById(R.id.name_of_file)).getText().toString();
                         SharedPreferences sp = getSharedPreferences("saved_files", MODE_PRIVATE);
                         Map m = sp.getAll();
-                        if(m!=null&&m.containsValue(name)){
+                        if (m != null && m.containsValue(name)) {
                             t.setText(R.string.name_allready_exist);
                             t.show();
                             return;
                         }
                         String ext = StaticVariables.file_name.substring(StaticVariables.file_name.lastIndexOf('.') + 1);
-                        FilesManagement.saveToSafe(Main.this,name+"."+ext);
+                        FilesManagement.saveToSafe(Main.this, name + "." + ext);
                         dialog.cancel();
                         findViewById(R.id.save_attachment).setVisibility(View.GONE);
                     }
@@ -422,9 +409,9 @@ public class Main extends FragmentActivity{
                     loadingFile = false;
                     if (r == FilesManagement.RESULT_ADD_FILE_OK) {
                         fileName = Visual.getFileName(Main.this, uri);
-                        if (pic != null){
-                            if(!new File(Environment.getExternalStorageDirectory(),Visual.getFileName(Main.this,pic)).delete())
-                                new File(getFilesDir()+FilesManagement.TEMP,Visual.getFileName(Main.this,pic)).delete();
+                        if (pic != null) {
+                            if (!new File(Environment.getExternalStorageDirectory(), Visual.getFileName(Main.this, pic)).delete())
+                                new File(getFilesDir() + FilesManagement.TEMP, Visual.getFileName(Main.this, pic)).delete();
                         }
                         hndl.sendEmptyMessage(REPLACE_PHOTO);
                     } else {
@@ -575,83 +562,20 @@ public class Main extends FragmentActivity{
         super.onNewIntent(i);
         if (i.getAction() != null && i.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED))
             if (FragmentManagement.currentLayout == R.layout.wait_nfc_to_write) {
-                Tag tag = i.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-                if (tag != null) {
-                    byte[] bin = CryptMethods.getPrivateTmp();
-                    // record to launch Play Store if app is not installed
-                    NdefRecord appRecord = NdefRecord
-                            .createApplicationRecord(this.getPackageName());
-                    byte[] mimeBytes = ("application/" + this.getPackageName())
-                            .getBytes(Charset.forName("US-ASCII"));
-                    NdefRecord cardRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-                            mimeBytes, new byte[0], bin);
-                    NdefMessage message = new NdefMessage(new NdefRecord[]{cardRecord,
-                            appRecord});
-                    Ndef ndef = null;
-                    try {
-                        // see if tag is already NDEF formatted
-                        ndef = Ndef.get(tag);
-                        ndef.connect();
-                        if (!ndef.isWritable()) {
-                            t.setText(R.string.failed_read_only);
-                        } else {
-                            // work out how much space we need for the dataRaw
-                            int size = message.toByteArray().length;
-                            if (ndef.getMaxSize() < size) {
-                                // attempt to format tag
-                                NdefFormatable format = NdefFormatable.get(tag);
-                                if (format != null) {
-                                    try {
-                                        format.connect();
-                                        format.format(message);
-                                        t.setText(R.string.tag_formatted);
-                                    } catch (IOException e) {
-                                        t.setText(R.string.cant_format);
-                                    }
-                                } else {
-                                    t.setText(R.string.tag_not_supported);
-                                }
-                            } else {
-                                ndef.writeNdefMessage(message);
-                                t.setText(R.string.tag_written);
-                                StaticVariables.NFCMode = true;
-                                CryptMethods.moveKeysFromTmp();
-                                onClickSkipNFC(null);
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        if (ndef != null && ndef.isConnected())
-                            try {
-                                ndef.close();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                        NdefFormatable format = NdefFormatable.get(tag);
-                        if (format != null) {
-                            try {
-                                format.connect();
-                                format.format(message);
-                                t.setText(R.string.tag_formatted);
-                            } catch (IOException ew) {
-                                t.setText(getString(R.string.io_exception_format));
-                            } catch (FormatException e1) {
-                                t.setText(R.string.cant_format);
-                            }
-                        } else {
-                            t.setText(R.string.tag_not_supported);
-                        }
-                    }
-                    t.show();
+                int result = NfcStuff.write(i, CryptMethods.getPrivateTmp());
+                t.setText(result);
+                t.show();
+                if (result == R.string.tag_written) {
+                    StaticVariables.NFCMode = true;
+                    CryptMethods.moveKeysFromTmp();
+                    onClickSkipNFC(null);
                 }
+
+
             } else {
-                Parcelable raw[] = i.getParcelableArrayExtra(
-                        NfcAdapter.EXTRA_NDEF_MESSAGES);
+                byte[] raw = NfcStuff.getData(i);
                 if (raw != null) {
-                    NdefMessage msg = (NdefMessage) raw[0];
-                    NdefRecord pvk = msg.getRecords()[0];
-                    if (!CryptMethods.setPrivate(pvk
-                            .getPayload())) {
+                    if (!CryptMethods.setPrivate(raw)) {
                         t.setText(R.string.cant_find_private_key);
                         t.show();
                     }
@@ -741,11 +665,13 @@ public class Main extends FragmentActivity{
             public void onClick(View v) {
                 dialog.cancel();
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE);
-                File f = new File(getFilesDir()+FilesManagement.TEMP, System.currentTimeMillis() + ".jpg");
-                pic = getUriForFile(Main.this,getPackageName(),f);
-                ResolveInfo lk = getPackageManager().resolveActivity(i,0);
-                grantUriPermission(lk.activityInfo.packageName,pic,Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                i.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                File path = new File(getFilesDir() + FilesManagement.TEMP);
+                if (!path.exists())
+                    path.mkdir();
+                File f = new File(path, System.currentTimeMillis() + ".jpg");
+                pic = getUriForFile(Main.this, getPackageName(), f);
+                ResolveInfo lk = getPackageManager().resolveActivity(i, 0);
+                grantUriPermission(lk.activityInfo.packageName, pic, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 i.putExtra(MediaStore.EXTRA_OUTPUT, pic);
                 startActivityForResult(i, TAKE_PICTURE);
             }
@@ -755,7 +681,7 @@ public class Main extends FragmentActivity{
             public void onClick(View v) {
                 dialog.cancel();
                 Intent i = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-                if(getPackageManager().queryIntentActivities(i,0).size()>0)
+                if (getPackageManager().queryIntentActivities(i, 0).size() > 0)
                     startActivityForResult(i, RECORD_AUDIO);
             }
         });
@@ -767,7 +693,7 @@ public class Main extends FragmentActivity{
             }
         });
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0,getActionBar().getHeight(),0,0);
+        lp.setMargins(0, getActionBar().getHeight(), 0, 0);
         dialog.findViewById(R.id.dlg_attach).setLayoutParams(lp);
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
@@ -928,7 +854,7 @@ public class Main extends FragmentActivity{
 
     @Override
     public void onPause() {
-        new KeysDeleter();
+        new KeysDeleter(this);
         FilesManagement.saveTempDecryptedMSG(this);
         Visual.hideKeyBord(this);
         //todo delete view content
@@ -1003,6 +929,7 @@ public class Main extends FragmentActivity{
         exit = false;
         Visual.hideKeyBord(this);
     }
+
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
@@ -1011,7 +938,7 @@ public class Main extends FragmentActivity{
     }
 
     private void setUpViews() {
-        final int CONTACTS = 0, SHARE = 1, EXPLORER = 2, SETUP = 3, LEARN = 4;
+        //final int CONTACTS = 0, SHARE = 1, EXPLORER = 2, SETUP = 3, LEARN = 4;
         final String[] allMenus = getResources().getStringArray(R.array.menus);
         final int[] allDrb = {R.drawable.encrypt, R.drawable.share
                 , R.drawable.explore, R.drawable.manage, R.drawable.learn};
@@ -1025,8 +952,11 @@ public class Main extends FragmentActivity{
         // opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
                 GravityCompat.START);
+
+        menuTitles = allMenus;
+        menuDrawables = allDrb;
         //define which menu's will be available
-        switch (status) {
+        /*switch (status) {
             case BOTH:
                 menuTitles = allMenus;
                 menuDrawables = allDrb;
@@ -1045,7 +975,7 @@ public class Main extends FragmentActivity{
                 menuTitles = new String[]{allMenus[LEARN], allMenus[SETUP]};
                 menuDrawables = new int[]{allDrb[LEARN], allDrb[SETUP]};
                 break;
-        }
+        }*/
         // set up the main's list view with items and click listener
         mDrawerList.setAdapter(new LeftMenu(this,
                 menuTitles, menuDrawables));
@@ -1081,12 +1011,11 @@ public class Main extends FragmentActivity{
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        final int allLayouts[] = {R.layout.encrypt,
+        layouts = new int[]{R.layout.encrypt,
                 R.layout.me, R.layout.explorer,
                 R.layout.setup, R.layout.learn};
         switch (status) {
             case BOTH:
-                layouts = allLayouts;
                 if (ContactsDataSource.fullList.size() > 3)
                     defaultScreen = R.layout.encrypt;
                 else
@@ -1096,8 +1025,7 @@ public class Main extends FragmentActivity{
                 }
                 break;
             case PB:
-                layouts = new int[]{allLayouts[CONTACTS], allLayouts[SHARE],
-                        allLayouts[LEARN], allLayouts[SETUP]};
+                //todo disable safe button
                 String msg = getIntent().getStringExtra("message");
                 if (StaticVariables.message != null || msg != null
                         || StaticVariables.fileContactCard != null) {
@@ -1113,14 +1041,13 @@ public class Main extends FragmentActivity{
                 }
                 break;
             case PV:
-                layouts = new int[]{allLayouts[LEARN], allLayouts[SETUP]};
                 if (!openByFile()) {
                     selectItem(0, R.layout.decrypt, null);
                     defaultScreen = R.layout.decrypt;
                 }
                 break;
             case NONE:
-                layouts = new int[]{allLayouts[LEARN], allLayouts[SETUP]};
+                layouts = new int[]{R.layout.setup, R.layout.learn};
                 selectItem(1, R.layout.create_new_keys, getString(R.string.first_time_create_keys));
                 defaultScreen = R.layout.create_new_keys;
                 msg = getIntent().getStringExtra("message");
@@ -1219,7 +1146,7 @@ public class Main extends FragmentActivity{
         if (getIntent().getParcelableExtra("specattach") != null) {
             if (FragmentManagement.currentLayout != R.layout.encrypt)
                 selectItem(-1, R.layout.encrypt, null);
-            attachFile((Uri)getIntent().getParcelableExtra("specattach"));
+            attachFile((Uri) getIntent().getParcelableExtra("specattach"));
             return true;
         }
         return false;
@@ -1340,7 +1267,7 @@ public class Main extends FragmentActivity{
                 (StaticVariables.fileContent != null ?
                         StaticVariables.fileContent.length : 0)) <
                 StaticVariables.MSG_LIMIT_FOR_QR, data);
-        Message msg = hndl.obtainMessage(CLEAR_AND_SEND,type,success?1:0);
+        Message msg = hndl.obtainMessage(CLEAR_AND_SEND, type, success ? 1 : 0);
         hndl.sendMessage(msg);
     }
 
@@ -1361,16 +1288,7 @@ public class Main extends FragmentActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (nfcAdapter != null && nfcAdapter.isEnabled()) {
-            PendingIntent pi = PendingIntent.getActivity(this, 0,
-                    new Intent(this, getClass())
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), 0);
-            IntentFilter tagDetected = new IntentFilter(
-                    NfcAdapter.ACTION_TAG_DISCOVERED);
-            IntentFilter[] filters = new IntentFilter[]{tagDetected};
-            nfcAdapter.enableForegroundDispatch(this, pi, filters, null);
-        }
+        NfcStuff.listen(this, getClass());
         if (StaticVariables.flag_msg != null && StaticVariables.flag_msg) {
             FilesManagement.getTempDecryptedMSG(this);
         }
@@ -1381,13 +1299,13 @@ public class Main extends FragmentActivity{
             KeysDeleter.stop();
         }
         int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
-        if (newkeys != KeysDeleter.oldStatus||Splash.file) {
-            Splash.file=false;
+        if (newkeys != KeysDeleter.oldStatus || Splash.file) {
+            Splash.file = false;
             setUpViews();
         }
     }
 
-    private void clearFields(int type,boolean success) {
+    private void clearFields(int type, boolean success) {
         if (FragmentManagement.currentLayout == R.layout.encrypt) {
             findViewById(R.id.message).clearFocus();
             ((TextView) findViewById(R.id.file_content_length)).setText("");
@@ -1430,7 +1348,7 @@ public class Main extends FragmentActivity{
                 } else {
                     message = R.string.backup_explain;
                 }
-                BackupDialog bd = new BackupDialog(this,message);
+                BackupDialog bd = new BackupDialog(this, message);
                 bd.show(getFragmentManager(), "bd");
                 break;
             case R.id.button3:

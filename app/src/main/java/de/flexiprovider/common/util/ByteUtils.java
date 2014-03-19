@@ -46,9 +46,9 @@ public final class ByteUtils {
         char[] rawChars = s.toUpperCase().toCharArray();
 
         int hexChars = 0;
-        for (int i = 0; i < rawChars.length; i++) {
-            if ((rawChars[i] >= '0' && rawChars[i] <= '9')
-                    || (rawChars[i] >= 'A' && rawChars[i] <= 'F')) {
+        for (char rawChar1 : rawChars) {
+            if ((rawChar1 >= '0' && rawChar1 <= '9')
+                    || (rawChar1 >= 'A' && rawChar1 <= 'F')) {
                 hexChars++;
             }
         }
@@ -57,13 +57,13 @@ public final class ByteUtils {
 
         int pos = hexChars & 1;
 
-        for (int i = 0; i < rawChars.length; i++) {
-            if (rawChars[i] >= '0' && rawChars[i] <= '9') {
+        for (char rawChar : rawChars) {
+            if (rawChar >= '0' && rawChar <= '9') {
                 byteString[pos >> 1] <<= 4;
-                byteString[pos >> 1] |= rawChars[i] - '0';
-            } else if (rawChars[i] >= 'A' && rawChars[i] <= 'F') {
+                byteString[pos >> 1] |= rawChar - '0';
+            } else if (rawChar >= 'A' && rawChar <= 'F') {
                 byteString[pos >> 1] <<= 4;
-                byteString[pos >> 1] |= rawChars[i] - 'A' + 10;
+                byteString[pos >> 1] |= rawChar - 'A' + 10;
             } else {
                 continue;
             }
@@ -76,9 +76,9 @@ public final class ByteUtils {
 
     public static String toHexString(byte[] input) {
         String result = "";
-        for (int i = 0; i < input.length; i++) {
-            result += HEX_CHARS[(input[i] >>> 4) & 0x0f];
-            result += HEX_CHARS[(input[i]) & 0x0f];
+        for (byte anInput : input) {
+            result += HEX_CHARS[(anInput >>> 4) & 0x0f];
+            result += HEX_CHARS[(anInput) & 0x0f];
         }
         return result;
     }

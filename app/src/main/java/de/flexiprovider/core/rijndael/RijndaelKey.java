@@ -37,8 +37,8 @@ public class RijndaelKey implements SecretKey {
 
     public int hashCode() {
         int result = 1;
-        for (int i = 0; i < keyBytes.length; i++) {
-            result = 31 * result + keyBytes[i];
+        for (byte keyByte : keyBytes) {
+            result = 31 * result + keyByte;
         }
 
         return result;

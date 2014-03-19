@@ -50,7 +50,7 @@ public abstract class AlgorithmParameterGenerator extends
                     (javax.crypto.spec.IvParameterSpec) genParamSpec);
             init(paramSpec, flexiRand);
         } else {
-            if (!(genParamSpec instanceof AlgorithmParameterSpec)) {
+            if (genParamSpec == null) {
                 throw new java.security.InvalidAlgorithmParameterException();
             }
             init(genParamSpec, flexiRand);

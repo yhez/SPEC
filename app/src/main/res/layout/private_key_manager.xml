@@ -16,8 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="@dimen/default_gap"
-        android:text="@string/move_private_to_nfc"
-        android:textColor="@color/spec_black" />
+        android:text="@string/move_private_to_nfc" />
 
     <View
         android:layout_width="match_parent"
@@ -33,8 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="@dimen/default_gap"
-        android:text="@string/get_private_from_nfc"
-        android:textColor="@color/spec_black" />
+        android:text="@string/get_private_from_nfc" />
 
     <View
         android:layout_width="match_parent"
@@ -49,8 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/get_private_from_qr"
-        android:textColor="@color/spec_gray" />
+        android:text="@string/get_private_from_qr" />
 
     <View
         android:layout_width="match_parent"
@@ -65,8 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/print_private_to_qr"
-        android:textColor="@color/spec_gray" />
+        android:text="@string/print_private_to_qr" />
 
     <View
         android:id="@+id/text_view_divide"

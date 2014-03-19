@@ -1,5 +1,7 @@
 package de.flexiprovider.core.rijndael;
 
+import java.util.Arrays;
+
 import de.flexiprovider.common.mode.ModeParameterSpec;
 import de.flexiprovider.common.util.ByteUtils;
 
@@ -53,7 +55,7 @@ public class RijndaelParameterSpec implements java.security.spec.AlgorithmParame
         if (iv == null) {
             return blockSize;
         }
-        return blockSize + iv.hashCode();
+        return blockSize + Arrays.hashCode(iv);
     }
 
 }

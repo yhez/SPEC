@@ -56,7 +56,6 @@ public class ShareContactDlg extends DialogFragment {
                     i.setAction(Intent.ACTION_SEND);
                     Uri uri = getUriForFile(getActivity(),getActivity().getPackageName(),FilesManagement.getContactCardToShare(getActivity()));
                     getActivity().grantUriPermission(cn.getPackageName(),uri,Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     i.putExtra(Intent.EXTRA_STREAM, uri);
                     try {
                         InputStream is = getActivity().getAssets().open("spec_temp_share_contact.html");

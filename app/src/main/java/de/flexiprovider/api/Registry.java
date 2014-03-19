@@ -281,8 +281,8 @@ public abstract class Registry {
 
         // build vector containing the parameter set names
         Vector params = new Vector(paramNames.length);
-        for (int i = 0; i < paramNames.length; i++) {
-            params.addElement(paramNames[i]);
+        for (String paramName : paramNames) {
+            params.addElement(paramName);
         }
 
         // register first name
