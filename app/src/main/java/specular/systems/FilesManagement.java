@@ -347,6 +347,10 @@ public final class FilesManagement {
                     .getDefaultSharedPreferences(a);
             SharedPreferences.Editor edt = srp.edit();
             ContactCard qrpk = new ContactCard(a);
+            File path = new File(a.getFilesDir()+TEMP);
+            if(path.exists())
+                for(String name:path.list())
+                    new File(path,name).delete();
             try {
                 FileOutputStream fos = a.openFileOutput(a.getString(FILE_NAME),
                         Context.MODE_PRIVATE);

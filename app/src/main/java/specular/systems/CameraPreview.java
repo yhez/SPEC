@@ -22,11 +22,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private SensorManager mSensorManager;
     private ArrayList<Sensor> sensors;
     public String[] names;
-    public void finish(){
+
+    public void finish() {
         mSensorManager.unregisterListener(this);
         mCamera.release();
-        ready=false;
+        ready = false;
     }
+
     public CameraPreview(Context context) {
         super(context);
         cp = this;
@@ -41,9 +43,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         sensors = new ArrayList<Sensor>();
         sensors.add(null);
         for (Sensor s : temp) {
-            if (s.getType() != Sensor.TYPE_PROXIMITY && s.getType() != Sensor.TYPE_LIGHT && s.getType() != Sensor.TYPE_SIGNIFICANT_MOTION) {
-                sensors.add(s);
-            }
+            sensors.add(s);
         }
         names = new String[sensors.size()];
         for (int a = 1; a < names.length; a++)
@@ -129,7 +129,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 progress = 0;
                 currentSensor++;
                 mCamera.setPreviewCallback(null);
-                mSensorManager.registerListener(CameraPreview.this, sensors.get(currentSensor), 15);
+                register(sensors.get(currentSensor));
             }
         }
     };
@@ -170,22 +170,36 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void onSensorChanged(SensorEvent event) {
         progress++;
         int i = sensors.indexOf(event.sensor);
-        dataCollected[i]++;
-        if (dataCollected[i] >= 63) {
-            mSensorManager.unregisterListener(this);
-            if (i + 1 == sensors.size()) {
-                ready = true;
-            } else {
-                progress = 0;
-                currentSensor++;
-                mSensorManager.registerListener(this, sensors.get(i + 1), 15);
-            }
-        } else
+        if (dataCollected[i] < 63) {
+            dataCollected[i]++;
             sensorsData[i][dataCollected[i]] = (byte) (event.values[0] * 10000.0);
+        }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+    private void register(final Sensor sensor){
+        mSensorManager.registerListener(this,sensor , 10);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (this){
+                    try {
+                        ((Object)this).wait(1000);
+                    } catch (Exception ignore) {}
+                }
+                mSensorManager.unregisterListener(CameraPreview.this);
+                int i = sensors.indexOf(sensor);
+                if (i + 1 == sensors.size()) {
+                    ready = true;
+                } else {
+                    progress = 0;
+                    currentSensor++;
+                    register(sensors.get(i + 1));
+                }
+            }
+        }).start();
     }
 }
