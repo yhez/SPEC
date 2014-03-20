@@ -19,7 +19,6 @@ import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Random;
 
 import javax.crypto.Cipher;
 
@@ -54,26 +53,19 @@ public class CryptMethods {
                     f.setAccessible(true);
                     Object bigInt = f.get(bi);
                     long addr = (Long) bigInt.getClass().getDeclaredField("bignum").get(bigInt);
-                    //todo new NativeDelete().delete(addr, bi.bitLength());for some reason the crash happened while im starting the app again
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                    new NativeDelete().delete(addr, bi.bitLength());
+                } catch (Exception ignore) {}
                 mPtK = null;
             }
             if (myPrivateKey != null) {
-                for (int a = 0; a < myPrivateKey.length; a++) {
-                    myPrivateKey[a] = (byte) (System.currentTimeMillis() * new Random().nextLong());
-                }
-                log(myPrivateKey[new Random().nextInt(myPrivateKey.length)]);
+                for(int a=0;a<myPrivateKey.length;a++)
+                    myPrivateKey[a] = (byte)System.currentTimeMillis();
                 myPrivateKey = null;
             }
+            Log.i("key","deleted");
             MessageFormat.decryptedMsg = null;
             lock = true;
         }
-    }
-
-    private static void log(int a) {
-        Log.d("prevent from skip", "" + a);
     }
 
     public static boolean setPrivate(byte[] p) {

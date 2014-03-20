@@ -4,15 +4,18 @@ package specular.systems;
 import android.app.Activity;
 import android.preference.PreferenceManager;
 
+import specular.systems.activities.Splash;
+
 public class KeysDeleter {
     public static boolean keysDeleted = true;
-    public static int oldStatus;
+    public static int oldStatus = -1;
     private static Thread t;
     private static Activity activity;
 
     public KeysDeleter(Activity activity) {
         KeysDeleter.activity=activity;
-        oldStatus = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
+        if(!(activity instanceof Splash))
+            oldStatus = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         if (CryptMethods.privateExist()) {
             keysDeleted=false;
             if (t != null && t.isAlive()) {

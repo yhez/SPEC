@@ -118,7 +118,7 @@ public final class FilesManagement {
         long limit = 900000;//15 minutes
         long current = System.currentTimeMillis();
         long oldTime = PreferenceManager.getDefaultSharedPreferences(a).getLong("onPause", current);
-        return current - oldTime > limit;
+        return current -  limit > oldTime;
     }
     private static boolean saveQRToSend(Activity a, String data) {
         int qrCodeDimention = 500;

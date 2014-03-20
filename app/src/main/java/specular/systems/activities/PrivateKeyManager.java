@@ -72,7 +72,7 @@ public class PrivateKeyManager extends Activity {
             @Override
             public void onClick(View view) {
                 TurnNFCOn tno = new TurnNFCOn();
-                tno.show(getFragmentManager(), "nfc");
+                tno.show(getFragmentManager(), "nf");
             }
         });
     }
@@ -211,7 +211,7 @@ public class PrivateKeyManager extends Activity {
                     break;
                 default:
                     NotImplemented nimp = new NotImplemented();
-                    nimp.show(getFragmentManager(), "nimp");
+                    nimp.show(getFragmentManager(), "np");
             }
         }
     }

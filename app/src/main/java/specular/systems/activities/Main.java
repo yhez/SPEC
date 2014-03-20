@@ -177,7 +177,7 @@ public class Main extends FragmentActivity {
                     ContactsGroup.currentPage = 1;
                     selectItem(1, R.layout.encrypt, null);
                     DialogAddGroup dag = new DialogAddGroup();
-                    dag.show(getFragmentManager(), "dag");
+                    dag.show(getFragmentManager(), "dg");
                     break;
                 case 777:
                     contactChosen(true, (Long) msg.obj);
@@ -213,7 +213,7 @@ public class Main extends FragmentActivity {
             onClickSkipNFC(null);
         else if(NfcStuff.nfcIsOff(this)){
             TurnNFCOn tno = new TurnNFCOn();
-            tno.show(getFragmentManager(), "nfc");
+            tno.show(getFragmentManager(), "nf");
         }
     }
 
@@ -240,7 +240,7 @@ public class Main extends FragmentActivity {
 
     public void notImp(View v) {
         NotImplemented ni3 = new NotImplemented();
-        ni3.show(getFragmentManager(), "aaaa");
+        ni3.show(getFragmentManager(), "aa");
     }
 
     public void decryptedMsgClick(View v) {
@@ -300,7 +300,7 @@ public class Main extends FragmentActivity {
                     hash += index++ + ". " + parts[8] + "\n" + StaticVariables.session + "\n";
                 hash += index + ". " + parts[9] + "\n" + StaticVariables.hash;
                 ExplainDialog edlg = new ExplainDialog(this, lightMsg ? ExplainDialog.HASH : ExplainDialog.HASH_QR, hash);
-                edlg.show(getFragmentManager(), "hash");
+                edlg.show(getFragmentManager(), "hs");
                 break;
             case R.id.session:
                 String msg;
@@ -341,7 +341,7 @@ public class Main extends FragmentActivity {
                         msg = Session.toShow(this, StaticVariables.session);
                 }
                 ExplainDialog edl = new ExplainDialog(this, ExplainDialog.SESSION, msg);
-                edl.show(getFragmentManager(), "session");
+                edl.show(getFragmentManager(), "ss");
                 break;
             case R.id.replay:
                 String replay = getString(R.string.time_created) + StaticVariables.timeStamp + "\n";
@@ -363,7 +363,7 @@ public class Main extends FragmentActivity {
                         break;
                 }
                 ExplainDialog ed = new ExplainDialog(this, ExplainDialog.REPLAY, replay);
-                ed.show(getFragmentManager(), "replay");
+                ed.show(getFragmentManager(), "rp");
                 break;
             case R.id.save_attachment:
                 final Dialog dialog = new Dialog(this, android.R.style.Theme_Holo_Light_Dialog_MinWidth);
@@ -481,7 +481,6 @@ public class Main extends FragmentActivity {
                 if (StaticVariables.readyToSend) {
                     EditText et = (EditText) findViewById(R.id.message);
                     userInput = et.getText().toString();
-                    // hides the keyboard when the user starts the encryption process
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
                     long id = Long.parseLong(((TextView) findViewById(R.id.contact_id_to_send)).getText().toString());
@@ -555,8 +554,9 @@ public class Main extends FragmentActivity {
         setContentView(R.layout.main);
         findViewById(R.id.drawer_layout).animate().setDuration(1000).alpha(1).start();
         setUpViews();
+        created = true;
     }
-
+    private boolean created;
     @Override
     public void onNewIntent(Intent i) {
         super.onNewIntent(i);
@@ -625,15 +625,14 @@ public class Main extends FragmentActivity {
             }
         } else if (FragmentManagement.currentLayout == R.layout.edit_contact) {
             ShareContactDlg sd = new ShareContactDlg();
-            sd.show(getFragmentManager(), ((EditText) findViewById(R.id.contact_name)
-                    .findViewById(R.id.edit_text)).getText().toString());
+            sd.show(getFragmentManager(), "ed");
         } else if (FragmentManagement.currentLayout == R.layout.decrypted_msg) {
             ContactCard pcc = new ContactCard(this
                     , StaticVariables.friendsPublicKey
                     , StaticVariables.email, StaticVariables.name);
             Contact c = ContactsDataSource.contactsDataSource.findContactByEmail(StaticVariables.email);
             AddContactDlg acd = new AddContactDlg(pcc, StaticVariables.session, c != null ? c.getId() : -1);
-            acd.show(getFragmentManager(), "acd3");
+            acd.show(getFragmentManager(), "ac");
         } else if (FragmentManagement.currentLayout == R.layout.me
                 || FragmentManagement.currentLayout == R.layout.profile) {
             share(null);
@@ -702,7 +701,7 @@ public class Main extends FragmentActivity {
 
     public void share(View v) {
         ShareCustomDialog scd = new ShareCustomDialog();
-        scd.show(getFragmentManager(), "scd");
+        scd.show(getFragmentManager(), "sc");
     }
 
     @Override
@@ -938,9 +937,8 @@ public class Main extends FragmentActivity {
     }
 
     private void setUpViews() {
-        //final int CONTACTS = 0, SHARE = 1, EXPLORER = 2, SETUP = 3, LEARN = 4;
-        final String[] allMenus = getResources().getStringArray(R.array.menus);
-        final int[] allDrb = {R.drawable.encrypt, R.drawable.share
+        menuTitles = getResources().getStringArray(R.array.menus);
+        menuDrawables =new int[] {R.drawable.encrypt, R.drawable.share
                 , R.drawable.explore, R.drawable.manage, R.drawable.learn};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? BOTH : CryptMethods.privateExist() ? PV : CryptMethods.publicExist() ? PB : NONE;
@@ -952,30 +950,10 @@ public class Main extends FragmentActivity {
         // opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
                 GravityCompat.START);
-
-        menuTitles = allMenus;
-        menuDrawables = allDrb;
-        //define which menu's will be available
-        /*switch (status) {
-            case BOTH:
-                menuTitles = allMenus;
-                menuDrawables = allDrb;
-                break;
-            case PB:
-                menuTitles = new String[]{allMenus[CONTACTS], allMenus[SHARE],
-                        allMenus[LEARN], allMenus[SETUP]};
-                menuDrawables = new int[]{allDrb[CONTACTS], allDrb[SHARE],
-                        allDrb[LEARN], allDrb[SETUP]};
-                break;
-            case PV:
-                menuTitles = new String[]{allMenus[LEARN], allMenus[SETUP]};
-                menuDrawables = new int[]{allDrb[LEARN], allDrb[SETUP]};
-                break;
-            case NONE:
-                menuTitles = new String[]{allMenus[LEARN], allMenus[SETUP]};
-                menuDrawables = new int[]{allDrb[LEARN], allDrb[SETUP]};
-                break;
-        }*/
+        if(status==NONE){
+            menuTitles = new String[]{menuTitles[3], menuTitles[4]};
+            menuDrawables = new int[]{menuDrawables[3], menuDrawables[4]};
+        }
         // set up the main's list view with items and click listener
         mDrawerList.setAdapter(new LeftMenu(this,
                 menuTitles, menuDrawables));
@@ -1006,8 +984,7 @@ public class Main extends FragmentActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 getActionBar().setTitle("Menu");
-                invalidateOptionsMenu(); // creates call to
-                // onPrepareOptionsMenu()
+                invalidateOptionsMenu();
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -1080,7 +1057,6 @@ public class Main extends FragmentActivity {
                     if (a != -1) {
                         Group g = GroupDataSource.groupDataSource.findGroup(a);
                         if (g != null) {
-                            //todo clean memory
                             key = CryptMethods.decrypt(g.getPrivateKey());
                         }
                     }
@@ -1114,7 +1090,7 @@ public class Main extends FragmentActivity {
                     else
                         id = -1;
                     AddContactDlg acd = new AddContactDlg(StaticVariables.fileContactCard, null, id);
-                    acd.show(getFragmentManager(), "acd");
+                    acd.show(getFragmentManager(), "ad");
                 } else {
                     //contactChosen(true, c.getId());
                     new Thread(new Runnable() {
@@ -1122,10 +1098,8 @@ public class Main extends FragmentActivity {
                         public void run() {
                             synchronized (this) {
                                 try {
-                                    ((Object) this).wait(700);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                                    ((Object) this).wait(1000);
+                                } catch (Exception ignore) {}
                             }
                             Message msg = hndl.obtainMessage(777, c.getId());
                             hndl.sendMessage(msg);
@@ -1301,7 +1275,10 @@ public class Main extends FragmentActivity {
         int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
         if (newkeys != KeysDeleter.oldStatus || Splash.file) {
             Splash.file = false;
-            setUpViews();
+            if(created)
+                created=false;
+            else
+                setUpViews();
         }
     }
 
@@ -1387,7 +1364,7 @@ public class Main extends FragmentActivity {
             case R.id.delete:
                 if (CryptMethods.privateExist()) {
                     DeleteContactDialog dlg = new DeleteContactDialog();
-                    dlg.show(getFragmentManager(), "delete");
+                    dlg.show(getFragmentManager(), "dl");
                 } else {
                     t.setText(R.string.reject_changes);
                     t.show();
@@ -1399,7 +1376,7 @@ public class Main extends FragmentActivity {
                 break;
             case R.id.contact_picture:
                 ContactQR cqr = new ContactQR();
-                cqr.show(getFragmentManager(), "cqr");
+                cqr.show(getFragmentManager(), "cq");
                 break;
             case R.id.invite:
                 Group grp = GroupDataSource
@@ -1407,7 +1384,7 @@ public class Main extends FragmentActivity {
                         .findGroup(Long.parseLong(((TextView) findViewById(R.id.contact_id))
                                 .getText().toString()));
                 InviteToGroup ing = new InviteToGroup(grp);
-                ing.show(getFragmentManager(), "ing");
+                ing.show(getFragmentManager(), "in");
                 break;
             case R.id.add_to_contact:
                 grp = GroupDataSource
