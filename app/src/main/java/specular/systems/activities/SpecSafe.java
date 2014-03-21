@@ -1,10 +1,15 @@
 package specular.systems.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.io.File;
@@ -12,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import specular.systems.CryptMethods;
+import specular.systems.Dialogs.TurnNFCOn;
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
 import specular.systems.NfcStuff;
@@ -19,72 +25,121 @@ import specular.systems.R;
 
 
 public class SpecSafe extends Activity {
+    File file;
+    byte[] bytes;
+    int req;
+    View content;
+
     @Override
     public void onCreate(Bundle b){
         super.onCreate(b);
-        int req = getIntent().getIntExtra("action",0);
+        req = getIntent().getIntExtra("action",0);
         String name = getIntent().getStringExtra("name");
         ComponentName cn = getCallingActivity();
-        if(cn==null||name==null||req==0) {
+        if(name==null||name.length()==0){
+            setResult(11);
+            finish();
+            return;
+        }
+        if(cn==null){
+            Log.e("can't find calling activity","You must call SPEC by using the method startActivityForResult!");
+            finish();
+            return;
+        }
+        if(req==0) {
+            setResult(12);
             finish();
             return;
         }
         File path = new File(getFilesDir()+"/SPEC_SAFE/"+cn.getPackageName());
         if(!path.exists())
             path.mkdirs();
-        File file = new File(path,name);
+        file = new File(path,name);
+        if(!file.exists()&&req==2){
+            setResult(13);
+            finish();
+            return;
+        }
         FilesManagement.getKeysFromSDCard(this);
         if(req==1){
             if(!CryptMethods.publicExist()) {
-                setResult(RESULT_CANCELED);
+                setResult(14);
                 finish();
                 return;
             }
-            byte[] bytes = getIntent().getByteArrayExtra("bytes");
-            byte[] encryptedData = CryptMethods.encrypt(bytes, CryptMethods.getPublic());
-            if(encryptedData==null){
-                setResult(RESULT_CANCELED);
-                finish();
-                return;
-            }
-            try {
-                FileOutputStream fos = new FileOutputStream(file);
-                fos.write(encryptedData);
-                fos.close();
-                setResult(RESULT_OK);
-                finish();
-            } catch (Exception e) {
-                setResult(RESULT_CANCELED);
-                finish();
-            }
+            bytes = getIntent().getByteArrayExtra("bytes");
+            encryptAndSave.execute(bytes);
+            showDialog();
         }else if(req==2){
+                if(!CryptMethods.privateExist()){
+                    setContentView(R.layout.wait_nfc_decrypt);
+                    content = findViewById(R.id.wait_for_nfc);
+                    content.setAlpha(1);
+                    if(NfcStuff.nfcIsOff(this)){
+                        TurnNFCOn to = new TurnNFCOn();
+                        to.show(getFragmentManager(),"to");
+                    }
+                }else {
+                    decryptAndReturn.execute();
+                    showDialog();
+                }
+        }
+    }
+    AsyncTask<byte[],Void,Integer> encryptAndSave = new AsyncTask<byte[],Void,Integer>() {
+        @Override
+        protected Integer doInBackground(byte[]... params) {
+            byte[] encryptedData = CryptMethods.encrypt(bytes, CryptMethods.getPublic());
+            int result=15;
+            if(encryptedData!=null){
+                try {
+                    FileOutputStream fos = new FileOutputStream(file);
+                    fos.write(encryptedData);
+                    fos.close();
+                    result = RESULT_OK;
+                } catch (Exception ignore) {
+                }
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result){
+            if(pd!=null&&pd.isShowing())
+                pd.cancel();
+            setResult(result);
+            finish();
+        }
+    };
+    AsyncTask<Void,Void,byte[]> decryptAndReturn = new AsyncTask<Void, Void, byte[]>() {
+
+        @Override
+        protected byte[] doInBackground(Void... params) {
             try {
                 FileInputStream fis = new FileInputStream(file);
                 bytes = new byte[fis.available()];
                 fis.read(bytes);
-                if(!CryptMethods.privateExist()){
-                    setContentView(R.layout.wait_nfc_decrypt);
-                }else {
-                    decrypt();
-                }
+                fis.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            return CryptMethods.decrypt(bytes);
         }
-    }
-    byte[] bytes;
-    private void decrypt(){
-        byte[] decryptedBytes = CryptMethods.decrypt(bytes);
-        if (decryptedBytes == null) {
-            setResult(RESULT_CANCELED);
-            finish();
-            return;
+
+        @Override
+        protected void onPostExecute(byte[] result){
+            if(pd!=null&&pd.isShowing())
+                pd.cancel();
+            if(result==null) {
+                setResult(15);
+                finish();
+            }else{
+                Intent intent = new Intent();
+                intent.putExtra("bytes",result);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
         }
-        Intent intent = new Intent();
-        intent.putExtra("bytes", decryptedBytes);
-        setResult(RESULT_OK, intent);
-        finish();
-    }
+    };
     @Override
     public void onResume(){
         super.onResume();
@@ -96,13 +151,29 @@ public class SpecSafe extends Activity {
         super.onPause();
     }
     @Override
-    public void onNewIntent(Intent intent){
-        if(CryptMethods.setPrivate(NfcStuff.getData(intent)))
-            decrypt();
+    public void onNewIntent(Intent intent) {
+        if (CryptMethods.setPrivate(NfcStuff.getData(intent))) {
+            decryptAndReturn.execute();
+            ((ViewGroup)content.getParent()).removeView(content);
+            showDialog();
+        }
         else {
             Toast t = Toast.makeText(this, R.string.cant_find_private_key, Toast.LENGTH_SHORT);
-            t.setGravity(Gravity.CENTER,0,0);
+            t.setGravity(Gravity.CENTER, 0, 0);
             t.show();
         }
+    }
+    ProgressDialog pd;
+    private void showDialog(){
+        pd = new ProgressDialog(this, R.style.dialogTransparent);
+        pd.setTitle("Working...");
+        pd.setMessage(req == 1 ? "Encrypting...\nSaving..." : "Getting file...\nDecrypting...");
+        pd.setCancelable(false);
+        pd.show();
+    }
+    @Override
+    public void finish(){
+        CryptMethods.deleteKeys();
+        super.finish();
     }
 }

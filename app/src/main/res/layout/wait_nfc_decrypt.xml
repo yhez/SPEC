@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:gravity="center"
+    android:id="@+id/wait_for_nfc"
     android:alpha="0">
 
     <TextView

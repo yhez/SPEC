@@ -213,7 +213,6 @@ public class CryptMethods {
             cipher.init(Cipher.ENCRYPT_MODE, frndPbK);
             return cipher.doFinal(b);
         } catch (Exception ignore) {
-            ignore.printStackTrace();
             return null;
         }
     }

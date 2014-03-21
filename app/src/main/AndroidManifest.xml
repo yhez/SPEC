@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
     android:versionCode="33"
-    android:versionName="V 0.5.1">
+    android:versionName="V 0.5.2">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -174,6 +174,7 @@
             android:exported="false"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
         <activity
+            android:theme="@style/Theme.Transparent"
             android:name=".activities.SpecSafe"
             android:noHistory="true"
             android:excludeFromRecents="true"
