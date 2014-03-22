@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -73,7 +74,8 @@ public class SpecSafe extends Activity {
                 if(!CryptMethods.privateExist()){
                     setContentView(R.layout.wait_nfc_decrypt);
                     content = findViewById(R.id.wait_for_nfc);
-                    content.setAlpha(1);
+                    content.setAlpha(0.9f);
+                    ((ImageView)content.findViewById(R.id.sec_pic)).setImageBitmap(FilesManagement.id_picture.getPicture(this));
                     if(NfcStuff.nfcIsOff(this)){
                         new TurnNFCOn(getFragmentManager());
                     }

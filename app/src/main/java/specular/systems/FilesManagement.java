@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -41,11 +45,41 @@ public final class FilesManagement {
     private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
     private final static int FILE_NAME_BACKUP = R.string.file_name_Backup_msg;
     private final static int FILE_NAME_GROUP = R.string.file_name_group;
-    public final static String ATTACHMENTS = "/attachments", MESSAGES = "/messages", TEMP = "/temp"
-            , SAFE = "/safe", NOTES = "/notes",REPORTS="/reports";
+    public final static String ATTACHMENTS = "/attachments", MESSAGES = "/messages", TEMP = "/temp", SAFE = "/safe", NOTES = "/notes", REPORTS = "/reports";
     private final static String PUBLIC_KEY = "public_key", PRIVATE_KEY = "private_key", NAME = "name", EMAIL = "email";
     private static Bitmap myQRPublicKey;
     private static Typeface tfos = null;
+
+    public static class id_picture {
+
+        private final static String SECRET_PICTURE = "obscure";
+
+        public static boolean pictureExist(Activity a) {
+            return new File(a.getFilesDir(), SECRET_PICTURE).exists();
+        }
+
+        public static Bitmap getPicture(Activity a) {
+            return BitmapFactory.decodeFile(a.getFilesDir() + "/" + SECRET_PICTURE);
+        }
+
+        public static Intent createIntent(Activity a) {
+            File path = new File(a.getFilesDir()+TEMP);
+            if(!path.exists())
+                path.mkdir();
+            Uri uri = getUriForFile(a, a.getPackageName(), new File(path, "t"));
+            Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE);
+            ResolveInfo lk = a.getPackageManager().resolveActivity(i, 0);
+            a.grantUriPermission(lk.activityInfo.packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            i.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            return i;
+        }
+        public static void save(Activity a){
+            File t = new File(a.getFilesDir()+TEMP,"t");
+            if(!t.renameTo(new File(a.getFilesDir(),SECRET_PICTURE)))
+                Log.e("failed","unable to move file");
+        }
+
+    }
 
     public static Bitmap getMyQRPublicKey(Activity a) {
         if (myQRPublicKey == null)
@@ -114,12 +148,14 @@ public final class FilesManagement {
         }
         return false;
     }
-    public static boolean isItOnPauseForALongTime(Activity a){
+
+    public static boolean isItOnPauseForALongTime(Activity a) {
         long limit = 900000;//15 minutes
         long current = System.currentTimeMillis();
         long oldTime = PreferenceManager.getDefaultSharedPreferences(a).getLong("onPause", current);
-        return current -  limit > oldTime;
+        return current - limit > oldTime;
     }
+
     private static boolean saveQRToSend(Activity a, String data) {
         int qrCodeDimention = 500;
         StaticVariables.encryptedMsgToSend = data.substring(data.length() / 4 * 3);
@@ -347,10 +383,10 @@ public final class FilesManagement {
                     .getDefaultSharedPreferences(a);
             SharedPreferences.Editor edt = srp.edit();
             ContactCard qrpk = new ContactCard(a);
-            File path = new File(a.getFilesDir()+TEMP);
-            if(path.exists())
-                for(String name:path.list())
-                    new File(path,name).delete();
+            File path = new File(a.getFilesDir() + TEMP);
+            if (path.exists())
+                for (String name : path.list())
+                    new File(path, name).delete();
             try {
                 FileOutputStream fos = a.openFileOutput(a.getString(FILE_NAME),
                         Context.MODE_PRIVATE);
@@ -591,7 +627,7 @@ public final class FilesManagement {
 
     public static boolean saveFileForOpen(Activity a, byte[] file, String name) {
         File path = new File(a.getFilesDir() + ATTACHMENTS);
-        if(!path.exists())
+        if (!path.exists())
             path.mkdir();
         for (String f : path.list()) {
             new File(path, f).delete();

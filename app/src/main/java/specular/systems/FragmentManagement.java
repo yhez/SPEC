@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import specular.systems.Dialogs.TurnNFCOn;
 import specular.systems.activities.Main;
 import zxing.QRCodeEncoder;
 import zxing.WriterException;
@@ -604,7 +605,9 @@ public class FragmentManagement extends Fragment {
                 if (NfcStuff.nfcIsntAvailable(getActivity())) {
                     Visual.toast(getActivity(), R.string.cant_connect_nfc_adapter);
                 } else if (NfcStuff.nfcIsOff(getActivity()))
-                    rootView.findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
+                    new TurnNFCOn(getActivity().getFragmentManager());
+                if(FilesManagement.id_picture.pictureExist(getActivity()))
+                    ((ImageView)rootView.findViewById(R.id.sec_pic)).setImageBitmap(FilesManagement.id_picture.getPicture(getActivity()));
                 break;
             case setup:
                 break;

@@ -274,6 +274,12 @@ It\'ll give you the option to decrypt messages that was sent to the group</strin
 It can be dangerous to give access to the data to another application</string>
     <string name="failed_create_qr">failed to create QR</string>
     <string name="nfc_to_decrypt_notes">Tab your NFC Tag To decrypt notes</string>
+    <string name="take_picture_explain">After you saved your key on an NFC Tag, you\'ll not be able to do critical actions like decrypting message.\n
+                    When your Private Key is required you will notify by a simple white page indicate that NFC Tag is required.\n
+                    To prevent Malicious app to show the same dialog and cause you to give them your private key,\n
+                    Take A Picture now and we\'ll use it in the background of the dialog.\n
+                    Now if some one trying to get your key, you\'ll know to not trust him, by the missing secrete picture.</string>
+    <string name="secret_picture_title">Secret Picture</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>

@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -114,6 +115,9 @@ public class Safe extends FragmentStatePagerAdapter {
             if(!CryptMethods.privateExist()){
                 View v = inflater.inflate(R.layout.wait_nfc_decrypt,container,false);
                 v.findViewById(R.id.wait_for_nfc).setAlpha(0.8f);
+                if(FilesManagement.id_picture.pictureExist(getActivity())){
+                    ((ImageView)v.findViewById(R.id.sec_pic)).setImageBitmap(FilesManagement.id_picture.getPicture(getActivity()));
+                }
                 ((TextView)v.findViewById(R.id.text)).setText(R.string.nfc_to_decrypt_notes);
                 return v;
             }

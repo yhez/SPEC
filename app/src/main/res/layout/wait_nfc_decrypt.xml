@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="specular.systems.activities.Main"
     android:orientation="vertical"
@@ -10,8 +10,14 @@
     android:gravity="center"
     android:id="@+id/wait_for_nfc"
     android:alpha="0">
-
+    <ImageView
+        android:alpha="0.5"
+        android:id="@+id/sec_pic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null" />
     <TextView
+        android:background="@android:color/white"
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,23 +26,4 @@
         android:layout_gravity="center"
         android:text="@string/wait_for_nfc_to_read"
         android:textSize="25sp" />
-
-    <LinearLayout
-        android:id="@+id/ll_wait"
-        android:visibility="gone"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:background="@color/spec_dark_blue"
-        android:orientation="horizontal"
-        android:padding="@dimen/default_gap">
-
-        <Button
-            android:gravity="center"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:padding="@dimen/default_gap"
-            android:text="@string/turn_nfc_on_nfc_wait" />
-    </LinearLayout>
-</LinearLayout>
+</FrameLayout>

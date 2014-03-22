@@ -63,6 +63,7 @@ import specular.systems.Dialogs.GenerateKeys;
 import specular.systems.Dialogs.GroupCreate;
 import specular.systems.Dialogs.InviteToGroup;
 import specular.systems.Dialogs.NotImplemented;
+import specular.systems.Dialogs.PictureForNfc;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.Dialogs.Response;
 import specular.systems.Dialogs.ShareContactDlg;
@@ -204,6 +205,8 @@ public class Main extends FragmentActivity {
             onClickSkipNFC(null);
         else if(NfcStuff.nfcIsOff(this)){
             new TurnNFCOn(getFragmentManager());
+        }else{
+            new PictureForNfc(getFragmentManager());
         }
     }
 
@@ -541,6 +544,7 @@ public class Main extends FragmentActivity {
             if (FragmentManagement.currentLayout == R.layout.wait_nfc_to_write) {
                 int result = NfcStuff.write(i, CryptMethods.getPrivateTmp());
                 Visual.toast(Main.this,result);
+                FilesManagement.id_picture.save(this);
                 if (result == R.string.tag_written) {
                     StaticVariables.NFCMode = true;
                     CryptMethods.moveKeysFromTmp();

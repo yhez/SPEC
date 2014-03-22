@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import specular.systems.CryptMethods;
 import specular.systems.Dialogs.NotImplemented;
+import specular.systems.Dialogs.PictureForNfc;
 import specular.systems.Dialogs.TurnNFCOn;
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
@@ -107,6 +108,7 @@ public class PrivateKeyManager extends Activity {
                 Visual.toast(this,result);
                 if(result==R.string.tag_written) {
                     FilesManagement.removePrivate(this);
+                    FilesManagement.id_picture.save(this);
                     finish();
                 }
                 break;
@@ -164,6 +166,8 @@ public class PrivateKeyManager extends Activity {
             switch (v.getId()) {
                 case R.id.p_button1:
                     status = MOVE_TO_NFC;
+                    if(!FilesManagement.id_picture.pictureExist(this))
+                        new PictureForNfc(getFragmentManager());
                     Visual.hideAllChildes((ViewGroup) findViewById(android.R.id.content));
                     tv.setVisibility(View.VISIBLE);
                     divider.setVisibility(View.VISIBLE);
@@ -206,7 +210,6 @@ public class PrivateKeyManager extends Activity {
 
     @Override
     public void onActivityResult(int req, int res, Intent i) {
-        super.onActivityResult(req, res, i);
         if (res == RESULT_OK) {
             if (CryptMethods.privateExist()) {
                 FilesManagement.savePrivate(this);
