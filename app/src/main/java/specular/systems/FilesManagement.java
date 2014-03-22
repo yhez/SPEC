@@ -309,7 +309,9 @@ public final class FilesManagement {
             OutputStream os = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, os);
             os.close();
-            return getUriForFile(a, cn.getPackageName(), file);
+            Uri uri  = getUriForFile(a, a.getPackageName(), file);
+            a.grantUriPermission(cn.getPackageName(),uri,Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            return uri;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -72,6 +73,17 @@ public class SpecSafe extends Activity {
                 return;
             }
             bytes = getIntent().getByteArrayExtra("bytes");
+            if(bytes==null){
+                Uri uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+                try {
+                    FileInputStream fis = new FileInputStream(uri.getPath());
+                    bytes = new byte[fis.available()];
+                    fis.read(bytes);
+                    fis.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             encryptAndSave.execute(bytes);
             showDialog();
         }else if(req==2){

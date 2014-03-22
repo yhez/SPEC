@@ -90,6 +90,10 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
         } else {
             Intent i = new Intent();
             i.setComponent(contact.getDefaultApp());
+            if(uris.get(0)!=null)
+                grantUriPermission(contact.getDefaultApp().getPackageName(),uris.get(0),Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            if(uris.get(1)!=null)
+                grantUriPermission(contact.getDefaultApp().getPackageName(),uris.get(1),Intent.FLAG_GRANT_READ_URI_PERMISSION);
             if (uris.get(0) == null || uris.get(1) == null)
                 i.setAction(Intent.ACTION_SEND);
             else
@@ -269,6 +273,9 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                 oldname.renameTo(newNmae);
                 uris.add(getUriForFile(this, getPackageName(), newNmae));
             }
+            for(Parcelable u:uris){
+                grantUriPermission(cn.getPackageName(),(Uri)u,Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
             i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
             finish();
             startActivity(i);
@@ -388,6 +395,10 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
             i.setAction(Intent.ACTION_SEND);
         else
             i.setAction(Intent.ACTION_SEND_MULTIPLE);
+        if(uris.get(0)!=null)
+            grantUriPermission(cn.getPackageName(),uris.get(1),Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if(uris.get(1)!=null)
+            grantUriPermission(cn.getPackageName(),uris.get(0),Intent.FLAG_GRANT_READ_URI_PERMISSION);
         switch (what) {
             case FILE:
                 i.setType("file/spec");
