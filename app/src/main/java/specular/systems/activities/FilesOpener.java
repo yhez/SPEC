@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import specular.systems.CustomExceptionHandler;
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
@@ -55,6 +56,9 @@ public class FilesOpener extends Activity {
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
+        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
+        }
         fileName = getIntent().getStringExtra("file_name");
         path = new File(getFilesDir()+"/attachments", fileName).getPath();
         if (!ableToHandle) {

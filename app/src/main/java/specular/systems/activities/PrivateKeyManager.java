@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import specular.systems.CryptMethods;
+import specular.systems.CustomExceptionHandler;
 import specular.systems.Dialogs.NotImplemented;
 import specular.systems.Dialogs.PictureForNfc;
 import specular.systems.Dialogs.TurnNFCOn;
@@ -32,6 +33,9 @@ public class PrivateKeyManager extends Activity {
     @Override
     public void onCreate(Bundle b) {
         super.onCreate(b);
+        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
+        }
         setContentView(R.layout.private_key_manager);
         bt = new Button[4];
         bt[0] = (Button) findViewById(R.id.p_button1);

@@ -2,6 +2,7 @@ package specular.systems.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.widget.TextView;
 
 import java.io.File;
@@ -9,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import specular.systems.CryptMethods;
+import specular.systems.CustomExceptionHandler;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
 import specular.systems.Visual;
@@ -37,8 +39,7 @@ public class StartScan extends CaptureActivity {
                 i.setData(Uri.fromFile(file));
                 finish();
                 startActivity(i);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ignore) {
             }
         } else {
             if (rawResult.getText() != null) {
@@ -60,7 +61,13 @@ public class StartScan extends CaptureActivity {
 
     int type;
     long id;
-
+    @Override
+    public void onCreate(Bundle b){
+        super.onCreate(b);
+        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
+        }
+    }
     @Override
     public void onStart() {
         super.onStart();

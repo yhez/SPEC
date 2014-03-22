@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import specular.systems.CryptMethods;
+import specular.systems.CustomExceptionHandler;
 import specular.systems.Dialogs.TurnNFCOn;
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
@@ -33,6 +34,9 @@ public class SpecSafe extends Activity {
     @Override
     public void onCreate(Bundle b){
         super.onCreate(b);
+        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
+        }
         req = getIntent().getIntExtra("action",0);
         String name = getIntent().getStringExtra("name");
         ComponentName cn = getCallingActivity();
