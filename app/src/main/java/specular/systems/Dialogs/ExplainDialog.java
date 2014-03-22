@@ -49,6 +49,7 @@ public class ExplainDialog extends DialogFragment {
                 break;
         }
         this.details = details;
+        show(aaa.getFragmentManager(),"");
     }
 
     @Override

@@ -12,7 +12,6 @@ import android.os.Parcelable;
 import android.support.v4.print.PrintHelper;
 import android.text.Html;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -21,7 +20,6 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -97,7 +95,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
             else
                 i.setAction(Intent.ACTION_SEND_MULTIPLE);
             if (uris.get(0) != null && uris.get(1) != null) {
-                i.setType("*/*");
+                i.setType(Visual.strings.MIME_ALL);
                 i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
             } else if (uris.get(0) != null) {
                 i.setType("file/spec");
@@ -117,9 +115,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                     is.read(buffer);
                     is.close();
                     i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer) + Visual.timeAndDate()));
-                } catch (Exception e) {
-                    Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
-                            .show();
+                } catch (Exception ignore) {
                 }
             }
             try {
@@ -139,13 +135,13 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
         if (uris != null) {
             if (uris.get(0) != null) {
                 if(type==BACKUP)
-                    ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(getFilesDir() + FilesManagement.MESSAGES, getString(R.string.file_name_Backup_msg)).length()).replace(" ", "\n"));
+                    ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(getFilesDir() + FilesManagement.MESSAGES, getString(R.string.file_name_Backup_msg)).length()).replace(" ", Visual.strings.NEW_LINE));
                 else
-                    ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(getFilesDir() + FilesManagement.MESSAGES, getString(R.string.file_name_secure_msg)).length()).replace(" ", "\n"));
+                    ((TextView) findViewById(R.id.file_size)).setText(Visual.getSize(new File(getFilesDir() + FilesManagement.MESSAGES, getString(R.string.file_name_secure_msg)).length()).replace(" ", Visual.strings.NEW_LINE));
                 ((ImageView) findViewById(R.id.file_icon)).setImageResource(R.drawable.logo);
                 EditText etFile = (EditText) findViewById(R.id.name_file);
                 etFile.setText(getName(FILE));
-                etFile.setSelection(etFile.getText().length());
+                etFile.setSelection(etFile.length());
                 etFile.setFilters(Visual.filters());
             }
             if (uris.get(1) != null) {
@@ -157,10 +153,10 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                     ((ImageView) findViewById(R.id.qr_icon)).setImageResource(R.drawable.logo);
                     e.printStackTrace();
                 }
-                ((TextView) findViewById(R.id.qr_size)).setText(Visual.getSize(new File(getFilesDir() + FilesManagement.MESSAGES, getString(R.string.file_name_qr_msg)).length()).replace(" ", "\n"));
+                ((TextView) findViewById(R.id.qr_size)).setText(Visual.getSize(new File(getFilesDir() + FilesManagement.MESSAGES, getString(R.string.file_name_qr_msg)).length()).replace(" ", Visual.strings.NEW_LINE));
                 EditText etImage = (EditText) findViewById(R.id.qr_name_file);
                 etImage.setText(getName(IMAGE));
-                etImage.setSelection(etImage.getText().length());
+                etImage.setSelection(etImage.length());
                 etImage.setFilters(Visual.filters());
             }
         }
@@ -208,7 +204,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                 if(type==OPEN_FILE){
                     intent = new Intent(Intent.ACTION_VIEW);
                     if(mimetype==null)
-                        intent.setType("*/*");
+                        intent.setType(Visual.strings.MIME_ALL);
                     else
                         intent.setType(mimetype);
                     both = getPackageManager().queryIntentActivities(intent, 0);
@@ -226,7 +222,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                 if (file == null)
                     getApps(FILE);
                 intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                intent.setType("*/*");
+                intent.setType(Visual.strings.MIME_ALL);
                 both = getPackageManager().queryIntentActivities(intent, 0);
                 ArrayList<ResolveInfo> tmp = new ArrayList<ResolveInfo>();
                 tmp.addAll(both);
@@ -261,7 +257,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
             Intent i = new Intent();
             i.setAction(Intent.ACTION_SEND_MULTIPLE);
             i.setComponent(cn);
-            i.setType("*/*");
+            i.setType(Visual.strings.MIME_ALL);
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.email_for_reports)});
             i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.send_report_subject));
             i.putExtra(Intent.EXTRA_TEXT, getString(R.string.send_report_content));
@@ -283,7 +279,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
             Intent i = new Intent();
             i.setAction(Intent.ACTION_VIEW);
             i.setComponent(cn);
-            i.setType(mimetype == null ? "*/*" : mimetype);
+            i.setType(mimetype == null ? Visual.strings.MIME_ALL : mimetype);
             File folder = new File(getFilesDir() + FilesManagement.ATTACHMENTS);
             File f = new File(folder,folder.list()[0]);
             Uri uri = getUriForFile(this,getPackageName(),f);
@@ -295,15 +291,13 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
         }
         if (contact != null)
             if (((CheckBox) findViewById(R.id.check_default)).isChecked()) {
-                contact.update(rs.activityInfo.packageName + "\n" + rs.activityInfo.name, null);
+                contact.update(rs.activityInfo.packageName + Visual.strings.NEW_LINE + rs.activityInfo.name, null);
             }
         EditText etFile = (EditText) findViewById(R.id.name_file),
                 etImage = (EditText) findViewById(R.id.qr_name_file);
-        if ((etFile.getText().length() == 0 && (what == BOTH || what == FILE))
-                || (etImage.getText().length() == 0 && (what == IMAGE || what == BOTH))) {
-            Toast t = Toast.makeText(this, R.string.length_name_of_file, Toast.LENGTH_SHORT);
-            t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            t.show();
+        if ((etFile.length() == 0 && (what == BOTH || what == FILE))
+                || (etImage.length() == 0 && (what == IMAGE || what == BOTH))) {
+            Visual.toast(this,R.string.length_name_of_file);
             return;
         }
         if (rs.activityInfo.packageName.equals("com.google.android.apps.docs")) {
@@ -338,13 +332,11 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                 is.read(buffer);
                 is.close();
                 i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer) + Visual.timeAndDate()));
-            } catch (Exception e) {
-                Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
-                        .show();
+            } catch (Exception ignore) {
             }
         } else if (type == INVITE_GROUP) {
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
-            i.putExtra(Intent.EXTRA_SUBJECT, "attached a group");
+            i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject_send_group));
             try {
                 InputStream is = getAssets().open("spec_tmp_invite.html");
                 int size = is.available();
@@ -352,12 +344,10 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                 is.read(buffer);
                 is.close();
                 i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer) + Visual.timeAndDate()));
-            } catch (Exception e) {
-                Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
-                        .show();
+            } catch (Exception ignore) {
             }
         } else if (type == BACKUP) {
-            i.putExtra(Intent.EXTRA_SUBJECT, "backup SPEC data");
+            i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject_backup_data));
             try {
                 InputStream is = getAssets().open("backup_file.html");
                 int size = is.available();
@@ -365,9 +355,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                 is.read(buffer);
                 is.close();
                 i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer) + Visual.timeAndDate()));
-            } catch (Exception e) {
-                Toast.makeText(this, R.string.failed, Toast.LENGTH_LONG)
-                        .show();
+            } catch (Exception ignore) {
             }
         }
         i.setComponent(cn);
@@ -410,7 +398,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
                 i.putExtra(Intent.EXTRA_STREAM, uris.get(1));
                 break;
             case BOTH:
-                i.setType("*/*");
+                i.setType(Visual.strings.MIME_ALL);
                 i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
                 break;
         }
@@ -419,8 +407,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
             startActivity(i);
             if (contact != null)
                 contact.update(this);
-        } catch (Exception e) {
-            //todo handle activity is missing can happen in rare cases
+        } catch (Exception ignore) {
         }
     }
 
@@ -457,7 +444,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
             return;
         }
         if(type==OPEN_FILE){
-            ((TextView) findViewById(R.id.text_both_share)).setText("Open file VIA external app.\nIt can be dangerous to give access to the data to another application");
+            ((TextView) findViewById(R.id.text_both_share)).setText(R.string.open_by_external_app);
             loadIcons(BOTH);
             return;
         }
@@ -650,9 +637,7 @@ public class SendMsg extends Activity implements GoogleApiClient.ConnectionCallb
         //                OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
         waitForDrive = false;
         if (resultCode == RESULT_OK) {
-            Toast tb = Toast.makeText(this, "file has saved on drive", Toast.LENGTH_SHORT);
-            tb.setGravity(Gravity.CENTER, 0, 0);
-            tb.show();
+            Visual.toast(this, R.string.file_saved_drive);
         }
 
     }

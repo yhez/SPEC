@@ -3,6 +3,7 @@ package specular.systems.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,9 @@ import specular.systems.activities.Main;
 import specular.systems.activities.Splash;
 
 public class TurnNFCOn extends DialogFragment {
+    public TurnNFCOn(FragmentManager fm){
+        show(fm,"");
+    }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction

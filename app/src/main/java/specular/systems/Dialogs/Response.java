@@ -3,18 +3,17 @@ package specular.systems.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
@@ -33,13 +32,12 @@ import specular.systems.activities.SendMsg;
 public class Response extends DialogFragment {
     Contact contact;
     Group group;
-    Toast t;
-
+    public Response(FragmentManager fm){
+        show(fm,"");
+    }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        t = Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
-        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
         // Inflate and set the layout for the dialog
@@ -120,8 +118,6 @@ public class Response extends DialogFragment {
                 final MessageFormat msg = new MessageFormat(null, CryptMethods.getMyDetails(getActivity()), "", userInput + msgContent
                         , sss);
                 final ProgressDlg prgd = new ProgressDlg(getActivity(), R.string.encrypting);
-                prgd.setCancelable(false);
-                prgd.show();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -139,8 +135,7 @@ public class Response extends DialogFragment {
                             intent.putExtra("contactId", contact!=null?contact.getId():group.getId());
                             startActivity(intent);
                         } else {
-                            t.setText(R.string.failed_to_create_files_to_send);
-                            t.show();
+                            Visual.toast(getActivity(),R.string.failed_to_create_files_to_send);
                         }
                         Response.this.getDialog().cancel();
                     }

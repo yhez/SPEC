@@ -22,6 +22,9 @@ import specular.systems.activities.Main;
 
 
 public class GenerateKeys extends DialogFragment {
+    public GenerateKeys(android.app.FragmentManager fm){
+        show(fm,"");
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

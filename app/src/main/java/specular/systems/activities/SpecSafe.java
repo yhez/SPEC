@@ -7,10 +7,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +20,7 @@ import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
 import specular.systems.NfcStuff;
 import specular.systems.R;
+import specular.systems.Visual;
 
 
 public class SpecSafe extends Activity {
@@ -76,8 +75,7 @@ public class SpecSafe extends Activity {
                     content = findViewById(R.id.wait_for_nfc);
                     content.setAlpha(1);
                     if(NfcStuff.nfcIsOff(this)){
-                        TurnNFCOn to = new TurnNFCOn();
-                        to.show(getFragmentManager(),"to");
+                        new TurnNFCOn(getFragmentManager());
                     }
                 }else {
                     decryptAndReturn.execute();
@@ -158,9 +156,7 @@ public class SpecSafe extends Activity {
             showDialog();
         }
         else {
-            Toast t = Toast.makeText(this, R.string.cant_find_private_key, Toast.LENGTH_SHORT);
-            t.setGravity(Gravity.CENTER, 0, 0);
-            t.show();
+            Visual.toast(this, R.string.cant_find_private_key);
         }
     }
     ProgressDialog pd;

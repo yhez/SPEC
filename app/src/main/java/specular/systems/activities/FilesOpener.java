@@ -33,7 +33,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Scroller;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +41,7 @@ import java.io.InputStream;
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
+import specular.systems.Visual;
 
 
 public class FilesOpener extends Activity {
@@ -107,9 +107,7 @@ public class FilesOpener extends Activity {
                 tv.setMovementMethod(LinkMovementMethod.getInstance());
                 setContentView(tv);
             } catch (Exception e) {
-                Toast t = Toast.makeText(this, "failed to read file", Toast.LENGTH_SHORT);
-                t.setGravity(Gravity.CENTER, 0, 0);
-                t.show();
+                Visual.toast(this, R.string.failed_read_file);
                 finish();
             }
         }

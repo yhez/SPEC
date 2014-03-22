@@ -3,6 +3,7 @@ package specular.systems.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,8 +23,9 @@ import specular.systems.activities.SendMsg;
 
 public class InviteToGroup extends DialogFragment {
     private Group g;
-    public InviteToGroup(Group g){
+    public InviteToGroup(FragmentManager fm,Group g){
         this.g=g;
+        show(fm,"");
     }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

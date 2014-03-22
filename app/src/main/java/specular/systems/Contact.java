@@ -73,7 +73,7 @@ public class Contact {
         this.received = received;
         this.sent = sent;
         if (app != null && app.length() > 0)
-            cn = new ComponentName(app.split("\n")[0], app.split("\n")[1]);
+            cn = new ComponentName(app.split(Visual.strings.NEW_LINE)[0], app.split(Visual.strings.NEW_LINE)[1]);
     }
 
     public Bitmap getPhoto() {
@@ -147,8 +147,8 @@ public class Contact {
     // Will be used by the ArrayAdapter in the ListView
     @Override
     public String toString() {
-        return contactName + "\n" + email + "\n" + publicKey.substring(0, 10)
-                + "...." + publicKey.substring(publicKey.length() - 10) + "\n"
+        return contactName + Visual.strings.NEW_LINE + email + Visual.strings.NEW_LINE + publicKey.substring(0, 10)
+                + "...." + publicKey.substring(publicKey.length() - 10) + Visual.strings.NEW_LINE
                 + session;
     }
 
@@ -186,7 +186,7 @@ public class Contact {
 
     public void update(String defaultApp, Activity a) {
         if (defaultApp != null) {
-            cn = new ComponentName(defaultApp.split("\n")[0], defaultApp.split("\n")[1]);
+            cn = new ComponentName(defaultApp.split(Visual.strings.NEW_LINE)[0], defaultApp.split(Visual.strings.NEW_LINE)[1]);
             ContactsDataSource.contactsDataSource.updateDB(id, defaultApp);
             if (MySimpleArrayAdapter.getAdapter() != null)
                 MySimpleArrayAdapter.getAdapter().updateCont(a, this);

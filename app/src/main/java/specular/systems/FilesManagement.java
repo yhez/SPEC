@@ -248,7 +248,7 @@ public final class FilesManagement {
                 path.mkdirs();
             File file = new File(path, a.getString(FRIEND_CONTACT_CARD));
             OutputStream os = new FileOutputStream(file);
-            os.write(pcc.getQRToPublish().getBytes("UTF-8"));
+            os.write(pcc.getQRToPublish().getBytes(Visual.strings.UTF));
             os.close();
             return file;
         } catch (Exception e) {
@@ -354,7 +354,7 @@ public final class FilesManagement {
             try {
                 FileOutputStream fos = a.openFileOutput(a.getString(FILE_NAME),
                         Context.MODE_PRIVATE);
-                fos.write(qrpk.getQRToPublish().getBytes("UTF-8"));
+                fos.write(qrpk.getQRToPublish().getBytes(Visual.strings.UTF));
                 fos.close();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -418,7 +418,7 @@ public final class FilesManagement {
                 path.mkdir();
             File file = new File(path, fileName);
             OutputStream os = new FileOutputStream(file);
-            byte[] dat = data.getBytes("UTF-8");
+            byte[] dat = data.getBytes(Visual.strings.UTF);
             os.write(CryptMethods.encrypt(dat, CryptMethods.getPublic()));
             os.close();
             a.getSharedPreferences("notes", Context.MODE_PRIVATE)
@@ -434,7 +434,7 @@ public final class FilesManagement {
         is.read(data);
         is.close();
         byte[] b = CryptMethods.decrypt(data);
-        return new String(b, "UTF-8");
+        return new String(b, Visual.strings.UTF);
     }
 
     public static void getFromSafe(Activity a, String name) throws Exception {
@@ -457,7 +457,7 @@ public final class FilesManagement {
             try {
                 fos = a.openFileOutput(a.getString(FILE_NAME),
                         Context.MODE_PRIVATE);
-                fos.write(qrpk.getQRToPublish().getBytes("UTF-8"));
+                fos.write(qrpk.getQRToPublish().getBytes(Visual.strings.UTF));
                 fos.close();
             } catch (Exception e) {
                 e.printStackTrace();

@@ -8,11 +8,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Gravity;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -62,9 +60,7 @@ public class Splash extends Activity {
                 vg.animate().setDuration(TIME_FOR_SPLASH).alpha(1).start();
                 waitForSplash.start();
             } else {
-                Toast t = Toast.makeText(Splash.this, R.string.failed, Toast.LENGTH_SHORT);
-                t.setGravity(Gravity.CENTER, 0, 0);
-                t.show();
+                Visual.toast(Splash.this, R.string.failed);
             }
         }
     };
@@ -125,12 +121,10 @@ public class Splash extends Activity {
                 finish();
                 return;
             }
-            if (uri.getScheme() == null || !uri.getScheme().equals("specular.systems")) {
+            if (uri.getScheme() == null || !uri.getScheme().equals(Visual.strings.SPEC_PACK)) {
                 String fileName = Visual.getFileName(this, uri);
                 if(fileName==null){
-                    Toast t  = Toast.makeText(this,R.string.failed_loading,Toast.LENGTH_SHORT);
-                    t.setGravity(Gravity.CENTER,0,0);
-                    t.show();
+                    Visual.toast(this,R.string.failed_loading);
                     finish();
                     return;
                 }
@@ -145,7 +139,7 @@ public class Splash extends Activity {
                     if (type != null)
                         intent.setType(type);
                     else
-                        intent.setType("*/*");
+                        intent.setType(Visual.strings.MIME_ALL);
                     finish();
                     startActivity(intent);
                     return;
@@ -164,10 +158,10 @@ public class Splash extends Activity {
                 @Override
                 public void run() {
                     String data = null;
-                    if (ur.getScheme() != null && ur.getScheme().equals("specular.systems")){
+                    if (ur.getScheme() != null && ur.getScheme().equals(Visual.strings.SPEC_PACK)){
                         data = ur.getQueryParameter("message");
                         if(data==null){
-                            data = "\n"+ur.getQueryParameter("name")+"\n"+ur.getQueryParameter("email")+"\n"+ur.getQueryParameter("key");
+                            data = Visual.strings.NEW_LINE+ur.getQueryParameter("name")+Visual.strings.NEW_LINE+ur.getQueryParameter("email")+Visual.strings.NEW_LINE+ur.getQueryParameter("key");
                         }
                     }
                     else
@@ -180,7 +174,7 @@ public class Splash extends Activity {
                                         new InputStreamReader(is));
                                 String str;
                                 while ((str = reader.readLine()) != null) {
-                                    buf.append(str).append("\n");
+                                    buf.append(str).append(Visual.strings.NEW_LINE);
                                 }
                                 buf.deleteCharAt(buf.length() - 1);
                                 data = buf.toString();

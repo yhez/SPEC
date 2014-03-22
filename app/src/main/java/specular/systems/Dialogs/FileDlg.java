@@ -3,16 +3,17 @@ package specular.systems.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import specular.systems.R;
 import specular.systems.StaticVariables;
@@ -23,8 +24,9 @@ public class FileDlg extends DialogFragment {
     EditText et;
     ImageButton ib;
     CheckBox mCheckBox;
-    public FileDlg(String fileName){
+    public FileDlg(FragmentManager fm,String fileName){
         name = fileName;
+        show(fm,"");
     }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -48,10 +50,9 @@ public class FileDlg extends DialogFragment {
             public void onClick(View v) {
                 if (mCheckBox.isChecked()) {
                     //todo delete file from file contains all file from list and the file
-                    NotImplemented no = new NotImplemented();
-                    no.show(getActivity().getFragmentManager(),"kk");
+                    new NotImplemented(getActivity().getFragmentManager());
                 }else{
-                    Toast.makeText(getActivity(),R.string.verify_delete,Toast.LENGTH_SHORT).show();
+                    Visual.toast(getActivity(),R.string.verify_delete);
                 }
             }
         });
@@ -61,7 +62,7 @@ public class FileDlg extends DialogFragment {
                 if (et.getKeyListener() == null) {
                     Visual.edit(getActivity(), et, ib);
                     et.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                    et.setSelection(et.getText().length());
+                    et.setSelection(et.length());
                 } else {
                     Visual.edit(getActivity(), et, ib);
                 }
@@ -70,5 +71,13 @@ public class FileDlg extends DialogFragment {
         builder.setView(v);
         Visual.setAllFonts(getActivity(), (ViewGroup) v);
         return builder.create();
+    }
+    @Override
+    public void onStart(){
+        super.onStart();
+        getDialog().getWindow().clearFlags(
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                        | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
+        );
     }
 }

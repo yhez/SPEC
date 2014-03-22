@@ -52,9 +52,9 @@ public class Session {
     //creates new session from nothing
     public Session() {
         Random rnd = new Random();
-        char f[] = "bcdfghjklmnpqrstwvxz".toCharArray();
-        char o[] = "aeiouy".toCharArray();
-        char s[] = "~`!12@3#4$5%6^7&8*9(0){[}]|\'.?/,".toCharArray();
+        char f[] = new char[]{'b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','w','v','x','z'};
+        char o[] = new char[]{'a','e','i','o','u','y'};
+        char s[] = new char[]{'~','`','!','1','2','@','3','#','4','$','5','%','6','^','7','&','8','*','9','(','0',')','{','[','}',']','|','\'',',',',','?','/'};
         word1 = Character.toString(f[rnd.nextInt(f.length)]).toUpperCase()
                 + Character.toString(o[rnd.nextInt(o.length)])
                 + Character.toString(f[rnd.nextInt(f.length)]);
@@ -163,8 +163,8 @@ public class Session {
         String[] ses = session.split(" ");
         return a.getString(R.string.session_words) +" "+ ses[0].replace(DIVIDER, "-")
                 + " " + ses[1].replace(DIVIDER, "-") +" "
-                + a.getString(R.string.secret_sign) +" " + ses[2].replace(DIVIDER, "-") + "\n"
-                + (ses.length > 3 ? a.getString(R.string.session_status) +"\n"
+                + a.getString(R.string.secret_sign) +" " + ses[2].replace(DIVIDER, "-") + Visual.strings.NEW_LINE
+                + (ses.length > 3 ? a.getString(R.string.session_status) +Visual.strings.NEW_LINE
                 + (ses[3].equals(FLAG_SESSION_VERIFIED) ? a.getString(R.string.session_verified) :
                 (ses[3].equals(FLAG_SESSION_JUST_ADDED) ? a.getString(R.string.just_added) : a.getString(R.string.sent_but_not_recieved))) : "");
     }

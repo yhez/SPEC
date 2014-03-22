@@ -77,9 +77,9 @@ public class Group {
         System.arraycopy(rawData, loc+1, privateKey, 0, privateKey.length-1);
         String strings[];
         try {
-            strings = new String(b, "UTF-8").split("\n");
+            strings = new String(b, Visual.strings.UTF).split(Visual.strings.NEW_LINE);
         } catch (UnsupportedEncodingException e) {
-            strings = new String(b).split("\n");
+            strings = new String(b).split(Visual.strings.NEW_LINE);
         }
         name=strings[0];
         session=strings[1];
@@ -107,12 +107,12 @@ public class Group {
         id = GroupDataSource.groupDataSource.createGroup(a,this);
     }
     public byte[] getGroupToShare(){
-        String s = name+"\n"+session+"\n"+locationForMessages+"\n"+publicKey+"\n"
-                +ownerName+"\n"+ownerEmail+"\n"+ownerPublicKey+"\n"+
-                (dontAllowNewMembers?"v":"x")+"\n"+(noPrivateOnDevice?"v":"x")+"\n"+"pvtKey";
+        String s = name+Visual.strings.NEW_LINE+session+Visual.strings.NEW_LINE+locationForMessages+Visual.strings.NEW_LINE+publicKey+Visual.strings.NEW_LINE
+                +ownerName+Visual.strings.NEW_LINE+ownerEmail+Visual.strings.NEW_LINE+ownerPublicKey+Visual.strings.NEW_LINE+
+                (dontAllowNewMembers?"v":"x")+Visual.strings.NEW_LINE+(noPrivateOnDevice?"v":"x")+Visual.strings.NEW_LINE+"pvtKey";
         byte[] strLength;
         try {
-            strLength = s.getBytes("UTF-8");
+            strLength = s.getBytes(Visual.strings.UTF);
         } catch (Exception e) {
             strLength = s.getBytes();
         }
@@ -152,8 +152,8 @@ public class Group {
     }
 
     public ComponentName getDefaultApp() {
-        if(defaultAPP.contains("\n"))
-            return new ComponentName(defaultAPP.split("\n")[0], defaultAPP.split("\n")[1]);
+        if(defaultAPP.contains(Visual.strings.NEW_LINE))
+            return new ComponentName(defaultAPP.split(Visual.strings.NEW_LINE)[0], defaultAPP.split(Visual.strings.NEW_LINE)[1]);
         return null;
     }
     public void update(String defaultApp, Activity a) {

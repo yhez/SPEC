@@ -7,14 +7,12 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -85,25 +83,18 @@ public class Safe extends FragmentStatePagerAdapter {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }else{
+                        Visual.toast(getActivity(), R.string.keys_loaded);
                     }
                 }
             });
             lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    if(CryptMethods.privateExist()) {
-                        final FileDlg fd = new FileDlg(((TextView) view.findViewById(R.id.text1)).getText().toString());
-                        fd.show(getActivity().getFragmentManager(), "fd");
-                        Handler h = new Handler();
-                        h.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                fd.getDialog().getWindow().clearFlags(
-                                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                                                | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
-                                );
-                            }
-                        }, 700);
+                    if(CryptMethods.privateExist())
+                        new FileDlg(getActivity().getFragmentManager(),((TextView) view.findViewById(R.id.text1)).getText().toString());
+                    else{
+                        Visual.toast(getActivity(), R.string.open_file_no_private);
                     }
                     return true;
                 }
@@ -127,7 +118,7 @@ public class Safe extends FragmentStatePagerAdapter {
             et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_DONE && et.getText().length() > 0) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE && et.length() > 0) {
                         final String text = et.getText().toString();
                         new Thread(new Runnable() {
                             @Override
@@ -174,7 +165,8 @@ public class Safe extends FragmentStatePagerAdapter {
                     else
                         right.addView(tv);
                 }
-                at.execute();
+                if(CryptMethods.privateExist())
+                    at.execute();
             }
             return v;
         }
@@ -185,9 +177,7 @@ public class Safe extends FragmentStatePagerAdapter {
                     try {
                         texts.add(FilesManagement.getNoteFromSafe(getActivity(),(String)o[a]));
                         publishProgress(a);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    } catch (Exception ignore) {}
                 }
                 return null;
             }

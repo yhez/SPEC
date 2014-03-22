@@ -86,7 +86,7 @@ public class Visual {
         if (CryptMethods.privateExist())
             if (et.getKeyListener() == null) {
                 ib.setImageResource(R.drawable.save);
-                et.setSelection(et.getText().length());
+                et.setSelection(et.length());
                 et.setKeyListener(StaticVariables.edit);
                 et.setFocusable(true);
                 et.setFocusableInTouchMode(true);
@@ -102,9 +102,7 @@ public class Visual {
                 imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
             }
         else {
-            Toast t = Toast.makeText(a, R.string.reject_changes, Toast.LENGTH_SHORT);
-            t.setGravity(Gravity.CENTER, 0, 0);
-            t.show();
+            toast(a, R.string.reject_changes);
         }
     }
 
@@ -292,5 +290,15 @@ public class Visual {
                 return types.VIDEO;
         }
         return types.UNKNOWN;
+    }
+    public static void toast(Context c,int s){
+        Toast t = Toast.makeText(c,s,Toast.LENGTH_SHORT);
+        t.setGravity(Gravity.CENTER,0,0);
+        t.show();
+    }
+    public static class strings{
+        public static String
+                NEW_LINE="\n",TAB="\t",UTF="UTF-8",SHA="SHA-256",
+                SPEC_PACK="specular.systems",MIME_ALL="*/*";
     }
 }

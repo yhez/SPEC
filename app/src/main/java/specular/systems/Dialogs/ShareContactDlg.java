@@ -3,6 +3,7 @@ package specular.systems.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
@@ -15,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.InputStream;
 import java.util.List;
@@ -28,6 +28,9 @@ import static android.support.v4.content.FileProvider.getUriForFile;
 
 
 public class ShareContactDlg extends DialogFragment {
+    public ShareContactDlg(FragmentManager fm){
+        show(fm,"");
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -64,9 +67,7 @@ public class ShareContactDlg extends DialogFragment {
                         is.read(buffer);
                         is.close();
                         i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()));
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), R.string.failed, Toast.LENGTH_LONG)
-                                .show();
+                    } catch (Exception ignore) {
                     }
                     i.putExtra(Intent.EXTRA_SUBJECT,
                             getResources().getString(R.string.share_contact_subject));
@@ -99,9 +100,7 @@ public class ShareContactDlg extends DialogFragment {
                         is.read(buffer);
                         is.close();
                         i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()));
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), R.string.failed, Toast.LENGTH_LONG)
-                                .show();
+                    } catch (Exception ignore) {
                     }
                     i.putExtra(Intent.EXTRA_SUBJECT,
                             getResources().getString(R.string.share_contact_subject));

@@ -57,8 +57,8 @@ public class NfcStuff {
         if (tag == null)
             return -1;
         NdefRecord appRecord = NdefRecord
-                .createApplicationRecord("specular.systems");
-        byte[] mimeBytes = ("application/" + "specular.systems")
+                .createApplicationRecord(Visual.strings.SPEC_PACK);
+        byte[] mimeBytes = ("application/" + Visual.strings.SPEC_PACK)
                 .getBytes(Charset.forName("US-ASCII"));
         NdefRecord cardRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
                 mimeBytes, new byte[0], data);

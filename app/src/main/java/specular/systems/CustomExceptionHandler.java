@@ -44,7 +44,7 @@ public class CustomExceptionHandler implements Thread.UncaughtExceptionHandler {
         }
         CryptMethods.deleteKeys();
         Log.e("stacktrace", stacktrace);
-        writeToFile("spec version: " + version + "\n" + stacktrace);
+        writeToFile("spec version: " + version + Visual.strings.NEW_LINE + stacktrace);
         android.os.Process.killProcess(android.os.Process.myPid());
         defaultUEH.uncaughtException(t, e);
     }

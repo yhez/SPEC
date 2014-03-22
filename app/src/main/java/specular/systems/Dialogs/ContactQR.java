@@ -3,6 +3,7 @@ package specular.systems.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -15,7 +16,9 @@ import zxing.WriterException;
 
 public class ContactQR extends DialogFragment {
 
-
+    public ContactQR(FragmentManager fm){
+        show(fm,"");
+    }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -32,12 +35,10 @@ public class ContactQR extends DialogFragment {
             builder.setView(iv);
         } catch (WriterException e) {
             tv = new TextView(getActivity());
-            tv.setText("failed to create QR");
+            tv.setText(R.string.failed_create_qr);
             e.printStackTrace();
             builder.setView(tv);
         }
-
-        //Visual.setAllFonts(getActivity(), (ViewGroup) v);
         return builder.create();
     }
 }

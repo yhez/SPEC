@@ -56,7 +56,7 @@ public class LastUsedContacts {
         View nv = a.findViewById(R.id.frame_grid_last);
         if (ContactsDataSource.fullList.size() < StaticVariables.minContactSize
                 || lasts.length == 0 || lasts[0] == null
-                || (tv!=null&&tv.getText().toString().length()!=0)
+                || (tv!=null&&tv.length()!=0)
                 || (vp!=null&&vp.getCurrentItem()==ContactsGroup.GROUPS)) {
             if (v != null)
                 v.findViewById(R.id.frame_grid_last).setVisibility(View.GONE);

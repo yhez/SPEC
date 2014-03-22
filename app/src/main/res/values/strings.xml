@@ -257,6 +257,22 @@
     <string name="save_to_safe">Save attachment to Safe</string>
     <string name="name_allready_exist">file with the same name already exist</string>
     <string name="collecting_data">collecting dataRaw from </string>
+    <string name="keys_loaded">load private key to decrypt file</string>
+    <string name="open_file_no_private">load private key to decrypt file</string>
+    <string name="file_saved_drive">file has saved on drive</string>
+    <string name="groups_same_name_exist">group with the same session already exist</string>
+    <string name="join_group">Join to The Group</string><string name="add_group_explain">would you like to add this group?
+It\'ll give you the option to decrypt messages that was sent to the group</string>
+    <string name="group_too_short_data">Group details must contains at least 2 charectors</string>
+    <string name="unexpexted_error">something went wrong</string>
+    <string name="failed_read_file">failed to read file</string>
+    <string name="hash_description_1">original message size:</string>
+    <string name="hash_description_2">encrypted message size:</string><string name="hash_description_title">message parts:
+</string>
+    <string name="subject_send_group">attached a group</string>
+    <string name="subject_backup_data">backup SPEC data</string><string name="open_by_external_app">Open file VIA external app.
+It can be dangerous to give access to the data to another application</string>
+    <string name="failed_create_qr">failed to create QR</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>

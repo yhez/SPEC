@@ -17,7 +17,6 @@ import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,7 +32,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -186,18 +184,11 @@ public class FragmentManagement extends Fragment {
                                     myName = myEmail.split("@")[0];
                                 }
                                 if (myName.length() < 3 && myName.length() > 0) {
-                                    Toast t = Toast.makeText(getActivity(), R.string.too_short_name,
-                                            Toast.LENGTH_LONG);
-                                    t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                                    t.show();
+                                    Visual.toast(getActivity(), R.string.too_short_name);
                                 } else {
                                     if (!validateEmail(myEmail)) {
-                                        Toast t = Toast.makeText(getActivity(), R.string.fill_all,
-                                                Toast.LENGTH_LONG);
-                                        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                                        t.show();
+                                        Visual.toast(getActivity(), R.string.fill_all);
                                     } else {
-
                                         CryptMethods.setDetails(myName, myEmail);
                                         Main.main.startCreateKeys();
                                     }
@@ -225,9 +216,9 @@ public class FragmentManagement extends Fragment {
                     ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
                             + currContact.getId());
                     ((TextView) rootView.findViewById(R.id.contact_name).
-                            findViewById(R.id.text_view)).setText(getString(R.string.edit_name) + "\t");
+                            findViewById(R.id.text_view)).setText(getString(R.string.edit_name) + Visual.strings.TAB);
                     ((TextView) rootView.findViewById(R.id.contact_email).
-                            findViewById(R.id.text_view)).setText("address" + "\t");
+                            findViewById(R.id.text_view)).setText("address" + Visual.strings.TAB);
                     if (currContact.getDefaultApp() != null) {
                         Intent i = new Intent();
                         i.setComponent(currContact.getDefaultApp());
@@ -280,7 +271,7 @@ public class FragmentManagement extends Fragment {
                                     if (etEmail.getKeyListener() == null) {
                                         Visual.edit(getActivity(), etEmail, ib);
                                         etEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                                        etEmail.setSelection(etEmail.getText().length());
+                                        etEmail.setSelection(etEmail.length());
                                     } else {
                                         String email = etEmail.getText().toString();
                                         String origEmail = ((TextView) rootView.findViewById(R.id.orig_eamil)).getText()
@@ -291,9 +282,7 @@ public class FragmentManagement extends Fragment {
                                                 ((TextView) rootView.findViewById(R.id.orig_eamil)).setText(email);
                                             } else {
                                                 etEmail.setText(origEmail);
-                                                Toast t = Toast.makeText(getActivity(), R.string.not_valid_change, Toast.LENGTH_LONG);
-                                                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                                                t.show();
+                                                Visual.toast(getActivity(), R.string.not_valid_change);
                                             }
                                         Visual.edit(getActivity(), etEmail, ib);
                                     }
@@ -311,7 +300,7 @@ public class FragmentManagement extends Fragment {
                                     if (etName.getKeyListener() == null) {
                                         Visual.edit(getActivity(), etName, ib);
                                         etName.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                                        etName.setSelection(etName.getText().length());
+                                        etName.setSelection(etName.length());
                                     } else {
                                         String origName = ((TextView) rootView.findViewById(R.id.orig_name)).getText()
                                                 .toString();
@@ -322,10 +311,7 @@ public class FragmentManagement extends Fragment {
                                                 ((TextView) rootView.findViewById(R.id.orig_name)).setText(name);
                                             } else {
                                                 etName.setText(origName);
-                                                Toast t = Toast.makeText(getActivity(), R.string.not_valid_change,
-                                                        Toast.LENGTH_LONG);
-                                                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                                                t.show();
+                                                Visual.toast(getActivity(), R.string.not_valid_change);
                                             }
                                         Visual.edit(getActivity(), etName, ib);
                                     }
@@ -337,9 +323,9 @@ public class FragmentManagement extends Fragment {
                     ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
                             + currContact.getId());
                     ((TextView) rootView.findViewById(R.id.contact_name).
-                            findViewById(R.id.text_view)).setText(getString(R.string.edit_name) + "\t");
+                            findViewById(R.id.text_view)).setText(getString(R.string.edit_name) + Visual.strings.TAB);
                     ((TextView) rootView.findViewById(R.id.contact_email).
-                            findViewById(R.id.text_view)).setText(getString(R.string.edit_email) + "\t");
+                            findViewById(R.id.text_view)).setText(getString(R.string.edit_email) + Visual.strings.TAB);
                     if (currContact.getDefaultApp() != null) {
                         Intent i = new Intent();
                         i.setComponent(currContact.getDefaultApp());
@@ -397,7 +383,7 @@ public class FragmentManagement extends Fragment {
                                     if (etEmail.getKeyListener() == null) {
                                         Visual.edit(getActivity(), etEmail, ib);
                                         etEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                                        etEmail.setSelection(etEmail.getText().length());
+                                        etEmail.setSelection(etEmail.length());
                                     } else {
                                         String email = etEmail.getText().toString();
                                         String origEmail = ((TextView) rootView.findViewById(R.id.orig_eamil)).getText()
@@ -408,9 +394,7 @@ public class FragmentManagement extends Fragment {
                                                 ((TextView) rootView.findViewById(R.id.orig_eamil)).setText(email);
                                             } else {
                                                 etEmail.setText(origEmail);
-                                                Toast t = Toast.makeText(getActivity(), R.string.not_valid_change, Toast.LENGTH_LONG);
-                                                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                                                t.show();
+                                                Visual.toast(getActivity(), R.string.not_valid_change);
                                             }
                                         Visual.edit(getActivity(), etEmail, ib);
                                     }
@@ -428,7 +412,7 @@ public class FragmentManagement extends Fragment {
                                     if (etName.getKeyListener() == null) {
                                         Visual.edit(getActivity(), etName, ib);
                                         etName.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                                        etName.setSelection(etName.getText().length());
+                                        etName.setSelection(etName.length());
                                     } else {
                                         String origName = ((TextView) rootView.findViewById(R.id.orig_name)).getText()
                                                 .toString();
@@ -439,10 +423,7 @@ public class FragmentManagement extends Fragment {
                                                 ((TextView) rootView.findViewById(R.id.orig_name)).setText(name);
                                             } else {
                                                 etName.setText(origName);
-                                                Toast t = Toast.makeText(getActivity(), R.string.not_valid_change,
-                                                        Toast.LENGTH_LONG);
-                                                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                                                t.show();
+                                                Visual.toast(getActivity(), R.string.not_valid_change);
                                             }
                                         Visual.edit(getActivity(), etName, ib);
                                     }
@@ -548,7 +529,7 @@ public class FragmentManagement extends Fragment {
                                 Integer.parseInt(len) : 0);
                         TextView tv = (TextView) rootView.findViewById(R.id.text_counter);
                         ImageButton bt = (ImageButton) rootView.findViewById(R.id.send);
-                        boolean choosedContact = ((TextView) rootView.findViewById(R.id.contact_id_to_send)).getText().toString().length() > 0;
+                        boolean choosedContact = ((TextView) rootView.findViewById(R.id.contact_id_to_send)).length() > 0;
                         StaticVariables.readyToSend = choosedContact;
                         bt.setImageResource(choosedContact ? R.drawable.ic_send_holo_light : R.drawable.ic_send_disabled_holo_light);
                         if (num == 0) {
@@ -625,9 +606,7 @@ public class FragmentManagement extends Fragment {
                 break;
             case wait_nfc_decrypt:
                 if (NfcStuff.nfcIsntAvailable(getActivity())) {
-                    Toast t = Toast.makeText(getActivity(), R.string.cant_connect_nfc_adapter, Toast.LENGTH_LONG);
-                    t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                    t.show();
+                    Visual.toast(getActivity(), R.string.cant_connect_nfc_adapter);
                 } else if (NfcStuff.nfcIsOff(getActivity()))
                     rootView.findViewById(R.id.ll_wait).setVisibility(View.VISIBLE);
                 break;
@@ -850,12 +829,12 @@ public class FragmentManagement extends Fragment {
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Editable et = ((EditText) rootView.findViewById(R.id.email)).getText();
+                EditText et = (EditText) rootView.findViewById(R.id.email);
                 if (et != null && et.length() > 0)
-                    et.clear();
-                et = ((EditText) rootView.findViewById(R.id.name)).getText();
+                    et.getText().clear();
+                et = (EditText) rootView.findViewById(R.id.name);
                 if (et != null && et.length() > 0)
-                    et.clear();
+                    et.getText().clear();
             }
         });
         ((GridLayout) rootView.findViewById(R.id.grid_login)).addView(ib);

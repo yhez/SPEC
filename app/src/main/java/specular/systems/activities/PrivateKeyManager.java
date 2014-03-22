@@ -7,12 +7,10 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.print.PrintHelper;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import specular.systems.CryptMethods;
 import specular.systems.Dialogs.NotImplemented;
@@ -71,8 +69,7 @@ public class PrivateKeyManager extends Activity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TurnNFCOn tno = new TurnNFCOn();
-                tno.show(getFragmentManager(), "nf");
+                new TurnNFCOn(getFragmentManager());
             }
         });
     }
@@ -82,9 +79,7 @@ public class PrivateKeyManager extends Activity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast t = Toast.makeText(PrivateKeyManager.this, msg, Toast.LENGTH_SHORT);
-                t.setGravity(Gravity.CENTER, 0, 0);
-                t.show();
+                Visual.toast(PrivateKeyManager.this, msg);
             }
         });
     }
@@ -92,28 +87,24 @@ public class PrivateKeyManager extends Activity {
     @Override
     public void onNewIntent(Intent i) {
         super.onNewIntent(i);
-        Toast t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
-        t.setGravity(Gravity.CENTER, 0, 0);
         switch (status) {
             case GET_FROM_NFC:
                 byte[] raw = NfcStuff.getData(i);
                 if (raw != null) {
                     if (CryptMethods.setPrivate(raw)) {
                         FilesManagement.savePrivate(this);
-                        t.setText(R.string.keys_moved_to_nfc);
+                        Visual.toast(this,R.string.keys_moved_to_nfc);
                         finish();
                     } else {
-                        t.setText(R.string.cant_find_private_key);
+                        Visual.toast(this,R.string.cant_find_private_key);
                     }
                 } else {
-                    t.setText(R.string.cant_find_data);
+                    Visual.toast(this,R.string.cant_find_data);
                 }
-                t.show();
                 break;
             case MOVE_TO_NFC:
                 int result = NfcStuff.write(i,CryptMethods.getPrivateToSave());
-                t.setText(result);
-                t.show();
+                Visual.toast(this,result);
                 if(result==R.string.tag_written) {
                     FilesManagement.removePrivate(this);
                     finish();
@@ -125,12 +116,10 @@ public class PrivateKeyManager extends Activity {
                     if (CryptMethods.setPrivate(raw)) {
                         updateViews();
                     } else {
-                        t.setText(R.string.cant_find_private_key);
-                        t.show();
+                        Visual.toast(this,R.string.cant_find_private_key);
                     }
                 } else {
-                    t.setText(R.string.cant_find_data);
-                    t.show();
+                    Visual.toast(this,R.string.cant_find_data);
                 }
                 break;
         }
@@ -210,8 +199,7 @@ public class PrivateKeyManager extends Activity {
                     }
                     break;
                 default:
-                    NotImplemented nimp = new NotImplemented();
-                    nimp.show(getFragmentManager(), "np");
+                    new NotImplemented(getFragmentManager());
             }
         }
     }
@@ -222,9 +210,7 @@ public class PrivateKeyManager extends Activity {
         if (res == RESULT_OK) {
             if (CryptMethods.privateExist()) {
                 FilesManagement.savePrivate(this);
-                Toast t = Toast.makeText(this, R.string.private_key_loaded_from_qr, Toast.LENGTH_SHORT);
-                t.setGravity(Gravity.CENTER, 0, 0);
-                t.show();
+                Visual.toast(this, R.string.private_key_loaded_from_qr);
             }
         }
     }

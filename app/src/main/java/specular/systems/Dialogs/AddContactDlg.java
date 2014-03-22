@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +30,12 @@ public class AddContactDlg extends DialogFragment {
     final long id;
     private final String session;
 
-    public AddContactDlg(ContactCard pcc, String session, long id) {
+    public AddContactDlg(FragmentManager fm,ContactCard pcc, String session, long id) {
         StaticVariables.fileContactCard = null;
         this.pcc = pcc;
         this.id = id;
         this.session = session;
+        show(fm,"");
     }
 
     @Override

@@ -3,6 +3,7 @@ package specular.systems.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
@@ -15,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -29,6 +29,9 @@ import static android.support.v4.content.FileProvider.getUriForFile;
 
 
 public class ShareCustomDialog extends DialogFragment {
+    public ShareCustomDialog(FragmentManager fm){
+        show(fm,"");
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -63,9 +66,7 @@ public class ShareCustomDialog extends DialogFragment {
                         is.read(buffer);
                         is.close();
                         i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()));
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), R.string.failed, Toast.LENGTH_LONG)
-                                .show();
+                    } catch (Exception ignore) {
                     }
                     i.putExtra(Intent.EXTRA_SUBJECT,
                             getResources().getString(R.string.subject_share));
@@ -100,9 +101,7 @@ public class ShareCustomDialog extends DialogFragment {
                         is.read(buffer);
                         is.close();
                         i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer)+Visual.timeAndDate()/*+"<br><br><a href="+ CryptMethods.getMyLink()+"\"/>Direct Link</a>"*/));
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), R.string.failed, Toast.LENGTH_LONG)
-                                .show();
+                    } catch (Exception ignore) {
                     }
                     i.putExtra(Intent.EXTRA_SUBJECT,
                             getResources().getString(R.string.subject_share));

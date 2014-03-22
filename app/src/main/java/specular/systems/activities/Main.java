@@ -23,7 +23,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.text.Editable;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -41,7 +40,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.util.Map;
@@ -121,16 +119,13 @@ public class Main extends FragmentActivity {
                     selectItem(1, R.layout.decrypted_msg, null);
                     break;
                 case FilesManagement.RESULT_ADD_FILE_TO_BIG:
-                    t.setText(R.string.file_to_big);
-                    t.show();
+                    Visual.toast(Main.this,R.string.file_to_big);
                     break;
                 case FilesManagement.RESULT_ADD_FILE_FAILED:
-                    t.setText(R.string.failed);
-                    t.show();
+                    Visual.toast(Main.this,R.string.failed);
                     break;
                 case FilesManagement.RESULT_ADD_FILE_EMPTY:
-                    t.setText(R.string.file_is_empty);
-                    t.show();
+                    Visual.toast(Main.this,R.string.file_is_empty);
                     break;
                 case CHANGE_HINT:
                     ((TextView) findViewById(R.id.message)).setHint(R.string.send_another_msg);
@@ -165,19 +160,16 @@ public class Main extends FragmentActivity {
                     clearFields(msg.arg1, msg.arg2 == 1);
                     break;
                 case 551:
-                    t.setText(R.string.bad_data);
-                    t.show();
+                    Visual.toast(Main.this,R.string.bad_data);
                     break;
                 case RESTORE:
                     setUpViews();
-                    DialogRestore dr = new DialogRestore(Backup.restore());
-                    dr.show(getFragmentManager(), "dr");
+                    new DialogRestore(getFragmentManager(),Backup.restore());
                     break;
                 case ADD_GROUP:
                     ContactsGroup.currentPage = 1;
                     selectItem(1, R.layout.encrypt, null);
-                    DialogAddGroup dag = new DialogAddGroup();
-                    dag.show(getFragmentManager(), "dg");
+                    new DialogAddGroup(getFragmentManager());
                     break;
                 case 777:
                     contactChosen(true, (Long) msg.obj);
@@ -187,7 +179,6 @@ public class Main extends FragmentActivity {
     };
     public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_FOR_GROUP = 2, SCAN_PRIVATE = 3, SCAN_CONTACT = 4, TAKE_PICTURE = 5, RECORD_AUDIO = 6;
     Thread addFile;
-    private Toast t = null;
     private int defaultScreen;
     private int layouts[];
     private DrawerLayout mDrawerLayout;
@@ -212,8 +203,7 @@ public class Main extends FragmentActivity {
         if (NfcStuff.nfcIsntAvailable(this))
             onClickSkipNFC(null);
         else if(NfcStuff.nfcIsOff(this)){
-            TurnNFCOn tno = new TurnNFCOn();
-            tno.show(getFragmentManager(), "nf");
+            new TurnNFCOn(getFragmentManager());
         }
     }
 
@@ -221,8 +211,6 @@ public class Main extends FragmentActivity {
         if (contact != null)
             StaticVariables.luc.change(this, contact);
         final ProgressDlg prgd = new ProgressDlg(this, R.string.encrypting);
-        prgd.setCancelable(false);
-        prgd.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -239,8 +227,7 @@ public class Main extends FragmentActivity {
     }
 
     public void notImp(View v) {
-        NotImplemented ni3 = new NotImplemented();
-        ni3.show(getFragmentManager(), "aa");
+        new NotImplemented(getFragmentManager());
     }
 
     public void decryptedMsgClick(View v) {
@@ -261,46 +248,43 @@ public class Main extends FragmentActivity {
                 break;
             case R.id.answer:
                 if (((TextView) findViewById(R.id.flag_contact_exist)).getText().toString().equals(false + "")) {
-                    t.setText(R.string.add_contact_first);
-                    t.show();
+                    Visual.toast(Main.this,R.string.add_contact_first);
                 } else {
-                    Response r = new Response();
-                    r.show(getFragmentManager(), "r");
+                    new Response(getFragmentManager());
                 }
                 break;
             case R.id.hash:
                 boolean lightMsg = ((ViewGroup) findViewById(R.id.top_pannel)).getChildAt(2).getVisibility() == View.VISIBLE;
-                String hash = "original message size:\t\t" + Visual.getSize(StaticVariables.orig_msg_size) + "\n";
-                hash += "encrypted message size:\t\t" + Visual.getSize(StaticVariables.encrypted_msg_size) + "\n";
+                String hash = getString(R.string.hash_description_1)+"\t\t" + Visual.getSize(StaticVariables.orig_msg_size) + Visual.strings.NEW_LINE;
+                hash += getString(R.string.hash_description_2)+"\t\t" + Visual.getSize(StaticVariables.encrypted_msg_size) + Visual.strings.NEW_LINE;
                 String[] parts = getResources().getStringArray(R.array.message_parts);
-                hash += "message parts:\n";
+                hash += getString(R.string.hash_description_title);
                 int index = 1;
                 if (lightMsg) {
-                    hash += index++ + ". " + parts[0] + "\n" + StaticVariables.name + "\n";
-                    hash += index++ + ". " + parts[1] + "\n" + StaticVariables.email + "\n";
-                    hash += index++ + ". " + parts[2] + "\n" + StaticVariables.friendsPublicKey + "\n";
+                    hash += index++ + ". " + parts[0] + Visual.strings.NEW_LINE + StaticVariables.name + Visual.strings.NEW_LINE;
+                    hash += index++ + ". " + parts[1] + Visual.strings.NEW_LINE + StaticVariables.email + Visual.strings.NEW_LINE;
+                    hash += index++ + ". " + parts[2] + Visual.strings.NEW_LINE + StaticVariables.friendsPublicKey + Visual.strings.NEW_LINE;
                 }
                 String q = getString(R.string.divide_msg) + getString(R.string.quote_msg) + getString(R.string.divide_msg);
                 if (StaticVariables.msg_content != null && StaticVariables.msg_content.length() > 0) {
-                    hash += index++ + ". " + parts[3] + "\n" + StaticVariables.msg_content.split(q)[0] + "\n";
+                    hash += index++ + ". " + parts[3] + Visual.strings.NEW_LINE + StaticVariables.msg_content.split(q)[0] + Visual.strings.NEW_LINE;
                     if (StaticVariables.msg_content.split(q).length > 1)
-                        hash += index++ + ". " + parts[4] + "\n" + StaticVariables.msg_content.split(q)[1] + "\n";
+                        hash += index++ + ". " + parts[4] + Visual.strings.NEW_LINE + StaticVariables.msg_content.split(q)[1] + Visual.strings.NEW_LINE;
                 }
                 //todo if coming back from pause the file is no longer in memory
                 if (StaticVariables.fileContent != null) {
                     int length = StaticVariables.fileContent.length > 100 ? 100 : StaticVariables.fileContent.length;
-                    hash += index++ + ". " + parts[5] + "\n" + new String(StaticVariables.fileContent, 0, length);
+                    hash += index++ + ". " + parts[5] + Visual.strings.NEW_LINE + new String(StaticVariables.fileContent, 0, length);
                     if (StaticVariables.fileContent.length > 100)
                         hash += "...";
-                    hash += "\n";
-                    hash += index++ + ". " + parts[6] + "\n" + StaticVariables.file_name + "\n";
+                    hash += Visual.strings.NEW_LINE;
+                    hash += index++ + ". " + parts[6] + Visual.strings.NEW_LINE + StaticVariables.file_name + Visual.strings.NEW_LINE;
                 }
-                hash += index++ + ". " + parts[7] + "\n" + StaticVariables.timeStamp + "\n";
+                hash += index++ + ". " + parts[7] + Visual.strings.NEW_LINE + StaticVariables.timeStamp + Visual.strings.NEW_LINE;
                 if (lightMsg)
-                    hash += index++ + ". " + parts[8] + "\n" + StaticVariables.session + "\n";
-                hash += index + ". " + parts[9] + "\n" + StaticVariables.hash;
-                ExplainDialog edlg = new ExplainDialog(this, lightMsg ? ExplainDialog.HASH : ExplainDialog.HASH_QR, hash);
-                edlg.show(getFragmentManager(), "hs");
+                    hash += index++ + ". " + parts[8] + Visual.strings.NEW_LINE + StaticVariables.session + Visual.strings.NEW_LINE;
+                hash += index + ". " + parts[9] + Visual.strings.NEW_LINE + StaticVariables.hash;
+                new ExplainDialog(this, lightMsg ? ExplainDialog.HASH : ExplainDialog.HASH_QR, hash);
                 break;
             case R.id.session:
                 String msg;
@@ -312,7 +296,7 @@ public class Main extends FragmentActivity {
                     case Session.DONT_TRUST:
                         contact = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
                         msg = getString(R.string.dont_trust_session_explain)
-                                + Session.toShow(this, contact.getSession()) + "\n"
+                                + Session.toShow(this, contact.getSession()) + Visual.strings.NEW_LINE
                                 + "other's session is:\n"
                                 + Session.toShow(this, StaticVariables.session);
                         break;
@@ -340,11 +324,10 @@ public class Main extends FragmentActivity {
                     default:
                         msg = Session.toShow(this, StaticVariables.session);
                 }
-                ExplainDialog edl = new ExplainDialog(this, ExplainDialog.SESSION, msg);
-                edl.show(getFragmentManager(), "ss");
+                new ExplainDialog(this, ExplainDialog.SESSION, msg);
                 break;
             case R.id.replay:
-                String replay = getString(R.string.time_created) + StaticVariables.timeStamp + "\n";
+                String replay = getString(R.string.time_created) + StaticVariables.timeStamp + Visual.strings.NEW_LINE;
                 switch (StaticVariables.flag_replay) {
                     case MessageFormat.NOT_RELEVANT:
                         replay += getString(R.string.replay_not_relevant);
@@ -362,8 +345,7 @@ public class Main extends FragmentActivity {
                         replay += getString(R.string.replay_older_then_latest);
                         break;
                 }
-                ExplainDialog ed = new ExplainDialog(this, ExplainDialog.REPLAY, replay);
-                ed.show(getFragmentManager(), "rp");
+                new ExplainDialog(this, ExplainDialog.REPLAY, replay);
                 break;
             case R.id.save_attachment:
                 final Dialog dialog = new Dialog(this, android.R.style.Theme_Holo_Light_Dialog_MinWidth);
@@ -376,8 +358,7 @@ public class Main extends FragmentActivity {
                         SharedPreferences sp = getSharedPreferences("saved_files", MODE_PRIVATE);
                         Map m = sp.getAll();
                         if (m != null && m.containsValue(name)) {
-                            t.setText(R.string.name_allready_exist);
-                            t.show();
+                            Visual.toast(Main.this,R.string.name_allready_exist);
                             return;
                         }
                         String ext = StaticVariables.file_name.substring(StaticVariables.file_name.lastIndexOf('.') + 1);
@@ -438,8 +419,7 @@ public class Main extends FragmentActivity {
             } else {
                 String result = intent.getStringExtra("barcode");
                 if (requestCode == SCAN_PRIVATE) {
-                    t.setText(R.string.load_private_from_qr);
-                    t.show();
+                    Visual.toast(Main.this,R.string.load_private_from_qr);
                 } else {
                     int type = FileParser.getType(result);
                     if (type == FileParser.CONTACT_CARD) {
@@ -492,8 +472,7 @@ public class Main extends FragmentActivity {
                         encryptManager(SendMsg.MESSAGE);
                     }
                 } else {
-                    t.setText(R.string.send_orders);
-                    t.show();
+                    Visual.toast(Main.this,R.string.send_orders);
                 }
                 break;
         }
@@ -540,8 +519,6 @@ public class Main extends FragmentActivity {
         if (MySimpleArrayAdapter.getAdapter() == null) {
             new MySimpleArrayAdapter(this);
         }
-        t = Toast.makeText(this, "", Toast.LENGTH_SHORT);
-        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         File folder = new File(getFilesDir() + FilesManagement.REPORTS);
         if (folder.exists() && folder.list().length > 0) {
             Intent i = new Intent(this, SendReport.class);
@@ -563,8 +540,7 @@ public class Main extends FragmentActivity {
         if (i.getAction() != null && i.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED))
             if (FragmentManagement.currentLayout == R.layout.wait_nfc_to_write) {
                 int result = NfcStuff.write(i, CryptMethods.getPrivateTmp());
-                t.setText(result);
-                t.show();
+                Visual.toast(Main.this,result);
                 if (result == R.string.tag_written) {
                     StaticVariables.NFCMode = true;
                     CryptMethods.moveKeysFromTmp();
@@ -576,12 +552,12 @@ public class Main extends FragmentActivity {
                 byte[] raw = NfcStuff.getData(i);
                 if (raw != null) {
                     if (!CryptMethods.setPrivate(raw)) {
-                        t.setText(R.string.cant_find_private_key);
-                        t.show();
+                        Visual.toast(Main.this,R.string.cant_find_private_key);
+                    }else{
+                        Visual.toast(Main.this,R.string.keys_loaded);
                     }
                 } else {
-                    t.setText(R.string.cant_find_data);
-                    t.show();
+                    Visual.toast(Main.this,R.string.cant_find_data);
                 }
             }
     }
@@ -602,37 +578,32 @@ public class Main extends FragmentActivity {
                 startActivityForResult(i, SCAN_CONTACT);
             } else if (item.getTitle().equals("Add")) {
                 if (((ViewPager) findViewById(R.id.pager)).getCurrentItem() == 1) {
-                    if (((TextView) findViewById(R.id.contact_id_to_send)).getText().toString().length() == 0
+                    if (((TextView) findViewById(R.id.contact_id_to_send)).length() == 0
                             || findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).getVisibility() == View.VISIBLE) {
-                        GroupCreate gc = new GroupCreate();
-                        gc.show(getFragmentManager(), "gc");
+                        new GroupCreate(getFragmentManager());
                     } else {
                         if (loadingFile) {
-                            t.setText(R.string.tring_add_another_file_while_loading);
-                            t.show();
+                            Visual.toast(Main.this,R.string.tring_add_another_file_while_loading);
                         } else {
                             showPictureDialog();
                         }
                     }
                 } else {
                     if (loadingFile) {
-                        t.setText(R.string.tring_add_another_file_while_loading);
-                        t.show();
+                        Visual.toast(Main.this,R.string.tring_add_another_file_while_loading);
                     } else {
                         showPictureDialog();
                     }
                 }
             }
         } else if (FragmentManagement.currentLayout == R.layout.edit_contact) {
-            ShareContactDlg sd = new ShareContactDlg();
-            sd.show(getFragmentManager(), "ed");
+            new ShareContactDlg(getFragmentManager());
         } else if (FragmentManagement.currentLayout == R.layout.decrypted_msg) {
             ContactCard pcc = new ContactCard(this
                     , StaticVariables.friendsPublicKey
                     , StaticVariables.email, StaticVariables.name);
             Contact c = ContactsDataSource.contactsDataSource.findContactByEmail(StaticVariables.email);
-            AddContactDlg acd = new AddContactDlg(pcc, StaticVariables.session, c != null ? c.getId() : -1);
-            acd.show(getFragmentManager(), "ac");
+            new AddContactDlg(getFragmentManager(),pcc, StaticVariables.session, c != null ? c.getId() : -1);
         } else if (FragmentManagement.currentLayout == R.layout.me
                 || FragmentManagement.currentLayout == R.layout.profile) {
             share(null);
@@ -654,7 +625,7 @@ public class Main extends FragmentActivity {
                 dialog.cancel();
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("*/*");
+                intent.setType(Visual.strings.MIME_ALL);
                 Intent i = Intent.createChooser(intent, getString(R.string.choose_file_to_attach));
                 startActivityForResult(i, ATTACH_FILE);
             }
@@ -700,8 +671,7 @@ public class Main extends FragmentActivity {
     }
 
     public void share(View v) {
-        ShareCustomDialog scd = new ShareCustomDialog();
-        scd.show(getFragmentManager(), "sc");
+        new ShareCustomDialog(getFragmentManager());
     }
 
     @Override
@@ -780,7 +750,7 @@ public class Main extends FragmentActivity {
                         mi.setVisible(false);
                         mi3.setVisible(false);
                     } else {
-                        if (tv != null && tv.getText().toString().length() != 0) {
+                        if (tv != null && tv.length() != 0) {
                             if (findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).getVisibility() == View.GONE) {
                                 mi.setVisible(false);
                                 mi2.setVisible(false);
@@ -815,7 +785,7 @@ public class Main extends FragmentActivity {
                     } else if (ContactsDataSource.fullList == null || ContactsDataSource.fullList.size() == 0) {
                         mi3.setVisible(false);
                     } else {
-                        if (tv != null && tv.getText().toString().length() != 0) {
+                        if (tv != null && tv.length() != 0) {
                             if (findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).getVisibility() == View.GONE) {
                                 mi.setVisible(false);
                                 mi2.setVisible(false);
@@ -1029,8 +999,7 @@ public class Main extends FragmentActivity {
                 defaultScreen = R.layout.create_new_keys;
                 msg = getIntent().getStringExtra("message");
                 if (StaticVariables.message != null || msg != null) {
-                    t.setText(R.string.no_keys_open_by_msg);
-                    t.show();
+                    Visual.toast(Main.this,R.string.no_keys_open_by_msg);
                 }
                 break;
         }
@@ -1045,8 +1014,6 @@ public class Main extends FragmentActivity {
         final String msg = getIntent().getStringExtra("message");
         if (StaticVariables.message != null || msg != null) {
             final ProgressDlg prgd = new ProgressDlg(this, R.string.decrypting);
-            prgd.setCancelable(false);
-            prgd.show();
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -1089,8 +1056,7 @@ public class Main extends FragmentActivity {
                         id = cc.getId();
                     else
                         id = -1;
-                    AddContactDlg acd = new AddContactDlg(StaticVariables.fileContactCard, null, id);
-                    acd.show(getFragmentManager(), "ad");
+                    new AddContactDlg(getFragmentManager(),StaticVariables.fileContactCard, null, id);
                 } else {
                     //contactChosen(true, c.getId());
                     new Thread(new Runnable() {
@@ -1106,14 +1072,12 @@ public class Main extends FragmentActivity {
                         }
                     }).start();
                     StaticVariables.fileContactCard = null;
-                    t.setText(R.string.contact_exist);
-                    t.show();
+                    Visual.toast(Main.this,R.string.contact_exist);
                 }
                 return true;
             }
             StaticVariables.fileContactCard = null;
-            t.setText(R.string.no_account_trying_add_contact);
-            t.show();
+            Visual.toast(Main.this,R.string.no_account_trying_add_contact);
             return true;
         }
         //this is for when coming to the app from share
@@ -1145,29 +1109,27 @@ public class Main extends FragmentActivity {
 
             public prepareToExit() {
                 exit = true;
-                t.setText(R.string.exit_by_back_notify);
-                t.show();
+                Visual.toast(Main.this,R.string.exit_by_back_notify);
                 prepareExit.start();
             }
         }
         if (exit) {
             FilesManagement.deleteTempDecryptedMSG(this);
             KeysDeleter.delete();
-            t.cancel();
             finish();
         } else {
             switch (FragmentManagement.currentLayout) {
                 case R.layout.encrypt:
                     TextView contactChosen = (TextView) findViewById(R.id.contact_id_to_send);
-                    Editable etMessage = ((EditText) findViewById(R.id.message)).getText();
+                    EditText etMessage = (EditText) findViewById(R.id.message);
                     TextView fileLength = (TextView) findViewById(R.id.file_content_length);
                     boolean clearedSomething = false;
                     if (etMessage.length() > 0) {
                         clearedSomething = true;
-                        etMessage.clear();
+                        etMessage.getText().clear();
                         StaticVariables.currentText = "";
                     }
-                    if (contactChosen.getText().length() > 0) {
+                    if (contactChosen.length() > 0) {
                         clearedSomething = true;
                         findViewById(R.id.en_contact).setVisibility(View.GONE);
                         contactChosen.setText("");
@@ -1195,8 +1157,7 @@ public class Main extends FragmentActivity {
                     break;
                 case R.layout.decrypted_msg:
                     if (StaticVariables.flag_msg != null && StaticVariables.flag_msg) {
-                        t.setText(R.string.notify_msg_deleted);
-                        t.show();
+                        Visual.toast(Main.this,R.string.notify_msg_deleted);
                         MessageFormat.decryptedMsg = null;
                         FilesManagement.deleteTempDecryptedMSG(this);
                     }
@@ -1300,7 +1261,7 @@ public class Main extends FragmentActivity {
                 intent.putExtra("type", type);
                 startActivity(intent);
             } else {
-                Toast.makeText(this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
+                Visual.toast(this, R.string.failed_to_create_files_to_send);
             }
         }
     }
@@ -1309,11 +1270,9 @@ public class Main extends FragmentActivity {
         switch (v.getId()) {
             case R.id.button1:
                 if (CryptMethods.privateExist()) {
-                    GenerateKeys gk = new GenerateKeys();
-                    gk.show(getFragmentManager(), "gk");
+                    new GenerateKeys(getFragmentManager());
                 } else {
-                    t.setText(R.string.reject_changes);
-                    t.show();
+                    Visual.toast(Main.this,R.string.reject_changes);
                 }
                 break;
             case R.id.button2:
@@ -1325,8 +1284,7 @@ public class Main extends FragmentActivity {
                 } else {
                     message = R.string.backup_explain;
                 }
-                BackupDialog bd = new BackupDialog(this, message);
-                bd.show(getFragmentManager(), "bd");
+                new BackupDialog(this, message);
                 break;
             case R.id.button3:
                 Intent intent = new Intent(this, PrivateKeyManager.class);
@@ -1363,28 +1321,23 @@ public class Main extends FragmentActivity {
         switch (v.getId()) {
             case R.id.delete:
                 if (CryptMethods.privateExist()) {
-                    DeleteContactDialog dlg = new DeleteContactDialog();
-                    dlg.show(getFragmentManager(), "dl");
+                    new DeleteContactDialog(getFragmentManager());
                 } else {
-                    t.setText(R.string.reject_changes);
-                    t.show();
+                    Visual.toast(Main.this,R.string.reject_changes);
                 }
                 break;
             case R.id.answer:
-                Response r = new Response();
-                r.show(getFragmentManager(), "n");
+                new Response(getFragmentManager());
                 break;
             case R.id.contact_picture:
-                ContactQR cqr = new ContactQR();
-                cqr.show(getFragmentManager(), "cq");
+                new ContactQR(getFragmentManager());
                 break;
             case R.id.invite:
                 Group grp = GroupDataSource
                         .groupDataSource
                         .findGroup(Long.parseLong(((TextView) findViewById(R.id.contact_id))
                                 .getText().toString()));
-                InviteToGroup ing = new InviteToGroup(grp);
-                ing.show(getFragmentManager(), "in");
+                new InviteToGroup(getFragmentManager(),grp);
                 break;
             case R.id.add_to_contact:
                 grp = GroupDataSource
@@ -1473,7 +1426,7 @@ public class Main extends FragmentActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(findViewById(R.id.message).getWindowToken(), 0);
         TextView id = (TextView) findViewById(R.id.contact_id_to_send);
-        if (id.getText().toString().length() > 0) {
+        if (id.length() > 0) {
             if (contact) {
                 findViewById(ContactsGroup.GROUPS).findViewById(R.id.en_contact).setVisibility(View.GONE);
                 findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).setVisibility(View.VISIBLE);

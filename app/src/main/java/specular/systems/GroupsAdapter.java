@@ -223,7 +223,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> implements Filterable {
             ((TextView) a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts)).setText(R.string.no_result_filter);
             a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
         } else if(a.findViewById(R.id.contact_id_to_send)==null
-                ||((TextView)a.findViewById(R.id.contact_id_to_send)).getText().length()==0){
+                ||((TextView)a.findViewById(R.id.contact_id_to_send)).length()==0){
             a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.no_contacts).setVisibility(View.GONE);
             a.findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).setVisibility(View.VISIBLE);
         }

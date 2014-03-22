@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 
 
 public class Backup {
-    public static final String Delimiter = "\n";
-    public static final String ContactDelimiter = "\t";
+    public static final String Delimiter = Visual.strings.NEW_LINE;
+    public static final String ContactDelimiter = Visual.strings.TAB;
 
     public static byte[] backup(Activity a) {
         List<Contact> contactList = ContactsDataSource.contactsDataSource.getAllContacts();
@@ -19,7 +19,7 @@ public class Backup {
         String details = myDetails[0] + Delimiter + myDetails[1] + Delimiter + myDetails[2] + Delimiter;
         byte[] my_details;
         try {
-            my_details = details.getBytes("UTF-8");
+            my_details = details.getBytes(Visual.strings.UTF);
         } catch (Exception e) {
             my_details = details.getBytes();
         }
@@ -48,7 +48,7 @@ public class Backup {
         finalResult[finalResult.length-1]=(byte)FileParser.getFlag(FileParser.ENCRYPTED_BACKUP);
         byte[] hash;
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            MessageDigest md = MessageDigest.getInstance(Visual.strings.SHA);
             hash =  md.digest(finalResult);
         } catch (NoSuchAlgorithmException e) {
             hash = new byte[0];
@@ -68,7 +68,7 @@ public class Backup {
         System.arraycopy(StaticVariables.decryptedBackup,currHash.length,dataToHash,0,dataToHash.length);
         byte[] newHash;
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            MessageDigest md = MessageDigest.getInstance(Visual.strings.SHA);
             newHash =  md.digest(dataToHash);
         } catch (NoSuchAlgorithmException e) {
             newHash = new byte[0];
@@ -112,7 +112,7 @@ public class Backup {
         contact += c.getReceived() + Delimiter;
         contact += c.getSent() + Delimiter;
         try {
-            return contact.getBytes("UTF-8");
+            return contact.getBytes(Visual.strings.UTF);
         } catch (Exception e) {
             return contact.getBytes();
         }

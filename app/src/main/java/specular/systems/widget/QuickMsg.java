@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 
@@ -38,13 +37,13 @@ public class QuickMsg extends Activity {
         }
         String widget = getIntent().getStringExtra("widget");
         if (widget == null) {
-            Toast.makeText(this, "something goes wrong code 0", Toast.LENGTH_SHORT).show();
+            Visual.toast(this,R.string.unexpexted_error);
             finish();
         } else {
             SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(this);
             String widgetDetails = srp.getString(widget, null);
             if (widgetDetails == null) {
-                Toast.makeText(this, "something goes wrong code 1", Toast.LENGTH_SHORT).show();
+                Visual.toast(this,R.string.unexpexted_error);
                 finish();
             } else {
                 long id = WidgetContact.getId(widgetDetails);
@@ -102,8 +101,6 @@ public class QuickMsg extends Activity {
                             final MessageFormat msg = new MessageFormat(null, CryptMethods.getMyDetails(QuickMsg.this), "", userInput
                                     , contact.getSession().substring(0,contact.getSession().length()-2));
                             final ProgressDlg prgd = new ProgressDlg(QuickMsg.this, R.string.encrypting);
-                            prgd.setCancelable(false);
-                            prgd.show();
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -117,7 +114,7 @@ public class QuickMsg extends Activity {
                                         intent.putExtra("contactId", contact.getId());
                                         startActivity(intent);
                                     } else {
-                                        Toast.makeText(QuickMsg.this, R.string.failed_to_create_files_to_send, Toast.LENGTH_LONG).show();
+                                       Visual.toast(QuickMsg.this, R.string.failed_to_create_files_to_send);
                                     }
                                 }
                             }).start();

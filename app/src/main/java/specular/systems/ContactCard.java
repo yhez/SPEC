@@ -25,7 +25,7 @@ public class ContactCard {
 
     public ContactCard(Activity a, String raw) {
         if (validate(raw)) {
-            String data[] = raw.split("\n");
+            String data[] = raw.split(Visual.strings.NEW_LINE);
             publicKey = data[3];
             email = data[2];
             name = data[1];
@@ -47,13 +47,13 @@ public class ContactCard {
 
     public String getQRToPublish() {
         String explain = a.getResources().getString(R.string.explain);
-        return explain + "\n" + name + "\n" + email + "\n" + publicKey;
+        return explain + Visual.strings.NEW_LINE + name + Visual.strings.NEW_LINE + email + Visual.strings.NEW_LINE + publicKey;
     }
 
     private boolean validate(String raw) {
         if (raw == null)
             return false;
-        String data[] = raw.split("\n");
+        String data[] = raw.split(Visual.strings.NEW_LINE);
         if (data.length != 4)
             return false;
         String l = data[3].replaceAll("A", "");

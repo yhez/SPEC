@@ -44,7 +44,7 @@ public class FileParser {
             return ENCRYPTED_MSG;
         if(c==flags[3])
             return ENCRYPTED_QR_MSG;
-        if(raw.contains("\n"))
+        if(raw.contains(Visual.strings.NEW_LINE))
             return CONTACT_CARD;
         return -1;
     }

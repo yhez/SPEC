@@ -3,11 +3,10 @@ package specular.systems.Dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -17,6 +16,7 @@ import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
 import specular.systems.R;
 import specular.systems.StaticVariables;
+import specular.systems.Visual;
 import specular.systems.activities.Main;
 
 
@@ -24,11 +24,12 @@ public class DialogRestore extends DialogFragment {
     private ArrayList<Contact> cn;
     String myDetails[];
 
-    public DialogRestore(ArrayList<Contact> cn) {
+    public DialogRestore(FragmentManager fm,ArrayList<Contact> cn) {
         this.cn = cn;
         Contact me = cn.get(0);
         myDetails = new String[]{me.getContactName(),me.getEmail(),me.getPublicKey()};
         cn.remove(0);
+        show(fm,"");
     }
 
     @Override
@@ -53,9 +54,7 @@ public class DialogRestore extends DialogFragment {
                 FilesManagement.save(getActivity());
                 if(FilesManagement.motNFCMod(getActivity()))
                     FilesManagement.savePrivate(getActivity());
-                Toast t = Toast.makeText(getActivity(),R.string.notify_after_restore, Toast.LENGTH_SHORT);
-                t.setGravity(Gravity.CENTER, 0, 0);
-                t.show();
+                Visual.toast(getActivity(),R.string.notify_after_restore);
                 getActivity().finish();
                 Intent in = new Intent(getActivity(), Main.class);
                 startActivity(in);

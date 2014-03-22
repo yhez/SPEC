@@ -28,9 +28,9 @@ public class MessageFormat {
         System.arraycopy(raw, 0, b, 0, b.length);
         String data[];
         try {
-            data = new String(b, "UTF-8").split("\n");
+            data = new String(b, Visual.strings.UTF).split(Visual.strings.NEW_LINE);
         } catch (Exception e) {
-            data = new String(b).split("\n");
+            data = new String(b).split(Visual.strings.NEW_LINE);
         }
         if (!(data.length < 5)) {
             name = data[0];
@@ -40,7 +40,7 @@ public class MessageFormat {
             fileName = data[4];
             msgContent = "";
             for (int a = 5; a < data.length; a++)
-                msgContent += data[a] + (a + 1 == data.length ? "" : "\n");
+                msgContent += data[a] + (a + 1 == data.length ? "" : Visual.strings.NEW_LINE);
             int keyLen = byteArray2Int(new byte[]{raw[raw.length-5],raw[raw.length-4],raw[raw.length-3],raw[raw.length-2]});
             hash = new byte[]{raw[raw.length-9],raw[raw.length-8],raw[raw.length-7],raw[raw.length-6]};
             publicKey = new byte[keyLen];
@@ -143,9 +143,9 @@ public class MessageFormat {
         byte[] fileName;
         byte[] name;
         try {
-            fileName = this.fileName.getBytes("UTF-8");
-            msgContent = this.msgContent.getBytes("UTF-8");
-            name = this.name.getBytes("UTF-8");
+            fileName = this.fileName.getBytes(Visual.strings.UTF);
+            msgContent = this.msgContent.getBytes(Visual.strings.UTF);
+            name = this.name.getBytes(Visual.strings.UTF);
         } catch (UnsupportedEncodingException e) {
             fileName = this.fileName.getBytes();
             msgContent = this.msgContent.getBytes();

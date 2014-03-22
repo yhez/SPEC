@@ -279,7 +279,7 @@ public class CryptMethods {
     */
     public static byte[] getPrivateHash() {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            MessageDigest md = MessageDigest.getInstance(Visual.strings.SHA);
             return md.digest(myPrivateKey);
         } catch (NoSuchAlgorithmException e) {
             return new byte[0];

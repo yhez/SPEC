@@ -9,13 +9,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -40,7 +38,7 @@ public class ChooseContact extends Activity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras == null) {
-            Toast.makeText(this, "something is wrong", Toast.LENGTH_SHORT).show();
+           Visual.toast(this, R.string.unexpexted_error);
             finish();
         } else {
             final int mAppWidgetId = extras.getInt(
@@ -52,9 +50,7 @@ public class ChooseContact extends Activity {
                 ContactsDataSource.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
             }
             if (ContactsDataSource.fullList.isEmpty()) {
-                Toast t = Toast.makeText(this, R.string.widget_add_contact_list_empty, Toast.LENGTH_SHORT);
-                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                t.show();
+                Visual.toast(this,R.string.widget_add_contact_list_empty);
                 finish();
             } else {
                 MySimpleArrayAdapter my = MySimpleArrayAdapter.getAdapter();

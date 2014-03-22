@@ -35,6 +35,8 @@ public class ProgressDlg extends ProgressDialog {
         super(activity);
         this.activity = activity;
         this.title = title;
+        setCancelable(false);
+        show();
     }
 
     @Override

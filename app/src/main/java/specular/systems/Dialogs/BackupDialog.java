@@ -21,7 +21,7 @@ public class BackupDialog extends DialogFragment {
     private Activity a;
 
     public BackupDialog(Activity a,int str) {
-        message=str;this.a=a;
+        message=str;this.a=a;show(a.getFragmentManager(),"");
     }
 
     @Override
@@ -36,8 +36,6 @@ public class BackupDialog extends DialogFragment {
                                 break;
                             case R.string.backup_explain:
                                 final ProgressDlg prgd = new ProgressDlg(a, R.string.backup_progress);
-                                prgd.setCancelable(false);
-                                prgd.show();
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
