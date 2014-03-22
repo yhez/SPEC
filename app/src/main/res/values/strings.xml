@@ -273,6 +273,7 @@ It\'ll give you the option to decrypt messages that was sent to the group</strin
     <string name="subject_backup_data">backup SPEC data</string><string name="open_by_external_app">Open file VIA external app.
 It can be dangerous to give access to the data to another application</string>
     <string name="failed_create_qr">failed to create QR</string>
+    <string name="nfc_to_decrypt_notes">Tab your NFC Tag To decrypt notes</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>

@@ -2,9 +2,7 @@ package specular.systems;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -159,8 +157,6 @@ public class FragmentManagement extends Fragment {
                 container, false);
         if (StaticVariables.luc == null)
             StaticVariables.luc = new LastUsedContacts(getActivity());
-        if (!(currentLayout == R.layout.explorer))
-            getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         switch (currentLayout) {
             case create_new_keys:
                 addSocialLogin();
@@ -664,9 +660,6 @@ public class FragmentManagement extends Fragment {
                     @Override
                     public void onPageSelected(int i) {
                         Safe.currentPage = i;
-                        ActionBar actionBar = getActivity().getActionBar();
-                        if(actionBar!=null)
-                            actionBar.setSelectedNavigationItem(i);
                     }
 
                     @Override
@@ -674,34 +667,6 @@ public class FragmentManagement extends Fragment {
 
                     }
                 });
-                ActionBar actionBar = getActivity().getActionBar();
-                if(actionBar!=null)
-                    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-                ActionBar.TabListener t = new ActionBar.TabListener() {
-                    @Override
-                    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-                        viewPager.setCurrentItem(tab.getPosition());
-                        Safe.currentPage = tab.getPosition();
-                    }
-
-                    @Override
-                    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-                    }
-
-                    @Override
-                    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
-                    }
-                };
-                if (actionBar.getTabCount() == 0) {
-                    actionBar.addTab(actionBar.newTab().setText(safe.getPageTitle(0)).setTabListener(t));
-                    actionBar.addTab(actionBar.newTab().setText(safe.getPageTitle(1)).setTabListener(t));
-                } else {
-                    actionBar.getTabAt(0).setTabListener(t);
-                    actionBar.getTabAt(1).setTabListener(t);
-                    actionBar.setSelectedNavigationItem(Safe.currentPage);
-                }
                 break;
             case R.layout.profile:
                 final ImageButton ibMyName = (ImageButton) rootView.findViewById(R.id.test).findViewById(R.id.image_button);

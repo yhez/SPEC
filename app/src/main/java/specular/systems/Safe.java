@@ -111,6 +111,12 @@ public class Safe extends FragmentStatePagerAdapter {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+            if(!CryptMethods.privateExist()){
+                View v = inflater.inflate(R.layout.wait_nfc_decrypt,container,false);
+                v.findViewById(R.id.wait_for_nfc).setAlpha(0.8f);
+                ((TextView)v.findViewById(R.id.text)).setText(R.string.nfc_to_decrypt_notes);
+                return v;
+            }
             View v = inflater.inflate(R.layout.notes, container, false);
             texts = new ArrayList<String>();
             main = (LinearLayout)v.findViewById(R.id.main);
@@ -165,8 +171,7 @@ public class Safe extends FragmentStatePagerAdapter {
                     else
                         right.addView(tv);
                 }
-                if(CryptMethods.privateExist())
-                    at.execute();
+                at.execute();
             }
             return v;
         }
