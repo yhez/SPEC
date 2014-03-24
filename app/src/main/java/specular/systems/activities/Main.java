@@ -550,8 +550,6 @@ public class Main extends FragmentActivity {
                     CryptMethods.moveKeysFromTmp();
                     onClickSkipNFC(null);
                 }
-
-
             } else {
                 byte[] raw = NfcStuff.getData(i);
                 if (raw != null) {
@@ -1237,13 +1235,20 @@ public class Main extends FragmentActivity {
         } else {
             KeysDeleter.stop();
         }
-        int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
-        if (newkeys != KeysDeleter.oldStatus || Splash.file) {
+        if(Splash.file){
             Splash.file = false;
             if(created)
                 created=false;
             else
                 setUpViews();
+        }else{
+            int newkeys = CryptMethods.privateExist() && CryptMethods.publicExist() ? 0 : CryptMethods.publicExist() ? 1 : CryptMethods.privateExist() ? 2 : 3;
+            if (newkeys != KeysDeleter.oldStatus) {
+                if(FragmentManagement.currentLayout==R.layout.explorer)
+                    selectItem(-1,FragmentManagement.currentLayout,null);
+                else
+                    setUpViews();
+            }
         }
     }
 

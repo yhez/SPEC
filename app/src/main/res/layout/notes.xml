@@ -12,6 +12,7 @@
         android:layout_height="wrap_content">
 
         <EditText
+            android:background="@drawable/edit_text"
             android:textColor="@color/spec_black"
             android:id="@+id/note"
             android:imeOptions="actionDone"

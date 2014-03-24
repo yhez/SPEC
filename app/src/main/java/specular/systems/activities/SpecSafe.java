@@ -101,7 +101,7 @@ public class SpecSafe extends Activity {
                     setContentView(R.layout.wait_nfc_decrypt);
                     content = findViewById(R.id.wait_for_nfc);
                     content.setAlpha(0.9f);
-                    ((ImageView)content.findViewById(R.id.sec_pic)).setImageBitmap(FilesManagement.id_picture.getPicture(this));
+                    ((ImageView)content.findViewById(R.id.sec_pic)).setImageDrawable(FilesManagement.id_picture.getPicture(this));
                     if(NfcStuff.nfcIsOff(this)){
                         new TurnNFCOn(getFragmentManager());
                     }

@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -55,11 +56,14 @@ public class Safe extends FragmentStatePagerAdapter {
     public static class SectionSafe extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+            if(!CryptMethods.privateExist()){
+                return privateNotExist(getActivity(),R.string.nfc_for_files);
+            }
             ListView lv = new ListView(getActivity());
             final ArrayList<ListFiles.FilesRows> files = new ArrayList<ListFiles.FilesRows>();
             SharedPreferences sp = getActivity().getSharedPreferences("saved_files", Context.MODE_PRIVATE);
             Map m = sp.getAll();
-            if(m==null){
+            if(m==null||m.size()==0){
                 TextView tv = new TextView(getActivity());
                 tv.setText(R.string.no_file_safe);
                 tv.setTextColor(Color.BLACK);
@@ -113,13 +117,7 @@ public class Safe extends FragmentStatePagerAdapter {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
             if(!CryptMethods.privateExist()){
-                View v = inflater.inflate(R.layout.wait_nfc_decrypt,container,false);
-                v.findViewById(R.id.wait_for_nfc).setAlpha(0.8f);
-                if(FilesManagement.id_picture.pictureExist(getActivity())){
-                    ((ImageView)v.findViewById(R.id.sec_pic)).setImageBitmap(FilesManagement.id_picture.getPicture(getActivity()));
-                }
-                ((TextView)v.findViewById(R.id.text)).setText(R.string.nfc_to_decrypt_notes);
-                return v;
+                return privateNotExist(getActivity(),R.string.nfc_to_decrypt_notes);
             }
             View v = inflater.inflate(R.layout.notes, container, false);
             texts = new ArrayList<String>();
@@ -146,10 +144,12 @@ public class Safe extends FragmentStatePagerAdapter {
             if(m==null||m.values().size()==0){
                 TextView tv = new TextView(getActivity());
                 tv.setId(8777);
-                tv.setPadding(20,20,20,20);
-                tv.setText(getActivity().getString(R.string.no_notes_yet));
+                tv.setPadding(25, 25, 25, 25);
+                tv.setText(R.string.no_notes_yet);
                 tv.setTextColor(Color.BLACK);
                 tv.setTextSize(25);
+                tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                tv.setGravity(Gravity.LEFT);
                 main.addView(tv);
             }else {
                 o = m.values().toArray();
@@ -214,5 +214,19 @@ public class Safe extends FragmentStatePagerAdapter {
                 left.addView(tv);
             }
         }
+    }
+    public static View privateNotExist(Activity a,int s){
+        FrameLayout fl = new FrameLayout(a);
+        fl.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        fl.setBackgroundColor(Color.TRANSPARENT);
+        TextView tv = new TextView(a);
+        tv.setText(s);
+        tv.setTextSize(25);
+        tv.setPadding(20, 20, 20, 20);
+        tv.setBackgroundColor(Color.WHITE);
+        FrameLayout.LayoutParams p = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
+        tv.setLayoutParams(p);
+        fl.addView(tv);
+        return fl;
     }
 }

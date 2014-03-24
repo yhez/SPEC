@@ -9,10 +9,10 @@
     android:background="@android:color/white"
     android:gravity="center"
     android:id="@+id/wait_for_nfc"
-    android:alpha="0">
+    android:alpha="1">
     <ImageView
-        android:alpha="0.5"
         android:id="@+id/sec_pic"
+        android:scaleType="fitCenter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@null" />

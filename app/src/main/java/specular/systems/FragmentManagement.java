@@ -607,7 +607,7 @@ public class FragmentManagement extends Fragment {
                 } else if (NfcStuff.nfcIsOff(getActivity()))
                     new TurnNFCOn(getActivity().getFragmentManager());
                 if(FilesManagement.id_picture.pictureExist(getActivity()))
-                    ((ImageView)rootView.findViewById(R.id.sec_pic)).setImageBitmap(FilesManagement.id_picture.getPicture(getActivity()));
+                    ((ImageView)rootView.findViewById(R.id.sec_pic)).setImageDrawable(FilesManagement.id_picture.getPicture(getActivity()));
                 break;
             case setup:
                 break;
@@ -651,6 +651,10 @@ public class FragmentManagement extends Fragment {
                 break;
             case R.layout.explorer:
                 final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.pager);
+                if(!CryptMethods.privateExist()) {
+                    if(FilesManagement.id_picture.pictureExist(getActivity()))
+                        rootView.setBackground(FilesManagement.id_picture.getPicture(getActivity()));
+                }
                 Safe safe = new Safe(Main.main);
                 viewPager.setAdapter(safe);
                 viewPager.setCurrentItem(Safe.currentPage);

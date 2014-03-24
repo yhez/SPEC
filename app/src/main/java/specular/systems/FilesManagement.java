@@ -10,11 +10,12 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -58,8 +59,10 @@ public final class FilesManagement {
             return new File(a.getFilesDir(), SECRET_PICTURE).exists();
         }
 
-        public static Bitmap getPicture(Activity a) {
-            return BitmapFactory.decodeFile(a.getFilesDir() + "/" + SECRET_PICTURE);
+        public static Drawable getPicture(Activity a) {
+            Drawable d = Drawable.createFromPath(a.getFilesDir() + "/" + SECRET_PICTURE);
+            d.setAlpha(128);
+            return d;
         }
 
         public static Intent createIntent(Activity a) {
@@ -75,8 +78,20 @@ public final class FilesManagement {
         }
         public static void save(Activity a){
             File t = new File(a.getFilesDir()+TEMP,"t");
-            if(!t.renameTo(new File(a.getFilesDir(),SECRET_PICTURE)))
-                Log.e("failed","unable to move file");
+            File d = new File(a.getFilesDir(),SECRET_PICTURE);
+            t.renameTo(d);
+            try {
+                Bitmap b = BitmapFactory.decodeFile(d.getPath());
+                Point p = new Point();
+                a.getWindow().getWindowManager().getDefaultDisplay().getSize(p);
+                Bitmap bb = Bitmap.createScaledBitmap(b, p.x, p.y, false);
+                FileOutputStream fos;
+                fos = new FileOutputStream(d);
+                bb.compress(Bitmap.CompressFormat.PNG,25,fos);
+                fos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }

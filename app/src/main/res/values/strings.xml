@@ -280,6 +280,7 @@
     In order to prevent malicious apps from showing the same dialog and gaining your Private Key,
     take a picture and we\'ll use it as the dialog background.\n This is your scret picture, verify that you see it.</string>
     <string name="secret_picture_title">Secret Picture</string>
+    <string name="nfc_for_files">Tab NFC to decrypt Files</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
