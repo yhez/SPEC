@@ -39,26 +39,34 @@ public class SpecSafe extends Activity {
             Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Visual.getNameReprt(), this));
         }
         req = getIntent().getIntExtra("action",0);
-        String name = getIntent().getStringExtra("name");
+        if(req<1||req>3) {
+            setResult(12);
+            finish();
+            return;
+        }
         ComponentName cn = getCallingActivity();
+        if(cn==null){
+            Log.e("can't find calling activity", "You must call SPEC by using the method startActivityForResult!");
+            finish();
+            return;
+        }
+        File path = new File(getFilesDir()+"/SPEC_SAFE/"+cn.getPackageName());
+        if(req==3){
+            Intent i = new Intent();
+            if(path.exists())
+                i.putExtra("files",path.list());
+            else
+                i.putExtra("files",new String[0]);
+            setResult(RESULT_OK,i);
+            finish();
+            return;
+        }
+        String name = getIntent().getStringExtra("name");
         if(name==null||name.length()==0){
             setResult(11);
             finish();
             return;
         }
-        if(cn==null){
-            Log.e("can't find calling activity","You must call SPEC by using the method startActivityForResult!");
-            finish();
-            return;
-        }
-        if(req==0) {
-            setResult(12);
-            finish();
-            return;
-        }
-        File path = new File(getFilesDir()+"/SPEC_SAFE/"+cn.getPackageName());
-        if(!path.exists())
-            path.mkdirs();
         file = new File(path,name);
         if(!file.exists()&&req==2){
             setResult(13);
@@ -84,6 +92,8 @@ public class SpecSafe extends Activity {
                     e.printStackTrace();
                 }
             }
+            if(!path.exists())
+                path.mkdirs();
             encryptAndSave.execute(bytes);
             showDialog();
         }else if(req==2){
