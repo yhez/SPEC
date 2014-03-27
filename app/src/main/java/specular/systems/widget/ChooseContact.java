@@ -112,7 +112,7 @@ public class ChooseContact extends Activity {
 
     private void updateWidget(int widgetId) {
         Intent intent = new Intent(this, WidgetContact.class);
-        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         int[] ids = {widgetId};
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         sendBroadcast(intent);
