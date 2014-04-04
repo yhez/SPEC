@@ -4,7 +4,6 @@ import java.security.InvalidParameterException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.InvalidParameterSpecException;
 
-import de.flexiprovider.api.keys.KeySpec;
 import de.flexiprovider.common.exceptions.InvalidFormatException;
 import de.flexiprovider.common.exceptions.InvalidPointException;
 import de.flexiprovider.common.math.ellipticcurves.Point;
@@ -12,7 +11,7 @@ import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.ec.parameters.CurveParams;
 
 
-public final class ECPublicKeySpec implements KeySpec {
+public final class ECPublicKeySpec implements java.security.spec.KeySpec {
 
 
 

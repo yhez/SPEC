@@ -1,10 +1,11 @@
 package de.flexiprovider.api.keys;
 
 import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
-
-import de.flexiprovider.pki.PKCS8EncodedKeySpec;
-import de.flexiprovider.pki.X509EncodedKeySpec;
+import java.security.spec.KeySpec;
 
 public abstract class KeyFactory extends java.security.KeyFactorySpi {
 
@@ -12,17 +13,7 @@ public abstract class KeyFactory extends java.security.KeyFactorySpi {
             java.security.spec.KeySpec keySpec)
             throws java.security.spec.InvalidKeySpecException {
 
-        if (keySpec != null && !(keySpec instanceof KeySpec)) {
-            if (keySpec instanceof java.security.spec.X509EncodedKeySpec) {
-                KeySpec encKeySpec = new X509EncodedKeySpec(
-                        (java.security.spec.X509EncodedKeySpec) keySpec);
-                return generatePublic(encKeySpec);
-            }
-
-            throw new java.security.spec.InvalidKeySpecException();
-        }
-
-        return generatePublic((KeySpec) keySpec);
+        return generatePublic(keySpec);
     }
 
 
@@ -30,38 +21,28 @@ public abstract class KeyFactory extends java.security.KeyFactorySpi {
             java.security.spec.KeySpec keySpec)
             throws java.security.spec.InvalidKeySpecException {
 
-        if (keySpec != null && !(keySpec instanceof KeySpec)) {
-            if (keySpec instanceof java.security.spec.PKCS8EncodedKeySpec) {
-                KeySpec encKeySpec = new PKCS8EncodedKeySpec(
-                        (java.security.spec.PKCS8EncodedKeySpec) keySpec);
-                return generatePrivate(encKeySpec);
-            }
-
-            throw new java.security.spec.InvalidKeySpecException();
-        }
-
-        return generatePrivate((KeySpec) keySpec);
+        return generatePrivate(keySpec);
     }
 
     protected final java.security.spec.KeySpec engineGetKeySpec(
             java.security.Key key, Class keySpec)
             throws java.security.spec.InvalidKeySpecException {
 
-        if (!(key instanceof Key)) {
+        if (key == null) {
             throw new java.security.spec.InvalidKeySpecException();
         }
 
-        return getKeySpec((Key) key, keySpec);
+        return getKeySpec(key, keySpec);
     }
 
     protected final java.security.Key engineTranslateKey(java.security.Key key)
             throws java.security.InvalidKeyException {
 
-        if (!(key instanceof Key)) {
+        if (key == null) {
             throw new java.security.InvalidKeyException();
         }
 
-        return translateKey((Key) key);
+        return translateKey(key);
     }
 
 

@@ -1,18 +1,13 @@
 package de.flexiprovider.ec.keys;
 
 import java.security.InvalidKeyException;
-import java.security.spec.InvalidParameterSpecException;
+import java.security.PublicKey;
 
-import codec.asn1.ASN1Null;
-import codec.asn1.ASN1ObjectIdentifier;
-import codec.asn1.ASN1Type;
-import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.ec.parameters.CurveParams;
-import de.flexiprovider.ec.parameters.ECParameters;
 
-public class ECPublicKey extends PublicKey {
+public class ECPublicKey implements PublicKey {
 
     // the public key value w := s * G, 1 < s < r
     private Point mW;
@@ -24,12 +19,12 @@ public class ECPublicKey extends PublicKey {
     // the EC domain parameters
     private CurveParams mParams;
 
-    protected ECPublicKey(Point w, CurveParams params) {
+    public ECPublicKey(Point w, CurveParams params) {
         mW = w;
         mParams = params;
     }
 
-    protected ECPublicKey(byte[] encodedW) {
+    public ECPublicKey(byte[] encodedW) {
         mEncodedW = encodedW;
     }
 
@@ -47,6 +42,16 @@ public class ECPublicKey extends PublicKey {
 
     public String getAlgorithm() {
         return "EC";
+    }
+
+    @Override
+    public String getFormat() {
+        return null;
+    }
+
+    @Override
+    public byte[] getEncoded() {
+        return new byte[0];
     }
 
 
@@ -81,44 +86,5 @@ public class ECPublicKey extends PublicKey {
                 + mParams.getQ().hashCode();
     }
 
-
-    protected ASN1ObjectIdentifier getOID() {
-        return new ASN1ObjectIdentifier(ECKeyFactory.OID);
-    }
-
-
-    protected ASN1Type getAlgParams() {
-        if (mParams == null) {
-            // If no parameters are specified, encode NULL.
-            return new ASN1Null();
-        }
-        // get the OID of the parameters
-        ASN1Type algParams = mParams.getOID();
-        if (algParams == null) {
-            // If no OID is given, the parameters are specified explicitly. In
-            // this case, use the corresponding AlgorithmParameters class to get
-            // the ASN.1 encoded parameters.
-            ECParameters ecParams = new ECParameters();
-            try {
-                ecParams.init(mParams);
-            } catch (InvalidParameterSpecException e) {
-                // the parameters are correct and must be accepted
-                throw new RuntimeException("internal error");
-            }
-            algParams = ecParams.getASN1Params();
-        }
-        return algParams;
-    }
-
-
-    protected byte[] getKeyData() {
-        byte[] keyBytes;
-        if (mEncodedW == null) {
-            keyBytes = mW.EC2OSP(Point.ENCODING_TYPE_UNCOMPRESSED);
-        } else {
-            keyBytes = mEncodedW;
-        }
-        return keyBytes;
-    }
 
 }

@@ -7,36 +7,31 @@ import android.util.Log;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Security;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 
-import javax.crypto.Cipher;
-
-import de.flexiprovider.core.FlexiCoreProvider;
-import de.flexiprovider.ec.FlexiECProvider;
+import de.flexiprovider.api.SecureRandom;
+import de.flexiprovider.api.keys.KeyPair;
+import de.flexiprovider.api.keys.KeyPairGenerator;
+import de.flexiprovider.common.math.FlexiBigInt;
+import de.flexiprovider.common.math.ellipticcurves.Point;
+import de.flexiprovider.ec.ECIES;
+import de.flexiprovider.ec.keys.ECKeyPairGenerator;
 import de.flexiprovider.ec.keys.ECPrivateKey;
+import de.flexiprovider.ec.keys.ECPrivateKeySpec;
+import de.flexiprovider.ec.keys.ECPublicKey;
 import de.flexiprovider.ec.parameters.CurveParams;
 import de.flexiprovider.ec.parameters.CurveRegistry;
 
 public class CryptMethods {
     public static boolean doneCreatingKeys = true;
-    private static PrivateKey mPtK;
+    private static ECPrivateKey mPtK;
     private static String myName = null, myEmail = null, myPublicKey = null;
-    private static PrivateKey tmpPtK = null;
+    private static ECPrivateKey tmpPtK = null;
     private static byte[] tmpPrivateKey;
     private static byte[] myPrivateKey;
     private static String tmpPublicKey = null;
-    private static boolean notInit = true;
     private static boolean lock = true;
 
     public static byte[] getPrivateToSave() {
@@ -47,7 +42,7 @@ public class CryptMethods {
         if (lock) {
             lock = false;
             if (mPtK != null) {
-                BigInteger bi = ((ECPrivateKey) mPtK).getS().bigInt;
+                BigInteger bi = mPtK.getS().bigInt;
                 try {
                     Field f = bi.getClass().getDeclaredField("bigInt");
                     f.setAccessible(true);
@@ -117,29 +112,14 @@ public class CryptMethods {
         return myPublicKey != null;
     }
 
-    private static void addProviders() {
-        Security.addProvider(new FlexiECProvider());
-        Security.addProvider(new FlexiCoreProvider());
-    }
 
     private static KeyPair createKeyPair() {
-        if (notInit) {
-            addProviders();
-            notInit = false;
-        }
+        CurveParams ecParams = new CurveRegistry.BrainpoolP512r1();
+        KeyPairGenerator kpg = new ECKeyPairGenerator();
         try {
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance("ECIES", "FlexiEC");
-            CurveParams ecParams = new CurveRegistry.BrainpoolP512r1();
-            try {
-                kpg.initialize(ecParams);
-                return kpg.generateKeyPair();
-
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
+            kpg.initialize(ecParams, (SecureRandom) null);
+            return kpg.genKeyPair();
+        } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         }
         return null;
@@ -152,11 +132,15 @@ public class CryptMethods {
     public static void createKeys() {
         KeyPair keypair = createKeyPair();
         if (!doneCreatingKeys) {
-            PrivateKey tmp = keypair.getPrivate();
+            ECPrivateKey tmp = (ECPrivateKey)keypair.getPrivate();
             if (tmp != null) {
-                tmpPublicKey = Visual.bin2hex(keypair.getPublic().getEncoded());
+                try {
+                    tmpPublicKey = Visual.bin2hex(((ECPublicKey)keypair.getPublic()).getW().EC2OSP(1));
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                }
                 tmpPtK = tmp;
-                tmpPrivateKey = tmpPtK.getEncoded();
+                tmpPrivateKey = tmpPtK.getS().toByteArray();
             }
         }
     }
@@ -202,19 +186,16 @@ public class CryptMethods {
     }
 
     public static byte[] encrypt(byte[] b, String publicKey) {
-        if (notInit) {
-            addProviders();
-            notInit = false;
-        }
         try {
-            PublicKey frndPbK = KeyFactory.getInstance("ECIES", "FlexiEC")
-                    .generatePublic(new X509EncodedKeySpec(Visual.hex2bin(publicKey)));
-            Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
-            cipher.init(Cipher.ENCRYPT_MODE, frndPbK);
+            CurveParams cp = new CurveRegistry.BrainpoolP512r1();
+            ECPublicKey frndPbK = new ECPublicKey(Point.OS2ECP(Visual.hex2bin(publicKey), cp),cp);
+            ECIES cipher = new ECIES();
+            cipher.initEncrypt(frndPbK,null,null);
             return cipher.doFinal(b);
-        } catch (Exception ignore) {
-            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     public static byte[] decrypt(byte[] raw) {
@@ -222,16 +203,12 @@ public class CryptMethods {
     }
 
     public static byte[] decrypt(byte[] data, byte[] key) {
-        if (notInit) {
-            addProviders();
-            notInit = false;
-        }
         try {
-            Cipher cipher = Cipher.getInstance("ECIES", "FlexiEC");
+            ECIES cipher = new ECIES();
             if (key == null)
-                cipher.init(Cipher.DECRYPT_MODE, mPtK);
+                cipher.initDecrypt(mPtK, null);
             else
-                cipher.init(Cipher.DECRYPT_MODE, formatPrivate(key));
+                cipher.initDecrypt(formatPrivate(key), null);
             return cipher.doFinal(data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -239,23 +216,8 @@ public class CryptMethods {
         }
     }
 
-    private static PrivateKey formatPrivate(byte[] p) {
-        if (notInit) {
-            addProviders();
-            notInit = false;
-        }
-        try {
-            return KeyFactory.getInstance("ECIES", "FlexiEC").generatePrivate(
-                    new PKCS8EncodedKeySpec(p));
-
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        }
-        return null;
+    private static ECPrivateKey formatPrivate(byte[] p) {
+        return new ECPrivateKey(new ECPrivateKeySpec(new FlexiBigInt(p),new CurveRegistry.BrainpoolP512r1()));
     }
 
     public static String getPublicTmp() {

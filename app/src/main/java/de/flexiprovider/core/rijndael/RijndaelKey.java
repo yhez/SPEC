@@ -1,10 +1,9 @@
 package de.flexiprovider.core.rijndael;
 
-import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.common.util.ByteUtils;
 
 
-public class RijndaelKey implements SecretKey {
+public class RijndaelKey implements javax.crypto.SecretKey, java.security.Key {
 
     // the key bytes
     private byte[] keyBytes;

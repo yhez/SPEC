@@ -3,19 +3,17 @@ package de.flexiprovider.api;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
-import java.security.NoSuchAlgorithmException;
+import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidParameterSpecException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.ShortBufferException;
 
-import de.flexiprovider.api.exceptions.NoSuchModeException;
-import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.parameters.AlgorithmParameters;
 import de.flexiprovider.common.util.JavaSecureRandomWrapper;
+import de.flexiprovider.ec.parameters.ECParameters;
 
 public abstract class Cipher extends javax.crypto.CipherSpi {
 
@@ -44,26 +42,7 @@ public abstract class Cipher extends javax.crypto.CipherSpi {
                                     java.security.SecureRandom random)
             throws java.security.InvalidKeyException,
             java.security.InvalidAlgorithmParameterException {
-
-        // if algParams are not specified, initialize without them
-        if (algParams == null) {
             engineInit(opMode, key, random);
-            return;
-        }
-
-        java.security.spec.AlgorithmParameterSpec paramSpec;
-        try {
-            paramSpec = algParams.getParameterSpec(Registry
-                    .getAlgParamSpecClass(algParams.getAlgorithm()));
-        } catch (NoSuchAlgorithmException e) {
-            throw new InvalidAlgorithmParameterException(
-                    "Unknown algorithm parameters.");
-        } catch (InvalidParameterSpecException e) {
-            throw new RuntimeException(
-                    "Internal error: invalid parameters type.");
-        }
-
-        engineInit(opMode, key, paramSpec, random);
     }
 
 
@@ -73,7 +52,7 @@ public abstract class Cipher extends javax.crypto.CipherSpi {
             throws java.security.InvalidKeyException,
             java.security.InvalidAlgorithmParameterException {
 
-        if ((key == null) || !(key instanceof Key)) {
+        if ((key == null)) {
             throw new java.security.InvalidKeyException();
         }
 
@@ -81,10 +60,10 @@ public abstract class Cipher extends javax.crypto.CipherSpi {
 
         if (opMode == ENCRYPT_MODE) {
             SecureRandom flexiRand = new JavaSecureRandomWrapper(javaRand);
-            initEncrypt((Key) key, params, flexiRand);
+            initEncrypt(key, params, flexiRand);
 
         } else if (opMode == DECRYPT_MODE) {
-            initDecrypt((Key) key, params);
+            initDecrypt(key, params);
 
         }
     }
@@ -112,10 +91,10 @@ public abstract class Cipher extends javax.crypto.CipherSpi {
 
     protected final int engineGetKeySize(java.security.Key key)
             throws java.security.InvalidKeyException {
-        if (!(key instanceof Key)) {
+        if (key == null) {
             throw new java.security.InvalidKeyException("Unsupported key.");
         }
-        return getKeySize((Key) key);
+        return getKeySize(key);
     }
 
     protected final byte[] engineGetIV() {
@@ -138,11 +117,7 @@ public abstract class Cipher extends javax.crypto.CipherSpi {
 
         String algName = getName();
         AlgorithmParameters params;
-        try {
-            params = Registry.getAlgParams(algName);
-        } catch (NoSuchAlgorithmException e) {
-            return null;
-        }
+        params = new ECParameters();
 
         JavaAlgorithmParameters algParams = new JavaAlgorithmParameters(params,
                 algName);
@@ -207,10 +182,10 @@ public abstract class Cipher extends javax.crypto.CipherSpi {
 
     public abstract byte[] getIV();
 
-    protected abstract void setMode(String mode) throws NoSuchModeException;
+    protected abstract void setMode(String mode);
 
     protected abstract void setPadding(String padding)
-            throws NoSuchPaddingException;
+            ;
 
     public abstract byte[] update(byte[] input, int inOff, int inLen);
 

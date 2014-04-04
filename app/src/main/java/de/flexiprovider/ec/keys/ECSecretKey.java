@@ -1,10 +1,9 @@
 package de.flexiprovider.ec.keys;
 
-import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.common.math.FlexiBigInt;
 
 
-public class ECSecretKey implements SecretKey {
+public class ECSecretKey implements javax.crypto.SecretKey, java.security.Key {
 
     // the private key s, 1 < s < r.
     private FlexiBigInt mS;

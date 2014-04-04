@@ -1,6 +1,9 @@
 package de.flexiprovider.api.keys;
 
 
+import java.security.PrivateKey;
+import java.security.PublicKey;
+
 public final class KeyPair {
 
     java.security.KeyPair pair;
@@ -11,11 +14,11 @@ public final class KeyPair {
     }
 
     public PublicKey getPublic() {
-        return (PublicKey) pair.getPublic();
+        return pair.getPublic();
     }
 
     public PrivateKey getPrivate() {
-        return (PrivateKey) pair.getPrivate();
+        return pair.getPrivate();
     }
 
 }

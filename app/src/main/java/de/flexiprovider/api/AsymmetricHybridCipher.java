@@ -2,12 +2,11 @@ package de.flexiprovider.api;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.ShortBufferException;
-
-import de.flexiprovider.api.keys.Key;
 
 public abstract class AsymmetricHybridCipher extends Cipher {
 

@@ -2,12 +2,12 @@ package de.flexiprovider.core.rijndael;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;
 
+import javax.crypto.SecretKey;
+
 import de.flexiprovider.api.BlockCipher;
-import de.flexiprovider.api.exceptions.NoSuchModeException;
-import de.flexiprovider.api.keys.Key;
-import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.common.util.BigEndianConversions;
 
 
@@ -718,20 +718,6 @@ public class Rijndael extends BlockCipher {
         public static final String OID = "2.16.840.1.101.3.4.1";
 
 
-        public static class AES128_ECB extends AES {
-
-
-            public static final String ALG_NAME = AES.ALG_NAME + "128_ECB";
-
-
-            public static final String OID = AES.OID + ".1";
-
-            public AES128_ECB() {
-                super(ALG_NAME, "ECB", 4);
-            }
-        }
-
-
         public static class AES128_CBC extends AES {
 
 
@@ -742,144 +728,6 @@ public class Rijndael extends BlockCipher {
 
             public AES128_CBC() {
                 super(ALG_NAME, "CBC", 4);
-            }
-        }
-
-
-        public static class AES128_OFB extends AES {
-
-
-            public static final String ALG_NAME = AES.ALG_NAME + "128_OFB";
-
-
-            public static final String OID = AES.OID + ".3";
-
-            public AES128_OFB() {
-                super(ALG_NAME, "OFB", 4);
-            }
-        }
-
-
-        public static class AES128_CFB extends AES {
-
-
-            public static final String ALG_NAME = AES.ALG_NAME + "128_CFB";
-
-
-            public static final String OID = AES.OID + ".4";
-
-            public AES128_CFB() {
-                super(ALG_NAME, "CFB", 4);
-            }
-        }
-
-
-        public static class AES192_ECB extends AES {
-
-
-            public static final String ALG_NAME = AES.ALG_NAME + "192_ECB";
-
-
-            public static final String OID = AES.OID + ".21";
-
-            public AES192_ECB() {
-                super(ALG_NAME, "ECB", 6);
-            }
-        }
-
-
-        public static class AES192_CBC extends AES {
-
-
-            public static final String ALG_NAME = AES.ALG_NAME + "192_CBC";
-
-
-            public static final String OID = AES.OID + ".22";
-
-            public AES192_CBC() {
-                super(ALG_NAME, "CBC", 6);
-            }
-        }
-        public static class AES192_OFB extends AES {
-
-
-            public static final String ALG_NAME = AES.ALG_NAME + "192_OFB";
-
-
-            public static final String OID = AES.OID + ".23";
-
-            public AES192_OFB() {
-                super(ALG_NAME, "OFB", 6);
-            }
-        }
-
-
-        public static class AES192_CFB extends AES {
-
-
-            public static final String ALG_NAME = AES.ALG_NAME + "192_CFB";
-
-
-            public static final String OID = AES.OID + ".24";
-
-            public AES192_CFB() {
-                super(ALG_NAME, "CFB", 6);
-            }
-        }
-
-
-        public static class AES256_ECB extends AES {
-
-
-            public static final String ALG_NAME = AES.ALG_NAME + "256_ECB";
-
-
-            public static final String OID = AES.OID + ".41";
-
-            public AES256_ECB() {
-                super(ALG_NAME, "ECB", 8);
-            }
-        }
-
-
-        public static class AES256_CBC extends AES {
-
-
-            public static final String ALG_NAME = AES.ALG_NAME + "256_CBC";
-
-
-            public static final String OID = AES.OID + ".42";
-
-            public AES256_CBC() {
-                super(ALG_NAME, "CBC", 8);
-            }
-        }
-
-
-        public static class AES256_OFB extends AES {
-
-
-            public static final String ALG_NAME = AES.ALG_NAME + "256_OFB";
-
-
-            public static final String OID = AES.OID + ".43";
-
-            public AES256_OFB() {
-                super(ALG_NAME, "OFB", 8);
-            }
-        }
-
-
-        public static class AES256_CFB extends AES {
-
-
-            public static final String ALG_NAME = AES.ALG_NAME + "256_CFB";
-
-
-            public static final String OID = AES.OID + ".44";
-
-            public AES256_CFB() {
-                super(ALG_NAME, "CFB", 8);
             }
         }
 
@@ -897,13 +745,7 @@ public class Rijndael extends BlockCipher {
             keySizeIsMutable = false;
 
             // set the mode
-            try {
-                setMode(modeName);
-            } catch (NoSuchModeException e) {
-                throw new RuntimeException(
-                        "Internal error: could not find mode '" + modeName
-                                + "'.");
-            }
+            setMode(modeName);
         }
 
 

@@ -12,30 +12,12 @@ public class ASN1Choice extends ASN1AbstractType {
 
     private ArrayList choices_;
 
-    public ASN1Choice() {
-        choices_ = new ArrayList(2);
-    }
-
     public ASN1Choice(int capacity) {
         if (capacity < 1)
             throw new IllegalArgumentException(
                     "capacity must be greater than zero!");
 
         choices_ = new ArrayList(capacity);
-    }
-
-    public void addType(ASN1Type t) {
-        if (t == null)
-            throw new NullPointerException("Choice is null!");
-
-        if (t instanceof ASN1Choice)
-            throw new IllegalArgumentException(
-                    "No nested CHOICE types are allowed!");
-
-        t.setOptional(false);
-        t.setExplicit(true);
-
-        choices_.add(t);
     }
 
     public ASN1Type getType(int tag, int tagclass) {
@@ -54,10 +36,6 @@ public class ASN1Choice extends ASN1AbstractType {
 
     public boolean isType(int tag, int tagclass) {
         return getType(tag, tagclass) != null;
-    }
-
-    public ASN1Type getInnerType() {
-        return inner_;
     }
 
 

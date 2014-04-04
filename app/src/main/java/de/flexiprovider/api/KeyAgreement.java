@@ -1,16 +1,16 @@
 package de.flexiprovider.api;
 
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.KeyAgreementSpi;
+import javax.crypto.SecretKey;
 import javax.crypto.ShortBufferException;
 
-import de.flexiprovider.api.keys.Key;
-import de.flexiprovider.api.keys.PrivateKey;
-import de.flexiprovider.api.keys.PublicKey;
-import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.common.util.JavaSecureRandomWrapper;
 
 public abstract class KeyAgreement extends KeyAgreementSpi {

@@ -4,18 +4,18 @@ import java.lang.reflect.Method;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
+import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.crypto.ShortBufferException;
 
-import de.flexiprovider.api.exceptions.NoSuchModeException;
-import de.flexiprovider.api.keys.Key;
-import de.flexiprovider.api.keys.SecretKey;
+import de.flexiprovider.common.mode.CBC;
 import de.flexiprovider.common.mode.ModeParameterSpec;
 import de.flexiprovider.common.mode.OFB;
+import de.flexiprovider.common.padding.PKCS5Padding;
 
 
 public abstract class BlockCipher extends Cipher {
@@ -91,30 +91,19 @@ public abstract class BlockCipher extends Cipher {
     }
 
 
-    public final void setMode(String modeName) throws NoSuchModeException {
+    public final void setMode(String modeName) {
         if (mode != null) {
             return;
         }
-
-        if ((modeName == null) || (modeName == "")) {
-            mode = Registry.getMode();
-        } else {
-            mode = Registry.getMode(modeName);
-        }
+        mode = new CBC();
         mode.setBlockCipher(this);
     }
 
-    public final void setPadding(String paddingName)
-            throws NoSuchPaddingException {
+    public final void setPadding(String paddingName) {
         if (paddingScheme != null) {
             return;
         }
-
-        if (paddingName == null || paddingName.equals("")) {
-            paddingScheme = Registry.getPaddingScheme();
-        } else {
-            paddingScheme = Registry.getPaddingScheme(paddingName);
-        }
+        paddingScheme = new PKCS5Padding();
     }
 
 
@@ -143,12 +132,12 @@ public abstract class BlockCipher extends Cipher {
     }
 
 
-    public final void initEncrypt(Key key, SecureRandom random)
+    public final void initEncrypt(Key key)
             throws InvalidKeyException, InvalidParameterException {
 
         try {
             initEncrypt(key, null,
-                    null, random);
+                    (SecureRandom)null);
         } catch (InvalidAlgorithmParameterException e) {
             throw new InvalidParameterException(
                     "This cipher needs algorithm parameters for initialization (cannot be null).");
@@ -159,12 +148,12 @@ public abstract class BlockCipher extends Cipher {
     public final void initEncrypt(Key key, AlgorithmParameterSpec cipherParams,
                                   SecureRandom random) throws InvalidKeyException,
             InvalidAlgorithmParameterException {
-        initEncrypt(key, null, cipherParams, random);
+        initEncrypt(key, null, cipherParams);
     }
 
 
     public final void initEncrypt(Key key, ModeParameterSpec modeParams,
-                                  AlgorithmParameterSpec cipherParams, SecureRandom random)
+                                  AlgorithmParameterSpec cipherParams)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
 
         initModeAndPadding();
@@ -380,12 +369,12 @@ public abstract class BlockCipher extends Cipher {
 
     private void initModeAndPadding() {
         if (mode == null) {
-            mode = Registry.getMode();
+            mode = new CBC();
             mode.setBlockCipher(this);
         }
 
         if (paddingScheme == null) {
-            paddingScheme = Registry.getPaddingScheme();
+            paddingScheme = new PKCS5Padding();
         }
     }
 

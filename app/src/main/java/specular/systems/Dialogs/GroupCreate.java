@@ -11,8 +11,11 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import java.security.KeyPair;
+import java.security.InvalidKeyException;
 
+import de.flexiprovider.api.keys.KeyPair;
+import de.flexiprovider.ec.keys.ECPrivateKey;
+import de.flexiprovider.ec.keys.ECPublicKey;
 import specular.systems.CryptMethods;
 import specular.systems.Group;
 import specular.systems.R;
@@ -35,8 +38,13 @@ public class GroupCreate extends DialogFragment {
             @Override
             public void onClick(View view) {
                 KeyPair kp = CryptMethods.createKeysForGroup();
-                String pub = Visual.bin2hex(kp.getPublic().getEncoded());
-                byte[] pvt = kp.getPrivate().getEncoded();
+                String pub = null;
+                try {
+                    pub = Visual.bin2hex(((ECPublicKey) kp.getPublic()).getW().EC2OSP(1));
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                }
+                byte[] pvt = ((ECPrivateKey)kp.getPrivate()).getS().toByteArray();
                 String name = ((EditText) v.findViewById(R.id.name)).getText().toString(),
                         email = ((EditText) v.findViewById(R.id.email)).getText().toString(),
                         session = ((EditText) v.findViewById(R.id.session)).getText().toString();

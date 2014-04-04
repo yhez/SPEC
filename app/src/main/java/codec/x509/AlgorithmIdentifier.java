@@ -1,6 +1,5 @@
 package codec.x509;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.AlgorithmParameters;
 import java.security.InvalidAlgorithmParameterException;
@@ -8,12 +7,9 @@ import java.security.NoSuchAlgorithmException;
 
 import codec.asn1.ASN1;
 import codec.asn1.ASN1Exception;
-import codec.asn1.ASN1Null;
 import codec.asn1.ASN1ObjectIdentifier;
 import codec.asn1.ASN1Opaque;
 import codec.asn1.ASN1Sequence;
-import codec.asn1.ASN1Type;
-import codec.asn1.DEREncoder;
 import codec.util.JCA;
 
 
@@ -51,39 +47,6 @@ public class AlgorithmIdentifier extends ASN1Sequence {
 
         add(algorithm_);
         add(parameters_);
-    }
-
-
-    public AlgorithmIdentifier(ASN1ObjectIdentifier oid, ASN1Type params)
-            throws Exception {
-        super(2);
-
-        DEREncoder enc;
-        ByteArrayOutputStream bos;
-
-        if (oid == null)
-            throw new NullPointerException("Need an OID!");
-
-        algorithm_ = (ASN1ObjectIdentifier) oid.clone();
-
-        try {
-            if (params == null || (params instanceof ASN1Null))
-                parameters_ = new ASN1Opaque(ASN1.TAG_NULL,
-                        ASN1.CLASS_UNIVERSAL, new byte[0]);
-            else {
-                bos = new ByteArrayOutputStream();
-                enc = new DEREncoder(bos);
-                params.encode(enc);
-
-                parameters_ = new ASN1Opaque(bos.toByteArray());
-                bos.close();
-            }
-            add(algorithm_);
-            add(parameters_);
-        } catch (IOException e) {
-            throw new Exception(
-                    "Internal, caught IOException!");
-        }
     }
 
 

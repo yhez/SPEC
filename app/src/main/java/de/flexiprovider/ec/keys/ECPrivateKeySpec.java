@@ -1,11 +1,10 @@
 package de.flexiprovider.ec.keys;
 
-import de.flexiprovider.api.keys.KeySpec;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.ec.parameters.CurveParams;
 
 
-public final class ECPrivateKeySpec implements KeySpec {
+public final class ECPrivateKeySpec implements java.security.spec.KeySpec {
 
 
     private CurveParams mParams;

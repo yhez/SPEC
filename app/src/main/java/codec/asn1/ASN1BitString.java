@@ -23,10 +23,6 @@ public class ASN1BitString extends ASN1AbstractType {
     public ASN1BitString() {
     }
 
-    public ASN1BitString(byte[] b, int pad) {
-        setBits0(b, pad);
-    }
-
     public Object getValue() {
         return getBits();
     }

@@ -4,8 +4,9 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.spec.AlgorithmParameterSpec;
 
+import javax.crypto.SecretKey;
+
 import de.flexiprovider.api.Mode;
-import de.flexiprovider.api.keys.SecretKey;
 
 
 public class OFB extends Mode {

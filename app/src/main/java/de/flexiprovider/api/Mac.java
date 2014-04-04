@@ -3,7 +3,7 @@ package de.flexiprovider.api;
 import java.security.InvalidKeyException;
 import java.security.spec.AlgorithmParameterSpec;
 
-import de.flexiprovider.api.keys.SecretKey;
+import javax.crypto.SecretKey;
 
 
 public abstract class Mac extends javax.crypto.MacSpi {
@@ -41,7 +41,7 @@ public abstract class Mac extends javax.crypto.MacSpi {
 
     public abstract int getMacLength();
 
-    public final void init(SecretKey key) throws InvalidKeyException {
+    public final void init(SecretKey key) {
         try {
             init(key, null);
         } catch (Exception iape) {

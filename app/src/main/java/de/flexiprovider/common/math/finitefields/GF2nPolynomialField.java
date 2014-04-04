@@ -151,7 +151,7 @@ public class GF2nPolynomialField extends GF2nField {
 
     private boolean testPentanomials() {
         int i, j, k;
-        boolean done = false;
+        boolean done;
 
         fieldPolynomial = new GF2Polynomial(mDegree + 1);
         fieldPolynomial.setBit(0);

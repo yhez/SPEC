@@ -74,16 +74,6 @@ public final class ByteUtils {
     }
 
 
-    public static String toHexString(byte[] input) {
-        String result = "";
-        for (byte anInput : input) {
-            result += HEX_CHARS[(anInput >>> 4) & 0x0f];
-            result += HEX_CHARS[(anInput) & 0x0f];
-        }
-        return result;
-    }
-
-
     public static String toHexString(byte[] input, String prefix,
                                      String seperator) {
         String result = prefix;

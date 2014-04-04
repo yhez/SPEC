@@ -15,8 +15,4 @@ public class ModeParameterSpec extends javax.crypto.spec.IvParameterSpec
     }
 
 
-    public ModeParameterSpec(byte[] iv, int offset, int length) {
-        super(iv, offset, length);
-    }
-
 }

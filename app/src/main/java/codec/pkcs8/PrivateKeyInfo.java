@@ -43,21 +43,6 @@ public class PrivateKeyInfo extends ASN1Sequence {
     }
 
 
-    public PrivateKeyInfo(AlgorithmIdentifier aid, byte[] key) {
-        version_ = new ASN1Integer(VERSION);
-        add(version_);
-
-        algorithm_ = aid;
-        add(algorithm_);
-
-        encodedKey_ = new ASN1OctetString(key);
-        add(encodedKey_);
-
-        attributes_ = new ASN1Set();
-        add(new ASN1TaggedType(0, attributes_, false, true));
-    }
-
-
     public AlgorithmIdentifier getAlgorithmIdentifier() {
         return algorithm_;
     }

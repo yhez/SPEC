@@ -2,7 +2,9 @@ package de.flexiprovider.api.keys;
 
 import java.security.InvalidKeyException;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 
+import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactorySpi;
 
 public abstract class SecretKeyFactory extends SecretKeyFactorySpi {
@@ -15,38 +17,27 @@ public abstract class SecretKeyFactory extends SecretKeyFactorySpi {
             throw new java.security.spec.InvalidKeySpecException();
         }
 
-        if (!(keySpec instanceof KeySpec)) {
-            if (keySpec instanceof javax.crypto.spec.SecretKeySpec) {
-                javax.crypto.spec.SecretKeySpec javaSpec = (javax.crypto.spec.SecretKeySpec) keySpec;
-                KeySpec secretKeySpec = new SecretKeySpec(
-                        javaSpec.getEncoded(), javaSpec.getAlgorithm());
-                return generateSecret(secretKeySpec);
-            }
-
-            throw new java.security.spec.InvalidKeySpecException();
-        }
-
-        return generateSecret((KeySpec) keySpec);
+        return generateSecret(keySpec);
     }
 
     protected java.security.spec.KeySpec engineGetKeySpec(
             javax.crypto.SecretKey key, Class keySpec)
             throws java.security.spec.InvalidKeySpecException {
 
-        if ((key == null) || (keySpec == null) || !(key instanceof SecretKey)) {
+        if ((key == null) || (keySpec == null)) {
             throw new java.security.spec.InvalidKeySpecException();
         }
-        return getKeySpec((SecretKey) key, keySpec);
+        return getKeySpec(key, keySpec);
     }
 
     protected javax.crypto.SecretKey engineTranslateKey(
             javax.crypto.SecretKey key)
             throws java.security.InvalidKeyException {
 
-        if ((key == null) || !(key instanceof SecretKey)) {
+        if ((key == null)) {
             throw new java.security.InvalidKeyException();
         }
-        return translateKey((SecretKey) key);
+        return translateKey(key);
     }
 
     public abstract SecretKey generateSecret(KeySpec keySpec)

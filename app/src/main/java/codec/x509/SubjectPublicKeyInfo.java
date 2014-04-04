@@ -21,19 +21,6 @@ public class SubjectPublicKeyInfo extends ASN1Sequence {
     }
 
 
-    public SubjectPublicKeyInfo(AlgorithmIdentifier aid, byte[] key) {
-        super(2);
-
-        if (aid == null || key == null)
-            throw new NullPointerException("Some arg is null!");
-
-        algorithm_ = aid;
-        add(algorithm_);
-        encodedKey_ = new ASN1BitString(key, 0);
-        add(encodedKey_);
-    }
-
-
     public byte[] getRawKey() {
         return encodedKey_.getBytes();
     }

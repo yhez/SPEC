@@ -1,17 +1,17 @@
 package de.flexiprovider.ec.keys;
 
 import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 
 import codec.asn1.ASN1OctetString;
 import codec.asn1.ASN1Sequence;
 import codec.pkcs8.PrivateKeyInfo;
 import codec.x509.SubjectPublicKeyInfo;
-import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.keys.KeyFactory;
-import de.flexiprovider.api.keys.KeySpec;
-import de.flexiprovider.api.keys.PrivateKey;
-import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.api.parameters.AlgorithmParameters;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.EllipticCurve;

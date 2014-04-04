@@ -4,7 +4,8 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.spec.AlgorithmParameterSpec;
 
-import de.flexiprovider.api.keys.SecretKey;
+import javax.crypto.SecretKey;
+
 import de.flexiprovider.common.mode.ModeParameterSpec;
 
 

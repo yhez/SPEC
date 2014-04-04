@@ -2,14 +2,12 @@ package de.flexiprovider.pki;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
 
 import codec.asn1.ASN1;
 import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1ObjectIdentifier;
-import codec.asn1.ASN1Type;
-import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.parameters.AlgorithmParameters;
+import de.flexiprovider.ec.parameters.ECParameters;
 
 
 public class AlgorithmIdentifier extends codec.x509.AlgorithmIdentifier {
@@ -21,13 +19,7 @@ public class AlgorithmIdentifier extends codec.x509.AlgorithmIdentifier {
     }
 
 
-    public AlgorithmIdentifier(ASN1ObjectIdentifier oid, ASN1Type params)
-            throws Exception {
-        super(oid, params);
-    }
-
-
-    public AlgorithmParameters getParams() throws NoSuchAlgorithmException,
+    public AlgorithmParameters getParams() throws
             InvalidAlgorithmParameterException {
         AlgorithmParameters params;
 
@@ -40,7 +32,7 @@ public class AlgorithmIdentifier extends codec.x509.AlgorithmIdentifier {
             return null;
         }
 
-        params = Registry.getAlgParams(algorithm_.toString());
+        params = new ECParameters();
 
         try {
             params.init(parameters_.getEncoded());

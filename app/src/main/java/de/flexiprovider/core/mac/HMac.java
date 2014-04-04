@@ -3,9 +3,10 @@ package de.flexiprovider.core.mac;
 import java.security.InvalidKeyException;
 import java.security.spec.AlgorithmParameterSpec;
 
+import javax.crypto.SecretKey;
+
 import de.flexiprovider.api.Mac;
 import de.flexiprovider.api.MessageDigest;
-import de.flexiprovider.api.keys.SecretKey;
 
 
 public class HMac extends Mac {
@@ -17,11 +18,6 @@ public class HMac extends Mac {
          * The OID of HmacSHA1 (defined by RFC 3370).
          */
         public static final String OID = "1.3.6.1.5.5.8.1.2";
-
-        /**
-         * An alternative OID of HmacSHA1 (defined by PKCS #5 v2.0)
-         */
-        public static final String PKCS5_OID = "1.2.840.113549.2.7";
 
         public SHA1() {
             super(new de.flexiprovider.core.md.SHA1(), 64);

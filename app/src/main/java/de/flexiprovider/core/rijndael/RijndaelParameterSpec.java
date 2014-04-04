@@ -2,7 +2,6 @@ package de.flexiprovider.core.rijndael;
 
 import java.util.Arrays;
 
-import de.flexiprovider.common.mode.ModeParameterSpec;
 import de.flexiprovider.common.util.ByteUtils;
 
 
@@ -26,11 +25,6 @@ public class RijndaelParameterSpec implements java.security.spec.AlgorithmParame
         } else {
             this.blockSize = blockSize;
         }
-    }
-
-    public RijndaelParameterSpec(int blockSize, ModeParameterSpec modeParams) {
-        this(blockSize);
-        iv = modeParams.getIV();
     }
 
     public int getBlockSize() {

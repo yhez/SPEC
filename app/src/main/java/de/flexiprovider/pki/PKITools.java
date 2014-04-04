@@ -18,7 +18,7 @@ public final class PKITools {
         try {
             java.security.AlgorithmParameters algParams = algId.getParameters();
             if (algParams == null) {
-                return new AlgorithmIdentifier(algOID, (byte[]) null);
+                return new AlgorithmIdentifier(algOID, null);
             }
             byte[] encParams = algParams.getEncoded();
             return new AlgorithmIdentifier(algOID, encParams);
@@ -36,7 +36,7 @@ public final class PKITools {
         try {
             java.security.AlgorithmParameters algParams = algId.getParameters();
             if (algParams == null) {
-                return new AlgorithmIdentifier(algOID, (byte[]) null);
+                return new AlgorithmIdentifier(algOID, null);
             }
             byte[] encParams = algParams.getEncoded();
             return new AlgorithmIdentifier(algOID, encParams);

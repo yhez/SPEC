@@ -2,16 +2,16 @@ package de.flexiprovider.ec;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.InvalidParameterSpecException;
 
 import de.flexiprovider.api.KeyAgreement;
-import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.keys.KeyFactory;
 import de.flexiprovider.api.keys.KeyPair;
 import de.flexiprovider.api.keys.KeyPairGenerator;
-import de.flexiprovider.api.keys.PrivateKey;
-import de.flexiprovider.api.keys.PublicKey;
 import de.flexiprovider.common.ies.IES;
 import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.ec.keys.ECKeyFactory;

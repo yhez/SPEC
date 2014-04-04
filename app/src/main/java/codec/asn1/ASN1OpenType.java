@@ -14,11 +14,6 @@ public class ASN1OpenType extends ASN1AbstractType {
     }
 
 
-    public ASN1OpenType(OIDRegistry registry, ASN1ObjectIdentifier oid) {
-        resolver_ = new DefinedByResolver(registry, oid);
-    }
-
-
     public ASN1Type getInnerType() throws ResolverException {
         if (inner_ != null) {
             return inner_;

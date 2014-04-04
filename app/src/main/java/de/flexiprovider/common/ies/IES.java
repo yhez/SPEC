@@ -3,11 +3,15 @@ package de.flexiprovider.common.ies;
 import java.io.ByteArrayOutputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.SecretKey;
 
 import de.flexiprovider.api.AsymmetricHybridCipher;
 import de.flexiprovider.api.BlockCipher;
@@ -16,16 +20,15 @@ import de.flexiprovider.api.KeyDerivation;
 import de.flexiprovider.api.Mac;
 import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.SecureRandom;
-import de.flexiprovider.api.keys.Key;
 import de.flexiprovider.api.keys.KeyPair;
-import de.flexiprovider.api.keys.PrivateKey;
-import de.flexiprovider.api.keys.PublicKey;
-import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.api.keys.SecretKeyFactory;
 import de.flexiprovider.api.keys.SecretKeySpec;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.kdf.KDF2;
 import de.flexiprovider.core.kdf.KDFParameterSpec;
+import de.flexiprovider.core.mac.HMac;
+import de.flexiprovider.core.mac.HMacKeyFactory;
+import de.flexiprovider.core.rijndael.RijndaelKeyFactory;
 
 
 public abstract class IES extends AsymmetricHybridCipher {
@@ -270,8 +273,8 @@ public abstract class IES extends AsymmetricHybridCipher {
     private void initMAC() {
         macName = iesParams.getMacName();
         try {
-            mac = Registry.getMAC(macName);
-            macKF = Registry.getSecretKeyFactory(iesParams.getMacKFName());
+            mac = new HMac.SHA1();
+            macKF = new HMacKeyFactory();
         } catch (Exception ex) {
             throw new RuntimeException("IES Init (checkMac): "
                     + ex.getMessage());
@@ -299,13 +302,12 @@ public abstract class IES extends AsymmetricHybridCipher {
             if (!isInternal) {
                 byte[] symKeyData = new byte[symKeyLength];
                 System.arraycopy(keyStream, 0, symKeyData, 0, symKeyLength);
-                SecretKeyFactory symKeyFactory = Registry
-                        .getSecretKeyFactory(iesParams.getSymKFName());
+                SecretKeyFactory symKeyFactory = new RijndaelKeyFactory();
                 SecretKeySpec keySpec = new SecretKeySpec(symKeyData,
                         symCipherName);
                 SecretKey symKey = symKeyFactory.generateSecret(keySpec);
                 if (opMode == ENCRYPT_MODE) {
-                    symCipher.initEncrypt(symKey, random);
+                    symCipher.initEncrypt(symKey);
                 } else if (opMode == DECRYPT_MODE) {
                     symCipher.initDecrypt(symKey);
                 }
@@ -352,9 +354,6 @@ public abstract class IES extends AsymmetricHybridCipher {
             mac.init(macKey);
         } catch (InvalidKeySpecException e) {
             throw new RuntimeException("internal error");
-        } catch (InvalidKeyException ike) {
-            throw new RuntimeException("InvalidKeyException: "
-                    + ike.getMessage());
         }
 
         macKeyLen = cText.length;

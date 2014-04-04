@@ -7,8 +7,4 @@ public class X509EncodedKeySpec extends java.security.spec.X509EncodedKeySpec
         super(encodedKey);
     }
 
-    public X509EncodedKeySpec(java.security.spec.X509EncodedKeySpec javaKeySpec) {
-        super(javaKeySpec.getEncoded());
-    }
-
 }

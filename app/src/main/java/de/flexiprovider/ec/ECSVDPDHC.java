@@ -1,17 +1,17 @@
 package de.flexiprovider.ec;
 
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.AlgorithmParameterSpec;
 
+import javax.crypto.SecretKey;
 import javax.crypto.ShortBufferException;
 
 import de.flexiprovider.api.KeyAgreement;
 import de.flexiprovider.api.SecureRandom;
-import de.flexiprovider.api.keys.Key;
-import de.flexiprovider.api.keys.PrivateKey;
-import de.flexiprovider.api.keys.PublicKey;
-import de.flexiprovider.api.keys.SecretKey;
 import de.flexiprovider.common.exceptions.InvalidPointException;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.Point;
@@ -49,17 +49,6 @@ public class ECSVDPDHC extends KeyAgreement {
         mK = FlexiBigInt.valueOf(ecPrivKey.getParams().getK());
     }
 
-
-    public void init(PrivateKey key)
-            throws InvalidKeyException {
-        if (!(key instanceof ECPrivateKey)) {
-            throw new InvalidKeyException("unsupported type");
-        }
-        ECPrivateKey ecPrivKey = (ECPrivateKey) key;
-
-        mS = ecPrivKey.getS();
-        mK = FlexiBigInt.valueOf(ecPrivKey.getParams().getK());
-    }
 
     public SecretKey generateSecret(String algorithm)
             throws NoSuchAlgorithmException {

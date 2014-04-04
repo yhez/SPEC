@@ -11,7 +11,6 @@ import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.common.math.ellipticcurves.ScalarMult;
 import de.flexiprovider.ec.parameters.CurveParams;
-import de.flexiprovider.ec.parameters.CurveRegistry;
 import specular.systems.CryptMethods;
 
 
@@ -63,13 +62,7 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
 
     public void initialize(int keySize, SecureRandom random) {
         CurveParams params;
-        try {
-            String paramName = CurveRegistry.getDefaultCurveParams(keySize);
-            params = (CurveParams) Registry.getAlgParamSpec(paramName);
-        } catch (InvalidAlgorithmParameterException e) {
-            // no default curve exists
-            throw new RuntimeException(e.getMessage());
-        }
+        params = (CurveParams) Registry.getAlgParamSpec();
 
         try {
             initialize(params, random);

@@ -8,18 +8,27 @@ import codec.asn1.AbstractOIDRegistry;
 
 
 public class ECurvesOIDRegistry extends AbstractOIDRegistry {
-
+    static final ASN1ObjectIdentifier PRIME_FIELD = new ASN1ObjectIdentifier(
+            "1.2.840.10045.1.1");
+    static final ASN1ObjectIdentifier CHARACTERISTIC_TWO_FIELD = new ASN1ObjectIdentifier(
+            "1.2.840.10045.1.2");
+    public static final ASN1ObjectIdentifier BASIS_TYPE_ONB = new ASN1ObjectIdentifier(
+            "1.2.840.10045.1.2.3.1");
+    public static final ASN1ObjectIdentifier BASIS_TYPE_TRINOMIAL = new ASN1ObjectIdentifier(
+            "1.2.840.10045.1.2.3.2");
+    public static final ASN1ObjectIdentifier BASIS_TYPE_PENTANOMIAL = new ASN1ObjectIdentifier(
+            "1.2.840.10045.1.2.3.3");
     private static final ASN1ObjectIdentifier[] oids = {
             // prime field
-            FieldId.PRIME_FIELD,
+            PRIME_FIELD,
             // characteristic-two field
-            FieldId.CHARACTERISTIC_TWO_FIELD,
+            CHARACTERISTIC_TWO_FIELD,
             // gaussian normal basis
-            FieldId.BASIS_TYPE_ONB,
+            BASIS_TYPE_ONB,
             // trinomial basis
-            FieldId.BASIS_TYPE_TRINOMIAL,
+            BASIS_TYPE_TRINOMIAL,
             // pentanomial basis
-            FieldId.BASIS_TYPE_PENTANOMIAL};
+            BASIS_TYPE_PENTANOMIAL};
 
     private static final Class[] types = {PrimeField.class,
             CharacteristicTwoField.class, GnBasis.class, TpBasis.class,
