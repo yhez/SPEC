@@ -957,6 +957,16 @@ public class Main extends FragmentActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 getActionBar().setTitle("Menu");
+                View row = ((ListView)drawerView).getChildAt(((ListView) drawerView).getChildCount() - 1);
+                ImageView iv = (ImageView)row.findViewById(R.id.icon_lst);
+                TextView tv = (TextView)row.findViewById(R.id.text_lst);
+                if(CryptMethods.privateExist()){
+                    iv.setImageResource(R.drawable.green);
+                    tv.setText(R.string.private_exist);
+                }else{
+                    iv.setImageResource(R.drawable.red);
+                    tv.setText(R.string.no_private);
+                }
                 invalidateOptionsMenu();
             }
         };

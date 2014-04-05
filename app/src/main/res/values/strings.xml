@@ -281,6 +281,8 @@
     take a picture and we\'ll use it as the dialog background.\n This is your scret picture, verify that you see it.</string>
     <string name="secret_picture_title">Secret Picture</string>
     <string name="nfc_for_files">Tab NFC to decrypt Files</string>
+    <string name="private_exist">Private Loaded</string>
+    <string name="no_private">No Private</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
@@ -295,6 +297,7 @@
         <item>Safe</item>
         <item>Manage</item>
         <item>About</item>
+        <item>key</item>
     </string-array>
 
     <string-array name="message_parts">

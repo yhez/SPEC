@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="specular.systems.activities.Main"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:alpha="0"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_height="match_parent"
+    android:alpha="1"
     android:background="@android:color/white"
     android:padding="@dimen/default_gap">
 
@@ -12,56 +14,23 @@
         android:id="@+id/your_public_key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
         android:alpha="1"
+        android:layout_weight="0.1"
         android:gravity="center"
         android:padding="6dp"
         android:text="@string/share_public_descripton"
         android:textColor="@color/spec_black"
         android:textSize="25sp" />
-
-    <View
-        android:id="@+id/div_down"
-        android:layout_width="240dp"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/spec_blue" />
-
-    <Button
-        android:id="@+id/share_panel"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/div_down"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:padding="@dimen/default_gap"
-        android:text="@string/my_details"
-        android:onClick="onClickShare"
-        android:textColor="@color/spec_black" />
-
-    <View
-        android:id="@+id/div_up"
-        android:layout_width="240dp"
-        android:layout_height="1dp"
-        android:layout_above="@id/share_panel"
-        android:layout_centerHorizontal="true"
-        android:background="@color/spec_blue" />
-
     <FrameLayout
         android:id="@+id/touch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/div_up"
-        android:background="@android:drawable/alert_light_frame"
-        android:layout_below="@id/your_public_key">
+        android:layout_height="0dip"
+        android:layout_weight="0.6"
+        android:background="@android:drawable/alert_light_frame">
 
         <TextView
             android:padding="32dp"
-            android:textSize="17sp"
+            android:textSize="23sp"
             android:id="@+id/me_public"
             android:gravity="fill"
             android:layout_width="match_parent"
@@ -78,4 +47,34 @@
             android:padding="32dp" />
 
     </FrameLayout>
-</RelativeLayout>
+    <LinearLayout
+        android:layout_weight="0.2"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dip">
+        <View
+            android:id="@+id/div_down"
+            android:layout_width="240dp"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue" />
+
+        <Button
+            android:id="@+id/share_panel"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/default_gap"
+            android:text="@string/my_details"
+            android:onClick="onClickShare"
+            android:textColor="@color/spec_black" />
+
+        <View
+            android:id="@+id/div_up"
+            android:layout_width="240dp"
+            android:layout_height="1dp"
+            android:background="@color/spec_blue" />
+    </LinearLayout>
+
+</LinearLayout>
