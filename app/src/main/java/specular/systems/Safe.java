@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import specular.systems.Dialogs.FileDlg;
+import specular.systems.Dialogs.NoteEdit;
 import specular.systems.activities.FilesOpener;
 import specular.systems.activities.Main;
 
@@ -65,8 +66,11 @@ public class Safe extends FragmentStatePagerAdapter {
             Map m = sp.getAll();
             if(m==null||m.size()==0){
                 TextView tv = new TextView(getActivity());
+                tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 tv.setText(R.string.no_file_safe);
-                tv.setTextColor(Color.BLACK);
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextColor(getResources().getColor(R.color.spec_black));
+                tv.setTypeface(FilesManagement.getOs(getActivity()));
                 tv.setTextSize(25);
                 tv.setPadding(25,25,25,25);
                 return tv;
@@ -146,10 +150,11 @@ public class Safe extends FragmentStatePagerAdapter {
                 tv.setId(8777);
                 tv.setPadding(25, 25, 25, 25);
                 tv.setText(R.string.no_notes_yet);
-                tv.setTextColor(Color.BLACK);
+                tv.setTextColor(getResources().getColor(R.color.spec_black));
+                tv.setTypeface(FilesManagement.getOs(getActivity()));
                 tv.setTextSize(25);
                 tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                tv.setGravity(Gravity.LEFT);
+                tv.setGravity(Gravity.CENTER);
                 main.addView(tv);
             }else {
                 o = m.values().toArray();
@@ -158,8 +163,9 @@ public class Safe extends FragmentStatePagerAdapter {
                     try {
                         TextView tv = new TextView(getActivity());
                         tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                        tv.setTextColor(Color.BLACK);
-                        tv.setPadding(20,20,20,20);
+                        tv.setTextColor(getResources().getColor(R.color.spec_gray));
+                        tv.setPadding(20, 20, 20, 20);
+                        tv.setText(R.string.loading);
                         tv.setBackgroundResource(R.drawable.border_botom);
                         textViews.add(tv);
                     } catch (Exception e) {
@@ -191,8 +197,18 @@ public class Safe extends FragmentStatePagerAdapter {
                 return null;
             }
             @Override
-            protected void onProgressUpdate(Integer... progress) {
-                textViews.get(progress[0]).setText(texts.get(progress[0]));
+            protected void onProgressUpdate(final Integer... progress) {
+                TextView tv = textViews.get(progress[0]);
+                final String s = texts.get(progress[0]);
+                tv.setText(s);
+                tv.setTextColor(getResources().getColor(R.color.spec_black));
+                tv.setTypeface(FilesManagement.getOs(getActivity()));
+                tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new NoteEdit(getActivity().getFragmentManager(),s);
+                    }
+                });
             }
         };
         private void addNote(String note){

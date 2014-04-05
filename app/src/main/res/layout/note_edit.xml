@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="@dimen/default_gap"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_weight="0.9"
+        android:layout_width="match_parent"
+        android:layout_height="0dip">
+    <TextView
+        android:id="@+id/text_view"
+        android:textSize="28sp"
+        android:gravity="start"
+        android:textColor="@color/spec_black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </ScrollView>
+    <LinearLayout
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_weight="0.1"
+        android:layout_height="0dip">
+        <ImageButton
+            android:padding="@dimen/default_gap"
+            style="?android:attr/borderlessButtonStyle"
+            android:src="@drawable/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:padding="@dimen/default_gap"
+            android:src="@drawable/edit"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null" />
+        <ImageButton
+            style="?android:attr/borderlessButtonStyle"
+            android:padding="@dimen/default_gap"
+            android:src="@drawable/ic_send_holo_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null" />
+        </LinearLayout>
+
+</LinearLayout>

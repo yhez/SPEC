@@ -829,6 +829,7 @@ public class Main extends FragmentActivity {
         FilesManagement.saveTempDecryptedMSG(this);
         Visual.hideKeyBord(this);
         //todo delete view content
+        created=false;
         super.onPause();
     }
 
