@@ -3,6 +3,7 @@ package specular.systems;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,14 +25,32 @@ public class LeftMenu extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        if(convertView!=null)
+            return convertView;
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
-        if(position<(drb.length-1)){
-            ((ImageView) rowView.findViewById(R.id.icon_lst)).setImageResource(drb[position]);
-            ((TextView) rowView.findViewById(R.id.text_lst)).setText(s[position]);
+        ImageView iv = (ImageView)rowView.findViewById(R.id.icon_lst);
+        TextView tv = (TextView)rowView.findViewById(R.id.text_lst);
+        if(position<(s.length-1)){
+            iv.setImageResource(drb[position]);
+            tv.setText(s[position]);
+        }else{
+            rowView.setBackgroundColor(Color.WHITE);
+            tv.setTextColor(Color.BLACK);
+            if(CryptMethods.privateExist()){
+                iv.setImageResource(R.drawable.green);
+                tv.setText(R.string.private_exist);
+            }else{
+                if(CryptMethods.publicExist()){
+                    iv.setImageResource(R.drawable.red);
+                    tv.setText(R.string.no_private);
+                }else{
+                    rowView.setVisibility(View.GONE);
+                }
+            }
         }
-        ((TextView) rowView.findViewById(R.id.text_lst)).setTypeface(FilesManagement.getOs(context));
+        tv.setTypeface(FilesManagement.getOs(context));
         return rowView;
     }
 }

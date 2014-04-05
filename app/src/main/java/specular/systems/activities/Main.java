@@ -183,6 +183,7 @@ public class Main extends FragmentActivity {
     private int defaultScreen;
     private int layouts[];
     private DrawerLayout mDrawerLayout;
+    private LeftMenu leftMenu;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private String[] menuTitles;
@@ -556,6 +557,7 @@ public class Main extends FragmentActivity {
                     if (!CryptMethods.setPrivate(raw)) {
                         Visual.toast(Main.this,R.string.cant_find_private_key);
                     }else{
+                        leftMenu.notifyDataSetChanged();
                         Visual.toast(Main.this,R.string.keys_loaded);
                     }
                 } else {
@@ -928,8 +930,8 @@ public class Main extends FragmentActivity {
             menuDrawables = new int[]{menuDrawables[3], menuDrawables[4]};
         }
         // set up the main's list view with items and click listener
-        mDrawerList.setAdapter(new LeftMenu(this,
-                menuTitles, menuDrawables));
+        leftMenu = new LeftMenu(this,menuTitles, menuDrawables);
+        mDrawerList.setAdapter(leftMenu);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enable ActionBar app icon to behave as action to toggle nav main
@@ -957,16 +959,6 @@ public class Main extends FragmentActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 getActionBar().setTitle("Menu");
-                View row = ((ListView)drawerView).getChildAt(((ListView) drawerView).getChildCount() - 1);
-                ImageView iv = (ImageView)row.findViewById(R.id.icon_lst);
-                TextView tv = (TextView)row.findViewById(R.id.text_lst);
-                if(CryptMethods.privateExist()){
-                    iv.setImageResource(R.drawable.green);
-                    tv.setText(R.string.private_exist);
-                }else{
-                    iv.setImageResource(R.drawable.red);
-                    tv.setText(R.string.no_private);
-                }
                 invalidateOptionsMenu();
             }
         };
@@ -1246,6 +1238,9 @@ public class Main extends FragmentActivity {
         } else {
             KeysDeleter.stop();
         }
+        if(!CryptMethods.privateExist()){
+            leftMenu.notifyDataSetChanged();
+        }
         if(Splash.file){
             Splash.file = false;
             if(created)
@@ -1437,7 +1432,8 @@ public class Main extends FragmentActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-            selectItem(position, 0, null);
+            if(1+position<parent.getChildCount())
+                selectItem(position, 0, null);
         }
     }
 
