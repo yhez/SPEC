@@ -2,11 +2,6 @@ package de.flexiprovider.common.util;
 
 public final class BigEndianConversions {
 
-    private BigEndianConversions() {
-        // empty
-    }
-
-
     public static byte[] I2OSP(int x) {
         byte[] result = new byte[4];
         result[0] = (byte) (x >>> 24);

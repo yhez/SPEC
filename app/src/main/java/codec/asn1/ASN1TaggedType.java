@@ -15,22 +15,8 @@ public class ASN1TaggedType extends ASN1AbstractType {
     }
 
 
-    public ASN1TaggedType(int tag, ASN1Type inner, boolean explicit,
-                          boolean optional) {
-        setTag(tag);
-        setTagClass(ASN1.CLASS_CONTEXT);
-        setInnerType(inner);
-        inner_.setExplicit(explicit);
-        setOptional(optional);
-    }
-
-
     public ASN1Type getInnerType() {
         return inner_;
-    }
-
-    public Object getValue() {
-        return inner_.getValue();
     }
 
     public void setInnerType(ASN1Type t) {
@@ -40,24 +26,25 @@ public class ASN1TaggedType extends ASN1AbstractType {
         inner_ = t;
     }
 
-
-    public void setTag(int tag) {
-        tag_ = tag;
+    public Object getValue() {
+        return inner_.getValue();
     }
-
 
     public int getTag() {
         return tag_;
     }
 
-    public void setTagClass(int cls) {
-        cls_ = cls;
+    public void setTag(int tag) {
+        tag_ = tag;
     }
 
     public int getTagClass() {
         return cls_;
     }
 
+    public void setTagClass(int cls) {
+        cls_ = cls;
+    }
 
     public boolean isExplicit() {
         return true;
@@ -69,11 +56,11 @@ public class ASN1TaggedType extends ASN1AbstractType {
                     "Tagget types are never IMPLICIT!");
     }
 
-    public void encode(Encoder enc){
+    public void encode(Encoder enc) {
         enc.writeTaggedType(this);
     }
 
-    public void decode(Decoder dec){
+    public void decode(Decoder dec) {
         dec.readTaggedType(this);
     }
 

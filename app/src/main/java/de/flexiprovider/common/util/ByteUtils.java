@@ -3,17 +3,6 @@ package de.flexiprovider.common.util;
 
 public final class ByteUtils {
 
-    private static final char[] HEX_CHARS = {'0', '1', '2', '3', '4', '5',
-            '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-
-    /**
-     * Default constructor (private)
-     */
-    private ByteUtils() {
-        // empty
-    }
-
-
     public static boolean equals(byte[] left, byte[] right) {
         if (left == null) {
             return right == null;
@@ -71,20 +60,6 @@ public final class ByteUtils {
         }
 
         return byteString;
-    }
-
-
-    public static String toHexString(byte[] input, String prefix,
-                                     String seperator) {
-        String result = prefix;
-        for (int i = 0; i < input.length; i++) {
-            result += HEX_CHARS[(input[i] >>> 4) & 0x0f];
-            result += HEX_CHARS[(input[i]) & 0x0f];
-            if (i < input.length - 1) {
-                result += seperator;
-            }
-        }
-        return result;
     }
 
 

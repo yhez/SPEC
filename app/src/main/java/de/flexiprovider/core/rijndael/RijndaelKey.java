@@ -9,7 +9,7 @@ public class RijndaelKey implements javax.crypto.SecretKey, java.security.Key {
     private byte[] keyBytes;
 
 
-    protected RijndaelKey(byte[] keyBytes) {
+    public RijndaelKey(byte[] keyBytes) {
         this.keyBytes = ByteUtils.clone(keyBytes);
     }
 

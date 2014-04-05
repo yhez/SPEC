@@ -25,19 +25,18 @@ public class GFPElement implements GFElement {
         mP = other.mP;
     }
 
-    public Object clone() {
-        return new GFPElement(this);
-    }
-
-
     public static GFPElement ZERO(FlexiBigInt p) {
         return new GFPElement(FlexiBigInt.ZERO, p);
     }
 
-
     public static GFPElement ONE(FlexiBigInt p) {
         return new GFPElement(FlexiBigInt.ONE, p);
     }
+
+    public Object clone() {
+        return new GFPElement(this);
+    }
+
     public boolean isZero() {
         return mValue.equals(FlexiBigInt.ZERO);
     }
@@ -65,8 +64,6 @@ public class GFPElement implements GFElement {
     }
 
 
-
-
     public GFElement add(GFElement addend) throws DifferentFieldsException {
         GFPElement result = new GFPElement(this);
         result.addToThis(addend);
@@ -74,7 +71,7 @@ public class GFPElement implements GFElement {
     }
 
 
-    public void addToThis(GFElement addend) throws DifferentFieldsException {
+    private void addToThis(GFElement addend) throws DifferentFieldsException {
         if (!(addend instanceof GFPElement)) {
             throw new DifferentFieldsException();
         }
@@ -132,8 +129,6 @@ public class GFPElement implements GFElement {
 
         return new GFPElement(mValue.modInverse(mP), mP);
     }
-
-
 
 
     public byte[] toByteArray() {

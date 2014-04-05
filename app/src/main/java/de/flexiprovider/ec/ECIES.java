@@ -5,20 +5,16 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.InvalidParameterSpecException;
 
 import de.flexiprovider.api.KeyAgreement;
-import de.flexiprovider.api.keys.KeyFactory;
 import de.flexiprovider.api.keys.KeyPair;
 import de.flexiprovider.api.keys.KeyPairGenerator;
 import de.flexiprovider.common.ies.IES;
 import de.flexiprovider.common.math.ellipticcurves.Point;
-import de.flexiprovider.ec.keys.ECKeyFactory;
 import de.flexiprovider.ec.keys.ECKeyPairGenerator;
 import de.flexiprovider.ec.keys.ECPrivateKey;
 import de.flexiprovider.ec.keys.ECPublicKey;
-import de.flexiprovider.ec.keys.ECPublicKeySpec;
 import de.flexiprovider.ec.parameters.CurveParams;
 
 
@@ -39,6 +35,7 @@ public class ECIES extends IES {
         }
         throw new InvalidKeyException("unsupported type");
     }
+
     protected PublicKey checkPubKey(Key key) throws InvalidKeyException {
         // check key
         if (!(key instanceof ECPublicKey)) {
@@ -97,18 +94,11 @@ public class ECIES extends IES {
 
 
     protected PublicKey decodeEphPubKey(byte[] encEphPubKey) {
-
         try {
-            ECPublicKeySpec ecPubKeySpec = new ECPublicKeySpec(encEphPubKey,
-                    (CurveParams) keyParams);
-
-            KeyFactory kf = new ECKeyFactory();
-            return kf.generatePublic(ecPubKeySpec);
+            Point w = Point.OS2ECP(encEphPubKey, (CurveParams) keyParams);
+            return new ECPublicKey(w, (CurveParams) keyParams);
         } catch (InvalidParameterSpecException e) {
             throw new RuntimeException("InvalidParameterSpecException: "
-                    + e.getMessage());
-        } catch (InvalidKeySpecException e) {
-            throw new RuntimeException("InvalidKeySpecException: "
                     + e.getMessage());
         }
     }

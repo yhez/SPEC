@@ -6,12 +6,8 @@ import de.flexiprovider.api.SecureRandom;
 
 public final class FlexiBigInt {
 
-    private class JavaSecureRandom extends java.security.SecureRandom {
-        JavaSecureRandom(SecureRandom flexiRand) {
-            super(flexiRand, null);
-        }
-    }
-
+    public static final FlexiBigInt ZERO = new FlexiBigInt(BigInteger.ZERO);
+    public static final FlexiBigInt ONE = valueOf(1);
     public BigInteger bigInt;
 
     public FlexiBigInt(String val) {
@@ -27,24 +23,21 @@ public final class FlexiBigInt {
     }
 
     public FlexiBigInt(byte[] randomData) {
-        bigInt = new BigInteger(1,randomData);
+        bigInt = new BigInteger(1, randomData);
     }
+
     public FlexiBigInt(int numBits, SecureRandom flexiRand) {
         JavaSecureRandom javaRand = new JavaSecureRandom(flexiRand);
         bigInt = new BigInteger(numBits, javaRand);
     }
 
-        public FlexiBigInt(BigInteger bigInt) {
+    public FlexiBigInt(BigInteger bigInt) {
         this.bigInt = bigInt;
     }
 
     public static FlexiBigInt valueOf(long val) {
         return new FlexiBigInt(BigInteger.valueOf(val));
     }
-
-    public static final FlexiBigInt ZERO = new FlexiBigInt(BigInteger.ZERO);
-
-    public static final FlexiBigInt ONE = valueOf(1);
 
     public FlexiBigInt add(FlexiBigInt addend) {
         return new FlexiBigInt(bigInt.add(addend.bigInt));
@@ -64,10 +57,6 @@ public final class FlexiBigInt {
 
     public FlexiBigInt remainder(FlexiBigInt divisor) {
         return new FlexiBigInt(bigInt.remainder(divisor.bigInt));
-    }
-
-    public FlexiBigInt gcd(FlexiBigInt val) {
-        return new FlexiBigInt(bigInt.gcd(val.bigInt));
     }
 
     public FlexiBigInt abs() {
@@ -110,10 +99,6 @@ public final class FlexiBigInt {
         return bigInt.bitLength();
     }
 
-    public boolean isProbablePrime(int certainty) {
-        return bigInt.isProbablePrime(certainty);
-    }
-
     public int compareTo(FlexiBigInt other) {
         return bigInt.compareTo(other.bigInt);
     }
@@ -140,6 +125,12 @@ public final class FlexiBigInt {
 
     public int intValue() {
         return bigInt.intValue();
+    }
+
+    private class JavaSecureRandom extends java.security.SecureRandom {
+        JavaSecureRandom(SecureRandom flexiRand) {
+            super(flexiRand, null);
+        }
     }
 
 }

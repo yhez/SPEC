@@ -1,13 +1,12 @@
 package de.flexiprovider.ec.parameters;
 
 import java.io.IOException;
+import java.security.AlgorithmParametersSpi;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidParameterSpecException;
 
-import de.flexiprovider.api.parameters.AlgorithmParameters;
 
-
-public class ECParameters extends AlgorithmParameters {
+public class ECParameters extends AlgorithmParametersSpi {
 
 
     // the EC domain parameters
@@ -23,16 +22,6 @@ public class ECParameters extends AlgorithmParameters {
         curveParams = (CurveParams) params;
     }
 
-    @Override
-    public void init(byte[] encParams) {
-
-    }
-
-
-    @Override
-    public void init(byte[] encParams, String format) {
-
-    }
 
     public byte[] getEncoded() {
         return new byte[0];
@@ -51,7 +40,7 @@ public class ECParameters extends AlgorithmParameters {
             throws InvalidParameterSpecException {
 
         if ((paramSpec == null)
-                || !(paramSpec.isAssignableFrom(((Object)curveParams).getClass()))) {
+                || !(paramSpec.isAssignableFrom(((Object) curveParams).getClass()))) {
             throw new InvalidParameterSpecException("unsupported type");
         }
 
@@ -60,7 +49,41 @@ public class ECParameters extends AlgorithmParameters {
 
 
     public String toString() {
-        return ((Object)curveParams).toString();
+        return ((Object) curveParams).toString();
     }
 
+    @Override
+    protected void engineInit(AlgorithmParameterSpec paramSpec) throws InvalidParameterSpecException {
+        init(paramSpec);
+    }
+
+    @Override
+    protected void engineInit(byte[] params) throws IOException {
+
+    }
+
+    @Override
+    protected void engineInit(byte[] params, String format) throws IOException {
+
+    }
+
+    @Override
+    protected AlgorithmParameterSpec engineGetParameterSpec(Class paramSpec) throws InvalidParameterSpecException {
+        return getParameterSpec(paramSpec);
+    }
+
+    @Override
+    protected byte[] engineGetEncoded() throws IOException {
+        return getEncoded();
+    }
+
+    @Override
+    protected byte[] engineGetEncoded(String format) throws IOException {
+        return getEncoded(format);
+    }
+
+    @Override
+    protected String engineToString() {
+        return null;
+    }
 }

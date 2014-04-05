@@ -1,26 +1,7 @@
 package codec.asn1;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 
 public class ASN1Opaque extends ASN1TaggedType {
-
-    public ASN1Opaque() {
-        super(-1, ASN1.CLASS_UNIVERSAL, new ASN1OctetString(), false);
-    }
-
-    public ASN1Opaque(byte[] code){
-        super(-1, ASN1.CLASS_UNIVERSAL, new ASN1OctetString(), false);
-
-        ByteArrayInputStream bis;
-        DERDecoder dec;
-            bis = new ByteArrayInputStream(code);
-            dec = new DERDecoder(bis);
-            decode(dec);
-            dec.close();
-    }
 
 
     public ASN1Opaque(int tag, int tagclass, byte[] b) {
@@ -36,23 +17,6 @@ public class ASN1Opaque extends ASN1TaggedType {
             return true;
         }
         return super.isType(tag, tagclass);
-    }
-
-
-    public byte[] getEncoded() {
-        ByteArrayOutputStream bos;
-        DEREncoder enc;
-        byte[] code;
-        try {
-            bos = new ByteArrayOutputStream();
-            enc = new DEREncoder(bos);
-            encode(enc);
-            code = bos.toByteArray();
-            enc.close();
-            return code;
-        } catch (IOException ignore) {
-        }
-        return null;
     }
 
 

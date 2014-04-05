@@ -3,11 +3,6 @@ package de.flexiprovider.common.util;
 
 public final class StringUtils {
 
-
-    private StringUtils() {
-        // empty
-    }
-
     public static String filterSpaces(String str) {
         StringBuffer buf = new StringBuffer(str);
 

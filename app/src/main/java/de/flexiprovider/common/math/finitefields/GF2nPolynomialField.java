@@ -1,19 +1,13 @@
 package de.flexiprovider.common.math.finitefields;
 
-import de.flexiprovider.common.exceptions.GFException;
 import de.flexiprovider.common.exceptions.PolynomialIsNotIrreducibleException;
 
 public class GF2nPolynomialField extends GF2nField {
 
     GF2Polynomial[] squaringMatrix;
-    // field polynomial is a trinomial
-    private boolean isTrinomial = false;
-    // field polynomial is a pentanomial
-    private boolean isPentanomial = false;
-    // middle coefficient of the field polynomial in case it is a trinomial
-    private int tc;
     // middle 3 coefficients of the field polynomial in case it is a pentanomial
     private int[] pc = new int[3];
+
     public GF2nPolynomialField(int deg, GF2Polynomial polynomial)
             throws PolynomialIsNotIrreducibleException {
         if (deg < 3) {
@@ -33,42 +27,13 @@ public class GF2nPolynomialField extends GF2nField {
         for (int j = 1; j < fieldPolynomial.getLength() - 1; j++) {
             if (fieldPolynomial.testBit(j)) {
                 k++;
-                if (k == 3) {
-                    tc = j;
-                }
                 if (k <= 5) {
                     pc[k - 3] = j;
                 }
             }
         }
-        if (k == 3) {
-            isTrinomial = true;
-        }
-        if (k == 5) {
-            isPentanomial = true;
-        }
     }
 
-    public boolean isTrinomial() {
-        return isTrinomial;
-    }
-    public boolean isPentanomial() {
-        return isPentanomial;
-    }
-    public int getTc() throws GFException {
-        if (!isTrinomial) {
-            throw new GFException();
-        }
-        return tc;
-    }
-    public int[] getPc() throws GFException {
-        if (!isPentanomial) {
-            throw new GFException();
-        }
-        int[] result = new int[3];
-        System.arraycopy(pc, 0, result, 0, 3);
-        return result;
-    }
     private void computeSquaringMatrix() {
         GF2Polynomial[] d = new GF2Polynomial[mDegree - 1];
         int i, j;
@@ -93,76 +58,5 @@ public class GF2nPolynomialField extends GF2nField {
         }
 
     }
-    protected void computeFieldPolynomial() {
-        if (testTrinomials()) {
-            return;
-        }
-        if (testPentanomials()) {
-            return;
-        }
-        testRandom();
-    }
-    private boolean testTrinomials() {
-        int i;
-        boolean done = false;
 
-        fieldPolynomial = new GF2Polynomial(mDegree + 1);
-        fieldPolynomial.setBit(0);
-        fieldPolynomial.setBit(mDegree);
-        for (i = 1; (i < mDegree) && !done; i++) {
-            fieldPolynomial.setBit(i);
-            done = fieldPolynomial.isIrreducible();
-            if (done) {
-                isTrinomial = true;
-                tc = i;
-                return true;
-            }
-            fieldPolynomial.resetBit(i);
-            done = fieldPolynomial.isIrreducible();
-        }
-
-        return done;
-    }
-    private boolean testPentanomials() {
-        int i, j, k;
-        boolean done;
-        fieldPolynomial = new GF2Polynomial(mDegree + 1);
-        fieldPolynomial.setBit(0);
-        fieldPolynomial.setBit(mDegree);
-        for (i = 1; (i <= (mDegree - 3)); i++) {
-            fieldPolynomial.setBit(i);
-            for (j = i + 1; (j <= (mDegree - 2)); j++) {
-                fieldPolynomial.setBit(j);
-                for (k = j + 1; (k <= (mDegree - 1)); k++) {
-                    fieldPolynomial.setBit(k);
-                    if (((mDegree & 1) != 0) | ((i & 1) != 0) | ((j & 1) != 0)
-                            | ((k & 1) != 0)) {
-                        done = fieldPolynomial.isIrreducible();
-                        if (done) {
-                            isPentanomial = true;
-                            pc[0] = i;
-                            pc[1] = j;
-                            pc[2] = k;
-                            return true;
-                        }
-                    }
-                    fieldPolynomial.resetBit(k);
-                }
-                fieldPolynomial.resetBit(j);
-            }
-            fieldPolynomial.resetBit(i);
-        }
-        return false;
-    }
-    private void testRandom() {
-        fieldPolynomial = new GF2Polynomial(mDegree + 1);
-        while (true) {
-            fieldPolynomial.randomize();
-            fieldPolynomial.setBit(mDegree);
-            fieldPolynomial.setBit(0);
-            if (fieldPolynomial.isIrreducible()) {
-                return;
-            }
-        }
-    }
 }

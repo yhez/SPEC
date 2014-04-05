@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="specular.systems"
     android:versionCode="33"
-    android:versionName="V 0.5.8">
+    android:versionName="V 0.5.9">
 
     <uses-sdk
-        android:minSdkVersion="14"
-        android:maxSdkVersion="19" />
+        android:maxSdkVersion="19"
+        android:minSdkVersion="14" />
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.NFC" />
@@ -37,8 +37,8 @@
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="specular.systems"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
@@ -120,42 +120,42 @@
             </intent-filter>
         </activity>
         <activity
-            android:exported="true"
             android:name=".activities.Main"
+            android:exported="true"
             android:icon="@drawable/menu"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.StartScan"
-            android:screenOrientation="landscape"
-            android:noHistory="true"
             android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
         <activity
-            android:label="@string/choose_contact_for_widget"
             android:name=".widget.ChooseContact"
+            android:label="@string/choose_contact_for_widget"
             android:theme="@android:style/Theme.Holo.Light.Dialog">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
         <activity
-            android:taskAffinity=""
-            android:exported="true"
-            android:noHistory="true"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
             android:name=".widget.QuickMsg"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:taskAffinity=""
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
         <activity
-            android:noHistory="true"
+            android:name=".activities.SendReport"
             android:excludeFromRecents="true"
             android:label="@string/send_report_title"
-            android:name=".activities.SendReport"
+            android:noHistory="true"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <activity
-            android:excludeFromRecents="true"
             android:name=".activities.SendMsg"
+            android:excludeFromRecents="true"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth">
             <meta-data
                 android:name="com.google.android.apps.drive.APP_ID"
@@ -163,22 +163,22 @@
         </activity>
         <activity android:name="zxing.scanqr.CaptureActivity" />
         <activity
-            android:excludeFromRecents="true"
             android:name=".activities.PrivateKeyManager"
+            android:excludeFromRecents="true"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
         <activity
             android:name=".activities.FilesOpener"
-            android:noHistory="true"
             android:excludeFromRecents="true"
-            android:launchMode="singleTask"
             android:exported="false"
+            android:launchMode="singleTask"
+            android:noHistory="true"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
         <activity
-            android:theme="@style/Theme.Transparent"
             android:name=".activities.SpecSafe"
-            android:noHistory="true"
             android:excludeFromRecents="true"
-            android:exported="true"/>
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@style/Theme.Transparent" />
 
         <meta-data
             android:name="com.google.android.gms.version"

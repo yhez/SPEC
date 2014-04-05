@@ -7,11 +7,11 @@ import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.AlgorithmParameterSpec;
-import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import de.flexiprovider.api.AsymmetricHybridCipher;
 import de.flexiprovider.api.BlockCipher;
@@ -21,42 +21,31 @@ import de.flexiprovider.api.Mac;
 import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.api.keys.KeyPair;
-import de.flexiprovider.api.keys.SecretKeyFactory;
-import de.flexiprovider.api.keys.SecretKeySpec;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.kdf.KDF2;
 import de.flexiprovider.core.kdf.KDFParameterSpec;
 import de.flexiprovider.core.mac.HMac;
-import de.flexiprovider.core.mac.HMacKeyFactory;
-import de.flexiprovider.core.rijndael.RijndaelKeyFactory;
+import de.flexiprovider.core.mac.HMacKey;
+import de.flexiprovider.core.rijndael.RijndaelKey;
 
 
 public abstract class IES extends AsymmetricHybridCipher {
 
 
     protected SecureRandom random;
-
+    protected AlgorithmParameterSpec keyParams;
     // the public key used for encryption
     private PublicKey pubKey;
-
     // the private key used for decryption
     private PrivateKey privKey;
-
     // the IES parameters
     private IESParameterSpec iesParams;
-
     // flag indicating the IES mode (internal (XOR) or symmetric cipher)
     private boolean isInternal = false;
-
     // the name of the symmetric cipher
     private String symCipherName;
-
     // the instantiated symmetric cipher for symmetric cipher mode
     private BlockCipher symCipher;
-
-
-    protected AlgorithmParameterSpec keyParams;
-
     // the length of the symmetric cipher key
     private int symKeyLength;
 
@@ -65,9 +54,6 @@ public abstract class IES extends AsymmetricHybridCipher {
 
     // the MAC instance
     private Mac mac;
-
-    // the key factory for the MAC
-    private SecretKeyFactory macKF;
 
     // the MAC length
     private int macLen;
@@ -162,6 +148,7 @@ public abstract class IES extends AsymmetricHybridCipher {
         this.random = (random != null) ? random : Registry.getSecureRandom();
         opMode = ENCRYPT_MODE;
     }
+
     protected void initCipherDecrypt(Key key, AlgorithmParameterSpec params)
             throws InvalidKeyException, InvalidAlgorithmParameterException {
 
@@ -274,7 +261,6 @@ public abstract class IES extends AsymmetricHybridCipher {
         macName = iesParams.getMacName();
         try {
             mac = new HMac.SHA1();
-            macKF = new HMacKeyFactory();
         } catch (Exception ex) {
             throw new RuntimeException("IES Init (checkMac): "
                     + ex.getMessage());
@@ -302,10 +288,9 @@ public abstract class IES extends AsymmetricHybridCipher {
             if (!isInternal) {
                 byte[] symKeyData = new byte[symKeyLength];
                 System.arraycopy(keyStream, 0, symKeyData, 0, symKeyLength);
-                SecretKeyFactory symKeyFactory = new RijndaelKeyFactory();
                 SecretKeySpec keySpec = new SecretKeySpec(symKeyData,
                         symCipherName);
-                SecretKey symKey = symKeyFactory.generateSecret(keySpec);
+                SecretKey symKey = new RijndaelKey(keySpec.getEncoded());
                 if (opMode == ENCRYPT_MODE) {
                     symCipher.initEncrypt(symKey);
                 } else if (opMode == DECRYPT_MODE) {
@@ -349,12 +334,8 @@ public abstract class IES extends AsymmetricHybridCipher {
         // initialize the MAC function with a MAC key
         SecretKeySpec macKeySpec = new SecretKeySpec(macKeyStream, macName);
         SecretKey macKey;
-        try {
-            macKey = macKF.generateSecret(macKeySpec);
-            mac.init(macKey);
-        } catch (InvalidKeySpecException e) {
-            throw new RuntimeException("internal error");
-        }
+        macKey = new HMacKey(macKeySpec.getEncoded());
+        mac.init(macKey);
 
         macKeyLen = cText.length;
         byte[] macInput = cText;

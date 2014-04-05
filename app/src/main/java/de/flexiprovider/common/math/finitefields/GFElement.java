@@ -9,8 +9,6 @@ public interface GFElement {
     Object clone();
 
 
-
-
     boolean equals(Object other);
 
 
@@ -23,12 +21,7 @@ public interface GFElement {
     boolean isOne();
 
 
-
-
     GFElement add(GFElement addend) throws DifferentFieldsException;
-
-
-    void addToThis(GFElement addend) throws DifferentFieldsException;
 
 
     GFElement subtract(GFElement minuend) throws DifferentFieldsException;
@@ -38,11 +31,6 @@ public interface GFElement {
 
 
     void multiplyThisBy(GFElement factor) throws DifferentFieldsException;
-
-
-    GFElement invert() throws ArithmeticException;
-
-
 
 
     FlexiBigInt toFlexiBigInt();

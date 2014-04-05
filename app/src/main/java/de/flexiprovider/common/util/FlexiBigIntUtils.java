@@ -4,10 +4,6 @@ import de.flexiprovider.common.math.FlexiBigInt;
 
 public final class FlexiBigIntUtils {
 
-    private FlexiBigIntUtils() {
-        // empty
-    }
-
     public static byte[] toMinimalByteArray(FlexiBigInt value) {
         byte[] valBytes = value.toByteArray();
         if ((valBytes.length == 1) || (value.bitLength() & 0x07) != 0) {

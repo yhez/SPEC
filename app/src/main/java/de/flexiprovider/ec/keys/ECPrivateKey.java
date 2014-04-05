@@ -13,23 +13,17 @@ public class ECPrivateKey implements PrivateKey {
 
     private CurveParams mParams;
 
-    protected ECPrivateKey(FlexiBigInt s, CurveParams params) {
+    public ECPrivateKey(FlexiBigInt s, CurveParams params) {
         mS = s;
         mParams = params;
     }
-
-
-    public ECPrivateKey(ECPrivateKeySpec keySpec) {
-        this(keySpec.getS(), keySpec.getParams());
-    }
-
 
     public FlexiBigInt getS() {
         return mS;
     }
 
     public String getAlgorithm() {
-        return "EC";
+        return null;
     }
 
     @Override
@@ -42,28 +36,7 @@ public class ECPrivateKey implements PrivateKey {
         return new byte[0];
     }
 
-    public String toString() {
-        return "s = " + mS.toString(16) + "\n" + ((Object)mParams).toString();
-    }
     public CurveParams getParams() {
         return mParams;
     }
-
-    public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof ECPrivateKey)) {
-            return false;
-        }
-
-        ECPrivateKey oKey = (ECPrivateKey) obj;
-        boolean value = oKey.mS.equals(mS);
-        value &= mParams.equals(oKey.mParams);
-
-        return value;
-    }
-
-    public int hashCode() {
-        return mS.hashCode() + mParams.getR().hashCode()
-                + mParams.getQ().hashCode();
-    }
-
 }

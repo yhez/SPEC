@@ -2,8 +2,6 @@ package codec.asn1;
 
 public interface Decoder {
 
-    public ASN1Type readType();
-
     public void readBoolean(ASN1Boolean t);
 
     public void readInteger(ASN1Integer t);

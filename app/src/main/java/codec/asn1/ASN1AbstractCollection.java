@@ -17,15 +17,11 @@ public abstract class ASN1AbstractCollection extends ArrayList implements
     private boolean explicit_ = true;
     private Constraint constraint_;
 
-    public abstract int getTag();
-
     public ASN1AbstractCollection() {
         super();
     }
 
-    public ASN1AbstractCollection(int capacity) {
-        super(capacity);
-    }
+    public abstract int getTag();
 
     public Object getValue() {
         return this;
@@ -35,26 +31,25 @@ public abstract class ASN1AbstractCollection extends ArrayList implements
         return this;
     }
 
-    public void setOptional(boolean optional) {
-        optional_ = optional;
-    }
-
     public boolean isOptional() {
         return optional_;
+    }
+
+    public void setOptional(boolean optional) {
+        optional_ = optional;
     }
 
     public int getTagClass() {
         return ASN1.CLASS_UNIVERSAL;
     }
 
-    public void setExplicit(boolean explicit) {
-        explicit_ = explicit;
-    }
-
     public boolean isExplicit() {
         return explicit_;
     }
 
+    public void setExplicit(boolean explicit) {
+        explicit_ = explicit;
+    }
 
     public void setConstraint(Constraint constraint) {
         constraint_ = constraint;
@@ -88,7 +83,7 @@ public abstract class ASN1AbstractCollection extends ArrayList implements
         Iterator i;
         String s;
 
-        s = removePackageName(((Object)this).getClass());
+        s = removePackageName(((Object) this).getClass());
 
         buf = new StringBuffer();
         buf.append(s);
@@ -133,14 +128,14 @@ public abstract class ASN1AbstractCollection extends ArrayList implements
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            encode(new DEREncoder(baos));
-            res = baos.toByteArray();
-            baos.close();
-            out.write(res);
+        encode(new DEREncoder(baos));
+        res = baos.toByteArray();
+        baos.close();
+        out.write(res);
     }
 
     public void readExternal(ObjectInput in) {
 
-            decode(new DERDecoder((ObjectInputStream) in));
+        decode(new DERDecoder((ObjectInputStream) in));
     }
 }

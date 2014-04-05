@@ -19,7 +19,6 @@ import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.ec.ECIES;
 import de.flexiprovider.ec.keys.ECKeyPairGenerator;
 import de.flexiprovider.ec.keys.ECPrivateKey;
-import de.flexiprovider.ec.keys.ECPrivateKeySpec;
 import de.flexiprovider.ec.keys.ECPublicKey;
 import de.flexiprovider.ec.parameters.CurveParams;
 import de.flexiprovider.ec.parameters.CurveRegistry;
@@ -49,15 +48,16 @@ public class CryptMethods {
                     Object bigInt = f.get(bi);
                     long addr = (Long) bigInt.getClass().getDeclaredField("bignum").get(bigInt);
                     new NativeDelete().delete(addr, bi.bitLength());
-                } catch (Exception ignore) {}
+                } catch (Exception ignore) {
+                }
                 mPtK = null;
             }
             if (myPrivateKey != null) {
-                for(int a=0;a<myPrivateKey.length;a++)
-                    myPrivateKey[a] = (byte)System.currentTimeMillis();
+                for (int a = 0; a < myPrivateKey.length; a++)
+                    myPrivateKey[a] = (byte) System.currentTimeMillis();
                 myPrivateKey = null;
             }
-            Log.i("key","deleted");
+            Log.i("key", "deleted");
             MessageFormat.decryptedMsg = null;
             lock = true;
         }
@@ -132,10 +132,10 @@ public class CryptMethods {
     public static void createKeys() {
         KeyPair keypair = createKeyPair();
         if (!doneCreatingKeys) {
-            ECPrivateKey tmp = (ECPrivateKey)keypair.getPrivate();
+            ECPrivateKey tmp = (ECPrivateKey) keypair.getPrivate();
             if (tmp != null) {
                 try {
-                    tmpPublicKey = Visual.bin2hex(((ECPublicKey)keypair.getPublic()).getW().EC2OSP(1));
+                    tmpPublicKey = Visual.bin2hex(((ECPublicKey) keypair.getPublic()).getW().EC2OSP(1));
                 } catch (InvalidKeyException e) {
                     e.printStackTrace();
                 }
@@ -188,9 +188,9 @@ public class CryptMethods {
     public static byte[] encrypt(byte[] b, String publicKey) {
         try {
             CurveParams cp = new CurveRegistry.BrainpoolP512r1();
-            ECPublicKey frndPbK = new ECPublicKey(Point.OS2ECP(Visual.hex2bin(publicKey), cp),cp);
+            ECPublicKey frndPbK = new ECPublicKey(Point.OS2ECP(Visual.hex2bin(publicKey), cp), cp);
             ECIES cipher = new ECIES();
-            cipher.initEncrypt(frndPbK,null,null);
+            cipher.initEncrypt(frndPbK, null, null);
             return cipher.doFinal(b);
         } catch (Exception e) {
             e.printStackTrace();
@@ -217,7 +217,7 @@ public class CryptMethods {
     }
 
     private static ECPrivateKey formatPrivate(byte[] p) {
-        return new ECPrivateKey(new ECPrivateKeySpec(new FlexiBigInt(p),new CurveRegistry.BrainpoolP512r1()));
+        return new ECPrivateKey(new FlexiBigInt(p), new CurveRegistry.BrainpoolP512r1());
     }
 
     public static String getPublicTmp() {

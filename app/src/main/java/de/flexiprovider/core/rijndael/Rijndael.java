@@ -15,30 +15,6 @@ public class Rijndael extends BlockCipher {
 
 
     public static final String ALG_NAME = "Rijndael";
-
-    protected String algName;
-
-
-    protected int keySize;
-
-
-    protected boolean keySizeIsMutable;
-
-
-    protected int blockSize;
-
-
-    protected boolean blockSizeIsMutable;
-
-    // the number of rounds
-    private int numRounds;
-
-    // the key array
-    private int[] K = new int[120];
-
-    // the inverse key array
-    private int[] Ki = new int[120];
-
     // the S-box
     private static final byte[] S = {99, 124, 119, 123, -14, 107, 111, -59,
             48, 1, 103, 43, -2, -41, -85, 118, -54, -126, -55, 125, -6, 89, 71,
@@ -59,7 +35,6 @@ public class Rijndael extends BlockCipher {
             -31, -8, -104, 17, 105, -39, -114, -108, -101, 30, -121, -23, -50,
             85, 40, -33, -116, -95, -119, 13, -65, -26, 66, 104, 65, -103, 45,
             15, -80, 84, -69, 22};
-
     // the inverse S-box
     private static final byte[] Si = {82, 9, 106, -43, 48, 54, -91, 56, -65,
             64, -93, -98, -127, -13, -41, -5, 124, -29, 57, -126, -101, 47, -1,
@@ -80,11 +55,9 @@ public class Rijndael extends BlockCipher {
             -55, -100, -17, -96, -32, 59, 77, -82, 42, -11, -80, -56, -21, -69,
             60, -125, 83, -103, 97, 23, 43, 4, 126, -70, 119, -42, 38, -31,
             105, 20, 99, 85, 33, 12, 125};
-
     private static final byte[] Rcon = {1, 2, 4, 8, 16, 32, 64, -128, 27, 54,
             108, -40, -85, 77, -102, 47, 94, -68, 99, -58, -105, 53, 106, -44,
             -77, 125, -6, -17, -59, -111};
-
     private static final int[] T0 = {-966564955, -126059388, -294160487,
             -159679603, -855539, -697603139, -563122255, -1849309868,
             1613770832, 33620227, -832084055, 1445669757, -402719207,
@@ -136,7 +109,6 @@ public class Rijndael extends BlockCipher {
             1503764984, 160008576, 437062935, 1707065306, -672733647,
             -2076032314, -798463816, -2109652541, 697932208, 1512910199,
             504303377, 2075177163, -1470868228, 1841019862, 739644986};
-
     private static final int[] T1 = {-1513725085, -2064089988, -1712425097,
             -1913226373, 234877682, -1110021269, -1310822545, 1418839493,
             1348481072, 50462977, -1446090905, 2102799147, 434634494,
@@ -188,7 +160,6 @@ public class Rijndael extends BlockCipher {
             -128343647, -2146858615, 387583245, -630865985, 836232934,
             -964410814, -1194301336, -1014873791, -1339450983, 2002398509,
             287182607, -881086288, -56077228, -697451589, 975967766};
-
     private static final int[] T2 = {1671808611, 2089089148, 2006576759,
             2072901243, -233963534, 1807603307, 1873927791, -984313403,
             810573872, 16974337, 1739181671, 729634347, -31856642, -681396777,
@@ -240,7 +211,6 @@ public class Rijndael extends BlockCipher {
             219617805, -1076206145, -432941082, 1120306242, 1756942440,
             1103331905, -1716508263, 762796589, 252780047, -1328841808,
             1425844308, -1143575109, 372911126};
-
     private static final int[] T3 = {1667474886, 2088535288, 2004326894,
             2071694838, -219017729, 1802223062, 1869591006, -976923503,
             808472672, 16843522, 1734846926, 724270422, -16901657, -673750347,
@@ -292,7 +262,6 @@ public class Rijndael extends BlockCipher {
             -1077945755, -421121577, 1111672452, 1751693520, 1094828930,
             -1717981143, 757954394, 252645662, -1330590853, 1414855848,
             -1145317779, 370555436};
-
     private static final int[] T0i = {1374988112, 2118214995, 437757123,
             975658646, 1001089995, 530400753, -1392879445, 1273168787,
             540080725, -1384747530, -1999866223, -184398811, 1340463100,
@@ -344,7 +313,6 @@ public class Rijndael extends BlockCipher {
             -1184316354, 941896748, -1029488545, 371049330, -1126030068,
             675039627, -15887039, 967311729, 135050206, -659233636, 1683407248,
             2076935265, -718096784, 1215061108, -793225406};
-
     private static final int[] T1i = {1347548327, 1400783205, -1021700188,
             -1774573730, -885281941, -249586363, -1414727080, -1823743229,
             1428173050, -156404115, -1853305738, 636813900, -61872681,
@@ -397,7 +365,6 @@ public class Rijndael extends BlockCipher {
             213705253, -1960297399, 1107234197, 1899603969, -569897805,
             -1663519516, -1872472383, 1635502980, 1893020342, 1950903388,
             1120974935};
-
     private static final int[] T2i = {-1487908364, 1699970625, -1530717673,
             1586903591, 1808481195, 1173430173, 1487645946, 59984867,
             -95084496, 1844882806, 1989249228, 1277555970, -671330331,
@@ -450,7 +417,6 @@ public class Rijndael extends BlockCipher {
             621591778, 1233856572, -1790836979, 24197544, -1277294580,
             -459482956, -1047501738, -2073986101, -1234119374, 1551124588,
             1463996600};
-
     private static final int[] T3i = {-190361519, 1097159550, 396673818,
             660510266, -1418998981, -1656360673, -94852180, -486304949,
             821712160, 1986918061, -864644728, 38544885, -438830001, 718002117,
@@ -502,7 +468,6 @@ public class Rijndael extends BlockCipher {
             -1556062270, 499347990, -500888388, 1011452712, 227885567,
             -1476300487, 213114376, -1260086056, 1455525988, -880516741,
             850817237, 1817998408, -1202240816};
-
     private static final int[] D0 = {0, 235474187, 470948374, 303765277,
             941896748, 908933415, 607530554, 708780849, 1883793496, 2118214995,
             1817866830, 1649639237, 1215061108, 1181045119, 1417561698,
@@ -553,7 +518,6 @@ public class Rijndael extends BlockCipher {
             -886847780, -987051049, -283776794, -518199827, -217582864,
             -49348613, -1485196142, -1452230247, -1150570876, -1251826801,
             -1621262146, -1856729675, -2091935064, -1924753501};
-
     private static final int[] D1 = {0, 185469197, 370938394, 487725847,
             741876788, 657861945, 975451694, 824852259, 1483753576, 1400783205,
             1315723890, 1164071807, 1950903388, 2135319889, 1649704518,
@@ -604,7 +568,6 @@ public class Rijndael extends BlockCipher {
             -590666810, -674944309, -420538904, -304014107, -252508174,
             -67301633, -1834518092, -1716948807, -2068091986, -1883938141,
             -1096852096, -1248766835, -1467789414, -1551022441};
-
     private static final int[] D2 = {0, 218828297, 437656594, 387781147,
             875313188, 958871085, 775562294, 590424639, 1750626376, 1699970625,
             1917742170, 2135253587, 1551124588, 1367295589, 1180849278,
@@ -655,7 +618,6 @@ public class Rijndael extends BlockCipher {
             -958608605, -875051734, -387518699, -437395172, -219090169,
             -262898, -1265457287, -1181111952, -1367032981, -1550863006,
             -2134991011, -1917480620, -1700232369, -1750889146};
-
     private static final int[] D3 = {0, 151849742, 303699484, 454499602,
             607398968, 758720310, 908999204, 1059270954, 1214797936,
             1097159550, 1517440620, 1400849762, 1817998408, 1699839814,
@@ -706,60 +668,17 @@ public class Rijndael extends BlockCipher {
             600235211, 718002117, 367585007, 484830689, 133361907, 251657213,
             2041877159, 1891211689, 1806599355, 1654886325, 1568718495,
             1418573201, 1335535747, 1184342925};
-
-
-
-    public static class AES extends Rijndael {
-
-
-        public static final String ALG_NAME = "AES";
-
-
-        public static final String OID = "2.16.840.1.101.3.4.1";
-
-
-        public static class AES128_CBC extends AES {
-
-
-            public static final String ALG_NAME = AES.ALG_NAME + "128_CBC";
-
-
-            public AES128_CBC() {
-                super(ALG_NAME, "CBC", 4);
-            }
-        }
-
-
-        protected AES(String algName, String modeName, int keySize) {
-            // set the block size
-            this();
-
-            // set the algorithm name
-            this.algName = algName;
-
-            // set the key size
-            this.keySize = keySize;
-            // changing the key size is disallowed
-            keySizeIsMutable = false;
-
-            // set the mode
-            setMode(modeName);
-        }
-
-
-        public AES() {
-            // set the algorithm name
-            algName = ALG_NAME;
-
-            // changing the key size is allowed (set during initialization)
-            keySizeIsMutable = true;
-
-            // set the block size to 4 words (128 bits)
-            blockSize = 4;
-            // changing the block size is disallowed
-            blockSizeIsMutable = false;
-        }
-    }
+    protected String algName;
+    protected int keySize;
+    protected boolean keySizeIsMutable;
+    protected int blockSize;
+    protected boolean blockSizeIsMutable;
+    // the number of rounds
+    private int numRounds;
+    // the key array
+    private int[] K = new int[120];
+    // the inverse key array
+    private int[] Ki = new int[120];
 
 
     public Rijndael() {
@@ -768,11 +687,9 @@ public class Rijndael extends BlockCipher {
         algName = ALG_NAME;
     }
 
-
     public final String getName() {
         return algName;
     }
-
 
     public int getKeySize(Key key) throws InvalidKeyException {
         if (!(key instanceof RijndaelKey)) {
@@ -788,11 +705,9 @@ public class Rijndael extends BlockCipher {
         return keyLen;
     }
 
-
     protected int getCipherBlockSize() {
         return blockSize << 2;
     }
-
 
     protected void initCipherEncrypt(SecretKey key,
                                      AlgorithmParameterSpec params) throws InvalidKeyException,
@@ -801,18 +716,8 @@ public class Rijndael extends BlockCipher {
         if (!(key instanceof RijndaelKey)) {
             throw new InvalidKeyException("unsupported type");
         }
-
-        if (params == null) {
-            // construct the default parameters
-            params = new RijndaelParameterSpec();
-        }
-
-        if (!(params instanceof RijndaelParameterSpec)) {
-            throw new InvalidAlgorithmParameterException("unsupported type");
-        }
-
         if (blockSizeIsMutable) {
-            blockSize = ((RijndaelParameterSpec) params).getBlockSize() >> 5;
+            blockSize = 128 >> 5;
         }
 
         byte[] keyBytes = key.getEncoded();
@@ -827,13 +732,11 @@ public class Rijndael extends BlockCipher {
         keyExpansion(keyBytes);
     }
 
-
     protected void initCipherDecrypt(SecretKey key,
                                      AlgorithmParameterSpec params) throws InvalidKeyException,
             InvalidAlgorithmParameterException {
         initCipherEncrypt(key, params);
     }
-
 
     protected void singleBlockEncrypt(byte[] input, int inOff, byte[] output,
                                       int outOff) {
@@ -1065,7 +968,6 @@ public class Rijndael extends BlockCipher {
                 }
     }
 
-
     protected void singleBlockDecrypt(byte[] input, int inOff, byte[] output,
                                       int outOff) {
 
@@ -1295,6 +1197,7 @@ public class Rijndael extends BlockCipher {
                     output[outOff] = (byte) (Si[d3 & 0xff] ^ Ki[i]);
                 }
     }
+
     private int computeNumRounds() {
         if ((keySize == 4) && (blockSize == 4)) {
             return 10;
@@ -1304,7 +1207,6 @@ public class Rijndael extends BlockCipher {
             return 14;
         }
     }
-
 
     private void keyExpansion(byte[] keyBytes) {
 
@@ -1344,6 +1246,54 @@ public class Rijndael extends BlockCipher {
         for (int i = blockSize; i < n; i++) {
             Ki[i] = D0[(Ki[i] >>> 24) & 255] ^ D1[(Ki[i] >>> 16) & 255]
                     ^ D2[(Ki[i] >>> 8) & 255] ^ D3[Ki[i] & 255];
+        }
+    }
+
+    public static class AES extends Rijndael {
+
+
+        public static final String ALG_NAME = "AES";
+
+
+        protected AES(String algName, String modeName, int keySize) {
+            // set the block size
+            this();
+
+            // set the algorithm name
+            this.algName = algName;
+
+            // set the key size
+            this.keySize = keySize;
+            // changing the key size is disallowed
+            keySizeIsMutable = false;
+
+            // set the mode
+            setMode(modeName);
+        }
+
+
+        public AES() {
+            // set the algorithm name
+            algName = ALG_NAME;
+
+            // changing the key size is allowed (set during initialization)
+            keySizeIsMutable = true;
+
+            // set the block size to 4 words (128 bits)
+            blockSize = 4;
+            // changing the block size is disallowed
+            blockSizeIsMutable = false;
+        }
+
+        public static class AES128_CBC extends AES {
+
+
+            public static final String ALG_NAME = AES.ALG_NAME + "128_CBC";
+
+
+            public AES128_CBC() {
+                super(ALG_NAME, "CBC", 4);
+            }
         }
     }
 

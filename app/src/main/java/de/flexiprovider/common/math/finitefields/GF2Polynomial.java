@@ -5,23 +5,11 @@ import java.util.Random;
 
 import de.flexiprovider.common.exceptions.BitDoesNotExistException;
 import de.flexiprovider.common.exceptions.PolynomialIsZeroException;
-import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.IntegerFunctions;
 import de.flexiprovider.common.util.IntUtils;
 
 
 public class GF2Polynomial {
-
-    private int len;
-
-    // number of int used in value
-    private int blocks;
-
-    // storage
-    private int[] value;
-
-    // Random source
-    private static Random rand = new Random();
 
     // Lookup-Table for Squaring: squaringTable[a]=a^2
     private static final short[] squaringTable = {0x0000, 0x0001, 0x0004,
@@ -57,7 +45,6 @@ public class GF2Polynomial {
             0x5445, 0x5450, 0x5451, 0x5454, 0x5455, 0x5500, 0x5501, 0x5504,
             0x5505, 0x5510, 0x5511, 0x5514, 0x5515, 0x5540, 0x5541, 0x5544,
             0x5545, 0x5550, 0x5551, 0x5554, 0x5555};
-
     // pre-computed Bitmask for fast masking, bitMask[a]=0x1 << a
     private static final int[] bitMask = {0x00000001, 0x00000002, 0x00000004,
             0x00000008, 0x00000010, 0x00000020, 0x00000040, 0x00000080,
@@ -66,7 +53,6 @@ public class GF2Polynomial {
             0x00040000, 0x00080000, 0x00100000, 0x00200000, 0x00400000,
             0x00800000, 0x01000000, 0x02000000, 0x04000000, 0x08000000,
             0x10000000, 0x20000000, 0x40000000, 0x80000000, 0x00000000};
-
     // pre-computed Bitmask for fast masking, rightMask[a]=0xffffffff >>> (32-a)
     private static final int[] reverseRightMask = {0x00000000, 0x00000001,
             0x00000003, 0x00000007, 0x0000000f, 0x0000001f, 0x0000003f,
@@ -76,6 +62,13 @@ public class GF2Polynomial {
             0x003fffff, 0x007fffff, 0x00ffffff, 0x01ffffff, 0x03ffffff,
             0x07ffffff, 0x0fffffff, 0x1fffffff, 0x3fffffff, 0x7fffffff,
             0xffffffff};
+    // Random source
+    private static Random rand = new Random();
+    private int len;
+    // number of int used in value
+    private int blocks;
+    // storage
+    private int[] value;
 
     public GF2Polynomial(int length) {
         int l = length;
@@ -108,7 +101,8 @@ public class GF2Polynomial {
         } else {
             throw new IllegalArgumentException(
                     "Error: GF2Polynomial was called using " + value
-                            + " as value!");
+                            + " as value!"
+            );
         }
 
     }
@@ -126,284 +120,11 @@ public class GF2Polynomial {
         zeroUnusedBits();
     }
 
-    public GF2Polynomial(int length, byte[] os) {
-        int l = length;
-        if (l < 1) {
-            l = 1;
-        }
-        blocks = ((l - 1) >> 5) + 1;
-        value = new int[blocks];
-        len = l;
-        int i, m;
-        int k = Math.min(((os.length - 1) >> 2) + 1, blocks);
-        for (i = 0; i < k - 1; i++) {
-            m = os.length - (i << 2) - 1;
-            value[i] = (os[m]) & 0x000000ff;
-            value[i] |= (os[m - 1] << 8) & 0x0000ff00;
-            value[i] |= (os[m - 2] << 16) & 0x00ff0000;
-            value[i] |= (os[m - 3] << 24) & 0xff000000;
-        }
-        i = k - 1;
-        m = os.length - (i << 2) - 1;
-        value[i] = os[m] & 0x000000ff;
-        if (m > 0) {
-            value[i] |= (os[m - 1] << 8) & 0x0000ff00;
-        }
-        if (m > 1) {
-            value[i] |= (os[m - 2] << 16) & 0x00ff0000;
-        }
-        if (m > 2) {
-            value[i] |= (os[m - 3] << 24) & 0xff000000;
-        }
-        zeroUnusedBits();
-        reduceN();
-    }
-
     public GF2Polynomial(GF2Polynomial b) {
         len = b.len;
         blocks = b.blocks;
         value = IntUtils.clone(b.value);
     }
-    public Object clone() {
-        return new GF2Polynomial(this);
-    }
-    public int getLength() {
-        return len;
-    }
-
-    public String toString(int radix) {
-        final char[] HEX_CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
-                '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-        final String[] BIN_CHARS = {"0000", "0001", "0010", "0011", "0100",
-                "0101", "0110", "0111", "1000", "1001", "1010", "1011", "1100",
-                "1101", "1110", "1111"};
-        String res;
-        int i;
-        res = "";
-        if (radix == 16) {
-            for (i = blocks - 1; i >= 0; i--) {
-                res += HEX_CHARS[(value[i] >>> 28) & 0x0f];
-                res += HEX_CHARS[(value[i] >>> 24) & 0x0f];
-                res += HEX_CHARS[(value[i] >>> 20) & 0x0f];
-                res += HEX_CHARS[(value[i] >>> 16) & 0x0f];
-                res += HEX_CHARS[(value[i] >>> 12) & 0x0f];
-                res += HEX_CHARS[(value[i] >>> 8) & 0x0f];
-                res += HEX_CHARS[(value[i] >>> 4) & 0x0f];
-                res += HEX_CHARS[(value[i]) & 0x0f];
-                res += " ";
-            }
-        } else {
-            for (i = blocks - 1; i >= 0; i--) {
-                res += BIN_CHARS[(value[i] >>> 28) & 0x0f];
-                res += BIN_CHARS[(value[i] >>> 24) & 0x0f];
-                res += BIN_CHARS[(value[i] >>> 20) & 0x0f];
-                res += BIN_CHARS[(value[i] >>> 16) & 0x0f];
-                res += BIN_CHARS[(value[i] >>> 12) & 0x0f];
-                res += BIN_CHARS[(value[i] >>> 8) & 0x0f];
-                res += BIN_CHARS[(value[i] >>> 4) & 0x0f];
-                res += BIN_CHARS[(value[i]) & 0x0f];
-                res += " ";
-            }
-        }
-        return res;
-    }
-
-
-    public byte[] toByteArray() {
-        int k = ((len - 1) >> 3) + 1;
-        int ov = k & 0x03;
-        int m;
-        byte[] res = new byte[k];
-        int i;
-        for (i = 0; i < (k >> 2); i++) {
-            m = k - (i << 2) - 1;
-            res[m] = (byte) ((value[i] & 0x000000ff));
-            res[m - 1] = (byte) ((value[i] & 0x0000ff00) >>> 8);
-            res[m - 2] = (byte) ((value[i] & 0x00ff0000) >>> 16);
-            res[m - 3] = (byte) ((value[i] & 0xff000000) >>> 24);
-        }
-        for (i = 0; i < ov; i++) {
-            m = (ov - i - 1) << 3;
-            res[i] = (byte) ((value[blocks - 1] & (0x000000ff << m)) >>> m);
-        }
-        return res;
-    }
-
-    public FlexiBigInt toFlexiBigInt() {
-        if (len == 0 || isZero()) {
-            return new FlexiBigInt(0, new byte[0]);
-        }
-        return new FlexiBigInt(1, toByteArray());
-    }
-
-    public void assignOne() {
-        int i;
-        for (i = 1; i < blocks; i++) {
-            value[i] = 0x00;
-        }
-        value[0] = 0x01;
-    }
-
-
-    public void assignX() {
-        int i;
-        for (i = 1; i < blocks; i++) {
-            value[i] = 0x00;
-        }
-        value[0] = 0x02;
-    }
-
-
-    public void assignAll() {
-        int i;
-        for (i = 0; i < blocks; i++) {
-            value[i] = 0xffffffff;
-        }
-        zeroUnusedBits();
-    }
-
-
-    public void assignZero() {
-        int i;
-        for (i = 0; i < blocks; i++) {
-            value[i] = 0x00;
-        }
-    }
-
-
-    public void randomize() {
-        int i;
-        for (i = 0; i < blocks; i++) {
-            value[i] = rand.nextInt();
-        }
-        zeroUnusedBits();
-    }
-
-
-    public void randomize(Random rand) {
-        int i;
-        for (i = 0; i < blocks; i++) {
-            value[i] = rand.nextInt();
-        }
-        zeroUnusedBits();
-    }
-
-
-    public boolean equals(Object other) {
-        if (other == null || !(other instanceof GF2Polynomial)) {
-            return false;
-        }
-
-        GF2Polynomial otherPol = (GF2Polynomial) other;
-
-        if (len != otherPol.len) {
-            return false;
-        }
-        for (int i = 0; i < blocks; i++) {
-            if (value[i] != otherPol.value[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-    public int hashCode() {
-        return len + Arrays.hashCode(value);
-    }
-
-
-    public boolean isZero() {
-        int i;
-        if (len == 0) {
-            return true;
-        }
-        for (i = 0; i < blocks; i++) {
-            if (value[i] != 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean isOne() {
-        int i;
-        for (i = 1; i < blocks; i++) {
-            if (value[i] != 0) {
-                return false;
-            }
-        }
-        return value[0] == 0x01;
-    }
-    public void addToThis(GF2Polynomial b) {
-        expandN(b.len);
-        xorThisBy(b);
-    }
-
-    public GF2Polynomial add(GF2Polynomial b) {
-        return xor(b);
-    }
-
-    public void subtractFromThis(GF2Polynomial b) {
-        expandN(b.len);
-        xorThisBy(b);
-    }
-    public void increaseThis() {
-        xorBit(0);
-    }
-
-
-    public GF2Polynomial multiply(GF2Polynomial b) {
-        int n = Math.max(len, b.len);
-        expandN(n);
-        b.expandN(n);
-        return karaMult(b);
-    }
-
-
-    private GF2Polynomial karaMult(GF2Polynomial b) {
-        GF2Polynomial result = new GF2Polynomial(len << 1);
-        if (len <= 32) {
-            result.value = mult32(value[0], b.value[0]);
-            return result;
-        }
-        if (len <= 64) {
-            result.value = mult64(value, b.value);
-            return result;
-        }
-        if (len <= 128) {
-            result.value = mult128(value, b.value);
-            return result;
-        }
-        if (len <= 256) {
-            result.value = mult256(value, b.value);
-            return result;
-        }
-        if (len <= 512) {
-            result.value = mult512(value, b.value);
-            return result;
-        }
-
-        int n = IntegerFunctions.floorLog(len - 1);
-        n = bitMask[n];
-
-        GF2Polynomial a0 = lower(((n - 1) >> 5) + 1);
-        GF2Polynomial a1 = upper(((n - 1) >> 5) + 1);
-        GF2Polynomial b0 = b.lower(((n - 1) >> 5) + 1);
-        GF2Polynomial b1 = b.upper(((n - 1) >> 5) + 1);
-
-        GF2Polynomial c = a1.karaMult(b1); // c = a1*b1
-        GF2Polynomial e = a0.karaMult(b0); // e = a0*b0
-        a0.addToThis(a1); // a0 = a0 + a1
-        b0.addToThis(b1); // b0 = b0 + b1
-        GF2Polynomial d = a0.karaMult(b0); // d = (a0+a1)*(b0+b1)
-
-        result.shiftLeftAddThis(c, n << 1);
-        result.shiftLeftAddThis(c, n);
-        result.shiftLeftAddThis(d, n);
-        result.shiftLeftAddThis(e, n);
-        result.addToThis(e);
-        return result;
-    }
-
 
     private static int[] mult512(int[] a, int[] b) {
         int[] result = new int[32];
@@ -505,7 +226,6 @@ public class GF2Polynomial {
         return result;
     }
 
-
     private static int[] mult256(int[] a, int[] b) {
         int[] result = new int[16];
         int[] a0 = new int[4];
@@ -588,7 +308,6 @@ public class GF2Polynomial {
         return result;
     }
 
-
     private static int[] mult128(int[] a, int[] b) {
         int[] result = new int[8];
         int[] a0 = new int[2];
@@ -652,6 +371,7 @@ public class GF2Polynomial {
         }
         return result;
     }
+
     private static int[] mult64(int[] a, int[] b) {
         int[] result = new int[4];
         int a0 = a[0];
@@ -679,6 +399,7 @@ public class GF2Polynomial {
         result[0] ^= e[0];
         return result;
     }
+
     private static int[] mult32(int a, int b) {
         int[] result = new int[2];
         if (a == 0 || b == 0) {
@@ -696,6 +417,221 @@ public class GF2Polynomial {
         }
         result[1] = (int) (h >>> 32);
         result[0] = (int) (h & 0x00000000ffffffffL);
+        return result;
+    }
+
+    public Object clone() {
+        return new GF2Polynomial(this);
+    }
+
+    public int getLength() {
+        return len;
+    }
+
+    public String toString(int radix) {
+        final char[] HEX_CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
+                '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+        final String[] BIN_CHARS = {"0000", "0001", "0010", "0011", "0100",
+                "0101", "0110", "0111", "1000", "1001", "1010", "1011", "1100",
+                "1101", "1110", "1111"};
+        String res;
+        int i;
+        res = "";
+        if (radix == 16) {
+            for (i = blocks - 1; i >= 0; i--) {
+                res += HEX_CHARS[(value[i] >>> 28) & 0x0f];
+                res += HEX_CHARS[(value[i] >>> 24) & 0x0f];
+                res += HEX_CHARS[(value[i] >>> 20) & 0x0f];
+                res += HEX_CHARS[(value[i] >>> 16) & 0x0f];
+                res += HEX_CHARS[(value[i] >>> 12) & 0x0f];
+                res += HEX_CHARS[(value[i] >>> 8) & 0x0f];
+                res += HEX_CHARS[(value[i] >>> 4) & 0x0f];
+                res += HEX_CHARS[(value[i]) & 0x0f];
+                res += " ";
+            }
+        } else {
+            for (i = blocks - 1; i >= 0; i--) {
+                res += BIN_CHARS[(value[i] >>> 28) & 0x0f];
+                res += BIN_CHARS[(value[i] >>> 24) & 0x0f];
+                res += BIN_CHARS[(value[i] >>> 20) & 0x0f];
+                res += BIN_CHARS[(value[i] >>> 16) & 0x0f];
+                res += BIN_CHARS[(value[i] >>> 12) & 0x0f];
+                res += BIN_CHARS[(value[i] >>> 8) & 0x0f];
+                res += BIN_CHARS[(value[i] >>> 4) & 0x0f];
+                res += BIN_CHARS[(value[i]) & 0x0f];
+                res += " ";
+            }
+        }
+        return res;
+    }
+
+    public byte[] toByteArray() {
+        int k = ((len - 1) >> 3) + 1;
+        int ov = k & 0x03;
+        int m;
+        byte[] res = new byte[k];
+        int i;
+        for (i = 0; i < (k >> 2); i++) {
+            m = k - (i << 2) - 1;
+            res[m] = (byte) ((value[i] & 0x000000ff));
+            res[m - 1] = (byte) ((value[i] & 0x0000ff00) >>> 8);
+            res[m - 2] = (byte) ((value[i] & 0x00ff0000) >>> 16);
+            res[m - 3] = (byte) ((value[i] & 0xff000000) >>> 24);
+        }
+        for (i = 0; i < ov; i++) {
+            m = (ov - i - 1) << 3;
+            res[i] = (byte) ((value[blocks - 1] & (0x000000ff << m)) >>> m);
+        }
+        return res;
+    }
+
+    public void assignOne() {
+        int i;
+        for (i = 1; i < blocks; i++) {
+            value[i] = 0x00;
+        }
+        value[0] = 0x01;
+    }
+
+    public void assignX() {
+        int i;
+        for (i = 1; i < blocks; i++) {
+            value[i] = 0x00;
+        }
+        value[0] = 0x02;
+    }
+
+    public void assignAll() {
+        int i;
+        for (i = 0; i < blocks; i++) {
+            value[i] = 0xffffffff;
+        }
+        zeroUnusedBits();
+    }
+
+    public void assignZero() {
+        int i;
+        for (i = 0; i < blocks; i++) {
+            value[i] = 0x00;
+        }
+    }
+
+    public void randomize() {
+        int i;
+        for (i = 0; i < blocks; i++) {
+            value[i] = rand.nextInt();
+        }
+        zeroUnusedBits();
+    }
+
+    public boolean equals(Object other) {
+        if (other == null || !(other instanceof GF2Polynomial)) {
+            return false;
+        }
+
+        GF2Polynomial otherPol = (GF2Polynomial) other;
+
+        if (len != otherPol.len) {
+            return false;
+        }
+        for (int i = 0; i < blocks; i++) {
+            if (value[i] != otherPol.value[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int hashCode() {
+        return len + Arrays.hashCode(value);
+    }
+
+    public boolean isZero() {
+        int i;
+        if (len == 0) {
+            return true;
+        }
+        for (i = 0; i < blocks; i++) {
+            if (value[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isOne() {
+        int i;
+        for (i = 1; i < blocks; i++) {
+            if (value[i] != 0) {
+                return false;
+            }
+        }
+        return value[0] == 0x01;
+    }
+
+    public void addToThis(GF2Polynomial b) {
+        expandN(b.len);
+        xorThisBy(b);
+    }
+
+    public GF2Polynomial add(GF2Polynomial b) {
+        return xor(b);
+    }
+
+    public void subtractFromThis(GF2Polynomial b) {
+        expandN(b.len);
+        xorThisBy(b);
+    }
+
+    public GF2Polynomial multiply(GF2Polynomial b) {
+        int n = Math.max(len, b.len);
+        expandN(n);
+        b.expandN(n);
+        return karaMult(b);
+    }
+
+    private GF2Polynomial karaMult(GF2Polynomial b) {
+        GF2Polynomial result = new GF2Polynomial(len << 1);
+        if (len <= 32) {
+            result.value = mult32(value[0], b.value[0]);
+            return result;
+        }
+        if (len <= 64) {
+            result.value = mult64(value, b.value);
+            return result;
+        }
+        if (len <= 128) {
+            result.value = mult128(value, b.value);
+            return result;
+        }
+        if (len <= 256) {
+            result.value = mult256(value, b.value);
+            return result;
+        }
+        if (len <= 512) {
+            result.value = mult512(value, b.value);
+            return result;
+        }
+
+        int n = IntegerFunctions.floorLog(len - 1);
+        n = bitMask[n];
+
+        GF2Polynomial a0 = lower(((n - 1) >> 5) + 1);
+        GF2Polynomial a1 = upper(((n - 1) >> 5) + 1);
+        GF2Polynomial b0 = b.lower(((n - 1) >> 5) + 1);
+        GF2Polynomial b1 = b.upper(((n - 1) >> 5) + 1);
+
+        GF2Polynomial c = a1.karaMult(b1); // c = a1*b1
+        GF2Polynomial e = a0.karaMult(b0); // e = a0*b0
+        a0.addToThis(a1); // a0 = a0 + a1
+        b0.addToThis(b1); // b0 = b0 + b1
+        GF2Polynomial d = a0.karaMult(b0); // d = (a0+a1)*(b0+b1)
+
+        result.shiftLeftAddThis(c, n << 1);
+        result.shiftLeftAddThis(c, n);
+        result.shiftLeftAddThis(d, n);
+        result.shiftLeftAddThis(e, n);
+        result.addToThis(e);
         return result;
     }
 
@@ -789,92 +725,6 @@ public class GF2Polynomial {
         }
 
         return true;
-    }
-
-    void reduceTrinomial(int m, int tc) {
-        int i;
-        int p0, p1;
-        int q0, q1;
-        long t;
-        p0 = m >>> 5; // block which contains 2^m
-        q0 = 32 - (m & 0x1f); // (32-index) of 2^m within block p0
-        p1 = (m - tc) >>> 5; // block which contains 2^tc
-        q1 = 32 - ((m - tc) & 0x1f); // (32-index) of 2^tc within block q1
-        int max = ((m << 1) - 2) >>> 5; // block which contains 2^(2m-2)
-        int min = p0; // block which contains 2^m
-        for (i = max; i > min; i--) { // for i = maxBlock to minBlock
-            // reduce coefficients contained in t
-            // t = block[i]
-            t = value[i] & 0x00000000ffffffffL;
-            // block[i-p0-1] ^= t << q0
-            value[i - p0 - 1] ^= (int) (t << q0);
-            // block[i-p0] ^= t >>> (32-q0)
-            value[i - p0] ^= t >>> (32 - q0);
-            // block[i-p1-1] ^= << q1
-            value[i - p1 - 1] ^= (int) (t << q1);
-            // block[i-p1] ^= t >>> (32-q1)
-            value[i - p1] ^= t >>> (32 - q1);
-            value[i] = 0x00;
-        }
-        // reduce last coefficients in block containing 2^m
-        t = value[min] & 0x00000000ffffffffL & (0xffffffffL << (m & 0x1f)); // t
-        // contains the last coefficients > m
-        value[0] ^= t >>> (32 - q0);
-        if (min - p1 - 1 >= 0) {
-            value[min - p1 - 1] ^= (int) (t << q1);
-        }
-        value[min - p1] ^= t >>> (32 - q1);
-
-        value[min] &= reverseRightMask[m & 0x1f];
-        blocks = ((m - 1) >>> 5) + 1;
-        len = m;
-    }
-
-    void reducePentanomial(int m, int[] pc) {
-        int i;
-        int p0, p1, p2, p3;
-        int q0, q1, q2, q3;
-        long t;
-        p0 = m >>> 5;
-        q0 = 32 - (m & 0x1f);
-        p1 = (m - pc[0]) >>> 5;
-        q1 = 32 - ((m - pc[0]) & 0x1f);
-        p2 = (m - pc[1]) >>> 5;
-        q2 = 32 - ((m - pc[1]) & 0x1f);
-        p3 = (m - pc[2]) >>> 5;
-        q3 = 32 - ((m - pc[2]) & 0x1f);
-        int max = ((m << 1) - 2) >>> 5;
-        int min = p0;
-        for (i = max; i > min; i--) {
-            t = value[i] & 0x00000000ffffffffL;
-            value[i - p0 - 1] ^= (int) (t << q0);
-            value[i - p0] ^= t >>> (32 - q0);
-            value[i - p1 - 1] ^= (int) (t << q1);
-            value[i - p1] ^= t >>> (32 - q1);
-            value[i - p2 - 1] ^= (int) (t << q2);
-            value[i - p2] ^= t >>> (32 - q2);
-            value[i - p3 - 1] ^= (int) (t << q3);
-            value[i - p3] ^= t >>> (32 - q3);
-            value[i] = 0;
-        }
-        t = value[min] & 0x00000000ffffffffL & (0xffffffffL << (m & 0x1f));
-        value[0] ^= t >>> (32 - q0);
-        if (min - p1 - 1 >= 0) {
-            value[min - p1 - 1] ^= (int) (t << q1);
-        }
-        value[min - p1] ^= t >>> (32 - q1);
-        if (min - p2 - 1 >= 0) {
-            value[min - p2 - 1] ^= (int) (t << q2);
-        }
-        value[min - p2] ^= t >>> (32 - q2);
-        if (min - p3 - 1 >= 0) {
-            value[min - p3 - 1] ^= (int) (t << q3);
-        }
-        value[min - p3] ^= t >>> (32 - q3);
-        value[min] &= reverseRightMask[m & 0x1f];
-
-        blocks = ((m - 1) >>> 5) + 1;
-        len = m;
     }
 
     public void reduceN() {
@@ -978,6 +828,7 @@ public class GF2Polynomial {
         // restore them to zero:
         zeroUnusedBits();
     }
+
     private void zeroUnusedBits() {
         if ((len & 0x1f) != 0) {
             value[blocks - 1] &= reverseRightMask[len & 0x1f];
@@ -994,37 +845,11 @@ public class GF2Polynomial {
         }
         value[i >>> 5] |= bitMask[i & 0x1f];
     }
-    public void resetBit(int i) throws BitDoesNotExistException {
-        if (i < 0 || i > (len - 1)) {
-            throw new BitDoesNotExistException();
-        }
-        if (i > (len - 1)) {
-            return;
-        }
-        value[i >>> 5] &= ~bitMask[i & 0x1f];
-    }
-    public void xorBit(int i) throws BitDoesNotExistException {
-        if (i < 0 || i > (len - 1)) {
-            throw new BitDoesNotExistException();
-        }
-        if (i > (len - 1)) {
-            return;
-        }
-        value[i >>> 5] ^= bitMask[i & 0x1f];
-    }
+
     public boolean testBit(int i) {
         return !(i < 0 || i > (len - 1)) && (value[i >>> 5] & bitMask[i & 0x1f]) != 0;
     }
-    public GF2Polynomial shiftLeft() {
-        GF2Polynomial result = new GF2Polynomial(len + 1, value);
-        int i;
-        for (i = result.blocks - 1; i >= 1; i--) {
-            result.value[i] <<= 1;
-            result.value[i] |= result.value[i - 1] >>> 31;
-        }
-        result.value[0] <<= 1;
-        return result;
-    }
+
     public GF2Polynomial shiftLeft(int k) {
         GF2Polynomial result = new GF2Polynomial(len + k, value);
         // Shift left as many multiples of the block size as possible:
@@ -1076,19 +901,5 @@ public class GF2Polynomial {
         }
     }
 
-
-    public void shiftRightThis() {
-        int i;
-        len -= 1;
-        blocks = ((len - 1) >>> 5) + 1;
-        for (i = 0; i <= blocks - 2; i++) {
-            value[i] >>>= 1;
-            value[i] |= value[i + 1] << 31;
-        }
-        value[blocks - 1] >>>= 1;
-        if ((len & 0x1f) == 0) {
-            value[blocks - 1] |= value[blocks] << 31;
-        }
-    }
 
 }

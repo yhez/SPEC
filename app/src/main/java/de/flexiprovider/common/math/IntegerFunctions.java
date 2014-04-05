@@ -13,10 +13,6 @@ public final class IntegerFunctions {
     // the jacobi function uses this lookup table
     private static final int[] jacobiTable = {0, 1, 0, -1, 0, -1, 0, 1};
 
-    private IntegerFunctions() {
-        // empty
-    }
-
 
     public static int jacobi(FlexiBigInt A, FlexiBigInt B) {
         FlexiBigInt a, b, v;

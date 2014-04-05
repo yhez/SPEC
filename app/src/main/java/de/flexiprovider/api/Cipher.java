@@ -1,5 +1,7 @@
 package de.flexiprovider.api;
 
+import java.security.AlgorithmParameters;
+import java.security.AlgorithmParametersSpi;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
@@ -11,7 +13,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.ShortBufferException;
 
-import de.flexiprovider.api.parameters.AlgorithmParameters;
 import de.flexiprovider.common.util.JavaSecureRandomWrapper;
 import de.flexiprovider.ec.parameters.ECParameters;
 
@@ -42,7 +43,7 @@ public abstract class Cipher extends javax.crypto.CipherSpi {
                                     java.security.SecureRandom random)
             throws java.security.InvalidKeyException,
             java.security.InvalidAlgorithmParameterException {
-            engineInit(opMode, key, random);
+        engineInit(opMode, key, random);
     }
 
 
@@ -106,19 +107,18 @@ public abstract class Cipher extends javax.crypto.CipherSpi {
         return getOutputSize(inLen);
     }
 
-    protected final java.security.AlgorithmParameters engineGetParameters() {
+    protected final AlgorithmParameters engineGetParameters() {
 
         final class JavaAlgorithmParameters extends
-                java.security.AlgorithmParameters {
-            JavaAlgorithmParameters(AlgorithmParameters params, String algName) {
+                AlgorithmParameters {
+            JavaAlgorithmParameters(AlgorithmParametersSpi params, String algName) {
                 super(params, null, algName);
             }
         }
 
         String algName = getName();
-        AlgorithmParameters params;
+        AlgorithmParametersSpi params;
         params = new ECParameters();
-
         JavaAlgorithmParameters algParams = new JavaAlgorithmParameters(params,
                 algName);
 
@@ -168,6 +168,7 @@ public abstract class Cipher extends javax.crypto.CipherSpi {
 
 
     public abstract String getName();
+
     public abstract int getBlockSize();
 
 

@@ -8,19 +8,6 @@ import java.util.Iterator;
 
 
 public class DERDecoder extends FilterInputStream implements Decoder {
-    protected int tag_;
-    protected int tagclass_;
-    protected int length_;
-    protected boolean indefinite_;
-    protected boolean primitive_;
-    protected boolean skip_ = false;
-
-    protected int pos_ = 0;
-    protected int markpos_ = 0;
-    protected int[] oidbuf_ = new int[32];
-
-    protected boolean debug_ = false;
-
     static private String[] typename_ = {null,
             "Boolean",
             "Integer",
@@ -53,10 +40,22 @@ public class DERDecoder extends FilterInputStream implements Decoder {
             null,
             "BMPString"
     };
-
-
     static private Class[] typeclass_ = getClasses();
+    protected int tag_;
+    protected int tagclass_;
+    protected int length_;
+    protected boolean indefinite_;
+    protected boolean primitive_;
+    protected boolean skip_ = false;
+    protected int pos_ = 0;
+    protected int markpos_ = 0;
+    protected int[] oidbuf_ = new int[32];
+    protected boolean debug_ = false;
 
+
+    public DERDecoder(InputStream in) {
+        super(in);
+    }
 
     static private Class[] getClasses() {
         int n, i;
@@ -86,21 +85,15 @@ public class DERDecoder extends FilterInputStream implements Decoder {
         return c;
     }
 
-
-    static public Class getClass(int tag){
-        Class cls=null;
+    static public Class getClass(int tag) {
+        Class cls = null;
         if (tag < typeclass_.length) {
             cls = typeclass_[tag];
         }
         return cls;
     }
 
-    public DERDecoder(InputStream in) {
-        super(in);
-    }
-
-
-    protected boolean readNext(){
+    protected boolean readNext() {
         int n;
         int m;
         int j;
@@ -143,7 +136,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
     }
 
 
-    protected void match0(ASN1Type t){
+    protected void match0(ASN1Type t) {
         if (!t.isExplicit()) {
             skipNext(false);
         }
@@ -160,7 +153,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
         skip_ = skip;
     }
 
-    public ASN1Type readType(){
+    private ASN1Type readType() {
         if (tag_ == 0 && tagclass_ == 0) {
             return null;
         }
@@ -195,7 +188,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
     }
 
 
-    protected void readTypes(ASN1Collection c){
+    protected void readTypes(ASN1Collection c) {
         ASN1Type o;
         int end;
 
@@ -236,7 +229,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
         t.setBits(buf, pad);
     }
 
-    public void readOctetString(ASN1OctetString t){
+    public void readOctetString(ASN1OctetString t) {
         byte[] buf;
 
         match0(t);
@@ -245,11 +238,11 @@ public class DERDecoder extends FilterInputStream implements Decoder {
         t.setByteArray(buf);
     }
 
-    public void readNull(ASN1Null t){
+    public void readNull(ASN1Null t) {
         match0(t);
     }
 
-    public void readObjectIdentifier(ASN1ObjectIdentifier t){
+    public void readObjectIdentifier(ASN1ObjectIdentifier t) {
         int[] oid;
         int end;
         int n;
@@ -262,16 +255,16 @@ public class DERDecoder extends FilterInputStream implements Decoder {
         oidbuf_[1] = n % 40;
         i = 2;
 
-            while (pos_ < end) {
-                oidbuf_[i++] = readBase128();
-            }
-            oid = new int[i];
+        while (pos_ < end) {
+            oidbuf_[i++] = readBase128();
+        }
+        oid = new int[i];
 
-            System.arraycopy(oidbuf_, 0, oid, 0, i);
-            t.setOID(oid);
+        System.arraycopy(oidbuf_, 0, oid, 0, i);
+        t.setOID(oid);
     }
 
-    public void readString(ASN1String t){
+    public void readString(ASN1String t) {
         byte[] buf;
         match0(t);
         buf = new byte[length_];
@@ -311,7 +304,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
         }
     }
 
-    public void readCollectionOf(ASN1CollectionOf t){
+    public void readCollectionOf(ASN1CollectionOf t) {
         int end;
         ASN1Type o;
 
@@ -322,18 +315,18 @@ public class DERDecoder extends FilterInputStream implements Decoder {
 
         while (pos_ < end) {
 
-                o = t.newElement();
+            o = t.newElement();
 
             o.decode(this);
         }
     }
 
-    public void readTime(ASN1Time t){
+    public void readTime(ASN1Time t) {
         readString(t);
     }
 
 
-    public void readTaggedType(ASN1TaggedType t){
+    public void readTaggedType(ASN1TaggedType t) {
         ASN1Type o;
 
         match1(t);
@@ -346,13 +339,14 @@ public class DERDecoder extends FilterInputStream implements Decoder {
     }
 
 
-    public void readChoice(ASN1Choice t){
+    public void readChoice(ASN1Choice t) {
         ASN1Type o;
         skipNext(true);
         o = t.getType(tag_, tagclass_);
         o.decode(this);
         t.setInnerType(o);
     }
+
     public int readBase128() {
         int n;
         int b;
@@ -382,7 +376,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
     }
 
 
-    public int read(){
+    public int read() {
 
         try {
             int b;
@@ -398,27 +392,27 @@ public class DERDecoder extends FilterInputStream implements Decoder {
     }
 
 
-    public int read(byte[] b, int off, int len){
-            try {
-                int l;
-                int ls;
-                ls = 0;
-                while (ls < len) {
-                    l = in.read(b, off + ls, len - ls);
-                    if (l < 0) {
-                        break;
-                    }
-                    ls += l;
+    public int read(byte[] b, int off, int len) {
+        try {
+            int l;
+            int ls;
+            ls = 0;
+            while (ls < len) {
+                l = in.read(b, off + ls, len - ls);
+                if (l < 0) {
+                    break;
                 }
-                pos_ += ls;
-                return ls;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return 0;
+                ls += l;
             }
+            pos_ += ls;
+            return ls;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
-    public int read(byte[] b){
+    public int read(byte[] b) {
         try {
             int l;
             int ls;
@@ -437,7 +431,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
 
             pos_ += ls;
             return ls;
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return 0;
         }

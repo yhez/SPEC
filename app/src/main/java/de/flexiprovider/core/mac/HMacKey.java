@@ -1,15 +1,18 @@
 package de.flexiprovider.core.mac;
 
+import java.security.Key;
 import java.util.Arrays;
+
+import javax.crypto.SecretKey;
 
 import de.flexiprovider.common.util.ByteUtils;
 
 
-public class HMacKey implements javax.crypto.SecretKey, java.security.Key {
+public class HMacKey implements SecretKey, Key {
 
     private byte[] keyBytes;
 
-    protected HMacKey(byte[] keyBytes) {
+    public HMacKey(byte[] keyBytes) {
         this.keyBytes = ByteUtils.clone(keyBytes);
     }
 

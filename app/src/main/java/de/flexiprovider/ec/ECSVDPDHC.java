@@ -23,17 +23,14 @@ import de.flexiprovider.ec.keys.ECSecretKey;
 
 public class ECSVDPDHC extends KeyAgreement {
 
-    // the private key value
-    private FlexiBigInt mS;
-
-    // the public key
-    private ECPublicKey mOtherKey;
-
     /**
      * flag indicating whether cofactor multiplication shall be used
      */
     protected boolean withCoFactor = true;
-
+    // the private key value
+    private FlexiBigInt mS;
+    // the public key
+    private ECPublicKey mOtherKey;
     // the (optional) cofactor
     private FlexiBigInt mK;
 
@@ -110,8 +107,9 @@ public class ECSVDPDHC extends KeyAgreement {
         }
         mOtherKey = (ECPublicKey) key;
 
-        if (!ECTools.isValidPublicKey(mOtherKey)) {
-            throw new InvalidKeyException("invalid key");
+        Point q = mOtherKey.getW();
+        if (q.isZero() || !q.onCurve()) {
+            throw new InvalidKeyException("invalid public key");
         }
         try {
             if (lastPhase) {
