@@ -256,7 +256,7 @@
     <string name="verify_delete">Verify delete first</string>
     <string name="save_to_safe">Save attachment to Safe</string>
     <string name="name_allready_exist">file with the same name already exist</string>
-    <string name="collecting_data">collecting dataRaw from </string>
+    <string name="collecting_data">collecting data from</string>
     <string name="keys_loaded">load private key to decrypt file</string>
     <string name="open_file_no_private">load private key to decrypt file</string>
     <string name="file_saved_drive">file has saved on drive</string>
