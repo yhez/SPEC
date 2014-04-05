@@ -1,7 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
-
 public class ASN1BitString extends ASN1AbstractType {
 
     private static final byte[] DEFAULT_VALUE = new byte[0];
@@ -45,7 +43,7 @@ public class ASN1BitString extends ASN1AbstractType {
         return b;
     }
 
-    public void setBits(byte[] b, int pad) throws ConstraintException {
+    public void setBits(byte[] b, int pad) {
         setBits0(b, pad);
         checkConstraints();
     }
@@ -104,12 +102,12 @@ public class ASN1BitString extends ASN1AbstractType {
     }
 
 
-    public void encode(Encoder enc) throws ASN1Exception, IOException {
+    public void encode(Encoder enc){
         enc.writeBitString(this);
     }
 
 
-    public void decode(Decoder dec) throws ASN1Exception, IOException {
+    public void decode(Decoder dec){
         boolean tmp;
 
         tmp = namedBits_;

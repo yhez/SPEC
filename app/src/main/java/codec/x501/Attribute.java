@@ -1,10 +1,8 @@
 package codec.x501;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1OpenType;
 import codec.asn1.ASN1RegisteredType;
 import codec.asn1.ASN1Sequence;
@@ -19,7 +17,7 @@ public class Attribute extends ASN1Sequence implements ASN1RegisteredType {
     protected ASN1Set values_;
 
 
-    public void decode(Decoder dec) throws IOException, ASN1Exception {
+    public void decode(Decoder dec) {
         super.decode(dec);
 
         if (!(values_ instanceof ASN1SetOf)) {
@@ -28,8 +26,6 @@ public class Attribute extends ASN1Sequence implements ASN1RegisteredType {
         ArrayList list;
         ASN1Type o;
         Iterator i;
-
-        try {
             list = new ArrayList(values_.size());
 
             for (i = values_.iterator(); i.hasNext(); ) {
@@ -42,10 +38,6 @@ public class Attribute extends ASN1Sequence implements ASN1RegisteredType {
             }
             values_.clear();
             values_.addAll(list);
-        } catch (ClassCastException e) {
-            throw new ASN1Exception("Unexpected type in SET OF!");
-        } catch (NullPointerException e) {
-            throw new ASN1Exception("NULL in SET OF!");
-        }
+
     }
 }

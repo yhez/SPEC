@@ -8,16 +8,8 @@ public final class CurveRegistry {
 
 
     public static final class BrainpoolP512r1 extends CurveParamsGFP {
-
-        /**
-         * The OID of brainpoolP512r1.
-         */
-        public static final String OID = "1.3.36.3.3.2.8.1.1.13";
-
         public BrainpoolP512r1() {
-            super(
-                    OID,
-                    // curve coefficient a
+            super(  // curve coefficient a
                     "7830A3318B603B89E2327145AC234CC594CBDD8D3DF91610A83441CAEA9863BC2DED5D5AA8253AA10A2EF1C98B9AC8B57F1117A72BF2C7B9E7C1AC4D77FC94CA",
                     // curve coefficient b
                     "3DF91610A83441CAEA9863BC2DED5D5AA8253AA10A2EF1C98B9AC8B57F1117A72BF2C7B9E7C1AC4D77FC94CADC083E67984050B75EBAE5DD2809BD638016F723",

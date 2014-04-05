@@ -1,8 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
-
-
 public class ASN1Boolean extends ASN1AbstractType {
 
     private boolean value_ = true;
@@ -23,11 +20,11 @@ public class ASN1Boolean extends ASN1AbstractType {
         return ASN1.TAG_BOOLEAN;
     }
 
-    public void encode(Encoder enc) throws ASN1Exception, IOException {
+    public void encode(Encoder enc){
         enc.writeBoolean(this);
     }
 
-    public void decode(Decoder dec) throws ASN1Exception, IOException {
+    public void decode(Decoder dec){
         dec.readBoolean(this);
     }
 

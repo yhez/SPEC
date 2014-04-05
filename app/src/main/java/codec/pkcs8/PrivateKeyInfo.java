@@ -1,9 +1,7 @@
 package codec.pkcs8;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
-import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1Integer;
 import codec.asn1.ASN1OctetString;
 import codec.asn1.ASN1Sequence;
@@ -51,8 +49,6 @@ public class PrivateKeyInfo extends ASN1Sequence {
     public ASN1Type getDecodedRawKey() throws Exception {
         DERDecoder dec;
         ASN1Type raw;
-
-        try {
             dec = new DERDecoder(new ByteArrayInputStream(encodedKey_
                     .getByteArray()));
 
@@ -60,12 +56,6 @@ public class PrivateKeyInfo extends ASN1Sequence {
             dec.close();
 
             return raw;
-        } catch (ASN1Exception e) {
-            throw new Exception("Cannot decode raw key!");
-        } catch (IOException e) {
-            throw new Exception(
-                    "Internal, I/O exception caught!");
-        }
     }
 
 }

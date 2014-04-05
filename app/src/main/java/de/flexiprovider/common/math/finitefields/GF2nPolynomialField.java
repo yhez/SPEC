@@ -1,28 +1,19 @@
 package de.flexiprovider.common.math.finitefields;
 
-import java.util.Vector;
-
 import de.flexiprovider.common.exceptions.GFException;
 import de.flexiprovider.common.exceptions.PolynomialIsNotIrreducibleException;
 
 public class GF2nPolynomialField extends GF2nField {
 
-
     GF2Polynomial[] squaringMatrix;
-
     // field polynomial is a trinomial
     private boolean isTrinomial = false;
-
     // field polynomial is a pentanomial
     private boolean isPentanomial = false;
-
     // middle coefficient of the field polynomial in case it is a trinomial
     private int tc;
-
     // middle 3 coefficients of the field polynomial in case it is a pentanomial
     private int[] pc = new int[3];
-
-
     public GF2nPolynomialField(int deg, GF2Polynomial polynomial)
             throws PolynomialIsNotIrreducibleException {
         if (deg < 3) {
@@ -56,29 +47,20 @@ public class GF2nPolynomialField extends GF2nField {
         if (k == 5) {
             isPentanomial = true;
         }
-        fields = new Vector();
-        matrices = new Vector();
     }
-
 
     public boolean isTrinomial() {
         return isTrinomial;
     }
-
-
     public boolean isPentanomial() {
         return isPentanomial;
     }
-
-
     public int getTc() throws GFException {
         if (!isTrinomial) {
             throw new GFException();
         }
         return tc;
     }
-
-
     public int[] getPc() throws GFException {
         if (!isPentanomial) {
             throw new GFException();
@@ -87,8 +69,6 @@ public class GF2nPolynomialField extends GF2nField {
         System.arraycopy(pc, 0, result, 0, 3);
         return result;
     }
-
-
     private void computeSquaringMatrix() {
         GF2Polynomial[] d = new GF2Polynomial[mDegree - 1];
         int i, j;
@@ -113,8 +93,6 @@ public class GF2nPolynomialField extends GF2nField {
         }
 
     }
-
-
     protected void computeFieldPolynomial() {
         if (testTrinomials()) {
             return;
@@ -124,8 +102,6 @@ public class GF2nPolynomialField extends GF2nField {
         }
         testRandom();
     }
-
-
     private boolean testTrinomials() {
         int i;
         boolean done = false;
@@ -147,12 +123,9 @@ public class GF2nPolynomialField extends GF2nField {
 
         return done;
     }
-
-
     private boolean testPentanomials() {
         int i, j, k;
         boolean done;
-
         fieldPolynomial = new GF2Polynomial(mDegree + 1);
         fieldPolynomial.setBit(0);
         fieldPolynomial.setBit(mDegree);
@@ -179,21 +152,17 @@ public class GF2nPolynomialField extends GF2nField {
             }
             fieldPolynomial.resetBit(i);
         }
-
         return false;
     }
-
-
-    private boolean testRandom() {
+    private void testRandom() {
         fieldPolynomial = new GF2Polynomial(mDegree + 1);
         while (true) {
             fieldPolynomial.randomize();
             fieldPolynomial.setBit(mDegree);
             fieldPolynomial.setBit(0);
             if (fieldPolynomial.isIrreducible()) {
-                return true;
+                return;
             }
         }
     }
-
 }

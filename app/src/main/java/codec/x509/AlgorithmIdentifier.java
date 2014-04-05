@@ -6,7 +6,6 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 
 import codec.asn1.ASN1;
-import codec.asn1.ASN1Exception;
 import codec.asn1.ASN1ObjectIdentifier;
 import codec.asn1.ASN1Opaque;
 import codec.asn1.ASN1Sequence;
@@ -30,8 +29,7 @@ public class AlgorithmIdentifier extends ASN1Sequence {
     }
 
 
-    public AlgorithmIdentifier(ASN1ObjectIdentifier oid, byte[] b)
-            throws ASN1Exception {
+    public AlgorithmIdentifier(ASN1ObjectIdentifier oid, byte[] b){
         super(2);
 
         if (oid == null)
@@ -80,12 +78,9 @@ public class AlgorithmIdentifier extends ASN1Sequence {
         try {
             params.init(parameters_.getEncoded());
         } catch (IOException e) {
-            throw new InvalidAlgorithmParameterException(
-                    "Caught IOException(\"" + e.getMessage() + "\")");
-        } catch (ASN1Exception e) {
-            throw new InvalidAlgorithmParameterException(
-                    "Caught ASN1Exception(\"" + e.getMessage() + "\")");
+            e.printStackTrace();
         }
+
         return params;
     }
     public ASN1ObjectIdentifier getAlgorithmOID() {

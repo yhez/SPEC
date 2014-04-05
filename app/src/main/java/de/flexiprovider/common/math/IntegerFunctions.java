@@ -10,9 +10,6 @@ public final class IntegerFunctions {
 
     private static final FlexiBigInt TWO = FlexiBigInt.valueOf(2);
 
-    private static final int[] SMALL_PRIMES = {3, 5, 7, 11, 13, 17, 19, 23,
-            29, 31, 37, 41};
-
     // the jacobi function uses this lookup table
     private static final int[] jacobiTable = {0, 1, 0, -1, 0, -1, 0, 1};
 
@@ -186,10 +183,6 @@ public final class IntegerFunctions {
     }
 
 
-    public static int gcd(int u, int v) {
-        return FlexiBigInt.valueOf(u).gcd(FlexiBigInt.valueOf(v)).intValue();
-    }
-
     public static int floorLog(int a) {
         int h = 0;
         if (a <= 0) {
@@ -202,53 +195,6 @@ public final class IntegerFunctions {
         }
 
         return h;
-    }
-
-    public static int order(int g, int p) {
-        int b, j;
-
-        b = g % p; // Reduce g mod p first.
-        j = 1;
-
-        // Check whether g == 0 mod p (avoiding endless loop).
-        if (b == 0) {
-            throw new IllegalArgumentException(g + " is not an element of Z/("
-                    + p + "Z)^*; it is not meaningful to compute its order.");
-        }
-
-        // Compute the order of g mod p:
-        while (b != 1) {
-            b *= g;
-            b %= p;
-            if (b < 0) {
-                b += p;
-            }
-            j++;
-        }
-
-        return j;
-    }
-
-    public static boolean isPrime(int n) {
-        if (n < 2) {
-            return false;
-        }
-        if (n == 2) {
-            return true;
-        }
-        if ((n & 1) == 0) {
-            return false;
-        }
-        if (n < 42) {
-            for (int SMALL_PRIME : SMALL_PRIMES) {
-                if (n == SMALL_PRIME) {
-                    return true;
-                }
-            }
-        }
-
-        return !((n % 3 == 0) || (n % 5 == 0) || (n % 7 == 0) || (n % 11 == 0) || (n % 13 == 0) || (n % 17 == 0) || (n % 19 == 0) || (n % 23 == 0) || (n % 29 == 0) || (n % 31 == 0) || (n % 37 == 0) || (n % 41 == 0)) && FlexiBigInt.valueOf(n).isProbablePrime(20);
-
     }
 
 

@@ -1,12 +1,10 @@
 package codec.asn1;
 
-import java.io.EOFException;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
-
 import java.math.BigInteger;
+import java.util.Iterator;
 
 
 public class DERDecoder extends FilterInputStream implements Decoder {
@@ -18,12 +16,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
     protected boolean skip_ = false;
 
     protected int pos_ = 0;
-
     protected int markpos_ = 0;
-
-    protected int limit_;
-
-
     protected int[] oidbuf_ = new int[32];
 
     protected boolean debug_ = false;
@@ -94,18 +87,12 @@ public class DERDecoder extends FilterInputStream implements Decoder {
     }
 
 
-    static public Class getClass(int tag) throws ASN1Exception {
-        Class cls;
-
-        if (tag < 0)
-            throw new IllegalArgumentException("Tag number is negative!");
-
+    static public Class getClass(int tag){
+        Class cls=null;
         if (tag < typeclass_.length) {
             cls = typeclass_[tag];
-            if (cls != null)
-                return cls;
         }
-        throw new ASN1Exception("Unknown tag! (" + tag + ")");
+        return cls;
     }
 
     public DERDecoder(InputStream in) {
@@ -113,7 +100,7 @@ public class DERDecoder extends FilterInputStream implements Decoder {
     }
 
 
-    protected boolean readNext() throws ASN1Exception, IOException {
+    protected boolean readNext(){
         int n;
         int m;
         int j;
@@ -141,10 +128,6 @@ public class DERDecoder extends FilterInputStream implements Decoder {
             tag_ = n & ASN1.TAG_MASK;
         }
         n = read();
-
-        if (n < 0) {
-            throw new ASN1Exception("Unexpected EOF, length missing!");
-        }
         indefinite_ = false;
         m = n & ASN1.LENGTH_MASK;
 
@@ -156,122 +139,20 @@ public class DERDecoder extends FilterInputStream implements Decoder {
             }
         }
         length_ = m;
-
-        if (length_ < 0) {
-            throw new ASN1Exception("Negative length: " + length_);
-        }
-        if (limit_ > 0) {
-            m = pos_ + length_ - limit_;
-
-            if (m > 0) {
-                throw new ASN1Exception("Maximum input limit violated by " + m
-                        + " octets!");
-            }
-        }
-        if (primitive_ && indefinite_) {
-            throw new ASN1Exception(
-                    "Encoding can't be PRIMITIVE and INDEFINITE LENGTH!");
-        }
-        {
-            if (debug_)
-                debugHeader(j);
-        }
         return true;
     }
 
-    private void debugHeader(int offset) {
-        StringBuffer sb;
-        String s;
-        String t;
 
-        sb = new StringBuffer();
-        sb.append("(").append(offset).append(")\t");
-
-        switch (tagclass_) {
-            case ASN1.CLASS_UNIVERSAL:
-                t = "UNIVERSAL";
-                break;
-            case ASN1.CLASS_PRIVATE:
-                t = "PRIVATE";
-                break;
-            case ASN1.CLASS_CONTEXT:
-                t = "CONTEXT SPECIFIC";
-                break;
-            case ASN1.CLASS_APPLICATION:
-                t = "APPLICATION";
-                break;
-            default:
-                t = "*INTERNAL ERROR*";
-        }
-        if (tagclass_ == ASN1.CLASS_UNIVERSAL && tag_ < typename_.length) {
-            s = typename_[tag_];
-            if (s == null) {
-                sb.append("[UNIVERSAL ").append(tag_).append("] ");
-            } else {
-                sb.append(s).append(" ");
-            }
-        } else {
-            sb.append("[").append(t).append(" ").append(tag_).append("] ");
-        }
-        sb.append((primitive_) ? "PRIMITIVE " : "CONSTRUCTED ");
-        sb.append("length: ");
-        if (indefinite_) {
-            sb.append("indefinite");
-        } else {
-            sb.append(length_);
-        }
-        System.out.println(sb.toString());
-    }
-
-
-    protected void match0(ASN1Type t, boolean primitive) throws ASN1Exception,
-            IOException {
-
+    protected void match0(ASN1Type t){
         if (!t.isExplicit()) {
-            if (primitive != primitive_) {
-                throw new ASN1Exception("PRIMTIVE vs. CONSTRUCTED mismatch!");
-            }
-
             skipNext(false);
-
-            return;
         }
-        if (!readNext()) {
-            throw new EOFException("End of stream reached!");
-        }
-        if (t.isType(tag_, tagclass_)) {
-            if (primitive != primitive_) {
-                throw new ASN1Exception("CONSTRUCTED vs. PRIMITIVE mismatch!");
-            }
-            return;
-        }
-        throw new ASN1Exception("Type mismatch!");
     }
 
 
-    protected void match1(ASN1Type t) throws ASN1Exception, IOException {
+    protected void match1(ASN1Type t) {
         if (!t.isExplicit()) {
-
             skipNext(false);
-
-            return;
-        }
-        if (!readNext()) {
-            throw new EOFException("End of stream reached!");
-        }
-        if (t.isType(tag_, tagclass_)) {
-            return;
-        }
-        throw new ASN1Exception("Type mismatch!");
-    }
-
-    protected void match2(int tag, int tagclass) throws IOException,
-            ASN1Exception {
-        if (!readNext()) {
-            throw new EOFException("End of stream reached!");
-        }
-        if (tag != tag_ || tagclass != tagclass_) {
-            throw new ASN1Exception("Type mismatch!");
         }
     }
 
@@ -279,36 +160,16 @@ public class DERDecoder extends FilterInputStream implements Decoder {
         skip_ = skip;
     }
 
-    public ASN1Type readType() throws ASN1Exception, IOException {
-        if (!readNext()) {
-            throw new EOFException("End of encoding reached!");
-        }
+    public ASN1Type readType(){
         if (tag_ == 0 && tagclass_ == 0) {
-            if (length_ != 0) {
-                throw new ASN1Exception("EOC with non-zero length!");
-            }
             return null;
         }
         if (tagclass_ != ASN1.CLASS_UNIVERSAL) {
             ASN1OctetString o;
             ASN1TaggedType t;
-
-
-            if (indefinite_) {
-                throw new ASN1Exception(
-                        "The decoder encountered a non-UNIVERSAL "
-                                + "type with INDEFINITE LENGTH encoding. "
-                                + "There is not sufficient information to "
-                                + "determine the actual length of this "
-                                + "type. Please try again by providing the "
-                                + "appropriate template structure to the "
-                                + "decoder.");
-            }
             primitive_ = true;
-
             o = new ASN1OctetString();
             t = new ASN1TaggedType(tag_, tagclass_, o, false);
-
             readOctetString(o);
 
             return t;
@@ -317,27 +178,24 @@ public class DERDecoder extends FilterInputStream implements Decoder {
 
         try {
             t = (ASN1Type) getClass(tag_).newInstance();
-        } catch (InstantiationException e) {
-            throw new ASN1Exception("Internal error, can't instantiate type!");
-        } catch (IllegalAccessException e) {
-            throw new ASN1Exception("Internal error, can't access type!");
-        }
 
-        if (t instanceof ASN1Collection) {
-            if (primitive_) {
-                throw new ASN1Exception("Collections cannot be PRIMITIVE!");
+            if (t instanceof ASN1Collection) {
+                readTypes((ASN1Collection) t);
+            } else {
+                skipNext(true);
+                t.decode(this);
             }
-            readTypes((ASN1Collection) t);
-        } else {
-            skipNext(true);
-            t.decode(this);
+            return t;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
-        return t;
+        return null;
     }
 
 
-    protected void readTypes(ASN1Collection c) throws ASN1Exception,
-            IOException {
+    protected void readTypes(ASN1Collection c){
         ASN1Type o;
         int end;
 
@@ -345,161 +203,90 @@ public class DERDecoder extends FilterInputStream implements Decoder {
 
         while (end > pos_) {
             o = readType();
-
-            if (o == null) {
-                throw new ASN1Exception(
-                        "EOC cannot be component of a collection!");
-            }
             c.add(o);
-        }
-        if (end < pos_) {
-            throw new ASN1Exception("Length short by " + (pos_ - end)
-                    + " octets!");
         }
     }
 
-    public void readBoolean(ASN1Boolean t) throws ASN1Exception, IOException {
+    public void readBoolean(ASN1Boolean t) {
         int b;
 
-        match0(t, true);
+        match0(t);
         b = read();
-
-        if (b < 0) {
-            throw new ASN1Exception("Unexpected EOF!");
-        }
         if (b == 0) {
             t.setTrue(false);
         } else if (b == 0xff) {
             t.setTrue(true);
-        } else {
-            throw new ASN1Exception("Bad ASN.1 Boolean encoding!");
         }
     }
 
-    public void readInteger(ASN1Integer t) throws ASN1Exception, IOException {
+    public void readInteger(ASN1Integer t) {
         byte[] buf;
-
-        match0(t, true);
-
+        match0(t);
         buf = new byte[length_];
-
-        if (read(buf) < buf.length) {
-            throw new ASN1Exception("Unexpected EOF!");
-        }
         t.setBigInteger(new BigInteger(buf));
     }
 
-    public void readBitString(ASN1BitString t) throws ASN1Exception,
-            IOException {
+    public void readBitString(ASN1BitString t) {
         byte[] buf;
         int pad;
 
-        match0(t, true);
-
-        if (length_ < 1) {
-            throw new ASN1Exception("Length is zero, no initial octet!");
-        }
+        match0(t);
         pad = read();
-
-        if (pad < 0) {
-            throw new ASN1Exception("Unexpected EOF!");
-        }
         buf = new byte[length_ - 1];
-
-        if (buf.length > 0 && read(buf) < buf.length) {
-            throw new ASN1Exception("Unexpected EOF!");
-        }
         t.setBits(buf, pad);
     }
 
-    public void readOctetString(ASN1OctetString t) throws ASN1Exception,
-            IOException {
+    public void readOctetString(ASN1OctetString t){
         byte[] buf;
 
-        match0(t, true);
+        match0(t);
 
         buf = new byte[length_];
-
-        if (length_ > 0) {
-            if (read(buf) < buf.length) {
-                throw new ASN1Exception("Unexpected EOF!");
-            }
-        }
         t.setByteArray(buf);
     }
 
-    public void readNull(ASN1Null t) throws ASN1Exception, IOException {
-        match0(t, true);
-
-        if (length_ != 0 || indefinite_) {
-            throw new ASN1Exception("ASN.1 Null has bad length!");
-        }
+    public void readNull(ASN1Null t){
+        match0(t);
     }
 
-    public void readObjectIdentifier(ASN1ObjectIdentifier t)
-            throws ASN1Exception, IOException {
+    public void readObjectIdentifier(ASN1ObjectIdentifier t){
         int[] oid;
         int end;
         int n;
         int i;
 
-        match0(t, true);
-
-        if (length_ < 1) {
-            throw new ASN1Exception("OID with not contents octets!");
-        }
+        match0(t);
         end = pos_ + length_;
         n = read();
-
-        if (n < 0 || n > 119) {
-            throw new ASN1Exception("OID contents octet[0] must be [0,119]!");
-        }
         oidbuf_[0] = n / 40;
         oidbuf_[1] = n % 40;
         i = 2;
 
-        try {
             while (pos_ < end) {
                 oidbuf_[i++] = readBase128();
-            }
-            if (pos_ != end) {
-                throw new ASN1Exception("Bad length!");
             }
             oid = new int[i];
 
             System.arraycopy(oidbuf_, 0, oid, 0, i);
             t.setOID(oid);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ASN1Exception("Can't handle more than " + oidbuf_.length
-                    + " OID elements!");
-        }
     }
 
-    public void readString(ASN1String t) throws ASN1Exception, IOException {
+    public void readString(ASN1String t){
         byte[] buf;
-
-        match0(t, true);
-
+        match0(t);
         buf = new byte[length_];
-
-        if (read(buf) < buf.length) {
-            throw new ASN1Exception("Unexpected EOF!");
-        }
         t.setString(t.convert(buf));
     }
 
-    public void readCollection(ASN1Collection t) throws ASN1Exception,
-            IOException {
+    public void readCollection(ASN1Collection t) {
         Iterator i;
         ASN1Type o;
         int end;
-        int n;
 
-        match0(t, false);
+        match0(t);
 
         end = pos_ + length_;
         i = t.iterator();
-        n = 0;
 
         if (pos_ < end) {
             while (i.hasNext()) {
@@ -508,7 +295,6 @@ public class DERDecoder extends FilterInputStream implements Decoder {
                 }
                 skipNext(true);
                 o = (ASN1Type) i.next();
-                n++;
 
                 if (o.isType(tag_, tagclass_)) {
                     o.decode(this);
@@ -517,110 +303,60 @@ public class DERDecoder extends FilterInputStream implements Decoder {
                     if (pos_ == end) {
                         break;
                     }
-                    if (pos_ > end) {
-                        throw new ASN1Exception("Length short by "
-                                + (pos_ - end) + " octets!");
-                    }
-                } else {
-                    if (!o.isOptional()) {
-                        throw new ASN1Exception("ASN.1 type mismatch!"
-                                + "\nExpected: " + o.getClass().getName()
-                                + "\nIn      : " + ((Object)t).getClass().getName()
-                                + "\nAt index: " + (n - 1) + "\nGot tag : "
-                                + tag_ + " and class: " + tagclass_);
-                    }
                 }
             }
         }
         while (i.hasNext()) {
-            o = (ASN1Type) i.next();
-            n++;
-
-            if (!o.isOptional()) {
-                throw new ASN1Exception("ASN.1 type missing!" + "\nExpected: "
-                        + o.getClass().getName() + "\nIn      : "
-                        + ((Object)t).getClass().getName() + "\nAt index: " + (n - 1));
-            }
-        }
-        if (pos_ < end) {
-            throw new ASN1Exception("Bad length, " + (end - pos_)
-                    + " contents octets left!");
+            i.next();
         }
     }
 
-    public void readCollectionOf(ASN1CollectionOf t) throws ASN1Exception,
-            IOException {
+    public void readCollectionOf(ASN1CollectionOf t){
         int end;
         ASN1Type o;
 
-        match0(t, false);
+        match0(t);
 
         t.clear();
         end = pos_ + length_;
 
         while (pos_ < end) {
-            try {
+
                 o = t.newElement();
-            } catch (IllegalStateException e) {
-                throw new ASN1Exception("Cannot create new element! ");
-            }
+
             o.decode(this);
-        }
-        if (pos_ != end) {
-            throw new ASN1Exception("Bad length!");
         }
     }
 
-    public void readTime(ASN1Time t) throws ASN1Exception, IOException {
+    public void readTime(ASN1Time t){
         readString(t);
     }
 
 
-    public void readTaggedType(ASN1TaggedType t) throws ASN1Exception,
-            IOException {
+    public void readTaggedType(ASN1TaggedType t){
         ASN1Type o;
 
         match1(t);
 
         o = t.getInnerType();
-        if (o.isExplicit() && primitive_) {
-            throw new ASN1Exception("PRIMITIVE vs. CONSTRUCTED mismatch!");
-        }
         if (t instanceof ASN1Opaque) {
-            if (indefinite_) {
-                throw new ASN1Exception(
-                        "Cannot decode indefinite length encodings "
-                                + "with ASN1Opaque type!");
-            }
             primitive_ = true;
         }
         o.decode(this);
     }
 
 
-    public void readChoice(ASN1Choice t) throws ASN1Exception, IOException {
+    public void readChoice(ASN1Choice t){
         ASN1Type o;
-
-        if (!readNext())
-            throw new IOException("Unexpected EOF!");
-
         skipNext(true);
-
         o = t.getType(tag_, tagclass_);
-        if (o == null)
-            throw new ASN1Exception("Type mismatch!");
-
         o.decode(this);
         t.setInnerType(o);
     }
-
-
-    public int readBase128() throws ASN1Exception, IOException {
+    public int readBase128() {
         int n;
         int b;
-
         n = 0;
-
         while ((b = read()) >= 0) {
             n = (n << 7) | (b & 0x7f);
 
@@ -628,25 +364,17 @@ public class DERDecoder extends FilterInputStream implements Decoder {
                 break;
             }
         }
-        if (b < 0) {
-            throw new ASN1Exception("Unexpected EOF, base 128 octet missing!");
-        }
         return n;
     }
 
 
-    public int readBase256(int num) throws ASN1Exception, IOException {
+    public int readBase256(int num) {
         int n, b;
 
         n = 0;
 
         while (num > 0) {
             b = read();
-
-            if (b < 0) {
-                throw new ASN1Exception(
-                        "Unexpected EOF, base 256 octet missing!");
-            }
             n = (n << 8) + b;
             num--;
         }
@@ -654,56 +382,65 @@ public class DERDecoder extends FilterInputStream implements Decoder {
     }
 
 
-    public int read() throws IOException {
-        int b;
+    public int read(){
 
-        b = in.read();
-
-        if (b >= 0) {
-            pos_++;
+        try {
+            int b;
+            b = in.read();
+            if (b >= 0) {
+                pos_++;
+            }
+            return b;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
         }
-        return b;
     }
 
 
-    public int read(byte[] b, int off, int len) throws IOException {
-        int l;
-        int ls;
-
-
-        ls = 0;
-
-        while (ls < len) {
-            l = in.read(b, off + ls, len - ls);
-
-            if (l < 0) {
-                break;
+    public int read(byte[] b, int off, int len){
+            try {
+                int l;
+                int ls;
+                ls = 0;
+                while (ls < len) {
+                    l = in.read(b, off + ls, len - ls);
+                    if (l < 0) {
+                        break;
+                    }
+                    ls += l;
+                }
+                pos_ += ls;
+                return ls;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return 0;
             }
-            ls += l;
-        }
-
-        pos_ += ls;
-        return ls;
     }
 
-    public int read(byte[] b) throws IOException {
-        int l;
-        int ls;
+    public int read(byte[] b){
+        try {
+            int l;
+            int ls;
 
 
-        ls = 0;
+            ls = 0;
 
-        while (ls < b.length) {
-            l = in.read(b, ls, b.length - ls);
+            while (ls < b.length) {
+                l = in.read(b, ls, b.length - ls);
 
-            if (l < 0) {
-                break;
+                if (l < 0) {
+                    break;
+                }
+                ls += l;
             }
-            ls += l;
-        }
 
-        pos_ += ls;
-        return ls;
+            pos_ += ls;
+            return ls;
+        }catch (IOException e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     public long skip(long n) throws IOException {
@@ -733,8 +470,12 @@ public class DERDecoder extends FilterInputStream implements Decoder {
         return in.available();
     }
 
-    public void close() throws IOException {
-        in.close();
+    public void close() {
+        try {
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         in = null;
     }
 

@@ -10,8 +10,6 @@ import de.flexiprovider.api.parameters.AlgorithmParameters;
 public class ECParameters extends AlgorithmParameters {
 
 
-    public static final String OID = "1.2.840.10045.4.1";
-
     // the EC domain parameters
     private CurveParams curveParams;
 
@@ -26,13 +24,13 @@ public class ECParameters extends AlgorithmParameters {
     }
 
     @Override
-    public void init(byte[] encParams) throws IOException {
+    public void init(byte[] encParams) {
 
     }
 
 
     @Override
-    public void init(byte[] encParams, String format) throws IOException {
+    public void init(byte[] encParams, String format) {
 
     }
 

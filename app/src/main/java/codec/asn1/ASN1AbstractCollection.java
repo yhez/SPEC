@@ -61,7 +61,7 @@ public abstract class ASN1AbstractCollection extends ArrayList implements
     }
 
 
-    public void checkConstraints() throws ConstraintException {
+    public void checkConstraints() {
         if (constraint_ != null) {
             constraint_.constrain(this);
         }
@@ -72,13 +72,13 @@ public abstract class ASN1AbstractCollection extends ArrayList implements
         return (getTag() == tag) && (getTagClass() == tagclass);
     }
 
-    public void encode(Encoder enc) throws ASN1Exception, IOException {
+    public void encode(Encoder enc) {
         checkConstraints();
         enc.writeCollection(this);
     }
 
 
-    public void decode(Decoder dec) throws ASN1Exception, IOException {
+    public void decode(Decoder dec) {
         dec.readCollection(this);
         checkConstraints();
     }
@@ -133,21 +133,14 @@ public abstract class ASN1AbstractCollection extends ArrayList implements
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        try {
             encode(new DEREncoder(baos));
             res = baos.toByteArray();
             baos.close();
             out.write(res);
-        } catch (ASN1Exception e) {
-            throw new RuntimeException(e.toString());
-        }
     }
 
-    public void readExternal(ObjectInput in) throws IOException {
-        try {
+    public void readExternal(ObjectInput in) {
+
             decode(new DERDecoder((ObjectInputStream) in));
-        } catch (ASN1Exception e) {
-            throw new RuntimeException(e.toString());
-        }
     }
 }

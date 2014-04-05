@@ -272,8 +272,6 @@ public class GF2nONBElement extends GF2nElement {
             int degf, degb, s, fielda, fieldb, bita, bitb;
             degf = mLength - 1;
             degb = mBit - 1;
-            s = 0;
-
             long TWOTOMAXLONGM1 = mBitmask[MAXLONG - 1];
             long TWOTODEGB = mBitmask[degb];
 
@@ -449,7 +447,8 @@ public class GF2nONBElement extends GF2nElement {
         }
         r++;
 
-        GF2nElement m = ZERO((GF2nONBField) mField);
+        GF2nElement m;
+        ZERO((GF2nONBField) mField);
         GF2nElement n = new GF2nONBElement(this);
 
         int k = 1;

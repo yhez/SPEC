@@ -1,7 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
-
 import java.math.BigInteger;
 
 
@@ -23,19 +21,6 @@ public class ASN1Integer extends ASN1AbstractType {
         opi_ = i;
     }
 
-    public ASN1Integer() {
-        value_ = BigInteger.ZERO;
-    }
-
-
-    public ASN1Integer(byte[] val) throws NumberFormatException {
-        value_ = new BigInteger(val);
-    }
-
-    public ASN1Integer(int signum, byte[] magnitude)
-            throws NumberFormatException {
-        value_ = new BigInteger(signum, magnitude);
-    }
 
     public ASN1Integer(int n) {
         byte[] b;
@@ -60,7 +45,7 @@ public class ASN1Integer extends ASN1AbstractType {
         return value_;
     }
 
-    public void setBigInteger(BigInteger n) throws ConstraintException {
+    public void setBigInteger(BigInteger n) {
         value_ = n;
         checkConstraints();
     }
@@ -69,11 +54,11 @@ public class ASN1Integer extends ASN1AbstractType {
         return ASN1.TAG_INTEGER;
     }
 
-    public void encode(Encoder enc) throws ASN1Exception, IOException {
+    public void encode(Encoder enc){
         enc.writeInteger(this);
     }
 
-    public void decode(Decoder dec) throws ASN1Exception, IOException {
+    public void decode(Decoder dec){
         dec.readInteger(this);
         checkConstraints();
     }

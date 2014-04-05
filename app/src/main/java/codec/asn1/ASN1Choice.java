@@ -1,6 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -84,21 +83,21 @@ public class ASN1Choice extends ASN1AbstractType {
         inner_.setConstraint(constraint);
     }
 
-    public void checkConstraints() throws ConstraintException {
+    public void checkConstraints(){
         if (inner_ == null)
             throw new IllegalStateException(NO_INNER);
 
         inner_.checkConstraints();
     }
 
-    public void encode(Encoder enc) throws ASN1Exception, IOException {
+    public void encode(Encoder enc){
         if (inner_ == null)
             throw new IllegalStateException(NO_INNER);
 
         enc.writeType(inner_);
     }
 
-    public void decode(Decoder dec) throws ASN1Exception, IOException {
+    public void decode(Decoder dec){
         dec.readChoice(this);
     }
 

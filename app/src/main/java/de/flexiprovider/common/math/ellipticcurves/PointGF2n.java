@@ -433,7 +433,7 @@ public class PointGF2n extends Point {
 
             if (T1.isZero() && T2.isZero()) {
                 multiplyThisBy2();
-            } else if (T1.isZero() && !T2.isZero()) {
+            } else if (T1.isZero()) {
                 assignZero();
             } else {
                 T4.multiplyThisBy(T2);

@@ -724,8 +724,6 @@ public class Rijndael extends BlockCipher {
             public static final String ALG_NAME = AES.ALG_NAME + "128_CBC";
 
 
-            public static final String OID = AES.OID + ".2";
-
             public AES128_CBC() {
                 super(ALG_NAME, "CBC", 4);
             }

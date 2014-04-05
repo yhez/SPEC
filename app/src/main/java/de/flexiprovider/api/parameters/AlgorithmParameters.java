@@ -53,12 +53,9 @@ public abstract class AlgorithmParameters extends
     public abstract void init(AlgorithmParameterSpec paramSpec)
             throws InvalidParameterSpecException;
 
-    public abstract void init(byte[] encParams) throws IOException;
+    public abstract void init(byte[] encParams);
 
-
-    public abstract void init(byte[] encParams, String format)
-            throws IOException;
-
+    public abstract void init(byte[] encParams, String format);
 
     public abstract byte[] getEncoded();
 

@@ -1,7 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
-
 public class ASN1OpenType extends ASN1AbstractType {
     private static final String NO_INNER = "No inner type defined!";
 
@@ -14,7 +12,7 @@ public class ASN1OpenType extends ASN1AbstractType {
     }
 
 
-    public ASN1Type getInnerType() throws ResolverException {
+    public ASN1Type getInnerType() {
         if (inner_ != null) {
             return inner_;
         }
@@ -62,7 +60,7 @@ public class ASN1OpenType extends ASN1AbstractType {
         inner_.setConstraint(constraint);
     }
 
-    public void checkConstraints() throws ConstraintException {
+    public void checkConstraints() {
         if (inner_ == null) {
             throw new IllegalStateException(NO_INNER);
         }
@@ -73,18 +71,14 @@ public class ASN1OpenType extends ASN1AbstractType {
         if (inner_ != null) {
             return inner_.isType(tag, tagclass);
         }
-        try {
             if (resolver_ != null) {
                 inner_ = resolver_.resolve(this);
             }
-        } catch (ResolverException e) {
-            return false;
-        }
 
         return inner_ == null || inner_.isType(tag, tagclass);
     }
 
-    public void encode(Encoder enc) throws ASN1Exception, IOException {
+    public void encode(Encoder enc){
         if (inner_ == null) {
             throw new IllegalStateException(NO_INNER);
         }
@@ -92,7 +86,7 @@ public class ASN1OpenType extends ASN1AbstractType {
     }
 
 
-    public void decode(Decoder dec) throws ASN1Exception, IOException {
+    public void decode(Decoder dec){
         if (resolver_ != null && inner_ == null) {
             inner_ = resolver_.resolve(this);
         }

@@ -22,8 +22,7 @@ public class DEREncoder extends AbstractEncoder {
     }
 
 
-    protected void writeHeader(ASN1Type t, boolean primitive)
-            throws ASN1Exception, IOException {
+    protected void writeHeader(ASN1Type t, boolean primitive){
         int length;
 
         if (!t.isExplicit()) {
@@ -36,64 +35,77 @@ public class DEREncoder extends AbstractEncoder {
             enc.writeType(t);
             stack_ = enc.getLengthFields();
             sp_ = stack_.length;
-
-            if (sp_ < 1) {
-                throw new ASN1Exception("Cannot determine length!");
-            }
         }
         length = stack_[--sp_];
 
         writeHeader(t.getTag(), t.getTagClass(), primitive, length);
     }
 
-    public void writeBoolean(ASN1Boolean t) throws ASN1Exception, IOException {
+    public void writeBoolean(ASN1Boolean t){
         if (t.isOptional())
             return;
 
         writeHeader(t, true);
-        write(t.isTrue() ? 0xff : 0x00);
+        try {
+            write(t.isTrue() ? 0xff : 0x00);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void writeInteger(ASN1Integer t) throws ASN1Exception, IOException {
+    public void writeInteger(ASN1Integer t){
         if (t.isOptional())
             return;
 
         writeHeader(t, true);
-        write(t.getBigInteger().toByteArray());
+        try {
+            write(t.getBigInteger().toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
-    public void writeBitString(ASN1BitString t) throws ASN1Exception,
-            IOException {
+    public void writeBitString(ASN1BitString t){
         if (t.isOptional()) {
             return;
         }
         writeHeader(t, true);
-        write(t.getPadCount());
+        try {
+            write(t.getPadCount());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if (!t.isZero()) {
-            write(t.getBytes());
+            try {
+                write(t.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public void writeOctetString(ASN1OctetString t) throws ASN1Exception,
-            IOException {
+    public void writeOctetString(ASN1OctetString t) {
         if (t.isOptional())
             return;
 
         writeHeader(t, true);
-        write(t.getByteArray());
+        try {
+            write(t.getByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void writeNull(ASN1Null t) throws ASN1Exception, IOException {
+    public void writeNull(ASN1Null t) {
         if (t.isOptional())
             return;
 
         writeHeader(t, true);
     }
 
-    public void writeObjectIdentifier(ASN1ObjectIdentifier t)
-            throws ASN1Exception, IOException {
+    public void writeObjectIdentifier(ASN1ObjectIdentifier t) {
         if (t.isOptional())
             return;
 
@@ -103,24 +115,33 @@ public class DEREncoder extends AbstractEncoder {
         int[] e;
 
         e = t.getOID();
-        if (e.length < 2)
-            throw new ASN1Exception("OID must have at least 2 elements!");
 
-        write(e[0] * 40 + e[1]);
+        try {
+            write(e[0] * 40 + e[1]);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
         for (i = 2; i < e.length; i++)
-            writeBase128(e[i]);
+            try {
+                writeBase128(e[i]);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
     }
 
-    public void writeString(ASN1String t) throws ASN1Exception, IOException {
+    public void writeString(ASN1String t){
         if (t.isOptional())
             return;
 
         writeHeader(t, true);
-        write(t.convert(t.getString()));
+        try {
+            write(t.convert(t.getString()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void writeCollection(ASN1Collection t) throws ASN1Exception,
-            IOException {
+    public void writeCollection(ASN1Collection t){
         if (t.isOptional())
             return;
 
@@ -142,16 +163,12 @@ public class DEREncoder extends AbstractEncoder {
             Collections.sort(h, new ASN1TagComparator());
             c = h;
         }
-        try {
             for (i = c.iterator(); i.hasNext(); )
                 writeType((ASN1Type) i.next());
-        } catch (ClassCastException e) {
-            throw new ASN1Exception("Non-ASN.1 type in collection!");
-        }
+
     }
 
-    protected void writeStrictSetOf(ASN1SetOf t) throws ASN1Exception,
-            IOException {
+    protected void writeStrictSetOf(ASN1SetOf t){
         ByteArrayOutputStream bos;
         OutputStream old;
         Collection c;
@@ -187,12 +204,11 @@ public class DEREncoder extends AbstractEncoder {
         }
     }
 
-    public void writeTime(ASN1Time t) throws ASN1Exception, IOException {
+    public void writeTime(ASN1Time t){
         writeString(t);
     }
 
-    public void writeTaggedType(ASN1TaggedType t) throws ASN1Exception,
-            IOException {
+    public void writeTaggedType(ASN1TaggedType t){
         if (t.isOptional())
             return;
 
@@ -221,18 +237,21 @@ public class DEREncoder extends AbstractEncoder {
         out.write(b);
     }
 
-    public void write(byte[] b, int off, int len) throws IOException {
-        out.write(b, off, len);
+    public void write(byte[] b, int off, int len) {
+        try {
+            out.write(b, off, len);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void writeType(ASN1Type t) throws ASN1Exception, IOException {
+    public void writeType(ASN1Type t){
         if (!t.isOptional())
             t.encode(this);
     }
 
 
-    private void writeHeader(int tag, int cls, boolean prim, int len)
-            throws IOException {
+    private void writeHeader(int tag, int cls, boolean prim, int len){
         int b, i;
 
         b = cls & ASN1.CLASS_MASK;
@@ -242,21 +261,41 @@ public class DEREncoder extends AbstractEncoder {
 
         if (tag > 30) {
             b = b | ASN1.TAG_MASK;
-            out.write(b);
-            writeBase128(tag);
+            try {
+                out.write(b);
+                writeBase128(tag);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             b = b | tag;
-            out.write(b);
+            try {
+                out.write(b);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         if (len == -1)
-            out.write(0x80);
+            try {
+                out.write(0x80);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         else {
             if (len > 127) {
                 i = (significantBits(len) + 7) / 8;
-                out.write(i | 0x80);
-                writeBase256(len);
+                try {
+                    out.write(i | 0x80);
+                    writeBase256(len);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else
-                out.write(len);
+                try {
+                    out.write(len);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
         }
     }
 

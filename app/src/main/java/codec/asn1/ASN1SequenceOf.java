@@ -1,15 +1,8 @@
 package codec.asn1;
 
-import java.io.IOException;
-
-
 public class ASN1SequenceOf extends ASN1Sequence implements ASN1CollectionOf {
 
     private Resolver resolver_;
-
-    protected ASN1SequenceOf(int capacity) {
-        super(capacity);
-    }
 
     public ASN1SequenceOf(Class type) {
         if (type == null)
@@ -40,7 +33,7 @@ public class ASN1SequenceOf extends ASN1Sequence implements ASN1CollectionOf {
         }
     }
 
-    public void decode(Decoder dec) throws ASN1Exception, IOException {
+    public void decode(Decoder dec){
         dec.readCollectionOf(this);
         checkConstraints();
     }

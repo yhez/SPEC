@@ -27,12 +27,12 @@ public class ClassInstanceResolver implements Resolver {
         return factory_;
     }
 
-    public ASN1Type resolve(ASN1Type caller) throws ResolverException {
+    public ASN1Type resolve(ASN1Type caller){
         try {
             return (ASN1Type) factory_.newInstance();
         } catch (Exception e) {
-            throw new ResolverException("Caught " + e.getClass().getName()
-                    + "(\"" + e.getMessage() + "\")");
+            e.printStackTrace();
+        return null;
         }
     }
 

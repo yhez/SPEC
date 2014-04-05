@@ -1,8 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
-
-
 public interface ASN1Type {
 
     public Object getValue();
@@ -22,14 +19,14 @@ public interface ASN1Type {
 
     public boolean isType(int tag, int tagclass);
 
-    public void encode(Encoder enc) throws ASN1Exception, IOException;
+    public void encode(Encoder enc);
 
-    public void decode(Decoder dec) throws ASN1Exception, IOException;
+    public void decode(Decoder dec);
 
 
     public void setConstraint(Constraint o);
 
 
-    public void checkConstraints() throws ConstraintException;
+    public void checkConstraints();
 
 }

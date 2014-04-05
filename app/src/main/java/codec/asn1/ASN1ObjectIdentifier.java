@@ -1,8 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
-import java.util.StringTokenizer;
-
 public class ASN1ObjectIdentifier extends ASN1AbstractType implements
         Cloneable, Comparable {
 
@@ -10,40 +7,6 @@ public class ASN1ObjectIdentifier extends ASN1AbstractType implements
 
     public ASN1ObjectIdentifier() {
         super();
-    }
-
-    public ASN1ObjectIdentifier(int[] oid) {
-        set0(oid);
-    }
-
-    public ASN1ObjectIdentifier(String s) throws NumberFormatException {
-        int n;
-        int[] oid;
-        String t;
-        StringTokenizer tok;
-
-        oid = new int[16];
-
-        if (s.startsWith("OID.") || s.startsWith("oid.")) {
-            s = s.substring(4);
-        }
-
-        tok = new StringTokenizer(s, ".");
-
-        if (tok.countTokens() >= oid.length) {
-            throw new IllegalArgumentException("OID has too many elements!");
-        }
-
-        n = 0;
-
-        while (tok.hasMoreTokens()) {
-            t = tok.nextToken();
-            oid[n++] = Integer.parseInt(t);
-        }
-
-        int[] buf = new int[n];
-        System.arraycopy(oid, 0, buf, 0, n);
-        set0(buf);
     }
 
 
@@ -56,7 +19,7 @@ public class ASN1ObjectIdentifier extends ASN1AbstractType implements
         return value_.clone();
     }
 
-    public void setOID(int[] oid) throws ConstraintException {
+    public void setOID(int[] oid) {
         set0(oid);
         checkConstraints();
     }
@@ -92,11 +55,11 @@ public class ASN1ObjectIdentifier extends ASN1AbstractType implements
         return ASN1.TAG_OID;
     }
 
-    public void encode(Encoder enc) throws ASN1Exception, IOException {
+    public void encode(Encoder enc){
         enc.writeObjectIdentifier(this);
     }
 
-    public void decode(Decoder dec) throws ASN1Exception, IOException {
+    public void decode(Decoder dec){
         dec.readObjectIdentifier(this);
         checkConstraints();
     }

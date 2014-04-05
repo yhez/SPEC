@@ -13,28 +13,15 @@ public class HMac extends Mac {
 
 
     public static class SHA1 extends HMac {
-
-        /**
-         * The OID of HmacSHA1 (defined by RFC 3370).
-         */
-        public static final String OID = "1.3.6.1.5.5.8.1.2";
-
         public SHA1() {
             super(new de.flexiprovider.core.md.SHA1(), 64);
         }
     }
-
     private static final byte IPAD_BYTE = 0x36;
-
     private static final byte OPAD_BYTE = 0x5c;
-
     private int L, B;
-
     private byte[] opadKey;
-
     private MessageDigest md;
-
-
     HMac(MessageDigest md, int blockSize) {
         this.md = md;
         L = md.getDigestLength();
@@ -73,25 +60,18 @@ public class HMac extends Mac {
         // feed the message digest with (macKey XOR ipadKey)
         md.update(ipadKey);
     }
-
-
     public void update(byte[] input, int inOff, int inLen) {
         md.update(input, inOff, inLen);
     }
-
-
     public void update(byte input) {
         md.update(input);
     }
-
     public byte[] doFinal() {
         byte[] hash1 = md.digest();
         md.update(opadKey);
         md.update(hash1);
         return md.digest();
     }
-
-
     public void reset() {
         md.reset();
     }

@@ -1,6 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
 
 public class ASN1OctetString extends ASN1AbstractType {
     private static final byte[] DEFAULT_VALUE = new byte[0];
@@ -25,7 +24,7 @@ public class ASN1OctetString extends ASN1AbstractType {
     }
 
 
-    public void setByteArray(byte[] b) throws ConstraintException {
+    public void setByteArray(byte[] b){
         setByteArray0(b);
         checkConstraints();
     }
@@ -46,11 +45,11 @@ public class ASN1OctetString extends ASN1AbstractType {
         return ASN1.TAG_OCTETSTRING;
     }
 
-    public void encode(Encoder enc) throws ASN1Exception, IOException {
+    public void encode(Encoder enc){
         enc.writeOctetString(this);
     }
 
-    public void decode(Decoder dec) throws ASN1Exception, IOException {
+    public void decode(Decoder dec){
         dec.readOctetString(this);
         checkConstraints();
     }
@@ -81,7 +80,6 @@ public class ASN1OctetString extends ASN1AbstractType {
         try {
             o = (ASN1OctetString) super.clone();
         } catch (CloneNotSupportedException e) {
-
             throw new Error("Internal, clone support mismatch!");
         }
         o.value_ = value_.clone();

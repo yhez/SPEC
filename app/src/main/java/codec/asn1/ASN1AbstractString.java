@@ -1,8 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
-
-
 public abstract class ASN1AbstractString extends ASN1AbstractType implements
         ASN1String {
 
@@ -23,7 +20,7 @@ public abstract class ASN1AbstractString extends ASN1AbstractType implements
     }
 
 
-    public void setString(String s) throws ConstraintException {
+    public void setString(String s) {
         setString0(s);
         checkConstraints();
     }
@@ -35,16 +32,16 @@ public abstract class ASN1AbstractString extends ASN1AbstractType implements
         value_ = s;
     }
 
-    public void encode(Encoder enc) throws ASN1Exception, IOException {
+    public void encode(Encoder enc){
         enc.writeString(this);
     }
 
-    public void decode(Decoder enc) throws ASN1Exception, IOException {
+    public void decode(Decoder enc){
         enc.readString(this);
         checkConstraints();
     }
 
-    public String convert(byte[] b) throws ASN1Exception {
+    public String convert(byte[] b){
         if (b == null)
             throw new NullPointerException("Cannot convert null array!");
 
@@ -55,7 +52,7 @@ public abstract class ASN1AbstractString extends ASN1AbstractType implements
         return String.valueOf(c);
     }
 
-    public byte[] convert(String s) throws ASN1Exception {
+    public byte[] convert(String s){
         if (s == null)
             throw new NullPointerException("Cannot convert null string!");
 
@@ -68,7 +65,7 @@ public abstract class ASN1AbstractString extends ASN1AbstractType implements
         return b;
     }
 
-    public int convertedLength(String s) throws ASN1Exception {
+    public int convertedLength(String s) {
         return s.length();
     }
 

@@ -1,8 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
-
-
 public class ASN1SetOf extends ASN1Set implements ASN1CollectionOf {
 
     private Resolver resolver_;
@@ -13,16 +10,6 @@ public class ASN1SetOf extends ASN1Set implements ASN1CollectionOf {
             throw new NullPointerException("Need a class!");
 
         resolver_ = new ClassInstanceResolver(type);
-    }
-
-    public ASN1SetOf(Resolver resolver, int capacity) {
-
-        super(capacity);
-
-        if (resolver == null) {
-            throw new NullPointerException("Need a resolver!");
-        }
-        resolver_ = resolver;
     }
 
     public Class getElementType() {
@@ -46,7 +33,7 @@ public class ASN1SetOf extends ASN1Set implements ASN1CollectionOf {
         }
     }
 
-    public void decode(Decoder dec) throws ASN1Exception, IOException {
+    public void decode(Decoder dec){
         dec.readCollectionOf(this);
         checkConstraints();
     }

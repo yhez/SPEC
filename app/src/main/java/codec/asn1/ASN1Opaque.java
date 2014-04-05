@@ -11,20 +11,15 @@ public class ASN1Opaque extends ASN1TaggedType {
         super(-1, ASN1.CLASS_UNIVERSAL, new ASN1OctetString(), false);
     }
 
-    public ASN1Opaque(byte[] code) throws ASN1Exception {
+    public ASN1Opaque(byte[] code){
         super(-1, ASN1.CLASS_UNIVERSAL, new ASN1OctetString(), false);
 
         ByteArrayInputStream bis;
         DERDecoder dec;
-
-        try {
             bis = new ByteArrayInputStream(code);
             dec = new DERDecoder(bis);
             decode(dec);
             dec.close();
-        } catch (IOException e) {
-            throw new ASN1Exception("Internal, caught IOException!");
-        }
     }
 
 
@@ -44,22 +39,20 @@ public class ASN1Opaque extends ASN1TaggedType {
     }
 
 
-    public byte[] getEncoded() throws ASN1Exception {
+    public byte[] getEncoded() {
         ByteArrayOutputStream bos;
         DEREncoder enc;
         byte[] code;
-
         try {
             bos = new ByteArrayOutputStream();
             enc = new DEREncoder(bos);
             encode(enc);
             code = bos.toByteArray();
             enc.close();
-
             return code;
-        } catch (IOException e) {
-            throw new ASN1Exception("Internal, caught IOException!");
+        } catch (IOException ignore) {
         }
+        return null;
     }
 
 

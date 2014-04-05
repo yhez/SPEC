@@ -1,6 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -28,21 +27,13 @@ public class RunLengthEncoder implements Encoder {
         return res;
     }
 
-    public void writeType(ASN1Type o) throws ASN1Exception {
-        try {
+    public void writeType(ASN1Type o){
             o.encode(this);
-        } catch (IOException e) {
-            throw new ASN1Exception("Caught IOException without I/O!");
-        }
     }
 
 
-    public int getHeaderLength(int tag, int len) throws ASN1Exception {
+    public int getHeaderLength(int tag, int len){
         int n;
-
-        if (len < 0)
-            throw new ASN1Exception("Length is negative!");
-
         n = 2;
         if (tag > 30)
             n = n + (significantBits(tag) + 6) / 7;
@@ -72,14 +63,14 @@ public class RunLengthEncoder implements Encoder {
         return i;
     }
 
-    public void writeBoolean(ASN1Boolean t) throws ASN1Exception {
+    public void writeBoolean(ASN1Boolean t) {
         if (t.isOptional())
             return;
 
         push(t, 1);
     }
 
-    public void writeInteger(ASN1Integer t) throws ASN1Exception {
+    public void writeInteger(ASN1Integer t) {
         if (t.isOptional())
             return;
 
@@ -89,7 +80,7 @@ public class RunLengthEncoder implements Encoder {
         push(t, n);
     }
 
-    public void writeBitString(ASN1BitString t) throws ASN1Exception {
+    public void writeBitString(ASN1BitString t) {
         if (t.isOptional())
             return;
 
@@ -103,22 +94,21 @@ public class RunLengthEncoder implements Encoder {
         push(t, n);
     }
 
-    public void writeOctetString(ASN1OctetString t) throws ASN1Exception {
+    public void writeOctetString(ASN1OctetString t) {
         if (t.isOptional())
             return;
 
         push(t, t.byteCount());
     }
 
-    public void writeNull(ASN1Null t) throws ASN1Exception {
+    public void writeNull(ASN1Null t) {
         if (t.isOptional())
             return;
 
         push(t, 0);
     }
 
-    public void writeObjectIdentifier(ASN1ObjectIdentifier t)
-            throws ASN1Exception {
+    public void writeObjectIdentifier(ASN1ObjectIdentifier t){
         if (t.isOptional())
             return;
 
@@ -127,8 +117,6 @@ public class RunLengthEncoder implements Encoder {
         int[] e;
 
         e = t.getOID();
-        if (e.length < 2)
-            throw new ASN1Exception("OID must have at least 2 elements!");
 
         for (n = 1, i = 2; i < e.length; i++)
             n = n + (significantBits(e[i]) + 6) / 7;
@@ -136,14 +124,14 @@ public class RunLengthEncoder implements Encoder {
         push(t, n);
     }
 
-    public void writeString(ASN1String t) throws ASN1Exception {
+    public void writeString(ASN1String t) {
         if (t.isOptional())
             return;
 
         push(t, t.convertedLength(t.getString()));
     }
 
-    public void writeCollection(ASN1Collection t) throws ASN1Exception {
+    public void writeCollection(ASN1Collection t) {
         if (t.isOptional())
             return;
 
@@ -160,22 +148,18 @@ public class RunLengthEncoder implements Encoder {
             l = new ArrayList(c.size());
             l.addAll(c);
         }
-        try {
             for (p = sp(), i = l.size() - 1; i >= 0; i--)
                 writeType((ASN1Type) l.get(i));
 
             n = accumulate(p);
             push(t, n);
-        } catch (ClassCastException e) {
-            throw new ASN1Exception("Non-ASN.1 type in collection!");
-        }
     }
 
-    public void writeTime(ASN1Time t) throws ASN1Exception {
+    public void writeTime(ASN1Time t){
         writeString(t);
     }
 
-    public void writeTaggedType(ASN1TaggedType t) throws ASN1Exception {
+    public void writeTaggedType(ASN1TaggedType t){
         if (t.isOptional())
             return;
 
@@ -188,7 +172,7 @@ public class RunLengthEncoder implements Encoder {
         push(t, n);
     }
 
-    protected void push(ASN1Type t, int n) throws ASN1Exception {
+    protected void push(ASN1Type t, int n){
         if (stack_ == null) {
             stack_ = new int[INCREMENT];
             tops_ = 0;

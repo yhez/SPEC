@@ -1,8 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
-
-
 public class ASN1TaggedType extends ASN1AbstractType {
     private int tag_;
     private int cls_ = ASN1.CLASS_CONTEXT;
@@ -72,11 +69,11 @@ public class ASN1TaggedType extends ASN1AbstractType {
                     "Tagget types are never IMPLICIT!");
     }
 
-    public void encode(Encoder enc) throws ASN1Exception, IOException {
+    public void encode(Encoder enc){
         enc.writeTaggedType(this);
     }
 
-    public void decode(Decoder dec) throws ASN1Exception, IOException {
+    public void decode(Decoder dec){
         dec.readTaggedType(this);
     }
 

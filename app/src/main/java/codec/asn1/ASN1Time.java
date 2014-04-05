@@ -1,6 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -28,11 +27,11 @@ abstract public class ASN1Time extends ASN1VisibleString {
         setString0(s);
     }
 
-    public void encode(Encoder enc) throws ASN1Exception, IOException {
+    public void encode(Encoder enc){
         enc.writeTime(this);
     }
 
-    public void decode(Decoder enc) throws ASN1Exception, IOException {
+    public void decode(Decoder enc){
         enc.readTime(this);
     }
 

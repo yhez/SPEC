@@ -31,9 +31,6 @@ import de.flexiprovider.pki.X509EncodedKeySpec;
 public class ECKeyFactory extends KeyFactory {
 
 
-    public static final String OID = "1.2.840.10045.2.1";
-
-
     public PrivateKey generatePrivate(KeySpec keySpec)
             throws InvalidKeySpecException {
 

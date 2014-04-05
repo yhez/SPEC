@@ -1,8 +1,5 @@
 package codec.asn1;
 
-import java.io.IOException;
-
-
 public class ASN1Null extends ASN1AbstractType implements Cloneable {
 
     public Object getValue() {
@@ -13,11 +10,11 @@ public class ASN1Null extends ASN1AbstractType implements Cloneable {
         return ASN1.TAG_NULL;
     }
 
-    public void encode(Encoder enc) throws ASN1Exception, IOException {
+    public void encode(Encoder enc){
         enc.writeNull(this);
     }
 
-    public void decode(Decoder dec) throws ASN1Exception, IOException {
+    public void decode(Decoder dec){
         dec.readNull(this);
     }
 
