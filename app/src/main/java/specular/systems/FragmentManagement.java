@@ -633,11 +633,6 @@ public class FragmentManagement extends Fragment {
                 }
                 break;
             case R.layout.recreating_keys:
-                FrameLayout f = (FrameLayout) rootView.findViewById(R.id.camera);
-                f.addView(new CameraPreview(getActivity()));
-                Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
-                rootView.findViewById(R.id.image_public).setAnimation(anim);
-                rootView.findViewById(R.id.image_public).setClickable(false);
                 break;
             case R.layout.explorer:
                 final ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.pager);

@@ -15,6 +15,7 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/text_explain"
             android:textSize="15sp"
             android:textStyle="bold"
             android:background="@android:color/white"
@@ -44,14 +45,41 @@
             android:padding="@dimen/default_gap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <ImageButton
+        <ImageView
             android:contentDescription="@null"
-            android:onClick="createKeysManager"
             style="?android:attr/borderlessButtonStyle"
             android:id="@+id/image_public"
             android:src="@drawable/spin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <LinearLayout
+            android:id="@+id/after_create_keys"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:padding="@dimen/default_gap"
+            android:layout_height="wrap_content">
+        <Button
+            android:textColor="@color/spec_black"
+            android:padding="@dimen/default_gap"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/regenerate"
+            android:onClick="recreateKeys"
+            android:text="@string/regenerate"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <Button
+            android:textColor="@color/spec_black"
+            android:padding="@dimen/default_gap"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="@string/continue_"
+            android:onClick="createKeysManager"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        </LinearLayout>
 
     </LinearLayout>
 </FrameLayout>

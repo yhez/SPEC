@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -94,7 +97,7 @@ import static android.support.v4.content.FileProvider.getUriForFile;
 public class Main extends FragmentActivity {
     public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_FOR_GROUP = 2, SCAN_PRIVATE = 3, SCAN_CONTACT = 4, TAKE_PICTURE = 5, RECORD_AUDIO = 6;
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2,
-            DECRYPT_SCREEN = 3, CHANGE_HINT = 4, DONE_CREATE_KEYS = 53, PROGRESS = 54, CLEAR_AND_SEND = 76,
+            DECRYPT_SCREEN = 3, CHANGE_HINT = 4, CLEAR_AND_SEND = 76,
             RESTORE = 45, ADD_GROUP = 46;
     private final Handler hndl = new Handler() {
         @Override
@@ -130,32 +133,6 @@ public class Main extends FragmentActivity {
                 case CHANGE_HINT:
                     ((TextView) findViewById(R.id.message)).setHint(R.string.send_another_msg);
                     break;
-                case DONE_CREATE_KEYS:
-                    if (FragmentManagement.currentLayout == R.layout.recreating_keys) {
-                        if (CryptMethods.getPublicTmp() == null) {
-                            new createKeys().start();
-                        } else {
-                            //todo needs to call only on the first key created
-                            findViewById(R.id.image_public).clearAnimation();
-                            findViewById(R.id.image_public).setClickable(true);
-                            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(CryptMethods.getPublicTmp(), 512);
-                            try {
-                                ((ImageView) findViewById(R.id.image_public)).setImageBitmap(qrCodeEncoder.encodeAsBitmap());
-                            } catch (WriterException e) {
-                                e.printStackTrace();
-                            }
-                            new createKeys().start();
-                        }
-                    }
-                    break;
-                case PROGRESS:
-                    if (FragmentManagement.currentLayout == R.layout.recreating_keys) {
-                        CameraPreview cp = CameraPreview.getCameraPreview();
-                        ((TextView) findViewById(R.id.collecting_data)).setText(getString(R.string.collecting_data) + " " + cp.names[cp.currentSensor]);
-                        ((ProgressBar) findViewById(R.id.progress_bar)).setProgress((int) (((double) cp.progress) / 64.0 * 100.0));
-                        ((ProgressBar) findViewById(R.id.sec_progress_bar)).setProgress((int) (((double) cp.currentSensor + 1) / (double) cp.names.length * 100.0));
-                    }
-                    break;
                 case CLEAR_AND_SEND:
                     clearFields(msg.arg1, msg.arg2 == 1);
                     break;
@@ -175,6 +152,60 @@ public class Main extends FragmentActivity {
                     contactChosen(true, (Long) msg.obj);
                     break;
             }
+        }
+    };
+    final static private int DONE_CREATE_KEYS = 0, PROGRESS = 1, CREATE_KEYS = 2;
+    private final Handler createKeys = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (FragmentManagement.currentLayout == R.layout.recreating_keys)
+                switch (msg.what) {
+                    case PROGRESS:
+                        CameraPreview cp = CameraPreview.getCameraPreview();
+                        ((TextView) findViewById(R.id.collecting_data)).setText(getString(R.string.collecting_data) + " " + cp.names[cp.currentSensor]);
+                        ((ProgressBar) findViewById(R.id.progress_bar)).setProgress((int) (((double) cp.progress) / 64.0 * 100.0));
+                        ((ProgressBar) findViewById(R.id.sec_progress_bar)).setProgress((int) (((double) cp.currentSensor + 1) / (double) cp.names.length * 100.0));
+                        break;
+                    case CREATE_KEYS:
+                        FrameLayout f = (FrameLayout) findViewById(R.id.camera);
+                        f.addView(new CameraPreview(Main.this));
+                        Animation anim = AnimationUtils.loadAnimation(Main.this, R.anim.rotate);
+                        ImageView iv = (ImageView) findViewById(R.id.image_public);
+                        iv.startAnimation(anim);
+                        iv.setImageResource(R.drawable.spin);
+                        findViewById(R.id.text_explain).setBackgroundColor(Color.WHITE);
+                        findViewById(R.id.after_create_keys).setVisibility(View.GONE);
+                        findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
+                        findViewById(R.id.collecting_data).setVisibility(View.VISIBLE);
+                        findViewById(R.id.sec_progress_bar).setVisibility(View.VISIBLE);
+                        new createKeys().start();
+                        break;
+                    case DONE_CREATE_KEYS:
+                        final CameraPreview cpp = CameraPreview.getCameraPreview();
+                        if(cpp!=null) {
+                            cpp.animate().alpha(0).setDuration(500).withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    cpp.finish();
+                                    FrameLayout f = (FrameLayout) findViewById(R.id.camera);
+                                    f.removeView(cpp);
+                                    findViewById(R.id.text_explain).setBackgroundColor(Color.TRANSPARENT);
+                                }
+                            }).start();
+                        }
+                        findViewById(R.id.collecting_data).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.progress_bar).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.sec_progress_bar).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.image_public).clearAnimation();
+                        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(CryptMethods.getPublicTmp(), 512);
+                        try {
+                            ((ImageView) findViewById(R.id.image_public)).setImageBitmap(qrCodeEncoder.encodeAsBitmap());
+                        } catch (WriterException e) {
+                            e.printStackTrace();
+                        }
+                        findViewById(R.id.after_create_keys).setVisibility(View.VISIBLE);
+                        break;
+                }
         }
     };
     public static Main main;
@@ -200,11 +231,14 @@ public class Main extends FragmentActivity {
 
     public void startCreateKeys() {
         selectItem(-1, R.layout.recreating_keys, getString(R.string.generator_menu_title));
-        hndl.sendEmptyMessage(DONE_CREATE_KEYS);
+        createKeys.sendEmptyMessage(CREATE_KEYS);
+    }
+
+    public void recreateKeys(View v) {
+        createKeys.sendEmptyMessage(CREATE_KEYS);
     }
 
     public void createKeysManager(View v) {
-        CryptMethods.doneCreatingKeys = true;
         selectItem(-1, R.layout.wait_nfc_to_write, getString(R.string.save_keys_menu_title));
         if (NfcStuff.nfcIsntAvailable(this))
             onClickSkipNFC(null);
@@ -1179,7 +1213,6 @@ public class Main extends FragmentActivity {
                     break;
                 case R.layout.recreating_keys:
                     CryptMethods.removeTemp();
-                    CryptMethods.doneCreatingKeys = true;
                     CameraPreview.getCameraPreview().finish();
                     selectItem(-1, R.layout.create_new_keys, CryptMethods.publicExist() ? null : getString(R.string.first_time_create_keys));
                     break;
@@ -1454,25 +1487,19 @@ public class Main extends FragmentActivity {
         Thread t, p;
 
         public void start() {
-            CryptMethods.doneCreatingKeys = false;
             t = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     CryptMethods.createKeys();
-                    if (FragmentManagement.currentLayout != R.layout.recreating_keys)
-                        CryptMethods.doneCreatingKeys = true;
-                    else
-                        hndl.sendEmptyMessage(DONE_CREATE_KEYS);
+                    createKeys.sendEmptyMessage(DONE_CREATE_KEYS);
                 }
             });
             t.start();
             p = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    while (true) {
-                        if (CryptMethods.doneCreatingKeys)
-                            break;
-                        hndl.sendEmptyMessage(PROGRESS);
+                    while (t.isAlive()) {
+                        createKeys.sendEmptyMessage(PROGRESS);
                         synchronized (this) {
                             try {
                                 ((Object) this).wait(25);

@@ -24,7 +24,6 @@ import de.flexiprovider.ec.parameters.CurveParams;
 import de.flexiprovider.ec.parameters.CurveRegistry;
 
 public class CryptMethods {
-    public static boolean doneCreatingKeys = true;
     private static ECPrivateKey mPtK;
     private static String myName = null, myEmail = null, myPublicKey = null;
     private static ECPrivateKey tmpPtK = null;
@@ -131,7 +130,6 @@ public class CryptMethods {
 
     public static void createKeys() {
         KeyPair keypair = createKeyPair();
-        if (!doneCreatingKeys) {
             ECPrivateKey tmp = (ECPrivateKey) keypair.getPrivate();
             if (tmp != null) {
                 try {
@@ -142,7 +140,6 @@ public class CryptMethods {
                 tmpPtK = tmp;
                 tmpPrivateKey = tmpPtK.getS().toByteArray();
             }
-        }
     }
 
     public static int decrypt(String encryptedMessage, byte[] key) {
@@ -261,9 +258,7 @@ public class CryptMethods {
         }
 
         public byte[] getRandomBits() {
-            if (doneCreatingKeys)
-                return null;
-            while (!cp.ready && !doneCreatingKeys) {
+            while (!cp.ready) {
                 synchronized (this) {
                     try {
                         wait(15);
@@ -272,8 +267,6 @@ public class CryptMethods {
                     }
                 }
             }
-            if (doneCreatingKeys)
-                return null;
             return cp.getData();
         }
     }

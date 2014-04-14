@@ -282,6 +282,8 @@
     <string name="nfc_for_files">Tab NFC to decrypt Files</string>
     <string name="private_exist">Private Loaded</string>
     <string name="no_private">No Private</string>
+    <string name="regenerate">regenerate keys</string>
+    <string name="continue_">continue</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
