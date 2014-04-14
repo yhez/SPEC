@@ -177,21 +177,4 @@ public final class IntegerFunctions {
         }
         return r;
     }
-
-
-    public static int floorLog(int a) {
-        int h = 0;
-        if (a <= 0) {
-            return -1;
-        }
-        int p = a >>> 1;
-        while (p > 0) {
-            h++;
-            p >>>= 1;
-        }
-
-        return h;
-    }
-
-
 }

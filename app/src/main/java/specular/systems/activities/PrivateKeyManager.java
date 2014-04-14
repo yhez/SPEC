@@ -15,7 +15,6 @@ import android.widget.TextView;
 import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.Dialogs.NotImplemented;
-import specular.systems.Dialogs.PictureForNfc;
 import specular.systems.Dialogs.TurnNFCOn;
 import specular.systems.FilesManagement;
 import specular.systems.KeysDeleter;
@@ -109,12 +108,16 @@ public class PrivateKeyManager extends Activity {
                 break;
             case MOVE_TO_NFC:
                 int result = NfcStuff.write(i,CryptMethods.getPrivateToSave());
-                Visual.toast(this,result);
                 if(result==R.string.tag_written) {
                     FilesManagement.removePrivate(this);
-                    FilesManagement.id_picture.save(this);
-                    finish();
-                }
+                    if(!FilesManagement.id_picture.pictureExist(this)) {
+                        Visual.toastBig(this,7);
+                        startActivityForResult(FilesManagement.id_picture.createIntent(this), R.string.take_secrate_pict);
+                    }
+                    else
+                        finish();
+                }else
+                    Visual.toast(this,result);
                 break;
             case NO_CHOICE:
                 raw = NfcStuff.getData(i);
@@ -170,8 +173,6 @@ public class PrivateKeyManager extends Activity {
             switch (v.getId()) {
                 case R.id.p_button1:
                     status = MOVE_TO_NFC;
-                    if(!FilesManagement.id_picture.pictureExist(this))
-                        new PictureForNfc(getFragmentManager());
                     Visual.hideAllChildes((ViewGroup) findViewById(android.R.id.content));
                     tv.setVisibility(View.VISIBLE);
                     divider.setVisibility(View.VISIBLE);
@@ -215,7 +216,11 @@ public class PrivateKeyManager extends Activity {
     @Override
     public void onActivityResult(int req, int res, Intent i) {
         if (res == RESULT_OK) {
-            if (CryptMethods.privateExist()) {
+            if(req==99){
+                FilesManagement.id_picture.save(this);
+                finish();
+            }
+            else if (CryptMethods.privateExist()) {
                 FilesManagement.savePrivate(this);
                 Visual.toast(this, R.string.private_key_loaded_from_qr);
             }

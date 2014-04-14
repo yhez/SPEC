@@ -66,7 +66,6 @@ import specular.systems.Dialogs.GenerateKeys;
 import specular.systems.Dialogs.GroupCreate;
 import specular.systems.Dialogs.InviteToGroup;
 import specular.systems.Dialogs.NotImplemented;
-import specular.systems.Dialogs.PictureForNfc;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.Dialogs.Response;
 import specular.systems.Dialogs.ShareContactDlg;
@@ -95,7 +94,7 @@ import static android.support.v4.content.FileProvider.getUriForFile;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class Main extends FragmentActivity {
-    public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_FOR_GROUP = 2, SCAN_PRIVATE = 3, SCAN_CONTACT = 4, TAKE_PICTURE = 5, RECORD_AUDIO = 6;
+    public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_FOR_GROUP = 2, SCAN_PRIVATE = 3, SCAN_CONTACT = 4, TAKE_PICTURE = 5, RECORD_AUDIO = 6,TAKE_SEC_PIC=7;
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2,
             DECRYPT_SCREEN = 3, CHANGE_HINT = 4, CLEAR_AND_SEND = 76,
             RESTORE = 45, ADD_GROUP = 46;
@@ -221,7 +220,6 @@ public class Main extends FragmentActivity {
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private String[] menuTitles;
-    private int[] menuDrawables;
     private CharSequence mTitle;
     private String userInput;
     private String fileName = "";
@@ -242,11 +240,6 @@ public class Main extends FragmentActivity {
         selectItem(-1, R.layout.wait_nfc_to_write, getString(R.string.save_keys_menu_title));
         if (NfcStuff.nfcIsntAvailable(this))
             onClickSkipNFC(null);
-        else if (NfcStuff.nfcIsOff(this)) {
-            new TurnNFCOn(getFragmentManager());
-        } else {
-            new PictureForNfc(getFragmentManager());
-        }
     }
 
     void encryptManager(final int type) {
@@ -400,7 +393,7 @@ public class Main extends FragmentActivity {
                         SharedPreferences sp = getSharedPreferences("saved_files", MODE_PRIVATE);
                         Map m = sp.getAll();
                         if (m != null && m.containsValue(name)) {
-                            Visual.toast(Main.this, R.string.name_allready_exist);
+                            Visual.toast(Main.this, R.string.name_already_exist);
                             return;
                         }
                         String ext = StaticVariables.file_name.substring(StaticVariables.file_name.lastIndexOf('.') + 1);
@@ -458,7 +451,11 @@ public class Main extends FragmentActivity {
                 pic = intent.getData();
                 attachFile(pic);
                 intent.setData(null);
-            } else {
+            } else if(requestCode==TAKE_SEC_PIC){
+                FilesManagement.id_picture.save(this);
+                onClickSkipNFC(null);
+            }
+            else {
                 String result = intent.getStringExtra("barcode");
                 if (requestCode == SCAN_PRIVATE) {
                     Visual.toast(Main.this, R.string.load_private_from_qr);
@@ -483,7 +480,7 @@ public class Main extends FragmentActivity {
     }
 
     public void onClickSkipNFC(View v) {
-        saveKeys.start(this);
+        saveKeys.start(this, v == null);
         synchronized (this) {
             while (saveKeys.isAlive()) {
                 try {
@@ -582,13 +579,12 @@ public class Main extends FragmentActivity {
         if (i.getAction() != null && i.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED))
             if (FragmentManagement.currentLayout == R.layout.wait_nfc_to_write) {
                 int result = NfcStuff.write(i, CryptMethods.getPrivateTmp());
-                Visual.toast(Main.this, result);
-                FilesManagement.id_picture.save(this);
                 if (result == R.string.tag_written) {
-                    StaticVariables.NFCMode = true;
+                    Visual.toastBig(this,R.string.take_secrate_pict);
                     CryptMethods.moveKeysFromTmp();
-                    onClickSkipNFC(null);
-                }
+                    startActivityForResult(FilesManagement.id_picture.createIntent(this), TAKE_SEC_PIC);
+                }else
+                    Visual.toast(Main.this, result);
             } else {
                 byte[] raw = NfcStuff.getData(i);
                 if (raw != null) {
@@ -947,7 +943,7 @@ public class Main extends FragmentActivity {
 
     private void setUpViews() {
         menuTitles = getResources().getStringArray(R.array.menus);
-        menuDrawables = new int[]{R.drawable.encrypt, R.drawable.share
+        int[] menuDrawables = new int[]{R.drawable.encrypt, R.drawable.share
                 , R.drawable.explore, R.drawable.manage, R.drawable.learn};
         final int BOTH = 0, PV = 1, PB = 2, NONE = 3;
         int status = CryptMethods.privateExist() && CryptMethods.publicExist() ? BOTH : CryptMethods.privateExist() ? PV : CryptMethods.publicExist() ? PB : NONE;
@@ -1223,7 +1219,9 @@ public class Main extends FragmentActivity {
                         new prepareToExit();
                     break;
                 case R.layout.wait_nfc_to_write:
-                    if (CryptMethods.publicExist())
+                    if(!findViewById(R.id.to_device).isClickable())
+                        selectItem(-1,R.layout.wait_nfc_to_write,null);
+                    else if (CryptMethods.publicExist())
                         selectItem(-1, R.layout.create_new_keys, null);
                     else
                         new prepareToExit();
@@ -1237,7 +1235,16 @@ public class Main extends FragmentActivity {
             }
         }
     }
-
+    public void toNFC(View v){
+        if (NfcStuff.nfcIsOff(this))
+            new TurnNFCOn(getFragmentManager());
+        else{
+            ((TextView)findViewById(R.id.text_explain)).setText(R.string.wait_for_nfc_to_write);
+            v.setClickable(false);
+            findViewById(R.id.to_device).setClickable(false);
+            findViewById(R.id.nfc_or_device).animate().alpha(0).setDuration(1000).start();
+        }
+    }
     void sendMessage(byte[] data, int type) {
         boolean success = FilesManagement.createFilesToSend(this, data);
         Message msg = hndl.obtainMessage(CLEAR_AND_SEND, type, success ? 1 : 0);
@@ -1465,13 +1472,12 @@ public class Main extends FragmentActivity {
 
     public static class saveKeys {
         static Thread t;
-
-        public static void start(final Activity a) {
+        public static void start(final Activity a,final boolean nfcMode) {
             if (t == null || !t.isAlive()) {
                 t = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        FilesManagement.save(a);
+                        FilesManagement.save(a,nfcMode);
                     }
                 });
                 t.start();

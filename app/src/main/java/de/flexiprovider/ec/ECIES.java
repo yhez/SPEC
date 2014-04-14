@@ -7,7 +7,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.InvalidParameterSpecException;
 
-import de.flexiprovider.api.KeyAgreement;
 import de.flexiprovider.api.keys.KeyPair;
 import de.flexiprovider.api.keys.KeyPairGenerator;
 import de.flexiprovider.common.ies.IES;
@@ -15,7 +14,7 @@ import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.ec.keys.ECKeyPairGenerator;
 import de.flexiprovider.ec.keys.ECPrivateKey;
 import de.flexiprovider.ec.keys.ECPublicKey;
-import de.flexiprovider.ec.parameters.CurveParams;
+import de.flexiprovider.ec.parameters.CurveParamsGFP;
 
 
 public class ECIES extends IES {
@@ -58,11 +57,6 @@ public class ECIES extends IES {
         return ecPrivKey;
     }
 
-
-    protected KeyAgreement getKeyAgreement() {
-        return new ECSVDPDHC();
-    }
-
     protected KeyPair generateEphKeyPair() {
         KeyPairGenerator kpg = new ECKeyPairGenerator();
         try {
@@ -88,15 +82,15 @@ public class ECIES extends IES {
 
 
     protected int getEncEphPubKeySize() {
-        Point g = ((CurveParams) keyParams).getG();
+        Point g = ((CurveParamsGFP) keyParams).getG();
         return g.EC2OSP(Point.ENCODING_TYPE_COMPRESSED).length;
     }
 
 
     protected PublicKey decodeEphPubKey(byte[] encEphPubKey) {
         try {
-            Point w = Point.OS2ECP(encEphPubKey, (CurveParams) keyParams);
-            return new ECPublicKey(w, (CurveParams) keyParams);
+            Point w = Point.OS2ECP(encEphPubKey, (CurveParamsGFP) keyParams);
+            return new ECPublicKey(w, (CurveParamsGFP) keyParams);
         } catch (InvalidParameterSpecException e) {
             throw new RuntimeException("InvalidParameterSpecException: "
                     + e.getMessage());

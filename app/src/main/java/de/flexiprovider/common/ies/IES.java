@@ -15,8 +15,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 import de.flexiprovider.api.AsymmetricHybridCipher;
 import de.flexiprovider.api.BlockCipher;
-import de.flexiprovider.api.KeyAgreement;
-import de.flexiprovider.api.KeyDerivation;
 import de.flexiprovider.api.Mac;
 import de.flexiprovider.api.Registry;
 import de.flexiprovider.api.SecureRandom;
@@ -27,6 +25,7 @@ import de.flexiprovider.core.kdf.KDFParameterSpec;
 import de.flexiprovider.core.mac.HMac;
 import de.flexiprovider.core.mac.HMacKey;
 import de.flexiprovider.core.rijndael.RijndaelKey;
+import de.flexiprovider.ec.ECSVDPDHC;
 
 
 public abstract class IES extends AsymmetricHybridCipher {
@@ -65,10 +64,10 @@ public abstract class IES extends AsymmetricHybridCipher {
     private byte[] sharedData;
 
     // the key agreement module
-    private KeyAgreement kag;
+    private ECSVDPDHC kag;
 
     // the key derivation function
-    private KeyDerivation kdf;
+    private KDF2 kdf;
 
     // the ephemeral public key
     private PublicKey ephPubKey;
@@ -88,7 +87,7 @@ public abstract class IES extends AsymmetricHybridCipher {
 
     protected IES() {
         buf = new ByteArrayOutputStream();
-        kag = getKeyAgreement();
+        kag = new ECSVDPDHC();
         kdf = new KDF2();
     }
 
@@ -277,7 +276,7 @@ public abstract class IES extends AsymmetricHybridCipher {
 
         try {
             // use key agreement to obtain secret key
-            kag.init(privKey, null, random);
+            kag.init(privKey);
             byte[] secretKey = kag.doPhase(pubKey, true).getEncoded();
 
             // generate key stream with the key derivation function
@@ -388,10 +387,6 @@ public abstract class IES extends AsymmetricHybridCipher {
 
     protected abstract PrivateKey checkPrivKey(Key key)
             throws InvalidKeyException;
-
-
-    protected abstract KeyAgreement getKeyAgreement();
-
 
     protected abstract KeyPair generateEphKeyPair();
 

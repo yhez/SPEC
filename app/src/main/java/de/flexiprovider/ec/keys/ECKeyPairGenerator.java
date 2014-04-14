@@ -10,7 +10,7 @@ import de.flexiprovider.api.keys.KeyPairGenerator;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.common.math.ellipticcurves.ScalarMult;
-import de.flexiprovider.ec.parameters.CurveParams;
+import de.flexiprovider.ec.parameters.CurveParamsGFP;
 import specular.systems.CryptMethods;
 
 
@@ -20,7 +20,7 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
     public static final int DEFAULT_KEY_SIZE = 192;
 
     // the EC domain parameters
-    private CurveParams curveParams;
+    private CurveParamsGFP curveParams;
 
     // the source of randomness
     private SecureRandom mRandom = null;
@@ -46,11 +46,11 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
             return;
         }
 
-        if (!(params instanceof CurveParams)) {
+        if (!(params instanceof CurveParamsGFP)) {
             throw new InvalidAlgorithmParameterException("unsupported type");
         }
 
-        curveParams = (CurveParams) params;
+        curveParams = (CurveParamsGFP) params;
         r = curveParams.getR();
         rLength = r.bitLength();
         mOddPowers = ScalarMult.pre_oddpowers(curveParams.getG(), 4);
@@ -61,8 +61,8 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
 
 
     public void initialize(int keySize, SecureRandom random) {
-        CurveParams params;
-        params = (CurveParams) Registry.getAlgParamSpec();
+        CurveParamsGFP params;
+        params = new CurveParamsGFP();
 
         try {
             initialize(params, random);

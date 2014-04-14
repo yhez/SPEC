@@ -15,7 +15,6 @@ import specular.systems.ContactsDataSource;
 import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
 import specular.systems.R;
-import specular.systems.StaticVariables;
 import specular.systems.Visual;
 import specular.systems.activities.Main;
 
@@ -50,8 +49,7 @@ public class DialogRestore extends DialogFragment {
                     new Contact(getActivity(),c);
                 CryptMethods.setDetails(myDetails[0],myDetails[1]);
                 CryptMethods.setPublic(myDetails[2]);
-                StaticVariables.NFCMode=true;
-                FilesManagement.save(getActivity());
+                FilesManagement.save(getActivity(),true);
                 if(FilesManagement.motNFCMod(getActivity()))
                     FilesManagement.savePrivate(getActivity());
                 Visual.toast(getActivity(),R.string.notify_after_restore);

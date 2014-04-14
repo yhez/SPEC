@@ -20,8 +20,7 @@ import de.flexiprovider.ec.ECIES;
 import de.flexiprovider.ec.keys.ECKeyPairGenerator;
 import de.flexiprovider.ec.keys.ECPrivateKey;
 import de.flexiprovider.ec.keys.ECPublicKey;
-import de.flexiprovider.ec.parameters.CurveParams;
-import de.flexiprovider.ec.parameters.CurveRegistry;
+import de.flexiprovider.ec.parameters.CurveParamsGFP;
 
 public class CryptMethods {
     private static ECPrivateKey mPtK;
@@ -113,7 +112,7 @@ public class CryptMethods {
 
 
     private static KeyPair createKeyPair() {
-        CurveParams ecParams = new CurveRegistry.BrainpoolP512r1();
+        CurveParamsGFP ecParams = new CurveParamsGFP();
         KeyPairGenerator kpg = new ECKeyPairGenerator();
         try {
             kpg.initialize(ecParams, (SecureRandom) null);
@@ -184,7 +183,7 @@ public class CryptMethods {
 
     public static byte[] encrypt(byte[] b, String publicKey) {
         try {
-            CurveParams cp = new CurveRegistry.BrainpoolP512r1();
+            CurveParamsGFP cp = new CurveParamsGFP();
             ECPublicKey frndPbK = new ECPublicKey(Point.OS2ECP(Visual.hex2bin(publicKey), cp), cp);
             ECIES cipher = new ECIES();
             cipher.initEncrypt(frndPbK, null, null);
@@ -214,7 +213,7 @@ public class CryptMethods {
     }
 
     private static ECPrivateKey formatPrivate(byte[] p) {
-        return new ECPrivateKey(new FlexiBigInt(p), new CurveRegistry.BrainpoolP512r1());
+        return new ECPrivateKey(new FlexiBigInt(p), new CurveParamsGFP());
     }
 
     public static String getPublicTmp() {
@@ -258,6 +257,8 @@ public class CryptMethods {
         }
 
         public byte[] getRandomBits() {
+            if(cp==null)
+                return null;
             while (!cp.ready) {
                 synchronized (this) {
                     try {

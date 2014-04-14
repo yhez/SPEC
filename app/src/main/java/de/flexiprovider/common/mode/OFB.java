@@ -41,18 +41,8 @@ public class OFB extends Mode {
                 this.iv = iv;
             }
         }
-
-        if (modeParams instanceof OFBParameterSpec) {
-            // get block size
-            blockSize = ((OFBParameterSpec) modeParams).getBlockSize();
-            // check block size
-            if (blockSize > cipherBlockSize) {
-                blockSize = cipherBlockSize;
-            }
-        } else {
             // default: set block size to cipher block size
-            blockSize = cipherBlockSize;
-        }
+        blockSize = cipherBlockSize;
 
         feedbackBlock = new byte[cipherBlockSize];
         buf = new byte[cipherBlockSize];

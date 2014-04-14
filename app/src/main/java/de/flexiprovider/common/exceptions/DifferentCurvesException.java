@@ -9,8 +9,4 @@ public class DifferentCurvesException extends ECException {
         super(diagnostic);
     }
 
-    public DifferentCurvesException(String detail) {
-        super(diagnostic + ":\n" + detail);
-    }
-
 }

@@ -35,10 +35,6 @@ public interface GFElement {
 
     FlexiBigInt toFlexiBigInt();
 
-
-    byte[] toByteArray();
-
-
     String toString();
 
 

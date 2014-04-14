@@ -7,15 +7,16 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:gravity="center"
-    android:alpha="0">
+    android:alpha="1">
 
     <TextView
+        android:id="@+id/text_explain"
         android:textColor="@color/spec_black"
         android:gravity="center"
         android:padding="@dimen/default_gap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/wait_for_nfc_to_write"
+        android:text="@string/save_key_explain"
         android:textSize="30sp" />
 
     <ImageView
@@ -26,19 +27,36 @@
         android:layout_width="wrap_content" />
 
     <LinearLayout
+        android:id="@+id/nfc_or_device"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
+        style="?android:attr/buttonBarButtonStyle"
         android:background="@color/spec_dark_blue"
         android:orientation="horizontal"
         android:padding="@dimen/default_gap">
 
         <Button
+            android:id="@+id/to_device"
+            style="?android:attr/borderlessButtonStyle"
             android:gravity="center"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClickSkipNFC"
             android:padding="@dimen/default_gap"
-            android:text="@string/skip_save_to_phone" />
+            android:text="@string/save_on_device" />
+        <View
+            android:background="@color/spec_black"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:gravity="center"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="toNFC"
+            android:padding="@dimen/default_gap"
+            android:text="@string/save_on_nfc" />
     </LinearLayout>
 </LinearLayout>

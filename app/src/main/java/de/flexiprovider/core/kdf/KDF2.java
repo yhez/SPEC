@@ -5,14 +5,13 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.spec.AlgorithmParameterSpec;
 
-import de.flexiprovider.api.KeyDerivation;
 import de.flexiprovider.api.MessageDigest;
 import de.flexiprovider.common.util.BigEndianConversions;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.md.SHA1;
 
 
-public class KDF2 extends KeyDerivation {
+public class KDF2 {
 
     // the hash function
     private MessageDigest md;

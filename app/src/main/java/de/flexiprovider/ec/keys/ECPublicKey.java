@@ -4,7 +4,7 @@ import java.security.InvalidKeyException;
 import java.security.PublicKey;
 
 import de.flexiprovider.common.math.ellipticcurves.Point;
-import de.flexiprovider.ec.parameters.CurveParams;
+import de.flexiprovider.ec.parameters.CurveParamsGFP;
 
 public class ECPublicKey implements PublicKey {
 
@@ -12,9 +12,9 @@ public class ECPublicKey implements PublicKey {
     private Point mW;
 
     // the EC domain parameters
-    private CurveParams mParams;
+    private CurveParamsGFP mParams;
 
-    public ECPublicKey(Point w, CurveParams params) {
+    public ECPublicKey(Point w, CurveParamsGFP params) {
         mW = w;
         mParams = params;
     }
@@ -26,7 +26,7 @@ public class ECPublicKey implements PublicKey {
         return mW;
     }
 
-    public CurveParams getParams() {
+    public CurveParamsGFP getParams() {
         return mParams;
     }
 

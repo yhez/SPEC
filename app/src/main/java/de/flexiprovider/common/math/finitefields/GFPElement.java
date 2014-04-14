@@ -130,12 +130,6 @@ public class GFPElement implements GFElement {
         return new GFPElement(mValue.modInverse(mP), mP);
     }
 
-
-    public byte[] toByteArray() {
-        return mValue.toByteArray();
-    }
-
-
     public FlexiBigInt toFlexiBigInt() {
         return mValue;
     }

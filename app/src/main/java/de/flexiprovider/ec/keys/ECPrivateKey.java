@@ -3,7 +3,7 @@ package de.flexiprovider.ec.keys;
 import java.security.PrivateKey;
 
 import de.flexiprovider.common.math.FlexiBigInt;
-import de.flexiprovider.ec.parameters.CurveParams;
+import de.flexiprovider.ec.parameters.CurveParamsGFP;
 
 
 public class ECPrivateKey implements PrivateKey {
@@ -11,9 +11,9 @@ public class ECPrivateKey implements PrivateKey {
     // the private key s, 1 < s < r.
     private FlexiBigInt mS;
 
-    private CurveParams mParams;
+    private CurveParamsGFP mParams;
 
-    public ECPrivateKey(FlexiBigInt s, CurveParams params) {
+    public ECPrivateKey(FlexiBigInt s, CurveParamsGFP params) {
         mS = s;
         mParams = params;
     }
@@ -36,7 +36,7 @@ public class ECPrivateKey implements PrivateKey {
         return new byte[0];
     }
 
-    public CurveParams getParams() {
+    public CurveParamsGFP getParams() {
         return mParams;
     }
 }

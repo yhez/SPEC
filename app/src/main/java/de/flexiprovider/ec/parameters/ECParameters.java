@@ -10,16 +10,16 @@ public class ECParameters extends AlgorithmParametersSpi {
 
 
     // the EC domain parameters
-    private CurveParams curveParams;
+    private CurveParamsGFP curveParams;
 
 
     public void init(AlgorithmParameterSpec params)
             throws InvalidParameterSpecException {
 
-        if ((params == null) || !(params instanceof CurveParams)) {
+        if ((params == null) || !(params instanceof CurveParamsGFP)) {
             throw new InvalidParameterSpecException("unsupported type");
         }
-        curveParams = (CurveParams) params;
+        curveParams = (CurveParamsGFP) params;
     }
 
 

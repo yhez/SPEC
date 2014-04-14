@@ -100,7 +100,7 @@ public final class FilesManagement {
         return myQRPublicKey;
     }
 
-    public static Typeface getOs(Activity a) {
+    public static Typeface getOs(Context a) {
         if (tfos == null)
             tfos = createFromAsset(a.getAssets(), "OpenSans-Light.ttf");
         return tfos;
@@ -352,10 +352,10 @@ public final class FilesManagement {
         new File(a.getFilesDir(), PRIVATE_KEY).delete();
     }
 
-    public static void save(Activity a) {
+    public static void save(Activity a,boolean nfcMode) {
         if (a != null) {
             myQRPublicKey = null;
-            if (!StaticVariables.NFCMode)
+            if (!nfcMode)
                 CryptMethods.moveKeysFromTmp();
             SharedPreferences srp = PreferenceManager
                     .getDefaultSharedPreferences(a);
@@ -397,7 +397,7 @@ public final class FilesManagement {
             edt.putString(PUBLIC_KEY, qrpk.getPublicKey());
             edt.putString(EMAIL, qrpk.getEmail());
             edt.putString(NAME, qrpk.getName());
-            if (!StaticVariables.NFCMode)
+            if (!nfcMode)
                 savePrivate(a);
             else
                 removePrivate(a);

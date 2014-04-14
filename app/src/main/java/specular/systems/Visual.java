@@ -296,6 +296,18 @@ public class Visual {
         t.setGravity(Gravity.CENTER,0,0);
         t.show();
     }
+    public static void toastBig(Context c,int s){
+        Toast t = Toast.makeText(c,null,Toast.LENGTH_LONG);
+        t.setGravity(Gravity.CENTER,0,0);
+        TextView tv = new TextView(c);
+        tv.setText(s);
+        tv.setTextSize(25f);
+        tv.setTypeface(FilesManagement.getOs(c));
+        tv.setTextColor(c.getResources().getColor(R.color.spec_black));
+        tv.setBackgroundResource(R.drawable.borders_widget);
+        t.setView(tv);
+        t.show();
+    }
     public static class strings{
         public static String
                 NEW_LINE="\n",TAB="\t",UTF="UTF-8",SHA="SHA-256",

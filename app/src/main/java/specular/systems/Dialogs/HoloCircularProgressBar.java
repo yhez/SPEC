@@ -76,15 +76,6 @@ public class HoloCircularProgressBar extends View {
     private final RectF mCircleBounds = new RectF();
 
     /**
-     * Radius of the circle
-     * <p/>
-     * <p>
-     * Note: (Re)calculated in {@link #onMeasure(int, int)}.
-     * </p>
-     */
-    private float mRadius;
-
-    /**
      * the color of the progress.
      */
     private int mProgressColor;
@@ -308,7 +299,14 @@ public class HoloCircularProgressBar extends View {
         setMeasuredDimension(min, height);
 
         final float halfWidth = min * 0.5f;
-        mRadius = halfWidth - mThumbRadius;
+        /*
+      Radius of the circle
+      <p/>
+      <p>
+      Note: (Re)calculated in {@link #onMeasure(int, int)}.
+      </p>
+     */
+        float mRadius = halfWidth - mThumbRadius;
 
         mCircleBounds.set(-mRadius, -mRadius, mRadius, mRadius);
 

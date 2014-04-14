@@ -1,11 +1,9 @@
 package de.flexiprovider.api;
 
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.AlgorithmParameterSpec;
 
 import de.flexiprovider.common.util.DefaultPRNG;
 import de.flexiprovider.core.rijndael.Rijndael;
-import de.flexiprovider.ec.parameters.CurveRegistry;
 
 
 public abstract class Registry {
@@ -57,11 +55,4 @@ public abstract class Registry {
     public static SecureRandom getSecureRandom() {
         return new DefaultPRNG();
     }
-
-
-    public static AlgorithmParameterSpec getAlgParamSpec() {
-        return new CurveRegistry.BrainpoolP512r1();
-    }
-
-
 }

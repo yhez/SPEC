@@ -5,13 +5,9 @@ import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.SecretKey;
-import javax.crypto.ShortBufferException;
 
-import de.flexiprovider.api.KeyAgreement;
-import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.common.exceptions.InvalidPointException;
 import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.Point;
@@ -21,7 +17,7 @@ import de.flexiprovider.ec.keys.ECPublicKey;
 import de.flexiprovider.ec.keys.ECSecretKey;
 
 
-public class ECSVDPDHC extends KeyAgreement {
+public class ECSVDPDHC {
 
     /**
      * flag indicating whether cofactor multiplication shall be used
@@ -34,9 +30,7 @@ public class ECSVDPDHC extends KeyAgreement {
     // the (optional) cofactor
     private FlexiBigInt mK;
 
-
-    public void init(PrivateKey key, AlgorithmParameterSpec params,
-                     SecureRandom random) throws InvalidKeyException {
+    public void init(PrivateKey key) throws InvalidKeyException {
         if (!(key instanceof ECPrivateKey)) {
             throw new InvalidKeyException("unsupported type");
         }
@@ -64,40 +58,6 @@ public class ECSVDPDHC extends KeyAgreement {
         return secr;
     }
 
-
-    public int generateSecret(byte[] sharedSecret, int offset)
-            throws ShortBufferException {
-        ECSecretKey secr;
-        try {
-            secr = secretGenerator();
-        } catch (InvalidKeyException ex) {
-            throw new RuntimeException("Can't generate shared secret: "
-                    + ex.getMessage());
-        }
-        byte[] sByte = secr.getS().toByteArray();
-        int n = sByte.length;
-        try {
-            System.arraycopy(sByte, 0, sharedSecret, offset, n);
-        } catch (IndexOutOfBoundsException ex) {
-            throw new ShortBufferException(
-                    "Byte array sharedSecret too small for shared secret.");
-        }
-
-        return n;
-    }
-
-    public byte[] generateSecret() {
-        ECSecretKey secr;
-
-        try {
-            secr = secretGenerator();
-        } catch (InvalidKeyException ex) {
-            throw new RuntimeException("Can't generate shared secret: "
-                    + ex.getMessage());
-        }
-
-        return secr.getS().toByteArray();
-    }
 
     public Key doPhase(PublicKey key, boolean lastPhase)
             throws InvalidKeyException {
@@ -141,5 +101,4 @@ public class ECSVDPDHC extends KeyAgreement {
         // return the x-coordinate of the computed point as EC secret key
         return new ECSecretKey(q.getXAffin().toFlexiBigInt());
     }
-
 }

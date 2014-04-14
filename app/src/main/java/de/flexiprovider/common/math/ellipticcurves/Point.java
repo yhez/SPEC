@@ -13,7 +13,7 @@ import de.flexiprovider.common.math.IntegerFunctions;
 import de.flexiprovider.common.math.finitefields.GFElement;
 import de.flexiprovider.common.math.finitefields.GFPElement;
 import de.flexiprovider.common.util.FlexiBigIntUtils;
-import de.flexiprovider.ec.parameters.CurveParams;
+import de.flexiprovider.ec.parameters.CurveParamsGFP;
 
 
 public class Point {
@@ -162,7 +162,7 @@ public class Point {
         assign(other);
     }
 
-    public static Point OS2ECP(byte[] encoded, CurveParams params)
+    public static Point OS2ECP(byte[] encoded, CurveParamsGFP params)
             throws InvalidPointException, InvalidFormatException,
             InvalidParameterSpecException {
         EllipticCurve mE = params.getE();

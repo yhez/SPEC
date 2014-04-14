@@ -8,7 +8,6 @@
     <!--strings related to writing/reading private key to/from the nfc tag-->
     <string name="tab_nfc_title">Tap NFC</string>
     <string name="cant_connect_nfc_adapter">Something went wrong. Try again.</string>
-    <string name="turn_nfc_on_nfc_wait">NFC is OFF, go to settings and turn it ON.</string>
     <string name="failed_read_only">Read-only tag.\nUse another tag.</string>
     <string name="tag_formatted">Tag has been formatted.\nTap again to save key.</string>
     <string name="cant_format">Unable to format tag to NDEF.\nTry another tag.</string>
@@ -89,7 +88,6 @@
     <string name="file_name_my_qr_key">ContactCardQR.SPEC.png</string>
     <string name="file_name_secure_msg">SecureMessage.SPEC</string>
     <string name="file_name_Backup_msg">SecureBackup.SPEC</string>
-    <string name="file_name_qr_msg">SecureQRMessageSPEC.png</string>
 
     <!--general-->
     <string name="welcome"><b>Let the SPEC magic begin.</b>\nStart bringing privacy and security to your online life.\nEnter email and swipe arrow to the left to generate keys.</string>
@@ -103,7 +101,6 @@
     <string name="hint_enter_your_name">Name (optional)&#8230;</string>
     <string name="hint_enter_your_email">Email&#8230;</string>
     <string name="wait_for_nfc_to_write">Tap NFC to store Private Decryption Key externally</string>
-    <string name="skip_save_to_phone">Skip and save key on device</string>
     <string name="create_keys">Generate New Keys</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
@@ -115,11 +112,9 @@
     <string name="subject_share">My Public Key - SPEC MOBILE APP</string>
     <string name="contact_exist">Contact already exists.</string>
     <string name="todo">SPEC Security</string>
-    <string name="Import">Import Keys</string>
     <string name="failed_to_create_files_to_send">Could not create files.</string>
     <string name="decrypting">Decrypting&#8230;</string>
     <string name="encrypting">Encrypting&#8230;</string>
-    <string name="backup">Backup ops&#8230;</string>
     <string name="exit_by_back_notify">Press back again to exit.</string>
     <string name="edit_email">Email: </string>
     <string name="edit_name">Name: </string>
@@ -137,18 +132,15 @@
     <string name="notify_msg_deleted">Message has been deleted</string>
     <string name="send_another_msg">Send another message</string>
     <string name="send_orders">Sending a SECURE message:\n------\n1. Choose contact\n2. Enter message\n3. Add file (optional)</string>
-    <string name="backup_profile">Backup Profile</string>
     <string name="share_file">Share file via:</string>
     <string name="my_details">My Details</string>
     <string name="share_image">Share QR code via:</string>
     <string name="edit_contact_title_pbk">Public Key:</string>
-    <string name="both_qr_file">Send both file and QR code via:</string>
     <string name="files_details">File details:</string>
     <string name="no_result_filter">No result, please search again.</string>
     <string name="profile_my_name">My name:</string>
     <string name="profile_my_email">My email:</string>
     <string name="send_file">Send file via:</string>
-    <string name="send_image">Send QR code via:</string>
     <string name="too_short_name">Name should be at least 3 characters long.</string>
     <string name="contact_with_same_email_exist">A contact with the same email already exists.\nDo you want to update their Public Encryption Key?</string>
     <string name="quote">Quote conversation</string>
@@ -254,7 +246,7 @@
     <string name="no_notes_yet">No notes added yet</string>
     <string name="verify_delete">Verify delete first</string>
     <string name="save_to_safe">Save attachment to Safe</string>
-    <string name="name_allready_exist">file with the same name already exist</string>
+    <string name="name_already_exist">file with the same name already exist</string>
     <string name="collecting_data">collecting data from</string>
     <string name="keys_loaded">load private key to decrypt file</string>
     <string name="open_file_no_private">load private key to decrypt file</string>
@@ -273,17 +265,15 @@
     <string name="open_by_external_app">Open file VIA external app.\nIt can be dangerous to give access to the data to another application</string>
     <string name="failed_create_qr">failed to create QR</string>
     <string name="nfc_to_decrypt_notes">Tab your NFC Tag To decrypt notes</string>
-    <string name="take_picture_explain">If you choose to save your key on an NFC tag or external device (next phase),
-        you\'ll be able to complete critical actions like decrypting messages with the tag / device alone.
-    Upon decryption and other actions the app will ask you to tag your NFC tag.\n\n
-    In order to prevent malicious apps from showing the same dialog and gaining your Private Key,
-    take a picture and we\'ll use it as the dialog background.\n This is your scret picture, verify that you see it.</string>
-    <string name="secret_picture_title">Secret Picture</string>
     <string name="nfc_for_files">Tab NFC to decrypt Files</string>
     <string name="private_exist">Private Loaded</string>
     <string name="no_private">No Private</string>
     <string name="regenerate">regenerate keys</string>
     <string name="continue_">continue</string>
+    <string name="save_on_device">Keep it on your device</string>
+    <string name="save_on_nfc">Move it to NFC tag</string>
+    <string name="save_key_explain">choose the place for the private key</string>
+    <string name="take_secrate_pict">Take a secrete picture to identify the app who request your NFC tag</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
