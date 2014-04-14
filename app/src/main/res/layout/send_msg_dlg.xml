@@ -66,39 +66,6 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/qr_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:contentDescription="@null"
-                    android:id="@+id/qr_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="4dp" />
-
-                <TextView
-                    android:id="@+id/qr_size"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:textColor="@color/spec_black" />
-
-                <EditText
-                    android:id="@+id/qr_name_file"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="100dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/edit_text"
-                    android:inputType="textNoSuggestions"
-                    android:textColor="@color/spec_gray"
-                    android:textCursorDrawable="@null"
-                    android:textSize="12sp" />
-            </LinearLayout>
         </LinearLayout>
 
         <CheckBox
@@ -108,27 +75,6 @@
             android:button="@drawable/check_box"
             android:text="@string/make_it_default"
             android:textColor="@color/spec_black" />
-
-        <TextView
-            android:id="@+id/text_both_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/both_qr_file"
-            android:textColor="@color/spec_black" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="240dp"
-            android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/spec_blue" />
-
-
-        <GridLayout
-            android:id="@+id/gl_both"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:columnCount="4" />
 
         <TextView
             android:id="@+id/title_file"
@@ -146,26 +92,6 @@
 
         <GridLayout
             android:id="@+id/gl_app_file"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:columnCount="4" />
-
-        <TextView
-            android:id="@+id/title_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/send_image"
-            android:textColor="@color/spec_black" />
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="240dp"
-            android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/spec_blue" />
-
-        <GridLayout
-            android:id="@+id/gl_app_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:columnCount="4" />

@@ -9,7 +9,6 @@ public class StaticVariables {
     //from splash
     public static ContactCard fileContactCard;
     public static String message;
-    public final static int MSG_LIMIT_FOR_QR = 141;
     public static KeyListener edit;
     public static String currentText = "";
     public static byte[] fileContent;
@@ -28,7 +27,5 @@ public class StaticVariables {
     public static long orig_msg_size, encrypted_msg_size;
     public static byte[] decryptedGroup;
     public static byte[] decryptedBackup;
-    public static String encryptedMsgToSend;
     public static byte[] dataRaw;
-    public static byte[] qrData;
 }

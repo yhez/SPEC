@@ -61,7 +61,6 @@ public class Response extends DialogFragment {
                 cb.setChecked(true);
             }
         }
-        final TextView tv = (TextView) v.findViewById(R.id.text_counter);
         final ImageButton bt = (ImageButton) v.findViewById(R.id.send);
         bt.setEnabled(false);
         final EditText et = (EditText) v.findViewById(R.id.message);
@@ -81,12 +80,9 @@ public class Response extends DialogFragment {
                 if (editable.length() == 0) {
                     bt.setEnabled(false);
                     bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
-                    tv.setVisibility(View.GONE);
                 } else {
                     bt.setEnabled(true);
                     bt.setImageResource(R.drawable.ic_send_holo_light);
-                    tv.setVisibility(View.VISIBLE);
-                    tv.setText(StaticVariables.MSG_LIMIT_FOR_QR - editable.length() > 0 ? StaticVariables.MSG_LIMIT_FOR_QR - editable.length() + "" : getString(R.string.no_qr));
                 }
             }
         });
@@ -123,7 +119,7 @@ public class Response extends DialogFragment {
                     public void run() {
                         byte[] data = Visual.bin2hex(CryptMethods.encrypt(msg.getFormatedMsg(),
                                 contact!=null?contact.getPublicKey():group.getPublicKey())).getBytes();
-                        boolean success = FilesManagement.createFilesToSend(getActivity(), userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR, data);
+                        boolean success = FilesManagement.createFilesToSend(getActivity(), data);
                         prgd.cancel();
                         if (success) {
                             Intent intent = new Intent(getActivity(), SendMsg.class);

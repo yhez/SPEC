@@ -11,7 +11,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import java.io.File;
 
@@ -23,7 +22,6 @@ import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.FilesManagement;
 import specular.systems.MessageFormat;
 import specular.systems.R;
-import specular.systems.StaticVariables;
 import specular.systems.Visual;
 import specular.systems.activities.SendMsg;
 
@@ -65,7 +63,6 @@ public class QuickMsg extends Activity {
                         updateWidget(WidgetContact.getWidgetId(widget));
                     }
                     setContentView(R.layout.response);
-                    final TextView tv = (TextView) findViewById(R.id.text_counter);
                     final ImageButton bt = (ImageButton) findViewById(R.id.send);
                     bt.setEnabled(false);
                     final EditText et = (EditText) findViewById(R.id.message);
@@ -85,12 +82,9 @@ public class QuickMsg extends Activity {
                             if (editable.length() == 0) {
                                 bt.setEnabled(false);
                                 bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
-                                tv.setVisibility(View.GONE);
                             } else {
                                 bt.setEnabled(true);
                                 bt.setImageResource(R.drawable.ic_send_holo_light);
-                                tv.setVisibility(View.VISIBLE);
-                                tv.setText(StaticVariables.MSG_LIMIT_FOR_QR - editable.length() > 0 ? StaticVariables.MSG_LIMIT_FOR_QR - editable.length() + "" : getString(R.string.no_qr));
                             }
                         }
                     });
@@ -106,7 +100,7 @@ public class QuickMsg extends Activity {
                                 public void run() {
                                     byte[] data = Visual.bin2hex(CryptMethods.encrypt(msg.getFormatedMsg(),
                                             contact.getPublicKey())).getBytes();
-                                    boolean success = FilesManagement.createFilesToSend(QuickMsg.this, userInput.length() < StaticVariables.MSG_LIMIT_FOR_QR, data);
+                                    boolean success = FilesManagement.createFilesToSend(QuickMsg.this, data);
                                     if (success) {
                                         prgd.cancel();
                                         Intent intent = new Intent(QuickMsg.this, SendMsg.class);

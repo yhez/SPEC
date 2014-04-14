@@ -524,32 +524,22 @@ public class FragmentManagement extends Fragment {
                         String len = ((TextView) rootView.findViewById(R.id.file_content_length)).getText().toString();
                         int num = editable.toString().length() + (len.length() > 0 ?
                                 Integer.parseInt(len) : 0);
-                        TextView tv = (TextView) rootView.findViewById(R.id.text_counter);
                         ImageButton bt = (ImageButton) rootView.findViewById(R.id.send);
                         boolean choosedContact = ((TextView) rootView.findViewById(R.id.contact_id_to_send)).length() > 0;
                         StaticVariables.readyToSend = choosedContact;
                         bt.setImageResource(choosedContact ? R.drawable.ic_send_holo_light : R.drawable.ic_send_disabled_holo_light);
                         if (num == 0) {
-                            tv.setVisibility(View.GONE);
                             getActivity().invalidateOptionsMenu();
                             bt.setImageResource(R.drawable.ic_send_disabled_holo_light);
                             StaticVariables.readyToSend = false;
                         } else {
-                            tv.setVisibility(View.VISIBLE);
                             getActivity().invalidateOptionsMenu();
                             if (num > 0) {
+                                getActivity().invalidateOptionsMenu();
                                 if (choosedContact) {
                                     StaticVariables.readyToSend = true;
                                     bt.setImageResource(R.drawable.ic_send_holo_light);
                                 }
-                                if (num == 1) {
-                                    tv.setVisibility(View.VISIBLE);
-                                    getActivity().invalidateOptionsMenu();
-                                    tv.setText(StaticVariables.MSG_LIMIT_FOR_QR - num + "");
-                                } else if (num <= StaticVariables.MSG_LIMIT_FOR_QR) {
-                                    tv.setText(StaticVariables.MSG_LIMIT_FOR_QR - num + "");
-                                } else
-                                    tv.setText(getActivity().getString(R.string.no_qr));
                             }
                         }
                     }

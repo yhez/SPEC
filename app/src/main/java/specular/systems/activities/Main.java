@@ -90,6 +90,7 @@ import zxing.WriterException;
 import static android.support.v4.content.FileProvider.getUriForFile;
 
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class Main extends FragmentActivity {
     public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_FOR_GROUP = 2, SCAN_PRIVATE = 3, SCAN_CONTACT = 4, TAKE_PICTURE = 5, RECORD_AUDIO = 6;
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2,
@@ -1205,10 +1206,7 @@ public class Main extends FragmentActivity {
     }
 
     void sendMessage(byte[] data, int type) {
-        boolean success = FilesManagement.createFilesToSend(this, (userInput.length() +
-                (StaticVariables.fileContent != null ?
-                        StaticVariables.fileContent.length : 0)) <
-                StaticVariables.MSG_LIMIT_FOR_QR, data);
+        boolean success = FilesManagement.createFilesToSend(this, data);
         Message msg = hndl.obtainMessage(CLEAR_AND_SEND, type, success ? 1 : 0);
         hndl.sendMessage(msg);
     }

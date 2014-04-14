@@ -20,13 +20,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 import specular.systems.activities.FilesOpener;
 import zxing.QRCodeEncoder;
@@ -35,6 +33,7 @@ import zxing.WriterException;
 import static android.graphics.Typeface.createFromAsset;
 import static android.support.v4.content.FileProvider.getUriForFile;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public final class FilesManagement {
     public final static int RESULT_ADD_FILE_FAILED = 5, RESULT_ADD_FILE_TO_BIG = 10, RESULT_ADD_FILE_EMPTY = 20, RESULT_ADD_FILE_OK = 40;
     private final static int FRIEND_CONTACT_CARD = R.string.file_name_shared_contact_card;
@@ -42,7 +41,6 @@ public final class FilesManagement {
     private final static int FILE_NAME = R.string.file_name_my_public_key;
     private final static int QR_NAME = R.string.file_name_my_qr_key;
     private final static int FILE_NAME_SEND = R.string.file_name_secure_msg;
-    private final static int QR_NAME_SEND = R.string.file_name_qr_msg;
     private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
     private final static int FILE_NAME_BACKUP = R.string.file_name_Backup_msg;
     private final static int FILE_NAME_GROUP = R.string.file_name_group;
@@ -171,36 +169,6 @@ public final class FilesManagement {
         return current - limit > oldTime;
     }
 
-    private static boolean saveQRToSend(Activity a, String data) {
-        int qrCodeDimention = 500;
-        StaticVariables.encryptedMsgToSend = data.substring(data.length() / 4 * 3);
-        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(
-                data, qrCodeDimention);
-        try {
-            Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
-            try {
-                File path = new File(a.getFilesDir() + MESSAGES);
-                if (!path.exists())
-                    path.mkdirs();
-                File file = new File(path, a.getString(QR_NAME_SEND));
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 90, baos);
-                StaticVariables.qrData = baos.toByteArray();
-                baos.close();
-                OutputStream os = new FileOutputStream(file);
-                os.write(StaticVariables.qrData);
-                os.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        } catch (WriterException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
     private static boolean saveFileToSend(Activity a, String fileName, byte[] fileData) {
         try {
             File path = new File(a.getFilesDir() + MESSAGES);
@@ -219,9 +187,12 @@ public final class FilesManagement {
 
     private static void cleanUp(Activity a) {
         File root = new File(a.getFilesDir() + MESSAGES);
-        if (root.exists())
-            for (File f : root.listFiles())
-                f.delete();
+        if (root.exists()) {
+            File[] fl = root.listFiles();
+            if(fl!=null)
+                for (File f : fl)
+                    f.delete();
+        }
     }
 
     public static boolean createBackupFileToSend(Activity a, byte[] fileData) {
@@ -234,34 +205,24 @@ public final class FilesManagement {
         saveFileToSend(a, a.getString(FILE_NAME_GROUP), fileData);
     }
 
-    public static boolean createFilesToSend(Activity a, boolean qr, byte[] data) {
+    public static boolean createFilesToSend(Activity a, byte[] data) {
         cleanUp(a);
-        boolean qrSuccess = true, fileSuccess;
-        if (qr)
-            qrSuccess = saveQRToSend(a, new String(data));
-        fileSuccess = saveFileToSend(a, a.getString(FILE_NAME_SEND), data);
+        boolean fileSuccess = saveFileToSend(a, a.getString(FILE_NAME_SEND), data);
         //todo delete it
         StaticVariables.dataRaw = data;
-        return qrSuccess || fileSuccess;
+        return fileSuccess;
     }
 
-    public static ArrayList<Uri> getFilesToSend(Activity a) {
+    public static Uri getFilesToSend(Activity a) {
         try {
             File root = new File(a.getFilesDir() + MESSAGES);
-            ArrayList<Uri> uris = new ArrayList<Uri>(2);
             if (new File(root, a.getString(FILE_NAME_SEND)).exists()) {
-                uris.add(getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_SEND))));
+                return getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_SEND)));
             } else if (new File(root, a.getString(FILE_NAME_BACKUP)).exists()) {
-                uris.add(getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_BACKUP))));
+                return getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_BACKUP)));
             } else {
-                uris.add(getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_GROUP))));
+                return getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_GROUP)));
             }
-            File f = new File(root, a.getString(QR_NAME_SEND));
-            if (f.exists())
-                uris.add(getUriForFile(a, a.getPackageName(), f));
-            else
-                uris.add(null);
-            return uris;
         } catch (Exception e) {
             return null;
         }

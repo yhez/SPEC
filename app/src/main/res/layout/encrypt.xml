@@ -54,33 +54,16 @@
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
-        <LinearLayout
+        <ImageButton
+            android:layout_gravity="bottom"
+            android:contentDescription="@null"
+            android:id="@+id/send"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/text_counter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="#cc333333"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <ImageButton
-                android:contentDescription="@null"
-                android:id="@+id/send"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="0dip"
-                android:onClick="onClickEncrypt"
-                android:src="@drawable/ic_send_disabled_holo_light" />
-        </LinearLayout>
+            android:drawablePadding="0dip"
+            android:onClick="onClickEncrypt"
+            android:src="@drawable/ic_send_disabled_holo_light" />
     </LinearLayout>
 
     <View
