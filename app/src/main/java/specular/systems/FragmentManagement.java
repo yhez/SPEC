@@ -22,13 +22,11 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -197,125 +195,7 @@ public class FragmentManagement extends Fragment {
                 });
                 break;
             case edit_contact:
-                boolean group = getArguments().getBoolean("groups", false);
                 int index = getArguments().getInt("index");
-                if (group) {
-                    LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.group_details);
-                    ll.setVisibility(View.VISIBLE);
-                    final Group currContact = GroupsAdapter.getAdapter().getItem(index);
-                    String[] ownDet = currContact.getOwnerDetails();
-                    ((TextView) ll.findViewById(R.id.name)).setText(ownDet[0]);
-                    ((TextView) ll.findViewById(R.id.email)).setText(ownDet[1]);
-                    ((CheckBox) ll.findViewById(R.id.reinvite)).setChecked(currContact.getLimitInvite());
-                    if (currContact.getLimitInvite() && !currContact.getOwnerDetails()[2].equals(CryptMethods.getPublic()))
-                        ll.findViewById(R.id.invite).setVisibility(View.GONE);
-                    ((CheckBox) ll.findViewById(R.id.nfc)).setChecked(currContact.getLimitNFC());
-                    ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
-                            + currContact.getId());
-                    ((TextView) rootView.findViewById(R.id.contact_name).
-                            findViewById(R.id.text_view)).setText(getString(R.string.edit_name) + Visual.strings.TAB);
-                    ((TextView) rootView.findViewById(R.id.contact_email).
-                            findViewById(R.id.text_view)).setText("address" + Visual.strings.TAB);
-                    if (currContact.getDefaultApp() != null) {
-                        Intent i = new Intent();
-                        i.setComponent(currContact.getDefaultApp());
-                        ResolveInfo rs = getActivity().getPackageManager().resolveActivity(i, 0);
-                        final ImageButton ibbb = (ImageButton) rootView.findViewById(R.id.default_app_send);
-                        ibbb.setImageDrawable(rs.loadIcon(getActivity().getPackageManager()));
-                        rootView.findViewById(R.id.default_app_send_ll).setVisibility(View.VISIBLE);
-                        ibbb.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                currContact.update(null, getActivity());
-                                rootView.findViewById(R.id.default_app_send_ll).setVisibility(View.GONE);
-                            }
-                        });
-                    }
-                    final EditText etName = (EditText) rootView.findViewById(R.id.contact_name).findViewById(R.id.edit_text);
-                    if (StaticVariables.edit == null)
-                        StaticVariables.edit = etName.getKeyListener();
-                    etName.setText(currContact.getGroupName());
-                    etName.setKeyListener(null);
-                    etName.setFocusable(false);
-                    ((TextView) rootView.findViewById(R.id.orig_name))
-                            .setText(currContact.getGroupName());
-                    final EditText etEmail = (EditText) rootView.findViewById(R.id.contact_email).findViewById(R.id.edit_text);
-                    etEmail.setText(currContact.getEmail());
-                    etEmail.setKeyListener(null);
-                    etEmail.setFocusable(false);
-                    ((TextView) rootView.findViewById(R.id.orig_eamil))
-                            .setText(currContact.getEmail());
-                    ((TextView) rootView.findViewById(R.id.contact_session))
-                            .setText(currContact.getMentor());
-                    ImageButton ibb = (ImageButton) rootView.findViewById(R.id.contact_picture);
-                    QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(currContact.getPublicKey(), 256);
-                    Bitmap bitmap = null;
-                    try {
-                        bitmap = qrCodeEncoder.encodeAsBitmap();
-                    } catch (WriterException e) {
-                        e.printStackTrace();
-                    }
-                    ibb.setImageBitmap(bitmap);
-                    TextView tvt = (TextView) rootView.findViewById(R.id.contact_pb);
-                    tvt.setText(currContact.getPublicKey());
-                    final ImageButton ib = (ImageButton) rootView.findViewById(R.id.contact_email)
-                            .findViewById(R.id.image_button);
-                    rootView.findViewById(R.id.contact_email)
-                            .findViewById(R.id.image_button).setOnClickListener(
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (etEmail.getKeyListener() == null) {
-                                        Visual.edit(getActivity(), etEmail, ib);
-                                        etEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                                        etEmail.setSelection(etEmail.length());
-                                    } else {
-                                        String email = etEmail.getText().toString();
-                                        String origEmail = ((TextView) rootView.findViewById(R.id.orig_eamil)).getText()
-                                                .toString();
-                                        if (!email.equals(origEmail))
-                                            if (email.length() > 2) {
-                                                currContact.update(getActivity(), null, email, null, null);
-                                                ((TextView) rootView.findViewById(R.id.orig_eamil)).setText(email);
-                                            } else {
-                                                etEmail.setText(origEmail);
-                                                Visual.toast(getActivity(), R.string.not_valid_change);
-                                            }
-                                        Visual.edit(getActivity(), etEmail, ib);
-                                    }
-                                }
-                            }
-                    );
-                    rootView.findViewById(R.id.contact_name)
-                            .findViewById(R.id.image_button).setOnClickListener(
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    ImageButton ib = (ImageButton) getActivity()
-                                            .findViewById(R.id.contact_name)
-                                            .findViewById(R.id.image_button);
-                                    if (etName.getKeyListener() == null) {
-                                        Visual.edit(getActivity(), etName, ib);
-                                        etName.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                                        etName.setSelection(etName.length());
-                                    } else {
-                                        String origName = ((TextView) rootView.findViewById(R.id.orig_name)).getText()
-                                                .toString();
-                                        String name = etName.getText().toString();
-                                        if (!name.equals(origName))
-                                            if (name.length() > 2) {
-                                                currContact.update(getActivity(), name, null, null, null);
-                                                ((TextView) rootView.findViewById(R.id.orig_name)).setText(name);
-                                            } else {
-                                                etName.setText(origName);
-                                                Visual.toast(getActivity(), R.string.not_valid_change);
-                                            }
-                                        Visual.edit(getActivity(), etName, ib);
-                                    }
-                                }
-                            }
-                    );
-                } else {
                     final Contact currContact = MySimpleArrayAdapter.getAdapter().getItem(index);
                     ((TextView) rootView.findViewById(R.id.contact_id)).setText(""
                             + currContact.getId());
@@ -427,7 +307,6 @@ public class FragmentManagement extends Fragment {
                                 }
                             }
                     );
-                }
                 break;
             case me:
                 if (FilesManagement.getMyQRPublicKey(getActivity()) != null)
@@ -482,26 +361,7 @@ public class FragmentManagement extends Fragment {
                     @Override
                     public void run() {
                         ContactsGroup cg = new ContactsGroup(Main.main.getSupportFragmentManager());
-                        vp.setCurrentItem(ContactsGroup.currentPage);
                         vp.setAdapter(cg);
-                        vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                            @Override
-                            public void onPageScrolled(int i, float v, int i2) {
-
-                            }
-
-                            @Override
-                            public void onPageSelected(int i) {
-                                ContactsGroup.currentPage = i;
-                                getActivity().invalidateOptionsMenu();
-                                StaticVariables.luc.showIfNeeded(getActivity(), null);
-                            }
-
-                            @Override
-                            public void onPageScrollStateChanged(int i) {
-
-                            }
-                        });
                     }
                 });
                 StaticVariables.readyToSend = false;

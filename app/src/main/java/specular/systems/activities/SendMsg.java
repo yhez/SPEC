@@ -27,8 +27,6 @@ import specular.systems.Contact;
 import specular.systems.ContactsDataSource;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.FilesManagement;
-import specular.systems.Group;
-import specular.systems.GroupDataSource;
 import specular.systems.KeysDeleter;
 import specular.systems.R;
 import specular.systems.Visual;
@@ -39,11 +37,10 @@ import static android.support.v4.content.FileProvider.getUriForFile;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class SendMsg extends Activity {
     public static boolean msgSended;
-    public static final int CONTACT = 1, MESSAGE = 2, INVITE_GROUP = 3, MESSAGE_FOR_GROUP = 4, BACKUP = 5, REPORT = 6, OPEN_FILE = 7;
+    public static final int MESSAGE = 2, BACKUP = 5, REPORT = 6, OPEN_FILE = 7;
     private static List<ResolveInfo> file;
     Uri uris;
     Contact contact;
-    Group group;
     int type = -1;
     String mimetype;
 
@@ -62,11 +59,8 @@ public class SendMsg extends Activity {
         }
         uris = FilesManagement.getFilesToSend(this);
         long id = getIntent().getLongExtra("contactId", -1);
-        if (type == MESSAGE || type == INVITE_GROUP)
+        if (type == MESSAGE)
             contact = ContactsDataSource.contactsDataSource.findContact(id);
-        else if (type == MESSAGE_FOR_GROUP) {
-            group = GroupDataSource.groupDataSource.findGroup(id);
-        }
         if (contact == null || contact.getDefaultApp() == null) {
             show();
         } else {
@@ -208,25 +202,13 @@ public class SendMsg extends Activity {
         }
         ComponentName cn = new ComponentName(rs.activityInfo.packageName, rs.activityInfo.name);
         Intent i = new Intent();
-        if (type == MESSAGE || type == MESSAGE_FOR_GROUP) {
-            String email = contact != null ? contact.getEmail() : group.getEmail();
+        if (type == MESSAGE) {
+            String email = contact.getEmail();
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
             i.putExtra(Intent.EXTRA_SUBJECT,
                     getResources().getString(R.string.subject_encrypt));
             try {
                 InputStream is = getAssets().open("spec_tmp_msg.html");
-                int size = is.available();
-                byte[] buffer = new byte[size];
-                is.read(buffer);
-                is.close();
-                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(new String(buffer) + Visual.timeAndDate()));
-            } catch (Exception ignore) {
-            }
-        } else if (type == INVITE_GROUP) {
-            i.putExtra(Intent.EXTRA_EMAIL, new String[]{contact.getEmail()});
-            i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject_send_group));
-            try {
-                InputStream is = getAssets().open("spec_tmp_invite.html");
                 int size = is.available();
                 byte[] buffer = new byte[size];
                 is.read(buffer);
@@ -247,7 +229,7 @@ public class SendMsg extends Activity {
             }
         }
         i.setComponent(cn);
-        if (((type == MESSAGE || type == MESSAGE_FOR_GROUP) && !(etFile.getText() + ".SPEC").equals(getString(R.string.file_name_secure_msg)))
+        if (((type == MESSAGE) && !(etFile.getText() + ".SPEC").equals(getString(R.string.file_name_secure_msg)))
                 || (type == BACKUP && !(etFile.getText() + ".SPEC").equals(getString(R.string.file_name_Backup_msg)))) {
             File newPath = new File(getFilesDir(), etFile.getText() + ".SPEC");
             if (newPath.exists())

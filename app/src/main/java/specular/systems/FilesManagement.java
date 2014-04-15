@@ -200,16 +200,10 @@ public final class FilesManagement {
         return saveFileToSend(a, a.getString(FILE_NAME_BACKUP), fileData);
     }
 
-    public static void createGroupFileToSend(Activity a, byte[] fileData) {
-        cleanUp(a);
-        saveFileToSend(a, a.getString(FILE_NAME_GROUP), fileData);
-    }
-
     public static boolean createFilesToSend(Activity a, byte[] data) {
         cleanUp(a);
         boolean fileSuccess = saveFileToSend(a, a.getString(FILE_NAME_SEND), data);
         //todo delete it
-        StaticVariables.dataRaw = data;
         return fileSuccess;
     }
 

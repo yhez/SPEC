@@ -3,7 +3,6 @@ package specular.systems;
 
 public class FileParser {
     public static final int
-            ENCRYPTED_GROUP=0,
             ENCRYPTED_MSG=1,
             ENCRYPTED_QR_MSG=2,
             ENCRYPTED_BACKUP=3,
@@ -13,8 +12,6 @@ public class FileParser {
         switch (type){
             case ENCRYPTED_BACKUP:
                 return flags[0];
-            case ENCRYPTED_GROUP:
-                return flags[1];
             case ENCRYPTED_MSG:
                 return flags[2];
             case ENCRYPTED_QR_MSG:
@@ -26,8 +23,6 @@ public class FileParser {
         char c = (char)raw[raw.length-1];
         if(c==flags[0])
             return ENCRYPTED_BACKUP;
-        if(c==flags[1])
-            return ENCRYPTED_GROUP;
         if(c==flags[2])
             return ENCRYPTED_MSG;
         if(c==flags[3])
@@ -38,8 +33,6 @@ public class FileParser {
         char c = raw.charAt(raw.length()-1);
         if(c==flags[0])
             return ENCRYPTED_BACKUP;
-        if(c==flags[1])
-            return ENCRYPTED_GROUP;
         if(c==flags[2])
             return ENCRYPTED_MSG;
         if(c==flags[3])

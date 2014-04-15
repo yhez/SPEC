@@ -52,19 +52,15 @@ import specular.systems.CameraPreview;
 import specular.systems.Contact;
 import specular.systems.ContactCard;
 import specular.systems.ContactsDataSource;
-import specular.systems.ContactsGroup;
 import specular.systems.CryptMethods;
 import specular.systems.CustomExceptionHandler;
 import specular.systems.Dialogs.AddContactDlg;
 import specular.systems.Dialogs.BackupDialog;
 import specular.systems.Dialogs.ContactQR;
 import specular.systems.Dialogs.DeleteContactDialog;
-import specular.systems.Dialogs.DialogAddGroup;
 import specular.systems.Dialogs.DialogRestore;
 import specular.systems.Dialogs.ExplainDialog;
 import specular.systems.Dialogs.GenerateKeys;
-import specular.systems.Dialogs.GroupCreate;
-import specular.systems.Dialogs.InviteToGroup;
 import specular.systems.Dialogs.NotImplemented;
 import specular.systems.Dialogs.ProgressDlg;
 import specular.systems.Dialogs.Response;
@@ -74,9 +70,6 @@ import specular.systems.Dialogs.TurnNFCOn;
 import specular.systems.FileParser;
 import specular.systems.FilesManagement;
 import specular.systems.FragmentManagement;
-import specular.systems.Group;
-import specular.systems.GroupDataSource;
-import specular.systems.GroupsAdapter;
 import specular.systems.KeysDeleter;
 import specular.systems.LeftMenu;
 import specular.systems.MessageFormat;
@@ -94,10 +87,10 @@ import static android.support.v4.content.FileProvider.getUriForFile;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class Main extends FragmentActivity {
-    public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_FOR_GROUP = 2, SCAN_PRIVATE = 3, SCAN_CONTACT = 4, TAKE_PICTURE = 5, RECORD_AUDIO = 6,TAKE_SEC_PIC=7;
+    public final static int ATTACH_FILE = 0, SCAN_MESSAGE = 1, SCAN_PRIVATE = 3, SCAN_CONTACT = 4, TAKE_PICTURE = 5, RECORD_AUDIO = 6,TAKE_SEC_PIC=7;
     private final static int FAILED = 0, REPLACE_PHOTO = 1, CANT_DECRYPT = 2,
             DECRYPT_SCREEN = 3, CHANGE_HINT = 4, CLEAR_AND_SEND = 76,
-            RESTORE = 45, ADD_GROUP = 46;
+            RESTORE = 45;
     private final Handler hndl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -141,11 +134,6 @@ public class Main extends FragmentActivity {
                 case RESTORE:
                     setUpViews();
                     new DialogRestore(getFragmentManager(), Backup.restore());
-                    break;
-                case ADD_GROUP:
-                    ContactsGroup.currentPage = 1;
-                    selectItem(1, R.layout.encrypt, null);
-                    new DialogAddGroup(getFragmentManager());
                     break;
                 case 777:
                     contactChosen(true, (Long) msg.obj);
@@ -224,7 +212,6 @@ public class Main extends FragmentActivity {
     private String userInput;
     private String fileName = "";
     private Contact contact;
-    private Group group;
     private boolean created;
 
     public void startCreateKeys() {
@@ -249,11 +236,11 @@ public class Main extends FragmentActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String sss = contact != null ? contact.getSession().substring(0, contact.getSession().length() - 2) : group.getMentor();
+                String sss = contact.getSession().substring(0, contact.getSession().length() - 2);
                 MessageFormat msg = new MessageFormat(StaticVariables.fileContent, CryptMethods.getMyDetails(Main.this), fileName, userInput,
                         sss);
                 String data = Visual.bin2hex(CryptMethods.encrypt(msg.getFormatedMsg(),
-                        contact != null ? contact.getPublicKey() : group.getPublicKey()));
+                        contact.getPublicKey()));
                 if (data != null)
                     sendMessage(data.getBytes(), type);
                 prgd.cancel();
@@ -468,11 +455,6 @@ public class Main extends FragmentActivity {
                         } else {
                             hndl.sendEmptyMessage(551);
                         }
-                    } else {
-                        getIntent().putExtra("message", result);
-                        if (requestCode == SCAN_FOR_GROUP)
-                            getIntent().putExtra("id", intent.getLongExtra("id", -1));
-                        setUpViews();
                     }
                 }
             }
@@ -503,13 +485,8 @@ public class Main extends FragmentActivity {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
                     long id = Long.parseLong(((TextView) findViewById(R.id.contact_id_to_send)).getText().toString());
-                    if (findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).getVisibility() == View.VISIBLE) {
-                        group = GroupDataSource.groupDataSource.findGroup(id);
-                        encryptManager(SendMsg.MESSAGE_FOR_GROUP);
-                    } else {
-                        contact = ContactsDataSource.contactsDataSource.findContact(id);
-                        encryptManager(SendMsg.MESSAGE);
-                    }
+                    contact = ContactsDataSource.contactsDataSource.findContact(id);
+                    encryptManager(SendMsg.MESSAGE);
                 } else {
                     Visual.toast(Main.this, R.string.send_orders);
                 }
@@ -550,10 +527,6 @@ public class Main extends FragmentActivity {
         if (ContactsDataSource.fullList == null) {
             ContactsDataSource.contactsDataSource = new ContactsDataSource(this);
             ContactsDataSource.fullList = ContactsDataSource.contactsDataSource.getAllContacts();
-        }
-        if (GroupDataSource.fullListG == null) {
-            GroupDataSource.groupDataSource = new GroupDataSource(this);
-            GroupDataSource.fullListG = GroupDataSource.groupDataSource.getAllGroups();
         }
         if (MySimpleArrayAdapter.getAdapter() == null) {
             new MySimpleArrayAdapter(this);
@@ -615,24 +588,11 @@ public class Main extends FragmentActivity {
                 i.putExtra("type", StartScan.CONTACT);
                 startActivityForResult(i, SCAN_CONTACT);
             } else if (item.getTitle().equals("Add")) {
-                if (((ViewPager) findViewById(R.id.pager)).getCurrentItem() == 1) {
-                    if (((TextView) findViewById(R.id.contact_id_to_send)).length() == 0
-                            || findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).getVisibility() == View.VISIBLE) {
-                        new GroupCreate(getFragmentManager());
-                    } else {
-                        if (loadingFile) {
-                            Visual.toast(Main.this, R.string.tring_add_another_file_while_loading);
-                        } else {
-                            showPictureDialog();
-                        }
-                    }
-                } else {
                     if (loadingFile) {
                         Visual.toast(Main.this, R.string.tring_add_another_file_while_loading);
                     } else {
                         showPictureDialog();
                     }
-                }
             }
         } else if (FragmentManagement.currentLayout == R.layout.edit_contact) {
             new ShareContactDlg(getFragmentManager());
@@ -731,9 +691,6 @@ public class Main extends FragmentActivity {
                     if (((ViewPager) findViewById(R.id.pager)).getCurrentItem() == 0) {
                         MySimpleArrayAdapter.getAdapter().updateViewAfterFilter(Main.this);
                         MySimpleArrayAdapter.getAdapter().getFilter().filter(s);
-                    } else {
-                        GroupsAdapter.getAdapter().updateViewAfterFilter(Main.this);
-                        GroupsAdapter.getAdapter().getFilter().filter(s);
                     }
                     return false;
                 }
@@ -787,7 +744,7 @@ public class Main extends FragmentActivity {
                         mi3.setVisible(false);
                     } else {
                         if (tv != null && tv.length() != 0) {
-                            if (findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).getVisibility() == View.GONE) {
+                            if (findViewById(R.id.list).getVisibility() == View.GONE) {
                                 mi.setVisible(false);
                                 mi2.setVisible(false);
                                 if (loadingFile)
@@ -812,38 +769,6 @@ public class Main extends FragmentActivity {
                                     mi3.setIcon(R.drawable.attachment);
                             } else {
                                 mi3.setVisible(false);
-                            }
-                        }
-                    }
-                } else {
-                    if (GroupDataSource.fullListG == null || GroupDataSource.fullListG.size() == 0) {
-                        mi.setVisible(false);
-                    } else if (ContactsDataSource.fullList == null || ContactsDataSource.fullList.size() == 0) {
-                        mi3.setVisible(false);
-                    } else {
-                        if (tv != null && tv.length() != 0) {
-                            if (findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).getVisibility() == View.GONE) {
-                                mi.setVisible(false);
-                                mi2.setVisible(false);
-                                if (loadingFile)
-                                    mi3.setIcon(android.R.drawable.ic_menu_upload);
-                                else if (StaticVariables.fileContent != null)
-                                    mi3.setIcon(R.drawable.after_attached);
-                                else
-                                    mi3.setIcon(R.drawable.attachment);
-                            }
-                        } else {
-                            if ((StaticVariables.currentText != null && StaticVariables.currentText.length() > 0)
-                                    || (StaticVariables.fileContent != null && StaticVariables.fileContent.length > 0)
-                                    || loadingFile) {
-                                mi.setVisible(false);
-                                mi2.setVisible(false);
-                                if (loadingFile)
-                                    mi3.setIcon(android.R.drawable.ic_menu_upload);
-                                else if (StaticVariables.fileContent != null)
-                                    mi3.setIcon(R.drawable.after_attached);
-                                else
-                                    mi3.setIcon(R.drawable.attachment);
                             }
                         }
                     }
@@ -1055,13 +980,6 @@ public class Main extends FragmentActivity {
                     FragmentManagement.currentLayout = 0;
                     int result;
                     byte[] key = null;
-                    long a = getIntent().getLongExtra("id", -1);
-                    if (a != -1) {
-                        Group g = GroupDataSource.groupDataSource.findGroup(a);
-                        if (g != null) {
-                            key = CryptMethods.decrypt(g.getPrivateKey());
-                        }
-                    }
                     result = CryptMethods.decrypt((msg != null ? msg : StaticVariables.message), key);
                     getIntent().removeExtra("message");
                     FilesManagement.deleteTempDecryptedMSG(Main.this);
@@ -1070,8 +988,6 @@ public class Main extends FragmentActivity {
                         hndl.sendEmptyMessage(DECRYPT_SCREEN);
                     else if (result == FileParser.ENCRYPTED_BACKUP) {
                         hndl.sendEmptyMessage(RESTORE);
-                    } else if (result == FileParser.ENCRYPTED_GROUP) {
-                        hndl.sendEmptyMessage(ADD_GROUP);
                     }
                     prgd.cancel();
                 }
@@ -1081,7 +997,6 @@ public class Main extends FragmentActivity {
         }
         if (StaticVariables.fileContactCard != null) {
             if (CryptMethods.publicExist() && CryptMethods.privateExist()) {
-                ContactsGroup.currentPage = 0;
                 selectItem(0, R.layout.encrypt, null);
                 final Contact c = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.fileContactCard.getPublicKey());
                 if (c == null) {
@@ -1312,7 +1227,7 @@ public class Main extends FragmentActivity {
             invalidateOptionsMenu();
             if (success) {
                 Intent intent = new Intent(this, SendMsg.class);
-                intent.putExtra("contactId", contact != null ? contact.getId() : group.getId());
+                intent.putExtra("contactId", contact.getId());
                 intent.putExtra("type", type);
                 startActivity(intent);
             } else {
@@ -1387,25 +1302,6 @@ public class Main extends FragmentActivity {
             case R.id.contact_picture:
                 new ContactQR(getFragmentManager());
                 break;
-            case R.id.invite:
-                Group grp = GroupDataSource
-                        .groupDataSource
-                        .findGroup(Long.parseLong(((TextView) findViewById(R.id.contact_id))
-                                .getText().toString()));
-                new InviteToGroup(getFragmentManager(), grp);
-                break;
-            case R.id.add_to_contact:
-                grp = GroupDataSource
-                        .groupDataSource
-                        .findGroup(Long.parseLong(((TextView) findViewById(R.id.contact_id))
-                                .getText().toString()));
-                String[] det = grp.getOwnerDetails();
-                String pbk = det[2];
-                String name = det[1];
-                String email = det[0];
-                StaticVariables.fileContactCard = new ContactCard(this, pbk, email, name);
-                openByFile();
-                break;
         }
     }
 
@@ -1414,38 +1310,23 @@ public class Main extends FragmentActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(findViewById(R.id.message).getWindowToken(), 0);
         TextView id = (TextView) findViewById(R.id.contact_id_to_send);
-        if (id.length() > 0) {
-            if (contact) {
-                findViewById(ContactsGroup.GROUPS).findViewById(R.id.en_contact).setVisibility(View.GONE);
-                findViewById(ContactsGroup.GROUPS).findViewById(R.id.list).setVisibility(View.VISIBLE);
-            } else {
-                findViewById(ContactsGroup.CONTACTS).findViewById(R.id.en_contact).setVisibility(View.GONE);
-                findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).setVisibility(View.VISIBLE);
-            }
-        }
         ViewPager vp = (ViewPager) findViewById(R.id.pager);
         if (vp.getCurrentItem() == 0 && !contact)
             vp.setCurrentItem(1, true);
         else if (vp.getCurrentItem() == 1 && contact)
             vp.setCurrentItem(0, true);
-        final View root = findViewById(contact ? ContactsGroup.CONTACTS : ContactsGroup.GROUPS);
-        root.findViewById(R.id.list).setVisibility(View.GONE);
-        root.findViewById(R.id.no_contacts).setVisibility(View.GONE);
-        final View cont = root.findViewById(R.id.en_contact);
+        findViewById(R.id.list).setVisibility(View.GONE);
+        findViewById(R.id.no_contacts).setVisibility(View.GONE);
+        final View cont = findViewById(R.id.en_contact);
         cont.setVisibility(View.VISIBLE);
         id.setText(contactID + "");
-        TextView name = (TextView) root.findViewById(R.id.chosen_name);
-        TextView email = (TextView) root.findViewById(R.id.chosen_email);
-        ImageView icon = (ImageView) root.findViewById(R.id.chosen_icon);
+        TextView name = (TextView) findViewById(R.id.chosen_name);
+        TextView email = (TextView)findViewById(R.id.chosen_email);
+        ImageView icon = (ImageView)findViewById(R.id.chosen_icon);
         StaticVariables.luc.showIfNeeded(this, null);
         if (contact) {
             Contact cvc = ContactsDataSource.contactsDataSource.findContact(contactID);
             name.setText(cvc.getContactName());
-            email.setText(cvc.getEmail());
-            icon.setImageBitmap(cvc.getPhoto());
-        } else {
-            Group cvc = GroupDataSource.groupDataSource.findGroup(contactID);
-            name.setText(cvc.getGroupName());
             email.setText(cvc.getEmail());
             icon.setImageBitmap(cvc.getPhoto());
         }
@@ -1454,7 +1335,7 @@ public class Main extends FragmentActivity {
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
                 .showSoftInput(myEditText, InputMethodManager.SHOW_FORCED);
         cont.setAlpha(1);
-        root.findViewById(R.id.x).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.x).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cont.setVisibility(View.GONE);
@@ -1463,7 +1344,7 @@ public class Main extends FragmentActivity {
                 findViewById(R.id.message).clearFocus();
                 ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
                         .hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
-                root.findViewById(R.id.list).setVisibility(View.VISIBLE);
+                findViewById(R.id.list).setVisibility(View.VISIBLE);
                 StaticVariables.luc.showIfNeeded(Main.this, null);
                 invalidateOptionsMenu();
             }

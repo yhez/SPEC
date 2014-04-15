@@ -12,29 +12,23 @@ import android.widget.TextView;
 
 
 public class ContactsGroup extends FragmentStatePagerAdapter {
-    public static final int CONTACTS = 97978, GROUPS = 97979;
-    public static int currentPage = 0;
     public ContactsGroup(FragmentManager fm) {
         super(fm);
     }
 
     @Override
     public Fragment getItem(int i) {
-        PageList pl = new PageList();
-        Bundle b = new Bundle();
-        b.putInt("a",i == 0 ? CONTACTS : GROUPS);
-        pl.setArguments(b);
-        return pl;
+        return new PageList();
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 1;
     }
 
     @Override
     public CharSequence getPageTitle(int p) {
-        return (p == 0 ? "Contacts" : "Groups");
+        return "Contacts";
     }
 
     public static class PageList extends Fragment {
@@ -48,9 +42,6 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
             StaticVariables.luc.showIfNeeded(getActivity(), rootView);
             TextView tv = (TextView) rootView.findViewById(R.id.no_contacts);
             final ListView lv = (ListView) rootView.findViewById(R.id.list);
-            int currentLayout = getArguments().getInt("a",CONTACTS);
-            if (currentLayout == CONTACTS) {
-                rootView.setId(CONTACTS);
                 MySimpleArrayAdapter ms = MySimpleArrayAdapter.getAdapter();
                 if (ms != null)
                     ms.showOriginal();
@@ -65,23 +56,6 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
                     lv.setVisibility(View.VISIBLE);
                     tv.setVisibility(View.GONE);
                 }
-            } else if (currentLayout == GROUPS) {
-                rootView.setId(GROUPS);
-                GroupsAdapter ga = GroupsAdapter.getAdapter();
-                if (ga != null)
-                    ga.showOriginal();
-                else
-                    ga = new GroupsAdapter(getActivity());
-                lv.setAdapter(ga);
-                if (GroupDataSource.fullListG.size() == 0) {
-                    tv.setText(R.string.there_is_no_groups);
-                    tv.setVisibility(View.VISIBLE);
-                    lv.setVisibility(View.GONE);
-                } else {
-                    lv.setVisibility(View.VISIBLE);
-                    tv.setVisibility(View.GONE);
-                }
-            }
             Visual.setAllFonts(getActivity(), (ViewGroup) rootView);
             return rootView;
         }

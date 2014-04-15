@@ -20,8 +20,6 @@ import specular.systems.ContactsDataSource;
 import specular.systems.CryptMethods;
 import specular.systems.FilesManagement;
 import specular.systems.FragmentManagement;
-import specular.systems.Group;
-import specular.systems.GroupDataSource;
 import specular.systems.MessageFormat;
 import specular.systems.R;
 import specular.systems.StaticVariables;
@@ -31,7 +29,6 @@ import specular.systems.activities.SendMsg;
 
 public class Response extends DialogFragment {
     Contact contact;
-    Group group;
     public Response(FragmentManager fm){
         show(fm,"");
     }
@@ -46,14 +43,8 @@ public class Response extends DialogFragment {
         builder.setView(v);
         final CheckBox cb = (CheckBox) v.findViewById(R.id.quote);
         if (FragmentManagement.currentLayout == R.layout.edit_contact) {
-            if (getActivity().findViewById(R.id.group_details).getVisibility() == View.VISIBLE) {
-                group = GroupDataSource.groupDataSource.findGroup(Long
-                        .valueOf(((TextView) getActivity().findViewById(R.id.contact_id))
-                                .getText().toString()));
-            }else{
                 contact = ContactsDataSource.contactsDataSource.findContact(Long.parseLong(
                         ((TextView) getActivity().findViewById(R.id.contact_id)).getText().toString()));
-            }
         } else if (FragmentManagement.currentLayout == R.layout.decrypted_msg) {
             contact = ContactsDataSource.contactsDataSource.findContactByKey(StaticVariables.friendsPublicKey);
             if (StaticVariables.msg_content != null && StaticVariables.msg_content.length() > 0) {
@@ -89,8 +80,6 @@ public class Response extends DialogFragment {
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if (FragmentManagement.currentLayout == R.layout.decrypted_msg)
-                //    getActivity().findViewById(R.id.answer).setVisibility(View.GONE);
                 final String userInput = et.getText().toString();
                 String msgContent;
                 if (cb.isChecked())
@@ -110,7 +99,7 @@ public class Response extends DialogFragment {
                 else {
                     msgContent = "";
                 }
-                String sss = contact!=null?contact.getSession().substring(0,contact.getSession().length()-2):group.getMentor();
+                String sss = contact.getSession().substring(0,contact.getSession().length()-2);
                 final MessageFormat msg = new MessageFormat(null, CryptMethods.getMyDetails(getActivity()), "", userInput + msgContent
                         , sss);
                 final ProgressDlg prgd = new ProgressDlg(getActivity(), R.string.encrypting);
@@ -118,17 +107,13 @@ public class Response extends DialogFragment {
                     @Override
                     public void run() {
                         byte[] data = Visual.bin2hex(CryptMethods.encrypt(msg.getFormatedMsg(),
-                                contact!=null?contact.getPublicKey():group.getPublicKey())).getBytes();
+                                contact.getPublicKey())).getBytes();
                         boolean success = FilesManagement.createFilesToSend(getActivity(), data);
                         prgd.cancel();
                         if (success) {
                             Intent intent = new Intent(getActivity(), SendMsg.class);
-                            if(FragmentManagement.currentLayout==R.layout.decrypted_msg
-                                    ||getActivity().findViewById(R.id.group_details).getVisibility()==View.GONE)
-                                intent.putExtra("type",SendMsg.MESSAGE);
-                            else
-                                intent.putExtra("type",SendMsg.MESSAGE_FOR_GROUP);
-                            intent.putExtra("contactId", contact!=null?contact.getId():group.getId());
+                            intent.putExtra("type",SendMsg.MESSAGE);
+                            intent.putExtra("contactId", contact.getId());
                             startActivity(intent);
                         } else {
                             Visual.toast(getActivity(),R.string.failed_to_create_files_to_send);

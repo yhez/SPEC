@@ -99,14 +99,14 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
             }
         });
         if (FragmentManagement.currentLayout == R.layout.encrypt) {
-            View v = a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list);
+            View v = a.findViewById(R.id.list);
             if (v != null)
                 if (ContactsDataSource.fullList.size() > 0) {
                     v.setVisibility(View.VISIBLE);
-                    a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.no_contacts).setVisibility(View.GONE);
+                    a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
                 } else {
                     v.setVisibility(View.GONE);
-                    a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+                    a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
                 }
             adapter.notifyDataSetChanged();
         }
@@ -221,13 +221,13 @@ public class MySimpleArrayAdapter extends ArrayAdapter<Contact> implements Filte
 
     private void updateContactList() {
         if (isEmpty()) {
-            a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).setVisibility(View.GONE);
-            ((TextView) a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.no_contacts)).setText(R.string.no_result_filter);
-            a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
+            a.findViewById(R.id.list).setVisibility(View.GONE);
+            ((TextView) a.findViewById(R.id.no_contacts)).setText(R.string.no_result_filter);
+            a.findViewById(R.id.no_contacts).setVisibility(View.VISIBLE);
         } else if(a.findViewById(R.id.contact_id_to_send)==null
                 ||((TextView)a.findViewById(R.id.contact_id_to_send)).length()==0){
-            a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.no_contacts).setVisibility(View.GONE);
-            a.findViewById(ContactsGroup.CONTACTS).findViewById(R.id.list).setVisibility(View.VISIBLE);
+            a.findViewById(R.id.no_contacts).setVisibility(View.GONE);
+            a.findViewById(R.id.list).setVisibility(View.VISIBLE);
         }
     }
 

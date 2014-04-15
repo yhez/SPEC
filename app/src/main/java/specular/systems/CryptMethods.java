@@ -144,7 +144,6 @@ public class CryptMethods {
     public static int decrypt(String encryptedMessage, byte[] key) {
         MessageFormat.decryptedMsg = null;
         StaticVariables.decryptedBackup = null;
-        StaticVariables.decryptedGroup = null;
         if (encryptedMessage == null) {
             return -1;
         }
@@ -172,9 +171,6 @@ public class CryptMethods {
                 return result;
             case FileParser.ENCRYPTED_BACKUP:
                 StaticVariables.decryptedBackup = decryptedBytes;
-                return result;
-            case FileParser.ENCRYPTED_GROUP:
-                StaticVariables.decryptedGroup = decryptedBytes;
                 return result;
             default:
                 return result;

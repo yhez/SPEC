@@ -186,24 +186,11 @@
     <string name="time_created">Message time-stamp:\n</string>
     <string name="not_valid_change">Change not valid (length, format).</string>
     <string name="make_it_default">Make default?</string>
-    <string name="there_is_no_groups">No groups yet.</string>
     <string name="no_support_print">Your device does not support direct printing.</string>
     <string name="private_scan_explain">Place Private QR Key within the box to scan.</string>
     <string name="private_key_loaded_from_qr">Key loaded successfully.</string>
-    <string name="group_mentor_hint">Group Slogan</string>
-    <string name="group_name_hint">Group Name</string>
-    <string name="group_location_for_messages_hint">Group Email</string>
-    <string name="create_group">START</string>
     <string name="default_app_click_to_remove">default app\nclick to remove</string>
-    <string name="file_name_group">PrivateGroup.SPEC</string>
     <string name="connecting_to_camera">1 second please, connecting…</string>
-    <string name="force_nfc">Force NFC</string>
-    <string name="limited_group">Limit Group Size</string>
-    <string name="group_owmer_detailes_title">Group creator Details:</string>
-    <string name="invite_not_available">Invitation disabled</string>
-    <string name="nfc_is_required">NFC required</string>
-    <string name="invite_to_the_group">Invite a friend to the group</string>
-    <string name="add_group_owner_to_contact">Add group owner to your contacts</string>
     <string name="session_words">Session words:</string>
     <string name="secret_sign">Secret sign:</string>
     <string name="session_status">Session status:</string>
@@ -251,16 +238,11 @@
     <string name="keys_loaded">load private key to decrypt file</string>
     <string name="open_file_no_private">load private key to decrypt file</string>
     <string name="file_saved_drive">file has saved on drive</string>
-    <string name="groups_same_name_exist">group with the same session already exist</string>
-    <string name="join_group">Join to The Group</string><string name="add_group_explain">would you like to add this group?\n
-            It\'ll give you the option to decrypt messages that was sent to the group</string>
-    <string name="group_too_short_data">Group details must contains at least 2 characters</string>
     <string name="unexpexted_error">something went wrong</string>
     <string name="failed_read_file">failed to read file</string>
     <string name="hash_description_1">original message size:</string>
     <string name="hash_description_2">encrypted message size:</string>
     <string name="hash_description_title">message parts:\n</string>
-    <string name="subject_send_group">attached a group</string>
     <string name="subject_backup_data">backup SPEC data</string>
     <string name="open_by_external_app">Open file VIA external app.\nIt can be dangerous to give access to the data to another application</string>
     <string name="failed_create_qr">failed to create QR</string>
