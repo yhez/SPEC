@@ -123,10 +123,6 @@ public class CryptMethods {
         return null;
     }
 
-    public static KeyPair createKeysForGroup() {
-        return createKeyPair();
-    }
-
     public static void createKeys() {
         KeyPair keypair = createKeyPair();
             ECPrivateKey tmp = (ECPrivateKey) keypair.getPrivate();

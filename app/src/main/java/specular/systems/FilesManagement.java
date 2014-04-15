@@ -43,7 +43,6 @@ public final class FilesManagement {
     private final static int FILE_NAME_SEND = R.string.file_name_secure_msg;
     private final static String QR_NAME_T = "PublicKeyQRT.SPEC.png";
     private final static int FILE_NAME_BACKUP = R.string.file_name_Backup_msg;
-    private final static int FILE_NAME_GROUP = R.string.file_name_group;
     public final static String ATTACHMENTS = "/attachments", MESSAGES = "/messages", TEMP = "/temp", SAFE = "/safe", NOTES = "/notes", REPORTS = "/reports";
     private final static String PUBLIC_KEY = "public_key", PRIVATE_KEY = "private_key", NAME = "name", EMAIL = "email";
     private static Bitmap myQRPublicKey;
@@ -214,8 +213,8 @@ public final class FilesManagement {
                 return getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_SEND)));
             } else if (new File(root, a.getString(FILE_NAME_BACKUP)).exists()) {
                 return getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_BACKUP)));
-            } else {
-                return getUriForFile(a, a.getPackageName(), new File(root, a.getString(FILE_NAME_GROUP)));
+            }else{
+                return null;
             }
         } catch (Exception e) {
             return null;

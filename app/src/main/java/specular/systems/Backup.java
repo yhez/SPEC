@@ -58,8 +58,7 @@ public class Backup {
         System.arraycopy(finalResult,0,finalFinalResult,hash.length,finalResult.length);
         return finalFinalResult;
     }
-
-    //TODO:4. groups support
+//todo files and notes support
     public static ArrayList<Contact> restore() {
         //byte[] del = ContactDelimiter.getBytes();
         byte[] currHash = new byte[32];

@@ -18,18 +18,6 @@ class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "data.db";
     private static final int DATABASE_VERSION = 1;
     public static final String TABLE_CONTACTS = "contacts";
-    public static final String COLUMN_GROUP_NAME = "group_name";
-    public static final String COLUMN_ADDRESS = "address";
-    public static final String TABLE_GROUP = "groups";
-    public static final String COLUMN_PRIVATE_KEY = "private_key";
-    public static final String FORCE_NFC = "nfc_required";
-    public static final String PRIVATE_GROUP = "private_group";
-    public static final String OWNER_NAME = "owner_name";
-    public static final String OWNER_EMAIL = "owner_email";
-    public static final String OWNER_PUBLIC = "owner_public_key";
-
-
-
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -49,20 +37,6 @@ class MySQLiteHelper extends SQLiteOpenHelper {
                 + COLUMN_SESSION + " text not null, "
                 + COLUMN_DEFAULT_APP + " text not null );";
         database.execSQL(CONTACT_TABLE);
-        String GROUP_CREATE = "create table "
-                + TABLE_GROUP + " ( " + COLUMN_ID + " integer primary key autoincrement, "
-                + COLUMN_GROUP_NAME + " text not null, "
-                + COLUMN_ADDRESS + " text not null, "
-                + COLUMN_SESSION + " text not null, "
-                + COLUMN_PUBLIC_KEY + " text not null, "
-                + COLUMN_PRIVATE_KEY + " BLOB, "
-                + FORCE_NFC + " integer not null, "
-                + PRIVATE_GROUP + " integer not null, "
-                + OWNER_NAME + " text not null, "
-                + OWNER_EMAIL + " text not null, "
-                + OWNER_PUBLIC + " text not null, "
-                + COLUMN_DEFAULT_APP + " text not null );";
-        database.execSQL(GROUP_CREATE);
     }
 
     @Override
@@ -73,7 +47,6 @@ class MySQLiteHelper extends SQLiteOpenHelper {
 		 * + ", which will destroy all old data");
 		 */
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_GROUP);
         onCreate(db);
     }
 }
