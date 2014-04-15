@@ -15,37 +15,42 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:layout_weight="0.5"
             android:id="@+id/text_explain"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:background="@android:color/white"
             android:textColor="@android:color/black"
-            android:padding="@dimen/default_gap"
+            android:layout_margin="@dimen/default_gap"
             android:gravity="center"
+            android:layout_gravity="center"
             android:text="@string/recreating_keys_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="12sp"
-            android:background="@android:color/white"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:id="@+id/collecting_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="@android:style/Widget.Holo.ProgressBar.Horizontal"
-            android:padding="@dimen/default_gap"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="0dip" />
         <ProgressBar
             android:id="@+id/sec_progress_bar"
             style="@android:style/Widget.Holo.ProgressBar.Horizontal"
             android:padding="@dimen/default_gap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <TextView
+            android:textSize="12sp"
+            android:background="@color/black_over_lay"
+            android:layout_gravity="center"
+            android:paddingLeft="@dimen/default_gap"
+            android:paddingRight="@dimen/default_gap"
+            android:textColor="@android:color/black"
+            android:id="@+id/collecting_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@android:style/Widget.Holo.ProgressBar.Horizontal"
+            android:paddingLeft="@dimen/default_gap"
+            android:paddingRight="@dimen/default_gap"
+            android:paddingBottom="@dimen/default_gap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <ImageView
+            android:padding="@dimen/default_gap"
             android:contentDescription="@null"
             style="?android:attr/borderlessButtonStyle"
             android:id="@+id/image_public"
@@ -59,10 +64,10 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:padding="@dimen/default_gap"
-            android:layout_height="wrap_content">
+            android:layout_weight="1"
+            android:layout_height="0dip">
         <Button
             android:textColor="@color/spec_black"
-            android:padding="@dimen/default_gap"
             style="?android:attr/borderlessButtonStyle"
             android:id="@+id/regenerate"
             android:onClick="recreateKeys"
@@ -72,7 +77,6 @@
             android:layout_height="wrap_content" />
         <Button
             android:textColor="@color/spec_black"
-            android:padding="@dimen/default_gap"
             style="?android:attr/borderlessButtonStyle"
             android:text="@string/continue_"
             android:onClick="createKeysManager"

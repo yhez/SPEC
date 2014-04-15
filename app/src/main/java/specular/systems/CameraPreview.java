@@ -136,26 +136,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     };
     private byte[][] sensorsData;
     private int[] dataCollected;
-
-    public void reset() {
-        progress = 0;
-        currentSensor = 0;
-        for (int a = 0; a < dataCollected.length; a++)
-            dataCollected[a] = 0;
-        for (int a = 0; a < sensorsData.length; a++)
-            for (int b = 0; b < sensorsData[a].length; b++)
-                sensorsData[a][b] = 0;
-        mCamera.setPreviewCallback(callback);
-        ready = false;
-    }
-
     public byte[] getData() {
         byte[] data = new byte[64];
         new SecureRandom().nextBytes(data);
         for (byte[] sensorData : sensorsData)
             for (int a = 0; a < 64; a++)
                 data[a] = (byte) (data[a] ^ sensorData[a]);
-        reset();
         return data;
     }
 

@@ -9,4 +9,5 @@
     <color name="spec_dark_blue">#17adce</color>
     <color name="spec_black">#222</color>
     <color name="spec_gray">#777</color>
+    <color name="black_over_lay">#55000000</color>
 </resources>

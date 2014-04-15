@@ -160,7 +160,7 @@ public class Main extends FragmentActivity {
                         ImageView iv = (ImageView) findViewById(R.id.image_public);
                         iv.startAnimation(anim);
                         iv.setImageResource(R.drawable.spin);
-                        findViewById(R.id.text_explain).setBackgroundColor(Color.WHITE);
+                        findViewById(R.id.text_explain).setBackgroundColor(getResources().getColor(R.color.black_over_lay));
                         findViewById(R.id.after_create_keys).setVisibility(View.GONE);
                         findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
                         findViewById(R.id.collecting_data).setVisibility(View.VISIBLE);
@@ -180,9 +180,9 @@ public class Main extends FragmentActivity {
                                 }
                             }).start();
                         }
-                        findViewById(R.id.collecting_data).setVisibility(View.INVISIBLE);
-                        findViewById(R.id.progress_bar).setVisibility(View.INVISIBLE);
-                        findViewById(R.id.sec_progress_bar).setVisibility(View.INVISIBLE);
+                        findViewById(R.id.collecting_data).setVisibility(View.GONE);
+                        findViewById(R.id.progress_bar).setVisibility(View.GONE);
+                        findViewById(R.id.sec_progress_bar).setVisibility(View.GONE);
                         findViewById(R.id.image_public).clearAnimation();
                         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(CryptMethods.getPublicTmp(), 512);
                         try {
