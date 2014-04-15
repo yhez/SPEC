@@ -1124,7 +1124,6 @@ public class Main extends FragmentActivity {
                     break;
                 case R.layout.recreating_keys:
                     CryptMethods.removeTemp();
-                    CameraPreview.getCameraPreview().finish();
                     selectItem(-1, R.layout.create_new_keys, CryptMethods.publicExist() ? null : getString(R.string.first_time_create_keys));
                     break;
                 case R.layout.create_new_keys:
