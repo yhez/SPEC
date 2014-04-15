@@ -27,6 +27,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mSensorManager.unregisterListener(this);
         mCamera.release();
         ready = false;
+        cp = null;
     }
 
     public CameraPreview(Context context) {
