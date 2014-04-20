@@ -230,8 +230,6 @@ public class Main extends FragmentActivity {
     }
 
     void encryptManager(final int type) {
-        if (contact != null)
-            StaticVariables.luc.change(this, contact);
         final ProgressDlg prgd = new ProgressDlg(this, R.string.encrypting);
         new Thread(new Runnable() {
             @Override
@@ -1087,7 +1085,6 @@ public class Main extends FragmentActivity {
                         findViewById(R.id.en_contact).setVisibility(View.GONE);
                         contactChosen.setText("");
                         findViewById(R.id.list).setVisibility(View.VISIBLE);
-                        StaticVariables.luc.showIfNeeded(this, null);
                     }
                     if (StaticVariables.fileContent != null) {
                         clearedSomething = true;
@@ -1222,7 +1219,6 @@ public class Main extends FragmentActivity {
             StaticVariables.fileContent = null;
             findViewById(R.id.list).setVisibility(View.VISIBLE);
             findViewById(R.id.en_contact).setVisibility(View.GONE);
-            StaticVariables.luc.showIfNeeded(this, null);
             invalidateOptionsMenu();
             if (success) {
                 Intent intent = new Intent(this, SendMsg.class);
@@ -1322,7 +1318,6 @@ public class Main extends FragmentActivity {
         TextView name = (TextView) findViewById(R.id.chosen_name);
         TextView email = (TextView)findViewById(R.id.chosen_email);
         ImageView icon = (ImageView)findViewById(R.id.chosen_icon);
-        StaticVariables.luc.showIfNeeded(this, null);
         if (contact) {
             Contact cvc = ContactsDataSource.contactsDataSource.findContact(contactID);
             name.setText(cvc.getContactName());
@@ -1344,7 +1339,6 @@ public class Main extends FragmentActivity {
                 ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
                         .hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
                 findViewById(R.id.list).setVisibility(View.VISIBLE);
-                StaticVariables.luc.showIfNeeded(Main.this, null);
                 invalidateOptionsMenu();
             }
         });

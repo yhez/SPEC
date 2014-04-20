@@ -154,8 +154,6 @@ public class FragmentManagement extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(currentLayout,
                 container, false);
-        if (StaticVariables.luc == null)
-            StaticVariables.luc = new LastUsedContacts(getActivity());
         switch (currentLayout) {
             case create_new_keys:
                 addSocialLogin();

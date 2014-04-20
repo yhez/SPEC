@@ -11,7 +11,6 @@ public class StaticVariables {
     public static KeyListener edit;
     public static String currentText = "";
     public static byte[] fileContent;
-    public static LastUsedContacts luc;
     public static boolean readyToSend = false;
     //from files management
     public final static int LIMIT_FILE_SIZE = 26214400;

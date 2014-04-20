@@ -39,7 +39,6 @@ public class ContactsGroup extends FragmentStatePagerAdapter {
         @Override
         public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle b) {
             View rootView = layoutInflater.inflate(R.layout.list, container, false);
-            StaticVariables.luc.showIfNeeded(getActivity(), rootView);
             TextView tv = (TextView) rootView.findViewById(R.id.no_contacts);
             final ListView lv = (ListView) rootView.findViewById(R.id.list);
                 MySimpleArrayAdapter ms = MySimpleArrayAdapter.getAdapter();
