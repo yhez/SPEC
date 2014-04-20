@@ -3,8 +3,6 @@ package specular.systems;
 import android.text.method.KeyListener;
 
 public class StaticVariables {
-    //defines how long does the list have to be to show the last used contacts
-    public static final int minContactSize = 10;
     //from splash
     public static ContactCard fileContactCard;
     public static String message;

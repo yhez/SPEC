@@ -201,9 +201,7 @@ public final class FilesManagement {
 
     public static boolean createFilesToSend(Activity a, byte[] data) {
         cleanUp(a);
-        boolean fileSuccess = saveFileToSend(a, a.getString(FILE_NAME_SEND), data);
-        //todo delete it
-        return fileSuccess;
+        return saveFileToSend(a, a.getString(FILE_NAME_SEND), data);
     }
 
     public static Uri getFilesToSend(Activity a) {
@@ -567,17 +565,6 @@ public final class FilesManagement {
         a.deleteDatabase(MySQLiteHelper.DATABASE_NAME);
     }*/
 
-    public static String getlasts(Activity a) {
-        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
-        return srp.getString("lasts", null);
-    }
-
-    public static void updateLasts(Activity a, String s) {
-        SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);
-        SharedPreferences.Editor edt = srp.edit();
-        edt.putString("lasts", s);
-        edt.commit();
-    }
 
     public static void getMyDetails(Activity a) {
         SharedPreferences srp = PreferenceManager.getDefaultSharedPreferences(a);

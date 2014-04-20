@@ -7,191 +7,79 @@
     android:orientation="vertical"
     tools:context="specular.systems.ContactsGroup">
 
-    <FrameLayout
-        android:id="@+id/frame_grid_last"
+    <ListView
+        android:id="@+id/list"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/no_contacts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:padding="@dimen/default_gap"
+        android:text="@string/no_contacts"
+        android:textColor="@color/spec_black"
+        android:textSize="22sp"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/en_contact"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:background="@android:drawable/alert_light_frame"
         android:layout_height="wrap_content">
 
-        <GridLayout
-            android:id="@+id/grid_lasts"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:columnCount="4"
-            android:rowCount="1">
+            android:isScrollContainer="true">
 
-            <LinearLayout
-                android:layout_column="0"
-                android:layout_row="0"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:contentDescription="@null"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_column="1"
-                android:layout_row="0"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:contentDescription="@null"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_column="2"
-                android:layout_row="0"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:contentDescription="@null"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_column="3"
-                android:layout_row="0"
-                android:orientation="vertical">
-
-                <ImageButton
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@null" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
-            </LinearLayout>
-        </GridLayout>
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ListView
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/no_contacts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:padding="@dimen/default_gap"
-            android:text="@string/no_contacts"
-            android:textColor="@color/spec_black"
-            android:textSize="22sp"
-            android:visibility="gone" />
-
-        <FrameLayout
-            android:id="@+id/en_contact"
-            android:layout_width="match_parent"
-            android:visibility="gone"
-            android:background="@android:drawable/alert_light_frame"
-            android:layout_height="wrap_content">
-
-            <RelativeLayout
+            <ImageView
+                android:id="@+id/chosen_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:isScrollContainer="true">
-
-                <ImageView
-                    android:id="@+id/chosen_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:contentDescription="@null"
-                    android:padding="6dp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_toRightOf="@id/chosen_icon"
-                    android:layout_centerVertical="true"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:padding="@dimen/default_gap">
-
-                    <TextView
-                        android:id="@+id/chosen_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/spec_black"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/chosen_email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/spec_blue"
-                        android:textSize="17sp" />
-                </LinearLayout>
-            </RelativeLayout>
-
-            <ImageButton
-                android:id="@+id/x"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
                 android:contentDescription="@null"
-                android:adjustViewBounds="true"
-                android:padding="6dp"
-                android:layout_gravity="right|top"
-                android:src="@drawable/close" />
-        </FrameLayout>
+                android:padding="6dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/chosen_icon"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="@dimen/default_gap">
+
+                <TextView
+                    android:id="@+id/chosen_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/spec_black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/chosen_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/spec_blue"
+                    android:textSize="17sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/x"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:adjustViewBounds="true"
+            android:padding="6dp"
+            android:layout_gravity="right|top"
+            android:src="@drawable/close" />
     </FrameLayout>
 </LinearLayout>
