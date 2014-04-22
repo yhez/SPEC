@@ -229,10 +229,10 @@ public class Visual {
             }
     }
 
-    public static void showAllChildes(Activity act, ViewGroup v) {
+    public static void showAllChildes(ViewGroup v) {
         for (int a = 0; a < v.getChildCount(); a++)
             try {
-                showAllChildes(act, (ViewGroup) v.getChildAt(a));
+                showAllChildes((ViewGroup) v.getChildAt(a));
             } catch (Exception e) {
                 try {
                     v.getChildAt(a).setVisibility(View.VISIBLE);

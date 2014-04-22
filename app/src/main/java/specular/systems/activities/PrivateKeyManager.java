@@ -145,7 +145,7 @@ public class PrivateKeyManager extends Activity {
         if (status == NO_CHOICE) {
             super.onBackPressed();
         } else {
-            Visual.showAllChildes(this, (ViewGroup) findViewById(android.R.id.content));
+            Visual.showAllChildes((ViewGroup) findViewById(android.R.id.content));
             findViewById(R.id.text_view_divide).setVisibility(View.GONE);
             findViewById(R.id.p_text).setVisibility(View.GONE);
             status = NO_CHOICE;
@@ -165,7 +165,7 @@ public class PrivateKeyManager extends Activity {
         final TextView tv = (TextView) findViewById(R.id.p_text);
         final View divider = findViewById(R.id.text_view_divide);
         if (status != NO_CHOICE) {
-            Visual.showAllChildes(this, (ViewGroup) findViewById(android.R.id.content));
+            Visual.showAllChildes((ViewGroup) findViewById(android.R.id.content));
             divider.setVisibility(View.GONE);
             tv.setVisibility(View.GONE);
             status = NO_CHOICE;

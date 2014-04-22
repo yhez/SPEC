@@ -2,6 +2,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:alpha="0"
+    android:animateLayoutChanges="true"
     android:background="@android:color/white"
     android:orientation="vertical">
 
