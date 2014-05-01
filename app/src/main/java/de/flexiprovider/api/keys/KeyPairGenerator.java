@@ -2,28 +2,15 @@ package de.flexiprovider.api.keys;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidParameterException;
+import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 
-import de.flexiprovider.api.SecureRandom;
-import de.flexiprovider.common.util.JavaSecureRandomWrapper;
 
 public abstract class KeyPairGenerator extends
         java.security.KeyPairGeneratorSpi {
 
-    public void initialize(java.security.spec.AlgorithmParameterSpec params,
-                           java.security.SecureRandom javaRand)
-            throws java.security.InvalidAlgorithmParameterException {
 
-        SecureRandom flexiRand = new JavaSecureRandomWrapper(javaRand);
-        initialize(params, flexiRand);
-    }
 
-    public final void initialize(int keysize,
-                                 java.security.SecureRandom javaRand)
-            throws InvalidParameterException {
-        SecureRandom flexiRand = new JavaSecureRandomWrapper(javaRand);
-        initialize(keysize, flexiRand);
-    }
     public final java.security.KeyPair generateKeyPair() {
         return genKeyPair().pair;
     }

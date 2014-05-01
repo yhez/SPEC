@@ -1,5 +1,6 @@
 package de.flexiprovider.ec;
 
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -9,7 +10,6 @@ import java.security.PublicKey;
 import javax.crypto.SecretKey;
 
 import de.flexiprovider.common.exceptions.InvalidPointException;
-import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.common.math.ellipticcurves.ScalarMult;
 import de.flexiprovider.ec.keys.ECPrivateKey;
@@ -24,11 +24,11 @@ public class ECSVDPDHC {
      */
     protected boolean withCoFactor = true;
     // the private key value
-    private FlexiBigInt mS;
+    private BigInteger mS;
     // the public key
     private ECPublicKey mOtherKey;
     // the (optional) cofactor
-    private FlexiBigInt mK;
+    private BigInteger mK;
 
     public void init(PrivateKey key) throws InvalidKeyException {
         if (!(key instanceof ECPrivateKey)) {
@@ -37,7 +37,7 @@ public class ECSVDPDHC {
         ECPrivateKey ecPrivKey = (ECPrivateKey) key;
 
         mS = ecPrivKey.getS();
-        mK = FlexiBigInt.valueOf(ecPrivKey.getParams().getK());
+        mK = BigInteger.valueOf(ecPrivKey.getParams().getK());
     }
 
 

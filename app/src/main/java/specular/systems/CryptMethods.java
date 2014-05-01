@@ -10,11 +10,10 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
-import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.api.keys.KeyPair;
 import de.flexiprovider.api.keys.KeyPairGenerator;
-import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.ec.ECIES;
 import de.flexiprovider.ec.keys.ECKeyPairGenerator;
@@ -39,7 +38,7 @@ public class CryptMethods {
         if (lock) {
             lock = false;
             if (mPtK != null) {
-                BigInteger bi = mPtK.getS().bigInt;
+                BigInteger bi = mPtK.getS();
                 try {
                     Field f = bi.getClass().getDeclaredField("bigInt");
                     f.setAccessible(true);
@@ -205,7 +204,7 @@ public class CryptMethods {
     }
 
     private static ECPrivateKey formatPrivate(byte[] p) {
-        return new ECPrivateKey(new FlexiBigInt(p), new CurveParamsGFP());
+        return new ECPrivateKey(new BigInteger(p), new CurveParamsGFP());
     }
 
     public static String getPublicTmp() {

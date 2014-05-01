@@ -1,6 +1,7 @@
 package de.flexiprovider.common.math.ellipticcurves;
 
-import de.flexiprovider.common.math.FlexiBigInt;
+import java.math.BigInteger;
+
 import de.flexiprovider.common.math.finitefields.GFPElement;
 
 public final class ScalarMult {
@@ -12,7 +13,7 @@ public final class ScalarMult {
         // empty
     }
 
-    public static Point multiply(FlexiBigInt b, Point p) {
+    public static Point multiply(BigInteger b, Point p) {
         int w = 4;
         int[] N = determineNaf(b, w);
         Point[] P = precomputationCMO(p, w + 1, 0);
@@ -59,11 +60,11 @@ public final class ScalarMult {
         doubleP = doubleP.getAffin(); // 2P
 
         // arrays for lambdas denominators and their inverses
-        FlexiBigInt[] NennerLambda = new FlexiBigInt[denoms];
-        FlexiBigInt[] NennerLambdaInvers = new FlexiBigInt[denoms];
-        FlexiBigInt invers;
+        BigInteger[] NennerLambda = new BigInteger[denoms];
+        BigInteger[] NennerLambdaInvers = new BigInteger[denoms];
+        BigInteger invers;
 
-        FlexiBigInt mP = p.getE().getQ();
+        BigInteger mP = p.getE().getQ();
 
         for (int i = 1; i < w; i++) {
             final int begin = 1 << i - 1; // startposition
@@ -86,7 +87,7 @@ public final class ScalarMult {
                 }
                 NennerLambda[start] = doubleP.getY().toFlexiBigInt().add(
                         doubleP.getY().toFlexiBigInt()).mod(mP);
-                NennerLambdaInvers[0] = NennerLambda[0].add(FlexiBigInt.ZERO);
+                NennerLambdaInvers[0] = NennerLambda[0].add(BigInteger.ZERO);
 
                 // example NennerLambdaInvers =
                 // |NL(5P) | NL(5P)*NL(7P) | NL(5P)*NL(7P)*NL(8P)| with w>3
@@ -115,7 +116,7 @@ public final class ScalarMult {
                             );
                     start++;
                 }
-                NennerLambdaInvers[0] = NennerLambda[0].add(FlexiBigInt.ZERO);
+                NennerLambdaInvers[0] = NennerLambda[0].add(BigInteger.ZERO);
 
                 // example NennerLambdaInvers = |NL(5P) | NL(5P)*NL(7P) |
                 // with w==3
@@ -137,9 +138,9 @@ public final class ScalarMult {
             }
 
             // compute multiples of point with P[j] = P[start] + doubleP
-            FlexiBigInt lambda;
-            FlexiBigInt temp;
-            FlexiBigInt x, y, startX, startY;
+            BigInteger lambda;
+            BigInteger temp;
+            BigInteger x, y, startX, startY;
             start = 0;
             for (int j = begin; j <= end; j++) {
                 startX = P[start].getX().toFlexiBigInt();
@@ -171,7 +172,7 @@ public final class ScalarMult {
                 lambda = doubleP.getX().toFlexiBigInt().multiply(
                         doubleP.getX().toFlexiBigInt()).mod(mP);
                 lambda = lambda.multiply(
-                        new FlexiBigInt(Integer.toString(3))).mod(mP);
+                        new BigInteger(Integer.toString(3))).mod(mP);
                 lambda = lambda.add(doubleP.getE().getA().toFlexiBigInt());
                 lambda = lambda.multiply(NennerLambdaInvers[start]).mod(mP);
 
@@ -188,9 +189,9 @@ public final class ScalarMult {
                 // update doubleP
                 // doubleP.mX = new GFPElement(x, mP);
                 // doubleP.mY = new GFPElement(y, mP);
-                // doubleP.mZ = new GFPElement(FlexiBigInt.ONE, mP);
+                // doubleP.mZ = new GFPElement(BigInteger.ONE, mP);
                 doubleP = new Point(new GFPElement(x, mP), new GFPElement(y,
-                        mP), new GFPElement(FlexiBigInt.ONE, mP),
+                        mP), new GFPElement(BigInteger.ONE, mP),
                         doubleP.getE()
                 );
             }
@@ -199,22 +200,22 @@ public final class ScalarMult {
     }
 
 
-    public static int[] determineNaf(FlexiBigInt e, int w, int b) {
+    public static int[] determineNaf(BigInteger e, int w, int b) {
         int power2wi = 1 << w;
         int j, u;
         int[] N = new int[b + 1];
-        FlexiBigInt c = e.abs();
+        BigInteger c = e.abs();
         int s = e.signum();
 
         j = 0;
-        while (c.compareTo(FlexiBigInt.ZERO) > 0) {
+        while (c.compareTo(BigInteger.ZERO) > 0) {
             if (c.testBit(0)) {
                 u = (c.intValue()) & ((power2wi << 1) - 1);
                 if ((u & power2wi) != 0) {
                     u = u - (power2wi << 1);
                 }
 
-                c = c.subtract(FlexiBigInt.valueOf(u));
+                c = c.subtract(BigInteger.valueOf(u));
             } else {
                 u = 0;
             }
@@ -238,7 +239,7 @@ public final class ScalarMult {
      * @param w the entries <i>n</i> of the Nafs are smaller than 2<sup>w</sup>
      * @return <tt>e</tt> in non-adjacent-form as int-array
      */
-    public static int[] determineNaf(FlexiBigInt e, int w) {
+    public static int[] determineNaf(BigInteger e, int w) {
         return determineNaf(e, w, e.bitLength());
     }
 

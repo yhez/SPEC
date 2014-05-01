@@ -1,8 +1,8 @@
 package de.flexiprovider.ec.parameters;
 
+import java.math.BigInteger;
 import java.security.spec.AlgorithmParameterSpec;
 
-import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.EllipticCurve;
 import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.common.math.finitefields.GFPElement;
@@ -10,14 +10,14 @@ import de.flexiprovider.common.util.ByteUtils;
 
 
 public class CurveParamsGFP implements AlgorithmParameterSpec {
-    FlexiBigInt q;
+    BigInteger q;
     EllipticCurve E;
     Point g;
-    private FlexiBigInt r;
+    private BigInteger r;
     private int k;
 
 
-    public FlexiBigInt getQ() {
+    public BigInteger getQ() {
         return q;
     }
 
@@ -29,7 +29,7 @@ public class CurveParamsGFP implements AlgorithmParameterSpec {
         return (Point) g.clone();
     }
 
-    public FlexiBigInt getR() {
+    public BigInteger getR() {
         return r;
     }
 
@@ -62,12 +62,12 @@ public class CurveParamsGFP implements AlgorithmParameterSpec {
     public CurveParamsGFP() {
         // order of basepoint G
         String s = "AADD9DB8DBE9C48B3FD4E6AE33C9FC07CB308DB3B3C9D20ED6639CCA70330870553E5C414CA92619418661197FAC10471DB1D381085DDADDB58796829CA90069";
-        this.r = new FlexiBigInt(s, 16);
+        this.r = new BigInteger(s, 16);
         //cofactor k
         this.k = Integer.valueOf("1", 16);
         // prime p
         s = "AADD9DB8DBE9C48B3FD4E6AE33C9FC07CB308DB3B3C9D20ED6639CCA703308717D4D9B009BC66842AECDA12AE6A380E62881FF2F2D82C68528AA6056583A48F3";
-        this.q = new FlexiBigInt(s, 16);
+        this.q = new BigInteger(s, 16);
         // curve coefficient a
         s = "7830A3318B603B89E2327145AC234CC594CBDD8D3DF91610A83441CAEA9863BC2DED5D5AA8253AA10A2EF1C98B9AC8B57F1117A72BF2C7B9E7C1AC4D77FC94CA";
         byte[] encA = ByteUtils.fromHexString(s);

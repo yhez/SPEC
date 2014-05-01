@@ -1,19 +1,18 @@
 package de.flexiprovider.ec.keys;
 
+import java.math.BigInteger;
 import java.security.Key;
 
 import javax.crypto.SecretKey;
-
-import de.flexiprovider.common.math.FlexiBigInt;
 
 
 public class ECSecretKey implements SecretKey, Key {
 
     // the private key s, 1 < s < r.
-    private FlexiBigInt mS;
+    private BigInteger mS;
 
 
-    public ECSecretKey(FlexiBigInt s) {
+    public ECSecretKey(BigInteger s) {
         mS = s;
     }
 
@@ -33,7 +32,7 @@ public class ECSecretKey implements SecretKey, Key {
     }
 
 
-    public FlexiBigInt getS() {
+    public BigInteger getS() {
         return mS;
     }
 

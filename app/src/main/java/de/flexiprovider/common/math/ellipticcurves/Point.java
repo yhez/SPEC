@@ -1,6 +1,7 @@
 package de.flexiprovider.common.math.ellipticcurves;
 
 
+import java.math.BigInteger;
 import java.security.spec.InvalidParameterSpecException;
 
 import de.flexiprovider.common.exceptions.DifferentCurvesException;
@@ -8,11 +9,9 @@ import de.flexiprovider.common.exceptions.DifferentFieldsException;
 import de.flexiprovider.common.exceptions.InvalidFormatException;
 import de.flexiprovider.common.exceptions.InvalidPointException;
 import de.flexiprovider.common.exceptions.NoQuadraticResidueException;
-import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.IntegerFunctions;
 import de.flexiprovider.common.math.finitefields.GFElement;
 import de.flexiprovider.common.math.finitefields.GFPElement;
-import de.flexiprovider.common.util.FlexiBigIntUtils;
 import de.flexiprovider.ec.parameters.CurveParamsGFP;
 
 
@@ -21,7 +20,7 @@ public class Point {
     public static final int ENCODING_TYPE_COMPRESSED = 1;
     public static final int ENCODING_TYPE_HYBRID = 2;
     protected EllipticCurve mE;
-    protected FlexiBigInt mP;
+    protected BigInteger mP;
     private GFPElement mA;
     private GFPElement mB;
     private GFPElement mX;
@@ -111,7 +110,7 @@ public class Point {
                 // compressed form
                 bX = new byte[encoded.length - 1];
                 System.arraycopy(encoded, 1, bX, 0, bX.length);
-                x = new GFPElement(new FlexiBigInt(1, bX), mP);
+                x = new GFPElement(new BigInteger(1, bX), mP);
                 boolean yMod2 = (pc & 1) == 1;
                 y = decompress(yMod2, x);
                 break;
@@ -123,8 +122,8 @@ public class Point {
                 bY = new byte[l];
                 System.arraycopy(encoded, 1, bX, 0, l);
                 System.arraycopy(encoded, 1 + l, bY, 0, l);
-                x = new GFPElement(new FlexiBigInt(1, bX), mP);
-                y = new GFPElement(new FlexiBigInt(1, bY), mP);
+                x = new GFPElement(new BigInteger(1, bX), mP);
+                y = new GFPElement(new BigInteger(1, bY), mP);
                 break;
 
             case 6:
@@ -135,8 +134,8 @@ public class Point {
                 bY = new byte[l];
                 System.arraycopy(encoded, 1, bX, 0, l);
                 System.arraycopy(encoded, 1 + l, bY, 0, l);
-                x = new GFPElement(new FlexiBigInt(1, bX), mP);
-                y = new GFPElement(new FlexiBigInt(1, bY), mP);
+                x = new GFPElement(new BigInteger(1, bX), mP);
+                y = new GFPElement(new BigInteger(1, bY), mP);
                 yMod2 = (pc & 0x01) == 1;
                 if (!(decompress(yMod2, x).equals(y))) {
                     throw new InvalidPointException();
@@ -571,7 +570,7 @@ public class Point {
     private void negateThis() {
         if (!isZero()) {
             // y = -mY mod mP
-            FlexiBigInt y = mP.add(mY.toFlexiBigInt().negate());
+            BigInteger y = mP.add(mY.toFlexiBigInt().negate());
             mY = new GFPElement(y, mP);
         }
     }
@@ -655,20 +654,20 @@ public class Point {
             return new Point(this.mE);
         }
 
-        if (this.mY.equals(FlexiBigInt.ZERO)) {
+        if (this.mY.equals(BigInteger.ZERO)) {
             return new Point(mE);
         }
 
         Point p = this.getAffin();
 
-        FlexiBigInt pX = p.mX.toFlexiBigInt();
-        FlexiBigInt pY = p.mY.toFlexiBigInt();
-        FlexiBigInt lambda, x, y, tmp;
+        BigInteger pX = p.mX.toFlexiBigInt();
+        BigInteger pY = p.mY.toFlexiBigInt();
+        BigInteger lambda, x, y, tmp;
 
         tmp = pY.add(pY).modInverse(mP);
         lambda = pX.multiply(pX).mod(mP);
         lambda = lambda
-                .multiply(new FlexiBigInt(Integer.toString(3))).mod(
+                .multiply(new BigInteger(Integer.toString(3))).mod(
                         mP);
         lambda = lambda.add(mA.toFlexiBigInt());
         lambda = lambda.multiply(tmp).mod(mP);
@@ -703,16 +702,24 @@ public class Point {
 
         encoded[0] = 4;
 
-        FlexiBigInt x = getXAffin().toFlexiBigInt();
-        FlexiBigInt y = getYAffin().toFlexiBigInt();
-        byte[] bX = FlexiBigIntUtils.toMinimalByteArray(x);
-        byte[] bY = FlexiBigIntUtils.toMinimalByteArray(y);
+        BigInteger x = getXAffin().toFlexiBigInt();
+        BigInteger y = getYAffin().toFlexiBigInt();
+        byte[] bX = toMinimalByteArray(x);
+        byte[] bY = toMinimalByteArray(y);
         System.arraycopy(bX, 0, encoded, 1 + l - bX.length, bX.length);
         System.arraycopy(bY, 0, encoded, 1 + (l << 1) - bY.length, bY.length);
 
         return encoded;
     }
-
+    public static byte[] toMinimalByteArray(BigInteger value) {
+        byte[] valBytes = value.toByteArray();
+        if ((valBytes.length == 1) || (value.bitLength() & 0x07) != 0) {
+            return valBytes;
+        }
+        byte[] result = new byte[value.bitLength() >> 3];
+        System.arraycopy(valBytes, 1, result, 0, result.length);
+        return result;
+    }
 
     byte[] encodeCompressed() {
 
@@ -732,11 +739,11 @@ public class Point {
 
         encoded[0] = 2;
 
-        FlexiBigInt x = getXAffin().toFlexiBigInt();
-        byte[] bX = FlexiBigIntUtils.toMinimalByteArray(x);
+        BigInteger x = getXAffin().toFlexiBigInt();
+        byte[] bX = toMinimalByteArray(x);
         System.arraycopy(bX, 0, encoded, 1 + l - bX.length, bX.length);
 
-        FlexiBigInt y = getYAffin().toFlexiBigInt();
+        BigInteger y = getYAffin().toFlexiBigInt();
         if (y.testBit(0)) {
             encoded[0] |= 1;
         }
@@ -762,10 +769,10 @@ public class Point {
 
         encoded[0] = 6;
 
-        FlexiBigInt x = getXAffin().toFlexiBigInt();
-        FlexiBigInt y = getYAffin().toFlexiBigInt();
-        byte[] bX = FlexiBigIntUtils.toMinimalByteArray(x);
-        byte[] bY = FlexiBigIntUtils.toMinimalByteArray(y);
+        BigInteger x = getXAffin().toFlexiBigInt();
+        BigInteger y = getYAffin().toFlexiBigInt();
+        byte[] bX = toMinimalByteArray(x);
+        byte[] bY = toMinimalByteArray(y);
         System.arraycopy(bX, 0, encoded, 1 + l - bX.length, bX.length);
         System.arraycopy(bY, 0, encoded, 1 + (l << 1) - bY.length, bY.length);
 
@@ -781,15 +788,15 @@ public class Point {
             throws InvalidPointException {
 
         // compute g = x^3 + ax + b mod p
-        FlexiBigInt xVal = x.toFlexiBigInt();
+        BigInteger xVal = x.toFlexiBigInt();
         // x3 = x^3
-        FlexiBigInt x3 = xVal.multiply(xVal).multiply(xVal);
-        FlexiBigInt g = mA.toFlexiBigInt().multiply(xVal);
+        BigInteger x3 = xVal.multiply(xVal).multiply(xVal);
+        BigInteger g = mA.toFlexiBigInt().multiply(xVal);
         g = g.add(x3);
         g = g.add(mB.toFlexiBigInt());
         g = g.mod(mP);
 
-        FlexiBigInt z;
+        BigInteger z;
         try {
             // compute z = sqrt(g) mod p
             z = IntegerFunctions.ressol(g, mP);

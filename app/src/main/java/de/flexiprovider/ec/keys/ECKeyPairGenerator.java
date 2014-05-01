@@ -1,13 +1,12 @@
 package de.flexiprovider.ec.keys;
 
+import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
+import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 
-import de.flexiprovider.api.Registry;
-import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.api.keys.KeyPair;
 import de.flexiprovider.api.keys.KeyPairGenerator;
-import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.common.math.ellipticcurves.Point;
 import de.flexiprovider.common.math.ellipticcurves.ScalarMult;
 import de.flexiprovider.ec.parameters.CurveParamsGFP;
@@ -29,7 +28,7 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
     private Point[] mOddPowers = null;
 
     // curve group order
-    private FlexiBigInt r;
+    private BigInteger r;
 
     // curve group order bit length
     private int rLength;
@@ -54,7 +53,7 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
         r = curveParams.getR();
         rLength = r.bitLength();
         mOddPowers = ScalarMult.pre_oddpowers(curveParams.getG(), 4);
-        mRandom = (random != null) ? random : Registry.getSecureRandom();
+        mRandom = (random != null) ? random : new SecureRandom();
 
         initialized = true;
     }
@@ -73,7 +72,7 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
     }
 
     private void initializeDefault() {
-        initialize(DEFAULT_KEY_SIZE, Registry.getSecureRandom());
+        initialize(DEFAULT_KEY_SIZE, new SecureRandom());
     }
 
     public KeyPair genKeyPair() {
@@ -83,15 +82,15 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
 
         // find statistically unique and unpredictable integer s in the
         // interval [1, r - 1]
-        FlexiBigInt s;
+        BigInteger s;
         CryptMethods.randomBits rb = new CryptMethods.randomBits(512);
         do {
             byte[] rand = rb.getRandomBits();
             if (rand != null)
-                s = new FlexiBigInt(rand);
+                s = new BigInteger(rand);
             else
-                s = new FlexiBigInt(rLength, mRandom);
-        } while ((s.compareTo(FlexiBigInt.ONE) < 0) || (s.compareTo(r) >= 0));
+                s = new BigInteger(rLength, new SecureRandom());
+        } while ((s.compareTo(BigInteger.ONE) < 0) || (s.compareTo(r) >= 0));
 
         // create new ECPrivateKey with value s
         ECPrivateKey privKey = new ECPrivateKey(s, curveParams);
@@ -103,5 +102,4 @@ public class ECKeyPairGenerator extends KeyPairGenerator {
         // return the keypair
         return new KeyPair(pubKey, privKey);
     }
-
 }

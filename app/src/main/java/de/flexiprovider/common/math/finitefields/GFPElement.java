@@ -1,22 +1,23 @@
 package de.flexiprovider.common.math.finitefields;
 
+import java.math.BigInteger;
+
 import de.flexiprovider.common.exceptions.DifferentFieldsException;
-import de.flexiprovider.common.math.FlexiBigInt;
 
 public class GFPElement implements GFElement {
 
-    private FlexiBigInt mValue;
+    private BigInteger mValue;
 
-    private FlexiBigInt mP;
+    private BigInteger mP;
 
 
-    public GFPElement(FlexiBigInt value, FlexiBigInt p) {
+    public GFPElement(BigInteger value, BigInteger p) {
         mValue = value.mod(p);
         mP = p;
     }
 
-    public GFPElement(byte[] encValue, FlexiBigInt p) {
-        mValue = new FlexiBigInt(1, encValue).mod(p);
+    public GFPElement(byte[] encValue, BigInteger p) {
+        mValue = new BigInteger(1, encValue).mod(p);
         mP = p;
     }
 
@@ -25,12 +26,12 @@ public class GFPElement implements GFElement {
         mP = other.mP;
     }
 
-    public static GFPElement ZERO(FlexiBigInt p) {
-        return new GFPElement(FlexiBigInt.ZERO, p);
+    public static GFPElement ZERO(BigInteger p) {
+        return new GFPElement(BigInteger.ZERO, p);
     }
 
-    public static GFPElement ONE(FlexiBigInt p) {
-        return new GFPElement(FlexiBigInt.ONE, p);
+    public static GFPElement ONE(BigInteger p) {
+        return new GFPElement(BigInteger.ONE, p);
     }
 
     public Object clone() {
@@ -38,12 +39,12 @@ public class GFPElement implements GFElement {
     }
 
     public boolean isZero() {
-        return mValue.equals(FlexiBigInt.ZERO);
+        return mValue.equals(BigInteger.ZERO);
     }
 
 
     public boolean isOne() {
-        return mValue.equals(FlexiBigInt.ONE);
+        return mValue.equals(BigInteger.ONE);
     }
 
 
@@ -130,7 +131,7 @@ public class GFPElement implements GFElement {
         return new GFPElement(mValue.modInverse(mP), mP);
     }
 
-    public FlexiBigInt toFlexiBigInt() {
+    public BigInteger toFlexiBigInt() {
         return mValue;
     }
 

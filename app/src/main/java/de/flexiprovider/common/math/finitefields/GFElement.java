@@ -1,7 +1,8 @@
 package de.flexiprovider.common.math.finitefields;
 
+import java.math.BigInteger;
+
 import de.flexiprovider.common.exceptions.DifferentFieldsException;
-import de.flexiprovider.common.math.FlexiBigInt;
 
 public interface GFElement {
 
@@ -33,7 +34,7 @@ public interface GFElement {
     void multiplyThisBy(GFElement factor) throws DifferentFieldsException;
 
 
-    FlexiBigInt toFlexiBigInt();
+    BigInteger toFlexiBigInt();
 
     String toString();
 

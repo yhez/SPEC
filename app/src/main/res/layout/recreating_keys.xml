@@ -6,10 +6,12 @@
     tools:context="specular.systems.activities.Main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <FrameLayout
         android:id="@+id/camera"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -26,12 +28,14 @@
             android:text="@string/recreating_keys_title"
             android:layout_width="wrap_content"
             android:layout_height="0dip" />
+
         <ProgressBar
             android:id="@+id/sec_progress_bar"
             style="@android:style/Widget.Holo.ProgressBar.Horizontal"
             android:padding="@dimen/default_gap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <TextView
             android:textSize="12sp"
             android:background="@color/black_over_lay"
@@ -42,6 +46,7 @@
             android:id="@+id/collecting_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <ProgressBar
             android:id="@+id/progress_bar"
             style="@android:style/Widget.Holo.ProgressBar.Horizontal"
@@ -50,6 +55,7 @@
             android:paddingBottom="@dimen/default_gap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <ImageView
             android:padding="@dimen/default_gap"
             android:contentDescription="@null"
@@ -58,6 +64,7 @@
             android:src="@drawable/spin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <LinearLayout
             android:id="@+id/after_create_keys"
             android:visibility="gone"
@@ -67,23 +74,25 @@
             android:padding="@dimen/default_gap"
             android:layout_weight="1"
             android:layout_height="0dip">
-        <Button
-            android:textColor="@color/spec_black"
-            style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/regenerate"
-            android:onClick="recreateKeys"
-            android:text="@string/regenerate"
-            android:layout_width="0dip"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
-        <Button
-            android:textColor="@color/spec_black"
-            style="?android:attr/borderlessButtonStyle"
-            android:text="@string/continue_"
-            android:onClick="createKeysManager"
-            android:layout_width="0dip"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+
+            <Button
+                android:textColor="@color/spec_black"
+                style="?android:attr/borderlessButtonStyle"
+                android:id="@+id/regenerate"
+                android:onClick="recreateKeys"
+                android:text="@string/regenerate"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:textColor="@color/spec_black"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="@string/continue_"
+                android:onClick="createKeysManager"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </LinearLayout>

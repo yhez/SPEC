@@ -8,6 +8,7 @@ build/assets/
 build/classes/
 build/dependency-cache/
 build/incremental/
+build/dex-cache/
 .gradle/
 gradle/
 .idea/

@@ -6,6 +6,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
 import java.security.Key;
+import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.InvalidParameterSpecException;
 
@@ -13,7 +14,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.ShortBufferException;
 
-import de.flexiprovider.common.util.JavaSecureRandomWrapper;
 import de.flexiprovider.ec.parameters.ECParameters;
 
 public abstract class Cipher extends javax.crypto.CipherSpi {
@@ -60,7 +60,7 @@ public abstract class Cipher extends javax.crypto.CipherSpi {
         this.opMode = opMode;
 
         if (opMode == ENCRYPT_MODE) {
-            SecureRandom flexiRand = new JavaSecureRandomWrapper(javaRand);
+            SecureRandom flexiRand = new SecureRandom();
             initEncrypt(key, params, flexiRand);
 
         } else if (opMode == DECRYPT_MODE) {

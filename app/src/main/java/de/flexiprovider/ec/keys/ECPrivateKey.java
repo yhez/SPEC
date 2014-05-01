@@ -1,24 +1,24 @@
 package de.flexiprovider.ec.keys;
 
+import java.math.BigInteger;
 import java.security.PrivateKey;
 
-import de.flexiprovider.common.math.FlexiBigInt;
 import de.flexiprovider.ec.parameters.CurveParamsGFP;
 
 
 public class ECPrivateKey implements PrivateKey {
 
     // the private key s, 1 < s < r.
-    private FlexiBigInt mS;
+    private BigInteger mS;
 
     private CurveParamsGFP mParams;
 
-    public ECPrivateKey(FlexiBigInt s, CurveParamsGFP params) {
+    public ECPrivateKey(BigInteger s, CurveParamsGFP params) {
         mS = s;
         mParams = params;
     }
 
-    public FlexiBigInt getS() {
+    public BigInteger getS() {
         return mS;
     }
 

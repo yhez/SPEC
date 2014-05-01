@@ -4,8 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.BadPaddingException;
@@ -16,14 +18,13 @@ import javax.crypto.spec.SecretKeySpec;
 import de.flexiprovider.api.AsymmetricHybridCipher;
 import de.flexiprovider.api.BlockCipher;
 import de.flexiprovider.api.Mac;
-import de.flexiprovider.api.Registry;
-import de.flexiprovider.api.SecureRandom;
 import de.flexiprovider.api.keys.KeyPair;
 import de.flexiprovider.common.util.ByteUtils;
 import de.flexiprovider.core.kdf.KDF2;
 import de.flexiprovider.core.kdf.KDFParameterSpec;
 import de.flexiprovider.core.mac.HMac;
 import de.flexiprovider.core.mac.HMacKey;
+import de.flexiprovider.core.rijndael.Rijndael;
 import de.flexiprovider.core.rijndael.RijndaelKey;
 import de.flexiprovider.ec.ECSVDPDHC;
 
@@ -144,7 +145,7 @@ public abstract class IES extends AsymmetricHybridCipher {
         }
         initMAC();
 
-        this.random = (random != null) ? random : Registry.getSecureRandom();
+        this.random = (random != null) ? random : new SecureRandom();
         opMode = ENCRYPT_MODE;
     }
 
@@ -247,7 +248,7 @@ public abstract class IES extends AsymmetricHybridCipher {
 
     private void initSymCipher() {
         try {
-            symCipher = Registry.getBlockCipher(symCipherName);
+            symCipher = getBlockCipher(symCipherName);
         } catch (Exception ex) {
             throw new RuntimeException("IES Init (checkSymCipher): "
                     + ex.getMessage());
@@ -255,6 +256,47 @@ public abstract class IES extends AsymmetricHybridCipher {
         symKeyLength = iesParams.getSymKeyLength();
     }
 
+    public static BlockCipher getBlockCipher(String transformation)
+            throws NoSuchAlgorithmException {
+
+        String modeName = null, paddingName = null;
+        int endIndex = transformation.indexOf('/');
+        if (endIndex >= 0) {
+            // transformation is of the form 'algorithm/mode/padding'
+
+            // get 'algorithm'
+
+            // get 'mode/padding'
+            String modePadding = transformation.substring(endIndex + 1);
+            endIndex = modePadding.indexOf("/");
+            if (endIndex == -1) {
+                // if no padding is specified
+                throw new NoSuchAlgorithmException(
+                        "Badly formed transformation: only 'algorithm' "
+                                + "or 'algorithm/mode/padding' allowed.");
+            }
+
+            // get 'mode'
+            modeName = modePadding.substring(0, endIndex);
+
+            // get 'padding'
+            paddingName = modePadding.substring(endIndex + 1);
+
+            // if even more information is provided, transformation is invalid
+            if (paddingName.contains("/")) {
+                throw new NoSuchAlgorithmException(
+                        "Badly formed transformation: only 'algorithm' "
+                                + "or 'algorithm/mode/padding' allowed.");
+            }
+        }
+
+        BlockCipher result = new Rijndael.AES.AES128_CBC();
+        if (modeName != null)
+            result.setMode(modeName);
+        if (paddingName != null)
+            result.setPadding(paddingName);
+        return result;
+    }
 
     private void initMAC() {
         macName = iesParams.getMacName();

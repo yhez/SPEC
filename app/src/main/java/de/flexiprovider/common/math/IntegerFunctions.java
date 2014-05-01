@@ -1,21 +1,23 @@
 package de.flexiprovider.common.math;
 
+import java.math.BigInteger;
+
 import de.flexiprovider.common.exceptions.NoQuadraticResidueException;
 
 public final class IntegerFunctions {
 
-    private static final FlexiBigInt ZERO = FlexiBigInt.ZERO;
+    private static final BigInteger ZERO = BigInteger.ZERO;
 
-    private static final FlexiBigInt ONE = FlexiBigInt.ONE;
+    private static final BigInteger ONE = BigInteger.ONE;
 
-    private static final FlexiBigInt TWO = FlexiBigInt.valueOf(2);
+    private static final BigInteger TWO = BigInteger.valueOf(2);
 
     // the jacobi function uses this lookup table
     private static final int[] jacobiTable = {0, 1, 0, -1, 0, -1, 0, 1};
 
 
-    public static int jacobi(FlexiBigInt A, FlexiBigInt B) {
-        FlexiBigInt a, b, v;
+    public static int jacobi(BigInteger A, BigInteger B) {
+        BigInteger a, b, v;
         long k;
 
         k = 1;
@@ -70,7 +72,7 @@ public final class IntegerFunctions {
 
             if (a.compareTo(b) < 0) { // a < b
                 // swap and correct intermediate result
-                FlexiBigInt x = a;
+                BigInteger x = a;
                 a = b;
                 b = x;
                 if (a.testBit(1) && b.testBit(1)) {
@@ -84,10 +86,10 @@ public final class IntegerFunctions {
     }
 
 
-    public static FlexiBigInt ressol(FlexiBigInt a, FlexiBigInt p)
+    public static BigInteger ressol(BigInteger a, BigInteger p)
             throws NoQuadraticResidueException {
 
-        FlexiBigInt v;
+        BigInteger v;
 
         if (a.compareTo(ZERO) < 0) {
             a = a.add(p);
@@ -117,7 +119,7 @@ public final class IntegerFunctions {
         // initialization
         // compute k and s, where p = 2^s (2k+1) +1
 
-        FlexiBigInt k = p.subtract(ONE); // k = p-1
+        BigInteger k = p.subtract(ONE); // k = p-1
         long s = 0;
         while (!k.testBit(0)) { // while k is even
             s++; // s = s+1
@@ -128,9 +130,9 @@ public final class IntegerFunctions {
         k = k.shiftRight(1); // k = k/2
 
         // initial values
-        FlexiBigInt r = a.modPow(k, p); // r = a^k mod p
+        BigInteger r = a.modPow(k, p); // r = a^k mod p
 
-        FlexiBigInt n = r.multiply(r).remainder(p); // n = r^2 % p
+        BigInteger n = r.multiply(r).remainder(p); // n = r^2 % p
         n = n.multiply(a).remainder(p); // n = n * a % p
         r = r.multiply(a).remainder(p); // r = r * a %p
 
@@ -139,7 +141,7 @@ public final class IntegerFunctions {
         }
 
         // non-quadratic residue
-        FlexiBigInt z = TWO; // z = 2
+        BigInteger z = TWO; // z = 2
         while (jacobi(z, p) == 1) {
             // while z quadratic residue
             z = z.add(ONE); // z = z + 1
@@ -148,7 +150,7 @@ public final class IntegerFunctions {
         v = k;
         v = v.multiply(TWO); // v = 2k
         v = v.add(ONE); // v = 2k + 1
-        FlexiBigInt c = z.modPow(v, p); // c = z^v mod p
+        BigInteger c = z.modPow(v, p); // c = z^v mod p
 
         // iteration
         while (n.compareTo(ONE) == 1) { // n > 1

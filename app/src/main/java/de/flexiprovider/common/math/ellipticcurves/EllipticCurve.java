@@ -1,16 +1,17 @@
 package de.flexiprovider.common.math.ellipticcurves;
 
-import de.flexiprovider.common.math.FlexiBigInt;
+import java.math.BigInteger;
+
 import de.flexiprovider.common.math.finitefields.GFElement;
 
 
 public class EllipticCurve {
 
-    protected FlexiBigInt mQ;
+    protected BigInteger mQ;
     protected GFElement mA;
     protected GFElement mB;
 
-    public EllipticCurve(GFElement a, GFElement b, FlexiBigInt q) {
+    public EllipticCurve(GFElement a, GFElement b, BigInteger q) {
         // TODO check whether the parameters match: are a and b are defined over
         // the same field, does parameter q match?
         mQ = q;
@@ -18,7 +19,7 @@ public class EllipticCurve {
         mB = b;
     }
 
-    public FlexiBigInt getQ() {
+    public BigInteger getQ() {
         return mQ;
     }
 
