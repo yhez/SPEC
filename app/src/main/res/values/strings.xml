@@ -252,10 +252,10 @@
     <string name="no_private">No Private</string>
     <string name="regenerate">Regenerate Keys</string>
     <string name="continue_">Accept</string>
-    <string name="save_on_device">Keep it on your device</string>
-    <string name="save_on_nfc">Move it to NFC tag</string>
-    <string name="save_key_explain">choose the place for the private key</string>
-    <string name="take_secrate_pict">Take a secrete picture to identify the app who request your NFC tag</string>
+    <string name="save_on_device">On device</string>
+    <string name="save_on_nfc">NFC tag</string>
+    <string name="save_key_explain">Choose where to store your Private Key</string>
+    <string name="take_secrate_pict">Take a secret picture for identifying NFC tag requests</string>
 
     <string-array name="links">
         <item>https://specularx.co/how-it-works/</item>
