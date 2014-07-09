@@ -174,7 +174,7 @@
     <string name="generator_menu_title">Generating Keys&#8230;</string>
     <string name="save_keys_menu_title">Save Keys</string>
     <string name="contact_deleted_widget">Contact deleted.</string>
-    <string name="recreating_keys_title">For enhanced transparency and security, we\'ll generate various keys and let you choose the one that you want, by pressing the QR code below.</string>
+    <string name="recreating_keys_title">For enhanced transparency and security, we\'ll generate various keys and let you choose the one that you want.</string>
     <string name="learn_screen_suggest_us">Feel free to send us suggestions and feedback. Add us to your contacts list by pressing the QR code.</string>
     <string name="widget_add_contact_list_empty">-----\nYour contact list is empty.\nThis widget requires at least one contact.\n-----</string>
     <string name="check_box_confirm_recreate_keys">I accept</string>
@@ -245,13 +245,13 @@
     <string name="hash_description_title">message parts:\n</string>
     <string name="subject_backup_data">backup SPEC data</string>
     <string name="open_by_external_app">Open file VIA external app.\nIt can be dangerous to give access to the data to another application</string>
-    <string name="failed_create_qr">failed to create QR</string>
+    <string name="failed_create_qr">Failed to create QR</string>
     <string name="nfc_to_decrypt_notes">Tab your NFC Tag To decrypt notes</string>
     <string name="nfc_for_files">Tab NFC to decrypt Files</string>
     <string name="private_exist">Private Loaded</string>
     <string name="no_private">No Private</string>
-    <string name="regenerate">regenerate keys</string>
-    <string name="continue_">continue</string>
+    <string name="regenerate">Regenerate Keys</string>
+    <string name="continue_">Accept</string>
     <string name="save_on_device">Keep it on your device</string>
     <string name="save_on_nfc">Move it to NFC tag</string>
     <string name="save_key_explain">choose the place for the private key</string>
